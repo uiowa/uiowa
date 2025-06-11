@@ -1126,7 +1126,7 @@ function uids_base_preprocess_menu(&$variables) {
       break;
 
     case 'main':
-      // Add class to all menu items
+      // Add class to all menu items.
       foreach ($variables['items'] as &$item) {
         if (!isset($item['attributes']['class'])) {
           $item['attributes']['class'] = [];
