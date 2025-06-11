@@ -1,13 +1,22 @@
 adding:
   dependencies:
     config:
+      - node.type.record
       - taxonomy.vocabulary.administrative_units
       - taxonomy.vocabulary.record_categories
   permissions:
+    - 'create record content'
     - 'create terms in administrative_units'
     - 'create terms in record_categories'
+    - 'delete any record content'
+    - 'delete own record content'
+    - 'delete record revisions'
     - 'delete terms in administrative_units'
     - 'delete terms in record_categories'
+    - 'edit any record content'
+    - 'edit own record content'
     - 'edit terms in administrative_units'
     - 'edit terms in record_categories'
+    - 'revert record revisions'
+    - 'view record revisions'
 removing: {  }
