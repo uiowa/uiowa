@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Module code for signage.sites.uiowa.edu
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $allowed_forms = ['node_sign_form', 'node_sign_edit_form', 'node_slide_form', 'node_slide_edit_form'];
+
+  // Break out if our form ID isn't one that we have defined.
+  if (!in_array($form_id, $allowed_forms, TRUE)) {
+    return;
+  }
+
+  // Break out if our form doesnt have other_groups defined.
+  if (!isset($form['og_audience']['other_groups'])) {
+    return;
+  }
+
+  // Unset the other groups field.
+  unset($form['og_audience']['other_groups']);
+}
