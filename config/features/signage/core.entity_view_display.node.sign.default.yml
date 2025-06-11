@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.node.sign.field_sign_display_title
     - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.og_audience
     - field.field.node.sign.field_sign_slides
     - node.type.sign
   module:
@@ -179,14 +178,6 @@ content:
         delimiter: ''
     weight: 0
     region: content
-  og_audience:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 103
-    region: first
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true

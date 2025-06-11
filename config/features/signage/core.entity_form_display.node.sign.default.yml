@@ -6,14 +6,12 @@ dependencies:
     - core.entity_form_mode.node.minimal
     - field.field.node.sign.field_sign_display_title
     - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.og_audience
     - field.field.node.sign.field_sign_slides
     - node.type.sign
   module:
     - content_moderation
     - entity_browser_entity_form
     - inline_entity_form
-    - og
     - path
 id: node.sign.default
 targetEntityType: node
@@ -66,16 +64,6 @@ content:
     weight: 10
     region: content
     settings: {  }
-    third_party_settings: {  }
-  og_audience:
-    type: og_complex
-    weight: 123
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
