@@ -4052,3 +4052,78 @@ function sitenow_update_10021(&$sandbox) {
     }
   }
 }
+
+/**
+ * Migrate exposed_filter_values for people list blocks.
+ */
+function sitenow_update_10022() {
+
+  $block_plugin_id = 'views_block:people_list_block-list_card';
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block = NULL) {
+    $config = $component->get('configuration');
+    // If the exposed_filter_values is set and $config['exposed'] is empty,
+    // move values to the new exposed filter format.
+    if (isset($config['exposed_filter_values']) && is_array($config['exposed_filter_values'])) {
+      $new_exposed = [];
+      foreach ($config['exposed_filter_values'] as $key => $value) {
+
+        // Skip these redundant filter values.
+        if ($key === 'field_person_type_status_value' || $key === 'field_person_type_status_value_op') {
+          continue;
+        }
+
+        if ($key === 'people_research_areas') {
+          $field = 'field_person_research_areas_target_id';
+        }
+        else {
+          $field = $key;
+        }
+
+        // Handle taxonomy ref fields.
+        if (is_array($value) && isset($value[0]['target_id'])) {
+          $new_exposed['filter-' . $field] = [
+            'type' => 'entity_autocomplete',
+            'value' => array_column($value, 'target_id'),
+            'plugin_id' => 'taxonomy_index_tid',
+            'exposed' => 0,
+            'expose' => ['use_operator' => FALSE],
+          ];
+        }
+        elseif ($key === 'filter-field_person_types_target_id') {
+          $new_exposed['filter-' . $field] = [
+            'value' => $value,
+            'plugin_id' => 'entity_reference',
+            'exposed' => 0,
+            'expose' => ['use_operator' => FALSE],
+          ];
+        }
+        // Handle the wrapped person_type_status filter differently.
+        elseif ($key === 'field_person_type_status_value_wrapper') {
+          if ($value['field_person_type_status_value'] !== 'All') {
+            $new_exposed['filter-field_person_type_status_value'] = [
+              'value' => [$value['field_person_type_status_value'] => $value['field_person_type_status_value']],
+              'plugin_id' => 'list_field',
+              'operator' => $value['field_person_type_status_value_op'] ?? 'or',
+              'exposed' => 0,
+              'expose' => ['use_operator' => FALSE],
+            ];
+          }
+        }
+        else {
+          if (!is_null($value) && $value !== '') {
+            $new_exposed['filter-' . $field] = [
+              'value' => $value,
+              'plugin_id' => 'string',
+              'exposed' => 0,
+              'expose' => ['use_operator' => FALSE],
+            ];
+          }
+        }
+      }
+      $config['exposed'] = $new_exposed;
+      unset($config['exposed_filter_values']);
+    }
+    $component->setConfiguration($config);
+
+  });
+}

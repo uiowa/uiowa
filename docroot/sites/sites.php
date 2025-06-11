@@ -7745,12 +7745,6 @@ $sites['labdrivingtechnology.dev.drupal.uiowa.edu'] = 'drivingtechnology.lab.uio
 $sites['labdrivingtechnology.stage.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
 $sites['labdrivingtechnology.prod.drupal.uiowa.edu'] = 'drivingtechnology.lab.uiowa.edu';
 
-// Directory aliases for go.tippie.uiowa.edu.
-$sites['tippiego.uiowa.ddev.site'] = 'go.tippie.uiowa.edu';
-$sites['tippiego.dev.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
-$sites['tippiego.stage.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
-$sites['tippiego.prod.drupal.uiowa.edu'] = 'go.tippie.uiowa.edu';
-
 // Directory aliases for henryfund.tippie.uiowa.edu.
 $sites['tippiehenryfund.uiowa.ddev.site'] = 'henryfund.tippie.uiowa.edu';
 $sites['tippiehenryfund.dev.drupal.uiowa.edu'] = 'henryfund.tippie.uiowa.edu';
