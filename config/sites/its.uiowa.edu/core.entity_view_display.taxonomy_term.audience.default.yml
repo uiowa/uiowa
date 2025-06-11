@@ -1,0 +1,27 @@
+uuid: 3d24275a-efc6-46a8-9698-6ecd6f913fd9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.audience.rabbit_hole__settings
+    - taxonomy.vocabulary.audience
+  module:
+    - text
+id: taxonomy_term.audience.default
+targetEntityType: taxonomy_term
+bundle: audience
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true
