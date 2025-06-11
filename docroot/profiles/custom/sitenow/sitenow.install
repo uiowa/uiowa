@@ -4056,7 +4056,7 @@ function sitenow_update_10021(&$sandbox) {
 /**
  * Migrate exposed_filter_values for people list blocks.
  */
-function sitenow_update_10027() {
+function sitenow_update_10022() {
 
   $block_plugin_id = 'views_block:people_list_block-list_card';
   _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block = NULL) {
@@ -4085,6 +4085,14 @@ function sitenow_update_10027() {
             'type' => 'entity_autocomplete',
             'value' => array_column($value, 'target_id'),
             'plugin_id' => 'taxonomy_index_tid',
+            'exposed' => 0,
+            'expose' => ['use_operator' => FALSE],
+          ];
+        }
+        elseif ($key === 'filter-field_person_types_target_id') {
+          $new_exposed['filter-' . $field] = [
+            'value' => $value,
+            'plugin_id' => 'entity_reference',
             'exposed' => 0,
             'expose' => ['use_operator' => FALSE],
           ];
@@ -4122,8 +4130,8 @@ function sitenow_update_10027() {
         }
       }
       $config['exposed'] = $new_exposed;
+      unset($config['exposed_filter_values']);
     }
-    unset($config['exposed_filter_values']);
     $component->setConfiguration($config);
 
   });
