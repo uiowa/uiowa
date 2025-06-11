@@ -295,6 +295,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       //   which are available in the saved block config.
       //   This ensures the exposed filters on the form
       //   properly match the previously selected filter values.
+      //   Relates to https://github.com/uiowa/uiowa/issues/4947
       $element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER]['#default_value'] = $block->getConfiguration()['exposed']['filter-' . PersonTypeInterface::STATUS_FILTER]['value'];
       $element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER . '_op']['#default_value'] = $block->getConfiguration()['exposed']['filter-' . PersonTypeInterface::STATUS_FILTER]['operator'];
 
