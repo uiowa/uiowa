@@ -220,9 +220,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         break;
       }
 
-      // Display person types as a select list.
-      uiowa_core_config_entity_filter_select($element['filter-field_person_types_target_id']['field_person_types_target_id'], 'person_type');
-
       // Only continue if person type status filter exists.
       if (!isset($element['filter-' . PersonTypeInterface::STATUS_FILTER])) {
         break;
