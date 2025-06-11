@@ -767,11 +767,20 @@ function sitenow_people_views_pre_build(ViewExecutable $view) {
       'type' => 'field_person_types_target_id',
       'research' => 'field_person_research_areas_target_id',
     ];
+    $uses_exposed = FALSE;
     foreach ($filters_to_toggle as $filter_type => $filter_label) {
-      if (!$config->get("filter_display.{$filter_type}")) {
+      if ($config->get("filter_display.{$filter_type}")) {
+        $uses_exposed = TRUE;
+      }
+      else {
         $filter = $view->display_handler->getHandler('filter', $filter_label);
         $filter->options['exposed'] = FALSE;
       }
+    }
+
+    // If no exposed filters are used, set has_exposed to FALSE.
+    if (!$uses_exposed) {
+      $view->display_handler->has_exposed = FALSE;
     }
   }
 }
