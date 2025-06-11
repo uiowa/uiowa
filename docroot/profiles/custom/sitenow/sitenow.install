@@ -4100,20 +4100,11 @@ function sitenow_update_10022() {
         // Handle the wrapped person_type_status filter differently.
         elseif ($key === 'field_person_type_status_value_wrapper') {
           if ($value['field_person_type_status_value'] !== 'All') {
-            $new_exposed['filter-field_person_type_status_value_wrapper'] = [
-              'value' => [
-                'field_person_type_status_value_op' => $value['field_person_type_status_value_op'] ?? 'or',
-                'field_person_type_status_value' => $value['field_person_type_status_value'],
-              ],
-              'plugin_id' => 'string',
-              'exposed' => 0,
-              'expose' => ['use_operator' => FALSE],
-            ];
             $new_exposed['filter-field_person_type_status_value'] = [
               'value' => [$value['field_person_type_status_value'] => $value['field_person_type_status_value']],
               'plugin_id' => 'list_field',
               'operator' => $value['field_person_type_status_value_op'] ?? 'or',
-              'exposed' => "0",
+              'exposed' => 0,
               'expose' => ['use_operator' => FALSE],
             ];
           }
