@@ -13,11 +13,13 @@ dependencies:
     - field.field.node.student_profile.field_person_last_name
     - field.field.node.student_profile.field_person_quote
     - field.field.node.student_profile.field_tags
+    - field.field.node.student_profile.rabbit_hole__settings
     - node.type.student_profile
   module:
     - content_moderation
     - media_library
     - path
+    - rabbit_hole
     - text
 id: node.student_profile.default
 targetEntityType: node
@@ -129,6 +131,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

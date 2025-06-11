@@ -53,15 +53,13 @@ default:
       alias: /home
       langcode: en
       pathauto: 1
-  rh_action:
+  rabbit_hole__settings:
     -
-      value: bundle_default
-  rh_redirect_response:
-    -
-      value: 301
-  rh_redirect_fallback_action:
-    -
-      value: bundle_default
+      action: bundle_default
+      settings:
+        redirect: null
+        redirect_code: 301
+        redirect_fallback_action: bundle_default
   field_publish_options:
     -
       value: title_hidden
