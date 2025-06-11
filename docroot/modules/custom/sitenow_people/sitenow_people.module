@@ -109,6 +109,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           }
         }
         // Show/hide person type statuses based on person type selections.
+        // The callback immediately returns just to trigger a node form reload.
         $form['field_person_types']['widget']['#ajax'] = [
           'callback' => 'sitenow_people_person_types_callback',
           'event' => 'change',
@@ -181,15 +182,12 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
       if (isset($form['settings'])
-        && isset($form['settings']['override'])
-        && isset($form['settings']['override']['exposed_filters'])
+        && isset($form['settings']['exposed'])
       ) {
-        // Add custom validation for certain blocks/regions to validate.
-        $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
         $form['#suffix'] = '</div>';
         // Add custom process callback to alter exposed filters.
-        $form['settings']['override']['exposed_filters']['#process'][] = '_sitenow_people_process_people_block_filters';
+        $form['settings']['exposed']['#process'][] = '_sitenow_people_process_people_block_filters';
       }
       break;
   }
@@ -217,32 +215,13 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
   switch ($block->getPluginId()) {
     case 'views_block:people_list_block-list_card':
 
-      // Check if values or defaults are set for exposed filters
-      // and leave the container open if so.
-      foreach (Element::children($element) as $field_name) {
-        $default = $element[$field_name]['#default_value'] ?: NULL;
-        $filter = $form_state->getValue([
-          'settings',
-          'override',
-          'exposed_filters',
-          $field_name,
-        ]);
-        if ($filter || $default) {
-          $element['#open'] = TRUE;
-          break;
-        }
-      }
-
       // Only continue if person type filter exists.
-      if (!isset($element['field_person_types_target_id'])) {
+      if (!isset($element['filter-field_person_types_target_id'])) {
         break;
       }
 
-      // Display person types as a select list.
-      uiowa_core_config_entity_filter_select($element['field_person_types_target_id'], 'person_type');
-
       // Only continue if person type status filter exists.
-      if (!isset($element[PersonTypeInterface::STATUS_FILTER])) {
+      if (!isset($element['filter-' . PersonTypeInterface::STATUS_FILTER])) {
         break;
       }
 
@@ -254,12 +233,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
       // Only allow admins access to the person type status filter for now.
       if ($access->isForbidden()) {
-        $element[PersonTypeInterface::STATUS_FILTER . '_wrapper']['#access'] = FALSE;
+        $element['filter-' . PersonTypeInterface::STATUS_FILTER]['#access'] = FALSE;
         break;
       }
 
       // Show/hide person type statuses based on person type selections.
-      $element['field_person_types_target_id']['#ajax'] = [
+      $element['filter-field_person_types_target_id']['field_person_types_target_id']['#ajax'] = [
         'callback' => 'sitenow_people_person_types_callback',
         'event' => 'change',
         'wrapper' => 'form-ajax-wrapper',
@@ -270,13 +249,13 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         ],
       ];
 
-      $person_type_options = $element['field_person_types_target_id']['#options'];
-      $person_type_status_options = $element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER]['#options'];
+      $person_type_options = $element['filter-field_person_types_target_id']['field_person_types_target_id']['#options'];
+      $person_type_status_options = $element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER]['#options'];
 
       foreach ($person_type_options as $key => $option) {
         if (isset($person_type_status_options[$key])) {
-          $element[PersonTypeInterface::STATUS_FILTER . '_wrapper']['#states']['visible'][] = [
-            ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
+          $element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER]['#states']['visible'][] = [
+            ':input[name="settings[exposed][filter-field_person_types_target_id][field_person_types_target_id]"]' => [
               'value' => $key,
             ],
           ];
@@ -291,19 +270,19 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         // Check if $form_state has person type value set.
         $type = $form_state->getValue([
           'settings',
-          'override',
-          'exposed_filters',
+          'exposed',
+          'filter-field_person_types_target_id',
           'field_person_types_target_id',
         ]);
 
         // If not, check if the default value is set.
-        if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
-          $type = $element['field_person_types_target_id']['#default_value'];
+        if (!$type && !empty($element['filter-field_person_types_target_id']['field_person_types_target_id']['#default_value'])) {
+          $type = $element['filter-field_person_types_target_id']['field_person_types_target_id']['#default_value'];
         }
 
         // Set person type status options based on the type.
         if ($type) {
-          sitenow_people_person_type_status_filter_options($element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+          sitenow_people_person_type_status_filter_options($element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
         }
       }
 
@@ -313,12 +292,9 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       //   which are available in the saved block config.
       //   This ensures the exposed filters on the form
       //   properly match the previously selected filter values.
-      foreach ([
-        'field_person_type_status_value',
-        'field_person_type_status_value_op',
-      ] as $field) {
-        $element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][$field]['#default_value'] = $block->getConfiguration()['exposed_filter_values'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][$field];
-      }
+      //   Relates to https://github.com/uiowa/uiowa/issues/4947
+      $element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER]['#default_value'] = $block->getConfiguration()['exposed']['filter-' . PersonTypeInterface::STATUS_FILTER]['value'];
+      $element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER . '_op']['#default_value'] = $block->getConfiguration()['exposed']['filter-' . PersonTypeInterface::STATUS_FILTER]['operator'];
 
       break;
 
@@ -327,55 +303,22 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 }
 
 /**
- * Validation callback.
- */
-function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
-  // @todo Potentially set the correct values here?
-  //   Also potentially need to scope the following:
-  //   We take our filter operators out of their wrapper,
-  //   and place them within their parent container to be
-  //   passed to the view.
-  foreach ([
-    'field_person_type_status_value',
-    'field_person_type_status_value_op',
-  ] as $field) {
-    $form_state->setValue(
-      ['settings',
-        'override',
-        'exposed_filters',
-        $field,
-      ],
-      $form_state->getValue(
-        ['settings',
-          'override',
-          'exposed_filters',
-          'field_person_type_status_value_wrapper',
-          $field,
-        ]
-      )
-    );
-  }
-}
-
-/**
  * Custom callback for person types field.
  */
 function sitenow_people_person_types_callback(array &$form, FormStateInterface $form_state) {
-  // @todo Do these modifications need to be scoped to just run when
-  //   the triggering element is the person types filter? Currently
-  //   we're skipping if we're on a node form, but scoping could be
-  //   more specific.
+  // Used to ajax reload the node form.
+  // Updates the person type status filter elsewhere.
   if (in_array($form['#form_id'], ['node_person_form', 'node_person_edit_form'])) {
     return $form;
   }
   $type = $form_state->getValue([
     'settings',
-    'override',
-    'exposed_filters',
+    'exposed',
+    'filter-field_person_types_target_id',
     'field_person_types_target_id',
   ]);
 
-  sitenow_people_person_type_status_filter_options($form['settings']['override']['exposed_filters'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+  sitenow_people_person_type_status_filter_options($form['settings']['exposed']['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
 
   return $form;
 }
@@ -814,30 +757,56 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 }
 
 /**
+ * Implements hook_views_pre_build().
+ */
+function sitenow_people_views_pre_build(ViewExecutable $view) {
+  if ($view->id() === 'people' && $view->current_display !== 'default') {
+    $config = \Drupal::config('sitenow_people.settings');
+    $filters_to_toggle = [
+      'combine' => 'combine',
+      'type' => 'field_person_types_target_id',
+      'research' => 'field_person_research_areas_target_id',
+    ];
+    $uses_exposed = FALSE;
+    foreach ($filters_to_toggle as $filter_type => $filter_label) {
+      if ($config->get("filter_display.{$filter_type}")) {
+        $uses_exposed = TRUE;
+      }
+      else {
+        $filter = $view->display_handler->getHandler('filter', $filter_label);
+        $filter->options['exposed'] = FALSE;
+      }
+    }
+
+    // If no exposed filters are used, set has_exposed to FALSE.
+    if (!$uses_exposed) {
+      $view->display_handler->has_exposed = FALSE;
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
-  if ($view->id() === 'people_block') {
-    if ($view->current_display === 'block_people_sfl' || $view->current_display === 'block_people_slf') {
-      $exposed_input = $view->getExposedInput();
-      if (isset($exposed_input['items_per_page'])) {
-        $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
-        $form['#attributes']['class'][] = 'hidden';
+  switch ($view->id()) {
+    case 'people_block':
+      if ($view->current_display === 'block_people_sfl' || $view->current_display === 'block_people_slf') {
+        $exposed_input = $view->getExposedInput();
+        if (isset($exposed_input['items_per_page'])) {
+          $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
+          $form['#attributes']['class'][] = 'hidden';
+        }
       }
-    }
-  }
+      break;
 
-  if ($view->id() === 'people') {
-    // Change the research areas label.
-    if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
-      $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
-    }
-
-    $person_type_filter = 'type';
-    if (isset($form[$person_type_filter])) {
-      uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
-    }
+    case 'people':
+      // Change the research areas label.
+      if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
+        $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
+      }
+      break;
   }
 }
 
