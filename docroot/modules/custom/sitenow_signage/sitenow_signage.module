@@ -29,12 +29,12 @@ function sitenow_signage_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
   }
 
   // Break out if our form doesnt have other_groups defined.
-  if (!isset($form["og_audience"]["other_groups"])) {
+  if (!isset($form['og_audience']['other_groups'])) {
     return;
   }
 
   // Unset the other groups field.
-  unset($form["og_audience"]["other_groups"]);
+  unset($form['og_audience']['other_groups']);
 }
 
 /**
