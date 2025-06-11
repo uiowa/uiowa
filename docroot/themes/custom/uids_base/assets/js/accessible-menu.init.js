@@ -43,8 +43,8 @@
           menuWrapper.insertAdjacentElement('afterbegin', toggleBtn);
         }
 
-        // Find all menu items that can be displayed.
-        const expandableMenuItems = menuElement.querySelectorAll('li.menu-item--expanded > a, li.menu-item--expanded > span');
+        // Find all menu items that can be displayed, excluding those with unpublished children.
+        const expandableMenuItems = menuElement.querySelectorAll('li.menu-item--expanded:not(.menu-child--unpublished) > a, li.menu-item--expanded:not(.menu-child--unpublished) > span');
 
         // Add buttons to toggle menus. Buttons are generated here to support
         // no JS and sub-menus displayed by default.
@@ -69,7 +69,7 @@
           menuElement,
           // We have to add 'span' to handle <nolink>.
           menuLinkSelector: 'a, span',
-          submenuItemSelector: 'li.menu-item--expanded',
+          submenuItemSelector: 'li.menu-item--expanded:not(.menu-child--unpublished)',
           controllerElement: menuWrapper.querySelector(`#${toggleBtnId}`),
           submenuToggleSelector: 'button',
           containerElement: menuWrapper,
