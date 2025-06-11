@@ -23,6 +23,6 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
     return;
   }
 
-  // Unset the other groups field.
-  unset($form['og_audience']['other_groups']);
+  // Remove access from the other groups field.
+  $form['og_audience']['other_groups']['#access'] = FALSE;
 }
