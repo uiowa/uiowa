@@ -759,6 +759,26 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 }
 
 /**
+ * Implements hook_views_pre_build().
+ */
+function sitenow_people_views_pre_build(ViewExecutable $view) {
+  if ($view->id() === 'people' && $view->current_display !== 'default') {
+    $config = \Drupal::config('sitenow_people.settings');
+    $filters_to_toggle = [
+      'combine' => 'combine',
+      'type' => 'field_person_types_target_id',
+      'research' => 'field_person_research_areas_target_id',
+    ];
+    foreach ($filters_to_toggle as $filter_type => $filter_label) {
+      if (!$config->get("filter_display.{$filter_type}")) {
+        $filter = $view->display_handler->getHandler('filter', $filter_label);
+        $filter->options['exposed'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
