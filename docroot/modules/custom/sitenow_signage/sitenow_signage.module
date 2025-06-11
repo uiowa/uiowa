@@ -5,6 +5,7 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 
@@ -20,7 +21,7 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $
 /**
  * Implements hook_form_alter().
  */
-function sitenow_signage_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) : void  {
+function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   $allowed_forms = ['node_sign_form', 'node_sign_edit_form', 'node_slide_form', 'node_slide_edit_form'];
 
   // Break out if our form ID isn't one that we have defined.
