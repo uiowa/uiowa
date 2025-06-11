@@ -775,22 +775,10 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       }
       break;
 
-    case 'people_list_block':
-      $person_type_filter = 'field_person_types_target_id';
-      if (isset($form[$person_type_filter])) {
-        uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
-      }
-      break;
-
     case 'people':
       // Change the research areas label.
       if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
-      }
-
-      $person_type_filter = 'type';
-      if (isset($form[$person_type_filter])) {
-        uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
       }
       break;
   }
