@@ -4142,17 +4142,21 @@ function sitenow_update_10023() {
   ];
 
   $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $changes = $entity_definition_update_manager->getChangeList();
   $field_definitions = \Drupal::service('entity_field.manager')
     ->getFieldDefinitions($entity_type, $entity_type);
   foreach ($fields as $field_name) {
-    if (!empty($field_definitions[$field_name])) {
-      \Drupal::messenger()->addMessage(t('Installing config definition for @field.', ['@field' => $field_name]));
-      $entity_definition_update_manager
-        ->installFieldStorageDefinition(
-          $field_name,
-          $entity_type,
-          $module_name,
-          $field_definitions[$field_name]);
+    // Make sure the field exists in the change list.
+    if (isset($changes[$entity_type]['field_storage_definitions'][$field_name])) {
+      if (!empty($field_definitions[$field_name])) {
+        \Drupal::messenger()->addMessage(t('Installing config definition for @field.', ['@field' => $field_name]));
+        $entity_definition_update_manager
+          ->installFieldStorageDefinition(
+            $field_name,
+            $entity_type,
+            $module_name,
+            $field_definitions[$field_name]);
+      }
     }
   }
 }
