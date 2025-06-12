@@ -62,16 +62,18 @@ function sitenow_signage_preprocess_field(&$variables) {
  * Implements hook_preprocess_node().
  */
 function sitenow_signage_preprocess_node(&$variables) {
-  if ($variables['node']->getType() == 'slide') {
+  if ($variables['node']->getType() === 'slide') {
     $variables['label'] = NULL;
   }
-  if ($variables['node']->getType() == 'sign') {
+  if ($variables['node']->getType() === 'sign') {
     $variables['attributes']['class'][] = 'bg--black';
-    if ($variables['view_mode'] == 'full' && (\Drupal::currentUser()->isAnonymous())) {
+    if ($variables['view_mode'] === 'full' && (\Drupal::currentUser()->isAnonymous())) {
       $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
     }
     // @todo Move this into the condition above.
     $variables['#attached']['library'][] = 'sitenow_signage/reload';
+    $reload_interval = $variables['node']->field_sign_reload_interval?->value ?? 5 * 60 * 60;
+    $variables['#attached']['drupalSettings']['signage']['signReloadInterval'] = $reload_interval;
   }
 }
 
