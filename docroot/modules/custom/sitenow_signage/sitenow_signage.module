@@ -70,6 +70,8 @@ function sitenow_signage_preprocess_node(&$variables) {
     if ($variables['view_mode'] == 'full' && (\Drupal::currentUser()->isAnonymous())) {
       $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
     }
+    // @todo Move this into the condition above.
+    $variables['#attached']['library'][] = 'sitenow_signage/reload';
   }
 }
 

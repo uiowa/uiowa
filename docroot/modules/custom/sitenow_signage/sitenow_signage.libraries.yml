@@ -16,7 +16,6 @@ splide:
   css:
     theme:
       /libraries/splidejs--splide/dist/css/splide.min.css: { preprocess: false }
-  dependencies: {  }
 
 # Slideshow
 slideshow:
@@ -24,6 +23,15 @@ slideshow:
     assets/js/slideshow.js: { preprocess: false }
   dependencies:
     - sitenow_signage/splide
+
+# Slideshow
+reload:
+  js:
+    assets/js/reload.js: { preprocess: false }
+  dependencies:
+    - drupal/drupal
+    - drupal/drupalSettings
+    - drupal/once
 
 # Hawk Alerts
 signage_alerts:
