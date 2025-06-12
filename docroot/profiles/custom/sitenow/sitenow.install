@@ -4146,6 +4146,7 @@ function sitenow_update_10023() {
     ->getFieldDefinitions($entity_type, $entity_type);
   foreach ($fields as $field_name) {
     if (!empty($field_definitions[$field_name])) {
+      \Drupal::messenger()->addMessage(t('Installing config definition for @field.', ['@field' => $field_name]));
       $entity_definition_update_manager
         ->installFieldStorageDefinition(
           $field_name,
