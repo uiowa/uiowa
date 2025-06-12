@@ -39,6 +39,40 @@ third_party_settings:
           layout_builder_custom_unique_id: Header
         components:
           -
+            uuid: f8eaa03b-4b2f-44d3-a475-795e64fb78ab
+            region: content
+            configuration:
+              id: 'field_block:node:record:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: d40c29c6-b300-4bcd-8ec4-e82ce7ba0c4c
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
             uuid: deb49c23-648a-4844-9946-c2ee23c8701a
             region: content
             configuration:
@@ -68,49 +102,10 @@ third_party_settings:
         layout_settings:
           label: ''
           context_mapping: {  }
+          layout_builder_custom_unique_id: Content
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
-        components:
-          -
-            uuid: f8eaa03b-4b2f-44d3-a475-795e64fb78ab
-            region: content
-            configuration:
-              id: 'field_block:node:record:title'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: visually_hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 1
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: d40c29c6-b300-4bcd-8ec4-e82ce7ba0c4c
-            region: content
-            configuration:
-              id: system_breadcrumb_block
-              label: null
-              label_display: null
-              provider: system
-              context_mapping: {  }
-            weight: 0
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
         components:
           -
             uuid: 7752bd29-a3a8-46e5-999f-a9db80462df0
@@ -309,6 +304,9 @@ third_party_settings:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
+            regions: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
