@@ -1,0 +1,23 @@
+uuid: 2a60aebe-b3bf-4c2f-8635-d319539c8203
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sign_reload_interval
+    - node.type.sign
+  module:
+    - options
+id: node.sign.field_sign_reload_interval
+field_name: field_sign_reload_interval
+entity_type: node
+bundle: sign
+label: 'Reload interval'
+description: 'This interval determines how often the sign will be reloaded. If you have scheduled slides, their display will be updated during the next reload after their scheduled publishing or unpublishing.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 6_hours
+default_value_callback: ''
+settings: {  }
+field_type: list_string
