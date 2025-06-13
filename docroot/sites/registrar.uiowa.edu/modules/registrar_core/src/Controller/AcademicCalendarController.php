@@ -207,16 +207,20 @@ class AcademicCalendarController extends ControllerBase {
       $includePastSessions = TRUE;
     }
 
-    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
-
-    if ($includePastSessions) {
-      // The getSessionsRange method includes the current session as the
-      // last element. The $steps variable is exclusive of the
-      // current session, so we use $steps + 1 to get the current
-      // number of steps including the current session.
-      // The current session is removed in the next step with array_merge.
-      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), -$steps - 1, $steps + 1);
-      $sessions = array_merge($pastSessions, $sessions);
+    $sessions = [];
+    // Assign sessions by id to avoid duplicates.
+    $sessions[$current->id] = $current;
+    // Include future sessions if more than current session is selected.
+    if ($steps > 0) {
+      foreach ($this->maui->getSessionsRange($current->id, $steps) as $future) {
+        $sessions[$future->id] = $future;
+      }
+    }
+    // Include past if checked and more than current session is selected.
+    if ($includePastSessions && $steps > 0) {
+      foreach ($this->maui->getSessionsRange($current->id, -$steps) as $past) {
+        $sessions[$past->id] = $past;
+      }
     }
 
     $events = [];
