@@ -221,7 +221,7 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: true
                   hide_label: false
-              field_record_ad_unit_responsible_target_id:
+              tid:
                 plugin_id: default
                 advanced:
                   sort_options: false
@@ -316,6 +316,7 @@ display:
           plugin_id: bundle
           value:
             record: record
+          group: 1
         combine:
           id: combine
           table: views
@@ -422,10 +423,10 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
-        field_record_ad_unit_responsible_target_id:
-          id: field_record_ad_unit_responsible_target_id
-          table: node__field_record_ad_unit_responsible
-          field: field_record_ad_unit_responsible_target_id
+        tid:
+          id: tid
+          table: taxonomy_index
+          field: tid
           relationship: none
           group_type: group
           admin_label: ''
@@ -435,14 +436,14 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: field_record_ad_unit_responsible_target_id_op
+            operator_id: tid_op
             label: 'Administrative unit'
             description: ''
             use_operator: false
-            operator: field_record_ad_unit_responsible_target_id_op
+            operator: tid_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: field_record_unit
+            identifier: tid
             required: false
             remember: false
             multiple: false
@@ -580,6 +581,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: default
         options:
