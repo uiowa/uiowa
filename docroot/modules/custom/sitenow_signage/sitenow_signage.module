@@ -49,26 +49,16 @@ function sitenow_signage_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_signage_preprocess_field(&$variables) {
-  if ($variables['element']['#field_name'] == 'field_sign_slides') {
-    // Attach the splide library.
-    $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
-  }
-}
-
-/**
  * Implements hook_preprocess_node().
  */
 function sitenow_signage_preprocess_node(&$variables) {
   if ($variables['node']->getType() === 'slide') {
-    $variables['label'] = NULL;
+    // Unset node title for slides.
+    unset($variables['label']);
   }
   if ($variables['node']->getType() === 'sign') {
+    // Add a black background to the sign node.
     $variables['attributes']['class'][] = 'bg--black';
-    if ($variables['view_mode'] === 'full' && (\Drupal::currentUser()->isAnonymous())) {
-    }
   }
 }
 
@@ -81,8 +71,21 @@ function sitenow_signage_preprocess_page(&$variables) {
     // Only modify the page if it is not an admin route.
     $admin_context = \Drupal::service('router.admin_context');
     if (!$admin_context->isAdminRoute()) {
+      // Unset regions for viewing logged in.
+      foreach ([
+        'header',
+        'after_content',
+        'pre_footer',
+        'footer_first',
+        'footer_second',
+      ] as $region) {
+        unset($variables['page'][$region]);
+      }
+
       // Add signage stylesheet.
       $variables['#attached']['library'][] = 'sitenow_signage/signage';
+      // Attach the slideshow library.
+      $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
 
       // Attach reload library and set the reload interval from the node.
       // @todo Move this into the anonymous user condition below.
@@ -97,7 +100,7 @@ function sitenow_signage_preprocess_page(&$variables) {
 
         // Check if the query string contains the 'signage-display' parameter.
         if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
-          // Remove all the regions from the page.
+          // Unset remaining regions except content for logged out users.
           foreach (Element::children($variables['page']) as $key) {
             if ($key !== 'content') {
               unset($variables['page'][$key]);
@@ -141,4 +144,14 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
       'base hook' => 'field',
     ],
   ];
+}
+
+function sitenow_signage_reload_intervals_allowed_values() {
+  $values = [
+    21600 => '6 hours',
+    3600 => '1 hour',
+    1800 => '30 minutes',
+  ];
+
+  return $values;
 }

@@ -83,3 +83,19 @@
 .signage-slideshow img {
   width: 100%;
 }
+
+.node--type-slide.node--unpublished:after {
+  display: block;
+  position: absolute;
+  padding: 30px;
+  top: 0;
+  left: 0;
+  font-size: variables.$h3-font-size;
+  font-family: variables.$font-family-sans-serif;
+  content: "Unpublished";
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  will-change: opacity;
+  // Default is dark overlay.
+  background: rgb(0, 0, 0, .5);
+}

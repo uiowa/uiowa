@@ -4,11 +4,11 @@
  */
 
  // Namespace jQuery to avoid conflicts.
-(function (Drupal, drupalSettings, once, $) {
+(function (Drupal, drupalSettings, once) {
 
   // Attach reload behavior.
   Drupal.behaviors.reload = {
-    attach: function (context, settings) {
+    attach: function (context) {
       once('reload', 'html', context).forEach(() => {
         Drupal.signageReload();
       });
@@ -17,8 +17,9 @@
 
   // Define the behavior.
   Drupal.signageReload = function () {
+    console.log('Digital Signage: Reload interval is ' + drupalSettings.signage.signReloadInterval + ' seconds');
     // @todo Set timeout from settings.
-    setInterval(Drupal.signageReload.updateWindow, 5 * 60 * 60);
+    setInterval(Drupal.signageReload.updateWindow, drupalSettings.signage.signReloadInterval * 1000);
   };
 
   function hostReachable(location) {
@@ -49,4 +50,4 @@
     }
   };
 
-})(Drupal, drupalSettings, once, jQuery);
+})(Drupal, drupalSettings, once);
