@@ -146,6 +146,11 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
   ];
 }
 
+/**
+ * Allowed values for reload interval field.
+ *
+ * @see \options_allowed_values()
+ */
 function sitenow_signage_reload_intervals_allowed_values() {
   $values = [
     21600 => '6 hours',
