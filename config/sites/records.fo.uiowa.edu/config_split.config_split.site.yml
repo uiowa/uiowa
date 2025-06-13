@@ -1,0 +1,29 @@
+uuid: 0327f04f-360e-4a7d-9a22-ebd94b3da8c6
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: records.fo.uiowa.edu
+description: 'The records.fo.uiowa.edu site split.'
+weight: 70
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/sites/records.fo.uiowa.edu
+module: {  }
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - metatag.metatag_defaults.node__record
+  - node.type.record
+  - pathauto.pattern.record
+  - simple_sitemap.bundle_settings.default.node.record
+  - taxonomy.vocabulary.administrative_units
+  - taxonomy.vocabulary.record_categories
+  - views.view.record
+  - 'field.storage.node.field_record_*'
+partial_list:
+  - metatag.settings
+  - rabbit_hole.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'
