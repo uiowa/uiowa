@@ -90,86 +90,20 @@ third_party_settings:
             third_party_settings: {  }
         third_party_settings: {  }
       -
-        layout_id: layout_twocol
+        layout_id: layout_twocol_card_sidebar
         layout_settings:
-          label: Content
+          label: ''
           context_mapping: {  }
-          column_widths: 75-25
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
-            section_alignment_start: section_alignment_start
+            2: section_card_media_size_medium
+            3: section_card_media_format_square
+            section_no_border: 0
         components:
           -
-            uuid: 03c4fbdb-8064-45f7-a0e6-63b6b86949a7
-            region: first
-            configuration:
-              id: 'field_block:node:record:field_record_category'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: false
-                third_party_settings: {  }
-            weight: 3
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: c1dd280e-3dab-4828-a2ca-5ee7b4e6169a
-            region: first
-            configuration:
-              id: 'field_block:node:record:field_record_files_maintained_by'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 2
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: bb51e9ce-e402-48ac-8fae-ad4a474f5b22
-            region: first
-            configuration:
-              id: 'field_block:node:record:field_record_ad_unit_responsible'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 1
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 7752bd29-a3a8-46e5-999f-a9db80462df0
-            region: first
+            uuid: 9d51079e-4c73-4dba-b7c2-3f6a513bf80f
+            region: main
             configuration:
               id: 'field_block:node:record:body'
               label: null
@@ -180,17 +114,16 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: text_default
-                label: above
+                label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
             weight: 0
             additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 751fc0c8-744e-43cc-b6cc-942eb9c64aa4
-            region: second
+            uuid: f9280a35-0959-491b-8a3c-261525bdc3e6
+            region: card_button
             configuration:
               id: 'field_block:node:record:field_record_ui_retention_guide'
               label: null
@@ -205,14 +138,14 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: -2
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
-            uuid: a80289fb-98a4-433f-8680-b0820540f9e2
-            region: second
+            uuid: a5c99f98-768e-48a4-9e53-dbd15f804dd1
+            region: card_button
             configuration:
               id: 'field_block:node:record:field_record_confidential'
               label: null
@@ -229,37 +162,14 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: -1
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: b4c77c4e-8079-4df2-a784-25676023fe0e
-            region: second
-            configuration:
-              id: 'field_block:node:record:field_record_year_updated'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: number_integer
-                label: inline
-                settings:
-                  thousand_separator: ''
-                  prefix_suffix: false
-                third_party_settings: {  }
             weight: 1
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
-            uuid: 0dc3f613-d5ae-4e2a-9952-aa5fd78ff6c7
-            region: second
+            uuid: c863ec91-e2e5-4966-bf8f-25cae4f74c08
+            region: card_button
             configuration:
               id: 'field_block:node:record:field_record_vital'
               label: null
@@ -276,10 +186,110 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 0
+            weight: 2
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 53de7a5e-cb6c-412b-b554-28e1339e9101
+            region: card_button
+            configuration:
+              id: 'field_block:node:record:field_record_year_updated'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: inline
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: false
+                third_party_settings: {  }
+            weight: 3
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 64241a83-0a4f-4a42-ae0a-684a091e0d6b
+            region: content
+            configuration:
+              id: 'field_block:node:record:field_record_ad_unit_responsible'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: c6c5474b-c646-45e1-84bd-fedbb91d30c6
+            region: content
+            configuration:
+              id: 'field_block:node:record:field_record_files_maintained_by'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 49957166-2149-4b1f-b5ad-18c1161e7393
+            region: content
+            configuration:
+              id: 'field_block:node:record:field_record_category'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings: {  }
+            weight: 2
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
