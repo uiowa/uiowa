@@ -1,10 +1,13 @@
+# Signage
 signage:
   css:
     theme:
       assets/css/signage.css: { preprocess: false }
+
+# Clock display
 datetime:
   js:
-    assets/js/datetime.js: { preprocess: false  }
+    js/datetime.js: { preprocess: false  }
   dependencies:
     - core/jquery
     - core/once
@@ -20,14 +23,14 @@ splide:
 # Slideshow
 slideshow:
   js:
-    assets/js/slideshow.js: { preprocess: false }
+    js/slideshow.js: { preprocess: false }
   dependencies:
     - sitenow_signage/splide
 
-# Slideshow
+# Reload
 reload:
   js:
-    assets/js/reload.js: { preprocess: false }
+    js/reload.js: { preprocess: false }
   dependencies:
     - drupal/drupal
     - drupal/drupalSettings

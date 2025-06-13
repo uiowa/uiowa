@@ -68,12 +68,7 @@ function sitenow_signage_preprocess_node(&$variables) {
   if ($variables['node']->getType() === 'sign') {
     $variables['attributes']['class'][] = 'bg--black';
     if ($variables['view_mode'] === 'full' && (\Drupal::currentUser()->isAnonymous())) {
-      $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
     }
-    // @todo Move this into the condition above.
-    $variables['#attached']['library'][] = 'sitenow_signage/reload';
-    $reload_interval = $variables['node']->field_sign_reload_interval?->value ?? 5 * 60 * 60;
-    $variables['#attached']['drupalSettings']['signage']['signReloadInterval'] = $reload_interval;
   }
 }
 
@@ -86,16 +81,20 @@ function sitenow_signage_preprocess_page(&$variables) {
     // Only modify the page if it is not an admin route.
     $admin_context = \Drupal::service('router.admin_context');
     if (!$admin_context->isAdminRoute()) {
-      // Remove regions.
-      $variables['page']['header'] = [];
-      $variables['page']['after_content'] = [];
-      $variables['page']['pre_footer'] = [];
-      $variables['page']['footer_first'] = [];
-      $variables['page']['footer_second'] = [];
       // Add signage stylesheet.
       $variables['#attached']['library'][] = 'sitenow_signage/signage';
+
+      // Attach reload library and set the reload interval from the node.
+      // @todo Move this into the anonymous user condition below.
+      $variables['#attached']['library'][] = 'sitenow_signage/reload';
+      $reload_interval = $variables['node']->field_sign_reload_interval?->value ?? 5 * 60 * 60;
+      $variables['#attached']['drupalSettings']['signage']['signReloadInterval'] = $reload_interval;
+
       // Check that user is logged out before unsetting anything.
       if (\Drupal::currentUser()->isAnonymous()) {
+        // Attach the signage alert overrides library.
+        $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
+
         // Check if the query string contains the 'signage-display' parameter.
         if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
           // Remove all the regions from the page.
