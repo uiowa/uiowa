@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Custom functionality the INRC website.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\forecords_core\Entity\Record;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function forecords_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['record'])) {
+    $bundles['node']['record']['class'] = Record::class;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function forecords_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form['#id'] === 'views-exposed-form-record-block-record') {
+    $form['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}
