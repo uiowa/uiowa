@@ -11,18 +11,27 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  $allowed_forms = ['node_sign_form', 'node_sign_edit_form', 'node_slide_form', 'node_slide_edit_form'];
 
-  // Break out if our form ID isn't one that we have defined.
-  if (!in_array($form_id, $allowed_forms, TRUE)) {
-    return;
+  // Define the forms to remove the "Other groups" field from.
+  $og_audience_other_groups_forms = ['node_sign_form', 'node_sign_edit_form', 'node_slide_form', 'node_slide_edit_form'];
+
+  // If our form ID is in the relevant list of form IDs...
+  if (in_array($form_id, $og_audience_other_groups_forms, TRUE)) {
+
+    // If our form has other_groups defined...
+    if (isset($form['og_audience']['other_groups'])) {
+
+      // Remove access from the other groups field.
+      $form['og_audience']['other_groups']['#access'] = FALSE;
+    }
+
+
   }
 
-  // Break out if our form doesnt have other_groups defined.
-  if (!isset($form['og_audience']['other_groups'])) {
-    return;
+  if (
+    isset($form['#form_id']) &&
+    str_starts_with($form['#form_id'], 'views_form_og_members_overview')
+  ) {
+    $foo = 'bar';
   }
-
-  // Remove access from the other groups field.
-  $form['og_audience']['other_groups']['#access'] = FALSE;
 }
