@@ -7762,3 +7762,9 @@ $sites['tippielearn.uiowa.ddev.site'] = 'learn.tippie.uiowa.edu';
 $sites['tippielearn.dev.drupal.uiowa.edu'] = 'learn.tippie.uiowa.edu';
 $sites['tippielearn.stage.drupal.uiowa.edu'] = 'learn.tippie.uiowa.edu';
 $sites['tippielearn.prod.drupal.uiowa.edu'] = 'learn.tippie.uiowa.edu';
+
+// Directory aliases for s-cube.lab.uiowa.edu.
+$sites['labs-cube.uiowa.ddev.site'] = 's-cube.lab.uiowa.edu';
+$sites['labs-cube.dev.drupal.uiowa.edu'] = 's-cube.lab.uiowa.edu';
+$sites['labs-cube.stage.drupal.uiowa.edu'] = 's-cube.lab.uiowa.edu';
+$sites['labs-cube.prod.drupal.uiowa.edu'] = 's-cube.lab.uiowa.edu';

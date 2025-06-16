@@ -1,19 +1,25 @@
-uuid: 14fd645c-36e8-457a-a892-5da604da8ee9
+uuid: 16913a1f-37c7-4c8e-9b57-cdb8aa272e2a
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_form_mode.node.minimal
-    - field.field.node.sign.field_sign_display_title
-    - field.field.node.sign.field_sign_hide_header
-    - field.field.node.sign.field_sign_slides
-    - node.type.sign
+    - field.field.node.record.body
+    - field.field.node.record.field_meta_tags
+    - field.field.node.record.field_record_ad_unit_responsible
+    - field.field.node.record.field_record_category
+    - field.field.node.record.field_record_confidential
+    - field.field.node.record.field_record_files_maintained_by
+    - field.field.node.record.field_record_ui_retention_guide
+    - field.field.node.record.field_record_vital
+    - field.field.node.record.field_record_year_updated
+    - node.type.record
   module:
     - content_moderation
     - path
-id: node.sign.minimal
+id: node.record.minimal
 targetEntityType: node
-bundle: sign
+bundle: record
 mode: minimal
 content:
   created:
@@ -84,11 +90,18 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_sign_display_title: true
-  field_sign_hide_header: true
-  field_sign_slides: true
+  body: true
+  field_meta_tags: true
+  field_record_ad_unit_responsible: true
+  field_record_category: true
+  field_record_confidential: true
+  field_record_files_maintained_by: true
+  field_record_ui_retention_guide: true
+  field_record_vital: true
+  field_record_year_updated: true
   publish_on: true
   publish_state: true
+  rabbit_hole__settings: true
   scheduler_settings: true
   unpublish_on: true
   unpublish_state: true
