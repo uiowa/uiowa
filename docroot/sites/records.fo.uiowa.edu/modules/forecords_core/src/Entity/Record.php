@@ -18,11 +18,13 @@ class Record extends NodeBundleBase implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#meta' => [
-        'field_record_ad_unit_responsible',
+      '#content' => [
+        'body',
         'field_record_files_maintained_by',
         'field_record_category',
         'field_record_ui_retention_guide',
+        'field_record_vital',
+        'field_record_confidential',
       ],
     ]);
     $build['#link_indicator'] = TRUE;

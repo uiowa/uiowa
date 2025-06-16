@@ -13,8 +13,10 @@ dependencies:
     - field.field.node.record.field_record_ui_retention_guide
     - field.field.node.record.field_record_vital
     - field.field.node.record.field_record_year_updated
+    - field.field.node.record.rabbit_hole__settings
     - node.type.record
   module:
+    - field_delimiter
     - text
     - user
 id: node.record.teaser
@@ -28,12 +30,63 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 101
+    weight: 0
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_record_category:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_record_confidential:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_record_files_maintained_by:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 4
+    region: content
+  field_record_ui_retention_guide:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_record_vital:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 7
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 2
     region: content
 hidden:
   entity_print_view_epub: true
@@ -41,11 +94,6 @@ hidden:
   entity_print_view_word_docx: true
   field_meta_tags: true
   field_record_ad_unit_responsible: true
-  field_record_category: true
-  field_record_confidential: true
-  field_record_files_maintained_by: true
-  field_record_ui_retention_guide: true
-  field_record_vital: true
   field_record_year_updated: true
   rabbit_hole__settings: true
   search_api_excerpt: true
