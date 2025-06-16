@@ -24,14 +24,5 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
       // Remove access from the other groups field.
       $form['og_audience']['other_groups']['#access'] = FALSE;
     }
-
-
-  }
-
-  if (
-    isset($form['#form_id']) &&
-    str_starts_with($form['#form_id'], 'views_form_og_members_overview')
-  ) {
-    $foo = 'bar';
   }
 }
