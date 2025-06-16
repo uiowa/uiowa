@@ -672,7 +672,17 @@ display:
       relationships: {  }
       css_class: 'bef-form bef-form--label-hidden bef-form--sidebar views--twocol--25-75 '
       use_ajax: true
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: false
+          content: '<p class="text-align-right"><small>Displaying <strong>@start</strong> - <strong>@end</strong> of <strong>@total</strong></small></p>'
       footer: {  }
       display_extenders: {  }
     cache_metadata:
