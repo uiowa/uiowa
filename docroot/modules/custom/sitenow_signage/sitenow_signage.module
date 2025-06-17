@@ -49,27 +49,16 @@ function sitenow_signage_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_signage_preprocess_field(&$variables) {
-  if ($variables['element']['#field_name'] == 'field_sign_slides') {
-    // Attach the splide library.
-    $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
-  }
-}
-
-/**
  * Implements hook_preprocess_node().
  */
 function sitenow_signage_preprocess_node(&$variables) {
-  if ($variables['node']->getType() == 'slide') {
-    $variables['label'] = NULL;
+  if ($variables['node']->getType() === 'slide') {
+    // Unset node title for slides.
+    unset($variables['label']);
   }
-  if ($variables['node']->getType() == 'sign') {
+  if ($variables['node']->getType() === 'sign') {
+    // Add a black background to the sign node.
     $variables['attributes']['class'][] = 'bg--black';
-    if ($variables['view_mode'] == 'full' && (\Drupal::currentUser()->isAnonymous())) {
-      $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
-    }
   }
 }
 
@@ -82,19 +71,36 @@ function sitenow_signage_preprocess_page(&$variables) {
     // Only modify the page if it is not an admin route.
     $admin_context = \Drupal::service('router.admin_context');
     if (!$admin_context->isAdminRoute()) {
-      // Remove regions.
-      $variables['page']['header'] = [];
-      $variables['page']['after_content'] = [];
-      $variables['page']['pre_footer'] = [];
-      $variables['page']['footer_first'] = [];
-      $variables['page']['footer_second'] = [];
+      // Unset regions for viewing logged in.
+      foreach ([
+        'header',
+        'after_content',
+        'pre_footer',
+        'footer_first',
+        'footer_second',
+      ] as $region) {
+        unset($variables['page'][$region]);
+      }
+
       // Add signage stylesheet.
       $variables['#attached']['library'][] = 'sitenow_signage/signage';
+      // Attach the slideshow library.
+      $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
+
+      // Attach reload library and set the reload interval from the node.
+      // @todo Move this into the anonymous user condition below.
+      $variables['#attached']['library'][] = 'sitenow_signage/reload';
+      $reload_interval = $variables['node']->field_sign_reload_interval?->value ?? 5 * 60 * 60;
+      $variables['#attached']['drupalSettings']['signage']['signReloadInterval'] = $reload_interval;
+
       // Check that user is logged out before unsetting anything.
       if (\Drupal::currentUser()->isAnonymous()) {
+        // Attach the signage alert overrides library.
+        $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
+
         // Check if the query string contains the 'signage-display' parameter.
         if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
-          // Remove all the regions from the page.
+          // Unset remaining regions except content for logged out users.
           foreach (Element::children($variables['page']) as $key) {
             if ($key !== 'content') {
               unset($variables['page'][$key]);
@@ -138,4 +144,19 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
       'base hook' => 'field',
     ],
   ];
+}
+
+/**
+ * Allowed values for reload interval field.
+ *
+ * @see \options_allowed_values()
+ */
+function sitenow_signage_reload_intervals_allowed_values() {
+  $values = [
+    21600 => '6 hours',
+    3600 => '1 hour',
+    1800 => '30 minutes',
+  ];
+
+  return $values;
 }
