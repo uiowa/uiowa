@@ -5,10 +5,10 @@ namespace Drupal\safety_core\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\safety_core\Controller\CrimeLogController;
-use GuzzleHttp\ClientInterface;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use GuzzleHttp\ClientInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Provides a Crime Log block.
@@ -34,6 +34,11 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
+
+  /**
+   * The base URL for the Clery Edge API.
+   */
+  const BASE_URL = 'https://app-cleryedge-api-prod.azurewebsites.net/api/public';
 
   /**
    * Constructs a new CrimeLogBlock instance.
@@ -62,7 +67,19 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * {@inheritdoc}
+   * Creates an instance of the plugin.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The container to pull out services used in the plugin.
+   * @param array $configuration
+   *   The plugin configuration.
+   * @param string $plugin_id
+   *   The plugin ID.
+   * @param mixed $plugin_definition
+   *   The plugin definition.
+   *
+   * @return static
+   *   Returns an instance of this plugin.
    */
   public static function create(
     ContainerInterface $container,
@@ -80,17 +97,159 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * Get crime log controller instance.
+   * Gets the API key from configuration.
    *
-   * @return \Drupal\safety_core\Controller\CrimeLogController
-   *   The crime log controller instance.
+   * @return string
+   *   The API key or empty string if not configured.
    */
-  protected function getCrimeLogController() {
-    return new CrimeLogController($this->httpClient, $this->configFactory);
+  protected function getApiKey() {
+    return $this->configFactory
+      ->get('safety_core.settings')
+      ->get('clery_api.api_key') ?:
+      '';
   }
 
   /**
-   * {@inheritdoc}
+   * Formats a date string with optional time.
+   *
+   * @param string $date_string
+   *   The date string to format.
+   * @param string|null $time_string
+   *   Optional time string to append.
+   *
+   * @return string|null
+   *   Formatted date string or NULL if invalid.
+   */
+  protected function formatDate($date_string, $time_string = NULL) {
+    if (empty($date_string)) {
+      return NULL;
+    }
+
+    $combined =
+      trim($date_string) . ($time_string ? ' ' . trim($time_string) : '');
+    $datetime =
+      \DateTime::createFromFormat('Y-m-d H:i:s', $combined) ?:
+        \DateTime::createFromFormat('Y-m-d', $date_string);
+
+    return $datetime
+      ? $datetime->format($time_string ? 'm/d/Y H:i' : 'm/d/Y')
+      : NULL;
+  }
+
+  /**
+   * Formats date fields in crime data array.
+   *
+   * @param array $crimes
+   *   Array of crime data.
+   *
+   * @return array
+   *   Crime data with formatted dates.
+   */
+  protected function formatCrimeDates(array $crimes) {
+    foreach ($crimes as &$crime) {
+      // Format occurred date.
+      $start =
+        $crime['dateOffenseOccuredStart'] ??
+        ($crime['dateOffenseOccured'] ?? NULL);
+      $end = $crime['dateOffenseOccuredEnd'] ?? NULL;
+
+      if ($start && $end) {
+        $start_fmt = $this->formatDate(
+          $start,
+          $crime['timeOffenseOccuredStart'] ?? NULL
+        );
+        $end_fmt = $this->formatDate(
+          $end,
+          $crime['timeOffenseOccuredEnd'] ?? NULL
+        );
+
+        $crime['dateOffenseOccured'] =
+          $start_fmt !== $end_fmt
+            ? "Between {$start_fmt} and {$end_fmt}"
+            : $start_fmt;
+      }
+      elseif ($start) {
+        $crime['dateOffenseOccured'] = $this->formatDate(
+          $start,
+          $crime['timeOffenseOccured'] ?? NULL
+        );
+      }
+
+      // Format reported date.
+      if (!empty($crime['dateOffenseReported'])) {
+        $crime['dateOffenseReported'] = $this->formatDate(
+          $crime['dateOffenseReported'],
+          $crime['timeOffenseReported'] ?? NULL
+        );
+      }
+    }
+    return $crimes;
+  }
+
+  /**
+   * Fetches crime data from the API.
+   *
+   * @param string $start_date
+   *   Start date for the query.
+   * @param string $end_date
+   *   End date for the query.
+   * @param int|null $limit
+   *   Optional limit for number of results.
+   *
+   * @return array
+   *   Array of crime data.
+   *
+   * @throws \Exception
+   *   When API request fails or returns invalid data.
+   */
+  protected function fetchCrimeData($start_date, $end_date, $limit = NULL) {
+    $api_key = $this->getApiKey();
+    if (empty($api_key)) {
+      throw new \Exception('API key not configured');
+    }
+
+    $params = [
+      'FromDateReported' => $start_date,
+      'ToDateReported' => $end_date,
+    ];
+
+    $response = $this->httpClient->get(self::BASE_URL . '/report/crime-log', [
+      'headers' => [
+        'x-api-key' => $api_key,
+        'Accept' => 'application/json',
+      ],
+      'verify' => FALSE,
+      'query' => $params,
+      'timeout' => 30,
+    ]);
+
+    if ($response->getStatusCode() !== 200) {
+      throw new \Exception('API request failed');
+    }
+
+    $data = json_decode($response->getBody()->getContents(), TRUE);
+    if (!is_array($data)) {
+      throw new \Exception('Invalid API response');
+    }
+
+    // Sort by reported date (newest first)
+    usort($data, function ($a, $b) {
+      return strtotime($b['dateOffenseReported'] ?? 0) -
+        strtotime($a['dateOffenseReported'] ?? 0);
+    });
+
+    if ($limit) {
+      $data = array_slice($data, 0, $limit);
+    }
+
+    return $this->formatCrimeDates($data);
+  }
+
+  /**
+   * Builds the render array for this block.
+   *
+   * @return array
+   *   A render array.
    */
   public function build() {
     $build = [];
@@ -157,13 +316,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     ];
 
     try {
-      $params = [
-        'FromDateReported' => $start_date,
-        'ToDateReported' => $end_date,
-      ];
-
-      $crimeLogController = $this->getCrimeLogController();
-      $crimes = $crimeLogController->fetchCrimeData($params, $limit);
+      $crimes = $this->fetchCrimeData($start_date, $end_date, $limit);
 
       // Render results table.
       $build['results'] = [
@@ -183,6 +336,36 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     }
 
     return $build;
+  }
+
+  /**
+   * Gets cache contexts for this block.
+   *
+   * @return array
+   *   Array of cache contexts.
+   */
+  public function getCacheContexts() {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['url.query_args']);
+  }
+
+  /**
+   * Gets cache tags for this block.
+   *
+   * @return array
+   *   Array of cache tags.
+   */
+  public function getCacheTags() {
+    return Cache::mergeTags(parent::getCacheTags(), ['crime_log_data']);
+  }
+
+  /**
+   * Gets the cache max age for this block.
+   *
+   * @return int
+   *   Cache max age in seconds.
+   */
+  public function getCacheMaxAge() {
+    return 3600;
   }
 
 }
