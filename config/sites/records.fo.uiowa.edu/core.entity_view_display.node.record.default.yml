@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.record.field_record_category
     - field.field.node.record.field_record_confidential
     - field.field.node.record.field_record_files_maintained_by
-    - field.field.node.record.field_record_ui_retention_guide
+    - field.field.node.record.field_record_ui_retention_guides
     - field.field.node.record.field_record_vital
     - field.field.node.record.field_record_year_updated
     - field.field.node.record.rabbit_hole__settings
@@ -122,28 +122,6 @@ third_party_settings:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: f9280a35-0959-491b-8a3c-261525bdc3e6
-            region: card_button
-            configuration:
-              id: 'field_block:node:record:field_record_ui_retention_guide'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 0
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
             uuid: a5c99f98-768e-48a4-9e53-dbd15f804dd1
             region: card_button
             configuration:
@@ -213,6 +191,26 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: 6ae0f715-402f-4a8b-865d-01eeb4f12be1
+            region: main
+            configuration:
+              id: 'field_block:node:record:field_record_ui_retention_guides'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
@@ -366,14 +364,6 @@ content:
     third_party_settings: {  }
     weight: 107
     region: content
-  field_record_ui_retention_guide:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 104
-    region: content
   field_record_vital:
     type: boolean
     label: above
@@ -402,5 +392,6 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_record_ui_retention_guides: true
   rabbit_hole__settings: true
   search_api_excerpt: true

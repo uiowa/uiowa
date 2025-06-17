@@ -5,7 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.storage.node.body
-    - field.storage.node.field_record_ui_retention_guide
+    - field.storage.node.field_record_ui_retention_guides
     - node.type.record
     - taxonomy.vocabulary.administrative_units
     - taxonomy.vocabulary.record_categories
@@ -156,10 +156,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_record_ui_retention_guide:
-          id: field_record_ui_retention_guide
-          table: node__field_record_ui_retention_guide
-          field: field_record_ui_retention_guide
+        field_record_ui_retention_guides:
+          id: field_record_ui_retention_guides
+          table: node__field_record_ui_retention_guides
+          field: field_record_ui_retention_guides
           relationship: none
           group_type: group
           admin_label: ''
@@ -206,9 +206,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
+          type: text_default
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -429,7 +428,7 @@ display:
           fields:
             title: title
             body: body
-            field_record_ui_retention_guide: field_record_ui_retention_guide
+            field_record_ui_retention_guides: field_record_ui_retention_guides
         field_record_category_target_id:
           id: field_record_category_target_id
           table: node__field_record_category
@@ -696,7 +695,7 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.body'
-        - 'config:field.storage.node.field_record_ui_retention_guide'
+        - 'config:field.storage.node.field_record_ui_retention_guides'
   block_record:
     id: block_record
     display_title: Block
@@ -735,4 +734,4 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.body'
-        - 'config:field.storage.node.field_record_ui_retention_guide'
+        - 'config:field.storage.node.field_record_ui_retention_guides'
