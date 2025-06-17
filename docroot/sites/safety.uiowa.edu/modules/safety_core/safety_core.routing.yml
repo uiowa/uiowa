@@ -5,34 +5,3 @@ safety_core.settings:
     _title: "Safety Core Settings"
   requirements:
     _permission: "administer site configuration"
-
-safety_core.crime_log_form:
-  path: "/safety/crime-log"
-  defaults:
-    _form: '\Drupal\safety_core\Form\CrimeLogSearchForm'
-    _title: "Campus Crime Log"
-  requirements:
-    _permission: "access content"
-  options:
-    _admin_route: FALSE
-
-safety_core.crime_logs:
-  path: "/safety/crime-logs/data"
-  defaults:
-    _controller: '\Drupal\safety_core\Controller\CrimeLogController::getCrimeLogs'
-    _title: "Crime Log Data"
-  requirements:
-    _permission: "access content"
-  options:
-    no_cache: TRUE
-
-safety_core.recent_logs:
-  path: "/safety/crime-logs/recent/{amount}"
-  defaults:
-    _controller: '\Drupal\safety_core\Controller\CrimeLogController::getRecentLogs'
-    _title: "Recent Crime Logs"
-    amount: 5
-  requirements:
-    _permission: "access content"
-  options:
-    no_cache: TRUE
