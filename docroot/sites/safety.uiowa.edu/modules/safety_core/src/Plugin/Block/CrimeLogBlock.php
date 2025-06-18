@@ -186,7 +186,10 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
 
     // Sort by newest first.
     usort($data, function ($a, $b) {
-      return strtotime($b['dateOffenseReported'] ?? 0) - strtotime($a['dateOffenseReported'] ?? 0);
+      $datetime_a = ($a['dateOffenseReported'] ?? '') . ' ' . ($a['timeOffenseReported'] ?? '00:00:00');
+      $datetime_b = ($b['dateOffenseReported'] ?? '') . ' ' . ($b['timeOffenseReported'] ?? '00:00:00');
+
+      return strtotime($datetime_b) - strtotime($datetime_a);
     });
 
     return $this->formatCrimeDates($data);
