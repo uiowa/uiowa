@@ -16,7 +16,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
  *
  * @Block(
  *   id = "crime_log_block",
- *   admin_label = @Translation("Crime Log"),
+ *   admin_label = @Translation("Crime log"),
  *   category = @Translation("Site custom")
  * )
  */
