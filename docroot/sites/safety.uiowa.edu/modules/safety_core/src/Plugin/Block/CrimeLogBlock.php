@@ -252,7 +252,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
 
     // Set defaults if no search performed.
     if (!$start_date && !$end_date) {
-      $start_date = (new DrupalDateTime('yesterday'))->format('Y-m-d');
+      $start_date = (new DrupalDateTime('7 days ago'))->format('Y-m-d');
       $end_date = (new DrupalDateTime('today'))->format('Y-m-d');
       // Show only 5 recent for initial load.
       $limit = 5;
