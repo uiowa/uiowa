@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-
 use GuzzleHttp\ClientInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 
@@ -271,8 +270,11 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
       '#method' => 'get',
       '#attributes' => [
         'class' => [
-          'bg--gray', 'uids-content', 'element--padding__all--minimal',
-          'block-margin__bottom--extra', 'form-horizontal',
+          'bg--gray',
+          'uids-content',
+          'element--padding__all--minimal',
+          'block-margin__bottom--extra',
+          'form-horizontal',
         ],
       ],
       'start_date' => [
