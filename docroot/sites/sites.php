@@ -7768,3 +7768,9 @@ $sites['labs-cube.uiowa.ddev.site'] = 's-cube.lab.uiowa.edu';
 $sites['labs-cube.dev.drupal.uiowa.edu'] = 's-cube.lab.uiowa.edu';
 $sites['labs-cube.stage.drupal.uiowa.edu'] = 's-cube.lab.uiowa.edu';
 $sites['labs-cube.prod.drupal.uiowa.edu'] = 's-cube.lab.uiowa.edu';
+
+// Directory aliases for wastewatertesting.shl.uiowa.edu.
+$sites['shlwastewatertesting.uiowa.ddev.site'] = 'wastewatertesting.shl.uiowa.edu';
+$sites['shlwastewatertesting.dev.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
+$sites['shlwastewatertesting.stage.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
+$sites['shlwastewatertesting.prod.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
