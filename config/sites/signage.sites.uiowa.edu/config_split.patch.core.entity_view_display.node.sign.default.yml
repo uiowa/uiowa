@@ -2,16 +2,6 @@ adding:
   dependencies:
     config:
       - field.field.node.sign.og_audience
-    module:
-      - field_delimiter
-      - options
-  content:
-    og_audience:
-      type: entity_reference_label
-      label: above
-      settings:
-        link: true
-      third_party_settings: {  }
-      weight: 103
-      region: first
+  hidden:
+    og_audience: true
 removing: {  }
