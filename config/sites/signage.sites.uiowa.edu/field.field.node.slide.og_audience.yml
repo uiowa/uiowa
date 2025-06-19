@@ -1,0 +1,31 @@
+uuid: 7fbdf7e2-e45a-4297-84b8-70204767b994
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.og_audience
+    - node.type.signage_group
+    - node.type.slide
+  module:
+    - og
+id: node.slide.og_audience
+field_name: og_audience
+entity_type: node
+bundle: slide
+label: 'Signage group'
+description: 'Signage group that has access to this slide'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: unpublished
+  handler_settings:
+    target_bundles:
+      signage_group: signage_group
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: 0
+    auto_create_bundle: ''
+field_type: og_standard_reference
