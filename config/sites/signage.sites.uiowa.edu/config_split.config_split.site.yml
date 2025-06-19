@@ -1,0 +1,29 @@
+uuid: d72d7aad-2265-4e46-8800-1087d8e24cd9
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: signage.sites.uiowa.edu
+description: ''
+weight: 70
+stackable: true
+no_patching: false
+storage: folder
+folder: ../config/sites/signage.sites.uiowa.edu
+module:
+  og: 0
+  og_ui: 0
+  sitessignage_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - field.field.node.sign.og_audience
+  - field.field.node.slide.og_audience
+  - node.type.signage_group
+partial_list:
+  - administerusersbyrole.settings
+  - views.view.og_members_overview
+  - 'core.entity_view_display.node.sign.*'
+  - 'core.form_view_display.node.sign.*'
+  - 'core.entity_view_display.node.slide.*'
+  - 'core.form_view_display.node.slide.*'

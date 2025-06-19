@@ -6,7 +6,7 @@ id: signage
 label: Signage
 description: 'Configuration for signage functionality.'
 weight: 80
-stackable: false
+stackable: true
 no_patching: false
 storage: folder
 folder: ../config/features/signage
@@ -28,8 +28,7 @@ complete_list:
   - rabbit_hole.behavior_settings.node_type_slide
   - system.action.user_add_role_action.sign_manager
   - system.action.user_remove_role_action.sign_manager
-  - 'core.entity_form_display.node.slide.*'
-  - 'core.entity_view_display.node.slide.*'
   - 'field.storage.node.field_sign_*'
 partial_list:
+  - administerusersbyrole.settings
   - 'user.role.*'
