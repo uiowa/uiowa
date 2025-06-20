@@ -33,20 +33,20 @@ process:
     plugin: map_taxonomy
     source: field_record_category
     create_new: true
-    vocabulary: grant_classification
+    vocabulary: record_categories
   field_retention_description/0/value: body/0/value
   field_retention_description/0/format: filtered_html
   field_retention_unit_criteria:
     plugin: map_taxonomy
     source: field_record_ad_unit_responsible
     create_new: true
-    vocabulary: grant_classification
+    vocabulary: administrative_units
   # need to check that multiple values are accounted for
   field_retention_unit_maintain:
     plugin: map_taxonomy
     source: field_record_files_maintained_by
     create_new: true
-    vocabulary: grant_classification
+    vocabulary: administrative_units
   field_retention_year_updated: field_record_year_updated
   field_retention_guidelines: field_record_ui_retention_guide
   field_retention_confidential: field_record_confidential
