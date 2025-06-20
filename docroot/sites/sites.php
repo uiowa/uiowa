@@ -7786,3 +7786,9 @@ $sites['provostsds.uiowa.ddev.site'] = 'sds.provost.uiowa.edu';
 $sites['provostsds.dev.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
 $sites['provostsds.stage.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
 $sites['provostsds.prod.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
+
+// Directory aliases for internal.law.uiowa.edu.
+$sites['lawinternal.uiowa.ddev.site'] = 'internal.law.uiowa.edu';
+$sites['lawinternal.dev.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
+$sites['lawinternal.stage.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
+$sites['lawinternal.prod.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
