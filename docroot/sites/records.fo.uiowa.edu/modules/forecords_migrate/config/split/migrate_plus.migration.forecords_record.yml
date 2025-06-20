@@ -34,21 +34,25 @@ process:
     source: field_retention_record_category
     create_new: true
     vocabulary: record_categories
-  body/0/value: field_retention_description
-  body/0/format: filtered_html
+  body/0/value: field_retention_description/0/value
+  body/0/format:
+    plugin: default_value
+    default_value: filtered_html
   field_record_ad_unit_responsible:
     plugin: map_taxonomy
     source: field_retention_unit_criteria
     create_new: true
     vocabulary: administrative_units
-  # need to check that multiple values are accounted for
   field_record_files_maintained_by:
     plugin: map_taxonomy
     source: field_retention_unit_maintain
     create_new: true
     vocabulary: administrative_units
   field_record_year_updated: field_retention_year_updated
-  field_record_ui_retention_guide: field_retention_guidelines
+  field_record_ui_retention_guides/0/value: field_retention_guidelines/0/value
+  field_record_ui_retention_guides/0/format:
+    plugin: default_value
+    default_value: filtered_html
   field_record_confidential: field_retention_confidential
   field_record_vital: field_retention_vital
 migration_dependencies: { }
