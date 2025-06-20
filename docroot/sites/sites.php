@@ -7774,3 +7774,9 @@ $sites['shlwastewatertesting.uiowa.ddev.site'] = 'wastewatertesting.shl.uiowa.ed
 $sites['shlwastewatertesting.dev.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
 $sites['shlwastewatertesting.stage.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
 $sites['shlwastewatertesting.prod.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
+
+// Directory aliases for hshp.uiowa.edu.
+$sites['hshp.uiowa.ddev.site'] = 'hshp.uiowa.edu';
+$sites['hshp.dev.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
+$sites['hshp.stage.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
+$sites['hshp.prod.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
