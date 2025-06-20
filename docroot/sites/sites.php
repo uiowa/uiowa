@@ -7780,3 +7780,9 @@ $sites['hshp.uiowa.ddev.site'] = 'hshp.uiowa.edu';
 $sites['hshp.dev.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
 $sites['hshp.stage.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
 $sites['hshp.prod.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
+
+// Directory aliases for sds.provost.uiowa.edu.
+$sites['provostsds.uiowa.ddev.site'] = 'sds.provost.uiowa.edu';
+$sites['provostsds.dev.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
+$sites['provostsds.stage.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
+$sites['provostsds.prod.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
