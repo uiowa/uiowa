@@ -7792,3 +7792,9 @@ $sites['lawinternal.uiowa.ddev.site'] = 'internal.law.uiowa.edu';
 $sites['lawinternal.dev.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
 $sites['lawinternal.stage.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
 $sites['lawinternal.prod.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
+
+// Directory aliases for exerciseoncology.center.uiowa.edu.
+$sites['centerexerciseoncology.uiowa.ddev.site'] = 'exerciseoncology.center.uiowa.edu';
+$sites['centerexerciseoncology.dev.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
+$sites['centerexerciseoncology.stage.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
+$sites['centerexerciseoncology.prod.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
