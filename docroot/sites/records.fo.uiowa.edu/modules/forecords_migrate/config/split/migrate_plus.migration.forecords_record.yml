@@ -1,0 +1,54 @@
+id: forecords_record
+label: Record migration
+dependencies:
+  enforced:
+    module:
+      - forecords_migrate
+migration_tags:
+  - forecords
+migration_group: sitenow_migrate
+source:
+  plugin: record
+  node_type: record_retention
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_retention_record_category:
+    plugin: map_taxonomy
+    source: field_record_category
+    create_new: true
+    vocabulary: grant_classification
+  field_retention_description/0/value: body/0/value
+  field_retention_description/0/format: filtered_html
+  field_retention_unit_criteria:
+    plugin: map_taxonomy
+    source: field_record_ad_unit_responsible
+    create_new: true
+    vocabulary: grant_classification
+  # need to check that multiple values are accounted for
+  field_retention_unit_maintain:
+    plugin: map_taxonomy
+    source: field_record_files_maintained_by
+    create_new: true
+    vocabulary: grant_classification
+  field_retention_year_updated: field_record_year_updated
+  field_retention_guidelines: field_record_ui_retention_guide
+  field_retention_confidential: field_record_confidential
+  field_retention_vital: field_record_vital
+migration_dependencies: { }
