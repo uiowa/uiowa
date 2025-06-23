@@ -32,26 +32,12 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
   if ($form_id == 'og_membership_default_add_form') {
     // If user does not exist in autocomplete to add user to group, give option to add user to site.
     // $form['uid'] - how to access the username field
-//    if ($form_state->getUserInput()['uid'][0]['target_id']) {
-//      $foo = 'bar';
-//    }
-//    $options = $form["uid"]["widget"][0]["target_id"]['#title']->getOptions();
-//    if ($options == NULL) {
-//      $options = ['Add new user'];
-//    }
-//    else {
-//      $options += $options['Add new user'];
-//    }
 //    $matches = getMatches('og_autocomplete' [], [], $string = '');
 
-    $foo = 'bar';
+    if ($form_state->getUserInput()) {
+      $username = $form_state->getUserInput()['uid'][0]['target_id'];
 
+    }
   }
 }
 
-/**
- * Implements hook_entity_presave().
- */
-//function sitessignage_core_entity_presave(EntityInterface $entity) {
-//  $foo = 'bar';
-//}
