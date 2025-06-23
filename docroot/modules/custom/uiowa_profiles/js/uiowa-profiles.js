@@ -3,11 +3,10 @@
  * UIowa Profiles JS.
  */
 
-// This needs to be declared globally outside the behavior.
-uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
-
 (function (Drupal, once) {
   'use strict';
+
+  window.uiProfiles = window.uiProfiles || { basePath: drupalSettings.uiowaProfiles.basePath };
 
   Drupal.uiowaProfiles = {};
 

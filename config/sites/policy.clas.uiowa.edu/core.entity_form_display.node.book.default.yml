@@ -7,11 +7,13 @@ dependencies:
     - field.field.node.book.book_amended_date
     - field.field.node.book.book_owner
     - field.field.node.book.book_tags
+    - field.field.node.book.rabbit_hole__settings
     - node.type.book
   module:
     - content_moderation
     - datetime
     - path
+    - rabbit_hole
     - text
 _core:
   default_config_hash: vLiV0db8dn1tmCTZrfImOXWBXV9bX677QMct9iI5nn0
@@ -78,6 +80,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

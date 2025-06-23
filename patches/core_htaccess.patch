@@ -5,7 +5,7 @@ index 4031da475..832ca8f34 100644
 @@ -2,6 +2,20 @@
  # Apache/PHP/Drupal settings:
  #
- 
+
 +# Block these IP addresses.
 +# https://docs.acquia.com/cloud-platform/arch/security/restrict/#blocking-by-ip-with-mod-rewrite-in-htaccess
 +<ifmodule mod_setenvif.c>
@@ -26,7 +26,7 @@ index 4031da475..832ca8f34 100644
 @@ -60,6 +74,84 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
- 
+
 +  # Return a 403 for autodiscover requests.
 +  RewriteCond %{REQUEST_URI} /autodiscover/autodiscover.xml [NC]
 +  RewriteRule ^ - [F,L]
@@ -118,12 +118,12 @@ index 4031da475..832ca8f34 100644
 +    </FilesMatch>
    </IfModule>
  </IfModule>
- 
+
 @@ -183,4 +279,7 @@ AddEncoding gzip svgz
    Header always set X-Content-Type-Options nosniff
    # Disable Proxy header, since it's an attack vector.
    RequestHeader unset Proxy
 +  # Declare HTTP Strict Transport Security (STS) header as recommended by Acquia.
 +  # https://acquia.my.site.com/s/article/360004119254-How-To-enable-HSTS-for-your-Drupal-site.
-+  Header always set Strict-Transport-Security "max-age=31536000; includeSubdomains;"
++  Header always set Strict-Transport-Security "max-age=31536000;"
  </IfModule>

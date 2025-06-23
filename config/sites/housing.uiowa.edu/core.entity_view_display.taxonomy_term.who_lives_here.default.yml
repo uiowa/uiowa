@@ -1,0 +1,27 @@
+uuid: 0774cef3-4a00-429d-b444-51a85f4e20ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.who_lives_here.rabbit_hole__settings
+    - taxonomy.vocabulary.who_lives_here
+  module:
+    - text
+id: taxonomy_term.who_lives_here.default
+targetEntityType: taxonomy_term
+bundle: who_lives_here
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true

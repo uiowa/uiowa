@@ -217,3 +217,176 @@ function sitenow_people_update_9303() {
 
   $config->save();
 }
+
+/**
+ * Re-save all person nodes.
+ */
+function sitenow_people_update_10000(&$sandbox) {
+
+  // Import rabbit hole config.
+  $config_storage = \Drupal::service('config.storage');
+  $config_path = DRUPAL_ROOT . '/../config/default';
+
+  $config_names = [
+    'field.storage.node.rabbit_hole__settings',
+    'field.field.node.person.rabbit_hole__settings',
+  ];
+
+  // Import configs.
+  $source = new FileStorage($config_path);
+  foreach ($config_names as $config_name) {
+    $config_data = $source->read($config_name);
+
+    if ($config_data) {
+      $config_storage->write($config_name, $config_data);
+    }
+  }
+
+  // Process all nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->accessCheck()
+      ->condition('type', 'person')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+
+    if ($node && $node->hasField('rabbit_hole__settings')) {
+      // Check for required field values before processing.
+      $link_direct = (int) $node->get('field_person_website_link_direct')->value;
+      $source_link = $node->get('field_person_website')->uri;
+
+      // Only process nodes with direct link enabled and source link set.
+      if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
+        $node->setNewRevision(TRUE);
+        $node->rabbit_hole__settings->setValue([
+          "action" => "page_redirect",
+          "settings" => [
+            "redirect" => "[node:field_person_website:0:uri]",
+            "redirect_code" => 301,
+            "redirect_fallback_action" => "display_page",
+          ],
+        ]);
+        $node->setRevisionLogMessage('Automated save')
+          ->setRevisionUserId(1)
+          ->setRevisionCreationTime(\Drupal::time()->getRequestTime())
+          ->setChangedTime(\Drupal::time()->getRequestTime())
+          ->setRevisionTranslationAffected(TRUE);
+        $node->save();
+      }
+    }
+
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+    drupal_flush_all_caches();
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Update people views ignored configuration while keeping site customizations.
+ */
+function sitenow_people_update_10001() {
+  // Get the current stuff.
+  $current_view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+  $current_default =& $current_view->getDisplay('default');
+  $current_displays = $current_view->get('display');
+  if ($current_view->get('status') === TRUE) {
+    $current_status = 1;
+  }
+  else {
+    $current_status = 0;
+  }
+  foreach ($current_displays as $current_display) {
+    // Override the default sort value. Assumes only one display is enabled...
+    if (isset($current_display['display_options']['enabled']) && $current_display['display_options']['enabled'] === TRUE) {
+      $enabled_id = $current_display['id'];
+      $current_path = $current_display['display_options']['path'];
+    }
+  }
+  $current_title = $current_default['display_options']['title'];
+  $current_header = $current_default['display_options']['header']['area']['content']['value'];
+
+  // Get the current filters.
+  $current_filters = $current_default['display_options']['filters'];
+
+  // Load the new config. Wiping everything else out.
+  $config_path = Settings::get('config_sync_directory');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('views.view.people', $source->read('views.view.people'));
+  drupal_flush_all_caches();
+
+  // Set the existing config again.
+  $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+  $default =& $view->getDisplay('default');
+  $default['display_options']['header']['area']['content']['value'] = $current_header;
+  $default['display_options']['title'] = $current_title;
+  if ($current_status === 1) {
+    $view->set('status', TRUE);
+    $displays = $view->get('display');
+    unset($displays['default']);
+    foreach ($displays as $display) {
+      $display[$display['id']] =& $view->getDisplay($display['id']);
+      if (isset($current_path)) {
+        $display[$display['id']]['display_options']['path'] = $current_path;
+      }
+      $display[$display['id']]['display_options']['enabled'] = FALSE;
+    }
+    if (isset($enabled_id)) {
+      $enabled_display =& $view->getDisplay($enabled_id);
+      $enabled_display['display_options']['enabled'] = TRUE;
+    }
+    // Set sitenow_people.settings with display_filter selections based
+    // on the current exposed filters.
+    $filters_to_toggle = [
+      'combine' => 'combine',
+      'type' => 'field_person_types_target_id',
+      'research' => 'field_person_research_areas_target_id',
+    ];
+    $filters = [];
+    foreach ($filters_to_toggle as $filter_name => $filter_id) {
+      if (isset($current_filters[$filter_id]) && $current_filters[$filter_id]['exposed'] === TRUE) {
+        $filters[$filter_name] = TRUE;
+      }
+      else {
+        $filters[$filter_name] = FALSE;
+      }
+    }
+    $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+    $config->set('filter_display', $filters);
+    $config->save();
+
+  }
+  else {
+    $view->set('status', FALSE);
+  }
+
+  $view->save();
+
+}

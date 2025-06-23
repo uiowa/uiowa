@@ -8,11 +8,14 @@ dependencies:
     - field.field.node.costs_estimate.field_costs_estimate_type
     - field.field.node.costs_estimate.field_costs_estimate_year
     - field.field.node.costs_estimate.field_meta_tags
+    - field.field.node.costs_estimate.rabbit_hole__settings
     - node.type.costs_estimate
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - metatag
     - path
+    - rabbit_hole
     - text
 id: node.costs_estimate.default
 targetEntityType: node
@@ -82,6 +85,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

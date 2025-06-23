@@ -5,12 +5,14 @@ dependencies:
   config:
     - field.field.node.sign.field_sign_display_title
     - field.field.node.sign.field_sign_hide_header
+    - field.field.node.sign.field_sign_reload_interval
     - field.field.node.sign.field_sign_slides
     - node.type.sign
   module:
     - field_delimiter
     - layout_builder
     - layout_builder_restrictions
+    - options
     - sitenow_signage
     - user
   theme:
@@ -158,32 +160,15 @@ id: node.sign.default
 targetEntityType: node
 bundle: sign
 mode: default
-content:
-  field_sign_slide:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 103
-    region: first
-  field_sign_slides:
-    type: entity_reference_entity_view
-    label: visually_hidden
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings:
-      field_delimiter:
-        delimiter: ''
-    weight: 0
-    region: content
+content: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_sign_display_title: true
   field_sign_hide_header: true
+  field_sign_reload_interval: true
+  field_sign_slides: true
   layout_builder__layout: true
   links: true
   search_api_excerpt: true

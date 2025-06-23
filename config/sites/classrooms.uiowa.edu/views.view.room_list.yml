@@ -425,7 +425,10 @@ display:
               field_room_building_id_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: ''
+                  sort_options: true
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Building'
+                    filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
                   is_secondary: true
@@ -1694,9 +1697,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: ''
+          plugin_id: entity_reference
+          operator: or
+          value: {  }
           group: 1
           exposed: true
           expose:
@@ -1719,7 +1722,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1732,6 +1735,12 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          sub_handler: 'default:building'
+          widget: select
+          sub_handler_settings:
+            target_bundles: null
+            auto_create: false
         field_room_instruction_category_value:
           id: field_room_instruction_category_value
           table: node__field_room_instruction_category
@@ -2391,9 +2400,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: ''
+          plugin_id: entity_reference
+          operator: or
+          value: {  }
           group: 1
           exposed: true
           expose:
@@ -2416,7 +2425,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -2429,6 +2438,12 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          sub_handler: 'default:building'
+          widget: select
+          sub_handler_settings:
+            target_bundles: null
+            auto_create: false
         field_room_max_occupancy_value:
           id: field_room_max_occupancy_value
           table: node__field_room_max_occupancy
