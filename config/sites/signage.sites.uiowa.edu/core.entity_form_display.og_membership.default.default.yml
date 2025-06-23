@@ -3,10 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.user.register
     - field.field.og_membership.default.og_membership_request
     - og.og_membership_type.default
   module:
-    - og
+    - entity_browser_entity_form
+    - inline_entity_form
 _core:
   default_config_hash: C41oZuigAxSADXjhBAz-nNKO0ZyhGBcIxzKq0ORtgFk
 id: og_membership.default.default
@@ -35,13 +37,23 @@ content:
     settings: {  }
     third_party_settings: {  }
   uid:
-    type: og_autocomplete
+    type: inline_entity_form_complex
     weight: -1
     region: content
     settings:
+      form_mode: register
+      override_labels: true
+      label_singular: User
+      label_plural: Users
+      allow_new: true
+      allow_existing: true
       match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: keep
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: _none
 hidden: {  }
