@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Safety Core module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function safety_core_theme() {
+  return [
+    'crime_log_table' => [
+      'variables' => [
+        'crimes' => [],
+        'start_date' => NULL,
+        'end_date' => NULL,
+      ],
+      'template' => 'crime-log-table',
+    ],
+  ];
+}
