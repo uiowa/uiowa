@@ -638,3 +638,23 @@
     }
   }
 }
+
+// Horizontal form.
+.uids-content--horizontal {
+  @include utilities.breakpoint(sm) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+  .uids-content--horizontal-flex {
+    flex: 1;
+  }
+  &.uids-content:not(.uids-search) .button {
+    padding: .9rem 1.25rem 1.1rem;
+    max-height: 3.45rem;
+    @include utilities.breakpoint(sm) {
+      margin-block-start: 2.75rem;
+    }
+  }
+}

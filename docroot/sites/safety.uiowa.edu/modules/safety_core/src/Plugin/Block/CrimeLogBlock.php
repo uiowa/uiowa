@@ -267,6 +267,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     $max_date = (new DrupalDateTime())->format('Y-m-d');
 
     $build['#attached']['library'][] = 'safety_core/clery';
+    $build['#attached']['library'][] = 'core/drupal.announce';
 
     $build['search_form'] = [
       '#type' => 'form',
@@ -277,7 +278,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
           'uids-content',
           'element--padding__all--minimal',
           'block-margin__bottom--extra',
-          'form-horizontal',
+          'uids-content--horizontal',
         ],
       ],
       'start_date' => [
@@ -286,7 +287,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
         '#name' => 'start_date',
         '#value' => $request->query->get('start_date'),
         '#attributes' => ['min' => $min_date, 'max' => $max_date],
-        '#wrapper_attributes' => ['class' => ['form-horizontal-flex']],
+        '#wrapper_attributes' => ['class' => ['uids-content--horizontal-flex']],
       ],
       'end_date' => [
         '#type' => 'date',
@@ -294,7 +295,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
         '#name' => 'end_date',
         '#value' => $request->query->get('end_date'),
         '#attributes' => ['min' => $min_date, 'max' => $max_date],
-        '#wrapper_attributes' => ['class' => ['form-horizontal-flex']],
+        '#wrapper_attributes' => ['class' => ['uids-content--horizontal-flex']],
       ],
       'actions' => [
         '#type' => 'actions',
@@ -309,6 +310,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
 
     try {
       $crimes = $this->getCrimeData($start_date, $end_date, $limit);
+      $crime_count = count($crimes);
 
       $build['results'] = [
         '#theme' => 'crime_log_table',
@@ -317,11 +319,26 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
         '#end_date' => (new DrupalDateTime($end_date))->format('m/d/Y'),
         '#cache' => ['max-age' => 3600],
       ];
+
+      // Pass data to JS for announce functionality.
+      $build['#attached']['drupalSettings']['crimeLog'] = [
+        'crimeCount' => $crime_count,
+        'startDate' => (new DrupalDateTime($start_date))->format('m/d/Y'),
+        'endDate' => (new DrupalDateTime($end_date))->format('m/d/Y'),
+        'isSearch' => !empty($request->query->get('start_date')) || !empty($request->query->get('end_date')),
+      ];
+
     }
     catch (\Exception $e) {
       \Drupal::logger('safety_core')->error('Crime log API error: @message', ['@message' => $e->getMessage()]);
       $build['error'] = [
         '#markup' => $this->t('Failed to load crime logs. Please try again later.'),
+      ];
+
+      // Pass errors to JS.
+      $build['#attached']['drupalSettings']['crimeLog'] = [
+        'error' => TRUE,
+        'isSearch' => !empty($request->query->get('start_date')) || !empty($request->query->get('end_date')),
       ];
     }
 
