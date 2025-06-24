@@ -7,8 +7,6 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\EntityAutocompleteMatcher;
-use Drupal\Core\Entity\EntityAutocompleteMatcherInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -34,11 +32,6 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
     // Set our custom validation to run before the default validation,
     // so that new users are created before we add them to a group.
     array_unshift($form['#validate'], 'sitessignage_core_og_membership_validation');
-
-    if ($form_state->getUserInput()) {
-      $username = $form_state->getUserInput()['uid'][0]['target_id'];
-
-    }
   }
 }
 
