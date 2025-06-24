@@ -30,9 +30,9 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
   }
 
   if ($form_id == 'og_membership_default_add_form') {
-    // If user does not exist in autocomplete to add user to group, give option to add user to site.
-    // $form['uid'] - how to access the username field
-//    $matches = getMatches('og_autocomplete' [], [], $string = '');
+    // Set our custom validation to run before the default validation,
+    // so that new users are created before we add them to a group.
+    array_unshift($form['#validate'], 'sitessignage_core_og_membership_validation');
 
     if ($form_state->getUserInput()) {
       $username = $form_state->getUserInput()['uid'][0]['target_id'];
@@ -41,3 +41,7 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
   }
 }
 
+function sitessignage_core_og_membership_validation(array &$form, FormStateInterface $form_state) {
+  // Add user if user does not already exist.
+  $foo = 'bar';
+}
