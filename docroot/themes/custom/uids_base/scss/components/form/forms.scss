@@ -645,7 +645,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 1.5rem;
+    gap: 1rem;
   }
   .uids-content--horizontal-flex {
     flex: 1;
@@ -654,7 +654,12 @@
     padding: .9rem 1.25rem 1.1rem;
     max-height: 3.45rem;
     @include utilities.breakpoint(sm) {
-      margin-block-start: 2.75rem;
+      margin-block-start: .75rem;
     }
+  }
+  .form-actions {
+    display: flex;
+    column-gap: 1rem;
+    align-self: center;
   }
 }
