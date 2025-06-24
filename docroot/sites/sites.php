@@ -7792,3 +7792,9 @@ $sites['centerexerciseoncology.uiowa.ddev.site'] = 'exerciseoncology.center.uiow
 $sites['centerexerciseoncology.dev.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
 $sites['centerexerciseoncology.stage.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
 $sites['centerexerciseoncology.prod.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
+
+// Directory aliases for craters.lab.uiowa.edu.
+$sites['labcraters.uiowa.ddev.site'] = 'craters.lab.uiowa.edu';
+$sites['labcraters.dev.drupal.uiowa.edu'] = 'craters.lab.uiowa.edu';
+$sites['labcraters.stage.drupal.uiowa.edu'] = 'craters.lab.uiowa.edu';
+$sites['labcraters.prod.drupal.uiowa.edu'] = 'craters.lab.uiowa.edu';
