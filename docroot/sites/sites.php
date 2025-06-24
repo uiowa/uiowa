@@ -1649,12 +1649,6 @@ $sites['laborcenter.dev.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.stage.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.prod.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 
-// Directory aliases for currents.iihr.uiowa.edu.
-$sites['iihrcurrents.uiowa.ddev.site'] = 'currents.iihr.uiowa.edu';
-$sites['iihrcurrents.dev.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
-$sites['iihrcurrents.stage.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
-$sites['iihrcurrents.prod.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
-
 // Directory aliases for mailloux.lab.uiowa.edu.
 $sites['labmailloux.uiowa.ddev.site'] = 'mailloux.lab.uiowa.edu';
 $sites['labmailloux.dev.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
