@@ -106,7 +106,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     }
     else {
       // Fetch date range for bucket.
-      $bucket_start = (new \DateTime($bucket . '-01'))->modify('-60 days')->format('Y-m-d');
+      $bucket_start = (new \DateTime($bucket . '-01'))->modify('-30 days')->format('Y-m-d');
       $bucket_end = (new \DateTime($bucket . '-01'))->modify('last day of this month')->format('Y-m-d');
 
       $cached_data = $this->fetchCrimeData($bucket_start, $bucket_end);
@@ -172,7 +172,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
         'FromDateReported' => $start_date,
         'ToDateReported' => $end_date,
       ],
-      'timeout' => 10,
+      'timeout' => 30,
     ]);
 
     if ($response->getStatusCode() !== 200) {
