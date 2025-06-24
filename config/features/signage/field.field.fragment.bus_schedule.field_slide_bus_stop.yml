@@ -1,0 +1,21 @@
+uuid: aadded0a-e966-4233-8be6-bdf9b8e34510
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.fragment.field_slide_bus_stop
+    - fragments.fragment_type.bus_schedule
+  module:
+    - options
+id: fragment.bus_schedule.field_slide_bus_stop
+field_name: field_slide_bus_stop
+entity_type: fragment
+bundle: bus_schedule
+label: Stop
+description: 'The bus stop for which to display predictions.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

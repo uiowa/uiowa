@@ -160,3 +160,18 @@ function sitenow_signage_reload_intervals_allowed_values() {
 
   return $values;
 }
+
+function sitenow_signage_bus_stops_allowed_values() {
+  $values = [];
+
+  $api_client = \Drupal::service('sitenow_signage.icareatransit_api');
+  $stops = $api_client->getStopList();
+  /** @var \stdClass $stop */
+  foreach ($stops as $item) {
+    $values[$item->stop->stopnumber] = "{$item->stop->stopnumber} - {$item->stop->stoptitle}";
+  }
+
+  ksort($values);
+
+  return $values;
+}

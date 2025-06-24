@@ -9,29 +9,12 @@ use Drupal\uiowa_core\ApiAuthKeyTrait;
 use Drupal\uiowa_core\ApiClientBase;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
+use stdClass;
 
 /**
  *
  */
-class ICAreaTransitApiClient extends ApiClientBase implements ApiAuthKeyInterface {
-  use ApiAuthKeyTrait;
-
-  /**
-   * Constructs a DispatchApiClient object.
-   *
-   * @param \GuzzleHttp\ClientInterface $client
-   *   The HTTP client.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *   The cache backend service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The Config Factory object.
-   */
-  public function __construct(protected ClientInterface $client, protected LoggerInterface $logger, protected CacheBackendInterface $cache, protected ConfigFactoryInterface $configFactory) {
-    parent::__construct($client, $logger, $cache, $configFactory);
-    $this->setKey($this->configFactory->get('sitenow_signage.settings')->get('icareatransit_api_key') ?? NULL);
-  }
+class ICAreaTransitApiClient extends ApiClientBase {
 
   /**
    * {@inheritdoc}
@@ -45,6 +28,14 @@ class ICAreaTransitApiClient extends ApiClientBase implements ApiAuthKeyInterfac
    */
   protected function getCacheIdBase() {
     return 'sitenow_signage_icareatransit';
+  }
+
+  /**
+   * Get a list of bus stops.
+   */
+  public function getStopList(): array {
+    $response = $this->get('stoplist');
+    return $response->stops;
   }
 
 }

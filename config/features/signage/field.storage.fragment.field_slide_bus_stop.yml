@@ -1,0 +1,21 @@
+uuid: 89715c8e-32ef-494e-b77b-bc888b58316c
+langcode: en
+status: true
+dependencies:
+  module:
+    - fragments
+    - options
+id: fragment.field_slide_bus_stop
+field_name: field_slide_bus_stop
+entity_type: fragment
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'sitenow_signage_bus_stops_allowed_values'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
