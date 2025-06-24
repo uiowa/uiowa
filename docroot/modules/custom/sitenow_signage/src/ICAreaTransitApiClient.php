@@ -2,17 +2,10 @@
 
 namespace Drupal\sitenow_signage;
 
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\uiowa_core\ApiAuthKeyInterface;
-use Drupal\uiowa_core\ApiAuthKeyTrait;
 use Drupal\uiowa_core\ApiClientBase;
-use GuzzleHttp\ClientInterface;
-use Psr\Log\LoggerInterface;
-use stdClass;
 
 /**
- *
+ * IC Area Transit API.
  */
 class ICAreaTransitApiClient extends ApiClientBase {
 
