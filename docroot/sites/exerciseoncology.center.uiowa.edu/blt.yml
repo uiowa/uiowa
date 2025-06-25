@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: centerexerciseoncology.uiowa.ddev.site
+    protocol: https
+  machine_name: centerexerciseoncology
+  human_name: exerciseoncology.center.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: centerexerciseoncology.prod
+drupal:
+  db:
+    database: exerciseoncology_center_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://centerexerciseoncology.prod.drupal.uiowa.edu'
+  requester: jgorzelitz
+  site-name: 'Iowa Exercise Oncology Clinic'
