@@ -5,7 +5,6 @@
  * Module code for signage.sites.uiowa.edu.
  */
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
 
@@ -35,11 +34,14 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
   }
 }
 
+/**
+ * Custom validation to add a new user if they do not already exist.
+ */
 function sitessignage_core_og_membership_validation(array &$form, FormStateInterface $form_state) {
   // Access built-in check to see if user exists.
   $username_input = $form_state->getValue('uid')[0]['target_id'];
   if (is_null($username_input)) {
-    // Check a username was entered
+    // Check a username was entered.
     if (!is_null($form_state->getUserInput()['uid'][0]['target_id'])) {
       $username = $form_state->getUserInput()['uid'][0]['target_id'];
       $pass = \Drupal::service('password_generator')->generate();
