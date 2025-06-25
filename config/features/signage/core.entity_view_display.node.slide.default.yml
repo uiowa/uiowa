@@ -3,23 +3,24 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.slide.field_image
+    - field.field.node.slide.field_slide_widget
     - node.type.slide
   module:
+    - entity_reference_revisions
     - user
 id: node.slide.default
 targetEntityType: node
 bundle: slide
 mode: default
 content:
-  field_image:
-    type: entity_reference_entity_view
-    label: visually_hidden
+  field_slide_widget:
+    type: entity_reference_revisions_entity_view
+    label: above
     settings:
-      view_mode: full__widescreen
-      link: false
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true
