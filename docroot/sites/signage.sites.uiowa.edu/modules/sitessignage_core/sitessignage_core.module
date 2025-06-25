@@ -42,15 +42,18 @@ function sitessignage_core_og_membership_validation(array &$form, FormStateInter
     // Check a username was entered
     if (!is_null($form_state->getUserInput()['uid'][0]['target_id'])) {
       $username = $form_state->getUserInput()['uid'][0]['target_id'];
-
+      $pass = \Drupal::service('password_generator')->generate();
       // Create a new user account.
-//      $new_user = User::create([
-//        'name' => $username,
-//        'roles' => array('sign_manager'),
-//      ])->save();
-
+      $newUser = User::create();
+      $newUser->setUsername($username);
+      $newUser->setPassword($pass);
+      $newUser->setEmail(uniqid('email_') . '@uiowa.edu');
+      $newUser->addRole('sign_manager');
+      $newUser->enforceIsNew();
+      $newUser->activate();
+      $newUser->save();
       // Update form_state to set target_id to new account uid.
-      $foo = 'bar';
+      $form_state->set('uid'[0]['target_id'], $newUser->id());
     }
   }
 }
