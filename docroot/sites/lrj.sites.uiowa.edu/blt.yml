@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteslrj.uiowa.ddev.site
+    protocol: https
+  machine_name: siteslrj
+  human_name: lrj.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteslrj.prod
+drupal:
+  db:
+    database: lrj_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteslrj.prod.drupal.uiowa.edu'
+  requester: nfixmeroraiz
+  site-name: 'Locating Reproductive Justice: Global and Regional Perspectives'
