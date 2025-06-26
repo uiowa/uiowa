@@ -36,6 +36,8 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
 
 /**
  * Custom validation to add a new user if they do not already exist.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function sitessignage_core_og_membership_validation(array &$form, FormStateInterface $form_state) {
   // Access built-in check to see if user exists.
@@ -55,7 +57,15 @@ function sitessignage_core_og_membership_validation(array &$form, FormStateInter
       $newUser->activate();
       $newUser->save();
       // Update form_state to set target_id to new account uid.
-      $form_state->set('uid'[0]['target_id'], $newUser->id());
+      $form_state->setValue(['uid', 0, 'target_id'], [
+        'target_id' => $newUser->id(),
+        'entity' => $newUser,
+      ]);
+//      $form['uid']['widget'][0]['target_id']['#value'] = $newUser->id();
+
+      $form_state->setRebuild();
+
+
     }
   }
 }
