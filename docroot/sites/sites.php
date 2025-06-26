@@ -1649,12 +1649,6 @@ $sites['laborcenter.dev.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.stage.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.prod.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 
-// Directory aliases for currents.iihr.uiowa.edu.
-$sites['iihrcurrents.uiowa.ddev.site'] = 'currents.iihr.uiowa.edu';
-$sites['iihrcurrents.dev.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
-$sites['iihrcurrents.stage.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
-$sites['iihrcurrents.prod.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
-
 // Directory aliases for mailloux.lab.uiowa.edu.
 $sites['labmailloux.uiowa.ddev.site'] = 'mailloux.lab.uiowa.edu';
 $sites['labmailloux.dev.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
@@ -7774,3 +7768,33 @@ $sites['shlwastewatertesting.uiowa.ddev.site'] = 'wastewatertesting.shl.uiowa.ed
 $sites['shlwastewatertesting.dev.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
 $sites['shlwastewatertesting.stage.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
 $sites['shlwastewatertesting.prod.drupal.uiowa.edu'] = 'wastewatertesting.shl.uiowa.edu';
+
+// Directory aliases for hshp.uiowa.edu.
+$sites['hshp.uiowa.ddev.site'] = 'hshp.uiowa.edu';
+$sites['hshp.dev.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
+$sites['hshp.stage.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
+$sites['hshp.prod.drupal.uiowa.edu'] = 'hshp.uiowa.edu';
+
+// Directory aliases for sds.provost.uiowa.edu.
+$sites['provostsds.uiowa.ddev.site'] = 'sds.provost.uiowa.edu';
+$sites['provostsds.dev.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
+$sites['provostsds.stage.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
+$sites['provostsds.prod.drupal.uiowa.edu'] = 'sds.provost.uiowa.edu';
+
+// Directory aliases for internal.law.uiowa.edu.
+$sites['lawinternal.uiowa.ddev.site'] = 'internal.law.uiowa.edu';
+$sites['lawinternal.dev.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
+$sites['lawinternal.stage.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
+$sites['lawinternal.prod.drupal.uiowa.edu'] = 'internal.law.uiowa.edu';
+
+// Directory aliases for exerciseoncology.center.uiowa.edu.
+$sites['centerexerciseoncology.uiowa.ddev.site'] = 'exerciseoncology.center.uiowa.edu';
+$sites['centerexerciseoncology.dev.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
+$sites['centerexerciseoncology.stage.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
+$sites['centerexerciseoncology.prod.drupal.uiowa.edu'] = 'exerciseoncology.center.uiowa.edu';
+
+// Directory aliases for craters.lab.uiowa.edu.
+$sites['labcraters.uiowa.ddev.site'] = 'craters.lab.uiowa.edu';
+$sites['labcraters.dev.drupal.uiowa.edu'] = 'craters.lab.uiowa.edu';
+$sites['labcraters.stage.drupal.uiowa.edu'] = 'craters.lab.uiowa.edu';
+$sites['labcraters.prod.drupal.uiowa.edu'] = 'craters.lab.uiowa.edu';
