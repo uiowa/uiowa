@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * Template for displaying the crime log table.
+ */
+#}
+
+{% if crimes is empty %}
+  <p>{{ 'No crime logs found for the selected period.'|t }}</p>
+{% else %}
+  <div class="table-responsive table-sticky">
+    <table class="table--hover-highlight table--gray-borders" style="width:100%">
+      <caption>
+        {% if start_date and end_date %}
+          {{ 'Crimes occurring on campus or within the patrol area of University of Iowa Police from %start_date to %end_date'|t({
+            '%start_date': start_date,
+            '%end_date': end_date
+          }) }}
+        {% else %}
+          {{ 'Crime data'|t }}
+        {% endif %}
+      </caption>
+      <thead>
+      <tr>
+        <th>{{ 'Case Number'|t }}</th>
+        <th>{{ 'Classification/Nature'|t }}</th>
+        <th>{{ 'Date/Time Occurred'|t }}</th>
+        <th>{{ 'Date/Time Reported'|t }}</th>
+        <th>{{ 'General Location'|t }}</th>
+        <th>{{ 'Disposition'|t }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for crime in crimes %}
+        <tr>
+          <td>{{ crime.id }}</td>
+          <td>{{ crime.classificationNature }}</td>
+          <td>
+            {% if crime.dateOffenseOccured %}
+              {{ crime.dateOffenseOccured }}
+            {% elseif crime.Occurred %}
+              {{ crime.Occurred }}
+            {% else %}
+              {% if crime.dateOffenseOccuredStart %}
+                {{ crime.dateOffenseOccuredStart }}
+                {% if crime.dateOffenseOccuredEnd %}
+                  to {{ crime.dateOffenseOccuredEnd }}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          </td>
+          <td>
+            {{ crime.dateOffenseReported }}
+          </td>
+          <td>{{ crime.generalLocation }}</td>
+          <td>{{ crime.disposition }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
