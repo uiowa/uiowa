@@ -49,6 +49,21 @@ function sitenow_signage_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_signage_preprocess_field(&$variables) {
+  $element = $variables['element'];
+  if ($element['#field_name'] === 'field_slide_bus_arrivals_stop') {
+    $api_client = \Drupal::service('sitenow_signage.icareatransit_api');
+    $id = (int) $element[0]['#markup'];
+    $prediction_data = $api_client->getPredictions($id);
+    // @todo make pretty.
+    $markup = print_r($prediction_data, TRUE);
+    $variables['items'][0]['content']['#markup'] = $markup;
+  }
+}
+
+/**
  * Implements hook_preprocess_node().
  */
 function sitenow_signage_preprocess_node(&$variables) {
