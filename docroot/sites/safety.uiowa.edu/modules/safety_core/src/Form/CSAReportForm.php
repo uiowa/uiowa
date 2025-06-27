@@ -70,7 +70,7 @@ class CSAReportForm extends FormBase {
     // Incident Details Fieldset.
     $form['incident_details'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Incident Details'),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Incident Details') . '</span>',
     ];
 
     $form['incident_details']['campus_filter'] = [
@@ -147,6 +147,7 @@ class CSAReportForm extends FormBase {
     $form['occurrence'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Occurrence Date & Time (Optional)'),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Occurrence Date & Time (Optional)') . '</span>',
       '#description' => $this->t(
         'Fill in the fields that apply to when the incident occurred.'
       ),
@@ -262,7 +263,7 @@ class CSAReportForm extends FormBase {
     // Reporter Information Fieldset.
     $form['reporter'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Reporter Information (Optional)'),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Reporter Information (Optional)') . '</span>',
     ];
 
     $form['reporter']['reporter_first_name'] = [
@@ -293,7 +294,7 @@ class CSAReportForm extends FormBase {
     // Incident Contacts Fieldset.
     $form['contacts'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Incident Contacts (Optional)'),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Incident Contacts (Optional)') . '</span>',
     ];
 
     $form['contacts']['contacts_container'] = [
@@ -343,7 +344,7 @@ class CSAReportForm extends FormBase {
   ) {
     $form['contacts']['contacts_container'][$index] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Contact @num', ['@num' => $index + 1]),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Contact @num', ['@num' => $index + 1]) . '</span>',
       '#collapsible' => FALSE,
     ];
 
@@ -399,7 +400,7 @@ class CSAReportForm extends FormBase {
     // Contact Location Section.
     $contact['location'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Contact Location'),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Contact Location') . '</span>',
       '#collapsible' => FALSE,
     ];
 
@@ -419,7 +420,7 @@ class CSAReportForm extends FormBase {
     // Off-Campus Address.
     $contact['off_campus'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('OR Off-Campus Address'),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('OR Off-Campus Address') . '</span>',
       '#collapsible' => FALSE,
     ];
 
@@ -448,7 +449,7 @@ class CSAReportForm extends FormBase {
     // Identifications Section.
     $contact['identifications'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Identifications'),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Identifications') . '</span>',
       '#collapsible' => FALSE,
     ];
 
@@ -486,7 +487,7 @@ class CSAReportForm extends FormBase {
   ) {
     $contact['identifications']['ids_container'][$id_index] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('ID @num', ['@num' => $id_index + 1]),
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('ID @num', ['@num' => $id_index + 1]) . '</span>',
       '#collapsible' => FALSE,
     ];
 
