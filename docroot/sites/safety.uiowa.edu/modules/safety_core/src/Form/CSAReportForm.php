@@ -2,10 +2,14 @@
 
 namespace Drupal\safety_core\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\safety_core\Controller\CleryController;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,6 +26,11 @@ class CSAReportForm extends FormBase {
   protected $cleryController;
 
   /**
+   * Default campus ID.
+   */
+  const DEFAULT_CAMPUS_ID = 3;
+
+  /**
    * Constructs a new CSAReportForm.
    *
    * @param \Drupal\safety_core\Controller\CleryController $clery_controller
@@ -35,257 +44,862 @@ class CSAReportForm extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get("safety_core.clery_controller"));
+    return new static($container->get('safety_core.clery_controller'));
   }
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return "csa_report_form";
+    return 'csa_report_form';
   }
 
   /**
    * {@inheritdoc}
    */
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form["#cache"] = ["max-age" => 0];
-    $form["#prefix"] = '<div class="container">';
-    $form["#suffix"] = "</div>";
+    $required_notice = '<p>Required fields are marked with an asterisk (<abbr class="req" title="required">*</abbr>).</p>';
+    $form['#prefix'] = '<div class="container">' . $required_notice;
+    $form['#suffix'] = '</div>';
 
-    // Add CSS library if needed.
-    $form["#attached"]["library"][] = "safety_core/csa-report-form";
+    $form['#attached']['library'][] = 'safety_core/csa-report-form';
 
     // Geography Filters Fieldset.
-    $form["geography_filters"] = [
-      "#type" => "fieldset",
-      "#title" => $this->t("Geography Filters"),
-      "#description" => $this->t(
-        "Select a campus and type to load available geographies."
+    $form['geography_filters'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Geography Filters'),
+      '#description' => $this->t(
+        'Select a campus and type to load available geographies.'
       ),
     ];
 
-    $form["geography_filters"]["campus_filter"] = [
-      "#type" => "hidden",
-      "#value" => 3,
+    $form['geography_filters']['campus_filter'] = [
+      '#type' => 'hidden',
+      '#value' => self::DEFAULT_CAMPUS_ID,
     ];
 
-    $form["geography_filters"]["geography_type_filter"] = [
-      "#type" => "select",
-      "#title" => $this->t("Geography Type"),
-      "#required" => TRUE,
-      "#options" => $this->getGeographyTypeOptions(),
-      "#empty_option" => $this->t("Select a type"),
-      "#ajax" => [
-        "callback" => "::updateGeographyCallback",
-        "wrapper" => "geography-wrapper",
-        "progress" => [
-          "type" => "throbber",
-        ],
-      ],
-    ];
+    $form['geography_filters']['geography_type_filter'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Geography Type'),
+      '#required' => TRUE,
+      '#options' => $this->cleryController->getGeographyTypeOptions(),
+      '#empty_option' => $this->t('Select a type'),
+    ] + $this->buildAjaxSelect('::updateGeographyCallback', 'geography-wrapper');
 
     // Incident Details Fieldset.
-    $form["incident_details"] = [
-      "#type" => "fieldset",
-      "#title" => $this->t("Incident Details"),
+    $form['incident_details'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Incident Details'),
     ];
 
-    $form["incident_details"]["date_offense_reported"] = [
-      "#type" => "date",
-      "#title" => $this->t("Date Reported"),
-      "#required" => TRUE,
+    $form['incident_details']['date_offense_reported'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Date Reported'),
+      '#required' => TRUE,
     ];
 
-    $form["incident_details"]["time_offense_reported"] = [
-      "#required" => TRUE,
-      "#type" => "textfield",
-      "#title" => $this->t("Time Reported"),
-      "#attributes" => [
-        "class" => ["time-input"],
+    $form['incident_details']['time_offense_reported'] = [
+      '#required' => TRUE,
+      '#type' => 'textfield',
+      '#title' => $this->t('Time Reported'),
+      '#attributes' => [
+        'class' => ['time-input'],
+        'placeholder' => 'HH:MM (24-hour format)',
       ],
     ];
 
-    $form["incident_details"]["geography_wrapper"] = [
-      "#type" => "container",
-      "#attributes" => ["id" => "geography-wrapper"],
+    $form['incident_details']['geography_wrapper'] = [
+      '#type' => 'container',
+      '#attributes' => ['id' => 'geography-wrapper'],
     ];
 
-    $form["incident_details"]["geography_wrapper"]["geography_id"] = [
-      "#type" => "select",
-      "#title" => $this->t("Geography"),
-      "#required" => TRUE,
-      "#options" => [],
-      "#empty_option" => $this->t("Select geography type first"),
-      "#disabled" => TRUE,
-      "#description" => $this->t(
-        "Select a geography type above to load available geographies."
+    $form['incident_details']['geography_wrapper']['geography_id'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Geography'),
+      '#required' => TRUE,
+      '#options' => [],
+      '#empty_option' => $this->t('Select geography type first'),
+      '#disabled' => TRUE,
+      '#description' => $this->t(
+        'Select a geography type above to load available geographies.'
       ),
-      // Add validation to ensure we catch empty submissions.
-      "#element_validate" => [[$this, "validateGeographyId"]],
-      "#states" => [
-        "required" => [
-          ':input[name="geography_type_filter"]' => ["!value" => ""],
+      '#element_validate' => [[$this, 'validateGeographyId']],
+      '#states' => [
+        'required' => [
+          ':input[name="geography_type_filter"]' => ['!value' => ''],
         ],
-        "enabled" => [
-          ':input[name="geography_type_filter"]' => ["!value" => ""],
+        'enabled' => [
+          ':input[name="geography_type_filter"]' => ['!value' => ''],
         ],
       ],
     ];
 
-    $form["incident_details"]["specific_location"] = [
-      "#type" => "textfield",
-      "#title" => $this->t("Specific Location"),
-      "#placeholder" => $this->t("e.g., Room 101, Main Hall"),
+    $form['incident_details']['specific_location'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Specific Location'),
+      '#placeholder' => $this->t('e.g., Room 101, Main Hall'),
     ];
 
-    $form["incident_details"]["description"] = [
-      "#type" => "textarea",
-      "#title" => $this->t("Description of Incident"),
-      "#rows" => 4,
-      "#placeholder" => $this->t(
-        "Provide a detailed description of the incident..."
+    $form['incident_details']['description'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Description of Incident'),
+      '#rows' => 4,
+      '#placeholder' => $this->t(
+        'Provide a detailed description of the incident...'
       ),
     ];
 
     // Occurrence Date & Time Fieldset.
-    $form["occurrence"] = [
-      "#type" => "fieldset",
-      "#title" => $this->t("Occurrence Date & Time"),
-      "#description" => $this->t(
-        "Specify if the date and time of the occurrence are known, a range, or unknown."
+    $form['occurrence'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Occurrence Date & Time (Optional)'),
+      '#description' => $this->t(
+        'Fill in the fields that apply to when the incident occurred.'
       ),
     ];
 
-    $form["occurrence"]["occurrence_date_type"] = [
-      "#type" => "select",
-      "#title" => $this->t("Occurrence Date"),
-      "#options" => [
-        "unknown" => $this->t("Unknown"),
-        "exact" => $this->t("Exact Date"),
-        "range" => $this->t("Date Range"),
+    // Date type selector.
+    $form['occurrence']['occurrence_date_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Date Type'),
+      '#options' => [
+        'unknown' => $this->t('Unknown'),
+        'exact' => $this->t('Exact Date'),
+        'range' => $this->t('Date Range'),
       ],
-      "#default_value" => "unknown",
-      "#ajax" => [
-        "callback" => "::occurrenceFieldsCallback",
-        "wrapper" => "occurrence-fields-wrapper",
-        "progress" => [
-          "type" => "throbber",
+      '#default_value' => 'unknown',
+    ];
+
+    // Time type selector.
+    $form['occurrence']['occurrence_time_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Time Type'),
+      '#options' => [
+        'unknown' => $this->t('Unknown'),
+        'exact' => $this->t('Exact Time'),
+        'range' => $this->t('Time Range'),
+      ],
+      '#default_value' => 'unknown',
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_date_type"]' => ['!value' => 'unknown'],
         ],
       ],
     ];
 
-    $form["occurrence"]["occurrence_time_type"] = [
-      "#type" => "select",
-      "#title" => $this->t("Occurrence Time"),
-      "#options" => [
-        "unknown" => $this->t("Unknown"),
-        "exact" => $this->t("Exact Time"),
-        "range" => $this->t("Time Range"),
-      ],
-      "#default_value" => "unknown",
-      "#states" => [
-        "disabled" => [
-          ':input[name="occurrence_date_type"]' => ["value" => "unknown"],
-        ],
-      ],
-      "#ajax" => [
-        "callback" => "::occurrenceFieldsCallback",
-        "wrapper" => "occurrence-fields-wrapper",
-        "progress" => [
-          "type" => "throbber",
+    // Exact date (shown when date_type = 'exact').
+    $form['occurrence']['date_offense_occured'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Date Occurred'),
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_date_type"]' => ['value' => 'exact'],
         ],
       ],
     ];
 
-    $form["occurrence"]["occurrence_fields"] = [
-      "#type" => "container",
-      "#attributes" => ["id" => "occurrence-fields-wrapper"],
+    // Exact time (shown when time_type = 'exact').
+    $form['occurrence']['exact_time_occured'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Time Occurred'),
+      '#attributes' => [
+        'class' => ['time-input'],
+        'placeholder' => 'HH:MM (24-hour format)',
+      ],
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_time_type"]' => ['value' => 'exact'],
+        ],
+      ],
     ];
 
-    $this->buildOccurrenceFields($form, $form_state);
+    // Start date (shown when date_type = 'range').
+    $form['occurrence']['date_start'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Start Date'),
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_date_type"]' => ['value' => 'range'],
+        ],
+      ],
+    ];
+
+    // Start time (shown when time_type = 'range').
+    $form['occurrence']['time_start'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Start Time'),
+      '#attributes' => [
+        'class' => ['time-input'],
+        'placeholder' => 'HH:MM (24-hour format)',
+      ],
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_time_type"]' => ['value' => 'range'],
+        ],
+      ],
+    ];
+
+    // End date (shown when date_type = 'range').
+    $form['occurrence']['date_end'] = [
+      '#type' => 'date',
+      '#title' => $this->t('End Date'),
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_date_type"]' => ['value' => 'range'],
+        ],
+      ],
+    ];
+
+    // End time (shown when time_type = 'range').
+    $form['occurrence']['time_end'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('End Time'),
+      '#attributes' => [
+        'class' => ['time-input'],
+        'placeholder' => 'HH:MM (24-hour format)',
+      ],
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_time_type"]' => ['value' => 'range'],
+        ],
+      ],
+    ];
 
     // Reporter Information Fieldset.
-    $form["reporter"] = [
-      "#type" => "fieldset",
-      "#title" => $this->t("Reporter Information (Optional)"),
+    $form['reporter'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Reporter Information (Optional)'),
     ];
 
-    $form["reporter"]["reporter_first_name"] = [
-      "#type" => "textfield",
-      "#title" => $this->t("First Name"),
+    $form['reporter']['reporter_first_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('First Name'),
     ];
 
-    $form["reporter"]["reporter_last_name"] = [
-      "#type" => "textfield",
-      "#title" => $this->t("Last Name"),
+    $form['reporter']['reporter_last_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Last Name'),
     ];
 
-    $form["reporter"]["reporter_email"] = [
-      "#type" => "email",
-      "#title" => $this->t("Email"),
+    $form['reporter']['reporter_email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('Email'),
     ];
 
-    $form["reporter"]["reporter_phone"] = [
-      "#type" => "tel",
-      "#title" => $this->t("Phone"),
+    $form['reporter']['reporter_phone'] = [
+      '#type' => 'tel',
+      '#title' => $this->t('Phone'),
     ];
 
-    $form["reporter"]["is_reporter_csa"] = [
-      "#type" => "checkbox",
-      "#title" => $this->t("The reporter is a Campus Security Authority (CSA)"),
+    $form['reporter']['is_reporter_csa'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('The reporter is a Campus Security Authority (CSA)'),
     ];
 
     // Incident Contacts Fieldset.
-    $form["contacts"] = [
-      "#type" => "fieldset",
-      "#title" => $this->t("Incident Contacts (Optional)"),
+    $form['contacts'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Incident Contacts (Optional)'),
     ];
 
-    $form["contacts"]["contacts_container"] = [
-      "#type" => "container",
-      "#attributes" => ["id" => "contacts-wrapper"],
-      "#tree" => TRUE,
+    $form['contacts']['contacts_container'] = [
+      '#type' => 'container',
+      '#attributes' => ['id' => 'contacts-wrapper'],
+      '#tree' => TRUE,
     ];
 
     // Build existing contacts.
-    $num_contacts = $form_state->get("num_contacts");
+    $num_contacts = $form_state->get('num_contacts');
     if ($num_contacts === NULL) {
       $num_contacts = 0;
-      $form_state->set("num_contacts", $num_contacts);
+      $form_state->set('num_contacts', $num_contacts);
     }
 
     for ($i = 0; $i < $num_contacts; $i++) {
       $this->buildContactForm($form, $form_state, $i);
     }
 
-    $form["contacts"]["add_contact"] = [
-      "#type" => "submit",
-      "#value" => $this->t("Add Contact"),
-      "#submit" => ["::addContactSubmit"],
-      "#ajax" => [
-        "callback" => "::contactsCallback",
-        "wrapper" => "contacts-wrapper",
-        "progress" => [
-          "type" => "throbber",
-        ],
-      ],
-      "#limit_validation_errors" => [],
-    ];
+    $form['contacts']['add_contact'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Add Contact'),
+    ] + $this->buildAjaxButton('::contactsCallback', 'contacts-wrapper', ['::addContactSubmit']);
 
     // Submit button.
-    $form["actions"] = [
-      "#type" => "actions",
+    $form['actions'] = [
+      '#type' => 'actions',
     ];
 
-    $form["actions"]["submit"] = [
-      "#type" => "submit",
-      "#value" => $this->t("Submit Report"),
-      "#attributes" => ["class" => ["btn", "btn-primary"]],
-      "#submit" => [[$this, "submitForm"]],
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit Report'),
+      '#attributes' => ['class' => ['btn', 'btn-primary']],
+      '#submit' => [[$this, 'submitForm']],
     ];
 
     return $form;
+  }
+
+  /**
+   * Build contact form fields.
+   */
+  protected function buildContactForm(
+    array &$form,
+    FormStateInterface $form_state,
+    $index,
+  ) {
+    $form['contacts']['contacts_container'][$index] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Contact @num', ['@num' => $index + 1]),
+      '#collapsible' => FALSE,
+    ];
+
+    $contact = &$form['contacts']['contacts_container'][$index];
+
+    $contact['remove'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Remove Contact'),
+      '#name' => 'remove_contact_' . $index,
+    ] + $this->buildAjaxButton('::contactsCallback', 'contacts-wrapper', ['::removeContactSubmit']);
+
+    $contact['first_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('First Name'),
+      '#required' => TRUE,
+    ];
+
+    $contact['last_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Last Name'),
+      '#required' => TRUE,
+    ];
+
+    $contact['email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('Email'),
+    ];
+
+    $contact['phone'] = [
+      '#type' => 'tel',
+      '#title' => $this->t('Phone'),
+    ];
+
+    $contact['date_of_birth'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Date of Birth'),
+    ];
+
+    $contact['relationship_id'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Relationship to Incident'),
+      '#options' => $this->cleryController->getRelationshipOptions(),
+      '#empty_option' => $this->t('Select relationship...'),
+    ];
+
+    $contact['contact_roles'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Contact Role(s)'),
+      '#options' => $this->cleryController->getContactRoleOptions(),
+      '#multiple' => TRUE,
+    ];
+
+    // Contact Location Section.
+    $contact['location'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Contact Location'),
+      '#collapsible' => FALSE,
+    ];
+
+    $contact['location']['on_campus_geography_id'] = [
+      '#type' => 'select',
+      '#title' => $this->t('On-Campus Geography'),
+      '#options' => $this->cleryController->getOnCampusGeographyOptions(self::DEFAULT_CAMPUS_ID),
+      '#empty_option' => $this->t('Select on-campus geography...'),
+    ];
+
+    $contact['location']['on_campus_room_number'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Room Number'),
+      '#placeholder' => $this->t('e.g., 203B'),
+    ];
+
+    // Off-Campus Address.
+    $contact['off_campus'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('OR Off-Campus Address'),
+      '#collapsible' => FALSE,
+    ];
+
+    $contact['off_campus']['street'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Street Address'),
+    ];
+
+    $contact['off_campus']['city'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('City'),
+    ];
+
+    $contact['off_campus']['state_id'] = [
+      '#type' => 'select',
+      '#title' => $this->t('State'),
+      '#options' => $this->cleryController->getStateOptions(),
+      '#empty_option' => $this->t('Select state...'),
+    ];
+
+    $contact['off_campus']['zip_code'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Zip Code'),
+    ];
+
+    // Identifications Section.
+    $contact['identifications'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Identifications'),
+      '#collapsible' => FALSE,
+    ];
+
+    $num_ids = $form_state->get('contact_' . $index . '_num_ids');
+    if ($num_ids === NULL) {
+      $num_ids = 0;
+      $form_state->set('contact_' . $index . '_num_ids', $num_ids);
+    }
+
+    $contact['identifications']['ids_container'] = [
+      '#type' => 'container',
+      '#attributes' => ['id' => 'ids-wrapper-' . $index],
+      '#tree' => TRUE,
+    ];
+
+    for ($i = 0; $i < $num_ids; $i++) {
+      $this->buildIdentificationForm($contact, $form_state, $index, $i);
+    }
+
+    $contact['identifications']['add_id'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Add Identification'),
+      '#name' => 'add_id_' . $index,
+    ] + $this->buildAjaxButton('::identificationsCallback', 'ids-wrapper-' . $index, ['::addIdentificationSubmit']);
+  }
+
+  /**
+   * Build identification form fields.
+   */
+  protected function buildIdentificationForm(
+    array &$contact,
+    FormStateInterface $form_state,
+    $contact_index,
+    $id_index,
+  ) {
+    $contact['identifications']['ids_container'][$id_index] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('ID @num', ['@num' => $id_index + 1]),
+      '#collapsible' => FALSE,
+    ];
+
+    $id = &$contact['identifications']['ids_container'][$id_index];
+
+    $id['remove'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Remove ID'),
+      '#name' => 'remove_id_' . $contact_index . '_' . $id_index,
+    ] + $this->buildAjaxButton('::identificationsCallback', 'ids-wrapper-' . $contact_index, ['::removeIdentificationSubmit']);
+
+    $id['type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Type'),
+      '#options' => $this->cleryController->getIdentificationTypeOptions(),
+      '#empty_option' => $this->t('Select type...'),
+      '#required' => TRUE,
+    ];
+
+    $id['number'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Number'),
+      '#required' => TRUE,
+    ];
+
+    $id['state_id'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Issuing State'),
+      '#options' => $this->cleryController->getStateOptions(),
+      '#empty_option' => $this->t('Select state...'),
+    ];
+
+    $id['other'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Other'),
+      '#placeholder' => $this->t('Description for "Other" type'),
+    ];
+  }
+
+  /**
+   * AJAX callback for updating geography options.
+   */
+  public function updateGeographyCallback(
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
+    $campus_id = 3;
+    $geo_type_id = $form_state->getValue('geography_type_filter');
+    $current_geography_id = $form_state->getValue('geography_id');
+
+    $response = new AjaxResponse();
+
+    if (empty($geo_type_id)) {
+      $html = $this->buildGeographySelectHtml(
+        [],
+        'Select geography type first',
+        TRUE
+      );
+      $html .=
+        '<div class="description">Select a geography type above to load available geographies.</div>';
+    }
+    else {
+      try {
+        $geography_options = $this->cleryController->getGeographyOptions(
+          $campus_id,
+          $geo_type_id
+        );
+
+        if (!empty($geography_options)) {
+          $form_state->set('geography_options', $geography_options);
+
+          $html = $this->buildGeographySelectHtml(
+            $geography_options,
+            'Select a geography',
+            FALSE,
+            $current_geography_id
+          );
+
+          if (
+            !empty($current_geography_id) &&
+            isset($geography_options[$current_geography_id])
+          ) {
+            $response->addCommand(
+              new InvokeCommand('#edit-geography-id', 'val', [
+                $current_geography_id,
+              ])
+            );
+            $form_state->setValue('geography_id', $current_geography_id);
+          }
+        }
+        else {
+          $html = $this->buildGeographySelectHtml(
+            [],
+            'No geographies available',
+            TRUE
+          );
+          $html .=
+            '<div class="description">No geographies found for this type.</div>';
+        }
+      }
+      catch (\Exception $e) {
+        $html = $this->buildGeographySelectHtml(
+          [],
+          'Error loading geographies',
+          TRUE
+        );
+        $html .=
+          '<div class="description">An error occurred loading geographies.</div>';
+      }
+    }
+
+    $response->addCommand(new HtmlCommand('#geography-wrapper', $html));
+    return $response;
+  }
+
+  /**
+   * Helper method to build geography select HTML.
+   */
+  private function buildGeographySelectHtml(
+    array $options,
+    $empty_text,
+    $disabled = FALSE,
+    $selected_value = NULL,
+  ) {
+    $attributes = [
+      'id' => 'edit-geography-id',
+      'name' => 'geography_id',
+      'class' => 'form-select',
+      'required' => 'required',
+    ];
+
+    if ($disabled) {
+      $attributes['disabled'] = 'disabled';
+    }
+
+    $html = '<select';
+    foreach ($attributes as $attr => $value) {
+      $html .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+    }
+    $html .= '>';
+
+    $html .= '<option value="">' . htmlspecialchars($empty_text) . '</option>';
+
+    foreach ($options as $key => $label) {
+      $selected =
+        !empty($selected_value) && $selected_value == $key
+          ? ' selected="selected"'
+          : '';
+      $html .=
+        '<option value="' . htmlspecialchars($key) . '"' . $selected . '>';
+      $html .= htmlspecialchars($label);
+      $html .= '</option>';
+    }
+
+    $html .= '</select>';
+
+    return $html;
+  }
+
+  /**
+   * Submit handler for adding a contact.
+   */
+  public function addContactSubmit(
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
+    $num_contacts = $form_state->get('num_contacts');
+    $form_state->set('num_contacts', $num_contacts + 1);
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Submit handler for removing a contact.
+   */
+  public function removeContactSubmit(
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
+    $trigger = $form_state->getTriggeringElement();
+    $contact_index = (int) str_replace(
+      'remove_contact_',
+      '',
+      $trigger['#name']
+    );
+
+    $num_contacts = $form_state->get('num_contacts');
+    if ($num_contacts > 0) {
+      $form_state->set('num_contacts', $num_contacts - 1);
+    }
+
+    $form_state->setRebuild();
+  }
+
+  /**
+   * AJAX callback for contacts.
+   */
+  public function contactsCallback(
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
+    return $form['contacts']['contacts_container'];
+  }
+
+  /**
+   * Submit handler for adding an identification.
+   */
+  public function addIdentificationSubmit(
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
+    $trigger = $form_state->getTriggeringElement();
+    $contact_index = (int) str_replace('add_id_', '', $trigger['#name']);
+
+    $num_ids = $form_state->get('contact_' . $contact_index . '_num_ids');
+    $form_state->set('contact_' . $contact_index . '_num_ids', $num_ids + 1);
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Submit handler for removing an identification.
+   */
+  public function removeIdentificationSubmit(
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
+    $trigger = $form_state->getTriggeringElement();
+    $parts = explode('_', $trigger['#name']);
+    $contact_index = (int) $parts[2];
+
+    $num_ids = $form_state->get('contact_' . $contact_index . '_num_ids');
+    if ($num_ids > 0) {
+      $form_state->set('contact_' . $contact_index . '_num_ids', $num_ids - 1);
+    }
+
+    $form_state->setRebuild();
+  }
+
+  /**
+   * AJAX callback for identifications.
+   */
+  public function identificationsCallback(
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
+    $trigger = $form_state->getTriggeringElement();
+    $parts = explode('_', $trigger['#name']);
+    $contact_index = (int) $parts[2];
+
+    return $form['contacts']['contacts_container'][$contact_index]['identifications']['ids_container'];
+  }
+
+  /**
+   * Enhanced form validation.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
+    parent::validateForm($form, $form_state);
+
+    $triggering_element = $form_state->getTriggeringElement();
+
+    // Skip validation for AJAX requests.
+    if ($triggering_element && isset($triggering_element['#ajax'])) {
+      return;
+    }
+
+    // Only validate on actual form submission.
+    if (
+      $triggering_element &&
+      ($triggering_element['#value'] ?? '') === 'Submit Report'
+    ) {
+      $form_values = $form_state->getValues();
+
+      // Use controller's validation method.
+      $validation_errors = $this->cleryController->validateIncidentData($form_values);
+
+      if (!empty($validation_errors)) {
+        foreach ($validation_errors as $error) {
+          $form_state->setErrorByName('', $this->t($error));
+        }
+        return;
+      }
+
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    try {
+      $user_input = $form_state->getUserInput();
+      $form_values = $form_state->getValues();
+
+      if (
+        !empty($user_input['geography_id']) &&
+        empty($form_values['geography_id'])
+      ) {
+        $form_state->setValue('geography_id', $user_input['geography_id']);
+        $form_values = $form_state->getValues();
+      }
+
+      $request_body = $this->cleryController->buildIncidentRequestData($form_values, self::DEFAULT_CAMPUS_ID);
+
+      // Add this for debugging.
+      \Drupal::logger('csa_report')->notice('Request body: @body', [
+        '@body' => json_encode($request_body, JSON_PRETTY_PRINT),
+      ]);
+
+      // API submission.
+      // $result = $this->cleryController->submitIncidentReport($request_body);
+      $this->messenger()->addMessage(
+        $this->t(
+          'Incident reported successfully! (API submission disabled for testing)'
+        )
+      );
+
+      // Redirect to form for complete reset.
+      $form_state->setRedirect('<current>');
+    }
+    catch (\Exception $e) {
+      $this->messenger()->addError(
+        $this->t('Failed to report incident: @error', [
+          '@error' => $e->getMessage(),
+        ])
+      );
+    }
+  }
+
+  /**
+   * Generic helper to create AJAX button configuration.
+   *
+   * @param string $callback
+   *   The callback method name.
+   * @param string $wrapper
+   *   The wrapper ID for AJAX updates.
+   * @param array $submit_handlers
+   *   Array of submit handler method names.
+   *
+   * @return array
+   *   AJAX button configuration array.
+   */
+  protected function buildAjaxButton($callback, $wrapper, array $submit_handlers = []) {
+    return [
+      '#ajax' => [
+        'callback' => $callback,
+        'wrapper' => $wrapper,
+        'progress' => [
+          'type' => 'throbber',
+        ],
+      ],
+      '#submit' => $submit_handlers,
+      '#limit_validation_errors' => [],
+    ];
+  }
+
+  /**
+   * Generic helper to create AJAX select configuration.
+   *
+   * @param string $callback
+   *   The callback method name.
+   * @param string $wrapper
+   *   The wrapper ID for AJAX updates.
+   *
+   * @return array
+   *   AJAX configuration array.
+   */
+  protected function buildAjaxSelect($callback, $wrapper) {
+    return [
+      '#ajax' => [
+        'callback' => $callback,
+        'wrapper' => $wrapper,
+        'progress' => [
+          'type' => 'throbber',
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Custom validation for geography ID field.
+   */
+  public function validateGeographyId(
+    $element,
+    FormStateInterface $form_state,
+    $form,
+  ) {
+    $value = $element['#value'];
+
+    $triggering_element = $form_state->getTriggeringElement();
+
+    // Skip validation during AJAX calls.
+    if ($triggering_element && isset($triggering_element['#ajax'])) {
+      return;
+    }
+
+    // Validate only on actual form submission.
+    if (
+      $triggering_element &&
+      isset($triggering_element['#value']) &&
+      $triggering_element['#value'] === 'Submit Report'
+    ) {
+      if (empty($value) || $value === '' || $value === '0') {
+        $form_state->setError($element, $this->t('Please select a geography.'));
+      }
+    }
   }
 
 }

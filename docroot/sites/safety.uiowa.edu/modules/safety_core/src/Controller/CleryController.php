@@ -5,18 +5,19 @@ namespace Drupal\safety_core\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller for Clery Edge API operations.
  */
 class CleryController extends ControllerBase {
-
   /**
    * The HTTP client service.
    *
-   * @var \GuzzleHttp\ClientInterface
+   * @var \GuzzleHttp\Client
    */
   protected $httpClient;
 
@@ -37,13 +38,13 @@ class CleryController extends ControllerBase {
   /**
    * The base URL for the Clery Edge API.
    */
-  const BASE_URL = 'https://app-cleryedge-api-prod.azurewebsites.net/api/public';
+  const BASE_URL = "https://app-cleryedge-api-prod.azurewebsites.net/api/public";
 
   /**
    * Constructs a new CleryController instance.
    */
   public function __construct(
-    ClientInterface $http_client,
+    Client $http_client,
     ConfigFactoryInterface $config_factory,
     CacheBackendInterface $cache_backend,
   ) {
@@ -57,9 +58,9 @@ class CleryController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('http_client'),
-      $container->get('config.factory'),
-      $container->get('cache.default')
+      $container->get("http_client"),
+      $container->get("config.factory"),
+      $container->get("cache.default")
     );
   }
 
@@ -68,8 +69,88 @@ class CleryController extends ControllerBase {
    */
   protected function getApiKey() {
     return $this->configFactory
-      ->get('safety_core.settings')
-      ->get('clery_api.api_key') ?: '';
+      ->get("safety_core.settings")
+      ->get("clery_api.api_key") ?:
+      "";
+  }
+
+  /**
+   * Base method for making API requests with consistent setup.
+   *
+   * @param string $endpoint
+   *   The API endpoint (without base URL).
+   * @param string $method
+   *   HTTP method (GET, POST, etc.).
+   * @param array $options
+   *   Additional request options.
+   *
+   * @return array
+   *   Decoded JSON response.
+   *
+   * @throws \Exception
+   */
+  protected function makeApiRequest($endpoint, $method = 'GET', array $options = []) {
+    $api_key = $this->getApiKey();
+    if (empty($api_key)) {
+      throw new \Exception("API key not configured");
+    }
+
+    // Default request configuration.
+    $default_options = [
+      'headers' => [
+        'x-api-key' => $api_key,
+        'Accept' => 'application/json',
+      ],
+      'verify' => FALSE,
+      'timeout' => 30,
+    ];
+
+    // Merge with provided options.
+    $request_options = array_merge_recursive($default_options, $options);
+
+    // Make the request.
+    $response = $this->httpClient->request($method, self::BASE_URL . $endpoint, $request_options);
+
+    // Check response status.
+    $valid_statuses = $options['valid_statuses'] ?? [200];
+    if (!in_array($response->getStatusCode(), $valid_statuses)) {
+      $error_body = $response->getBody()->getContents();
+      throw new \Exception(
+        "API request failed with status: " . $response->getStatusCode() .
+        " for endpoint: " . $endpoint .
+        ". Response: " . $error_body
+      );
+    }
+
+    // Decode and validate response.
+    $data = json_decode($response->getBody()->getContents(), TRUE);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      throw new \Exception("Invalid JSON response for endpoint: " . $endpoint);
+    }
+
+    return $data;
+  }
+
+  /**
+   * Make a GET request with query parameters.
+   */
+  protected function apiGet($endpoint, array $query_params = []) {
+    $options = [];
+    if (!empty($query_params)) {
+      $options['query'] = $query_params;
+    }
+    return $this->makeApiRequest($endpoint, 'GET', $options);
+  }
+
+  /**
+   * Make a POST request with JSON data.
+   */
+  protected function apiPost($endpoint, array $data = []) {
+    return $this->makeApiRequest($endpoint, 'POST', [
+      'headers' => ['Content-Type' => 'application/json'],
+      'json' => $data,
+      'valid_statuses' => [200, 201],
+    ]);
   }
 
   /**
@@ -77,8 +158,8 @@ class CleryController extends ControllerBase {
    */
   public function getCrimeData($start_date, $end_date, $limit = NULL) {
     // Create cache bucket.
-    $bucket = (new \DateTime($end_date))->format('Y-m');
-    $cid = 'safety_core:crime_log:bucket:' . $bucket;
+    $bucket = (new \DateTime($end_date))->format("Y-m");
+    $cid = "safety_core:crime_log:bucket:" . $bucket;
 
     // Check cache first.
     if ($cache = $this->cacheBackend->get($cid)) {
@@ -86,8 +167,12 @@ class CleryController extends ControllerBase {
     }
     else {
       // Fetch date range for bucket.
-      $bucket_start = (new \DateTime($bucket . '-01'))->modify('-30 days')->format('Y-m-d');
-      $bucket_end = (new \DateTime($bucket . '-01'))->modify('last day of this month')->format('Y-m-d');
+      $bucket_start = (new \DateTime($bucket . "-01"))
+        ->modify("-30 days")
+        ->format("Y-m-d");
+      $bucket_end = (new \DateTime($bucket . "-01"))
+        ->modify("last day of this month")
+        ->format("Y-m-d");
 
       $cached_data = $this->fetchCrimeData($bucket_start, $bucket_end);
 
@@ -96,7 +181,11 @@ class CleryController extends ControllerBase {
     }
 
     // Filter cached data to requested range.
-    $filtered_data = $this->filterByDateRange($cached_data, $start_date, $end_date);
+    $filtered_data = $this->filterByDateRange(
+      $cached_data,
+      $start_date,
+      $end_date
+    );
 
     return $limit ? array_slice($filtered_data, 0, $limit) : $filtered_data;
   }
@@ -108,28 +197,37 @@ class CleryController extends ControllerBase {
    */
   protected function filterByDateRange($data, $start_date, $end_date) {
     $start_timestamp = strtotime($start_date);
-    $end_timestamp = strtotime($end_date . ' 23:59:59');
+    $end_timestamp = strtotime($end_date . " 23:59:59");
 
-    return array_filter($data, function ($crime) use ($start_timestamp, $end_timestamp) {
-      $crime_date = $crime['dateOffenseReported'] ?? '';
+    return array_filter($data, function ($crime) use (
+      $start_timestamp,
+      $end_timestamp
+    ) {
+      $crime_date = $crime["dateOffenseReported"] ?? "";
       if (empty($crime_date)) {
         return FALSE;
       }
 
       // Check if there's a time.
-      if (preg_match('/\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}/', $crime_date)) {
-        $crime_timestamp = \DateTime::createFromFormat('m/d/Y H:i', $crime_date);
+      if (preg_match("/\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}/", $crime_date)) {
+        $crime_timestamp = \DateTime::createFromFormat(
+          "m/d/Y H:i",
+          $crime_date
+        );
       }
-      elseif (preg_match('/\d{1,2}\/\d{1,2}\/\d{4}/', $crime_date)) {
-        $crime_timestamp = \DateTime::createFromFormat('m/d/Y', $crime_date);
+      elseif (preg_match("/\d{1,2}\/\d{1,2}\/\d{4}/", $crime_date)) {
+        $crime_timestamp = \DateTime::createFromFormat("m/d/Y", $crime_date);
       }
       else {
         $crime_timestamp = new \DateTime($crime_date);
       }
 
-      $crime_timestamp = $crime_timestamp ? $crime_timestamp->getTimestamp() : 0;
+      $crime_timestamp = $crime_timestamp
+        ? $crime_timestamp->getTimestamp()
+        : 0;
 
-      return $crime_timestamp >= $start_timestamp && $crime_timestamp <= $end_timestamp;
+      return $crime_timestamp >= $start_timestamp &&
+        $crime_timestamp <= $end_timestamp;
     });
   }
 
@@ -137,37 +235,27 @@ class CleryController extends ControllerBase {
    * Fetches crime data from the API.
    */
   protected function fetchCrimeData($start_date, $end_date) {
-    $api_key = $this->getApiKey();
-    if (empty($api_key)) {
-      throw new \Exception('API key not configured');
-    }
+    $query_params = [
+      'FromDateReported' => $start_date,
+      'ToDateReported' => $end_date,
+    ];
 
-    $response = $this->httpClient->get(self::BASE_URL . '/report/crime-log', [
-      'headers' => [
-        'x-api-key' => $api_key,
-        'Accept' => 'application/json',
-      ],
-      'verify' => FALSE,
-      'query' => [
-        'FromDateReported' => $start_date,
-        'ToDateReported' => $end_date,
-      ],
-      'timeout' => 30,
-    ]);
+    $data = $this->apiGet('/report/crime-log', $query_params);
 
-    if ($response->getStatusCode() !== 200) {
-      throw new \Exception('API request failed with status: ' . $response->getStatusCode());
-    }
-
-    $data = json_decode($response->getBody()->getContents(), TRUE);
     if (!is_array($data)) {
-      throw new \Exception('Invalid API response format');
+      throw new \Exception("Invalid API response format");
     }
 
     // Sort by newest first.
     usort($data, function ($a, $b) {
-      $datetime_a = ($a['dateOffenseReported'] ?? '') . ' ' . ($a['timeOffenseReported'] ?? '00:00:00');
-      $datetime_b = ($b['dateOffenseReported'] ?? '') . ' ' . ($b['timeOffenseReported'] ?? '00:00:00');
+      $datetime_a =
+        ($a["dateOffenseReported"] ?? "") .
+        " " .
+        ($a["timeOffenseReported"] ?? "00:00:00");
+      $datetime_b =
+        ($b["dateOffenseReported"] ?? "") .
+        " " .
+        ($b["timeOffenseReported"] ?? "00:00:00");
 
       return strtotime($datetime_b) - strtotime($datetime_a);
     });
@@ -181,25 +269,37 @@ class CleryController extends ControllerBase {
   protected function formatCrimeDates(array $crimes) {
     foreach ($crimes as &$crime) {
       // Format occurred date.
-      $start = $crime['dateOffenseOccuredStart'] ?? ($crime['dateOffenseOccured'] ?? NULL);
-      $end = $crime['dateOffenseOccuredEnd'] ?? NULL;
+      $start =
+        $crime["dateOffenseOccuredStart"] ??
+        ($crime["dateOffenseOccured"] ?? NULL);
+      $end = $crime["dateOffenseOccuredEnd"] ?? NULL;
 
       if ($start && $end) {
-        $start_fmt = $this->formatDate($start, $crime['timeOffenseOccuredStart'] ?? NULL);
-        $end_fmt = $this->formatDate($end, $crime['timeOffenseOccuredEnd'] ?? NULL);
-        $crime['dateOffenseOccured'] = $start_fmt !== $end_fmt
-          ? "Between {$start_fmt} and {$end_fmt}"
-          : $start_fmt;
+        $start_fmt = $this->formatDate(
+          $start,
+          $crime["timeOffenseOccuredStart"] ?? NULL
+        );
+        $end_fmt = $this->formatDate(
+          $end,
+          $crime["timeOffenseOccuredEnd"] ?? NULL
+        );
+        $crime["dateOffenseOccured"] =
+          $start_fmt !== $end_fmt
+            ? "Between {$start_fmt} and {$end_fmt}"
+            : $start_fmt;
       }
       elseif ($start) {
-        $crime['dateOffenseOccured'] = $this->formatDate($start, $crime['timeOffenseOccured'] ?? NULL);
+        $crime["dateOffenseOccured"] = $this->formatDate(
+          $start,
+          $crime["timeOffenseOccured"] ?? NULL
+              );
       }
 
       // Format reported date.
-      if (!empty($crime['dateOffenseReported'])) {
-        $crime['dateOffenseReported'] = $this->formatDate(
-          $crime['dateOffenseReported'],
-          $crime['timeOffenseReported'] ?? NULL
+      if (!empty($crime["dateOffenseReported"])) {
+        $crime["dateOffenseReported"] = $this->formatDate(
+          $crime["dateOffenseReported"],
+          $crime["timeOffenseReported"] ?? NULL
         );
       }
     }
@@ -214,11 +314,524 @@ class CleryController extends ControllerBase {
       return NULL;
     }
 
-    $combined = trim($date_string) . ($time_string ? ' ' . trim($time_string) : '');
-    $datetime = \DateTime::createFromFormat('Y-m-d H:i:s', $combined) ?:
-      \DateTime::createFromFormat('Y-m-d', $date_string);
+    $combined =
+      trim($date_string) . ($time_string ? " " . trim($time_string) : "");
+    $datetime =
+      \DateTime::createFromFormat("Y-m-d H:i:s", $combined) ?:
+      \DateTime::createFromFormat("Y-m-d", $date_string);
 
-    return $datetime ? $datetime->format($time_string ? 'm/d/Y H:i' : 'm/d/Y') : NULL;
+    return $datetime
+      ? $datetime->format($time_string ? "m/d/Y H:i" : "m/d/Y")
+      : NULL;
+  }
+
+  /**
+   * Fetches campuses from the API.
+   */
+  public function getCampuses() {
+    return $this->fetchFromApi("/incident/geography/campus");
+  }
+
+  /**
+   * Fetches geography types from the API.
+   */
+  public function getGeographyTypes() {
+    return $this->fetchFromApi("/incident/geography/type");
+  }
+
+  /**
+   * Fetches geographies based on campus and type filters.
+   */
+  public function getGeographies($campus_id = NULL, $geography_type_id = NULL) {
+    $query_params = array_filter([
+      'cleryCampusId' => $campus_id,
+      'geographyTypeId' => $geography_type_id,
+    ]);
+
+    return $this->apiGet('/incident/geography', $query_params);
+  }
+
+  /**
+   * Fetches states from the API.
+   */
+  public function getStates() {
+    return $this->fetchFromApi("/incident/states");
+  }
+
+  /**
+   * Fetches contact roles from the API.
+   */
+  public function getContactRoles() {
+    return $this->fetchFromApi("/incident/contact/roles");
+  }
+
+  /**
+   * Fetches contact relationships from the API.
+   */
+  public function getContactRelationships() {
+    return $this->fetchFromApi("/incident/contact/relationships");
+  }
+
+  /**
+   * Fetches identification types from the API.
+   */
+  public function getIdentificationTypes() {
+    return $this->fetchFromApi("/incident/contact/identification-types");
+  }
+
+  /**
+   * Submits a new incident report to the API.
+   */
+  public function submitIncidentReport(array $incident_data) {
+    return $this->apiPost('/incident', $incident_data);
+  }
+
+  /**
+   * Generic method to fetch data from the API with caching.
+   */
+  protected function fetchFromApi($endpoint, $cache_duration = 3600) {
+    // Create cache ID from endpoint.
+    $cid = "safety_core:api_data:" . md5($endpoint);
+
+    // Check cache first.
+    if ($cache = $this->cacheBackend->get($cid)) {
+      return $cache->data;
+    }
+
+    $data = $this->makeApiRequest($endpoint);
+
+    if (!is_array($data)) {
+      throw new \Exception("Expected array response for endpoint: " . $endpoint);
+    }
+
+    // Cache the data.
+    $this->cacheBackend->set($cid, $data, time() + $cache_duration);
+
+    return $data;
+  }
+
+  /**
+   * Generic AJAX response wrapper.
+   */
+  protected function ajaxResponse($callback, ...$args) {
+    try {
+      $result = call_user_func_array([$this, $callback], $args);
+      return new JsonResponse($result);
+    }
+    catch (\Exception $e) {
+      return new JsonResponse(["error" => $e->getMessage()], 500);
+    }
+  }
+
+  /**
+   * AJAX endpoint to get campuses.
+   */
+  public function ajaxGetCampuses() {
+    return $this->ajaxResponse('getCampuses');
+  }
+
+  /**
+   * AJAX endpoint to get geography types.
+   */
+  public function ajaxGetGeographyTypes() {
+    return $this->ajaxResponse('getGeographyTypes');
+  }
+
+  /**
+   * AJAX endpoint to get geographies with filters.
+   */
+  public function ajaxGetGeographies(Request $request) {
+    $campus_id = $request->query->get("cleryCampusId");
+    $geography_type_id = $request->query->get("geographyTypeId");
+
+    return $this->ajaxResponse('getGeographies', $campus_id, $geography_type_id);
+  }
+
+  /**
+   * AJAX endpoint to get all prerequisite data for the form.
+   */
+  public function ajaxGetPrerequisites() {
+    try {
+      $data = [
+        "campuses" => $this->getCampuses(),
+        "geographyTypes" => $this->getGeographyTypes(),
+        "states" => $this->getStates(),
+        "contactRoles" => $this->getContactRoles(),
+        "relationships" => $this->getContactRelationships(),
+        "identificationTypes" => $this->getIdentificationTypes(),
+      ];
+      return new JsonResponse($data);
+    }
+    catch (\Exception $e) {
+      return new JsonResponse(["error" => $e->getMessage()], 500);
+    }
+  }
+
+  /**
+   * AJAX endpoint to submit incident report.
+   */
+  public function ajaxSubmitIncident(Request $request) {
+    try {
+      $incident_data = json_decode($request->getContent(), TRUE);
+
+      if (!$incident_data) {
+        return new JsonResponse(["error" => "Invalid JSON data"], 400);
+      }
+
+      $result = $this->submitIncidentReport($incident_data);
+      return new JsonResponse([
+        "success" => TRUE,
+        "message" => "Incident reported successfully",
+        "data" => $result,
+      ]);
+    }
+    catch (\Exception $e) {
+      return new JsonResponse(["error" => $e->getMessage()], 500);
+    }
+  }
+
+  /**
+   * Formats time string to proper format for API.
+   */
+  public function formatTime($time_string): ?string {
+    if (empty($time_string)) {
+      return NULL;
+    }
+
+    // If already in HH:MM format, return as is.
+    if (preg_match('/^\d{2}:\d{2}$/', $time_string)) {
+      return $time_string;
+    }
+
+    // If in H:MM format, pad with leading zero.
+    if (preg_match('/^\d{1}:\d{2}$/', $time_string)) {
+      return str_pad($time_string, 5, '0', STR_PAD_LEFT);
+    }
+
+    // Try to parse and format various time formats.
+    $time = \DateTime::createFromFormat('H:i', $time_string);
+    if ($time === FALSE) {
+      $time = \DateTime::createFromFormat('g:i A', $time_string);
+    }
+    if ($time === FALSE) {
+      $time = \DateTime::createFromFormat('g:i a', $time_string);
+    }
+
+    return $time ? $time->format('H:i') : NULL;
+  }
+
+  /**
+   * Builds form options from API data.
+   */
+  public function buildFormOptions($api_method, $id_key, $label_key, array $additional_params = []): array {
+    try {
+      $data = call_user_func_array([$this, $api_method], $additional_params);
+      $options = [];
+
+      if (is_array($data)) {
+        foreach ($data as $item) {
+          if (isset($item[$id_key], $item[$label_key])) {
+            $options[$item[$id_key]] = $item[$label_key];
+          }
+        }
+      }
+
+      return $options;
+    }
+    catch (\Exception $e) {
+      return [];
+    }
+  }
+
+  /**
+   * Get campus options formatted for form select.
+   */
+  public function getCampusOptions(): array {
+    return $this->buildFormOptions('getCampuses', 'campusId', 'name');
+  }
+
+  /**
+   * Get geography type options formatted for form select.
+   */
+  public function getGeographyTypeOptions(): array {
+    return $this->buildFormOptions('getGeographyTypes', 'geographyTypeId', 'geographyTypeName');
+  }
+
+  /**
+   * Get geography options based on campus and type formatted for form select.
+   */
+  public function getGeographyOptions($campus_id, $geo_type_id): array {
+    try {
+      $geographies = $this->getGeographies($campus_id, $geo_type_id);
+      $options = [];
+
+      if (is_array($geographies)) {
+        foreach ($geographies as $geography) {
+          if (
+            isset($geography['geographyId']) &&
+            isset($geography['geographyName'])
+          ) {
+            $key = (string) $geography['geographyId'];
+            $options[$key] = $geography['geographyName'];
+          }
+        }
+      }
+
+      return $options;
+    }
+    catch (\Exception $e) {
+      return [];
+    }
+  }
+
+  /**
+   * Get relationship options formatted for form select.
+   */
+  public function getRelationshipOptions(): array {
+    return $this->buildFormOptions('getContactRelationships', 'relationshipId', 'relationshipName');
+  }
+
+  /**
+   * Get contact role options formatted for form select.
+   */
+  public function getContactRoleOptions(): array {
+    return $this->buildFormOptions('getContactRoles', 'contactRoleId', 'roleName');
+  }
+
+  /**
+   * Get state options formatted for form select.
+   */
+  public function getStateOptions(): array {
+    return $this->buildFormOptions('getStates', 'stateId', 'stateName');
+  }
+
+  /**
+   * Get identification type options formatted for form select.
+   */
+  public function getIdentificationTypeOptions(): array {
+    return $this->buildFormOptions('getIdentificationTypes', 'identificationTypeId', 'identificationTypeName');
+  }
+
+  /**
+   * Get on-campus geography options formatted for form select.
+   */
+  public function getOnCampusGeographyOptions($default_campus_id = 3): array {
+    try {
+      $geography_types = $this->getGeographyTypes();
+      $options = [];
+
+      foreach ($geography_types as $type) {
+        if (isset($type['geographyTypeId'])) {
+          $geographies = $this->getGeographies(
+            $default_campus_id,
+            $type['geographyTypeId']
+          );
+
+          foreach ($geographies as $geography) {
+            if (isset($geography['geographyId'], $geography['geographyName'])) {
+              $options[$geography['geographyId']] = $geography['geographyName'];
+            }
+          }
+        }
+      }
+
+      ksort($options);
+      return $options;
+    }
+    catch (\Exception $e) {
+      return [];
+    }
+  }
+
+  /**
+   * Validates incident form data.
+   */
+  public function validateIncidentData(array $form_values) {
+    $errors = [];
+
+    // Validate required fields.
+    if (empty($form_values['date_offense_reported'])) {
+      $errors[] = 'Date offense reported is required.';
+    }
+
+    if (empty($form_values['time_offense_reported'])) {
+      $errors[] = 'Time offense reported is required.';
+    }
+
+    // Validate geography selection.
+    $geography_id = $form_values['geography_id'] ?? '';
+    if (empty($geography_id) || $geography_id === '' || $geography_id === '0') {
+      $errors[] = 'Please select a geography.';
+    }
+
+    // Validate contacts if present.
+    if (isset($form_values['contacts_container']) && is_array($form_values['contacts_container'])) {
+      foreach ($form_values['contacts_container'] as $index => $contact_data) {
+        if (!empty($contact_data['first_name']) || !empty($contact_data['last_name'])) {
+          if (empty($contact_data['first_name'])) {
+            $errors[] = "Contact " . ($index + 1) . ": First name is required.";
+          }
+          if (empty($contact_data['last_name'])) {
+            $errors[] = "Contact " . ($index + 1) . ": Last name is required.";
+          }
+        }
+      }
+    }
+
+    return $errors;
+  }
+
+  /**
+   * Builds the request body for API submission from form values.
+   */
+  public function buildIncidentRequestData(array $form_values, $default_campus_id = 3) {
+    // Validate and convert geography ID.
+    $geography_id = 0;
+    if (
+      isset($form_values['geography_id']) &&
+      $form_values['geography_id'] !== '' &&
+      $form_values['geography_id'] !== '0'
+    ) {
+      $geography_id = (int) $form_values['geography_id'];
+    }
+
+    // Fallback: Try to set geography ID using first available option.
+    if ($geography_id <= 0) {
+      try {
+        $geo_type_id = $form_values['geography_type_filter'] ?? NULL;
+        if ($geo_type_id) {
+          $available_options = $this->getGeographyOptions($default_campus_id, $geo_type_id);
+          if (!empty($available_options)) {
+            $first_option = array_keys($available_options)[0];
+            $geography_id = (int) $first_option;
+          }
+        }
+      }
+      catch (\Exception $e) {
+        // Throw detailed one below if ID still invalid.
+      }
+
+      if ($geography_id <= 0) {
+        $error_message = 'Please select a valid geography from the dropdown. ';
+        $error_message .=
+          'If the geography dropdown is empty, try selecting a different geography type first.';
+        throw new \Exception($error_message);
+      }
+    }
+
+    $body = [];
+
+    // Incident Detail.
+    $body['incidentDetail'] = [
+      'dateOffenseReported' => $form_values['date_offense_reported'] ?? NULL,
+      'timeOffenseReported' => $this->formatTime($form_values['time_offense_reported'] ?? NULL),
+      'dateOffenseOccured' => $form_values['date_offense_occured'] ?? NULL,
+      'exactTimeOccured' => $this->formatTime($form_values['exact_time_occured'] ?? NULL),
+      'dateStart' => $form_values['date_start'] ?? NULL,
+      'timeStart' => $this->formatTime($form_values['time_start'] ?? NULL),
+      'dateEnd' => $form_values['date_end'] ?? NULL,
+      'timeEnd' => $this->formatTime($form_values['time_end'] ?? NULL),
+      'specificLocation' => $form_values['specific_location'] ?? NULL,
+      'description' => $form_values['description'] ?? NULL,
+    ];
+
+    // Geography ID.
+    $body['geographyId'] = $geography_id;
+
+    // Reporter.
+    if (
+      !empty($form_values['reporter_first_name']) &&
+      !empty($form_values['reporter_last_name'])
+    ) {
+      $body['reporter'] = [
+        'firstName' => $form_values['reporter_first_name'],
+        'lastName' => $form_values['reporter_last_name'],
+        'email' => $form_values['reporter_email'] ?? NULL,
+        'phone' => $form_values['reporter_phone'] ?? NULL,
+      ];
+    }
+    else {
+      $body['reporter'] = NULL;
+    }
+
+    // CSA Flag.
+    $body['isReporterCsa'] = (bool) $form_values['is_reporter_csa'];
+
+    // Incident Contacts.
+    $body['incidentContacts'] = [];
+    if (
+      isset($form_values['contacts_container']) &&
+      is_array($form_values['contacts_container'])
+    ) {
+      foreach ($form_values['contacts_container'] as $contact_data) {
+        if (
+          !empty($contact_data['first_name']) &&
+          !empty($contact_data['last_name'])
+        ) {
+          $contact = [
+            'firstName' => $contact_data['first_name'],
+            'lastName' => $contact_data['last_name'],
+            'email' => $contact_data['email'] ?? NULL,
+            'phone' => $contact_data['phone'] ?? NULL,
+            'dateOfBirth' => $contact_data['date_of_birth'] ?? NULL,
+            'relationshipId' => !empty($contact_data['relationship_id'])
+              ? (int) $contact_data['relationship_id']
+              : NULL,
+            'contactRoles' => array_map(
+              'intval',
+              array_filter($contact_data['contact_roles'] ?? [])
+            ),
+            'onCampusGeographyId' => !empty(
+            $contact_data['location']['on_campus_geography_id']
+            )
+              ? (int) $contact_data['location']['on_campus_geography_id']
+              : NULL,
+            'onCampusRoomNumber' =>
+            $contact_data['location']['on_campus_room_number'] ?? NULL,
+            'offCampusAddress' => NULL,
+            'identifications' => [],
+          ];
+
+          if (
+            !empty($contact_data['off_campus']['street']) &&
+            !empty($contact_data['off_campus']['city'])
+          ) {
+            $contact['offCampusAddress'] = [
+              'street' => $contact_data['off_campus']['street'],
+              'city' => $contact_data['off_campus']['city'],
+              'stateId' => !empty($contact_data['off_campus']['state_id'])
+                ? (int) $contact_data['off_campus']['state_id']
+                : NULL,
+              'zipCode' => $contact_data['off_campus']['zip_code'] ?? NULL,
+            ];
+          }
+
+          if (
+            isset($contact_data['identifications']['ids_container']) &&
+            is_array($contact_data['identifications']['ids_container'])
+          ) {
+            foreach (
+              $contact_data['identifications']['ids_container'] as $id_data
+            ) {
+              if (!empty($id_data['type']) && !empty($id_data['number'])) {
+                $contact['identifications'][] = [
+                  'identificationTypeId' => (int) $id_data['type'],
+                  'number' => $id_data['number'],
+                  'stateId' => !empty($id_data['state_id'])
+                    ? (int) $id_data['state_id']
+                    : NULL,
+                  'other' => $id_data['other'] ?? NULL,
+                ];
+              }
+            }
+          }
+
+          $body['incidentContacts'][] = $contact;
+        }
+      }
+    }
+
+    return $body;
   }
 
 }
