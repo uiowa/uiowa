@@ -77,7 +77,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     $limit = NULL;
 
     // Build search form.
-    $min_date = (new DrupalDateTime('-60 days'))->format('Y-m-d');
+    $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
     $max_date = (new DrupalDateTime())->format('Y-m-d');
 
     $build['#attached']['library'][] = 'safety_core/clery';
@@ -201,7 +201,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
    * Gets the cache max age for this block.
    */
   public function getCacheMaxAge() {
-    return 3600;
+    return 1800;
   }
 
 }
