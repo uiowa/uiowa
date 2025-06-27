@@ -251,7 +251,6 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     // Build search form.
     $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
     $max_date = (new DrupalDateTime())->format('Y-m-d');
-    \Drupal::logger('safety_core')->notice('Max date calculated as: @date', ['@date' => $max_date]);
 
     $build['#attached']['library'][] = 'safety_core/clery';
     $build['#attached']['library'][] = 'core/drupal.announce';
