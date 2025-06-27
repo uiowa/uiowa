@@ -4,6 +4,15 @@ signage:
     theme:
       assets/css/signage.css: { preprocess: false }
 
+# Bus Arrivals
+bus_arrivals:
+  js:
+    js/bus_arrivals.js: { preprocess: false }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
 # Clock display
 datetime:
   js:

@@ -54,12 +54,25 @@ function sitenow_signage_preprocess_block(&$variables) {
 function sitenow_signage_preprocess_field(&$variables) {
   $element = $variables['element'];
   if ($element['#field_name'] === 'field_slide_bus_arrivals_stop') {
-    $api_client = \Drupal::service('sitenow_signage.icareatransit_api');
-    $id = (int) $element[0]['#markup'];
-    $prediction_data = $api_client->getPredictions($id);
-    // @todo make pretty.
-    $markup = print_r($prediction_data, TRUE);
-    $variables['items'][0]['content']['#markup'] = $markup;
+    $stop_id = (int) $element[0]['#markup'];
+    // Get the bus stop name from the allowed values and set label.
+    $stops = sitenow_signage_bus_stops_allowed_values();
+    $stop_name = $stops[$stop_id] ?? 'Mystery Stop... Muhahaha!';
+    $variables['label'] = 'Bus arrivals for ' . $stop_name;
+    // Set the bus stop id as a data attribute on the container for JS.
+    $variables['items'][0]['content'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['bus-arrivals'],
+        'data-stop-id' => $stop_id,
+      ],
+      'loading_message' => [
+        '#markup' => '<p class="bus-arrivals-message">Loading bus arrival information…</p>',
+        '#allowed_tags' => ['p'],
+      ],
+    ];
+
+    $variables['#attached']['library'][] = 'sitenow_signage/bus_arrivals';
   }
 }
 
