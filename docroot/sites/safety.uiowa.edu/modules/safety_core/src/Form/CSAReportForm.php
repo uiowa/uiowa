@@ -67,32 +67,49 @@ class CSAReportForm extends FormBase {
 
     $form['#attached']['library'][] = 'safety_core/csa-report-form';
 
-    // Geography Filters Fieldset.
-    $form['geography_filters'] = [
+    // Incident Details Fieldset.
+    $form['incident_details'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Geography Filters'),
-      '#description' => $this->t(
-        'Select a campus and type to load available geographies.'
-      ),
+      '#title' => $this->t('Incident Details'),
     ];
 
-    $form['geography_filters']['campus_filter'] = [
+    $form['incident_details']['campus_filter'] = [
       '#type' => 'hidden',
       '#value' => self::DEFAULT_CAMPUS_ID,
     ];
 
-    $form['geography_filters']['geography_type_filter'] = [
+    $form['incident_details']['geography_type_filter'] = [
       '#type' => 'select',
-      '#title' => $this->t('Geography Type'),
+      '#title' => $this->t('Location Type'),
       '#required' => TRUE,
       '#options' => $this->cleryController->getGeographyTypeOptions(),
       '#empty_option' => $this->t('Select a type'),
     ] + $this->buildAjaxSelect('::updateGeographyCallback', 'geography-wrapper');
 
-    // Incident Details Fieldset.
-    $form['incident_details'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Incident Details'),
+    $form['incident_details']['geography_wrapper'] = [
+      '#type' => 'container',
+      '#attributes' => ['id' => 'geography-wrapper'],
+    ];
+
+    $form['incident_details']['geography_wrapper']['geography_id'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Location'),
+      '#required' => TRUE,
+      '#options' => [],
+      '#empty_option' => $this->t('Select location type first'),
+      '#disabled' => TRUE,
+      '#description' => $this->t(
+        'Select a location type above to load available locations.'
+      ),
+      '#element_validate' => [[$this, 'validateGeographyId']],
+      '#states' => [
+        'required' => [
+          ':input[name="geography_type_filter"]' => ['!value' => ''],
+        ],
+        'enabled' => [
+          ':input[name="geography_type_filter"]' => ['!value' => ''],
+        ],
+      ],
     ];
 
     $form['incident_details']['date_offense_reported'] = [
@@ -108,32 +125,6 @@ class CSAReportForm extends FormBase {
       '#attributes' => [
         'class' => ['time-input'],
         'placeholder' => 'HH:MM (24-hour format)',
-      ],
-    ];
-
-    $form['incident_details']['geography_wrapper'] = [
-      '#type' => 'container',
-      '#attributes' => ['id' => 'geography-wrapper'],
-    ];
-
-    $form['incident_details']['geography_wrapper']['geography_id'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Geography'),
-      '#required' => TRUE,
-      '#options' => [],
-      '#empty_option' => $this->t('Select geography type first'),
-      '#disabled' => TRUE,
-      '#description' => $this->t(
-        'Select a geography type above to load available geographies.'
-      ),
-      '#element_validate' => [[$this, 'validateGeographyId']],
-      '#states' => [
-        'required' => [
-          ':input[name="geography_type_filter"]' => ['!value' => ''],
-        ],
-        'enabled' => [
-          ':input[name="geography_type_filter"]' => ['!value' => ''],
-        ],
       ],
     ];
 
@@ -551,11 +542,11 @@ class CSAReportForm extends FormBase {
     if (empty($geo_type_id)) {
       $html = $this->buildGeographySelectHtml(
         [],
-        'Select geography type first',
+        'Select location type first',
         TRUE
       );
       $html .=
-        '<div class="description">Select a geography type above to load available geographies.</div>';
+        '<div class="description">Select a location type above to load available locations.</div>';
     }
     else {
       try {
@@ -569,7 +560,7 @@ class CSAReportForm extends FormBase {
 
           $html = $this->buildGeographySelectHtml(
             $geography_options,
-            'Select a geography',
+            'Select a location',
             FALSE,
             $current_geography_id
           );
@@ -589,21 +580,21 @@ class CSAReportForm extends FormBase {
         else {
           $html = $this->buildGeographySelectHtml(
             [],
-            'No geographies available',
+            'No locations available',
             TRUE
           );
           $html .=
-            '<div class="description">No geographies found for this type.</div>';
+            '<div class="description">No locations found for this type.</div>';
         }
       }
       catch (\Exception $e) {
         $html = $this->buildGeographySelectHtml(
           [],
-          'Error loading geographies',
+          'Error loading locations',
           TRUE
         );
         $html .=
-          '<div class="description">An error occurred loading geographies.</div>';
+          '<div class="description">An error occurred loading locations.</div>';
       }
     }
 
@@ -897,7 +888,7 @@ class CSAReportForm extends FormBase {
       $triggering_element['#value'] === 'Submit Report'
     ) {
       if (empty($value) || $value === '' || $value === '0') {
-        $form_state->setError($element, $this->t('Please select a geography.'));
+        $form_state->setError($element, $this->t('Please select a location.'));
       }
     }
   }
