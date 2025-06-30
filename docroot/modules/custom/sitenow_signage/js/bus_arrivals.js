@@ -9,16 +9,16 @@
 
         const palette = {
           'coralville' : {
-            'bg' : '#00558C',
-            'fg' : 'white'
+            'bg' : 'var(--coralville)',
+            'fg' : 'var(--text-dark)'
           },
           'iowacity' : {
-            'bg' : '#BD472A',
-            'fg' : 'white'
+            'bg' : 'var(--iowa-city)',
+            'fg' : 'var(--text-dark)'
           },
           'uiowa' : {
-            'bg' : '#FFCD00',
-            'fg' : 'black'
+            'bg' : 'var(--uiowa)',
+            'fg' : 'var(--text-dark)'
           },
         }
 
@@ -26,6 +26,7 @@
 
         const updateArrivals = async () => {
           let predictionsTable = `<table>
+            <caption>${drupalSettings.sitenowSignage.label ?? 'Bus arrival information'}</caption>
             <thead>
               <tr>
                 <th>Time</th>
