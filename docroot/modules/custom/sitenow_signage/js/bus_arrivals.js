@@ -27,7 +27,7 @@
         const label = stopName ? `Next Arrivals for Stop ${stopName}` : 'Bus arrival information';
 
         const updateArrivals = async () => {
-          let predictionsTable = `<table class="table--gray-borders table">
+          let predictionsTable = `<table>
             <caption>${label}</caption>
             <thead>
               <tr>
