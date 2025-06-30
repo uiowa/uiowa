@@ -146,7 +146,6 @@ class CSAReportForm extends FormBase {
     // Occurrence Date & Time Fieldset.
     $form['occurrence'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Occurrence Date & Time (Optional)'),
       '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Occurrence Date & Time (Optional)') . '</span>',
       '#description' => $this->t(
         'Fill in the fields that apply to when the incident occurred.'
