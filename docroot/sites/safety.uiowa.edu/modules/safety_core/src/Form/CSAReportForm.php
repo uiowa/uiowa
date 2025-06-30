@@ -405,9 +405,9 @@ class CSAReportForm extends FormBase {
 
     $contact['location']['on_campus_geography_id'] = [
       '#type' => 'select',
-      '#title' => $this->t('On-Campus Geography'),
+      '#title' => $this->t('Location'),
       '#options' => $this->cleryController->getOnCampusGeographyOptions(self::DEFAULT_CAMPUS_ID),
-      '#empty_option' => $this->t('Select on-campus geography...'),
+      '#empty_option' => $this->t('Select a location'),
     ];
 
     $contact['location']['on_campus_room_number'] = [
