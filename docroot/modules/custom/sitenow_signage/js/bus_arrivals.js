@@ -3,7 +3,6 @@
     attach(context) {
       context.querySelectorAll('.bus-arrivals').forEach((element) => {
         const stopId = element.dataset.stopId;
-        const stopName = element.dataset.stopName;
         if (!stopId) {
           return;
         }
@@ -24,10 +23,12 @@
         }
 
         const url = `https://api.icareatransit.org/prediction?stopid=${stopId}`;
+        const stopName = element.dataset.stopName?.trim();
+        const label = stopName ? `Next Arrivals for Stop ${stopName}` : 'Bus arrival information';
 
         const updateArrivals = async () => {
           let predictionsTable = `<table>
-            <caption>Next Arrivals for Stop ${stopName ?? 'Bus arrival information'}</caption>
+            <caption>${label}</caption>
             <thead>
               <tr>
                 <th>Time</th>
