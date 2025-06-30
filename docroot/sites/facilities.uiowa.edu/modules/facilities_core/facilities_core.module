@@ -15,6 +15,7 @@ use Drupal\Core\Url;
 use Drupal\facilities_core\Entity\Artwork;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\uiowa_core\Plugin\views\filter\EntityReferenceOverride;
 
 /**
  * Set dynamic allowed values bus routes status.
@@ -191,9 +192,22 @@ function facilities_core_form_views_exposed_form_alter(&$form, FormStateInterfac
           }
         }
 
+        // Sort the options alphabetically by value.
+        asort($options);
+
         $form['field_artwork_artist_target_id']['#options'] = $options;
       }
     }
+  }
+}
+
+/**
+ * Implements hook_views_plugins_filter_alter().
+ */
+function facilities_core_views_plugins_filter_alter(array &$plugins): void {
+  // Override all entity reference filter plugins for this site. :grimacing:.
+  if (isset($plugins['entity_reference'])) {
+    $plugins['entity_reference']['class'] = EntityReferenceOverride::class;
   }
 }
 
