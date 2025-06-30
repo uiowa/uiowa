@@ -99,3 +99,42 @@
   // Default is dark overlay.
   background: rgb(0, 0, 0, .5);
 }
+
+// Bus arrivals widget.
+.bus-arrivals {
+
+  // Table reset.
+  table,
+  caption,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td{
+    background-color: transparent;
+  }
+
+  padding: variables.$mobile-width-gutter;
+
+  caption {
+    font-size: variables.$h3-font-size;
+    font-weight: variables.$font-weight-heavy;
+    color: variables.$primary;
+    text-align: left;
+  }
+
+  thead th {
+    font-size: variables.$h4-font-size;
+    color: variables.$white;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid variables.$secondary !important;
+  }
+
+  tbody td {
+    font-size: variables.$h5-font-size;
+  }
+
+}
