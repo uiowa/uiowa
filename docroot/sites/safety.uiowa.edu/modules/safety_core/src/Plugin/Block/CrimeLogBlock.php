@@ -93,32 +93,21 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * Gets cached crime data or fetches from API using bucket system.
+   * Gets cached crime data or fetches from API.
    */
   protected function getCrimeData($start_date, $end_date, $limit = NULL) {
-    // Create cache bucket.
-    $bucket = (new \DateTime($end_date))->format('Y-m');
-    $cid = 'safety_core:crime_log:bucket:' . $bucket;
+    $cid = 'safety_core:crime_log:' . $start_date . ':' . $end_date;
 
-    // Check cache first.
     if ($cache = $this->cacheBackend->get($cid)) {
-      $cached_data = $cache->data;
+      $data = $cache->data;
     }
     else {
-      // Fetch date range for bucket.
-      $bucket_start = (new \DateTime($bucket . '-01'))->modify('-30 days')->format('Y-m-d');
-      $bucket_end = (new \DateTime($bucket . '-01'))->modify('last day of this month')->format('Y-m-d');
-
-      $cached_data = $this->fetchCrimeData($bucket_start, $bucket_end);
-
-      // Cache for 24 hours.
-      $this->cacheBackend->set($cid, $cached_data, time() + 86400);
+      $data = $this->fetchCrimeData($start_date, $end_date);
+      $cache_duration = (strtotime($end_date) >= strtotime('-2 days')) ? 1800 : 86400;
+      $this->cacheBackend->set($cid, $data, time() + $cache_duration);
     }
 
-    // Filter cached data to requested range.
-    $filtered_data = $this->filterByDateRange($cached_data, $start_date, $end_date);
-
-    return $limit ? array_slice($filtered_data, 0, $limit) : $filtered_data;
+    return $limit ? array_slice($data, 0, $limit) : $data;
   }
 
   /**
@@ -260,7 +249,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     $limit = NULL;
 
     // Build search form.
-    $min_date = (new DrupalDateTime('-60 days'))->format('Y-m-d');
+    $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
     $max_date = (new DrupalDateTime())->format('Y-m-d');
 
     $build['#attached']['library'][] = 'safety_core/clery';
@@ -360,7 +349,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
    * Gets the cache max age for this block.
    */
   public function getCacheMaxAge() {
-    return 3600;
+    return 1800;
   }
 
 }
