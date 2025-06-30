@@ -310,6 +310,13 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_classes'] = [];
   $name_length = strlen($variables['site_name']);
 
+  $variables['not_digital_sign'] = TRUE;
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface && $node->getType() === 'sign') {
+    $variables['not_digital_sign'] = FALSE;
+  }
+
   if ($variables['header_branding'] === 'regents' && $variables['footer_logo']) {
     $variables['uiowa_logo'] = TRUE;
   }
