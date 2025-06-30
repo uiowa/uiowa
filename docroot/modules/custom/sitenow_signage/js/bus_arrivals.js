@@ -7,6 +7,14 @@
           return;
         }
 
+        const palette = {
+          '#4314FF' : '#00558C',
+          '#00C65E' : '#00664F',
+          '#7C9E68' : '#FFCD00',
+          '#FF143C' : '#BD472A',
+
+        }
+
         const url = `https://api.icareatransit.org/prediction?stopid=${stopId}`;
 
         const updateArrivals = async () => {
@@ -23,7 +31,7 @@
             element.innerHTML = `
               <ul class="bus-arrival-list">
                 ${predictions.map((item) =>
-              `<li style="color: ${item.routeTextColor}; background: ${item.routeColor};">
+              `<li style="color: ${item.routeTextColor}; background: ${palette[item.routeColor]};">
                     <strong>${item.title}</strong> — ${item.minutes} min - ${item.agencyName}
                   </li>`
             ).join('')}
