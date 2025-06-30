@@ -8,38 +8,60 @@
         }
 
         const palette = {
-          '#4314FF' : '#00558C',
-          '#00C65E' : '#00664F',
-          '#7C9E68' : '#FFCD00',
-          '#FF143C' : '#BD472A',
-
+          'coralville' : {
+            'bg' : '#00558C',
+            'fg' : 'white'
+          },
+          'iowacity' : {
+            'bg' : '#BD472A',
+            'fg' : 'white'
+          },
+          'uiowa' : {
+            'bg' : '#FFCD00',
+            'fg' : 'black'
+          },
         }
 
         const url = `https://api.icareatransit.org/prediction?stopid=${stopId}`;
 
         const updateArrivals = async () => {
+          let predictionsTable = `<table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Route</th>
+                <th>Agency</th>
+              </tr>
+            </thead>`;
+
           try {
             const response = await fetch(url);
             const data = await response.json();
             const predictions = data.predictions ?? [];
 
             if (predictions.length === 0) {
-              element.innerHTML = '<p class="bus-arrivals-message">No upcoming arrivals.</p>';
+              predictionsTable += `<td colspan='3' >No upcoming arrivals.</td></table>`;
+              element.innerHTML = predictionsTable;
               return;
             }
 
-            element.innerHTML = `
-              <ul class="bus-arrival-list">
+            predictionsTable += `
+              <tbody>
                 ${predictions.map((item) =>
-              `<li style="color: ${item.routeTextColor}; background: ${palette[item.routeColor]};">
-                    <strong>${item.title}</strong> — ${item.minutes} min - ${item.agencyName}
-                  </li>`
-            ).join('')}
-              </ul>
+                  `<tr style="color: ${palette[item.agency].fg}; background: ${palette[item.agency].bg};">
+                      <td>${item.minutes} minutes</td>
+                      <td>${item.title}</td>
+                      <td>${item.agencyName}</td>
+                  </tr>`
+                ).join('')}
+              <tbody>
+              </table>
             `;
+            element.innerHTML = predictionsTable;
           } catch (error) {
             console.error('Fetch error:', error);
-            element.innerHTML = '<p class="bus-arrivals-message">Unable to load bus arrival information.</p>';
+            predictionsTable += `<td colspan='3' >Unable to load bus arrival information.</td></table>`;
+            element.innerHTML = predictionsTable;
           }
         };
 
