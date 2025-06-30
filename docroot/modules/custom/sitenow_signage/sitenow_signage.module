@@ -59,13 +59,13 @@ function sitenow_signage_preprocess_field(&$variables) {
     // Get the bus stop name from the allowed values and set label.
     $stops = sitenow_signage_bus_stops_allowed_values();
     $stop_name = $stops[$stop_id] ?? '';
-    $variables['#attached']['drupalSettings']['sitenowSignage']['label'] = 'Next Arrivals for Stop ' . $stop_name;
 
     // Set the bus stop id as a data attribute on the container for JS.
     $variables['items'][0]['content'] = [
       '#type' => 'container',
       '#attributes' => [
         'class' => ['bus-arrivals'],
+        'data-stop-name' => $stop_name,
         'data-stop-id' => $stop_id,
       ],
       'loading_message' => [

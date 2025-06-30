@@ -3,6 +3,7 @@
     attach(context) {
       context.querySelectorAll('.bus-arrivals').forEach((element) => {
         const stopId = element.dataset.stopId;
+        const stopName = element.dataset.stopName;
         if (!stopId) {
           return;
         }
@@ -26,7 +27,7 @@
 
         const updateArrivals = async () => {
           let predictionsTable = `<table>
-            <caption>${drupalSettings.sitenowSignage.label ?? 'Bus arrival information'}</caption>
+            <caption>Next Arrivals for Stop ${stopName ?? 'Bus arrival information'}</caption>
             <thead>
               <tr>
                 <th>Time</th>
