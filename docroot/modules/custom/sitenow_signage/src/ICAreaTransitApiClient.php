@@ -31,16 +31,4 @@ class ICAreaTransitApiClient extends ApiClientBase {
     return $response->stops;
   }
 
-  /**
-   * Get bus predictions based on stop id.
-   */
-  public function getPredictions(int $stop_id): array {
-    $response = $this->get('prediction', [
-      'query' => [
-        'stopid' => $stop_id,
-      ],
-    ]);
-    return $response->predictions;
-  }
-
 }
