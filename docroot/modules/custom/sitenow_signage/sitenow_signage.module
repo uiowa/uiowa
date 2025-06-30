@@ -57,8 +57,8 @@ function sitenow_signage_preprocess_field(&$variables) {
     $stop_id = (int) $element[0]['#markup'];
     // Get the bus stop name from the allowed values and set label.
     $stops = sitenow_signage_bus_stops_allowed_values();
-    $stop_name = $stops[$stop_id] ?? 'Mystery Stop... Muhahaha!';
-    $variables['label'] = 'Bus arrivals for ' . $stop_name;
+    $stop_name = $stops[$stop_id] ?? '';
+    $variables['label'] = 'Next Arrivals for Stop ' . $stop_name;
     // Set the bus stop id as a data attribute on the container for JS.
     $variables['items'][0]['content'] = [
       '#type' => 'container',
