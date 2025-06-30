@@ -1042,9 +1042,9 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          handler: 'default:node'
+          sub_handler: 'default:node'
           widget: select
-          handler_settings:
+          sub_handler_settings:
             target_bundles:
               building: building
             sort:
@@ -1099,8 +1099,16 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          handler: 'default:node'
+          sub_handler: 'default:node'
           widget: select
+          sub_handler_settings:
+            target_bundles: null
+            sort:
+              field: _none
+              direction: ASC
+            auto_create: false
+            auto_create_bundle: ''
+          handler: 'default:node'
           handler_settings:
             target_bundles:
               person: person
