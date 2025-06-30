@@ -40,7 +40,7 @@
           try {
             const response = await fetch(url);
             const data = await response.json();
-            const predictions = data.predictions ?? [];
+            const predictions = (data.predictions ?? []).slice(0, 10);
 
             if (predictions.length === 0) {
               predictionsTable += `<td colspan='3' >No upcoming arrivals.</td></table>`;
