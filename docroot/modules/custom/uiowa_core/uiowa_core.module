@@ -1847,3 +1847,28 @@ function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_
     }
   }
 }
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function uiowa_core_config_schema_info_alter(&$schemas) {
+  // Extend the schema for 'system.site'.
+  $schemas['system.site']['mapping']['has_parent'] = [
+    'type' => 'boolean',
+    'label' => t('Has parent organization'),
+  ];
+  $schemas['system.site']['mapping']['parent'] = [
+    'type' => 'mapping',
+    'label' => t('Parent organization'),
+    'mapping' => [
+      'name' => [
+        'type' => 'text',
+        'label' => t('Parent organization name'),
+      ],
+      'url' => [
+        'type' => 'uri',
+        'label' => t('Parent organization URL'),
+      ],
+    ],
+  ];
+}
