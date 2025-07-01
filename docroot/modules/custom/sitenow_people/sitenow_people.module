@@ -19,6 +19,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_people\Entity\Person;
 use Drupal\sitenow_people\PersonTypeInterface;
@@ -188,6 +189,24 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         $form['#suffix'] = '</div>';
         // Add custom process callback to alter exposed filters.
         $form['settings']['exposed']['#process'][] = '_sitenow_people_process_people_block_filters';
+      }
+
+      // Form modifications per block plugin and bundle.
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof ConfigureBlockFormBase) {
+        /** @var \Drupal\layout_builder\SectionComponent $component */
+        $component = $form_object->getCurrentComponent();
+        $block = $component->getPlugin();
+
+        // Modify the form per block plugin and bundle.
+        switch ($block->getPluginId()) {
+          case 'views_block:people_list_block-list_card':
+            // Update labels for exposed filters for block configuration form.
+            if (isset($form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title']) && $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] !== '') {
+              $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] = sitenow_people_get_research_title();
+            }
+            break;
+        }
       }
       break;
   }
@@ -810,6 +829,11 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
 
     case 'people_list_block':
       $form['#attached']['library'][] = 'uids_base/view-bef';
+      // Change the research areas label.
+      if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
+        $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
+        $form["people_research_areas_collapsible"]["#title"] = sitenow_people_get_research_title();
+      }
       break;
   }
 }
