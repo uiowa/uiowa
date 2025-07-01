@@ -7,21 +7,6 @@
           return;
         }
 
-        const palette = {
-          'coralville' : {
-            'bg' : 'var(--coralville)',
-            'fg' : 'var(--text-dark)'
-          },
-          'iowacity' : {
-            'bg' : 'var(--iowa-city)',
-            'fg' : 'var(--text-dark)'
-          },
-          'uiowa' : {
-            'bg' : 'var(--uiowa)',
-            'fg' : 'var(--text-dark)'
-          },
-        }
-
         const url = `https://api.icareatransit.org/prediction?stopid=${stopId}`;
         const stopName = element.dataset.stopName?.trim();
         const label = stopName ? `Next Arrivals for Stop ${stopName}` : 'Bus arrival information';
@@ -29,7 +14,7 @@
         const updateArrivals = async () => {
           let predictionsTable = `<table>
             <caption>${label}</caption>
-            <thead>
+            <thead class='headers'>
               <tr>
                 <th>Time</th>
                 <th>Route</th>
@@ -51,7 +36,7 @@
             predictionsTable += `
               <tbody>
                 ${predictions.map((item) =>
-                  `<tr style="color: ${palette[item.agency].fg}; background: ${palette[item.agency].bg};">
+                  `<tr class='prediction ${item.agency}'>
                       <td>${item.minutes} minutes</td>
                       <td>${item.title}</td>
                       <td>${item.agencyName}</td>

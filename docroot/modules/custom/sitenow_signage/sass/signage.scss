@@ -102,6 +102,13 @@
 
 // Bus arrivals widget.
 .bus-arrivals {
+  --header-border-grey: #616161;
+  --coralville: #dbeefa;
+  --iowa-city: #f9e2de;
+  --uiowa: #ffffff;
+  --text-dark: black;
+  --text-light: white;
+
 
   // Table reset.
   table,
@@ -112,27 +119,42 @@
   tr,
   th,
   td{
-    background-color: transparent;
+    //background-color: inherit;
   }
-
-  padding: variables.$mobile-width-gutter;
-
+  //
+  //padding: variables.$mobile-width-gutter;
+  //
   caption {
     font-size: variables.$h3-font-size;
-    font-weight: variables.$font-weight-heavy;
-    color: variables.$primary;
-    text-align: left;
+    font-weight: 500;
+    //font-weight: variables.$font-weight-heavy;
+  //  color: variables.$primary;
+  //  text-align: left;
   }
-
-  thead th {
+  //
+  thead.headers th {
     font-size: variables.$h4-font-size;
+    font-weight: 500;
+    background-color: variables.$brand-cool-gray;
     color: variables.$white;
+    border-bottom: 1px solid variables.$grey;
   }
-
+  //
   tbody tr {
-    border-bottom: 1px solid variables.$secondary !important;
-  }
+    border-bottom: 1px solid;
+    color: var(--text-dark);
 
+    &.prediction {
+      &.coralville {
+        background-color: var(--coralville);
+      }
+
+      &.uiowa {
+        background-color: var(--uiowa);
+      }
+    }
+  }
+  //
   tbody td {
     font-size: variables.$h5-font-size;
   }
