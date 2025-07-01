@@ -807,6 +807,10 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
       }
       break;
+
+    case 'people_list_block':
+      $form['#attached']['library'][] = 'uids_base/view-bef';
+      break;
   }
 }
 
