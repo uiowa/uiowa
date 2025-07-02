@@ -30,7 +30,7 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
   if ($form_id == 'og_membership_default_add_form') {
     if (isset($form['uid']['widget'][0]['target_id'])) {
       // Add a custom element processor.
-      $form['uid']['widget'][0]['target_id']['#process'][] = 'sitessignage_core_process_element';
+      $form['#validate'][] = 'sitessignage_core_og_user_validate';
     }
   }
 }
@@ -40,7 +40,7 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
  *
  * @throws \Drupal\Core\Entity\EntityStorageException
  */
-function sitessignage_core_og_user_validate(array &$element, FormStateInterface $form_state, array &$complete_form): void {
+function sitessignage_core_og_user_validate(array &$form, FormStateInterface $form_state): void {
   // The target_id is set if the user already exists. Otherwise, it is null.
   if (is_null($form_state->getValue('uid')[0]['target_id'])) {
     $new_username = $form_state->getUserInput()['uid'][0]['target_id'];
@@ -48,16 +48,18 @@ function sitessignage_core_og_user_validate(array &$element, FormStateInterface 
     if (!is_null($new_username)) {
       $pass = \Drupal::service('password_generator')->generate();
       // Create a new user account.
-      $new_user = User::create();
-      $new_user->setUsername($new_username);
-      $new_user->setPassword($pass);
-      $new_user->setEmail(uniqid('email_') . '@uiowa.edu');
-      $new_user->addRole('sign_manager');
-      $new_user->enforceIsNew();
-      $new_user->activate();
-      $new_user->save();
+      $new_account = User::create([
+        'name' => $new_username,
+        'pass' => $pass,
+        'mail' => uniqid('email_') . '@uiowa.edu',
+      ]);
+      $new_account->addRole('sign_manager');
+      $new_account->enforceIsNew();
+      $new_account->activate();
+      $new_account->save();
+
       // Update form_state to set target_id to new account uid.
-      $form_state->setValue(['uid', 0, 'target_id'], $new_user->id());
+      $form_state->setValue(['uid', 0, 'target_id'], $new_account->id());
 
       // Add a message letting the user know that a new account was created.
       \Drupal::service('messenger')->addMessage(t('New user @username created.', [
@@ -75,14 +77,4 @@ function sitessignage_core_og_user_validate(array &$element, FormStateInterface 
       }
     }
   }
-}
-
-/**
- * Custom element processor for OG user autocomplete field.
- */
-function sitessignage_core_process_element(array $element, FormStateInterface $form_state) {
-  // Attach the custom validation.
-  $element['#element_validate'][] = 'sitessignage_core_og_user_validate';
-
-  return $element;
 }
