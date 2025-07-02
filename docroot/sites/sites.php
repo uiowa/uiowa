@@ -7810,3 +7810,9 @@ $sites['labheistad.uiowa.ddev.site'] = 'heistad.lab.uiowa.edu';
 $sites['labheistad.dev.drupal.uiowa.edu'] = 'heistad.lab.uiowa.edu';
 $sites['labheistad.stage.drupal.uiowa.edu'] = 'heistad.lab.uiowa.edu';
 $sites['labheistad.prod.drupal.uiowa.edu'] = 'heistad.lab.uiowa.edu';
+
+// Directory aliases for npl.lab.uiowa.edu.
+$sites['labnpl.uiowa.ddev.site'] = 'npl.lab.uiowa.edu';
+$sites['labnpl.dev.drupal.uiowa.edu'] = 'npl.lab.uiowa.edu';
+$sites['labnpl.stage.drupal.uiowa.edu'] = 'npl.lab.uiowa.edu';
+$sites['labnpl.prod.drupal.uiowa.edu'] = 'npl.lab.uiowa.edu';
