@@ -445,86 +445,10 @@ class CSAReportForm extends FormBase {
       '#title' => $this->t('Zip Code'),
     ];
 
-    // Identifications Section.
-    $contact['identifications'] = [
-      '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Identifications') . '</span>',
-      '#collapsible' => FALSE,
-    ];
 
-    $num_ids = $form_state->get('contact_' . $index . '_num_ids');
-    if ($num_ids === NULL) {
-      $num_ids = 0;
-      $form_state->set('contact_' . $index . '_num_ids', $num_ids);
-    }
-
-    $contact['identifications']['ids_container'] = [
-      '#type' => 'container',
-      '#attributes' => ['id' => 'ids-wrapper-' . $index],
-      '#tree' => TRUE,
-    ];
-
-    for ($i = 0; $i < $num_ids; $i++) {
-      $this->buildIdentificationForm($contact, $form_state, $index, $i);
-    }
-
-    $contact['identifications']['add_id'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Add Identification'),
-      '#name' => 'add_id_' . $index,
-    ] + $this->buildAjaxButton('::identificationsCallback', 'ids-wrapper-' . $index, ['::addIdentificationSubmit']);
   }
 
-  /**
-   * Build identification form fields.
-   */
-  protected function buildIdentificationForm(
-    array &$contact,
-    FormStateInterface $form_state,
-    $contact_index,
-    $id_index,
-  ) {
-    $contact['identifications']['ids_container'][$id_index] = [
-      '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('ID @num', ['@num' => $id_index + 1]) . '</span>',
-      '#collapsible' => FALSE,
-    ];
 
-    $id = &$contact['identifications']['ids_container'][$id_index];
-
-    $id['remove'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Remove ID'),
-      '#name' => 'remove_id_' . $contact_index . '_' . $id_index,
-    ] + $this->buildAjaxButton('::identificationsCallback', 'ids-wrapper-' . $contact_index, ['::removeIdentificationSubmit']);
-
-    $id['type'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Type'),
-      '#options' => $this->cleryController->getIdentificationTypeOptions(),
-      '#empty_option' => $this->t('Select type...'),
-      '#required' => TRUE,
-    ];
-
-    $id['number'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Number'),
-      '#required' => TRUE,
-    ];
-
-    $id['state_id'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Issuing State'),
-      '#options' => $this->cleryController->getStateOptions(),
-      '#empty_option' => $this->t('Select state...'),
-    ];
-
-    $id['other'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Other'),
-      '#placeholder' => $this->t('Description for "Other" type'),
-    ];
-  }
 
   /**
    * AJAX callback for updating geography options.
@@ -690,53 +614,7 @@ class CSAReportForm extends FormBase {
     return $form['contacts']['contacts_container'];
   }
 
-  /**
-   * Submit handler for adding an identification.
-   */
-  public function addIdentificationSubmit(
-    array &$form,
-    FormStateInterface $form_state,
-  ) {
-    $trigger = $form_state->getTriggeringElement();
-    $contact_index = (int) str_replace('add_id_', '', $trigger['#name']);
 
-    $num_ids = $form_state->get('contact_' . $contact_index . '_num_ids');
-    $form_state->set('contact_' . $contact_index . '_num_ids', $num_ids + 1);
-    $form_state->setRebuild();
-  }
-
-  /**
-   * Submit handler for removing an identification.
-   */
-  public function removeIdentificationSubmit(
-    array &$form,
-    FormStateInterface $form_state,
-  ) {
-    $trigger = $form_state->getTriggeringElement();
-    $parts = explode('_', $trigger['#name']);
-    $contact_index = (int) $parts[2];
-
-    $num_ids = $form_state->get('contact_' . $contact_index . '_num_ids');
-    if ($num_ids > 0) {
-      $form_state->set('contact_' . $contact_index . '_num_ids', $num_ids - 1);
-    }
-
-    $form_state->setRebuild();
-  }
-
-  /**
-   * AJAX callback for identifications.
-   */
-  public function identificationsCallback(
-    array &$form,
-    FormStateInterface $form_state,
-  ) {
-    $trigger = $form_state->getTriggeringElement();
-    $parts = explode('_', $trigger['#name']);
-    $contact_index = (int) $parts[2];
-
-    return $form['contacts']['contacts_container'][$contact_index]['identifications']['ids_container'];
-  }
 
   /**
    * Enhanced form validation.
