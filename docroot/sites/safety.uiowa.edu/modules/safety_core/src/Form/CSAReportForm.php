@@ -316,7 +316,7 @@ class CSAReportForm extends FormBase {
   ) {
     $form['contacts']['contacts_container'][$index] = [
       '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Contact @num', ['@num' => $index + 1]) . '</span>',
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Individual @num', ['@num' => $index + 1]) . '</span>',
       '#collapsible' => FALSE,
     ];
 
