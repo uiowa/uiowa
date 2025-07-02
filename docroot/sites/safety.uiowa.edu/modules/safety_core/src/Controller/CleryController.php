@@ -7,8 +7,6 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use GuzzleHttp\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller for Clery Edge API operations.
@@ -326,100 +324,10 @@ class CleryController extends ControllerBase {
   }
 
   /**
-   * Fetches states from the API.
-   */
-  public function getStates() {
-    return $this->fetchFromApi("/incident/states");
-  }
-
-  /**
-   * Fetches contact roles from the API.
-   */
-  public function getContactRoles() {
-    return $this->fetchFromApi("/incident/contact/roles");
-  }
-
-  /**
    * Submits a new incident report to the API.
    */
   public function submitIncidentReport(array $incident_data) {
     return $this->apiPost('/incident', $incident_data);
-  }
-
-  /**
-   * Generic method to fetch data from the API with caching.
-   */
-  protected function fetchFromApi($endpoint, $cache_duration = 3600) {
-    // Create cache ID from endpoint.
-    $cid = "safety_core:api_data:" . md5($endpoint);
-
-    // Check cache first.
-    if ($cache = $this->cacheBackend->get($cid)) {
-      return $cache->data;
-    }
-
-    $data = $this->makeApiRequest($endpoint);
-
-    if (!is_array($data)) {
-      throw new \Exception("Expected array response for endpoint: " . $endpoint);
-    }
-
-    // Cache the data.
-    $this->cacheBackend->set($cid, $data, time() + $cache_duration);
-
-    return $data;
-  }
-
-  /**
-   * Generic AJAX response wrapper.
-   */
-  protected function ajaxResponse($callback, ...$args) {
-    try {
-      $result = call_user_func_array([$this, $callback], $args);
-      return new JsonResponse($result);
-    }
-    catch (\Exception $e) {
-      return new JsonResponse(["error" => $e->getMessage()], 500);
-    }
-  }
-
-  /**
-   * AJAX endpoint to get all prerequisite data for the form.
-   */
-  public function ajaxGetPrerequisites() {
-    try {
-      $data = [
-        "states" => $this->getStates(),
-        "contactRoles" => $this->getContactRoles(),
-      ];
-      return new JsonResponse($data);
-    }
-    catch (\Exception $e) {
-      return new JsonResponse(["error" => $e->getMessage()], 500);
-    }
-  }
-
-  /**
-   * AJAX endpoint to submit incident report.
-   */
-  public function ajaxSubmitIncident(Request $request) {
-    try {
-      $incident_data = json_decode($request->getContent(), TRUE);
-
-      if (!$incident_data) {
-        return new JsonResponse(["error" => "Invalid JSON data"], 400);
-      }
-
-      $result = $this->submitIncidentReport($incident_data);
-      return new JsonResponse([
-        "success" => TRUE,
-        "message" => "Incident reported successfully",
-        "data" => $result,
-      ]);
-    }
-    catch (\Exception $e) {
-      return new JsonResponse(["error" => $e->getMessage()], 500);
-    }
   }
 
   /**
@@ -450,36 +358,6 @@ class CleryController extends ControllerBase {
     }
 
     return $time ? $time->format('H:i') : NULL;
-  }
-
-  /**
-   * Builds form options from API data.
-   */
-  public function buildFormOptions($api_method, $id_key, $label_key, array $additional_params = []): array {
-    try {
-      $data = call_user_func_array([$this, $api_method], $additional_params);
-      $options = [];
-
-      if (is_array($data)) {
-        foreach ($data as $item) {
-          if (isset($item[$id_key], $item[$label_key])) {
-            $options[$item[$id_key]] = $item[$label_key];
-          }
-        }
-      }
-
-      return $options;
-    }
-    catch (\Exception $e) {
-      return [];
-    }
-  }
-
-  /**
-   * Get contact role options formatted for form select.
-   */
-  public function getContactRoleOptions(): array {
-    return $this->buildFormOptions('getContactRoles', 'contactRoleId', 'roleName');
   }
 
   /**

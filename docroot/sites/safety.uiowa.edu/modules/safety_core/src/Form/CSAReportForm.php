@@ -355,13 +355,6 @@ class CSAReportForm extends FormBase {
       '#title' => $this->t('Date of Birth'),
     ];
 
-    $contact['contact_roles'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Contact Role(s)'),
-      '#options' => $this->cleryController->getContactRoleOptions(),
-      '#multiple' => TRUE,
-    ];
-
   }
 
   /**
