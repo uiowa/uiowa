@@ -2,9 +2,6 @@
 
 namespace Drupal\safety_core\Form;
 
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
-use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -24,11 +21,6 @@ class CSAReportForm extends FormBase {
    * @var \Drupal\safety_core\Controller\CleryController
    */
   protected $cleryController;
-
-  /**
-   * Default campus ID.
-   */
-  const DEFAULT_CAMPUS_ID = 3;
 
   /**
    * Constructs a new CSAReportForm.
@@ -71,45 +63,6 @@ class CSAReportForm extends FormBase {
     $form['incident_details'] = [
       '#type' => 'fieldset',
       '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Incident Details') . '</span>',
-    ];
-
-    $form['incident_details']['campus_filter'] = [
-      '#type' => 'hidden',
-      '#value' => self::DEFAULT_CAMPUS_ID,
-    ];
-
-    $form['incident_details']['geography_type_filter'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Location Type'),
-      '#required' => TRUE,
-      '#options' => $this->cleryController->getGeographyTypeOptions(),
-      '#empty_option' => $this->t('Select a type'),
-    ] + $this->buildAjaxSelect('::updateGeographyCallback', 'geography-wrapper');
-
-    $form['incident_details']['geography_wrapper'] = [
-      '#type' => 'container',
-      '#attributes' => ['id' => 'geography-wrapper'],
-    ];
-
-    $form['incident_details']['geography_wrapper']['geography_id'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Location'),
-      '#required' => TRUE,
-      '#options' => [],
-      '#empty_option' => $this->t('Select location type first'),
-      '#disabled' => TRUE,
-      '#description' => $this->t(
-        'Select a location type above to load available locations.'
-      ),
-      '#element_validate' => [[$this, 'validateGeographyId']],
-      '#states' => [
-        'required' => [
-          ':input[name="geography_type_filter"]' => ['!value' => ''],
-        ],
-        'enabled' => [
-          ':input[name="geography_type_filter"]' => ['!value' => ''],
-        ],
-      ],
     ];
 
     $form['incident_details']['date_offense_reported'] = [
@@ -268,21 +221,41 @@ class CSAReportForm extends FormBase {
     $form['reporter']['reporter_first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('First Name'),
+      '#states' => [
+        'required' => [
+          ':input[name="is_reporter_csa"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['reporter']['reporter_last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Last Name'),
+      '#states' => [
+        'required' => [
+          ':input[name="is_reporter_csa"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['reporter']['reporter_email'] = [
       '#type' => 'email',
       '#title' => $this->t('Email'),
+      '#states' => [
+        'required' => [
+          ':input[name="is_reporter_csa"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['reporter']['reporter_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Phone'),
+      '#states' => [
+        'required' => [
+          ':input[name="is_reporter_csa"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $form['reporter']['is_reporter_csa'] = [
@@ -382,8 +355,6 @@ class CSAReportForm extends FormBase {
       '#title' => $this->t('Date of Birth'),
     ];
 
-
-
     $contact['contact_roles'] = [
       '#type' => 'select',
       '#title' => $this->t('Contact Role(s)'),
@@ -391,131 +362,6 @@ class CSAReportForm extends FormBase {
       '#multiple' => TRUE,
     ];
 
-
-
-
-  }
-
-
-
-  /**
-   * AJAX callback for updating geography options.
-   */
-  public function updateGeographyCallback(
-    array &$form,
-    FormStateInterface $form_state,
-  ) {
-    $campus_id = 3;
-    $geo_type_id = $form_state->getValue('geography_type_filter');
-    $current_geography_id = $form_state->getValue('geography_id');
-
-    $response = new AjaxResponse();
-
-    if (empty($geo_type_id)) {
-      $html = $this->buildGeographySelectHtml(
-        [],
-        'Select location type first',
-        TRUE
-      );
-      $html .=
-        '<div class="description">Select a location type above to load available locations.</div>';
-    }
-    else {
-      try {
-        $geography_options = $this->cleryController->getGeographyOptions(
-          $campus_id,
-          $geo_type_id
-        );
-
-        if (!empty($geography_options)) {
-          $form_state->set('geography_options', $geography_options);
-
-          $html = $this->buildGeographySelectHtml(
-            $geography_options,
-            'Select a location',
-            FALSE,
-            $current_geography_id
-          );
-
-          if (
-            !empty($current_geography_id) &&
-            isset($geography_options[$current_geography_id])
-          ) {
-            $response->addCommand(
-              new InvokeCommand('#edit-geography-id', 'val', [
-                $current_geography_id,
-              ])
-            );
-            $form_state->setValue('geography_id', $current_geography_id);
-          }
-        }
-        else {
-          $html = $this->buildGeographySelectHtml(
-            [],
-            'No locations available',
-            TRUE
-          );
-          $html .=
-            '<div class="description">No locations found for this type.</div>';
-        }
-      }
-      catch (\Exception $e) {
-        $html = $this->buildGeographySelectHtml(
-          [],
-          'Error loading locations',
-          TRUE
-        );
-        $html .=
-          '<div class="description">An error occurred loading locations.</div>';
-      }
-    }
-
-    $response->addCommand(new HtmlCommand('#geography-wrapper', $html));
-    return $response;
-  }
-
-  /**
-   * Helper method to build geography select HTML.
-   */
-  private function buildGeographySelectHtml(
-    array $options,
-    $empty_text,
-    $disabled = FALSE,
-    $selected_value = NULL,
-  ) {
-    $attributes = [
-      'id' => 'edit-geography-id',
-      'name' => 'geography_id',
-      'class' => 'form-select',
-      'required' => 'required',
-    ];
-
-    if ($disabled) {
-      $attributes['disabled'] = 'disabled';
-    }
-
-    $html = '<select';
-    foreach ($attributes as $attr => $value) {
-      $html .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
-    }
-    $html .= '>';
-
-    $html .= '<option value="">' . htmlspecialchars($empty_text) . '</option>';
-
-    foreach ($options as $key => $label) {
-      $selected =
-        !empty($selected_value) && $selected_value == $key
-          ? ' selected="selected"'
-          : '';
-      $html .=
-        '<option value="' . htmlspecialchars($key) . '"' . $selected . '>';
-      $html .= htmlspecialchars($label);
-      $html .= '</option>';
-    }
-
-    $html .= '</select>';
-
-    return $html;
   }
 
   /**
@@ -562,8 +408,6 @@ class CSAReportForm extends FormBase {
     return $form['contacts']['contacts_container'];
   }
 
-
-
   /**
    * Enhanced form validation.
    */
@@ -583,6 +427,22 @@ class CSAReportForm extends FormBase {
       ($triggering_element['#value'] ?? '') === 'Submit Report'
     ) {
       $form_values = $form_state->getValues();
+
+      // Validate CSA reporter fields if CSA checkbox is checked.
+      if (!empty($form_values['is_reporter_csa'])) {
+        $required_csa_fields = [
+          'reporter_first_name' => 'First Name',
+          'reporter_last_name' => 'Last Name',
+          'reporter_email' => 'Email',
+          'reporter_phone' => 'Phone',
+        ];
+
+        foreach ($required_csa_fields as $field_name => $field_label) {
+          if (empty($form_values[$field_name])) {
+            $form_state->setErrorByName($field_name, $this->t('@field is required when the reporter is a Campus Security Authority (CSA).', ['@field' => $field_label]));
+          }
+        }
+      }
 
       // Use controller's validation method.
       $validation_errors = $this->cleryController->validateIncidentData($form_values);
@@ -605,15 +465,7 @@ class CSAReportForm extends FormBase {
       $user_input = $form_state->getUserInput();
       $form_values = $form_state->getValues();
 
-      if (
-        !empty($user_input['geography_id']) &&
-        empty($form_values['geography_id'])
-      ) {
-        $form_state->setValue('geography_id', $user_input['geography_id']);
-        $form_values = $form_state->getValues();
-      }
-
-      $request_body = $this->cleryController->buildIncidentRequestData($form_values, self::DEFAULT_CAMPUS_ID);
+      $request_body = $this->cleryController->buildIncidentRequestData($form_values);
 
       // Add this for debugging.
       \Drupal::logger('csa_report')->notice('Request body: @body', [
@@ -688,35 +540,6 @@ class CSAReportForm extends FormBase {
         ],
       ],
     ];
-  }
-
-  /**
-   * Custom validation for geography ID field.
-   */
-  public function validateGeographyId(
-    $element,
-    FormStateInterface $form_state,
-    $form,
-  ) {
-    $value = $element['#value'];
-
-    $triggering_element = $form_state->getTriggeringElement();
-
-    // Skip validation during AJAX calls.
-    if ($triggering_element && isset($triggering_element['#ajax'])) {
-      return;
-    }
-
-    // Validate only on actual form submission.
-    if (
-      $triggering_element &&
-      isset($triggering_element['#value']) &&
-      $triggering_element['#value'] === 'Submit Report'
-    ) {
-      if (empty($value) || $value === '' || $value === '0') {
-        $form_state->setError($element, $this->t('Please select a location.'));
-      }
-    }
   }
 
 }

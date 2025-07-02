@@ -326,32 +326,6 @@ class CleryController extends ControllerBase {
   }
 
   /**
-   * Fetches campuses from the API.
-   */
-  public function getCampuses() {
-    return $this->fetchFromApi("/incident/geography/campus");
-  }
-
-  /**
-   * Fetches geography types from the API.
-   */
-  public function getGeographyTypes() {
-    return $this->fetchFromApi("/incident/geography/type");
-  }
-
-  /**
-   * Fetches geographies based on campus and type filters.
-   */
-  public function getGeographies($campus_id = NULL, $geography_type_id = NULL) {
-    $query_params = array_filter([
-      'cleryCampusId' => $campus_id,
-      'geographyTypeId' => $geography_type_id,
-    ]);
-
-    return $this->apiGet('/incident/geography', $query_params);
-  }
-
-  /**
    * Fetches states from the API.
    */
   public function getStates() {
@@ -364,8 +338,6 @@ class CleryController extends ControllerBase {
   public function getContactRoles() {
     return $this->fetchFromApi("/incident/contact/roles");
   }
-
-
 
   /**
    * Submits a new incident report to the API.
@@ -412,37 +384,11 @@ class CleryController extends ControllerBase {
   }
 
   /**
-   * AJAX endpoint to get campuses.
-   */
-  public function ajaxGetCampuses() {
-    return $this->ajaxResponse('getCampuses');
-  }
-
-  /**
-   * AJAX endpoint to get geography types.
-   */
-  public function ajaxGetGeographyTypes() {
-    return $this->ajaxResponse('getGeographyTypes');
-  }
-
-  /**
-   * AJAX endpoint to get geographies with filters.
-   */
-  public function ajaxGetGeographies(Request $request) {
-    $campus_id = $request->query->get("cleryCampusId");
-    $geography_type_id = $request->query->get("geographyTypeId");
-
-    return $this->ajaxResponse('getGeographies', $campus_id, $geography_type_id);
-  }
-
-  /**
    * AJAX endpoint to get all prerequisite data for the form.
    */
   public function ajaxGetPrerequisites() {
     try {
       $data = [
-        "campuses" => $this->getCampuses(),
-        "geographyTypes" => $this->getGeographyTypes(),
         "states" => $this->getStates(),
         "contactRoles" => $this->getContactRoles(),
       ];
@@ -530,56 +476,11 @@ class CleryController extends ControllerBase {
   }
 
   /**
-   * Get campus options formatted for form select.
-   */
-  public function getCampusOptions(): array {
-    return $this->buildFormOptions('getCampuses', 'campusId', 'name');
-  }
-
-  /**
-   * Get geography type options formatted for form select.
-   */
-  public function getGeographyTypeOptions(): array {
-    return $this->buildFormOptions('getGeographyTypes', 'geographyTypeId', 'geographyTypeName');
-  }
-
-  /**
-   * Get geography options based on campus and type formatted for form select.
-   */
-  public function getGeographyOptions($campus_id, $geo_type_id): array {
-    try {
-      $geographies = $this->getGeographies($campus_id, $geo_type_id);
-      $options = [];
-
-      if (is_array($geographies)) {
-        foreach ($geographies as $geography) {
-          if (
-            isset($geography['geographyId']) &&
-            isset($geography['geographyName'])
-          ) {
-            $key = (string) $geography['geographyId'];
-            $options[$key] = $geography['geographyName'];
-          }
-        }
-      }
-
-      return $options;
-    }
-    catch (\Exception $e) {
-      return [];
-    }
-  }
-
-
-
-  /**
    * Get contact role options formatted for form select.
    */
   public function getContactRoleOptions(): array {
     return $this->buildFormOptions('getContactRoles', 'contactRoleId', 'roleName');
   }
-
-
 
   /**
    * Validates incident form data.
@@ -594,12 +495,6 @@ class CleryController extends ControllerBase {
 
     if (empty($form_values['time_offense_reported'])) {
       $errors[] = 'Time offense reported is required.';
-    }
-
-    // Validate geography selection.
-    $geography_id = $form_values['geography_id'] ?? '';
-    if (empty($geography_id) || $geography_id === '' || $geography_id === '0') {
-      $errors[] = 'Please select a geography.';
     }
 
     // Validate contacts if present.
@@ -622,40 +517,7 @@ class CleryController extends ControllerBase {
   /**
    * Builds the request body for API submission from form values.
    */
-  public function buildIncidentRequestData(array $form_values, $default_campus_id = 3) {
-    // Validate and convert geography ID.
-    $geography_id = 0;
-    if (
-      isset($form_values['geography_id']) &&
-      $form_values['geography_id'] !== '' &&
-      $form_values['geography_id'] !== '0'
-    ) {
-      $geography_id = (int) $form_values['geography_id'];
-    }
-
-    // Fallback: Try to set geography ID using first available option.
-    if ($geography_id <= 0) {
-      try {
-        $geo_type_id = $form_values['geography_type_filter'] ?? NULL;
-        if ($geo_type_id) {
-          $available_options = $this->getGeographyOptions($default_campus_id, $geo_type_id);
-          if (!empty($available_options)) {
-            $first_option = array_keys($available_options)[0];
-            $geography_id = (int) $first_option;
-          }
-        }
-      }
-      catch (\Exception $e) {
-        // Throw detailed one below if ID still invalid.
-      }
-
-      if ($geography_id <= 0) {
-        $error_message = 'Please select a valid geography from the dropdown. ';
-        $error_message .=
-          'If the geography dropdown is empty, try selecting a different geography type first.';
-        throw new \Exception($error_message);
-      }
-    }
+  public function buildIncidentRequestData(array $form_values) {
 
     $body = [];
 
@@ -672,9 +534,6 @@ class CleryController extends ControllerBase {
       'specificLocation' => $form_values['specific_location'] ?? NULL,
       'description' => $form_values['description'] ?? NULL,
     ];
-
-    // Geography ID.
-    $body['geographyId'] = $geography_id;
 
     // Reporter.
     if (
@@ -717,8 +576,6 @@ class CleryController extends ControllerBase {
               array_filter($contact_data['contact_roles'] ?? [])
             ),
           ];
-
-
 
           $body['incidentContacts'][] = $contact;
         }
