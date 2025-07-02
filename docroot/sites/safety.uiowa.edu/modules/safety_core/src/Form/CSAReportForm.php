@@ -462,12 +462,11 @@ class CSAReportForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     try {
-      $user_input = $form_state->getUserInput();
       $form_values = $form_state->getValues();
 
       $request_body = $this->cleryController->buildIncidentRequestData($form_values);
 
-      // Add this for debugging.
+      // Log json for testing.
       \Drupal::logger('csa_report')->notice('Request body: @body', [
         '@body' => json_encode($request_body, JSON_PRETTY_PRINT),
       ]);
@@ -516,29 +515,6 @@ class CSAReportForm extends FormBase {
       ],
       '#submit' => $submit_handlers,
       '#limit_validation_errors' => [],
-    ];
-  }
-
-  /**
-   * Generic helper to create AJAX select configuration.
-   *
-   * @param string $callback
-   *   The callback method name.
-   * @param string $wrapper
-   *   The wrapper ID for AJAX updates.
-   *
-   * @return array
-   *   AJAX configuration array.
-   */
-  protected function buildAjaxSelect($callback, $wrapper) {
-    return [
-      '#ajax' => [
-        'callback' => $callback,
-        'wrapper' => $wrapper,
-        'progress' => [
-          'type' => 'throbber',
-        ],
-      ],
     ];
   }
 
