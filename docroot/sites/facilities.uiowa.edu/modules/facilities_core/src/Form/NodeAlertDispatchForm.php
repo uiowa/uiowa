@@ -138,6 +138,15 @@ class NodeAlertDispatchForm extends FormBase {
       return $form;
     }
 
+    // Check if the node is published.
+    if (!$this->node->isPublished()) {
+      $form['not_published'] = [
+        '#markup' => $this->t('This alert must be published before it can be scheduled for an e-mail notification.'),
+      ];
+
+      return $form;
+    }
+
     $form['title'] = [
       '#markup' => $this->t('<h3>Schedule Email Communication</h3>'),
     ];
