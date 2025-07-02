@@ -365,19 +365,7 @@ class CleryController extends ControllerBase {
     return $this->fetchFromApi("/incident/contact/roles");
   }
 
-  /**
-   * Fetches contact relationships from the API.
-   */
-  public function getContactRelationships() {
-    return $this->fetchFromApi("/incident/contact/relationships");
-  }
 
-  /**
-   * Fetches identification types from the API.
-   */
-  public function getIdentificationTypes() {
-    return $this->fetchFromApi("/incident/contact/identification-types");
-  }
 
   /**
    * Submits a new incident report to the API.
@@ -457,8 +445,6 @@ class CleryController extends ControllerBase {
         "geographyTypes" => $this->getGeographyTypes(),
         "states" => $this->getStates(),
         "contactRoles" => $this->getContactRoles(),
-        "relationships" => $this->getContactRelationships(),
-        "identificationTypes" => $this->getIdentificationTypes(),
       ];
       return new JsonResponse($data);
     }
@@ -584,12 +570,7 @@ class CleryController extends ControllerBase {
     }
   }
 
-  /**
-   * Get relationship options formatted for form select.
-   */
-  public function getRelationshipOptions(): array {
-    return $this->buildFormOptions('getContactRelationships', 'relationshipId', 'relationshipName');
-  }
+
 
   /**
    * Get contact role options formatted for form select.
@@ -598,50 +579,7 @@ class CleryController extends ControllerBase {
     return $this->buildFormOptions('getContactRoles', 'contactRoleId', 'roleName');
   }
 
-  /**
-   * Get state options formatted for form select.
-   */
-  public function getStateOptions(): array {
-    return $this->buildFormOptions('getStates', 'stateId', 'stateName');
-  }
 
-  /**
-   * Get identification type options formatted for form select.
-   */
-  public function getIdentificationTypeOptions(): array {
-    return $this->buildFormOptions('getIdentificationTypes', 'identificationTypeId', 'identificationTypeName');
-  }
-
-  /**
-   * Get on-campus geography options formatted for form select.
-   */
-  public function getOnCampusGeographyOptions($default_campus_id = 3): array {
-    try {
-      $geography_types = $this->getGeographyTypes();
-      $options = [];
-
-      foreach ($geography_types as $type) {
-        if (isset($type['geographyTypeId'])) {
-          $geographies = $this->getGeographies(
-            $default_campus_id,
-            $type['geographyTypeId']
-          );
-
-          foreach ($geographies as $geography) {
-            if (isset($geography['geographyId'], $geography['geographyName'])) {
-              $options[$geography['geographyId']] = $geography['geographyName'];
-            }
-          }
-        }
-      }
-
-      ksort($options);
-      return $options;
-    }
-    catch (\Exception $e) {
-      return [];
-    }
-  }
 
   /**
    * Validates incident form data.
@@ -774,57 +712,13 @@ class CleryController extends ControllerBase {
             'email' => $contact_data['email'] ?? NULL,
             'phone' => $contact_data['phone'] ?? NULL,
             'dateOfBirth' => $contact_data['date_of_birth'] ?? NULL,
-            'relationshipId' => !empty($contact_data['relationship_id'])
-              ? (int) $contact_data['relationship_id']
-              : NULL,
             'contactRoles' => array_map(
               'intval',
               array_filter($contact_data['contact_roles'] ?? [])
             ),
-            'onCampusGeographyId' => !empty(
-            $contact_data['location']['on_campus_geography_id']
-            )
-              ? (int) $contact_data['location']['on_campus_geography_id']
-              : NULL,
-            'onCampusRoomNumber' =>
-            $contact_data['location']['on_campus_room_number'] ?? NULL,
-            'offCampusAddress' => NULL,
-            'identifications' => [],
           ];
 
-          if (
-            !empty($contact_data['off_campus']['street']) &&
-            !empty($contact_data['off_campus']['city'])
-          ) {
-            $contact['offCampusAddress'] = [
-              'street' => $contact_data['off_campus']['street'],
-              'city' => $contact_data['off_campus']['city'],
-              'stateId' => !empty($contact_data['off_campus']['state_id'])
-                ? (int) $contact_data['off_campus']['state_id']
-                : NULL,
-              'zipCode' => $contact_data['off_campus']['zip_code'] ?? NULL,
-            ];
-          }
 
-          if (
-            isset($contact_data['identifications']['ids_container']) &&
-            is_array($contact_data['identifications']['ids_container'])
-          ) {
-            foreach (
-              $contact_data['identifications']['ids_container'] as $id_data
-            ) {
-              if (!empty($id_data['type']) && !empty($id_data['number'])) {
-                $contact['identifications'][] = [
-                  'identificationTypeId' => (int) $id_data['type'],
-                  'number' => $id_data['number'],
-                  'stateId' => !empty($id_data['state_id'])
-                    ? (int) $id_data['state_id']
-                    : NULL,
-                  'other' => $id_data['other'] ?? NULL,
-                ];
-              }
-            }
-          }
 
           $body['incidentContacts'][] = $contact;
         }

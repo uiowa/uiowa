@@ -382,12 +382,7 @@ class CSAReportForm extends FormBase {
       '#title' => $this->t('Date of Birth'),
     ];
 
-    $contact['relationship_id'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Relationship to Incident'),
-      '#options' => $this->cleryController->getRelationshipOptions(),
-      '#empty_option' => $this->t('Select relationship...'),
-    ];
+
 
     $contact['contact_roles'] = [
       '#type' => 'select',
@@ -396,54 +391,7 @@ class CSAReportForm extends FormBase {
       '#multiple' => TRUE,
     ];
 
-    // Contact Location Section.
-    $contact['location'] = [
-      '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Contact Location') . '</span>',
-      '#collapsible' => FALSE,
-    ];
 
-    $contact['location']['on_campus_geography_id'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Location'),
-      '#options' => $this->cleryController->getOnCampusGeographyOptions(self::DEFAULT_CAMPUS_ID),
-      '#empty_option' => $this->t('Select a location'),
-    ];
-
-    $contact['location']['on_campus_room_number'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Room Number'),
-      '#placeholder' => $this->t('e.g., 203B'),
-    ];
-
-    // Off-Campus Address.
-    $contact['off_campus'] = [
-      '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('OR Off-Campus Address') . '</span>',
-      '#collapsible' => FALSE,
-    ];
-
-    $contact['off_campus']['street'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Street Address'),
-    ];
-
-    $contact['off_campus']['city'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('City'),
-    ];
-
-    $contact['off_campus']['state_id'] = [
-      '#type' => 'select',
-      '#title' => $this->t('State'),
-      '#options' => $this->cleryController->getStateOptions(),
-      '#empty_option' => $this->t('Select state...'),
-    ];
-
-    $contact['off_campus']['zip_code'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Zip Code'),
-    ];
 
 
   }
