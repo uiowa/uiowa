@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 
 /**
@@ -29,8 +30,18 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
 
   if ($form_id == 'og_membership_default_add_form') {
     if (isset($form['uid']['widget'][0]['target_id'])) {
+      // Update the description of the uid field.
+      $form['uid']['widget'][0]['target_id']['#description'] = t('Enter the HawkID of the member you wish to add. If no user account exists for the HawkID, one will be created. HawkIDs can be found using the <a href=":url">UIowa directory</a>.', [
+        ':url' => Url::fromUri('https://iam.uiowa.edu/whitepages/search')->toString(),
+      ]);
+
       // Add a custom element processor.
       $form['#validate'][] = 'sitessignage_core_og_user_validate';
+    }
+
+    if (isset($form['roles']['widget'])) {
+      // Update the description of roles field.
+      $form['roles']['widget']['#description'] = t('Select any roles the member should have within the group.');
     }
   }
 }
