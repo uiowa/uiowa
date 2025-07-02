@@ -99,7 +99,7 @@ class CSAReportForm extends FormBase {
     // Occurrence Date & Time Fieldset.
     $form['occurrence'] = [
       '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Occurrence Date & Time (Optional)') . '</span>',
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Occurrence Date & Time') . '</span>',
       '#description' => $this->t(
         'Fill in the fields that apply to when the incident occurred.'
       ),
@@ -215,7 +215,7 @@ class CSAReportForm extends FormBase {
     // Reporter Information Fieldset.
     $form['reporter'] = [
       '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Reporter Information (Optional)') . '</span>',
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Reporter Information') . '</span>',
     ];
 
     $form['reporter']['reporter_first_name'] = [
@@ -266,7 +266,7 @@ class CSAReportForm extends FormBase {
     // Incident Contacts Fieldset.
     $form['contacts'] = [
       '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Incident Contacts (Optional)') . '</span>',
+      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Individuals involved') . '</span>',
     ];
 
     $form['contacts']['contacts_container'] = [
@@ -288,7 +288,7 @@ class CSAReportForm extends FormBase {
 
     $form['contacts']['add_contact'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Add Contact'),
+      '#value' => $this->t('Add Individual'),
     ] + $this->buildAjaxButton('::contactsCallback', 'contacts-wrapper', ['::addContactSubmit']);
 
     // Submit button.
@@ -324,7 +324,7 @@ class CSAReportForm extends FormBase {
 
     $contact['remove'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Remove Contact'),
+      '#value' => $this->t('Remove Individual'),
       '#name' => 'remove_contact_' . $index,
     ] + $this->buildAjaxButton('::contactsCallback', 'contacts-wrapper', ['::removeContactSubmit']);
 
