@@ -1,5 +1,6 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use 'sass:color';
 
 // Sign header.
 .page-node-type-sign {
@@ -8,6 +9,7 @@
     margin-left: variables.$mobile-width-gutter;
     margin-right: variables.$mobile-width-gutter;
   }
+
   // Adjust column gap to be smaller for signage.
   .layout {
     &[class*="twocol"],
@@ -19,26 +21,38 @@
       }
     }
   }
+
   // Adjust padding to be smaller for signage.
   .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
     padding-bottom: 0;
     padding-top: variables.$mobile-width-gutter;
   }
+
   // Set sign background to black.
   main.content__container {
-    background: variables.$secondary;
+    --darkmode-bg: #1e1e1e;
+    background: var(--darkmode-bg);
+
     .region-content {
-      background: #fff;
+      background: var(--darkmode-bg);
+    }
+
+    // TODO: figure out how to change classes, this shouldn;t be shipped.
+    .layout__container:not(:first-child) {
+      background: var(--darkmode-bg);
     }
   }
+
   .sign--header {
     display: flex !important;
     align-items: flex-start;
     gap: 1rem;
     flex-wrap: wrap;
+
     .block {
       flex-basis: auto!important;
     }
+
     .site-name {
       @include utilities.breakpoint(page-container) {
         padding-top: .3rem;
@@ -102,43 +116,50 @@
 
 // Bus arrivals widget.
 .bus-arrivals {
-  --coralville: #dbeefa;
-  --coralville-dark: #b4c7d3;
-  --iowa-city: #f9e2de;
-  --uiowa: white;
-  --text-dark: black;
-
-  thead.headers th {
-    font-size: variables.$h6-font-size;
-    background-color: variables.$brand-cool-gray;
+  .bg-dark-gray {
+    background-color: variables.$dark-gray;
     color: variables.$white;
-   letter-spacing: 0.08rem;
   }
 
-  caption {
+  caption.predictions-title {
+    background-color: var(--darkmode-bg);
     font-size: variables.$h5-font-size;
     font-weight: variables.$font-weight-heavy;
     letter-spacing: 0.08rem;
     text-align: left;
+    color: variables.$light;
   }
 
-  tbody tr {
-    color: var(--text-dark);
+  thead.headers {
+    border-top: 7px solid var(--darkmode-bg);
+    border-bottom: 7px solid var(--darkmode-bg);
 
-    &.prediction {
-      &.coralville {
-        background-color: var(--coralville);
-        border-bottom: 1px solid var(--coralville-dark);
-      }
+    th {
+      font-size: variables.$h6-font-size;
+      background: variables.$dark;
+      color: variables.$white;
+      letter-spacing: 0.08rem;
 
-      &.uiowa {
-        background-color: var(--uiowa);
-        border-bottom: 1px solid variables.$grey-light;
+      &:not(:last-child) {
+        border-right: 1px solid color.scale(variables.$dark, $lightness: 12%);
       }
     }
   }
 
-  tbody td {
-    font-size: variables.$h6-font-size;
+  tbody {
+    tr {
+      &.prediction {
+        border-bottom: 7px solid var(--darkmode-bg);
+      }
+
+      td {
+        font-size: variables.$h6-font-size;
+
+        &.minutes,
+        &.title {
+          border-right: 1px solid color.scale(variables.$dark-gray, $lightness: 10%);
+        }
+      }
+    }
   }
 }

@@ -71,14 +71,14 @@ function sitenow_signage_preprocess_field(&$variables) {
       'loading_message' => [
         '#markup' => '
           <table>
-            <thead>
+            <thead class="headers">
               <tr>
                 <th>Time</th>
                 <th>Route</th>
                 <th>Agency</th>
               </tr>
             </thead>
-            <td colspan="3" >Loading bus arrival information…</td>
+            <td class="bg-dark-gray" colspan="3" >Loading bus arrival information…</td>
           </table>',
         '#allowed_tags' => ['table', 'thead', 'tr', 'th', 'td'],
       ],

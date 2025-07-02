@@ -13,7 +13,7 @@
 
         const updateArrivals = async () => {
           let predictionsTable = `<table>
-            <caption>${label}</caption>
+            <caption class='predictions-title'>${label}</caption>
             <thead class='headers'>
               <tr>
                 <th>Time</th>
@@ -28,27 +28,27 @@
             const predictions = (data.predictions ?? []).slice(0, 10);
 
             if (predictions.length === 0) {
-              predictionsTable += `<td colspan='3' >No upcoming arrivals.</td></table>`;
+              predictionsTable += `<td class='bg-dark-gray' colspan='3' >No upcoming arrivals.</td></table>`;
               element.innerHTML = predictionsTable;
               return;
             }
 
             predictionsTable += `
-              <tbody>
-                ${predictions.map((item) =>
-                  `<tr class='prediction ${item.agency}'>
-                      <td>${item.minutes} minutes</td>
-                      <td>${item.title}</td>
-                      <td>${item.agencyName}</td>
-                  </tr>`
-                ).join('')}
-              <tbody>
+                <tbody>
+                  ${predictions.map((item) =>
+                    `<tr class='prediction ${item.agency}'>
+                      <td class='bg-dark-gray minutes'>${item.minutes} minutes</td>
+                      <td class='bg-dark-gray title'>${item.title}</td>
+                      <td class='bg-dark-gray agency'>${item.agencyName}</td>
+                    </tr>`
+                  ).join('')}
+                </tbody>
               </table>
             `;
             element.innerHTML = predictionsTable;
           } catch (error) {
             console.error('Fetch error:', error);
-            predictionsTable += `<td colspan='3' >Unable to load bus arrival information.</td></table>`;
+            predictionsTable += `<td class='bg-dark-gray' colspan='3' >Unable to load bus arrival information.</td></table>`;
             element.innerHTML = predictionsTable;
           }
         };
