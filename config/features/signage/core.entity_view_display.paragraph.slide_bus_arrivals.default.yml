@@ -1,0 +1,26 @@
+uuid: aca8736e-129d-4699-81b9-a31cf59e7884
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_bus_arrivals.field_slide_bus_arrivals_stop
+    - paragraphs.paragraphs_type.slide_bus_arrivals
+  module:
+    - options
+id: paragraph.slide_bus_arrivals.default
+targetEntityType: paragraph
+bundle: slide_bus_arrivals
+mode: default
+content:
+  field_slide_bus_arrivals_stop:
+    type: list_key
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

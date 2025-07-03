@@ -49,6 +49,46 @@ function sitenow_signage_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_signage_preprocess_field(&$variables) {
+  $element = $variables['element'];
+  if ($element['#field_name'] === 'field_slide_bus_arrivals_stop') {
+    $stop_id = (int) $element[0]['#markup'];
+
+    // Get the bus stop name from the allowed values and set label.
+    $stops = sitenow_signage_bus_stops_allowed_values();
+    $stop_name = $stops[$stop_id] ?? '';
+
+    // Set the bus stop id as a data attribute on the container for JS.
+    $variables['items'][0]['content'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['bus-arrivals'],
+        'data-stop-name' => $stop_name,
+        'data-stop-id' => $stop_id,
+      ],
+      'loading_message' => [
+        '#markup' => '
+          <table>
+            <thead class="headers">
+              <tr>
+                <th>Time</th>
+                <th>Route</th>
+                <th>Agency</th>
+              </tr>
+            </thead>
+            <td class="bg-dark-gray" colspan="3" >Loading bus arrival information…</td>
+          </table>',
+        '#allowed_tags' => ['table', 'thead', 'tr', 'th', 'td'],
+      ],
+    ];
+
+    $variables['#attached']['library'][] = 'sitenow_signage/bus_arrivals';
+  }
+}
+
+/**
  * Implements hook_preprocess_node().
  */
 function sitenow_signage_preprocess_node(&$variables) {
@@ -157,6 +197,29 @@ function sitenow_signage_reload_intervals_allowed_values() {
     3600 => '1 hour',
     1800 => '30 minutes',
   ];
+
+  return $values;
+}
+
+/**
+ * Allowed values for bus stops field.
+ *
+ * @see \options_allowed_values()
+ */
+function sitenow_signage_bus_stops_allowed_values() {
+  $values = [];
+  $unlisted_stops = [0];
+
+  $api_client = \Drupal::service('sitenow_signage.icareatransit_api');
+  $stops = $api_client->getStopList();
+  /** @var \stdClass $stop */
+  foreach ($stops as $item) {
+    if (!in_array($item->stop->stopnumber, $unlisted_stops)) {
+      $values[$item->stop->stopnumber] = "{$item->stop->stopnumber} - {$item->stop->stoptitle}";
+    }
+  }
+
+  ksort($values);
 
   return $values;
 }

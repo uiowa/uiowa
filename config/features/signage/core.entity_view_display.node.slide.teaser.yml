@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.slide.field_image
+    - field.field.node.slide.field_slide_widget
     - node.type.slide
   module:
     - user
@@ -12,19 +12,11 @@ id: node.slide.teaser
 targetEntityType: node
 bundle: slide
 mode: teaser
-content:
-  field_image:
-    type: entity_reference_entity_view
-    label: hidden
-    settings:
-      view_mode: large__widescreen
-      link: false
-    third_party_settings: {  }
-    weight: 0
-    region: content
+content: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_slide_widget: true
   links: true
   search_api_excerpt: true
