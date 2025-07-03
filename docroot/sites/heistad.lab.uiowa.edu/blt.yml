@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labheistad.uiowa.ddev.site
+    protocol: https
+  machine_name: labheistad
+  human_name: heistad.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labheistad.prod
+drupal:
+  db:
+    database: heistad_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labheistad.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Heistad Lab'

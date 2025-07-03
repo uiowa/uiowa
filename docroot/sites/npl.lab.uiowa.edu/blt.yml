@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labnpl.uiowa.ddev.site
+    protocol: https
+  machine_name: labnpl
+  human_name: npl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnpl.prod
+drupal:
+  db:
+    database: npl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labnpl.prod.drupal.uiowa.edu'
+  requester: schuettp
+  site-name: 'Native Policy Lab'
