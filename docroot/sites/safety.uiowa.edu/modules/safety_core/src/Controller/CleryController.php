@@ -99,37 +99,19 @@ class CleryController extends ControllerBase {
         'x-api-key' => $api_key,
         'Accept' => 'application/json',
       ],
-      'verify' => FALSE,
       'timeout' => 30,
     ];
 
     // Merge with provided options.
     $request_options = array_merge_recursive($default_options, $options);
 
-    // Log the request for debugging
-    \Drupal::logger('clery_api')->notice('API Request: @method @url', [
-      '@method' => $method,
-      '@url' => self::BASE_URL . $endpoint,
-    ]);
-    \Drupal::logger('clery_api')->notice('Request Options: @options', [
-      '@options' => json_encode($request_options, JSON_PRETTY_PRINT),
-    ]);
-
     // Make the request.
     $response = $this->httpClient->request($method, self::BASE_URL . $endpoint, $request_options);
-
-    // Log the response for debugging
-    \Drupal::logger('clery_api')->notice('Response Status: @status', [
-      '@status' => $response->getStatusCode(),
-    ]);
 
     // Check response status.
     $valid_statuses = $options['valid_statuses'] ?? [200];
     if (!in_array($response->getStatusCode(), $valid_statuses)) {
       $error_body = $response->getBody()->getContents();
-      \Drupal::logger('clery_api')->error('API Error Response: @body', [
-        '@body' => $error_body,
-      ]);
       throw new \Exception(
         "API request failed with status: " . $response->getStatusCode() .
         " for endpoint: " . $endpoint .
@@ -137,8 +119,16 @@ class CleryController extends ControllerBase {
       );
     }
 
+    // Get response body content.
+    $response_body = $response->getBody()->getContents();
+
+    // Handle empty response body.
+    if (empty($response_body)) {
+      return [];
+    }
+
     // Decode and validate response.
-    $data = json_decode($response->getBody()->getContents(), TRUE);
+    $data = json_decode($response_body, TRUE);
     if (json_last_error() !== JSON_ERROR_NONE) {
       throw new \Exception("Invalid JSON response for endpoint: " . $endpoint);
     }
@@ -324,7 +314,7 @@ class CleryController extends ControllerBase {
   /**
    * Formats a date string with optional time.
    */
-  protected function formatDate($date_string, $time_string = NULL) {
+  protected function formatDate($date_string, $time_string = NULL): ?string {
     if (empty($date_string)) {
       return NULL;
     }
@@ -344,28 +334,30 @@ class CleryController extends ControllerBase {
    * Submits a new incident report to the API.
    */
   public function submitIncidentReport(array $incident_data) {
-    \Drupal::logger('clery_api')->notice('Submitting incident data: @data', [
-      '@data' => json_encode($incident_data, JSON_PRETTY_PRINT),
-    ]);
     return $this->apiPost('/incident', $incident_data);
   }
 
   /**
-   * Formats time string to proper format for API.
+   * Formats time string to proper format for API (HH:MM:SS).
    */
   public function formatTime($time_string): ?string {
     if (empty($time_string)) {
       return NULL;
     }
 
-    // If already in HH:MM format, return as is.
-    if (preg_match('/^\d{2}:\d{2}$/', $time_string)) {
+    // If already in HH:MM:SS format, return as is.
+    if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $time_string)) {
       return $time_string;
     }
 
-    // If in H:MM format, pad with leading zero.
+    // If already in HH:MM format, add seconds.
+    if (preg_match('/^\d{2}:\d{2}$/', $time_string)) {
+      return $time_string . ':00';
+    }
+
+    // If in H:MM format, pad with leading zero and add seconds.
     if (preg_match('/^\d{1}:\d{2}$/', $time_string)) {
-      return str_pad($time_string, 5, '0', STR_PAD_LEFT);
+      return str_pad($time_string, 5, '0', STR_PAD_LEFT) . ':00';
     }
 
     // Try to parse and format various time formats.
@@ -377,7 +369,7 @@ class CleryController extends ControllerBase {
       $time = \DateTime::createFromFormat('g:i a', $time_string);
     }
 
-    return $time ? $time->format('H:i') : NULL;
+    return $time ? $time->format('H:i:s') : NULL;
   }
 
   /**
@@ -416,27 +408,21 @@ class CleryController extends ControllerBase {
    * Builds the request body for API submission from form values.
    */
   public function buildIncidentRequestData(array $form_values) {
-
     $body = [];
 
     // Incident Detail.
     $body['incidentDetail'] = [
-      'dateOffenseReported' => $this->formatDateForApi($form_values['date_offense_reported'] ?? NULL),
-      'timeOffenseReported' => $this->formatTime($form_values['time_offense_reported'] ?? NULL),
-      'dateOffenseOccured' => $this->formatDateForApi($form_values['date_offense_occured'] ?? NULL),
-      'exactTimeOccured' => $this->formatTime($form_values['exact_time_occured'] ?? NULL),
-      'dateStart' => $this->formatDateForApi($form_values['date_start'] ?? NULL),
-      'timeStart' => $this->formatTime($form_values['time_start'] ?? NULL),
-      'dateEnd' => $this->formatDateForApi($form_values['date_end'] ?? NULL),
-      'timeEnd' => $this->formatTime($form_values['time_end'] ?? NULL),
+      'dateOffenseReported' => $form_values['date_offense_reported'] ?: NULL,
+      'timeOffenseReported' => $form_values['time_offense_reported'] ? $this->formatTime($form_values['time_offense_reported']) : NULL,
+      'dateOffenseOccured' => $form_values['date_offense_occured'] ?: NULL,
+      'exactTimeOccured' => $form_values['exact_time_occured'] ? $this->formatTime($form_values['exact_time_occured']) : NULL,
+      'dateStart' => $form_values['date_start'] ?: NULL,
+      'timeStart' => $form_values['time_start'] ? $this->formatTime($form_values['time_start']) : NULL,
+      'dateEnd' => $form_values['date_end'] ?: NULL,
+      'timeEnd' => $form_values['time_end'] ? $this->formatTime($form_values['time_end']) : NULL,
       'specificLocation' => $form_values['specific_location'] ?? NULL,
       'description' => $form_values['description'] ?? NULL,
     ];
-
-    // Log form values for debugging
-    \Drupal::logger('clery_api')->notice('Form values: @values', [
-      '@values' => json_encode($form_values, JSON_PRETTY_PRINT),
-    ]);
 
     // Reporter.
     if (
@@ -457,6 +443,9 @@ class CleryController extends ControllerBase {
     // CSA Flag.
     $body['isReporterCsa'] = (bool) $form_values['is_reporter_csa'];
 
+    // Geography ID.
+    $body['geographyId'] = 165;
+
     // Incident Contacts.
     $body['incidentContacts'] = [];
     if (
@@ -473,8 +462,8 @@ class CleryController extends ControllerBase {
             'lastName' => $contact_data['last_name'],
             'email' => $contact_data['email'] ?? NULL,
             'phone' => $contact_data['phone'] ?? NULL,
-            'dateOfBirth' => $this->formatDateForApi($contact_data['date_of_birth'] ?? NULL),
-            'contactRoles' => [], // Remove contact roles for now since form doesn't collect this
+            'dateOfBirth' => $contact_data['date_of_birth'] ?? NULL,
+            'contactRoles' => [],
           ];
 
           $body['incidentContacts'][] = $contact;
@@ -483,24 +472,6 @@ class CleryController extends ControllerBase {
     }
 
     return $body;
-  }
-
-  /**
-   * Formats date string for API compatibility.
-   */
-  public function formatDateForApi($date_string): ?string {
-    if (empty($date_string)) {
-      return NULL;
-    }
-
-    // Convert date to ISO 8601 format (YYYY-MM-DD)
-    $date = \DateTime::createFromFormat('Y-m-d', $date_string);
-    if ($date === FALSE) {
-      // Try alternative formats
-      $date = new \DateTime($date_string);
-    }
-
-    return $date ? $date->format('Y-m-d') : NULL;
   }
 
 }

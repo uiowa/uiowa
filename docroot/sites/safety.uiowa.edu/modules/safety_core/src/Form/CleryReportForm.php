@@ -467,9 +467,7 @@ class CleryReportForm extends FormBase {
       // API submission.
       $result = $this->cleryController->submitIncidentReport($request_body);
       $this->messenger()->addMessage(
-        $this->t(
-          'Incident reported successfully! (API submission disabled for testing)'
-        )
+        $this->t('Incident reported successfully!')
       );
 
       // Redirect to form for complete reset.
