@@ -10,9 +10,9 @@ use Drupal\safety_core\Controller\CleryController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * CSA Report Form.
+ * Clery Report Form.
  */
-class CSAReportForm extends FormBase {
+class CleryReportForm extends FormBase {
   use StringTranslationTrait;
 
   /**
@@ -23,7 +23,7 @@ class CSAReportForm extends FormBase {
   protected $cleryController;
 
   /**
-   * Constructs a new CSAReportForm.
+   * Constructs a new CleryReportForm.
    *
    * @param \Drupal\safety_core\Controller\CleryController $clery_controller
    *   The Clery controller service.
@@ -43,7 +43,7 @@ class CSAReportForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'csa_report_form';
+    return 'clery_report_form';
   }
 
   /**
@@ -57,7 +57,7 @@ class CSAReportForm extends FormBase {
     $form['#prefix'] = '<div class="container">' . $required_notice;
     $form['#suffix'] = '</div>';
 
-    $form['#attached']['library'][] = 'safety_core/csa-report-form';
+    $form['#attached']['library'][] = 'safety_core/clery-report-form';
 
     // Incident Details Fieldset.
     $form['incident_details'] = [
@@ -316,7 +316,7 @@ class CSAReportForm extends FormBase {
   ) {
     $form['contacts']['contacts_container'][$index] = [
       '#type' => 'fieldset',
-      '#title' => '<span class="headline headline--serif headline--underline h5">' . $this->t('Individual @num', ['@num' => $index + 1]) . '</span>',
+      '#title' => '<span class="headline h6">' . $this->t('Individual @num', ['@num' => $index + 1]) . '</span>',
       '#collapsible' => FALSE,
     ];
 
@@ -465,7 +465,7 @@ class CSAReportForm extends FormBase {
       ]);
 
       // API submission.
-      // $result = $this->cleryController->submitIncidentReport($request_body);
+      $result = $this->cleryController->submitIncidentReport($request_body);
       $this->messenger()->addMessage(
         $this->t(
           'Incident reported successfully! (API submission disabled for testing)'

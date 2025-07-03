@@ -106,13 +106,30 @@ class CleryController extends ControllerBase {
     // Merge with provided options.
     $request_options = array_merge_recursive($default_options, $options);
 
+    // Log the request for debugging
+    \Drupal::logger('clery_api')->notice('API Request: @method @url', [
+      '@method' => $method,
+      '@url' => self::BASE_URL . $endpoint,
+    ]);
+    \Drupal::logger('clery_api')->notice('Request Options: @options', [
+      '@options' => json_encode($request_options, JSON_PRETTY_PRINT),
+    ]);
+
     // Make the request.
     $response = $this->httpClient->request($method, self::BASE_URL . $endpoint, $request_options);
+
+    // Log the response for debugging
+    \Drupal::logger('clery_api')->notice('Response Status: @status', [
+      '@status' => $response->getStatusCode(),
+    ]);
 
     // Check response status.
     $valid_statuses = $options['valid_statuses'] ?? [200];
     if (!in_array($response->getStatusCode(), $valid_statuses)) {
       $error_body = $response->getBody()->getContents();
+      \Drupal::logger('clery_api')->error('API Error Response: @body', [
+        '@body' => $error_body,
+      ]);
       throw new \Exception(
         "API request failed with status: " . $response->getStatusCode() .
         " for endpoint: " . $endpoint .
@@ -327,6 +344,9 @@ class CleryController extends ControllerBase {
    * Submits a new incident report to the API.
    */
   public function submitIncidentReport(array $incident_data) {
+    \Drupal::logger('clery_api')->notice('Submitting incident data: @data', [
+      '@data' => json_encode($incident_data, JSON_PRETTY_PRINT),
+    ]);
     return $this->apiPost('/incident', $incident_data);
   }
 
@@ -401,17 +421,22 @@ class CleryController extends ControllerBase {
 
     // Incident Detail.
     $body['incidentDetail'] = [
-      'dateOffenseReported' => $form_values['date_offense_reported'] ?? NULL,
+      'dateOffenseReported' => $this->formatDateForApi($form_values['date_offense_reported'] ?? NULL),
       'timeOffenseReported' => $this->formatTime($form_values['time_offense_reported'] ?? NULL),
-      'dateOffenseOccured' => $form_values['date_offense_occured'] ?? NULL,
+      'dateOffenseOccured' => $this->formatDateForApi($form_values['date_offense_occured'] ?? NULL),
       'exactTimeOccured' => $this->formatTime($form_values['exact_time_occured'] ?? NULL),
-      'dateStart' => $form_values['date_start'] ?? NULL,
+      'dateStart' => $this->formatDateForApi($form_values['date_start'] ?? NULL),
       'timeStart' => $this->formatTime($form_values['time_start'] ?? NULL),
-      'dateEnd' => $form_values['date_end'] ?? NULL,
+      'dateEnd' => $this->formatDateForApi($form_values['date_end'] ?? NULL),
       'timeEnd' => $this->formatTime($form_values['time_end'] ?? NULL),
       'specificLocation' => $form_values['specific_location'] ?? NULL,
       'description' => $form_values['description'] ?? NULL,
     ];
+
+    // Log form values for debugging
+    \Drupal::logger('clery_api')->notice('Form values: @values', [
+      '@values' => json_encode($form_values, JSON_PRETTY_PRINT),
+    ]);
 
     // Reporter.
     if (
@@ -448,11 +473,8 @@ class CleryController extends ControllerBase {
             'lastName' => $contact_data['last_name'],
             'email' => $contact_data['email'] ?? NULL,
             'phone' => $contact_data['phone'] ?? NULL,
-            'dateOfBirth' => $contact_data['date_of_birth'] ?? NULL,
-            'contactRoles' => array_map(
-              'intval',
-              array_filter($contact_data['contact_roles'] ?? [])
-            ),
+            'dateOfBirth' => $this->formatDateForApi($contact_data['date_of_birth'] ?? NULL),
+            'contactRoles' => [], // Remove contact roles for now since form doesn't collect this
           ];
 
           $body['incidentContacts'][] = $contact;
@@ -461,6 +483,24 @@ class CleryController extends ControllerBase {
     }
 
     return $body;
+  }
+
+  /**
+   * Formats date string for API compatibility.
+   */
+  public function formatDateForApi($date_string): ?string {
+    if (empty($date_string)) {
+      return NULL;
+    }
+
+    // Convert date to ISO 8601 format (YYYY-MM-DD)
+    $date = \DateTime::createFromFormat('Y-m-d', $date_string);
+    if ($date === FALSE) {
+      // Try alternative formats
+      $date = new \DateTime($date_string);
+    }
+
+    return $date ? $date->format('Y-m-d') : NULL;
   }
 
 }
