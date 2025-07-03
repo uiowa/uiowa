@@ -16,9 +16,9 @@
             <caption class='predictions-title'>${label}</caption>
             <thead class='headers'>
               <tr>
-                <th>Time</th>
-                <th>Route</th>
                 <th>Agency</th>
+                <th>Route</th>
+                <th>Time</th>
               </tr>
             </thead>`;
 
@@ -36,10 +36,10 @@
             predictionsTable += `
                 <tbody>
                   ${predictions.map((item) =>
-                    `<tr class='prediction ${item.agency}'>
-                      <td class='bg-dark-gray minutes'>${item.minutes} minutes</td>
-                      <td class='bg-dark-gray title'>${item.title}</td>
+                  `<tr class='prediction ${item.agency}'>
                       <td class='bg-dark-gray agency'>${item.agencyName}</td>
+                      <td class='bg-dark-gray title'>${item.title}</td>
+                      <td class='bg-dark-gray minutes'>${item.minutes} minutes</td>
                     </tr>`
                   ).join('')}
                 </tbody>
@@ -57,8 +57,12 @@
         updateArrivals();
 
         // Refresh every 60 seconds.
-        setInterval(updateArrivals, 60000);
+        // setInterval(updateArrivals, 60000);
       });
     }
   };
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 })(Drupal);

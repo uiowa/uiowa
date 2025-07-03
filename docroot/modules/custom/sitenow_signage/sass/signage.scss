@@ -143,6 +143,37 @@
       &:not(:last-child) {
         border-right: 1px solid color.scale(variables.$dark, $lightness: 12%);
       }
+
+      &:first-child,
+      &:last-child {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        &:before {
+          content: '';
+          position: relative;
+          width: 100%;
+          height: 0px;
+          left: 0;
+          top: 0;
+          color: transparent;
+          font-size: variables.$h6-font-size;
+          font-weight: variables.$font-weight-medium;
+          text-wrap: nowrap;
+          text-transform: none;
+          letter-spacing: normal;
+        }
+      }
+
+      &:first-child:before {
+          content: 'Coralville Transit';
+      }
+
+      &:last-child:before {
+          content: '000 Minutes';
+          font-weight: variables.$font-weight-normal;
+      }
     }
   }
 
@@ -150,14 +181,34 @@
     tr {
       &.prediction {
         border-bottom: 7px solid var(--darkmode-bg);
+
+        .agency {
+          font-weight: variables.$font-weight-medium;
+        }
+
+        &.uiowa .agency {
+          color: variables.$primary;
+        }
+
+        &.coralville .agency {
+          color: #4bbaff;
+        }
       }
 
       td {
         font-size: variables.$h6-font-size;
 
-        &.minutes,
-        &.title {
+        &:not(:last-child) {
           border-right: 1px solid color.scale(variables.$dark-gray, $lightness: 10%);
+        }
+      }
+
+      td,
+      th {
+        &:first-child,
+        &:last-child {
+          width: 1%;
+          white-space: nowrap;
         }
       }
     }
