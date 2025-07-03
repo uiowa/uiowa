@@ -372,37 +372,7 @@ class CleryController extends ControllerBase {
     return $time ? $time->format('H:i:s') : NULL;
   }
 
-  /**
-   * Validates incident form data.
-   */
-  public function validateIncidentData(array $form_values) {
-    $errors = [];
 
-    // Validate required fields.
-    if (empty($form_values['date_offense_reported'])) {
-      $errors[] = 'Date offense reported is required.';
-    }
-
-    if (empty($form_values['time_offense_reported'])) {
-      $errors[] = 'Time offense reported is required.';
-    }
-
-    // Validate contacts if present.
-    if (isset($form_values['contacts_container']) && is_array($form_values['contacts_container'])) {
-      foreach ($form_values['contacts_container'] as $index => $contact_data) {
-        if (!empty($contact_data['first_name']) || !empty($contact_data['last_name'])) {
-          if (empty($contact_data['first_name'])) {
-            $errors[] = "Contact " . ($index + 1) . ": First name is required.";
-          }
-          if (empty($contact_data['last_name'])) {
-            $errors[] = "Contact " . ($index + 1) . ": Last name is required.";
-          }
-        }
-      }
-    }
-
-    return $errors;
-  }
 
   /**
    * Builds the request body for API submission from form values.
