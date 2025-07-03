@@ -372,8 +372,6 @@ class CleryController extends ControllerBase {
     return $time ? $time->format('H:i:s') : NULL;
   }
 
-
-
   /**
    * Builds the request body for API submission from form values.
    */
