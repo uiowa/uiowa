@@ -443,8 +443,8 @@ class CleryController extends ControllerBase {
     // CSA Flag.
     $body['isReporterCsa'] = (bool) $form_values['is_reporter_csa'];
 
-    // Geography ID.
-    $body['geographyId'] = 165;
+    // Geography ID hardcoded to an empty location.
+    $body['geographyId'] = 1400;
 
     // Incident Contacts.
     $body['incidentContacts'] = [];
