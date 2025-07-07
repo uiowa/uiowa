@@ -46,7 +46,9 @@
               </table>
             `;
             element.innerHTML = predictionsTable;
-          } catch (error) {
+          }
+
+          catch (error) {
             console.error('Fetch error:', error);
             predictionsTable += `<td class='bg-dark-gray' colspan='3' >Unable to load bus arrival information.</td></table>`;
             element.innerHTML = predictionsTable;
@@ -62,6 +64,7 @@
     }
   };
 
+  // Translates special cases.
   function minutesTranslation(minutes) {
     if (minutes === '0') {
       return 'Now arriving';
