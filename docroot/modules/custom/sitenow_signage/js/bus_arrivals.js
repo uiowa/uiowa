@@ -39,7 +39,7 @@
                   `<tr class='prediction ${item.agency}'>
                       <td class='bg-dark-gray agency'>${item.agencyName}</td>
                       <td class='bg-dark-gray title'>${item.title}</td>
-                      <td class='bg-dark-gray minutes'>${item.minutes} minutes</td>
+                      <td class='bg-dark-gray minutes'>${minutesTranslation(item.minutes)}</td>
                     </tr>`
                   ).join('')}
                 </tbody>
@@ -57,12 +57,20 @@
         updateArrivals();
 
         // Refresh every 60 seconds.
-        // setInterval(updateArrivals, 60000);
+        setInterval(updateArrivals, 60000);
       });
     }
   };
 
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+  function minutesTranslation(minutes) {
+    if (minutes === '0') {
+      return 'Now arriving';
+    }
+
+    if (minutes === '1') {
+      return '1 minute';
+    }
+
+    return minutes + ' minutes';
   }
 })(Drupal);
