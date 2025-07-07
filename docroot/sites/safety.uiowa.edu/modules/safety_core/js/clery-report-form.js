@@ -1,14 +1,4 @@
 (function (Drupal, once) {
-  Drupal.behaviors.setTimeInputType = {
-    attach: function (context, settings) {
-      // Turn text fields into time fields.
-      const timeInputs = context.querySelectorAll(".time-input");
-      timeInputs.forEach(function (input) {
-        input.setAttribute("type", "time");
-      });
-    },
-  };
-
   Drupal.behaviors.csaReportFormValidation = {
     attach: function (context, settings) {
 
@@ -44,11 +34,11 @@
       // Initial attachment.
       attachValidationToRequiredFields();
 
-      // Re-attach when CSA checkbox changes (after states API updates required attributes).
+      // Re-attach when CSA checkbox changes.
       const csaCheckbox = once('csa-validation-trigger', '[name="is_reporter_csa"]', context);
       csaCheckbox.forEach(function (checkbox) {
         checkbox.addEventListener('change', function () {
-          // Small delay to let Drupal's states API update the DOM.
+          // Small delay to let Drupal update the DOM.
           setTimeout(attachValidationToRequiredFields, 50);
         });
       });

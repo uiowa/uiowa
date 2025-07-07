@@ -2,6 +2,7 @@
 
 namespace Drupal\safety_core\Controller;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -343,6 +344,11 @@ class CleryController extends ControllerBase {
   public function formatTime($time_string): ?string {
     if (empty($time_string)) {
       return NULL;
+    }
+
+    // Handle DrupalDateTime objects from datetime form elements.
+    if ($time_string instanceof DrupalDateTime) {
+      return $time_string->format('H:i:s');
     }
 
     // If already in HH:MM:SS format, return as is.

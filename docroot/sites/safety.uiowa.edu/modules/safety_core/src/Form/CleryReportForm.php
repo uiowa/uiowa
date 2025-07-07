@@ -49,9 +49,6 @@ class CleryReportForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $required_notice = '<p>Required fields are marked with an asterisk (<abbr class="req" title="required">*</abbr>).</p>';
     $form['#prefix'] = '<div class="container">' . $required_notice;
@@ -73,11 +70,12 @@ class CleryReportForm extends FormBase {
 
     $form['incident_details']['time_offense_reported'] = [
       '#required' => TRUE,
-      '#type' => 'textfield',
+      '#type' => 'datetime',
       '#title' => $this->t('Time Reported'),
+      '#date_date_element' => 'none',
+      '#date_time_element' => 'time',
       '#attributes' => [
-        'class' => ['time-input'],
-        'placeholder' => 'HH:MM (24-hour format)',
+        'step' => '60',
       ],
     ];
 
@@ -134,10 +132,9 @@ class CleryReportForm extends FormBase {
       ],
     ];
 
-    // Exact date (shown when date_type = 'exact').
-    $form['occurrence']['date_offense_occured'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Date Occurred'),
+    // Exact date container (shown when date_type = 'exact').
+    $form['occurrence']['exact_date_container'] = [
+      '#type' => 'container',
       '#states' => [
         'visible' => [
           ':input[name="occurrence_date_type"]' => ['value' => 'exact'],
@@ -145,14 +142,14 @@ class CleryReportForm extends FormBase {
       ],
     ];
 
-    // Exact time (shown when time_type = 'exact').
-    $form['occurrence']['exact_time_occured'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Time Occurred'),
-      '#attributes' => [
-        'class' => ['time-input'],
-        'placeholder' => 'HH:MM (24-hour format)',
-      ],
+    $form['occurrence']['exact_date_container']['date_offense_occured'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Date Occurred'),
+    ];
+
+    // Exact time container (shown when time_type = 'exact').
+    $form['occurrence']['exact_time_container'] = [
+      '#type' => 'container',
       '#states' => [
         'visible' => [
           ':input[name="occurrence_time_type"]' => ['value' => 'exact'],
@@ -160,25 +157,34 @@ class CleryReportForm extends FormBase {
       ],
     ];
 
-    // Start date (shown when date_type = 'range').
-    $form['occurrence']['date_start'] = [
+    $form['occurrence']['exact_time_container']['exact_time_occured'] = [
+      '#type' => 'datetime',
+      '#title' => $this->t('Time Occurred'),
+      '#date_date_element' => 'none',
+      '#date_time_element' => 'time',
+      '#attributes' => [
+        'step' => '60',
+      ],
+    ];
+
+    // Start date container (shown when date_type = 'range').
+    $form['occurrence']['start_date_container'] = [
+      '#type' => 'container',
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_date_type"]' => ['value' => 'range'],
+        ],
+      ],
+    ];
+
+    $form['occurrence']['start_date_container']['date_start'] = [
       '#type' => 'date',
       '#title' => $this->t('Start Date'),
-      '#states' => [
-        'visible' => [
-          ':input[name="occurrence_date_type"]' => ['value' => 'range'],
-        ],
-      ],
     ];
 
-    // Start time (shown when time_type = 'range').
-    $form['occurrence']['time_start'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Start Time'),
-      '#attributes' => [
-        'class' => ['time-input'],
-        'placeholder' => 'HH:MM (24-hour format)',
-      ],
+    // Start time container (shown when time_type = 'range').
+    $form['occurrence']['start_time_container'] = [
+      '#type' => 'container',
       '#states' => [
         'visible' => [
           ':input[name="occurrence_time_type"]' => ['value' => 'range'],
@@ -186,29 +192,48 @@ class CleryReportForm extends FormBase {
       ],
     ];
 
-    // End date (shown when date_type = 'range').
-    $form['occurrence']['date_end'] = [
+    $form['occurrence']['start_time_container']['time_start'] = [
+      '#type' => 'datetime',
+      '#title' => $this->t('Start Time'),
+      '#date_date_element' => 'none',
+      '#date_time_element' => 'time',
+      '#attributes' => [
+        'step' => '60',
+      ],
+    ];
+
+    // End date container (shown when date_type = 'range').
+    $form['occurrence']['end_date_container'] = [
+      '#type' => 'container',
+      '#states' => [
+        'visible' => [
+          ':input[name="occurrence_date_type"]' => ['value' => 'range'],
+        ],
+      ],
+    ];
+
+    $form['occurrence']['end_date_container']['date_end'] = [
       '#type' => 'date',
       '#title' => $this->t('End Date'),
-      '#states' => [
-        'visible' => [
-          ':input[name="occurrence_date_type"]' => ['value' => 'range'],
-        ],
-      ],
     ];
 
-    // End time (shown when time_type = 'range').
-    $form['occurrence']['time_end'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('End Time'),
-      '#attributes' => [
-        'class' => ['time-input'],
-        'placeholder' => 'HH:MM (24-hour format)',
-      ],
+    // End time container (shown when time_type = 'range').
+    $form['occurrence']['end_time_container'] = [
+      '#type' => 'container',
       '#states' => [
         'visible' => [
           ':input[name="occurrence_time_type"]' => ['value' => 'range'],
         ],
+      ],
+    ];
+
+    $form['occurrence']['end_time_container']['time_end'] = [
+      '#type' => 'datetime',
+      '#title' => $this->t('End Time'),
+      '#date_date_element' => 'none',
+      '#date_time_element' => 'time',
+      '#attributes' => [
+        'step' => '60',
       ],
     ];
 
