@@ -9,7 +9,7 @@ use Drupal\Core\Block\BlockBase;
  *
  * @Block(
  *   id = "clery_report_block",
- *   admin_label = @Translation("Clery Incident Report Form"),
+ *   admin_label = @Translation("Clery incident report form"),
  *   category = @Translation("Site custom"),
  * )
  */
