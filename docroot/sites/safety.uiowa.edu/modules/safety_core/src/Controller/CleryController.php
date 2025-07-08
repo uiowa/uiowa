@@ -160,77 +160,24 @@ class CleryController extends ControllerBase {
   }
 
   /**
-   * Gets cached crime data or fetches from API using bucket system.
+   * Gets cached crime data or fetches from API.
    */
   public function getCrimeData($start_date, $end_date, $limit = NULL) {
-    // Cache key based on date range.
-    $cache_key = "safety_core:crime_log:{$start_date}:{$end_date}";
+    $cid = "safety_core:crime_log:" . $start_date . ":" . $end_date;
+    if ($limit) {
+      $cid .= ":" . $limit;
+    }
 
-    // Check cache.
-    if ($cache = $this->cacheBackend->get($cache_key)) {
+    if ($cache = $this->cacheBackend->get($cid)) {
       $data = $cache->data;
     }
     else {
-      // Fetch from API.
       $data = $this->fetchCrimeData($start_date, $end_date);
-
-      // Cache duration based on how recent the end date is.
-      $cache_duration = $this->getSimpleCacheDuration($end_date);
-      $this->cacheBackend->set($cache_key, $data, time() + $cache_duration);
+      // Cache for 24 hours.
+      $this->cacheBackend->set($cid, $data, time() + 86400);
     }
 
     return $limit ? array_slice($data, 0, $limit) : $data;
-  }
-
-  /**
-   * Simple cache duration based on end date.
-   */
-  protected function getSimpleCacheDuration($end_date) {
-    $today = (new \DateTime())->format('Y-m-d');
-
-    // Today: 15 minutes, everything else: 1 hour.
-    return ($end_date === $today) ? 900 : 3600;
-  }
-
-  /**
-   * Filters crime data by date range.
-   *
-   * @throws \Exception
-   */
-  protected function filterByDateRange($data, $start_date, $end_date) {
-    $start_timestamp = strtotime($start_date);
-    $end_timestamp = strtotime($end_date . " 23:59:59");
-
-    return array_filter($data, function ($crime) use (
-      $start_timestamp,
-      $end_timestamp
-    ) {
-      $crime_date = $crime["dateOffenseReported"] ?? "";
-      if (empty($crime_date)) {
-        return FALSE;
-      }
-
-      // Check if there's a time.
-      if (preg_match("/\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}/", $crime_date)) {
-        $crime_timestamp = \DateTime::createFromFormat(
-          "m/d/Y H:i",
-          $crime_date
-        );
-      }
-      elseif (preg_match("/\d{1,2}\/\d{1,2}\/\d{4}/", $crime_date)) {
-        $crime_timestamp = \DateTime::createFromFormat("m/d/Y", $crime_date);
-      }
-      else {
-        $crime_timestamp = new \DateTime($crime_date);
-      }
-
-      $crime_timestamp = $crime_timestamp
-        ? $crime_timestamp->getTimestamp()
-        : 0;
-
-      return $crime_timestamp >= $start_timestamp &&
-        $crime_timestamp <= $end_timestamp;
-    });
   }
 
   /**

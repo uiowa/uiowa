@@ -2,11 +2,11 @@
 
 namespace Drupal\safety_core\Plugin\Block;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Cache\Cache;
 use Drupal\safety_core\Controller\CleryController;
 use Drupal\Core\Datetime\DrupalDateTime;
 
@@ -155,7 +155,6 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
         '#crimes' => $crimes,
         '#start_date' => (new DrupalDateTime($start_date))->format('m/d/Y'),
         '#end_date' => (new DrupalDateTime($end_date))->format('m/d/Y'),
-        '#cache' => ['max-age' => 3600],
       ];
 
       // Pass data to JS for announce functionality.
@@ -188,54 +187,6 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
    */
   public function getCacheContexts() {
     return Cache::mergeContexts(parent::getCacheContexts(), ['url.query_args']);
-  }
-
-  /**
-   * Gets cache tags for this block.
-   */
-  public function getCacheTags() {
-    $request = \Drupal::request();
-    $start_date = $request->query->get('start_date');
-    $end_date = $request->query->get('end_date');
-
-    // Set defaults if no search performed.
-    if (!$start_date && !$end_date) {
-      $start_date = (new DrupalDateTime('7 days ago'))->format('Y-m-d');
-      $end_date = (new DrupalDateTime('today'))->format('Y-m-d');
-    }
-
-    // Create date-specific cache tags.
-    $tags = ['crime_log_data'];
-
-    // Add monthly cache tags for better invalidation.
-    if ($start_date && $end_date) {
-      $start_month = (new DrupalDateTime($start_date))->format('Y-m');
-      $end_month = (new DrupalDateTime($end_date))->format('Y-m');
-
-      $tags[] = "crime_log_data:month:{$start_month}";
-      if ($start_month !== $end_month) {
-        $tags[] = "crime_log_data:month:{$end_month}";
-      }
-    }
-
-    return Cache::mergeTags(parent::getCacheTags(), $tags);
-  }
-
-  /**
-   * Gets the cache max age for this block.
-   */
-  public function getCacheMaxAge() {
-    $request = \Drupal::request();
-    $end_date = $request->query->get('end_date');
-
-    if (!$end_date) {
-      $end_date = (new DrupalDateTime('today'))->format('Y-m-d');
-    }
-
-    $today = (new DrupalDateTime())->format('Y-m-d');
-
-    // Short cache for today's data, longer for historical.
-    return ($end_date === $today) ? 900 : 3600;
   }
 
 }
