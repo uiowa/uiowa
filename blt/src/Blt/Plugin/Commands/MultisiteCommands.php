@@ -334,6 +334,9 @@ class MultisiteCommands extends BltTasks {
       $this->logger->warning('The cloud properties above will not be deleted because you used the --simulate option.');
     }
 
+    // Flag if site configuration exists.
+    $site_config = file_exists("{$root}/config/sites/{$dir}");
+
     // Delete the site code.
     $this->taskFilesystemStack()
       ->remove("{$root}/config/sites/{$dir}")
@@ -375,7 +378,8 @@ EOD
         ->add('blt/manifest.yml')
         ->interactive(FALSE);
 
-      if (file_exists("{$root}/config/sites/{$dir}")) {
+      // If site configuration existed, add it to the commit.
+      if ($site_config) {
         $task->add("config/sites/{$dir}");
       }
 
