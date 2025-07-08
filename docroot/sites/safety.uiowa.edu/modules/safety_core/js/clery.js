@@ -1,54 +1,69 @@
 (function (Drupal, drupalSettings) {
-  'use strict';
+  "use strict";
 
-  Drupal.behaviors.crimeLogAnnounce = {
+  Drupal.behaviors.logAnnounce = {
     attach: function (context, settings) {
       // Only run once per page load.
       if (context !== document) {
         return;
       }
 
-      // Check if settings.
-      if (!settings.crimeLog) {
-        return;
-      }
+      // Function to handle announcements for any log type.
+      function announceLogResults(logData, logType) {
+        // Only announce if this was a search.
+        if (logData.isSearch) {
+          let message;
 
-      const crimeLogData = settings.crimeLog;
-
-      // Only announce if this was a search.
-      if (crimeLogData.isSearch) {
-        let message;
-
-        if (crimeLogData.error) {
-          message = Drupal.t('Error loading crime log data. Please try again later.');
-          Drupal.announce(message, 'assertive');
-        } else {
-          const count = crimeLogData.crimeCount;
-          const startDate = crimeLogData.startDate;
-          const endDate = crimeLogData.endDate;
-
-          if (count > 0) {
-            message = Drupal.formatPlural(
-              count,
-              'Found 1 crime log entry from @start to @end.',
-              'Found @count crime log entries from @start to @end.',
+          if (logData.error) {
+            message = Drupal.t(
+              "Error loading @type log data. Please try again later.",
               {
-                '@start': startDate,
-                '@end': endDate,
-                '@count': count
-              }
+                "@type": logType,
+              },
             );
+            Drupal.announce(message, "assertive");
           } else {
-            message = Drupal.t('No crime log entries found from @start to @end.', {
-              '@start': startDate,
-              '@end': endDate
-            });
-          }
+            const count = logData[logType + "Count"];
+            const startDate = logData.startDate;
+            const endDate = logData.endDate;
 
-          Drupal.announce(message, 'polite');
+            if (count > 0) {
+              message = Drupal.formatPlural(
+                count,
+                "Found 1 @type log entry from @start to @end.",
+                "Found @count @type log entries from @start to @end.",
+                {
+                  "@type": logType,
+                  "@start": startDate,
+                  "@end": endDate,
+                  "@count": count,
+                },
+              );
+            } else {
+              message = Drupal.t(
+                "No @type log entries found from @start to @end.",
+                {
+                  "@type": logType,
+                  "@start": startDate,
+                  "@end": endDate,
+                },
+              );
+            }
+
+            Drupal.announce(message, "polite");
+          }
         }
       }
-    }
-  };
 
+      // Handle crime log announcements.
+      if (settings.crimeLog) {
+        announceLogResults(settings.crimeLog, "crime");
+      }
+
+      // Handle fire log announcements.
+      if (settings.fireLog) {
+        announceLogResults(settings.fireLog, "fire");
+      }
+    },
+  };
 })(Drupal, drupalSettings);
