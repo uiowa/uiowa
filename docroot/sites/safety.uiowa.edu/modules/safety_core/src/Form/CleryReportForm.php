@@ -467,13 +467,8 @@ class CleryReportForm extends FormBase {
 
       $request_body = $this->cleryController->buildIncidentRequestData($form_values);
 
-      // Log json for testing.
-      \Drupal::logger('csa_report')->notice('Request body: @body', [
-        '@body' => json_encode($request_body, JSON_PRETTY_PRINT),
-      ]);
-
       // API submission.
-      // $result = $this->cleryController->submitIncidentReport($request_body);
+      $result = $this->cleryController->submitIncidentReport($request_body);
       $this->messenger()->addMessage(
         $this->t('Incident reported successfully!')
       );
