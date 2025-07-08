@@ -188,7 +188,7 @@ class CleryController extends ControllerBase {
     else {
       // Fetch date range for bucket.
       $bucket_start = (new \DateTime($bucket . "-01"))
-        //->modify("-30 days")
+        // ->modify("-30 days")
         ->modify("-360 days")
         ->format("Y-m-d");
       $bucket_end = (new \DateTime($bucket . "-01"))
