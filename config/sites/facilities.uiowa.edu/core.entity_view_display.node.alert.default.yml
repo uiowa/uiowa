@@ -74,6 +74,17 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: f124cead-a1ad-4ad7-860a-d57d7608e1a7
+            region: content
+            configuration:
+              id: 'extra_field_block:node:alert:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -103,7 +114,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 0
+            weight: -5
             additional: {  }
             third_party_settings: {  }
           -
@@ -128,7 +139,7 @@ third_party_settings:
                   time_wrapper: true
                   localize: false
                 third_party_settings: {  }
-            weight: 1
+            weight: -4
             additional: {  }
             third_party_settings: {  }
           -
@@ -148,7 +159,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 2
+            weight: -3
             additional: {  }
             third_party_settings: {  }
           -
@@ -168,7 +179,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 4
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
@@ -190,7 +201,7 @@ third_party_settings:
                   format_custom_false: ''
                   format_custom_true: ''
                 third_party_settings: {  }
-            weight: 3
+            weight: -1
             additional: {  }
             third_party_settings: {  }
           -
@@ -209,7 +220,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -228,7 +239,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -249,26 +260,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ','
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 3b843159-1293-4659-bde1-fc53d21e5271
-            region: content
-            configuration:
-              id: 'field_block:node:alert:body'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: inline
-                settings: {  }
-                third_party_settings: {  }
-            weight: 8
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -288,7 +280,26 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 9
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3b843159-1293-4659-bde1-fc53d21e5271
+            region: content
+            configuration:
+              id: 'field_block:node:alert:body'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            weight: -2
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -312,6 +323,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   field_alert_accessible_route:
     type: basic_string
