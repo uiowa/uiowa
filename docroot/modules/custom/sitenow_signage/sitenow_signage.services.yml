@@ -1,0 +1,13 @@
+services:
+  sitenow_signage.icareatransit_api:
+    class: Drupal\sitenow_signage\ICAreaTransitApiClient
+    arguments: ['@http_client', '@logger.channel.sitenow_signage_icareatransit', '@cache.sitenow_signage_icareatransit', '@config.factory', ]
+  logger.channel.sitenow_signage_icareatransit:
+    parent: logger.channel_base
+    arguments: [ 'sitenow_signage_icareatransit' ]
+  cache.sitenow_signage_icareatransit:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['sitenow_signage_icareatransit']
