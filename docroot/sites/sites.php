@@ -4247,12 +4247,6 @@ $sites['gwss.dev.drupal.uiowa.edu'] = 'gwss.uiowa.edu';
 $sites['gwss.stage.drupal.uiowa.edu'] = 'gwss.uiowa.edu';
 $sites['gwss.prod.drupal.uiowa.edu'] = 'gwss.uiowa.edu';
 
-// Directory aliases for hhp.uiowa.edu.
-$sites['hhp.uiowa.ddev.site'] = 'hhp.uiowa.edu';
-$sites['hhp.dev.drupal.uiowa.edu'] = 'hhp.uiowa.edu';
-$sites['hhp.stage.drupal.uiowa.edu'] = 'hhp.uiowa.edu';
-$sites['hhp.prod.drupal.uiowa.edu'] = 'hhp.uiowa.edu';
-
 // Directory aliases for philosophy.uiowa.edu.
 $sites['philosophy.uiowa.ddev.site'] = 'philosophy.uiowa.edu';
 $sites['philosophy.dev.drupal.uiowa.edu'] = 'philosophy.uiowa.edu';
