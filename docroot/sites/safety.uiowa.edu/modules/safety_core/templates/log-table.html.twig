@@ -1,0 +1,110 @@
+{#
+/**
+ * @file
+ * Template for displaying crime and fire log tables.
+ *
+ * Available variables:
+ * - log_type: 'crime' or 'fire' to determine which type of log to display
+ * - crimes: Array of crime log entries (when log_type is 'crime')
+ * - fires: Array of fire log entries (when log_type is 'fire')
+ * - start_date: Start date for the period
+ * - end_date: End date for the period
+ */
+#}
+
+{% set items = log_type == 'crime' ? crimes : fires %}
+{% set item_name = log_type == 'crime' ? 'crime' : 'fire' %}
+{% set item_plural = log_type == 'crime' ? 'crimes' : 'fires' %}
+
+{% if items is empty %}
+  <p>
+    {% if log_type == 'crime' %}
+      {{ 'No crime logs found for the selected period.'|t }}
+    {% else %}
+      {{ 'No fires reported in on-campus residences during this date range.'|t }}
+    {% endif %}
+  </p>
+{% else %}
+  <div class="table-responsive table-sticky">
+    <table class="table--hover-highlight table--gray-borders" style="width:100%">
+      <caption>
+        {% if start_date and end_date %}
+          {{ '%item_plural occurring on campus or within the patrol area of University of Iowa Police from %start_date to %end_date'|t({
+            '%item_plural': item_plural,
+            '%start_date': start_date,
+            '%end_date': end_date
+          }) }}
+        {% else %}
+          {{ '%item_plural data'|t({'%item_plural': item_plural}) }}
+        {% endif %}
+      </caption>
+      <thead>
+      <tr>
+        <th>{{ 'Case Number'|t }}</th>
+        <th>{{ 'Classification/Nature'|t }}</th>
+        <th>{{ 'Date/Time Occurred'|t }}</th>
+        <th>{{ 'Date/Time Reported'|t }}</th>
+        <th>{{ 'General Location'|t }}</th>
+        {% if log_type == 'crime' %}
+          <th>{{ 'Disposition'|t }}</th>
+        {% endif %}
+      </tr>
+      </thead>
+      <tbody>
+      {% for item in items %}
+        <tr>
+          <td>{{ item.id ?? '' }}</td>
+          <td>
+            {% if log_type == 'crime' %}
+              {{ item.classificationNature ?? '' }}
+            {% else %}
+              {{ item.causeDetails ?? '' }}{{ item.causeType ? ', ' ~ item.causeType : '' }}
+            {% endif %}
+          </td>
+          <td>
+            {% if log_type == 'crime' %}
+              {% if item.dateOffenseOccured %}
+                {{ item.dateOffenseOccured }}
+              {% elseif item.Occurred %}
+                {{ item.Occurred }}
+              {% else %}
+                {% if item.dateOffenseOccuredStart %}
+                  {{ item.dateOffenseOccuredStart }}
+                  {% if item.dateOffenseOccuredEnd %}
+                    to {{ item.dateOffenseOccuredEnd }}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            {% else %}
+              {% if item.dateFireOccured is defined and item.dateFireOccured is not empty %}
+                {% if item.dateFireOccuredEnd is defined and item.dateFireOccuredEnd is not empty and item.dateFireOccured != item.dateFireOccuredEnd %}
+                  {{ item.dateFireOccured }} to {{ item.dateFireOccuredEnd }}
+                {% else %}
+                  {{ item.dateFireOccured }}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          </td>
+          <td>
+            {% if log_type == 'crime' %}
+              {{ item.dateOffenseReported ?? '' }}
+            {% else %}
+              {{ item.dateFireReported ?? '' }}
+            {% endif %}
+          </td>
+          <td>
+            {% if log_type == 'crime' %}
+              {{ item.generalLocation ?? '' }}
+            {% else %}
+              {{ item.cleryCampus.name ?? item.generalLocation ?? '' }}
+            {% endif %}
+          </td>
+          {% if log_type == 'crime' %}
+            <td>{{ item.disposition ?? '' }}</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}

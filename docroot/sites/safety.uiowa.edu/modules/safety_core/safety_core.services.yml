@@ -1,0 +1,4 @@
+services:
+  safety_core.clery_controller:
+    class: Drupal\safety_core\Controller\CleryController
+    arguments: ['@http_client', '@config.factory', '@cache.default']
