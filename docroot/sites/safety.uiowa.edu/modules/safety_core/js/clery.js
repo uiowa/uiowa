@@ -1,5 +1,5 @@
 (function (Drupal, drupalSettings) {
-  "use strict";
+  'use strict';
 
   Drupal.behaviors.logAnnounce = {
     attach: function (context, settings) {
@@ -16,53 +16,53 @@
 
           if (logData.error) {
             message = Drupal.t(
-              "Error loading @type log data. Please try again later.",
+              'Error loading @type log data. Please try again later.',
               {
-                "@type": logType,
+                '@type': logType,
               },
             );
-            Drupal.announce(message, "assertive");
+            Drupal.announce(message, 'assertive');
           } else {
-            const count = logData[logType + "Count"];
+            const count = logData[logType + 'Count'];
             const startDate = logData.startDate;
             const endDate = logData.endDate;
 
             if (count > 0) {
               message = Drupal.formatPlural(
                 count,
-                "Found 1 @type log entry from @start to @end.",
-                "Found @count @type log entries from @start to @end.",
+                'Found 1 @type log entry from @start to @end.',
+                'Found @count @type log entries from @start to @end.',
                 {
-                  "@type": logType,
-                  "@start": startDate,
-                  "@end": endDate,
-                  "@count": count,
+                  '@type': logType,
+                  '@start': startDate,
+                  '@end': endDate,
+                  '@count': count,
                 },
               );
             } else {
               message = Drupal.t(
-                "No @type log entries found from @start to @end.",
+                'No @type log entries found from @start to @end.',
                 {
-                  "@type": logType,
-                  "@start": startDate,
-                  "@end": endDate,
+                  '@type': logType,
+                  '@start': startDate,
+                  '@end': endDate,
                 },
               );
             }
 
-            Drupal.announce(message, "polite");
+            Drupal.announce(message, 'polite');
           }
         }
       }
 
       // Handle crime log announcements.
       if (settings.crimeLog) {
-        announceLogResults(settings.crimeLog, "crime");
+        announceLogResults(settings.crimeLog, 'crime');
       }
 
       // Handle fire log announcements.
       if (settings.fireLog) {
-        announceLogResults(settings.fireLog, "fire");
+        announceLogResults(settings.fireLog, 'fire');
       }
     },
   };
