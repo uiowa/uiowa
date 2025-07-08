@@ -1,0 +1,21 @@
+uuid: 2bb2b2a6-5bad-4959-b87a-6fbb2bfc5f01
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_bus_arrivals.field_slide_bus_arrivals_stop
+    - paragraphs.paragraphs_type.slide_bus_arrivals
+id: paragraph.slide_bus_arrivals.default
+targetEntityType: paragraph
+bundle: slide_bus_arrivals
+mode: default
+content:
+  field_slide_bus_arrivals_stop:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

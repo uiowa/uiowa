@@ -4,14 +4,12 @@ signage:
     theme:
       assets/css/signage.css: { preprocess: false }
 
-# Clock display
-datetime:
+# Bus Arrivals
+bus_arrivals:
   js:
-    js/datetime.js: { preprocess: false  }
+    js/bus_arrivals.js: { preprocess: false }
   dependencies:
-    - core/jquery
-    - core/once
-
+    - core/drupal
 # Splide
 splide:
   js:

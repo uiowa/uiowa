@@ -1,0 +1,48 @@
+uuid: ad3935d6-b428-4565-b5ca-e988d594147d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_slide_widget
+    - node.type.slide
+    - paragraphs.paragraphs_type.slide_bus_arrivals
+    - paragraphs.paragraphs_type.slide_image
+  module:
+    - entity_reference_revisions
+id: node.slide.field_slide_widget
+field_name: field_slide_widget
+entity_type: node
+bundle: slide
+label: 'Slide Content'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      slide_image: slide_image
+      slide_bus_arrivals: slide_bus_arrivals
+    negate: 0
+    target_bundles_drag_drop:
+      slide_bus_arrivals:
+        weight: -12
+        enabled: true
+      slide_image:
+        weight: -13
+        enabled: true
+      uiowa_collection_item:
+        weight: -11
+        enabled: false
+      uiowa_contact:
+        weight: -10
+        enabled: false
+      uiowa_slide:
+        weight: -9
+        enabled: false
+      uiowa_timeline_item:
+        weight: -8
+        enabled: false
+field_type: entity_reference_revisions
