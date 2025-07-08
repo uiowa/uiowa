@@ -764,7 +764,7 @@ display:
           entity_field: nid
           plugin_id: field
           label: id
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -827,7 +827,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: category
+          label: 'Record Category'
           exclude: false
           alter:
             alter_text: false
@@ -860,7 +860,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -890,70 +890,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: title
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        body:
-          id: body
-          table: node__body
-          field: body
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: description
+          label: 'Official Record Title'
           exclude: false
           alter:
             alter_text: false
@@ -995,8 +932,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: text_default
-          settings: {  }
+          type: string
+          settings:
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1007,16 +945,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_record_ui_retention_guides:
-          id: field_record_ui_retention_guides
-          table: node__field_record_ui_retention_guides
-          field: field_record_ui_retention_guides
+        body:
+          id: body
+          table: node__body
+          field: body
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: ''
-          exclude: true
+          label: 'Record Description'
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -1077,7 +1015,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'administrative unit responsible for establishing retention criteria'
+          label: 'Administrative Unit Responsible for Establishing Retention Criteria'
           exclude: false
           alter:
             alter_text: false
@@ -1110,7 +1048,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1132,15 +1070,15 @@ display:
           multi_type: separator
           separator: '|'
           field_api_classes: false
-        field_record_ui_retention_guides_1:
-          id: field_record_ui_retention_guides_1
+        field_record_ui_retention_guides:
+          id: field_record_ui_retention_guides
           table: node__field_record_ui_retention_guides
           field: field_record_ui_retention_guides
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'ui retention guidelines'
+          label: 'UI Retention Guidelines'
           exclude: false
           alter:
             alter_text: false
@@ -1173,7 +1111,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1202,7 +1140,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: confidential
+          label: Confidential
           exclude: false
           alter:
             alter_text: false
@@ -1235,7 +1173,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1267,7 +1205,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: vital
+          label: Vital
           exclude: false
           alter:
             alter_text: false
@@ -1300,7 +1238,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1332,7 +1270,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'official files maintained by'
+          label: 'Official Files Maintained By'
           exclude: false
           alter:
             alter_text: false
@@ -1365,7 +1303,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1395,7 +1333,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'year updated'
+          label: 'Year Updated'
           exclude: false
           alter:
             alter_text: false
@@ -1428,7 +1366,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1472,6 +1410,32 @@ display:
             label: ''
             field_identifier: ''
           exposed: false
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          value:
+            record: record
+          group: 1
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: data_export
         options:
@@ -1496,6 +1460,8 @@ display:
         access: false
         fields: false
         sorts: false
+        filters: false
+        filter_groups: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -1513,7 +1479,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - request_format
-        - url
         - 'user.node_grants:view'
         - user.roles
       tags:
