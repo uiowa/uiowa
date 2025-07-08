@@ -2903,12 +2903,6 @@ $sites['asl.dev.drupal.uiowa.edu'] = 'asl.uiowa.edu';
 $sites['asl.stage.drupal.uiowa.edu'] = 'asl.uiowa.edu';
 $sites['asl.prod.drupal.uiowa.edu'] = 'asl.uiowa.edu';
 
-// Directory aliases for asian-slavic.uiowa.edu.
-$sites['asian-slavic.uiowa.ddev.site'] = 'asian-slavic.uiowa.edu';
-$sites['asian-slavic.dev.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
-$sites['asian-slavic.stage.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
-$sites['asian-slavic.prod.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
-
 // Directory aliases for spanish-portuguese.uiowa.edu.
 $sites['spanish-portuguese.uiowa.ddev.site'] = 'spanish-portuguese.uiowa.edu';
 $sites['spanish-portuguese.dev.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
