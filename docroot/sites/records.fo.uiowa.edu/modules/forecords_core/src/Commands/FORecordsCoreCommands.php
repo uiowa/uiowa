@@ -41,8 +41,9 @@ class FORecordsCoreCommands extends DrushCommands {
    * @aliases records-download
    * @usage forecords_core:records-download
    *  Inspired by views_data_export:views-data-export.
+   * @option force Delete today's file if it exists and regenerate it.
    */
-  public function recordsDownload(): void {
+  public function recordsDownload(array $options = ['force' => FALSE]): void {
     $public_files = $this->fileSystem->realpath('public://exports/');
     $file_name = 'records_' . date('Y-m-d') . '.csv';
     $file_path = $public_files . '/' . $file_name;
@@ -60,8 +61,7 @@ class FORecordsCoreCommands extends DrushCommands {
       // Use filemtime to get the last modified time of the file.
       $file_mtime = filemtime($file->uri);
       // If the file is older than 1 day, delete it.
-      // @todo set to -1 day after testing.
-      if ($file_mtime < strtotime('-1 minutes')) {
+      if ($file_mtime > strtotime('1 day')) {
         $this->fileSystem->delete($file->uri);
         $this->getLogger('forecords_core')->notice($this->t('Deleted old file: @file', ['@file' => $file->filename]));
       }
@@ -69,10 +69,17 @@ class FORecordsCoreCommands extends DrushCommands {
 
     // Exit if the file already exists.
     if (file_exists($file_path)) {
-      $this->getLogger('forecords_core')->notice(
-        $this->t('Records download for today already exists: @file', ['@file' => $file_name])
-      );
-      return;
+      // If the force option is set, delete the existing file.
+      if ($options['force']) {
+        $this->fileSystem->delete($file_path);
+        $this->getLogger('forecords_core')->notice($this->t("Force deleted today's file."));
+      }
+      else {
+        $this->getLogger('forecords_core')->notice(
+          $this->t('Records download for today already exists: @file', ['@file' => $file_name])
+        );
+        return;
+      }
     }
 
     // Switch to user 1 to run trigger the view.
