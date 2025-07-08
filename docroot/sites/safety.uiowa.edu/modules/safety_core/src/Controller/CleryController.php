@@ -56,9 +56,9 @@ class CleryController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-    $container->get("http_client"),
-    $container->get("config.factory"),
-    $container->get("cache.default")
+      $container->get("http_client"),
+      $container->get("config.factory"),
+      $container->get("cache.default")
     );
   }
 
@@ -112,10 +112,11 @@ class CleryController extends ControllerBase {
     $valid_statuses = $options['valid_statuses'] ?? [200];
     if (!in_array($response->getStatusCode(), $valid_statuses)) {
       $error_body = $response->getBody()->getContents();
+
       throw new \Exception(
-      "API request failed with status: " . $response->getStatusCode() .
-      " for endpoint: " . $endpoint .
-      ". Response: " . $error_body
+        "API request failed with status: " . $response->getStatusCode() .
+        " for endpoint: " . $endpoint .
+        ". Response: " . $error_body
       );
     }
 
@@ -124,12 +125,14 @@ class CleryController extends ControllerBase {
 
     // Handle empty response body.
     if (empty($response_body)) {
+
       return [];
     }
 
     // Decode and validate response.
     $data = json_decode($response_body, TRUE);
     if (json_last_error() !== JSON_ERROR_NONE) {
+
       throw new \Exception("Invalid JSON response for endpoint: " . $endpoint);
     }
 
@@ -159,12 +162,24 @@ class CleryController extends ControllerBase {
   }
 
   /**
-   * Gets cached crime data or fetches from API using bucket system.
+   * Generic method to get cached log data or fetch from API.
+   *
+   * @param string $log_type
+   *   The type of log (crime, fire, etc.).
+   * @param string $start_date
+   *   Start date for filtering.
+   * @param string $end_date
+   *   End date for filtering.
+   * @param int|null $limit
+   *   Optional limit for results.
+   *
+   * @return array
+   *   Filtered log data.
    */
-  public function getCrimeData($start_date, $end_date, $limit = NULL) {
+  protected function getLogData($log_type, $start_date, $end_date, $limit = NULL) {
     // Create cache bucket.
     $bucket = (new \DateTime($end_date))->format("Y-m");
-    $cid = "safety_core:crime_log:bucket:" . $bucket;
+    $cid = "safety_core:{$log_type}_log:bucket:" . $bucket;
 
     // Check cache first.
     if ($cache = $this->cacheBackend->get($cid)) {
@@ -173,13 +188,14 @@ class CleryController extends ControllerBase {
     else {
       // Fetch date range for bucket.
       $bucket_start = (new \DateTime($bucket . "-01"))
-        ->modify("-30 days")
+        //->modify("-30 days")
+        ->modify("-360 days")
         ->format("Y-m-d");
       $bucket_end = (new \DateTime($bucket . "-01"))
         ->modify("last day of this month")
         ->format("Y-m-d");
 
-      $cached_data = $this->fetchCrimeData($bucket_start, $bucket_end);
+      $cached_data = $this->fetchLogData($log_type, $bucket_start, $bucket_end);
 
       // Cache for 24 hours.
       $this->cacheBackend->set($cid, $cached_data, time() + 86400);
@@ -187,85 +203,161 @@ class CleryController extends ControllerBase {
 
     // Filter cached data to requested range.
     $filtered_data = $this->filterByDateRange(
-    $cached_data,
-    $start_date,
-    $end_date
+      $cached_data,
+      $start_date,
+      $end_date,
+      $log_type
     );
 
     return $limit ? array_slice($filtered_data, 0, $limit) : $filtered_data;
   }
 
   /**
-   * Filters crime data by date range.
+   * Gets cached crime data or fetches from API using bucket system.
+   */
+  public function getCrimeData($start_date, $end_date, $limit = NULL) {
+    return $this->getLogData('crime', $start_date, $end_date, $limit);
+  }
+
+  /**
+   * Gets cached fire data or fetches from API using bucket system.
+   */
+  public function getFireData($start_date, $end_date, $limit = NULL) {
+    return $this->getLogData('fire', $start_date, $end_date, $limit);
+  }
+
+  /**
+   * Filters log data by date range.
+   *
+   * @param array $data
+   *   The data to filter.
+   * @param string $start_date
+   *   Start date for filtering.
+   * @param string $end_date
+   *   End date for filtering.
+   * @param string $log_type
+   *   The type of log for date field mapping.
+   *
+   * @return array
+   *   Filtered data.
    *
    * @throws \Exception
    */
-  protected function filterByDateRange($data, $start_date, $end_date) {
+  protected function filterByDateRange($data, $start_date, $end_date, $log_type = 'crime') {
     $start_timestamp = strtotime($start_date);
     $end_timestamp = strtotime($end_date . " 23:59:59");
 
-    return array_filter($data, function ($crime) use (
+    // Map log types to their date fields.
+    $date_field_map = [
+      'crime' => 'dateOffenseReported',
+      'fire' => 'dateFireReported',
+    ];
+
+    $date_field = $date_field_map[$log_type] ?? 'dateOffenseReported';
+
+    return array_filter($data, function ($log) use (
       $start_timestamp,
-      $end_timestamp
+      $end_timestamp,
+      $date_field
     ) {
-      $crime_date = $crime["dateOffenseReported"] ?? "";
-      if (empty($crime_date)) {
+      $log_date = $log[$date_field] ?? "";
+      if (empty($log_date)) {
         return FALSE;
       }
 
       // Check if there's a time.
-      if (preg_match("/\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}/", $crime_date)) {
-        $crime_timestamp = \DateTime::createFromFormat(
-        "m/d/Y H:i",
-        $crime_date
-        );
+      if (preg_match("/\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}/", $log_date)) {
+        $log_timestamp = \DateTime::createFromFormat("m/d/Y H:i", $log_date);
       }
-      elseif (preg_match("/\d{1,2}\/\d{1,2}\/\d{4}/", $crime_date)) {
-        $crime_timestamp = \DateTime::createFromFormat("m/d/Y", $crime_date);
+      elseif (preg_match("/\d{1,2}\/\d{1,2}\/\d{4}/", $log_date)) {
+        $log_timestamp = \DateTime::createFromFormat("m/d/Y", $log_date);
       }
       else {
-        $crime_timestamp = new \DateTime($crime_date);
+        $log_timestamp = new \DateTime($log_date);
       }
 
-      $crime_timestamp = $crime_timestamp
-      ? $crime_timestamp->getTimestamp()
-      : 0;
+      $log_timestamp = $log_timestamp
+        ? $log_timestamp->getTimestamp()
+        : 0;
 
-      return $crime_timestamp >= $start_timestamp &&
-      $crime_timestamp <= $end_timestamp;
+      return $log_timestamp >= $start_timestamp &&
+        $log_timestamp <= $end_timestamp;
     });
+  }
+
+  /**
+   * Fetches log data from the API.
+   *
+   * @param string $log_type
+   *   The type of log (crime, fire, etc.).
+   * @param string $start_date
+   *   Start date for the query.
+   * @param string $end_date
+   *   End date for the query.
+   *
+   * @return array
+   *   The fetched and formatted log data.
+   *
+   * @throws \Exception
+   */
+  protected function fetchLogData($log_type, $start_date, $end_date) {
+    // Map log types to their API endpoints and parameters.
+    $endpoint_map = [
+      'crime' => '/report/crime-log',
+      'fire' => '/report/fire-log',
+    ];
+
+    $param_map = [
+      'crime' => [
+        'FromDateReported' => $start_date,
+        'ToDateReported' => $end_date,
+      ],
+      'fire' => [
+        'FromDateReported' => $start_date,
+        'ToDateReported' => $end_date,
+      ],
+    ];
+
+    $endpoint = $endpoint_map[$log_type] ?? '/report/crime-log';
+    $query_params = $param_map[$log_type] ?? $param_map['crime'];
+
+    $data = $this->apiGet($endpoint, $query_params);
+
+    if (!is_array($data)) {
+      throw new \Exception("Invalid API response format for {$log_type} log");
+    }
+
+    // Sort by newest first using appropriate date field.
+    $date_field_map = [
+      'crime' => ['dateOffenseReported', 'timeOffenseReported'],
+      'fire' => ['dateFireReported', 'timeFireReported'],
+    ];
+
+    $date_fields = $date_field_map[$log_type] ?? $date_field_map['crime'];
+
+    usort($data, function ($a, $b) use ($date_fields) {
+      $datetime_a = ($a[$date_fields[0]] ?? "") . " " . ($a[$date_fields[1]] ?? "00:00:00");
+      $datetime_b = ($b[$date_fields[0]] ?? "") . " " . ($b[$date_fields[1]] ?? "00:00:00");
+
+      return strtotime($datetime_b) - strtotime($datetime_a);
+    });
+
+    // Format dates based on log type.
+    return $log_type === 'crime' ? $this->formatCrimeDates($data) : $this->formatFireDates($data);
   }
 
   /**
    * Fetches crime data from the API.
    */
   protected function fetchCrimeData($start_date, $end_date) {
-    $query_params = [
-      'FromDateReported' => $start_date,
-      'ToDateReported' => $end_date,
-    ];
+    return $this->fetchLogData('crime', $start_date, $end_date);
+  }
 
-    $data = $this->apiGet('/report/crime-log', $query_params);
-
-    if (!is_array($data)) {
-      throw new \Exception("Invalid API response format");
-    }
-
-    // Sort by newest first.
-    usort($data, function ($a, $b) {
-      $datetime_a =
-      ($a["dateOffenseReported"] ?? "") .
-      " " .
-      ($a["timeOffenseReported"] ?? "00:00:00");
-      $datetime_b =
-      ($b["dateOffenseReported"] ?? "") .
-      " " .
-      ($b["timeOffenseReported"] ?? "00:00:00");
-
-      return strtotime($datetime_b) - strtotime($datetime_a);
-    });
-
-    return $this->formatCrimeDates($data);
+  /**
+   * Fetches fire data from the API.
+   */
+  protected function fetchFireData($start_date, $end_date) {
+    return $this->fetchLogData('fire', $start_date, $end_date);
   }
 
   /**
@@ -274,41 +366,91 @@ class CleryController extends ControllerBase {
   protected function formatCrimeDates(array $crimes) {
     foreach ($crimes as &$crime) {
       // Format occurred date.
-      $start =
-        $crime["dateOffenseOccuredStart"] ??
-        ($crime["dateOffenseOccured"] ?? NULL);
+      $start = $crime["dateOffenseOccuredStart"] ?? ($crime["dateOffenseOccured"] ?? NULL);
       $end = $crime["dateOffenseOccuredEnd"] ?? NULL;
 
       if ($start && $end) {
-        $start_fmt = $this->formatDate(
-        $start,
-        $crime["timeOffenseOccuredStart"] ?? NULL
-        );
-        $end_fmt = $this->formatDate(
-          $end,
-          $crime["timeOffenseOccuredEnd"] ?? NULL
-        );
-        $crime["dateOffenseOccured"] =
-          $start_fmt !== $end_fmt
-            ? "Between {$start_fmt} and {$end_fmt}"
-            : $start_fmt;
+        $start_fmt = $this->formatDate($start, $crime["timeOffenseOccuredStart"] ?? NULL);
+        $end_fmt = $this->formatDate($end, $crime["timeOffenseOccuredEnd"] ?? NULL);
+        $crime["dateOffenseOccured"] = $start_fmt !== $end_fmt
+          ? "Between {$start_fmt} and {$end_fmt}"
+          : $start_fmt;
       }
       elseif ($start) {
-        $crime["dateOffenseOccured"] = $this->formatDate(
-        $start,
-        $crime["timeOffenseOccured"] ?? NULL
-        );
+        $crime["dateOffenseOccured"] = $this->formatDate($start, $crime["timeOffenseOccured"] ?? NULL);
       }
 
       // Format reported date.
       if (!empty($crime["dateOffenseReported"])) {
         $crime["dateOffenseReported"] = $this->formatDate(
-        $crime["dateOffenseReported"],
-        $crime["timeOffenseReported"] ?? NULL
+          $crime["dateOffenseReported"],
+          $crime["timeOffenseReported"] ?? NULL
         );
       }
     }
     return $crimes;
+  }
+
+  /**
+   * Formats date fields in fire data array.
+   */
+  protected function formatFireDates(array $fires) {
+    foreach ($fires as &$fire) {
+      // Format occurred date.
+      $start = $fire["dateFireOccuredStart"] ?? ($fire["dateFireOccured"] ?? NULL);
+      $end = $fire["dateFireOccuredEnd"] ?? NULL;
+
+      if ($start && $end) {
+        $start_fmt = $this->formatDate($start, $fire["timeFireOccuredStart"] ?? NULL);
+        $end_fmt = $this->formatDate($end, $fire["timeFireOccuredEnd"] ?? NULL);
+        $fire["dateFireOccured"] = $start_fmt !== $end_fmt
+          ? "Between {$start_fmt} and {$end_fmt}"
+          : $start_fmt;
+      }
+      elseif ($start) {
+        $fire["dateFireOccured"] = $this->formatDate($start, $fire["timeFireOccured"] ?? NULL);
+      }
+
+      // Format reported date.
+      if (!empty($fire["dateFireReported"])) {
+        $fire["dateFireReported"] = $this->formatDate(
+          $fire["dateFireReported"],
+          $fire["timeFireReported"] ?? NULL
+        );
+      }
+    }
+    return $fires;
+  }
+
+  /**
+   * Format a date string with optional time.
+   *
+   * @param string $date
+   *   The date string to format.
+   * @param string|null $time
+   *   Optional time string.
+   *
+   * @return string
+   *   Formatted date string.
+   */
+  protected function formatDate($date, $time = NULL) {
+    if (empty($date)) {
+      return '';
+    }
+
+    try {
+      $datetime = new \DateTime($date);
+      if (!empty($time)) {
+        $time_parts = explode(':', $time);
+        if (count($time_parts) >= 2) {
+          $datetime->setTime((int) $time_parts[0], (int) $time_parts[1]);
+        }
+      }
+      return $datetime->format('m/d/Y' . (!empty($time) ? ' H:i' : ''));
+    }
+    catch (\Exception $e) {
+      return $date;
+    }
   }
 
 }
