@@ -947,12 +947,6 @@ $sites['org-jacobsoninstitute.dev.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
 $sites['org-jacobsoninstitute.stage.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
 $sites['org-jacobsoninstitute.prod.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
 
-// Directory aliases for prairierestoration.course.uiowa.edu.
-$sites['courseprairierestoration.uiowa.ddev.site'] = 'prairierestoration.course.uiowa.edu';
-$sites['courseprairierestoration.dev.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
-$sites['courseprairierestoration.stage.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
-$sites['courseprairierestoration.prod.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
-
 // Directory aliases for issuree.lab.uiowa.edu.
 $sites['labissuree.uiowa.ddev.site'] = 'issuree.lab.uiowa.edu';
 $sites['labissuree.dev.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
