@@ -300,15 +300,16 @@ class CleryReportForm extends FormBase {
       '#tree' => TRUE,
     ];
 
-    // Build existing contacts.
-    $num_contacts = $form_state->get('num_contacts');
-    if ($num_contacts === NULL) {
-      $num_contacts = 0;
-      $form_state->set('num_contacts', $num_contacts);
+    // Initialize contacts data in form state if not set.
+    $contacts_data = $form_state->get('contacts_data');
+    if ($contacts_data === NULL) {
+      $contacts_data = [];
+      $form_state->set('contacts_data', $contacts_data);
     }
 
-    for ($i = 0; $i < $num_contacts; $i++) {
-      $this->buildContactForm($form, $form_state, $i);
+    // Build existing contacts.
+    foreach ($contacts_data as $contact_id => $contact_data) {
+      $this->buildContactForm($form, $form_state, $contact_id, $contact_data);
     }
 
     $form['contacts']['add_contact'] = [
@@ -337,47 +338,55 @@ class CleryReportForm extends FormBase {
   protected function buildContactForm(
     array &$form,
     FormStateInterface $form_state,
-    $index,
+    $contact_id,
+    array $contact_data = [],
   ) {
-    $form['contacts']['contacts_container'][$index] = [
+    $contact_number = array_search($contact_id, array_keys($form_state->get('contacts_data'))) + 1;
+
+    $form['contacts']['contacts_container'][$contact_id] = [
       '#type' => 'fieldset',
-      '#title' => '<span class="headline h6">' . $this->t('Individual @num', ['@num' => $index + 1]) . '</span>',
+      '#title' => '<span class="headline h6">' . $this->t('Individual @num', ['@num' => $contact_number]) . '</span>',
       '#collapsible' => FALSE,
     ];
 
-    $contact = &$form['contacts']['contacts_container'][$index];
+    $contact = &$form['contacts']['contacts_container'][$contact_id];
 
     $contact['remove'] = [
       '#type' => 'submit',
       '#value' => $this->t('Remove Individual'),
-      '#name' => 'remove_contact_' . $index,
+      '#name' => 'remove_contact_' . $contact_id,
     ] + $this->buildAjaxButton('::contactsCallback', 'contacts-wrapper', ['::removeContactSubmit']);
 
     $contact['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('First Name'),
       '#required' => TRUE,
+      '#default_value' => $contact_data['first_name'] ?? '',
     ];
 
     $contact['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Last Name'),
       '#required' => TRUE,
+      '#default_value' => $contact_data['last_name'] ?? '',
     ];
 
     $contact['email'] = [
       '#type' => 'email',
       '#title' => $this->t('Email'),
+      '#default_value' => $contact_data['email'] ?? '',
     ];
 
     $contact['phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Phone'),
+      '#default_value' => $contact_data['phone'] ?? '',
     ];
 
     $contact['date_of_birth'] = [
       '#type' => 'date',
       '#title' => $this->t('Date of Birth'),
+      '#default_value' => $contact_data['date_of_birth'] ?? '',
     ];
 
   }
@@ -389,8 +398,15 @@ class CleryReportForm extends FormBase {
     array &$form,
     FormStateInterface $form_state,
   ) {
-    $num_contacts = $form_state->get('num_contacts');
-    $form_state->set('num_contacts', $num_contacts + 1);
+    // Preserve existing contact data.
+    $this->preserveContactData($form_state);
+
+    // Add new contact with unique ID.
+    $contacts_data = $form_state->get('contacts_data');
+    $new_contact_id = 'contact_' . time() . '_' . mt_rand();
+    $contacts_data[$new_contact_id] = [];
+    $form_state->set('contacts_data', $contacts_data);
+
     $form_state->setRebuild();
   }
 
@@ -401,19 +417,35 @@ class CleryReportForm extends FormBase {
     array &$form,
     FormStateInterface $form_state,
   ) {
-    $trigger = $form_state->getTriggeringElement();
-    $contact_index = (int) str_replace(
-      'remove_contact_',
-      '',
-      $trigger['#name']
-    );
+    // Preserve existing contact data.
+    $this->preserveContactData($form_state);
 
-    $num_contacts = $form_state->get('num_contacts');
-    if ($num_contacts > 0) {
-      $form_state->set('num_contacts', $num_contacts - 1);
+    $trigger = $form_state->getTriggeringElement();
+    $contact_id = str_replace('remove_contact_', '', $trigger['#name']);
+
+    $contacts_data = $form_state->get('contacts_data');
+    if (isset($contacts_data[$contact_id])) {
+      unset($contacts_data[$contact_id]);
+      $form_state->set('contacts_data', $contacts_data);
     }
 
     $form_state->setRebuild();
+  }
+
+  /**
+   * Preserve contact data from form values into form state.
+   */
+  protected function preserveContactData(FormStateInterface $form_state) {
+    $contacts_data = $form_state->get('contacts_data');
+    $contacts_values = $form_state->getValue('contacts_container', []);
+
+    foreach ($contacts_data as $contact_id => $stored_data) {
+      if (isset($contacts_values[$contact_id])) {
+        $contacts_data[$contact_id] = array_merge($stored_data, $contacts_values[$contact_id]);
+      }
+    }
+
+    $form_state->set('contacts_data', $contacts_data);
   }
 
   /**
