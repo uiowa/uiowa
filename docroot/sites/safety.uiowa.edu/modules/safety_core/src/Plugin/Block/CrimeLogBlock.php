@@ -9,6 +9,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\safety_core\Controller\CleryController;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Psr\Log\LoggerInterface;
 
 /**
  * Provides a Crime Log block.
@@ -29,6 +31,20 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
   protected $cleryController;
 
   /**
+   * The request stack service.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * The logger service.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
    * Constructs a new CrimeLogBlock instance.
    */
   public function __construct(
@@ -36,9 +52,13 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
     $plugin_id,
     $plugin_definition,
     CleryController $clery_controller,
+    RequestStack $request_stack,
+    LoggerInterface $logger,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->cleryController = $clery_controller;
+    $this->requestStack = $request_stack;
+    $this->logger = $logger;
   }
 
   /**
@@ -55,6 +75,8 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
       $plugin_id,
       $plugin_definition,
       $container->get('safety_core.clery_controller'),
+      $container->get('request_stack'),
+      $container->get('logger.factory')->get('safety_core'),
     );
   }
 
@@ -63,7 +85,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
    */
   public function build() {
     $build = [];
-    $request = \Drupal::request();
+    $request = $this->requestStack->getCurrentRequest();
     $start_date = $request->query->get('start_date');
     $end_date = $request->query->get('end_date');
 
@@ -167,7 +189,7 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
 
     }
     catch (\Exception $e) {
-      \Drupal::logger('safety_core')->error('Crime log API error: @message', ['@message' => $e->getMessage()]);
+      $this->logger->error('Crime log API error: @message', ['@message' => $e->getMessage()]);
       $build['error'] = [
         '#markup' => $this->t('Failed to load crime logs. Please try again later.'),
       ];
