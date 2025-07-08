@@ -1799,12 +1799,6 @@ $sites['csd.dev.drupal.uiowa.edu'] = 'csd.uiowa.edu';
 $sites['csd.stage.drupal.uiowa.edu'] = 'csd.uiowa.edu';
 $sites['csd.prod.drupal.uiowa.edu'] = 'csd.uiowa.edu';
 
-// Directory aliases for ees.uiowa.edu.
-$sites['ees.uiowa.ddev.site'] = 'ees.uiowa.edu';
-$sites['ees.dev.drupal.uiowa.edu'] = 'ees.uiowa.edu';
-$sites['ees.stage.drupal.uiowa.edu'] = 'ees.uiowa.edu';
-$sites['ees.prod.drupal.uiowa.edu'] = 'ees.uiowa.edu';
-
 // Directory aliases for esl.uiowa.edu.
 $sites['esl.uiowa.ddev.site'] = 'esl.uiowa.edu';
 $sites['esl.dev.drupal.uiowa.edu'] = 'esl.uiowa.edu';
