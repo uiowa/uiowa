@@ -808,7 +808,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     }
     if (isset($form['unpublish_on'])) {
       if (isset($form['unpublish_state'])) {
-        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Archive on');
+        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Unpublish on');
         $state = 'archived';
         $form['unpublish_state']['#attributes']['class'] = (!empty($form['unpublish_state']['#attributes']['class']) ? array_merge($form['unpublish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
       }
@@ -1078,6 +1078,28 @@ function _uiowa_core_process_element(array $element, FormStateInterface $form_st
   $checkboxes['administrator']['#access'] = FALSE;
 
   return $checkboxes;
+}
+
+function uiowa_core_inline_entity_form_entity_form_alter(&$entity_form, &$form_state){
+  $foo = 'bar';
+  if ($entity_form['#entity_type'] === 'node' && $entity_form['#bundle'] === 'slide') {
+    if (isset($entity_form['unpublish_on'])) {
+      if (isset($entity_form['unpublish_state'])) {
+        $entity_form['unpublish_on']['widget'][0]['value']['#title'] = t('Unpublish on');
+        $state = 'archived';
+        $entity_form['unpublish_state']['#attributes']['class'] = (!empty($entity_form['unpublish_state']['#attributes']['class']) ? array_merge($form['unpublish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
+      }
+      else {
+        $state = 'unpublished';
+      }
+
+      $additional_unpublished_help_text = t('Note: this content will transition to an @state state within a one-hour window of the selected date and time.', [
+        '@state' => $state,
+      ]);
+      $entity_form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
+
+    }
+  }
 }
 
 /**
