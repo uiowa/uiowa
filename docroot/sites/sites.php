@@ -2897,12 +2897,6 @@ $sites['dwllc.dev.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
 $sites['dwllc.stage.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
 $sites['dwllc.prod.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
 
-// Directory aliases for asl.uiowa.edu.
-$sites['asl.uiowa.ddev.site'] = 'asl.uiowa.edu';
-$sites['asl.dev.drupal.uiowa.edu'] = 'asl.uiowa.edu';
-$sites['asl.stage.drupal.uiowa.edu'] = 'asl.uiowa.edu';
-$sites['asl.prod.drupal.uiowa.edu'] = 'asl.uiowa.edu';
-
 // Directory aliases for spanish-portuguese.uiowa.edu.
 $sites['spanish-portuguese.uiowa.ddev.site'] = 'spanish-portuguese.uiowa.edu';
 $sites['spanish-portuguese.dev.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
