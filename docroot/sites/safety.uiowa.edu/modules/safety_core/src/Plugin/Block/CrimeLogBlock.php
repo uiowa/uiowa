@@ -194,14 +194,48 @@ class CrimeLogBlock extends BlockBase implements ContainerFactoryPluginInterface
    * Gets cache tags for this block.
    */
   public function getCacheTags() {
-    return Cache::mergeTags(parent::getCacheTags(), ['crime_log_data']);
+    $request = \Drupal::request();
+    $start_date = $request->query->get('start_date');
+    $end_date = $request->query->get('end_date');
+
+    // Set defaults if no search performed.
+    if (!$start_date && !$end_date) {
+      $start_date = (new DrupalDateTime('7 days ago'))->format('Y-m-d');
+      $end_date = (new DrupalDateTime('today'))->format('Y-m-d');
+    }
+
+    // Create date-specific cache tags.
+    $tags = ['crime_log_data'];
+
+    // Add monthly cache tags for better invalidation.
+    if ($start_date && $end_date) {
+      $start_month = (new DrupalDateTime($start_date))->format('Y-m');
+      $end_month = (new DrupalDateTime($end_date))->format('Y-m');
+
+      $tags[] = "crime_log_data:month:{$start_month}";
+      if ($start_month !== $end_month) {
+        $tags[] = "crime_log_data:month:{$end_month}";
+      }
+    }
+
+    return Cache::mergeTags(parent::getCacheTags(), $tags);
   }
 
   /**
    * Gets the cache max age for this block.
    */
   public function getCacheMaxAge() {
-    return 1800;
+    $request = \Drupal::request();
+    $end_date = $request->query->get('end_date');
+
+    if (!$end_date) {
+      $end_date = (new DrupalDateTime('today'))->format('Y-m-d');
+    }
+
+    $today = (new DrupalDateTime())->format('Y-m-d');
+
+    // Short cache for today's data, longer for historical.
+    return ($end_date === $today) ? 900 : 3600;
   }
 
 }

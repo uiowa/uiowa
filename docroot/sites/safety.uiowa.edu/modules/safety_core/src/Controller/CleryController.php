@@ -163,37 +163,33 @@ class CleryController extends ControllerBase {
    * Gets cached crime data or fetches from API using bucket system.
    */
   public function getCrimeData($start_date, $end_date, $limit = NULL) {
-    // Create cache bucket.
-    $bucket = (new \DateTime($end_date))->format("Y-m");
-    $cid = "safety_core:crime_log:bucket:" . $bucket;
+    // Cache key based on date range.
+    $cache_key = "safety_core:crime_log:{$start_date}:{$end_date}";
 
-    // Check cache first.
-    if ($cache = $this->cacheBackend->get($cid)) {
-      $cached_data = $cache->data;
+    // Check cache.
+    if ($cache = $this->cacheBackend->get($cache_key)) {
+      $data = $cache->data;
     }
     else {
-      // Fetch date range for bucket.
-      $bucket_start = (new \DateTime($bucket . "-01"))
-        ->modify("-30 days")
-        ->format("Y-m-d");
-      $bucket_end = (new \DateTime($bucket . "-01"))
-        ->modify("last day of this month")
-        ->format("Y-m-d");
+      // Fetch from API.
+      $data = $this->fetchCrimeData($start_date, $end_date);
 
-      $cached_data = $this->fetchCrimeData($bucket_start, $bucket_end);
-
-      // Cache for 24 hours.
-      $this->cacheBackend->set($cid, $cached_data, time() + 86400);
+      // Cache duration based on how recent the end date is.
+      $cache_duration = $this->getSimpleCacheDuration($end_date);
+      $this->cacheBackend->set($cache_key, $data, time() + $cache_duration);
     }
 
-    // Filter cached data to requested range.
-    $filtered_data = $this->filterByDateRange(
-      $cached_data,
-      $start_date,
-      $end_date
-    );
+    return $limit ? array_slice($data, 0, $limit) : $data;
+  }
 
-    return $limit ? array_slice($filtered_data, 0, $limit) : $filtered_data;
+  /**
+   * Simple cache duration based on end date.
+   */
+  protected function getSimpleCacheDuration($end_date) {
+    $today = (new \DateTime())->format('Y-m-d');
+
+    // Today: 15 minutes, everything else: 1 hour.
+    return ($end_date === $today) ? 900 : 3600;
   }
 
   /**
