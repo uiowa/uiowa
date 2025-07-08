@@ -10,13 +10,16 @@
  */
 function safety_core_theme() {
   return [
-    'crime_log_table' => [
+    'log_table' => [
       'variables' => [
-        'crimes' => [],
+        'crimes' => NULL,
+        'fires' => NULL,
+        'log_type' => 'crime',
         'start_date' => NULL,
         'end_date' => NULL,
+        'field_config' => [],
       ],
-      'template' => 'crime-log-table',
+      'template' => 'log-table',
     ],
   ];
 }
