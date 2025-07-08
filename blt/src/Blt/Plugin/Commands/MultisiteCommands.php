@@ -231,7 +231,9 @@ class MultisiteCommands extends BltTasks {
    *   Array of options.
    *
    * @option simulate
-   *   Simulate cloud operations and file system tasks.
+   *   Simulate cloud operations.
+   * @option no-commit
+   *   Do not create a git commit.
    *
    * @command uiowa:multisite:delete
    *
@@ -243,7 +245,12 @@ class MultisiteCommands extends BltTasks {
    * @requireFeatureBranch
    * @requireCredentials
    */
-  public function delete(array $options = ['simulate' => FALSE]) {
+  public function delete(
+    array $options = [
+      'simulate' => FALSE,
+      'no-commit' => FALSE,
+    ],
+  ) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -368,7 +375,7 @@ EOD
     // Write the manifest back to the file.
     $this->arrayToManifest($manifest);
 
-    if (!$options['simulate']) {
+    if (!$options['no-commit']) {
 
       $task = $this->taskGit()
         ->dir($root)
