@@ -15,7 +15,6 @@ dependencies:
     - node.type.record
     - taxonomy.vocabulary.administrative_units
     - taxonomy.vocabulary.record_categories
-    - user.role.administrator
   module:
     - better_exposed_filters
     - csv_serialization
@@ -1390,10 +1389,9 @@ display:
           separator: ', '
           field_api_classes: false
       access:
-        type: role
+        type: perm
         options:
-          role:
-            administrator: administrator
+          perm: 'create record content'
       sorts:
         nid:
           id: nid
@@ -1480,7 +1478,7 @@ display:
         - 'languages:language_interface'
         - request_format
         - 'user.node_grants:view'
-        - user.roles
+        - user.permissions
       tags:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_record_ad_unit_responsible'
