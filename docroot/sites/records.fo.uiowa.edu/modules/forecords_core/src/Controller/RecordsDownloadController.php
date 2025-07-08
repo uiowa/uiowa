@@ -42,10 +42,10 @@ class RecordsDownloadController extends ControllerBase implements ContainerInjec
   }
 
   /**
-   * Download today's version of records.
+   * Download the stored copy of records.
    */
   public function downloadRecordsExport() {
-    $file_path = 'public://exports/records_' . date('Y-m-d') . '.csv';
+    $file_path = 'public://exports/records.csv';
     $real_path = $this->fileSystem->realpath($file_path);
 
     if (file_exists($real_path)) {
