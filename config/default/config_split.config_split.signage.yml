@@ -15,18 +15,23 @@ module:
 theme: {  }
 complete_list:
   - core.base_field_override.node.slide.promote
-  - field.field.node.slide.field_image
+  - field.storage.node.field_slide_widget
   - metatag.metatag_defaults.node__sign
   - metatag.metatag_defaults.node__slide
   - node.type.sign
   - node.type.slide
+  - paragraphs.paragraphs_type.slide_bus_arrivals
+  - paragraphs.paragraphs_type.slide_image
   - pathauto.pattern.sign
   - pathauto.pattern.slide
   - rabbit_hole.behavior_settings.node_type_sign
   - rabbit_hole.behavior_settings.node_type_slide
   - system.action.user_add_role_action.sign_manager
   - system.action.user_remove_role_action.sign_manager
+  - user.role.sign_manager
+  - field.field.node.slide.field_image
   - 'field.storage.node.field_sign_*'
+  - 'field.storage.paragraph.field_slide_*'
 partial_list:
   - administerusersbyrole.settings
   - 'user.role.*'

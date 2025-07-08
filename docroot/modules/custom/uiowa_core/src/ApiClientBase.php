@@ -184,7 +184,7 @@ abstract class ApiClientBase implements ApiClientInterface {
     else {
       $data = $this->request('GET', $endpoint, $options, $type);
       if ($data) {
-        // Cache for 15 minutes.
+        // Cache for time specified by cacheLength.
         $this->cache->set($cache_id, $data, time() + $this->cacheLength);
       }
     }
