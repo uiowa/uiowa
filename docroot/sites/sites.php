@@ -2903,12 +2903,6 @@ $sites['spanish-portuguese.dev.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.ed
 $sites['spanish-portuguese.stage.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
 $sites['spanish-portuguese.prod.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
 
-// Directory aliases for flare.uiowa.edu.
-$sites['flare.uiowa.ddev.site'] = 'flare.uiowa.edu';
-$sites['flare.dev.drupal.uiowa.edu'] = 'flare.uiowa.edu';
-$sites['flare.stage.drupal.uiowa.edu'] = 'flare.uiowa.edu';
-$sites['flare.prod.drupal.uiowa.edu'] = 'flare.uiowa.edu';
-
 // Directory aliases for translation.uiowa.edu.
 $sites['translation.uiowa.ddev.site'] = 'translation.uiowa.edu';
 $sites['translation.dev.drupal.uiowa.edu'] = 'translation.uiowa.edu';
