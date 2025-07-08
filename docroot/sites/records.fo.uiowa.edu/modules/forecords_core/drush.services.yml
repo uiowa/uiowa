@@ -1,6 +1,0 @@
-services:
-  forecords_core.commands:
-    class: Drupal\forecords_core\Commands\FORecordsCoreCommands
-    arguments: ['@file_system', '@account_switcher']
-    tags:
-      - { name: drush.command }
