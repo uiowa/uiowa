@@ -1817,12 +1817,6 @@ $sites['nrcfcp.dev.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
 $sites['nrcfcp.stage.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
 $sites['nrcfcp.prod.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
 
-// Directory aliases for environmentalsciences.uiowa.edu.
-$sites['environmentalsciences.uiowa.ddev.site'] = 'environmentalsciences.uiowa.edu';
-$sites['environmentalsciences.dev.drupal.uiowa.edu'] = 'environmentalsciences.uiowa.edu';
-$sites['environmentalsciences.stage.drupal.uiowa.edu'] = 'environmentalsciences.uiowa.edu';
-$sites['environmentalsciences.prod.drupal.uiowa.edu'] = 'environmentalsciences.uiowa.edu';
-
 // Directory aliases for stephens.lab.uiowa.edu.
 $sites['labstephens.uiowa.ddev.site'] = 'stephens.lab.uiowa.edu';
 $sites['labstephens.dev.drupal.uiowa.edu'] = 'stephens.lab.uiowa.edu';
