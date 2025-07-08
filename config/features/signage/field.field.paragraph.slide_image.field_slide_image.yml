@@ -1,18 +1,18 @@
-uuid: 31562fe3-d3bb-413c-a0d3-849df520b85a
+uuid: fb5dad06-c4b9-48b3-9992-f17b36c90f5c
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
+    - field.storage.paragraph.field_slide_image
     - media.type.image
-    - node.type.slide
-id: node.slide.field_image
-field_name: field_image
-entity_type: node
-bundle: slide
+    - paragraphs.paragraphs_type.slide_image
+id: paragraph.slide_image.field_slide_image
+field_name: field_slide_image
+entity_type: paragraph
+bundle: slide_image
 label: Image
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -22,8 +22,8 @@ settings:
     target_bundles:
       image: image
     sort:
-      field: _none
+      field: changed
       direction: ASC
     auto_create: true
-    auto_create_bundle: image
+    auto_create_bundle: ''
 field_type: entity_reference
