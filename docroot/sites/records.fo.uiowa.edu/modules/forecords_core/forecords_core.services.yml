@@ -1,0 +1,4 @@
+services:
+  forecords_core.records_export:
+    class: Drupal\forecords_core\RecordsExport
+    arguments: ['@file_system', '@account_switcher']
