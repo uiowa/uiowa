@@ -145,7 +145,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
     // $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
     $max_date = (new DrupalDateTime())->format('Y-m-d');
 
-    $build['#attached']['library'][] = 'safety_core/clery';
+    $build['#attached']['library'][] = 'safety_core/clery-log';
     $build['#attached']['library'][] = 'core/drupal.announce';
 
     // Check if a search has been done.
