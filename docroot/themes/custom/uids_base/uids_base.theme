@@ -314,6 +314,16 @@ function uids_base_preprocess_page(&$variables) {
     $variables['uiowa_logo'] = TRUE;
   }
 
+  // Back to top nav.
+  $excluded_back_top_nav_types = ['sign'];
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $variables['show_back_top_nav'] = TRUE;
+
+  if ($node && in_array($node->getType(), $excluded_back_top_nav_types)) {
+    $variables['show_back_top_nav'] = FALSE;
+  }
+
   // If the site has a parent organization or the site name is more than 43
   // characters, we force the site to use the 'below' header option.
   if ($variables['site_has_parent'] || $name_length > 43) {

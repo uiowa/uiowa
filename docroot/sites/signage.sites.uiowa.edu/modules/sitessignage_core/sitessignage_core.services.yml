@@ -1,0 +1,5 @@
+services:
+  sitessignage_core.route_subscriber:
+    class: 'Drupal\sitessignage_core\Routing\SignageSiteRouteSubscriber'
+    tags:
+      - { name: event_subscriber }

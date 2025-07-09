@@ -1,0 +1,21 @@
+uuid: d7e9a7a6-0ae4-446a-a93c-f441e656e689
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_slide_bus_arrivals_stop
+field_name: field_slide_bus_arrivals_stop
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'sitenow_signage_bus_stops_allowed_values'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

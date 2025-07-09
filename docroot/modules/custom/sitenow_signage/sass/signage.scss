@@ -1,5 +1,6 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use 'sass:color';
 
 // Sign header.
 .page-node-type-sign {
@@ -8,6 +9,7 @@
     margin-left: variables.$mobile-width-gutter;
     margin-right: variables.$mobile-width-gutter;
   }
+
   // Adjust column gap to be smaller for signage.
   .layout {
     &[class*="twocol"],
@@ -19,26 +21,38 @@
       }
     }
   }
+
   // Adjust padding to be smaller for signage.
   .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
     padding-bottom: 0;
     padding-top: variables.$mobile-width-gutter;
   }
+
   // Set sign background to black.
   main.content__container {
-    background: variables.$secondary;
+    --darkmode-bg: #1e1e1e;
+    background: var(--darkmode-bg);
+
     .region-content {
-      background: #fff;
+      background: var(--darkmode-bg);
+    }
+
+    // TODO: figure out how to change classes, this shouldn;t be shipped.
+    .layout__container:not(:first-child) {
+      background: var(--darkmode-bg);
     }
   }
+
   .sign--header {
     display: flex !important;
     align-items: flex-start;
     gap: 1rem;
     flex-wrap: wrap;
+
     .block {
       flex-basis: auto!important;
     }
+
     .site-name {
       @include utilities.breakpoint(page-container) {
         padding-top: .3rem;
@@ -98,4 +112,105 @@
   will-change: opacity;
   // Default is dark overlay.
   background: rgb(0, 0, 0, .5);
+}
+
+// Bus arrivals widget.
+.bus-arrivals {
+  .bg-dark-gray {
+    background-color: variables.$dark-gray;
+    color: variables.$white;
+  }
+
+  caption.predictions-title {
+    background-color: var(--darkmode-bg);
+    font-size: variables.$h5-font-size;
+    font-weight: variables.$font-weight-heavy;
+    letter-spacing: 0.08rem;
+    text-align: left;
+    color: variables.$light;
+  }
+
+  thead.headers {
+    border-top: 7px solid var(--darkmode-bg);
+    border-bottom: 7px solid var(--darkmode-bg);
+
+    th {
+      font-size: variables.$h6-font-size;
+      background: variables.$dark;
+      color: variables.$white;
+      letter-spacing: 0.08rem;
+
+      &:not(:last-child) {
+        border-right: 1px solid color.scale(variables.$dark, $lightness: 12%);
+      }
+
+      &:first-child,
+      &:last-child {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        &:before {
+          content: '';
+          position: relative;
+          width: 100%;
+          height: 0px;
+          left: 0;
+          top: 0;
+          color: transparent;
+          font-size: variables.$h6-font-size;
+          font-weight: variables.$font-weight-medium;
+          text-wrap: nowrap;
+          text-transform: none;
+          letter-spacing: normal;
+        }
+      }
+
+      &:first-child:before {
+          content: 'Coralville Transit';
+      }
+
+      &:last-child:before {
+          content: '000 Minutes';
+          font-weight: variables.$font-weight-normal;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      &.prediction {
+        border-bottom: 7px solid var(--darkmode-bg);
+
+        .agency {
+          font-weight: variables.$font-weight-medium;
+        }
+
+        &.uiowa .agency {
+          color: variables.$primary;
+        }
+
+        &.coralville .agency {
+          color: #4bbaff;
+        }
+      }
+
+      td {
+        font-size: variables.$h6-font-size;
+
+        &:not(:last-child) {
+          border-right: 1px solid color.scale(variables.$dark-gray, $lightness: 10%);
+        }
+      }
+
+      td,
+      th {
+        &:first-child,
+        &:last-child {
+          width: 1%;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
 }
