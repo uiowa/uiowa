@@ -2,6 +2,7 @@
 
 namespace Drupal\safety_core\Controller;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -36,7 +37,7 @@ class CleryController extends ControllerBase {
   /**
    * The base URL for the Clery Edge API.
    */
-  const BASE_URL = "https://app-cleryedge-api-prod.azurewebsites.net/api/public";
+  const BASE_URL = 'https://app-cleryedge-api-prod.azurewebsites.net/api/public';
 
   /**
    * Constructs a new CleryController instance.
@@ -56,9 +57,9 @@ class CleryController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get("http_client"),
-      $container->get("config.factory"),
-      $container->get("cache.default")
+      $container->get('http_client'),
+      $container->get('config.factory'),
+      $container->get('cache.default')
     );
   }
 
@@ -67,9 +68,9 @@ class CleryController extends ControllerBase {
    */
   protected function getApiKey() {
     return $this->configFactory
-      ->get("safety_core.settings")
-      ->get("clery_api.api_key") ?:
-      "";
+      ->get('safety_core.settings')
+      ->get('clery_api.api_key') ?:
+      '';
   }
 
   /**
@@ -90,7 +91,7 @@ class CleryController extends ControllerBase {
   protected function makeApiRequest($endpoint, $method = 'GET', array $options = []) {
     $api_key = $this->getApiKey();
     if (empty($api_key)) {
-      throw new \Exception("API key not configured");
+      throw new \Exception('API key not configured');
     }
 
     // Default request configuration.
@@ -114,9 +115,9 @@ class CleryController extends ControllerBase {
       $error_body = $response->getBody()->getContents();
 
       throw new \Exception(
-        "API request failed with status: " . $response->getStatusCode() .
-        " for endpoint: " . $endpoint .
-        ". Response: " . $error_body
+        'API request failed with status: ' . $response->getStatusCode() .
+        ' for endpoint: ' . $endpoint .
+        '. Response: ' . $error_body
       );
     }
 
@@ -125,15 +126,13 @@ class CleryController extends ControllerBase {
 
     // Handle empty response body.
     if (empty($response_body)) {
-
       return [];
     }
 
     // Decode and validate response.
     $data = json_decode($response_body, TRUE);
     if (json_last_error() !== JSON_ERROR_NONE) {
-
-      throw new \Exception("Invalid JSON response for endpoint: " . $endpoint);
+      throw new \Exception('Invalid JSON response for endpoint: ' . $endpoint);
     }
 
     return $data;
@@ -177,39 +176,21 @@ class CleryController extends ControllerBase {
    *   Filtered log data.
    */
   protected function getLogData($log_type, $start_date, $end_date, $limit = NULL) {
-    // Create cache bucket.
-    $bucket = (new \DateTime($end_date))->format("Y-m");
-    $cid = "safety_core:{$log_type}_log:bucket:" . $bucket;
+    $cid = "safety_core:{$log_type}_log:" . $start_date . ':' . $end_date;
+    if ($limit) {
+      $cid .= ':' . $limit;
+    }
 
-    // Check cache first.
     if ($cache = $this->cacheBackend->get($cid)) {
-      $cached_data = $cache->data;
+      $data = $cache->data;
     }
     else {
-      // Fetch date range for bucket.
-      $bucket_start = (new \DateTime($bucket . "-01"))
-        // ->modify("-30 days")
-        ->modify("-360 days")
-        ->format("Y-m-d");
-      $bucket_end = (new \DateTime($bucket . "-01"))
-        ->modify("last day of this month")
-        ->format("Y-m-d");
-
-      $cached_data = $this->fetchLogData($log_type, $bucket_start, $bucket_end);
-
+      $data = $this->fetchLogData($log_type, $start_date, $end_date);
       // Cache for 24 hours.
-      $this->cacheBackend->set($cid, $cached_data, time() + 86400);
+      $this->cacheBackend->set($cid, $data, time() + 86400);
     }
 
-    // Filter cached data to requested range.
-    $filtered_data = $this->filterByDateRange(
-      $cached_data,
-      $start_date,
-      $end_date,
-      $log_type
-    );
-
-    return $limit ? array_slice($filtered_data, 0, $limit) : $filtered_data;
+    return $limit ? array_slice($data, 0, $limit) : $data;
   }
 
   /**
@@ -224,65 +205,6 @@ class CleryController extends ControllerBase {
    */
   public function getFireData($start_date, $end_date, $limit = NULL) {
     return $this->getLogData('fire', $start_date, $end_date, $limit);
-  }
-
-  /**
-   * Filters log data by date range.
-   *
-   * @param array $data
-   *   The data to filter.
-   * @param string $start_date
-   *   Start date for filtering.
-   * @param string $end_date
-   *   End date for filtering.
-   * @param string $log_type
-   *   The type of log for date field mapping.
-   *
-   * @return array
-   *   Filtered data.
-   *
-   * @throws \Exception
-   */
-  protected function filterByDateRange($data, $start_date, $end_date, $log_type = 'crime') {
-    $start_timestamp = strtotime($start_date);
-    $end_timestamp = strtotime($end_date . " 23:59:59");
-
-    // Map log types to their date fields.
-    $date_field_map = [
-      'crime' => 'dateOffenseReported',
-      'fire' => 'dateFireReported',
-    ];
-
-    $date_field = $date_field_map[$log_type] ?? 'dateOffenseReported';
-
-    return array_filter($data, function ($log) use (
-      $start_timestamp,
-      $end_timestamp,
-      $date_field
-    ) {
-      $log_date = $log[$date_field] ?? "";
-      if (empty($log_date)) {
-        return FALSE;
-      }
-
-      // Check if there's a time.
-      if (preg_match("/\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}/", $log_date)) {
-        $log_timestamp = \DateTime::createFromFormat("m/d/Y H:i", $log_date);
-      }
-      elseif (preg_match("/\d{1,2}\/\d{1,2}\/\d{4}/", $log_date)) {
-        $log_timestamp = \DateTime::createFromFormat("m/d/Y", $log_date);
-      }
-      else {
-        $log_timestamp = new \DateTime($log_date);
-      }
-
-      $log_timestamp = $log_timestamp
-        ? $log_timestamp->getTimestamp()
-        : 0;
-
-      return $log_timestamp >= $start_timestamp &&
-        $log_timestamp <= $end_timestamp;
-    });
   }
 
   /**
@@ -336,8 +258,8 @@ class CleryController extends ControllerBase {
     $date_fields = $date_field_map[$log_type] ?? $date_field_map['crime'];
 
     usort($data, function ($a, $b) use ($date_fields) {
-      $datetime_a = ($a[$date_fields[0]] ?? "") . " " . ($a[$date_fields[1]] ?? "00:00:00");
-      $datetime_b = ($b[$date_fields[0]] ?? "") . " " . ($b[$date_fields[1]] ?? "00:00:00");
+      $datetime_a = ($a[$date_fields[0]] ?? '') . ' ' . ($a[$date_fields[1]] ?? '00:00:00');
+      $datetime_b = ($b[$date_fields[0]] ?? '') . ' ' . ($b[$date_fields[1]] ?? '00:00:00');
 
       return strtotime($datetime_b) - strtotime($datetime_a);
     });
@@ -366,25 +288,25 @@ class CleryController extends ControllerBase {
   protected function formatCrimeDates(array $crimes) {
     foreach ($crimes as &$crime) {
       // Format occurred date.
-      $start = $crime["dateOffenseOccuredStart"] ?? ($crime["dateOffenseOccured"] ?? NULL);
-      $end = $crime["dateOffenseOccuredEnd"] ?? NULL;
+      $start = $crime['dateOffenseOccuredStart'] ?? ($crime['dateOffenseOccured'] ?? NULL);
+      $end = $crime['dateOffenseOccuredEnd'] ?? NULL;
 
       if ($start && $end) {
-        $start_fmt = $this->formatDate($start, $crime["timeOffenseOccuredStart"] ?? NULL);
-        $end_fmt = $this->formatDate($end, $crime["timeOffenseOccuredEnd"] ?? NULL);
-        $crime["dateOffenseOccured"] = $start_fmt !== $end_fmt
+        $start_fmt = $this->formatDate($start, $crime['timeOffenseOccuredStart'] ?? NULL);
+        $end_fmt = $this->formatDate($end, $crime['timeOffenseOccuredEnd'] ?? NULL);
+        $crime['dateOffenseOccured'] = $start_fmt !== $end_fmt
           ? "Between {$start_fmt} and {$end_fmt}"
           : $start_fmt;
       }
       elseif ($start) {
-        $crime["dateOffenseOccured"] = $this->formatDate($start, $crime["timeOffenseOccured"] ?? NULL);
+        $crime['dateOffenseOccured'] = $this->formatDate($start, $crime['timeOffenseOccured'] ?? NULL);
       }
 
       // Format reported date.
-      if (!empty($crime["dateOffenseReported"])) {
-        $crime["dateOffenseReported"] = $this->formatDate(
-          $crime["dateOffenseReported"],
-          $crime["timeOffenseReported"] ?? NULL
+      if (!empty($crime['dateOffenseReported'])) {
+        $crime['dateOffenseReported'] = $this->formatDate(
+          $crime['dateOffenseReported'],
+          $crime['timeOffenseReported'] ?? NULL
         );
       }
     }
@@ -397,25 +319,25 @@ class CleryController extends ControllerBase {
   protected function formatFireDates(array $fires) {
     foreach ($fires as &$fire) {
       // Format occurred date.
-      $start = $fire["dateFireOccuredStart"] ?? ($fire["dateFireOccured"] ?? NULL);
-      $end = $fire["dateFireOccuredEnd"] ?? NULL;
+      $start = $fire['dateFireOccuredStart'] ?? ($fire['dateFireOccured'] ?? NULL);
+      $end = $fire['dateFireOccuredEnd'] ?? NULL;
 
       if ($start && $end) {
-        $start_fmt = $this->formatDate($start, $fire["timeFireOccuredStart"] ?? NULL);
-        $end_fmt = $this->formatDate($end, $fire["timeFireOccuredEnd"] ?? NULL);
-        $fire["dateFireOccured"] = $start_fmt !== $end_fmt
+        $start_fmt = $this->formatDate($start, $fire['timeFireOccuredStart'] ?? NULL);
+        $end_fmt = $this->formatDate($end, $fire['timeFireOccuredEnd'] ?? NULL);
+        $fire['dateFireOccured'] = $start_fmt !== $end_fmt
           ? "Between {$start_fmt} and {$end_fmt}"
           : $start_fmt;
       }
       elseif ($start) {
-        $fire["dateFireOccured"] = $this->formatDate($start, $fire["timeFireOccured"] ?? NULL);
+        $fire['dateFireOccured'] = $this->formatDate($start, $fire['timeFireOccured'] ?? NULL);
       }
 
       // Format reported date.
-      if (!empty($fire["dateFireReported"])) {
-        $fire["dateFireReported"] = $this->formatDate(
-          $fire["dateFireReported"],
-          $fire["timeFireReported"] ?? NULL
+      if (!empty($fire['dateFireReported'])) {
+        $fire['dateFireReported'] = $this->formatDate(
+          $fire['dateFireReported'],
+          $fire['timeFireReported'] ?? NULL
         );
       }
     }
@@ -451,6 +373,123 @@ class CleryController extends ControllerBase {
     catch (\Exception $e) {
       return $date;
     }
+  }
+
+  /**
+   * Submits a new incident report to the API.
+   */
+  public function submitIncidentReport(array $incident_data) {
+    return $this->apiPost('/incident', $incident_data);
+  }
+
+  /**
+   * Formats time string to proper format for API (HH:MM:SS).
+   */
+  public function formatTime($time_string): ?string {
+    if (empty($time_string)) {
+      return NULL;
+    }
+
+    // Handle DrupalDateTime objects from datetime form elements.
+    if ($time_string instanceof DrupalDateTime) {
+      return $time_string->format('H:i:s');
+    }
+
+    // If already in HH:MM:SS format, return as is.
+    if (preg_match('/^\d{2}:\d{2}:\d{2}$/', $time_string)) {
+      return $time_string;
+    }
+
+    // If already in HH:MM format, add seconds.
+    if (preg_match('/^\d{2}:\d{2}$/', $time_string)) {
+      return $time_string . ':00';
+    }
+
+    // If in H:MM format, pad with leading zero and add seconds.
+    if (preg_match('/^\d{1}:\d{2}$/', $time_string)) {
+      return str_pad($time_string, 5, '0', STR_PAD_LEFT) . ':00';
+    }
+
+    // Try to parse and format various time formats.
+    $time = \DateTime::createFromFormat('H:i', $time_string);
+    if ($time === FALSE) {
+      $time = \DateTime::createFromFormat('g:i A', $time_string);
+    }
+    if ($time === FALSE) {
+      $time = \DateTime::createFromFormat('g:i a', $time_string);
+    }
+
+    return $time ? $time->format('H:i:s') : NULL;
+  }
+
+  /**
+   * Builds the request body for API submission from form values.
+   */
+  public function buildIncidentRequestData(array $form_values) {
+    $body = [];
+
+    // Incident Detail.
+    $body['incidentDetail'] = [
+      'dateOffenseReported' => $form_values['date_offense_reported'] ?: NULL,
+      'timeOffenseReported' => $form_values['time_offense_reported'] ? $this->formatTime($form_values['time_offense_reported']) : NULL,
+      'dateOffenseOccured' => $form_values['date_offense_occured'] ?: NULL,
+      'exactTimeOccured' => $form_values['exact_time_occured'] ? $this->formatTime($form_values['exact_time_occured']) : NULL,
+      'dateStart' => $form_values['date_start'] ?: NULL,
+      'timeStart' => $form_values['time_start'] ? $this->formatTime($form_values['time_start']) : NULL,
+      'dateEnd' => $form_values['date_end'] ?: NULL,
+      'timeEnd' => $form_values['time_end'] ? $this->formatTime($form_values['time_end']) : NULL,
+      'specificLocation' => $form_values['specific_location'] ?? NULL,
+      'description' => $form_values['description'] ?? NULL,
+    ];
+
+    // Reporter.
+    if (
+      !empty($form_values['reporter_first_name']) &&
+      !empty($form_values['reporter_last_name'])
+    ) {
+      $body['reporter'] = [
+        'firstName' => $form_values['reporter_first_name'],
+        'lastName' => $form_values['reporter_last_name'],
+        'email' => $form_values['reporter_email'] ?? NULL,
+        'phone' => $form_values['reporter_phone'] ?? NULL,
+      ];
+    }
+    else {
+      $body['reporter'] = NULL;
+    }
+
+    // CSA Flag.
+    $body['isReporterCsa'] = (bool) $form_values['is_reporter_csa'];
+
+    // Geography ID hardcoded to an empty location.
+    $body['geographyId'] = 1400;
+
+    // Incident Contacts.
+    $body['incidentContacts'] = [];
+    if (
+      isset($form_values['contacts_container']) &&
+      is_array($form_values['contacts_container'])
+    ) {
+      foreach ($form_values['contacts_container'] as $contact_data) {
+        if (
+          !empty($contact_data['first_name']) &&
+          !empty($contact_data['last_name'])
+        ) {
+          $contact = [
+            'firstName' => $contact_data['first_name'],
+            'lastName' => $contact_data['last_name'],
+            'email' => $contact_data['email'] ?? NULL,
+            'phone' => $contact_data['phone'] ?? NULL,
+            'dateOfBirth' => $contact_data['date_of_birth'] ?? NULL,
+            'contactRoles' => [],
+          ];
+
+          $body['incidentContacts'][] = $contact;
+        }
+      }
+    }
+
+    return $body;
   }
 
 }
