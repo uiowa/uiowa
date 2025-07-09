@@ -337,8 +337,8 @@ class CleryController extends ControllerBase {
       'timeStart' => $form_values['time_start'] ? $this->formatTime($form_values['time_start']) : NULL,
       'dateEnd' => $form_values['date_end'] ?: NULL,
       'timeEnd' => $form_values['time_end'] ? $this->formatTime($form_values['time_end']) : NULL,
-      'specificLocation' => $form_values['specific_location'] ?? NULL,
-      'description' => $form_values['description'] ?? NULL,
+      'specificLocation' => !empty($form_values['specific_location']) ? $form_values['specific_location'] : NULL,
+      'description' => !empty($form_values['description']) ? $form_values['description'] : NULL,
     ];
 
     // Reporter.
@@ -349,8 +349,8 @@ class CleryController extends ControllerBase {
       $body['reporter'] = [
         'firstName' => $form_values['reporter_first_name'],
         'lastName' => $form_values['reporter_last_name'],
-        'email' => $form_values['reporter_email'] ?? NULL,
-        'phone' => $form_values['reporter_phone'] ?? NULL,
+        'email' => !empty($form_values['reporter_email']) ? $form_values['reporter_email'] : NULL,
+        'phone' => !empty($form_values['reporter_phone']) ? $form_values['reporter_phone'] : NULL,
       ];
     }
     else {
@@ -377,9 +377,9 @@ class CleryController extends ControllerBase {
           $contact = [
             'firstName' => $contact_data['first_name'],
             'lastName' => $contact_data['last_name'],
-            'email' => $contact_data['email'] ?? NULL,
-            'phone' => $contact_data['phone'] ?? NULL,
-            'dateOfBirth' => $contact_data['date_of_birth'] ?? NULL,
+            'email' => !empty($contact_data['email']) ? $contact_data['email'] : NULL,
+            'phone' => !empty($contact_data['phone']) ? $contact_data['phone'] : NULL,
+            'dateOfBirth' => !empty($contact_data['date_of_birth']) ? $contact_data['date_of_birth'] : NULL,
             'contactRoles' => [],
           ];
 
