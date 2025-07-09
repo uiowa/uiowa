@@ -1787,12 +1787,6 @@ $sites['ethicspublicpolicy.dev.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.ed
 $sites['ethicspublicpolicy.stage.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
 $sites['ethicspublicpolicy.prod.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
 
-// Directory aliases for geography.uiowa.edu.
-$sites['geography.uiowa.ddev.site'] = 'geography.uiowa.edu';
-$sites['geography.dev.drupal.uiowa.edu'] = 'geography.uiowa.edu';
-$sites['geography.stage.drupal.uiowa.edu'] = 'geography.uiowa.edu';
-$sites['geography.prod.drupal.uiowa.edu'] = 'geography.uiowa.edu';
-
 // Directory aliases for history.uiowa.edu.
 $sites['history.uiowa.ddev.site'] = 'history.uiowa.edu';
 $sites['history.dev.drupal.uiowa.edu'] = 'history.uiowa.edu';
