@@ -25,13 +25,6 @@ class FireLogBlock extends LogBlock {
   /**
    * {@inheritdoc}
    */
-  protected function getLibraryName() {
-    return 'fire-log';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getDataKey() {
     return 'fires';
   }
@@ -41,13 +34,6 @@ class FireLogBlock extends LogBlock {
    */
   protected function getCountKey() {
     return 'fireCount';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getCacheTag() {
-    return 'fire_log_data';
   }
 
   /**

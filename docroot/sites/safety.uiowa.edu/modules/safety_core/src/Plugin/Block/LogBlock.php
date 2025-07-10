@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\safety_core\Controller\CleryController;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 
 /**
  * Base class for log blocks.
@@ -23,6 +25,20 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
   protected $cleryController;
 
   /**
+   * The request stack service.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * The logger channel factory service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   */
+  protected $loggerChannelFactory;
+
+  /**
    * Constructs a new LogBlock instance.
    */
   public function __construct(
@@ -30,9 +46,13 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
     $plugin_id,
     $plugin_definition,
     CleryController $clery_controller,
+    RequestStack $request_stack,
+    LoggerChannelFactoryInterface $logger_channel_factory,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->cleryController = $clery_controller;
+    $this->requestStack = $request_stack;
+    $this->loggerChannelFactory = $logger_channel_factory;
   }
 
   /**
@@ -49,6 +69,8 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
       $plugin_id,
       $plugin_definition,
       $container->get('safety_core.clery_controller'),
+      $container->get('request_stack'),
+      $container->get('logger.factory'),
     );
   }
 
@@ -75,14 +97,6 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    *   The count key.
    */
   abstract protected function getCountKey();
-
-  /**
-   * Gets the cache tag for this block.
-   *
-   * @return string
-   *   The cache tag.
-   */
-  abstract protected function getCacheTag();
 
   /**
    * Gets the log data from the controller.
@@ -126,7 +140,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    */
   public function build() {
     $build = [];
-    $request = \Drupal::request();
+    $request = $this->requestStack->getCurrentRequest();
     $start_date = $request->query->get('start_date');
     $end_date = $request->query->get('end_date');
 
@@ -235,7 +249,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
 
     }
     catch (\Exception $e) {
-      \Drupal::logger($this->getLoggerChannel())->error('@type log API error: @message', [
+      $this->loggerChannelFactory->get($this->getLoggerChannel())->error('@type log API error: @message', [
         '@type' => ucfirst($this->getLogType()),
         '@message' => $e->getMessage(),
       ]);

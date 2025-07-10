@@ -23,13 +23,6 @@ class CrimeLogBlock extends LogBlock {
   /**
    * {@inheritdoc}
    */
-  protected function getLibraryName() {
-    return 'clery-log';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getDataKey() {
     return 'crimes';
   }
@@ -39,13 +32,6 @@ class CrimeLogBlock extends LogBlock {
    */
   protected function getCountKey() {
     return 'crimeCount';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getCacheTag() {
-    return 'crime_log_data';
   }
 
   /**
