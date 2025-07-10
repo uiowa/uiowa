@@ -424,9 +424,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: Counselor
+          plugin_id: entity_reference
+          operator: or
+          value:
+            counselor: Counselor
           group: 1
           exposed: false
           expose:
