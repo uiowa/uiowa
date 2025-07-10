@@ -10,7 +10,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\safety_core\Controller\CleryController;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Base class for log blocks.
@@ -32,11 +32,11 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
   protected $requestStack;
 
   /**
-   * The logger channel factory service.
+   * The logger service.
    *
-   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   * @var \Psr\Log\LoggerInterface
    */
-  protected $loggerChannelFactory;
+  protected $logger;
 
   /**
    * Constructs a new LogBlock instance.
@@ -47,12 +47,12 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
     $plugin_definition,
     CleryController $clery_controller,
     RequestStack $request_stack,
-    LoggerChannelFactoryInterface $logger_channel_factory,
+    LoggerInterface $logger,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->cleryController = $clery_controller;
     $this->requestStack = $request_stack;
-    $this->loggerChannelFactory = $logger_channel_factory;
+    $this->logger = $logger;
   }
 
   /**
@@ -70,7 +70,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
       $plugin_definition,
       $container->get('safety_core.clery_controller'),
       $container->get('request_stack'),
-      $container->get('logger.factory'),
+      $container->get('logger.channel.safety_core'),
     );
   }
 
@@ -112,16 +112,6 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    *   The log data.
    */
   abstract protected function getLogData($start_date, $end_date, $limit = NULL);
-
-  /**
-   * Gets the logger channel name.
-   *
-   * @return string
-   *   The logger channel.
-   */
-  protected function getLoggerChannel() {
-    return 'safety_core';
-  }
 
   /**
    * Gets the error message for failed API calls.
@@ -249,10 +239,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
 
     }
     catch (\Exception $e) {
-      $this->loggerChannelFactory->get($this->getLoggerChannel())->error('@type log API error: @message', [
-        '@type' => ucfirst($this->getLogType()),
-        '@message' => $e->getMessage(),
-      ]);
+      $this->logger->error('Crime log API error: @message', ['@message' => $e->getMessage()]);
 
       $build['error'] = [
         '#markup' => $this->getErrorMessage(),
