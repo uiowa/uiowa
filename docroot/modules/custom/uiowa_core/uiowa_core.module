@@ -252,7 +252,7 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
           $request_time = \Drupal::time()->getRequestTime();
           if ($archive_time > $request_time) {
             $entity->moderation_state = $entity->original->moderation_state->value;
-            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set unpublished moderation state. Switching back to "@fallback_state."', [
+            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "unpublished" moderation state. Switching back to "@fallback_state."', [
               '@label' => $entity->label(),
               '@set_state' => $set_state,
               '@fallback_state' => $entity->original->moderation_state->value,
