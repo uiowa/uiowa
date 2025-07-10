@@ -30,7 +30,7 @@
 
   // Set sign background to black.
   main.content__container {
-    --darkmode-bg: #1e1e1e;
+    --darkmode-bg: #000;
     background: var(--darkmode-bg);
 
     .region-content {
@@ -116,8 +116,11 @@
 
 // Bus arrivals widget.
 .bus-arrivals {
+  --darkmode-dark: #1e1e1e;
+
   .bg-dark-gray {
     background-color: variables.$dark-gray;
+    background-color: var(--darkmode-dark);
     color: variables.$white;
   }
 
@@ -136,12 +139,12 @@
 
     th {
       font-size: variables.$h6-font-size;
-      background: variables.$dark;
+      background: variables.$dark-gray;
       color: variables.$white;
       letter-spacing: 0.08rem;
 
       &:not(:last-child) {
-        border-right: 1px solid color.scale(variables.$dark, $lightness: 12%);
+        border-right: 1px solid color.scale(variables.$dark-gray, $lightness: 12%);
       }
 
       &:first-child,
@@ -159,7 +162,7 @@
           top: 0;
           color: transparent;
           font-size: variables.$h6-font-size;
-          font-weight: variables.$font-weight-medium;
+          font-weight: variables.$font-weight-normal;
           text-wrap: nowrap;
           text-transform: none;
           letter-spacing: normal;
@@ -183,7 +186,7 @@
         border-bottom: 7px solid var(--darkmode-bg);
 
         .agency {
-          font-weight: variables.$font-weight-medium;
+          font-weight: variables.$font-weight-normal;
         }
 
         &.uiowa .agency {
@@ -199,7 +202,7 @@
         font-size: variables.$h6-font-size;
 
         &:not(:last-child) {
-          border-right: 1px solid color.scale(variables.$dark-gray, $lightness: 10%);
+          border-right: 1px solid color.scale(#1e1e1e, $lightness: 10%);
         }
       }
 
