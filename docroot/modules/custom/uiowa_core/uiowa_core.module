@@ -252,7 +252,7 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
           $request_time = \Drupal::time()->getRequestTime();
           if ($archive_time > $request_time) {
             $entity->moderation_state = $entity->original->moderation_state->value;
-            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set unpublished moderation state. Switching back to "@fallback_state."', [
               '@label' => $entity->label(),
               '@set_state' => $set_state,
               '@fallback_state' => $entity->original->moderation_state->value,
@@ -783,13 +783,13 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         $state = 'published';
       }
       elseif ($node->get('unpublish_on')?->value) {
-        $state = 'archived';
+        $state = 'unpublished';
       }
 
       if (!empty($state)) {
         $message = 'This content is currently scheduled to be ' . $state . '.';
         if ($node->moderation_state?->value) {
-          $message .= ' Editors are restricted from editing until published.';
+          $message .= ' Editors are restricted from editing until after scheduled.';
         }
         \Drupal::messenger()
           ->addStatus($message);
