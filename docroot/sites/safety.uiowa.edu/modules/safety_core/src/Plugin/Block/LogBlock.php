@@ -141,7 +141,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
     $limit = NULL;
 
     // Build search form.
-    $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
+    $min_date = (new DrupalDateTime())->modify('-560 days')->format('Y-m-d');
     $max_date = (new DrupalDateTime())->format('Y-m-d');
 
     $build['#attached']['library'][] = 'safety_core/clery-log';
@@ -282,20 +282,6 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    */
   public function getCacheContexts() {
     return Cache::mergeContexts(parent::getCacheContexts(), ['url.query_args']);
-  }
-
-  /**
-   * Gets cache tags for this block.
-   */
-  public function getCacheTags() {
-    return Cache::mergeTags(parent::getCacheTags(), [$this->getCacheTag()]);
-  }
-
-  /**
-   * Gets the cache max age for this block.
-   */
-  public function getCacheMaxAge() {
-    return 1800;
   }
 
 }
