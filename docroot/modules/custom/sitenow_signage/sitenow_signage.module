@@ -124,6 +124,31 @@ function sitenow_signage_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_paragraph().
+ */
+function sitenow_signage_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->bundle() == 'slide_image' &&
+    $paragraph->hasField('field_slide_image_size') &&
+    !$paragraph->get('field_slide_image_size')->isEmpty() &&
+    $paragraph->get('field_slide_image_size')->value === 'standard' &&
+    isset($variables['content']['field_slide_image'])) {
+
+    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+
+    foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+      if (is_numeric($delta)) {
+        $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+        if ($media_entity) {
+          $item = $view_builder->view($media_entity, 'full__widescreen');
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function sitenow_signage_theme($existing, $type, $theme, $path) {
