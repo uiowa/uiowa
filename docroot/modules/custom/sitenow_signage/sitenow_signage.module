@@ -176,6 +176,19 @@ function sitenow_signage_reload_intervals_allowed_values() {
 }
 
 /**
+ * Implements hook_allowed_values_function().
+ */
+function sitenow_signage_slides_size_allowed_values() {
+  $options = [
+    'widescreen' => 'Widescreen 16:9',
+    'standard' => 'Standard 4:3',
+  ];
+  return $options;
+}
+
+
+
+/**
  * Allowed values for bus stops field.
  *
  * @see \options_allowed_values()
