@@ -1,0 +1,23 @@
+uuid: b84592a8-a574-4a3a-ae6e-87c84a8515eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slide_image_size
+    - paragraphs.paragraphs_type.slide_image
+  module:
+    - options
+id: paragraph.slide_image.field_slide_image_size
+field_name: field_slide_image_size
+entity_type: paragraph
+bundle: slide_image
+label: 'Image size'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: widescreen
+default_value_callback: ''
+settings: {  }
+field_type: list_string
