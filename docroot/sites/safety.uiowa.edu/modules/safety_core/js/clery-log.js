@@ -22,8 +22,8 @@
         const count = logData[`${logType}Count`];
         const { startDate, endDate } = logData;
 
-        message = count > 0
-          ? Drupal.formatPlural(
+        if (count > 0) {
+          message = Drupal.formatPlural(
             count,
             'Found 1 @type log entry from @start to @end.',
             'Found @count @type log entries from @start to @end.',
@@ -33,8 +33,9 @@
               '@end': endDate,
               '@count': count,
             }
-          )
-          : Drupal.t(
+          );
+        } else {
+          message = Drupal.t(
             'No @type log entries found from @start to @end.',
             {
               '@type': logType,
@@ -42,6 +43,7 @@
               '@end': endDate,
             }
           );
+        }
 
         Drupal.announce(message, 'polite');
       };
