@@ -18,28 +18,28 @@ class FireLogBlock extends LogBlock {
   /**
    * {@inheritdoc}
    */
-  protected function getLogType() {
+  public function getLogType() {
     return 'fire';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getDataKey() {
+  public function getDataKey() {
     return 'fires';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getCountKey() {
+  public function getCountKey() {
     return 'fireCount';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getLogData($start_date, $end_date, $limit = NULL) {
+  public function getLogData($start_date, $end_date, $limit = NULL) {
     return $this->cleryController->getFireData($start_date, $end_date, $limit);
   }
 
@@ -49,7 +49,7 @@ class FireLogBlock extends LogBlock {
    * @return array
    *   Array with 'start' and 'end' keys containing formatted dates.
    */
-  protected function getDefaultDateRange() {
+  public function getDefaultDateRange(): array {
     return [
       'start' => (new DrupalDateTime('60 days ago'))->format('Y-m-d'),
       'end' => (new DrupalDateTime('today'))->format('Y-m-d'),

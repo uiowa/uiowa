@@ -2,7 +2,8 @@
 
 namespace Drupal\safety_core\Plugin\Block;
 
-use Drupal\Core\Url;
+use Drupal\safety_core\Form\LogSearchForm;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -11,6 +12,8 @@ use Drupal\safety_core\Controller\CleryController;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Psr\Log\LoggerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Render\RendererInterface;
 
 /**
  * Base class for log blocks.
@@ -39,6 +42,20 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
   protected $logger;
 
   /**
+   * The form builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * Constructs a new LogBlock instance.
    */
   public function __construct(
@@ -48,11 +65,15 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
     CleryController $clery_controller,
     RequestStack $request_stack,
     LoggerInterface $logger,
+    FormBuilderInterface $form_builder,
+    RendererInterface $renderer,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->cleryController = $clery_controller;
     $this->requestStack = $request_stack;
     $this->logger = $logger;
+    $this->formBuilder = $form_builder;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -63,7 +84,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) {
+  ): LogBlock {
     return new static(
       $configuration,
       $plugin_id,
@@ -71,6 +92,8 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
       $container->get('safety_core.clery_controller'),
       $container->get('request_stack'),
       $container->get('logger.channel.safety_core'),
+      $container->get('form_builder'),
+      $container->get('renderer'),
     );
   }
 
@@ -80,7 +103,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    * @return string
    *   The log type (crime, fire, etc.).
    */
-  abstract protected function getLogType();
+  abstract public function getLogType();
 
   /**
    * Gets the data key for JS settings.
@@ -88,7 +111,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    * @return string
    *   The data key.
    */
-  abstract protected function getDataKey();
+  abstract public function getDataKey();
 
   /**
    * Gets the count key for JS settings.
@@ -96,7 +119,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    * @return string
    *   The count key.
    */
-  abstract protected function getCountKey();
+  abstract public function getCountKey();
 
   /**
    * Gets the log data from the controller.
@@ -111,7 +134,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    * @return array
    *   The log data.
    */
-  abstract protected function getLogData($start_date, $end_date, $limit = NULL);
+  abstract public function getLogData($start_date, $end_date, $limit = NULL);
 
   /**
    * Gets the error message for failed API calls.
@@ -119,7 +142,7 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    * @return string
    *   The error message.
    */
-  protected function getErrorMessage() {
+  protected function getErrorMessage(): TranslatableMarkup {
     return $this->t('Failed to load @type logs. Please try again later.', [
       '@type' => $this->getLogType(),
     ]);
@@ -128,129 +151,30 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
   /**
    * Builds the render array for this block.
    */
-  public function build() {
+  public function build(): array {
     $build = [];
-    $request = $this->requestStack->getCurrentRequest();
-    $start_date = $request->query->get('start_date');
-    $end_date = $request->query->get('end_date');
 
-    // Set defaults if no search performed.
-    if (!$start_date && !$end_date) {
-      $defaults = $this->getDefaultDateRange();
-      $start_date = $defaults['start'];
-      $end_date = $defaults['end'];
-    }
+    $form_object = new LogSearchForm(
+      $this->cleryController,
+      $this->requestStack,
+      $this->logger,
+      $this->renderer
+    );
+    $form_object->setLogContext($this->getLogType(), $this);
 
-    // Always show all results.
-    $limit = NULL;
+    $build['search_form'] = $this->formBuilder->getForm($form_object);
 
-    // Build search form.
-    $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
-    $max_date = (new DrupalDateTime())->format('Y-m-d');
-
-    $build['#attached']['library'][] = 'safety_core/clery-log';
-    $build['#attached']['library'][] = 'core/drupal.announce';
-
-    // Check if a search has been done.
-    $has_search = !empty($request->query->get('start_date')) || !empty($request->query->get('end_date'));
-
-    $actions = [
-      'submit' => [
-        '#type' => 'submit',
-        '#value' => $this->t('Search'),
-        '#button_type' => 'primary',
-        '#attributes' => [
-          'class' => ['bg--black'],
-        ],
-      ],
-    ];
-
-    // Only show reset button if a search was done.
-    if ($has_search) {
-      $actions['reset'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Reset'),
-        '#url' => Url::fromRoute('<current>'),
-        '#attributes' => [
-          'class' => ['button', 'bttn--primary'],
-          'role' => 'button',
-        ],
-      ];
-    }
-
-    $build['search_form'] = [
-      '#type' => 'form',
-      '#method' => 'get',
+    // Add results container that will be updated by AJAX.
+    $build['results_container'] = [
+      '#type' => 'container',
       '#attributes' => [
-        'class' => [
-          'bg--gray',
-          'uids-content',
-          'element--padding__all--minimal',
-          'block-margin__bottom--extra',
-          'uids-content--horizontal',
-        ],
+        'id' => $form_object->getResultsWrapperId(),
+        'aria-live' => 'polite',
       ],
-      'start_date' => [
-        '#type' => 'date',
-        '#title' => $this->t('Start Date'),
-        '#name' => 'start_date',
-        '#value' => $request->query->get('start_date'),
-        '#attributes' => ['min' => $min_date, 'max' => $max_date],
-        '#wrapper_attributes' => ['class' => ['uids-content--horizontal-flex']],
-      ],
-      'end_date' => [
-        '#type' => 'date',
-        '#title' => $this->t('End Date'),
-        '#name' => 'end_date',
-        '#value' => $request->query->get('end_date'),
-        '#attributes' => ['min' => $min_date, 'max' => $max_date],
-        '#wrapper_attributes' => ['class' => ['uids-content--horizontal-flex']],
-      ],
-      'actions' => [
-        '#type' => 'actions',
-        '#attributes' => [
-          'class' => ['form-actions'],
-        ],
-      ] + $actions,
     ];
 
-    try {
-      $log_data = $this->getLogData($start_date, $end_date, $limit);
-      $log_count = count($log_data);
-
-      $build['results'] = [
-        '#theme' => 'log_table',
-        '#' . $this->getDataKey() => $log_data,
-        '#log_type' => $this->getLogType(),
-        '#start_date' => (new DrupalDateTime($start_date))->format('m/d/Y'),
-        '#end_date' => (new DrupalDateTime($end_date))->format('m/d/Y'),
-        '#cache' => ['max-age' => 3600],
-      ];
-
-      // Pass data to JS for announce functionality.
-      $js_settings = [
-        $this->getCountKey() => $log_count,
-        'startDate' => (new DrupalDateTime($start_date))->format('m/d/Y'),
-        'endDate' => (new DrupalDateTime($end_date))->format('m/d/Y'),
-        'isSearch' => $has_search,
-      ];
-
-      $build['#attached']['drupalSettings'][$this->getJsSettingsKey()] = $js_settings;
-
-    }
-    catch (\Exception $e) {
-      $this->logger->error('Crime log API error: @message', ['@message' => $e->getMessage()]);
-
-      $build['error'] = [
-        '#markup' => $this->getErrorMessage(),
-      ];
-
-      // Pass errors to JS.
-      $build['#attached']['drupalSettings'][$this->getJsSettingsKey()] = [
-        'error' => TRUE,
-        'isSearch' => $has_search,
-      ];
-    }
+    // Add initial results.
+    $build['results_container']['results'] = $form_object->getInitialResults();
 
     return $build;
   }
@@ -261,28 +185,11 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
    * @return array
    *   Array with 'start' and 'end' keys containing formatted dates.
    */
-  protected function getDefaultDateRange() {
+  public function getDefaultDateRange(): array {
     return [
       'start' => (new DrupalDateTime('7 days ago'))->format('Y-m-d'),
       'end' => (new DrupalDateTime('today'))->format('Y-m-d'),
     ];
-  }
-
-  /**
-   * Gets the JavaScript settings key for this block.
-   *
-   * @return string
-   *   The JS settings key.
-   */
-  protected function getJsSettingsKey() {
-    return $this->getLogType() . 'Log';
-  }
-
-  /**
-   * Gets cache contexts for this block.
-   */
-  public function getCacheContexts() {
-    return Cache::mergeContexts(parent::getCacheContexts(), ['url.query_args']);
   }
 
 }

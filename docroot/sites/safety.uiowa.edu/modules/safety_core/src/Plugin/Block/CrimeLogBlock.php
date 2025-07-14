@@ -16,28 +16,28 @@ class CrimeLogBlock extends LogBlock {
   /**
    * {@inheritdoc}
    */
-  protected function getLogType() {
+  public function getLogType() {
     return 'crime';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getDataKey() {
+  public function getDataKey() {
     return 'crimes';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getCountKey() {
+  public function getCountKey() {
     return 'crimeCount';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getLogData($start_date, $end_date, $limit = NULL) {
+  public function getLogData($start_date, $end_date, $limit = NULL) {
     return $this->cleryController->getCrimeData($start_date, $end_date, $limit);
   }
 
