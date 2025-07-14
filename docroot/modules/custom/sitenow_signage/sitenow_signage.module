@@ -130,18 +130,26 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
 
   if ($paragraph->bundle() == 'slide_image' &&
-    $paragraph->hasField('field_slide_image_size') &&
-    !$paragraph->get('field_slide_image_size')->isEmpty() &&
-    $paragraph->get('field_slide_image_size')->value === 'vertical' &&
     isset($variables['content']['field_slide_image'])) {
 
-    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+    // Get the sign node from the current route.
+    $sign_node = \Drupal::routeMatch()->getParameter('node');
 
-    foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
-      if (is_numeric($delta)) {
-        $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
-        if ($media_entity) {
-          $item = $view_builder->view($media_entity, 'full__vertical');
+    // Check if we have a sign node with vertical orientation.
+    if ($sign_node &&
+      $sign_node->bundle() == 'sign' &&
+      $sign_node->hasField('field_sign_orientation') &&
+      !$sign_node->get('field_sign_orientation')->isEmpty() &&
+      $sign_node->get('field_sign_orientation')->value === 'vertical') {
+
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+
+      foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+        if (is_numeric($delta)) {
+          $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+          if ($media_entity) {
+            $item = $view_builder->view($media_entity, 'full__vertical');
+          }
         }
       }
     }
