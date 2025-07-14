@@ -169,7 +169,6 @@ abstract class LogBlock extends BlockBase implements ContainerFactoryPluginInter
       '#type' => 'container',
       '#attributes' => [
         'id' => $form_object->getResultsWrapperId(),
-        'aria-live' => 'polite',
       ],
     ];
 
