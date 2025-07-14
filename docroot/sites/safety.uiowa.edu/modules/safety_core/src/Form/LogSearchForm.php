@@ -136,7 +136,6 @@ class LogSearchForm extends FormBase {
     $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
     $max_date = (new DrupalDateTime())->format('Y-m-d');
 
-
     $form['#attributes'] = [
       'class' => [
         'bg--gray',
