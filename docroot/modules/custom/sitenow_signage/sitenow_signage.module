@@ -148,7 +148,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         if (is_numeric($delta)) {
           $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
           if ($media_entity) {
-            $item = $view_builder->view($media_entity, 'full__vertical');
+            $item = $view_builder->view($media_entity, 'vertical_9_16');
           }
         }
       }
