@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.node.minimal
+    - field.field.node.sign.field_sign_orientation
     - field.field.node.sign.field_sign_reload_interval
     - field.field.node.sign.field_sign_slides
     - node.type.sign
@@ -20,6 +21,12 @@ content:
   created:
     type: datetime_timestamp
     weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_sign_orientation:
+    type: options_select
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }

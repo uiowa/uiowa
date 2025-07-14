@@ -3,12 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.sign.field_sign_orientation
     - field.field.node.sign.field_sign_reload_interval
     - field.field.node.sign.field_sign_slides
     - node.type.sign
   module:
     - layout_builder
     - layout_builder_restrictions
+    - options
     - sitenow_signage
     - user
   theme:
@@ -45,6 +47,22 @@ third_party_settings:
             weight: 0
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4bbfacd0-fafb-40fe-a5d5-493393f0532d
+            region: content
+            configuration:
+              id: 'field_block:node:sign:field_sign_orientation'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
@@ -83,7 +101,14 @@ id: node.sign.default
 targetEntityType: node
 bundle: sign
 mode: default
-content: {  }
+content:
+  field_sign_orientation:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true

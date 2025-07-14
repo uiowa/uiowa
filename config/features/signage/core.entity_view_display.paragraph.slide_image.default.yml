@@ -6,8 +6,6 @@ dependencies:
     - field.field.paragraph.slide_image.field_slide_image
     - field.field.paragraph.slide_image.field_slide_image_size
     - paragraphs.paragraphs_type.slide_image
-  module:
-    - options
 id: paragraph.slide_image.default
 targetEntityType: paragraph
 bundle: slide_image
@@ -17,17 +15,10 @@ content:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: full__square
+      view_mode: default
       link: false
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_slide_image_size:
-    type: list_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true
