@@ -1,0 +1,29 @@
+uuid: 949779f4-8376-4242-b19e-674b8f6dc011
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.vertical_1080_x_1920
+    - image.style.vertical_1458_x_2592
+    - image.style.vertical_216_x_384
+    - image.style.vertical_432_x_768
+    - image.style.vertical_576_x_1024
+    - image.style.vertical_738_x_1312
+id: full__vertical
+label: 'Full - Vertical'
+image_style_mappings:
+  -
+    image_mapping_type: sizes
+    image_mapping:
+      sizes: '(min-width:1310px) 1310px, 100vw'
+      sizes_image_styles:
+        - vertical_1080_x_1920
+        - vertical_1458_x_2592
+        - vertical_216_x_384
+        - vertical_432_x_768
+        - vertical_576_x_1024
+        - vertical_738_x_1312
+    breakpoint_id: responsive_image.viewport_sizing
+    multiplier: 1x
+breakpoint_group: responsive_image
+fallback_image_style: vertical_738_x_1312

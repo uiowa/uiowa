@@ -132,7 +132,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
   if ($paragraph->bundle() == 'slide_image' &&
     $paragraph->hasField('field_slide_image_size') &&
     !$paragraph->get('field_slide_image_size')->isEmpty() &&
-    $paragraph->get('field_slide_image_size')->value === 'standard' &&
+    $paragraph->get('field_slide_image_size')->value === 'vertical' &&
     isset($variables['content']['field_slide_image'])) {
 
     $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
@@ -141,7 +141,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       if (is_numeric($delta)) {
         $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
         if ($media_entity) {
-          $item = $view_builder->view($media_entity, 'full__widescreen');
+          $item = $view_builder->view($media_entity, 'full__vertical');
         }
       }
     }
@@ -181,7 +181,7 @@ function sitenow_signage_reload_intervals_allowed_values() {
 function sitenow_signage_slides_size_allowed_values() {
   $options = [
     'widescreen' => 'Widescreen 16:9',
-    'standard' => 'Standard 4:3',
+    'vertical' => 'Vertical 9:16',
   ];
   return $options;
 }
