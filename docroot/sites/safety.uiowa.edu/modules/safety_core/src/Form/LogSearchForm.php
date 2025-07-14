@@ -133,13 +133,9 @@ class LogSearchForm extends FormBase {
       $end_date = $defaults['end'];
     }
 
-    $min_date = (new DrupalDateTime())->modify('-360 days')->format('Y-m-d');
+    $min_date = (new DrupalDateTime())->modify('-60 days')->format('Y-m-d');
     $max_date = (new DrupalDateTime())->format('Y-m-d');
 
-    $form_wrapper_id = 'log-search-form-wrapper-' . $this->logType;
-
-    $form['#prefix'] = '<div id="' . $form_wrapper_id . '">';
-    $form['#suffix'] = '</div>';
 
     $form['#attributes'] = [
       'class' => [
