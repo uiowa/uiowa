@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_person_territory
     - node.type.person
+    - sitenow_people.person_type.palliative_grad
   module:
     - node
     - options
@@ -269,9 +270,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: palliative_grad
+          plugin_id: entity_reference
+          operator: or
+          value:
+            palliative_grad: palliative_grad
           group: 1
           exposed: false
           expose:

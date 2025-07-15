@@ -175,7 +175,7 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
     if (in_array($theme, ['uids_base'])) {
       $limit = theme_get_setting('header.top_links_limit', 'uids_base');
       if ($limit) {
-        $warning_text = t('Only the top @limit menu items will display.', [
+        $warning_text = t('Only the top @limit menu items will display. Child/submenu items are automatically hidden to maintain a usable header layout.', [
           '@limit' => $limit,
         ]);
         \Drupal::messenger()->addWarning($warning_text);

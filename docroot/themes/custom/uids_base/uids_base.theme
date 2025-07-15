@@ -1133,8 +1133,14 @@ function uids_base_preprocess_menu(&$variables) {
   switch ($variables['menu_name']) {
     case 'top-links':
       $variables['limit'] = theme_get_setting('header.top_links_limit');
-      break;
 
+      // Remove nested children from menu items.
+      if (!empty($variables['items'])) {
+        foreach ($variables['items'] as &$item) {
+          unset($item['below']);
+        }
+      }
+      break;
   }
 }
 

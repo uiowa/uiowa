@@ -66,6 +66,7 @@ class CleryReportForm extends FormBase {
       '#type' => 'date',
       '#title' => $this->t('Date Reported'),
       '#required' => TRUE,
+      '#attributes' => ['max' => date('Y-m-d')],
     ];
 
     $form['incident_details']['time_offense_reported'] = [
@@ -145,6 +146,7 @@ class CleryReportForm extends FormBase {
     $form['occurrence']['exact_date_container']['date_offense_occured'] = [
       '#type' => 'date',
       '#title' => $this->t('Date Occurred'),
+      '#attributes' => ['max' => date('Y-m-d')],
     ];
 
     // Exact time container (shown when time_type = 'exact').
@@ -180,6 +182,7 @@ class CleryReportForm extends FormBase {
     $form['occurrence']['start_date_container']['date_start'] = [
       '#type' => 'date',
       '#title' => $this->t('Start Date'),
+      '#attributes' => ['max' => date('Y-m-d')],
     ];
 
     // Start time container (shown when time_type = 'range').
@@ -215,6 +218,7 @@ class CleryReportForm extends FormBase {
     $form['occurrence']['end_date_container']['date_end'] = [
       '#type' => 'date',
       '#title' => $this->t('End Date'),
+      '#attributes' => ['max' => date('Y-m-d')],
     ];
 
     // End time container (shown when time_type = 'range').
@@ -387,6 +391,7 @@ class CleryReportForm extends FormBase {
       '#type' => 'date',
       '#title' => $this->t('Date of Birth'),
       '#default_value' => $contact_data['date_of_birth'] ?? '',
+      '#attributes' => ['max' => date('Y-m-d')],
     ];
 
   }

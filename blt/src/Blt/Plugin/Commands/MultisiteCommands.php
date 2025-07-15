@@ -231,7 +231,9 @@ class MultisiteCommands extends BltTasks {
    *   Array of options.
    *
    * @option simulate
-   *   Simulate cloud operations and file system tasks.
+   *   Simulate cloud operations.
+   * @option no-commit
+   *   Do not create a git commit.
    *
    * @command uiowa:multisite:delete
    *
@@ -243,7 +245,12 @@ class MultisiteCommands extends BltTasks {
    * @requireFeatureBranch
    * @requireCredentials
    */
-  public function delete(array $options = ['simulate' => FALSE]) {
+  public function delete(
+    array $options = [
+      'simulate' => FALSE,
+      'no-commit' => FALSE,
+    ],
+  ) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -334,6 +341,9 @@ class MultisiteCommands extends BltTasks {
       $this->logger->warning('The cloud properties above will not be deleted because you used the --simulate option.');
     }
 
+    // Flag if site configuration exists.
+    $site_config = file_exists("{$root}/config/sites/{$dir}");
+
     // Delete the site code.
     $this->taskFilesystemStack()
       ->remove("{$root}/config/sites/{$dir}")
@@ -365,7 +375,7 @@ EOD
     // Write the manifest back to the file.
     $this->arrayToManifest($manifest);
 
-    if (!$options['simulate']) {
+    if (!$options['no-commit']) {
 
       $task = $this->taskGit()
         ->dir($root)
@@ -375,7 +385,8 @@ EOD
         ->add('blt/manifest.yml')
         ->interactive(FALSE);
 
-      if (file_exists("{$root}/config/sites/{$dir}")) {
+      // If site configuration existed, add it to the commit.
+      if ($site_config) {
         $task->add("config/sites/{$dir}");
       }
 
