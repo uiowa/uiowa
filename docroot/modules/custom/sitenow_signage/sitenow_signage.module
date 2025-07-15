@@ -135,6 +135,10 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
     // Get the sign node from the current route.
     $sign_node = \Drupal::routeMatch()->getParameter('node');
 
+    if ($sign_node && $sign_node->bundle() == 'sign') {
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
+    }
+
     // Check if we have a sign node with vertical orientation.
     if ($sign_node &&
       $sign_node->bundle() == 'sign' &&
