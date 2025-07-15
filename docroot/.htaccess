@@ -152,6 +152,9 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
   RewriteRule ^(.*)$ https://ocrc.uiowa.edu/ [R=301,L]
 
+  RewriteCond %{HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteRule ^igs/geosam/(.*)$ https://igs.iihr.uiowa.edu/igs/geosam/$1 [R=301,L]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
