@@ -59,7 +59,7 @@
         updateArrivals();
 
         // Refresh every 60 seconds.
-        // setInterval(updateArrivals, 60000);
+        setInterval(updateArrivals, 60000);
       });
     }
   };
