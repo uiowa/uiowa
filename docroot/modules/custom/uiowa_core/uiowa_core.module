@@ -1847,7 +1847,7 @@ function uiowa_core_scheduler_help_text(array &$form): void {
   foreach (['publish', 'unpublish'] as $state) {
     if (isset($form["{$state}_on"])) {
       // Update help text for scheduler on content types.
-      $additional_help_text = t('Note: this content will transition to a @stateed state within a one-hour window of the selected date and time.', [
+      $additional_help_text = t('Note: this content will be @stateed at the top of the hour after the time you select. (e.g., 2:43 p.m. will go live at 3:00 p.m.).', [
         '@state' => $state,
       ]);
       $form["{$state}_on"]['widget'][0]['value']['#description'] .= '<p>' . $additional_help_text . '</p>';
