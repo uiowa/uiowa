@@ -61,6 +61,10 @@ details {
   align-items: baseline;
 }
 
+.element--vh {
+  height: 100svh;
+}
+
 // Align items in a grid to the top.
 .element--align-top {
   align-self: start;
@@ -682,6 +686,12 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__left {
     @include utilities.breakpoint(sm) {
       margin-left: variables.$md;
+    }
+    &--extra {
+      margin-left: variables.$md;
+      @include utilities.breakpoint(sm) {
+        margin-left: variables.$mobile-height-gutter;
+      }
     }
   }
 }
