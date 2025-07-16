@@ -22,7 +22,11 @@
 {% set attributes = attributes.addClass(classes) %}
 {% include '@uids_base/layouts/layout.html.twig' %}
 
-<div class="signage--empty">
-  <h2>University of Iowa</h2>
-  <p>Digital signage</p>
+<div class="signage--empty layout__container block-padding__all--extra section-padding__top-extra element--flex-center">
+  {{ attach_library('uids_base/logo') }}
+  {% include "@uids_base/uids/logo.twig" with {
+    path: "https://uiowa.edu",
+    logo_classes: "logo--tab",
+  } %}
+  <p class="element--bold-intro">Digital signage</p>
 </div>
