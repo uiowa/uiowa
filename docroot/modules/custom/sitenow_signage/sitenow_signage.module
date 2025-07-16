@@ -18,6 +18,20 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_signage_form_node_sign_form_alter(
+  &$form,
+  \Drupal\Core\Form\FormStateInterface $form_state,
+  $form_id
+) {
+  if (isset($form['field_sign_slides']['widget']['actions']['bundle'])) {
+    $form['field_sign_slides']['widget']['actions']['bundle']['#value'] = 'slide';
+    $form['field_sign_slides']['widget']['actions']['bundle']['#type'] = 'hidden';
+  }
+}
+
+/**
  * Implements hook_preprocess_field().
  */
 function sitenow_signage_preprocess_field(&$variables) {
