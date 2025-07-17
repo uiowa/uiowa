@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.slide.field_slide_duration
     - field.field.node.slide.field_slide_widget
     - node.type.slide
   module:
@@ -19,6 +20,12 @@ content:
   created:
     type: datetime_timestamp
     weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_duration:
+    type: options_select
+    weight: 122
     region: content
     settings: {  }
     third_party_settings: {  }
