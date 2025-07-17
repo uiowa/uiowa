@@ -2813,12 +2813,6 @@ $sites['sitesfblynn.dev.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
 $sites['sitesfblynn.stage.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
 $sites['sitesfblynn.prod.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
 
-// Directory aliases for sds.studentlife.uiowa.edu.
-$sites['studentlifesds.uiowa.ddev.site'] = 'sds.studentlife.uiowa.edu';
-$sites['studentlifesds.dev.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
-$sites['studentlifesds.stage.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
-$sites['studentlifesds.prod.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
-
 // Directory aliases for mew.conference.uiowa.edu.
 $sites['conferencemew.uiowa.ddev.site'] = 'mew.conference.uiowa.edu';
 $sites['conferencemew.dev.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
