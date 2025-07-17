@@ -7708,3 +7708,9 @@ $sites['labnpl.uiowa.ddev.site'] = 'npl.lab.uiowa.edu';
 $sites['labnpl.dev.drupal.uiowa.edu'] = 'npl.lab.uiowa.edu';
 $sites['labnpl.stage.drupal.uiowa.edu'] = 'npl.lab.uiowa.edu';
 $sites['labnpl.prod.drupal.uiowa.edu'] = 'npl.lab.uiowa.edu';
+
+// Directory aliases for piper.lab.uiowa.edu.
+$sites['labpiper.uiowa.ddev.site'] = 'piper.lab.uiowa.edu';
+$sites['labpiper.dev.drupal.uiowa.edu'] = 'piper.lab.uiowa.edu';
+$sites['labpiper.stage.drupal.uiowa.edu'] = 'piper.lab.uiowa.edu';
+$sites['labpiper.prod.drupal.uiowa.edu'] = 'piper.lab.uiowa.edu';
