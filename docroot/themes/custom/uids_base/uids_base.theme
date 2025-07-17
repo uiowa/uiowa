@@ -235,19 +235,25 @@ function uids_base_preprocess_html(&$variables) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
 
+  // Loop through entity types that we have allow per item layout customization.
   foreach ([
     'fragment' => FragmentInterface::class,
     'node' => NodeInterface::class,
   ] as $entity_type => $interface_class) {
+    // Check if an entity of that type is loaded at the current route.
     $route_entity = $route_match->getParameter($entity_type);
+    // Check if the entity is an instance of the corresponding interface class.
     if ($route_entity instanceof $interface_class) {
+      // Defensive coding check to make sure our helper class is available.
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+        // Set a variable indicating that the Layout Builder UI is loaded.
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($route_entity);
       }
     }
   }
 
-  if ($route_match->getRouteObject()?->getOption('_layout_builder') || !empty($variables['layout_builder_enabled'])) {
+  if ($route_match->getRouteObject()?->getOption('_layout_builder')) {
+    // Add Layout Builder specific CSS settings.
     $variables['#attached']['library'][] = 'uids_base/layout-builder';
   }
 
