@@ -22,23 +22,24 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $
  */
 function sitenow_signage_preprocess_field(&$variables) {
   $element = $variables['element'];
-  if ($element['#field_name'] === 'field_slide_bus_arrivals_stop') {
-    $stop_id = (int) $element[0]['#markup'];
+  switch ($element['#field_name']) {
+    case 'field_slide_bus_arrivals_stop':
+      $stop_id = (int) $element[0]['#markup'];
 
-    // Get the bus stop name from the allowed values and set label.
-    $stops = sitenow_signage_bus_stops_allowed_values();
-    $stop_name = $stops[$stop_id] ?? '';
+      // Get the bus stop name from the allowed values and set label.
+      $stops = sitenow_signage_bus_stops_allowed_values();
+      $stop_name = $stops[$stop_id] ?? '';
 
-    // Set the bus stop id as a data attribute on the container for JS.
-    $variables['items'][0]['content'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => ['bus-arrivals'],
-        'data-stop-name' => $stop_name,
-        'data-stop-id' => $stop_id,
-      ],
-      'loading_message' => [
-        '#markup' => '
+      // Set the bus stop id as a data attribute on the container for JS.
+      $variables['items'][0]['content'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['bus-arrivals'],
+          'data-stop-name' => $stop_name,
+          'data-stop-id' => $stop_id,
+        ],
+        'loading_message' => [
+          '#markup' => '
           <table>
             <thead class="headers">
               <tr>
@@ -49,11 +50,23 @@ function sitenow_signage_preprocess_field(&$variables) {
             </thead>
             <td class="bg-dark-gray" colspan="3" >Loading bus arrival information…</td>
           </table>',
-        '#allowed_tags' => ['table', 'thead', 'tr', 'th', 'td'],
-      ],
-    ];
+          '#allowed_tags' => ['table', 'thead', 'tr', 'th', 'td'],
+        ],
+      ];
 
-    $variables['#attached']['library'][] = 'sitenow_signage/bus_arrivals';
+      $variables['#attached']['library'][] = 'sitenow_signage/bus_arrivals';
+      break;
+
+    case 'field_sign_slides':
+      foreach ($variables['items'] as &$item) {
+        // Set a reasonable default just in case.
+        $item['interval'] = '15000';
+        if ($item['content']['#node']->hasField('field_slide_duration')) {
+          $item['interval'] = $item['content']['#node']->field_slide_duration->value;
+        }
+      }
+      break;
+
   }
 }
 
@@ -145,6 +158,24 @@ function sitenow_signage_reload_intervals_allowed_values() {
     21600 => '6 hours',
     3600 => '1 hour',
     1800 => '30 minutes',
+  ];
+
+  return $values;
+}
+
+/**
+ * Allowed values for slide duration field.
+ *
+ * @see \options_allowed_values()
+ */
+function sitenow_signage_slide_durations_allowed_values() {
+  $values = [
+    10000 => '10 seconds',
+    15000 => '15 seconds',
+    20000 => '20 seconds',
+    30000 => '30 seconds',
+    45000 => '45 seconds',
+    60000 => '1 minute',
   ];
 
   return $values;
