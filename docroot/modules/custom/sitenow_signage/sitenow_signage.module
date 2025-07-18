@@ -59,9 +59,10 @@ function sitenow_signage_preprocess_field(&$variables) {
 
     case 'field_sign_slides':
       foreach ($variables['items'] as &$item) {
+        $node = $item['content']['#node'];
         // Set a reasonable default just in case.
         $item['interval'] = '15000';
-        if ($item['content']['#node']->hasField('field_slide_duration')) {
+        if ($node->hasField('field_slide_duration') && !$node->field_slide_duration->isEmpty()) {
           $item['interval'] = $item['content']['#node']->field_slide_duration->value;
         }
       }
