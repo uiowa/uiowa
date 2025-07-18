@@ -2,20 +2,6 @@
 # Apache/PHP/Drupal settings:
 #
 
-# Block these IP addresses.
-# https://docs.acquia.com/cloud-platform/arch/security/restrict/#blocking-by-ip-with-mod-rewrite-in-htaccess
-<ifmodule mod_setenvif.c>
-SetEnvIf AH_CLIENT_IP ^193\.42\.33\.66$ DENY=1
-SetEnvIf AH_CLIENT_IP ^47\.76\.209\.138$ DENY=1
-SetEnvIf AH_CLIENT_IP ^47\.76\.99\.127$ DENY=1
-SetEnvIf AH_CLIENT_IP ^91\.108\.194\.40$ DENY=1
-SetEnvIf AH_CLIENT_IP ^47\.76\.220\.119$ DENY=1
-SetEnvIf AH_CLIENT_IP ^47\.76\.222\.244$ DENY=1
-Order allow,deny
-Allow From All
-Deny from env=DENY
-</ifmodule>
-
 # Protect files and directories from prying eyes.
 <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config|yarn\.lock|package\.json)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
   <IfModule mod_authz_core.c>
@@ -73,87 +59,6 @@ AddEncoding gzip svgz
 # Various rewrite rules.
 <IfModule mod_rewrite.c>
   RewriteEngine on
-
-  # Return a 403 for autodiscover requests.
-  RewriteCond %{REQUEST_URI} /autodiscover/autodiscover.xml [NC]
-  RewriteRule ^ - [F,L]
-
-  # Redirect http(s)://www.domain.com to https://domain.com.
-  RewriteCond %{HTTP_HOST} !\.acquia-sites\.com [NC]
-  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-  RewriteRule ^(.*)$ https://%1%{REQUEST_URI} [L,R=301]
-
-  # Redirect all traffic from HTTP to HTTPS.
-  RewriteCond %{HTTP_HOST} !\.acquia-sites\.com [NC]
-  RewriteCond %{HTTPS} off
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-  # Redirect legacy stories site for the homepage.
-  RewriteCond %{HTTP_HOST} ^uiowa.edu$
-  RewriteRule ^stories(.*)$  https://stories.uiowa.edu$1 [R,L]
-
-  # Redirect engineering.uiowa.edu/~ to user.engineering.uiowa.edu for Engineering
-  RewriteCond %{HTTP_HOST} engineering\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} /~(.*)
-  RewriteRule ^(.*)$ https://user.engineering.uiowa.edu/$1 [L,R=301]
-
-  # Redirect veterans.org.uiowa.edu to veterans.uiowa.edu/uiva.
-  RewriteCond %{HTTP_HOST} veterans.org.uiowa.edu [NC]
-  RewriteRule ^ https://veterans.uiowa.edu/uiva%{REQUEST_URI} [L,R=301]
-
-  # Redirect trans-resources.org.uiowa.edu to uihc.org/educational-resources/information-transgender-individuals.
-  RewriteCond %{HTTP_HOST} ^trans-resources\.org\.uiowa\.edu$ [NC]
-  RewriteRule ^(.*)$ https://uihc.org/educational-resources/information-transgender-individuals/ [R=301,L]
-
-  # Redirect iconsortium.subst-abuse.uiowa.edu to icsa.uiowa.edu
-  RewriteCond %{HTTP_HOST} iconsortium\.subst-abuse\.uiowa\.edu$ [NC]
-  RewriteRule ^ https://icsa.uiowa.edu/ [L,R=301]
-
-  # Redirect www.(cs|math|stat).uiowa.edu/~ to homepage.divms.uiowa.edu for CS, Math, Stats
-  RewriteCond %{HTTP_HOST} ^(www\.)?(cs|math|stat)\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} /~(.*)
-  RewriteRule ^(.*)$ http://homepage.divms.uiowa.edu/$1 [L,R=301]
-
-  # Redirect physics.uiowa.edu/~ to homepage.physics.uiowa.edu for Physics and Astronomy
-  RewriteCond %{HTTP_HOST} physics\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} /~(.*)
-  RewriteRule ^(.*)$ http://homepage.physics.uiowa.edu/$1 [L,R=301]
-
-  # Redirect physics.uiowa.edu/itu/* to itu.physics.uiowa.edu/* for Physics and Astronomy ITU
-  RewriteCond %{HTTP_HOST} physics\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteCond %{REQUEST_URI} ^/itu/(.*) [NC,OR]
-  RewriteCond %{REQUEST_URI} ^/itu$ [NC]
-  RewriteRule ^itu(.*)$ https://itu.physics.uiowa.edu/$1 [L,R=301]
-
-  # Redirect www and writinguniversity.uiowa.edu to writinguniversity.org.
-  RewriteCond %{HTTP_HOST} ^(www\.|)writinguniversity\.uiowa\.edu$ [NC]
-  RewriteRule ^(.*)$ https://www.writinguniversity.org/$1 [L,R=301]
-
-  # Redirect rules for diversity.uiowa.edu.
-  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteRule ^johndeerescholars$ https://provost.uiowa.edu/johndeerescholars [R=301,L]
-
-  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteRule ^programs/student-support/trio-student-support-services$ https://uc.uiowa.edu/trio-student-support-services [R=301,L]
-
-  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteRule ^report$ https://ocrc.uiowa.edu/report [R=301,L]
-
-  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteRule ^programs/high-school-hawkeyes/trio-upward-bound$ https://uc.uiowa.edu/students/trio-upward-bound [R=301,L]
-
-  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteRule ^(.*)$ https://ocrc.uiowa.edu/ [R=301,L]
-
-  RewriteCond %{HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteRule ^igs/geosam/(.*)$ https://igs.iihr.uiowa.edu/igs/geosam/$1 [R=301,L]
 
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
@@ -263,10 +168,6 @@ AddEncoding gzip svgz
       # Force proxies to cache gzipped & non-gzipped css/js files separately.
       Header append Vary Accept-Encoding
     </FilesMatch>
-    # Set CORS for JSON files.
-    <FilesMatch "\.json$">
-      Header set Access-Control-Allow-Origin "*"
-    </FilesMatch>
   </IfModule>
 </IfModule>
 
@@ -282,7 +183,4 @@ AddEncoding gzip svgz
   Header always set X-Content-Type-Options nosniff
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
-  # Declare HTTP Strict Transport Security (STS) header as recommended by Acquia.
-  # https://acquia.my.site.com/s/article/360004119254-How-To-enable-HSTS-for-your-Drupal-site.
-  Header always set Strict-Transport-Security "max-age=31536000;"
 </IfModule>
