@@ -28,7 +28,7 @@
             const predictions = (data.predictions ?? []).slice(0, 10);
 
             if (predictions.length === 0) {
-              predictionsTable += `<td class='bg-dark-gray' colspan='3' >No upcoming arrivals.</td></table>`;
+              predictionsTable += `<td colspan='3' >No upcoming arrivals.</td></table>`;
               element.innerHTML = predictionsTable;
               return;
             }
@@ -37,9 +37,9 @@
                 <tbody>
                   ${predictions.map((item) =>
                   `<tr class='prediction ${item.agency}'>
-                      <td class='bg-dark-gray agency'>${item.agencyName}</td>
-                      <td class='bg-dark-gray title'>${item.title}</td>
-                      <td class='bg-dark-gray minutes'>${minutesTranslation(item.minutes)}</td>
+                      <td class='agency'>${item.agencyName}</td>
+                      <td class='title'>${item.title}</td>
+                      <td class='minutes'>${minutesTranslation(item.minutes)}</td>
                     </tr>`
                   ).join('')}
                 </tbody>
@@ -50,7 +50,7 @@
 
           catch (error) {
             console.error('Fetch error:', error);
-            predictionsTable += `<td class='bg-dark-gray' colspan='3' >Unable to load bus arrival information.</td></table>`;
+            predictionsTable += `<td colspan='3' >Unable to load bus arrival information.</td></table>`;
             element.innerHTML = predictionsTable;
           }
         };
