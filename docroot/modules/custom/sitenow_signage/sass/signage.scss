@@ -30,17 +30,7 @@
 
   // Set sign background to black.
   main.content__container {
-    --darkmode-bg: #1e1e1e;
-    background: var(--darkmode-bg);
-
-    .region-content {
-      background: var(--darkmode-bg);
-    }
-
-    // TODO: figure out how to change classes, this shouldn;t be shipped.
-    .layout__container:not(:first-child) {
-      background: var(--darkmode-bg);
-    }
+    background: variables.$secondary;
   }
 
   .sign--header {
@@ -116,13 +106,10 @@
 
 // Bus arrivals widget.
 .bus-arrivals {
-  .bg-dark-gray {
-    background-color: variables.$dark-gray;
-    color: variables.$white;
-  }
+  $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
 
   caption.predictions-title {
-    background-color: var(--darkmode-bg);
+    background-color: variables.$secondary;
     font-size: variables.$h5-font-size;
     font-weight: variables.$font-weight-heavy;
     letter-spacing: 0.08rem;
@@ -131,8 +118,8 @@
   }
 
   thead.headers {
-    border-top: 7px solid var(--darkmode-bg);
-    border-bottom: 7px solid var(--darkmode-bg);
+    border-top: 7px solid variables.$secondary;
+    border-bottom: 7px solid variables.$secondary;
 
     th {
       font-size: variables.$h6-font-size;
@@ -146,20 +133,18 @@
 
       &:first-child,
       &:last-child {
-        display: flex;
-        flex-direction: column;
-        position: relative;
 
         &:before {
           content: '';
           position: relative;
           width: 100%;
           height: 0px;
+          display: block;
           left: 0;
           top: 0;
           color: transparent;
           font-size: variables.$h6-font-size;
-          font-weight: variables.$font-weight-medium;
+          font-weight: variables.$font-weight-normal;
           text-wrap: nowrap;
           text-transform: none;
           letter-spacing: normal;
@@ -172,18 +157,17 @@
 
       &:last-child:before {
           content: '000 Minutes';
-          font-weight: variables.$font-weight-normal;
       }
     }
   }
 
-  tbody {
+  table {
     tr {
       &.prediction {
-        border-bottom: 7px solid var(--darkmode-bg);
+        border-bottom: 7px solid variables.$secondary;
 
         .agency {
-          font-weight: variables.$font-weight-medium;
+          font-weight: variables.$font-weight-normal;
         }
 
         &.uiowa .agency {
@@ -197,17 +181,20 @@
 
       td {
         font-size: variables.$h6-font-size;
+        background-color: $pitch-gray;
+        color: variables.$white;
 
         &:not(:last-child) {
-          border-right: 1px solid color.scale(variables.$dark-gray, $lightness: 10%);
+          border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
         }
       }
 
+      // This sizes the columns so that they always stay small and consistent.
       td,
       th {
         &:first-child,
         &:last-child {
-          width: 1%;
+          width: 1px;
           white-space: nowrap;
         }
       }
