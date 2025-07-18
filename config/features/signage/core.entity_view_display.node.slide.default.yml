@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.slide.field_slide_description
     - field.field.node.slide.field_slide_widget
     - node.type.slide
   module:
@@ -13,6 +14,14 @@ targetEntityType: node
 bundle: slide
 mode: default
 content:
+  field_slide_description:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_slide_widget:
     type: entity_reference_revisions_entity_view
     label: hidden
