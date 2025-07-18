@@ -22,6 +22,10 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_signage_form_node_sign_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // We are using an entity reference view to provide suggestions for the
+  // autocomplete field widget for slides. This doesn't provide a way for us to
+  // limit newly created nodes to a particular node type. Our workaround is to
+  // set the bundle to 'slide' and change the field type to hidden.
   if (isset($form['field_sign_slides']['widget']['actions']['bundle'])) {
     $form['field_sign_slides']['widget']['actions']['bundle']['#value'] = 'slide';
     $form['field_sign_slides']['widget']['actions']['bundle']['#type'] = 'hidden';
