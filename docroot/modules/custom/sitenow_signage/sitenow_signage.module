@@ -18,43 +18,42 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_signage_preprocess_block(&$variables) {
-  switch ($variables['plugin_id']) {
-    case 'datetime_block':
-    case 'iowalogo_block':
-      $node = \Drupal::routeMatch()->getParameter('node');
-
-      // Check if the header display field is empty.
-      $hide_block = !empty($node->field_sign_hide_header->value);
-      // Hide the block if all the specified fields are empty.
-      if ($hide_block) {
-        $variables['content'] = [];
-      }
-      break;
-
-    case 'field_block:node:sign:field_sign_display_title':
-      uiowa_core_set_attributes($variables, 'site-name');
-      $node = \Drupal::routeMatch()->getParameter('node');
-
-      // Check if the header display field is empty.
-      $hide_block = !empty($node->field_sign_hide_header->value);
-      // Hide the block if all the specified fields are empty.
-      if ($hide_block) {
-        $variables['content'] = [];
-      }
-      break;
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_preprocess_field().
  */
 function sitenow_signage_preprocess_field(&$variables) {
-  if ($variables['element']['#field_name'] == 'field_sign_slides') {
-    // Attach the splide library.
-    $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
+  $element = $variables['element'];
+  if ($element['#field_name'] === 'field_slide_bus_arrivals_stop') {
+    $stop_id = (int) $element[0]['#markup'];
+
+    // Get the bus stop name from the allowed values and set label.
+    $stops = sitenow_signage_bus_stops_allowed_values();
+    $stop_name = $stops[$stop_id] ?? '';
+
+    // Set the bus stop id as a data attribute on the container for JS.
+    $variables['items'][0]['content'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['bus-arrivals'],
+        'data-stop-name' => $stop_name,
+        'data-stop-id' => $stop_id,
+      ],
+      'loading_message' => [
+        '#markup' => '
+          <table>
+            <thead class="headers">
+              <tr>
+                <th>Time</th>
+                <th>Route</th>
+                <th>Agency</th>
+              </tr>
+            </thead>
+            <td colspan="3" >Loading bus arrival information…</td>
+          </table>',
+        '#allowed_tags' => ['table', 'thead', 'tr', 'th', 'td'],
+      ],
+    ];
+
+    $variables['#attached']['library'][] = 'sitenow_signage/bus_arrivals';
   }
 }
 
@@ -62,14 +61,13 @@ function sitenow_signage_preprocess_field(&$variables) {
  * Implements hook_preprocess_node().
  */
 function sitenow_signage_preprocess_node(&$variables) {
-  if ($variables['node']->getType() == 'slide') {
-    $variables['label'] = NULL;
+  if ($variables['node']->getType() === 'slide') {
+    // Unset node title for slides.
+    unset($variables['label']);
   }
-  if ($variables['node']->getType() == 'sign') {
+  if ($variables['node']->getType() === 'sign') {
+    // Add a black background to the sign node.
     $variables['attributes']['class'][] = 'bg--black';
-    if ($variables['view_mode'] == 'full' && (\Drupal::currentUser()->isAnonymous())) {
-      $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
-    }
   }
 }
 
@@ -82,19 +80,36 @@ function sitenow_signage_preprocess_page(&$variables) {
     // Only modify the page if it is not an admin route.
     $admin_context = \Drupal::service('router.admin_context');
     if (!$admin_context->isAdminRoute()) {
-      // Remove regions.
-      $variables['page']['header'] = [];
-      $variables['page']['after_content'] = [];
-      $variables['page']['pre_footer'] = [];
-      $variables['page']['footer_first'] = [];
-      $variables['page']['footer_second'] = [];
+      // Unset regions for viewing logged in.
+      foreach ([
+        'header',
+        'after_content',
+        'pre_footer',
+        'footer_first',
+        'footer_second',
+      ] as $region) {
+        unset($variables['page'][$region]);
+      }
+
       // Add signage stylesheet.
       $variables['#attached']['library'][] = 'sitenow_signage/signage';
+      // Attach the slideshow library.
+      $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
+
+      // Attach reload library and set the reload interval from the node.
+      // @todo Move this into the anonymous user condition below.
+      $variables['#attached']['library'][] = 'sitenow_signage/reload';
+      $reload_interval = $variables['node']->field_sign_reload_interval?->value ?? 5 * 60 * 60;
+      $variables['#attached']['drupalSettings']['signage']['signReloadInterval'] = $reload_interval;
+
       // Check that user is logged out before unsetting anything.
       if (\Drupal::currentUser()->isAnonymous()) {
+        // Attach the signage alert overrides library.
+        $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
+
         // Check if the query string contains the 'signage-display' parameter.
         if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
-          // Remove all the regions from the page.
+          // Unset remaining regions except content for logged out users.
           foreach (Element::children($variables['page']) as $key) {
             if ($key !== 'content') {
               unset($variables['page'][$key]);
@@ -109,22 +124,6 @@ function sitenow_signage_preprocess_page(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_layout().
- */
-function sitenow_signage_preprocess_layout(&$variables) {
-  $layout = $variables['layout'];
-
-  switch ($layout->id()) {
-
-    case 'layout_twocol':
-      if (isset($variables['region_attributes']['first']) && ($variables['content']['#settings']['label'] === 'Header')) {
-        $variables['region_attributes']['first']->addClass('sign--header');
-      }
-      break;
-  }
-}
-
-/**
  * Implements hook_theme().
  */
 function sitenow_signage_theme($existing, $type, $theme, $path) {
@@ -133,9 +132,43 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-sign-slides--sign--default',
       'base hook' => 'field',
     ],
-    'field__node__field_sign_display_title__sign__default' => [
-      'template' => 'field--node--field-sign-display-title--sign--default',
-      'base hook' => 'field',
-    ],
   ];
+}
+
+/**
+ * Allowed values for reload interval field.
+ *
+ * @see \options_allowed_values()
+ */
+function sitenow_signage_reload_intervals_allowed_values() {
+  $values = [
+    21600 => '6 hours',
+    3600 => '1 hour',
+    1800 => '30 minutes',
+  ];
+
+  return $values;
+}
+
+/**
+ * Allowed values for bus stops field.
+ *
+ * @see \options_allowed_values()
+ */
+function sitenow_signage_bus_stops_allowed_values() {
+  $values = [];
+  $unlisted_stops = [0];
+
+  $api_client = \Drupal::service('sitenow_signage.icareatransit_api');
+  $stops = $api_client->getStopList();
+  /** @var \stdClass $stop */
+  foreach ($stops as $item) {
+    if (!in_array($item->stop->stopnumber, $unlisted_stops)) {
+      $values[$item->stop->stopnumber] = "{$item->stop->stopnumber} - {$item->stop->stoptitle}";
+    }
+  }
+
+  ksort($values);
+
+  return $values;
 }

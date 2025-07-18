@@ -11,11 +11,13 @@ dependencies:
     - field.field.node.scholar.field_scholar_bio_headline
     - field.field.node.scholar.field_scholar_mentor
     - field.field.node.scholar.field_scholar_participation_year
+    - field.field.node.scholar.rabbit_hole__settings
     - node.type.scholar
   module:
     - content_moderation
     - media_library
     - path
+    - rabbit_hole
     - text
 id: node.scholar.default
 targetEntityType: node
@@ -103,6 +105,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

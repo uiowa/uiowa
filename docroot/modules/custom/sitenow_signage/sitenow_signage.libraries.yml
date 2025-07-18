@@ -1,14 +1,15 @@
+# Signage
 signage:
   css:
     theme:
       assets/css/signage.css: { preprocess: false }
-datetime:
-  js:
-    assets/js/datetime.js: { preprocess: false  }
-  dependencies:
-    - core/jquery
-    - core/once
 
+# Bus Arrivals
+bus_arrivals:
+  js:
+    js/bus_arrivals.js: { preprocess: false }
+  dependencies:
+    - core/drupal
 # Splide
 splide:
   js:
@@ -16,14 +17,22 @@ splide:
   css:
     theme:
       /libraries/splidejs--splide/dist/css/splide.min.css: { preprocess: false }
-  dependencies: {  }
 
 # Slideshow
 slideshow:
   js:
-    assets/js/slideshow.js: { preprocess: false }
+    js/slideshow.js: { preprocess: false }
   dependencies:
     - sitenow_signage/splide
+
+# Reload
+reload:
+  js:
+    js/reload.js: { preprocess: false }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
 
 # Hawk Alerts
 signage_alerts:

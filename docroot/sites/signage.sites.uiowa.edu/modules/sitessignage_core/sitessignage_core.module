@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * @file
+ * Module code for signage.sites.uiowa.edu.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+
+  // Define the forms to remove the "Other groups" field from.
+  $og_audience_other_groups_forms = ['node_sign_form', 'node_sign_edit_form', 'node_slide_form', 'node_slide_edit_form'];
+
+  // If our form ID is in the relevant list of form IDs...
+  if (in_array($form_id, $og_audience_other_groups_forms, TRUE)) {
+
+    // If our form has other_groups defined...
+    if (isset($form['og_audience']['other_groups'])) {
+
+      // Remove access from the other groups field.
+      $form['og_audience']['other_groups']['#access'] = FALSE;
+    }
+  }
+
+  if ($form_id == 'og_membership_default_add_form') {
+    if (isset($form['uid']['widget'][0]['target_id'])) {
+      // Update the description of the uid field.
+      $form['uid']['widget'][0]['target_id']['#description'] = t('Enter the HawkID of the member you wish to add. If no user account exists for the HawkID, one will be created. HawkIDs can be found using the <a href=":url">University of Iowa Directory Search</a>.', [
+        ':url' => Url::fromUri('https://iam.uiowa.edu/whitepages/search')->toString(),
+      ]);
+
+      // Add a custom element processor.
+      $form['#validate'][] = 'sitessignage_core_og_user_validate';
+    }
+
+    // Update the description of roles field.
+    if (isset($form['roles']['widget'])) {
+      $form['roles']['widget']['#description'] = t('Select any roles the member should have within the group.');
+    }
+
+    // Remove access to the state field.
+    if (isset($form['state'])) {
+      $form['state']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Custom validation to add a new user if they do not already exist.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function sitessignage_core_og_user_validate(array &$form, FormStateInterface $form_state): void {
+  // The target_id is set if the user already exists. Otherwise, it is null.
+  if (is_null($form_state->getValue('uid')[0]['target_id'])) {
+    $new_username = $form_state->getUserInput()['uid'][0]['target_id'];
+    // Check a username was entered.
+    if (!is_null($new_username)) {
+      $pass = \Drupal::service('password_generator')->generate();
+      // Create a new user account.
+      $new_account = User::create([
+        'name' => $new_username,
+        'pass' => $pass,
+        'mail' => uniqid('email_') . '@uiowa.edu',
+      ]);
+      $new_account->addRole('sign_manager');
+      $new_account->enforceIsNew();
+      $new_account->activate();
+      $new_account->save();
+
+      // Update form_state to set target_id to new account uid.
+      $form_state->setValue(['uid', 0, 'target_id'], $new_account->id());
+
+      // Add a message letting the user know that a new account was created.
+      \Drupal::service('messenger')->addMessage(t('New user @username created.', [
+        '@username' => $new_username,
+      ]));
+
+      // Remove the form error set by the previous validation.
+      // Copied from https://drupal.stackexchange.com/a/248055/6066.
+      $form_errors = $form_state->getErrors();
+      $form_state->clearErrors();
+      unset($form_errors['uid][0][target_id']);
+
+      foreach ($form_errors as $name => $error_message) {
+        $form_state->setErrorByName($name, $error_message);
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: hshp.uiowa.ddev.site
+    protocol: https
+  machine_name: hshp
+  human_name: hshp.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: hshp.prod
+drupal:
+  db:
+    database: hshp_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://hshp.prod.drupal.uiowa.edu'
+  requester: bschweig
+  site-name: 'Department of Health, Sport, and Human Physiology'

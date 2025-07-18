@@ -1,0 +1,18 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.sign.og_audience
+    module:
+      - og
+  content:
+    og_audience:
+      type: og_complex
+      weight: 123
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+removing: {  }

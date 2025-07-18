@@ -81,7 +81,7 @@
 
   {{ page.content }}
 
-  {% if header_toppage %}
+  {% if header_toppage and show_back_top_nav %}
     {% include '@uids_base/navigation/top-scroll.html.twig' %}
   {% endif %}
 
