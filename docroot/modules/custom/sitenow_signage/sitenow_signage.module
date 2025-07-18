@@ -10,18 +10,13 @@ use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter().
  */
-function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $form_id) {
-  // Update the custom alerts description text to note that
-  // custom alerts will not display on signs.
-  $form['custom_alert_display']['#description'] = $form['custom_alert_display']['#description'] . ' Custom alerts will not render on signs.';
-}
+function sitenow_signage_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if (!in_array($form_id, ['node_sign_edit_form', 'node_sign_form'])) {
+    return;
+  }
 
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function sitenow_signage_form_node_sign_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // We are using an entity reference view to provide suggestions for the
   // autocomplete field widget for slides. This doesn't provide a way for us to
   // limit newly created nodes to a particular node type. Our workaround is to
@@ -30,6 +25,15 @@ function sitenow_signage_form_node_sign_form_alter(&$form, FormStateInterface $f
     $form['field_sign_slides']['widget']['actions']['bundle']['#value'] = 'slide';
     $form['field_sign_slides']['widget']['actions']['bundle']['#type'] = 'hidden';
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $form_id) {
+  // Update the custom alerts description text to note that
+  // custom alerts will not display on signs.
+  $form['custom_alert_display']['#description'] = $form['custom_alert_display']['#description'] . ' Custom alerts will not render on signs.';
 }
 
 /**
