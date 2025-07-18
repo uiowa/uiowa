@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.node.minimal
+    - field.field.node.sign.field_sign_orientation
     - field.field.node.sign.field_sign_reload_interval
     - field.field.node.sign.field_sign_slides
     - node.type.sign
@@ -19,19 +20,25 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 6
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_sign_orientation:
+    type: options_select
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   field_sign_reload_interval:
     type: options_buttons
-    weight: 2
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
   field_sign_slides:
     type: inline_entity_form_complex
-    weight: 4
+    weight: 3
     region: content
     settings:
       form_mode: minimal
@@ -51,38 +58,38 @@ content:
         entity_browser_id: _none
   moderation_state:
     type: moderation_state_default
-    weight: 12
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 10
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 8
+    weight: 7
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 13
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 9
+    weight: 8
     region: content
     settings:
       display_label: true
@@ -97,7 +104,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 4
     region: content
     settings:
       match_operator: CONTAINS
@@ -106,7 +113,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 11
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }

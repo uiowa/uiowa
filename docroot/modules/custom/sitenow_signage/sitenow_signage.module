@@ -124,6 +124,43 @@ function sitenow_signage_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_paragraph().
+ */
+function sitenow_signage_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->bundle() == 'slide_image' &&
+    isset($variables['content']['field_slide_image'])) {
+
+    // Get the sign node from the current route.
+    $sign_node = \Drupal::routeMatch()->getParameter('node');
+
+    if ($sign_node && $sign_node->bundle() == 'sign') {
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
+    }
+
+    // Check if we have a sign node with vertical orientation.
+    if ($sign_node &&
+      $sign_node->bundle() == 'sign' &&
+      $sign_node->hasField('field_sign_orientation') &&
+      !$sign_node->get('field_sign_orientation')->isEmpty() &&
+      $sign_node->get('field_sign_orientation')->value === 'vertical') {
+
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+
+      foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+        if (is_numeric($delta)) {
+          $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+          if ($media_entity) {
+            $item = $view_builder->view($media_entity, 'vertical_9_16');
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function sitenow_signage_theme($existing, $type, $theme, $path) {
@@ -148,6 +185,17 @@ function sitenow_signage_reload_intervals_allowed_values() {
   ];
 
   return $values;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sitenow_signage_slides_size_allowed_values() {
+  $options = [
+    'horizontal' => 'Horizontal (16:9)',
+    'vertical' => 'Vertical (9:16)',
+  ];
+  return $options;
 }
 
 /**
