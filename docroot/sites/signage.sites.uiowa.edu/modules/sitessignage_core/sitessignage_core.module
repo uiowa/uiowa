@@ -94,3 +94,14 @@ function sitessignage_core_og_user_validate(array &$form, FormStateInterface $fo
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitessignage_core_preprocess_user(&$variables) {
+  $roles = ($variables['elements']['#user'])->getRoles();
+  if (in_array('sign_manager', $roles)) {
+    $foo = 'bar';
+  }
+
+}
