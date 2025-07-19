@@ -12,7 +12,7 @@ use Drupal\node\NodeInterface;
 /**
  * Implements hook_form_alter().
  */
-function sitenow_signage_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (!in_array($form_id, ['node_sign_edit_form', 'node_sign_form'])) {
     return;
   }
