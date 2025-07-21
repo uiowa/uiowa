@@ -39,10 +39,6 @@
     vertical-align: baseline;
   }
 
-  textarea {
-    overflow: auto;
-  }
-
   label.form-required {
     &:after {
       margin-left: variables.$xsm;
@@ -60,12 +56,7 @@
     }
   }
 
-  [type="checkbox"],
-  [type="radio"] {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0;
-  }
+
 
   [type="number"]::-webkit-inner-spin-button,
   [type="number"]::-webkit-outer-spin-button {
@@ -102,12 +93,6 @@
     display: none;
   }
 
-  textarea {
-    height: auto;
-    min-height: 100px;
-    //border-radius: 3px;
-  }
-
   select {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -118,89 +103,6 @@
 
   pre {
     overflow: auto;
-  }
-
-  optgroup,
-  select,
-  textarea {
-    font-family: inherit;
-  }
-
-  [type='text'],
-  [type='password'],
-  [type='date'],
-  [type='datetime'],
-  [type='datetime-local'],
-  [type='month'],
-  [type='week'],
-  [type='email'],
-  [type='number'],
-  [type='search'],
-  [type='tel'],
-  [type='time'],
-  [type='url'],
-  [type='color'],
-  textarea,
-  select {
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    height: 3.5rem;
-    margin: 0 0 1rem;
-    padding: 0.5rem;
-    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-    color: #0a0a0a;
-    border: 1px solid #cacaca;
-    //border-radius: 3px;
-    background-color: #fefefe;
-    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: normal;
-    line-height: 1.5;
-    appearance: none;
-  }
-
-  [type='text']:focus,
-  [type='password']:focus,
-  [type='date']:focus,
-  [type='datetime']:focus,
-  [type='datetime-local']:focus,
-  [type='month']:focus,
-  [type='week']:focus,
-  [type='email']:focus,
-  [type='number']:focus,
-  [type='search']:focus,
-  [type='tel']:focus,
-  [type='time']:focus,
-  [type='url']:focus,
-  [type='color']:focus,
-  textarea:focus {
-    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-    border: 1px solid #8a8a8a;
-    outline: none;
-    background-color: #fefefe;
-    box-shadow: 0 0 5px #cacaca;
-  }
-
-  textarea {
-    max-width: 100%;
-  }
-
-  textarea[rows] {
-    height: auto;
-  }
-
-  input:disabled,
-  input[readonly],
-  textarea:disabled,
-  textarea[readonly] {
-    cursor: not-allowed;
-    color: #63666A;
-    border-color: #bababf;
-    background-color: #f3f3f3 !important;
-    box-shadow: none;
-    -webkit-text-fill-color: #63666A;
   }
 
   [type='submit'],
@@ -220,23 +122,6 @@
     &.button--full-width {
       width: 100%;
     }
-  }
-
-  input[type='search'] {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-
-  input[id^='edit-submit'][type='submit'],
-  input[id^='edit-actions-submit'] {
-    @include utilities.bttn--primary;
-  }
-
-  input#edit-preview {
-    //@include utilities.bttn--outline;
-    @include utilities.bttn--tertiary;
-    @include utilities.margin(variables.$left: variables.$md);
-
   }
 
   ::-webkit-input-placeholder {
@@ -259,23 +144,6 @@
   [type='checkbox'],
   [type='radio'] {
     @include utilities.margin(variables.$top: 0, variables.$right: 0, variables.$bottom: variables.$sm);
-  }
-
-  [type='checkbox']+label,
-  [type='radio']+label {
-    display: inline-block;
-    vertical-align: baseline;
-    @include utilities.margin(variables.$right: variables.$sm, variables.$bottom: 0, variables.$left: variables.$xsm);
-  }
-
-  [type='checkbox']+label[for],
-  [type='radio']+label[for] {
-    cursor: pointer;
-  }
-
-  label>[type='checkbox'],
-  label>[type='radio'] {
-    @include utilities.margin(variables.$right: variables.$sm);
   }
 
   [type='file'] {
@@ -323,14 +191,6 @@
     select {
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIpJREFUeNrEkckNgDAMBBfRkEt0ObRBBdsGXUDgmQfK4XhH2m8czQAAy27R3tsw4Qfe2x8uOO6oYLb6GlOor3GF+swURAOmUJ+RwtEJs9WvTGEYxBXqI1MQAZhCfUQKRzDMVj+TwrAIV6jvSUEkYAr1LSkcyTBb/V+KYfX7xAeusq3sLDtGH3kEGACPWIflNZfhRQAAAABJRU5ErkJggg==");
     }
-  }
-
-  select:focus {
-    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-    border: 1px solid #8a8a8a;
-    outline: none;
-    background-color: #fefefe;
-    box-shadow: 0 0 5px #cacaca;
   }
 
   select:disabled {
@@ -566,10 +426,6 @@
     input[multiple="multiple"].button {
       margin: 0 0 1rem 0;
     }
-  }
-
-  input.form-autocomplete {
-    background-position: 98% center;
   }
 }
 

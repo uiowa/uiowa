@@ -38,11 +38,6 @@
     }
   }
 
-  // Make fields respect field width settings
-  input[size]:not([size='60']) {
-    width: inherit;
-  }
-
   .webform-element-help {
     background: variables.$brand-cool-gray;
     border: 2px solid variables.$brand-cool-gray;
@@ -68,13 +63,6 @@
     margin: variables.$xsm 0;
     flex-basis: 100%;
   }
-  input + .description,
-  input + .field-prefix,
-  input + .field-suffix {
-    position: relative;
-    top: -0.75rem;
-    inset-block-start: -0.75rem;
-  }
 
   // --------------------------------
   // More
@@ -92,22 +80,14 @@
   // --------------------------------
   // Checkboxes
   // --------------------------------
-  [type=checkbox], [type=radio] {
-    height: 1.2rem;
-    min-width: 1.2rem;
-    margin: 0 .35rem 0 .25rem;
-    -webkit-transform: scale(1.3, 1.3);
-  }
+
   .form-type-checkbox,
   .form-type-radio {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
   }
-  [type='checkbox']+label,
-  [type='radio']+label {
-    font-weight: variables.$font-weight-normal;
-  }
+
   .webform-type-checkboxes,
   .webform-checkboxes-other,
   .webform-type-radios,
@@ -172,32 +152,6 @@
   .field-prefix,
   .field-suffix {
     display: block;
-  }
-
-  // --------------------------------
-  // Error
-  // --------------------------------
-  [type='text'].error,
-  [type='password'].error,
-  [type='date'].error,
-  [type='datetime'].error,
-  [type='datetime-local'].error,
-  [type='month'].error,
-  [type='week'].error,
-  [type='email'].error,
-  [type='number'].error,
-  [type='search'].error,
-  [type='tel'].error,
-  [type='time'].error,
-  [type='url'].error,
-  textarea.error,
-  select.error {
-    border: 1px solid variables.$danger;
-    background-color: variables.$danger-light;
-    &:focus {
-      border: 1px solid variables.$danger;
-      box-shadow: 0 0 5px variables.$danger-light;
-    }
   }
 
   // --------------------------------
