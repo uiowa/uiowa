@@ -2,10 +2,7 @@ uuid: 1515c467-4651-4e07-a466-14d50c5ca2d0
 langcode: en
 status: true
 dependencies:
-  config:
-    - node.type.signage_group
   module:
-    - node
     - og
     - user
 id: user_signage_group_membership
@@ -24,23 +21,23 @@ display:
     display_options:
       title: 'My Signage Groups'
       fields:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: uid
+        entity_id:
+          id: entity_id
+          table: og_membership
+          field: entity_id
+          relationship: og_membership
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
+          entity_type: og_membership
+          entity_field: entity_id
           plugin_id: field
           label: ''
           exclude: false
           alter:
-            alter_text: false
+            alter_text: true
             text: ''
-            make_link: false
-            path: ''
+            make_link: true
+            path: '/node/{{ entity_id }}'
             absolute: false
             external: false
             replace_spaces: false
@@ -78,7 +75,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -129,22 +126,7 @@ display:
         type: tag
         options: {  }
       empty: {  }
-      sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: uid
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-          order: ASC
-          expose:
-            label: ''
-            field_identifier: ''
-          exposed: false
+      sorts: {  }
       arguments:
         uid:
           id: uid
@@ -182,49 +164,7 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-      filters:
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          relationship: uid
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          operator: in
-          value:
-            signage_group: signage_group
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
+      filters: {  }
       style:
         type: default
         options:
@@ -258,17 +198,6 @@ display:
           entity_type: user
           plugin_id: standard
           required: true
-        uid:
-          id: uid
-          table: users_field_data
-          field: uid
-          relationship: none
-          group_type: group
-          admin_label: nodes
-          entity_type: user
-          entity_field: uid
-          plugin_id: standard
-          required: false
       group_by: true
       header: {  }
       footer: {  }
