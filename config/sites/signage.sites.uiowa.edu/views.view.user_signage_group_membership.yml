@@ -1,4 +1,4 @@
-uuid: 95359566-f7fe-4d47-82a3-e76264df32cb
+uuid: 1515c467-4651-4e07-a466-14d50c5ca2d0
 langcode: en
 status: true
 dependencies:
@@ -8,8 +8,8 @@ dependencies:
     - node
     - og
     - user
-id: user
-label: User
+id: user_signage_group_membership
+label: 'User signage group membership'
 module: views
 description: ''
 tag: ''
@@ -94,7 +94,7 @@ display:
         options:
           offset: 0
           pagination_heading_level: h4
-          items_per_page: 10
+          items_per_page: 3
           total_pages: null
           id: 0
           tags:
@@ -289,6 +289,27 @@ display:
           metatags: {  }
           tokenize: false
       path: user/mygroups
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user
+        - user.permissions
+      tags: {  }
+  user_signage_groups_block:
+    id: user_signage_groups_block
+    display_title: Block
+    display_plugin: block
+    position: 2
+    display_options:
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      block_description: 'Signage group membership list block'
     cache_metadata:
       max-age: -1
       contexts:
