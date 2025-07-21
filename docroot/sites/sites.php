@@ -7720,3 +7720,9 @@ $sites['ucpathways.uiowa.ddev.site'] = 'pathways.uc.uiowa.edu';
 $sites['ucpathways.dev.drupal.uiowa.edu'] = 'pathways.uc.uiowa.edu';
 $sites['ucpathways.stage.drupal.uiowa.edu'] = 'pathways.uc.uiowa.edu';
 $sites['ucpathways.prod.drupal.uiowa.edu'] = 'pathways.uc.uiowa.edu';
+
+// Directory aliases for holden.uihealthcare.org.
+$sites['org-uihealthcareholden.uiowa.ddev.site'] = 'holden.uihealthcare.org';
+$sites['org-uihealthcareholden.dev.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
+$sites['org-uihealthcareholden.stage.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
+$sites['org-uihealthcareholden.prod.drupal.uiowa.edu'] = 'holden.uihealthcare.org';

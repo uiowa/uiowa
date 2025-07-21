@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-uihealthcareholden.uiowa.ddev.site
+    protocol: https
+  machine_name: org-uihealthcareholden
+  human_name: holden.uihealthcare.org
+drush:
+  aliases:
+    local: self
+    remote: org-uihealthcareholden.prod
+drupal:
+  db:
+    database: holden_uihealthcare_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-uihealthcareholden.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Holden Comprehensive Cancer Center'
