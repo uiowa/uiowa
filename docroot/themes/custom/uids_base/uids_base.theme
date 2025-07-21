@@ -256,13 +256,6 @@ function uids_base_preprocess_html(&$variables) {
     // Add Layout Builder specific CSS settings.
     $variables['#attached']['library'][] = 'uids_base/layout-builder';
   }
-
-  $is_layout_builder_edit = strpos($route_name, 'layout_builder') !== FALSE &&
-    (strpos($route_name, '.view') !== FALSE || strpos($route_name, '.edit') !== FALSE);
-
-  if ($is_layout_builder_edit && !empty($variables['layout_builder_enabled'])) {
-    $variables['#attached']['library'][] = 'uids_base/ckeditor5-override';
-  }
 }
 
 /**
