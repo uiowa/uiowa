@@ -1,8 +1,9 @@
 @use 'sass:color';
 @use '../../../uids/scss/abstracts/_variables.scss';
 @use '../../../uids/scss/abstracts/_utilities.scss';
+@use '../../../uids/scss/components/form.scss';
 
-.uids-content {
+.uids-form {
 
   .button--primary {
 
@@ -325,8 +326,8 @@
   border: 1px solid variables.$primary;
 }
 
-.uids-content .help-text,
-.uids-content .description {
+.uids-form .help-text,
+.uids-form .description {
   font-style: normal;
 }
 
@@ -387,17 +388,17 @@
 }
 
 // Horizontal form.
-.uids-content--horizontal {
+.uids-form--horizontal {
   @include utilities.breakpoint(sm) {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     gap: 1rem;
   }
-  .uids-content--horizontal-flex {
+  .uids-form--horizontal-flex {
     flex: 1;
   }
-  &.uids-content:not(.uids-search) .button {
+  &.uids-form:not(.uids-search) .button {
     padding: .9rem 1.25rem 1.1rem;
     max-height: 3.45rem;
     @include utilities.breakpoint(sm) {

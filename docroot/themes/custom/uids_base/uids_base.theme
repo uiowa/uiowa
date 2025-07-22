@@ -38,13 +38,13 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
     'views_exposed_form',
   ];
   if (!in_array($form_id, $skip_forms)) {
-    // Add 'uids-content' class to all forms except media library.
-    $form['#attributes']['class'][] = 'uids-content';
+    // Add 'uids-form' class to all forms except media library.
+    $form['#attributes']['class'][] = 'uids-form';
   }
 
   if (strpos($form_id, 'node_page_layout_builder_form') !== FALSE) {
-    $form['actions']['#attributes']['class'][] = 'uids-content';
-    $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
+    $form['actions']['#attributes']['class'][] = 'uids-form';
+    $form['layout_builder_message']['#attributes']['class'][] = 'uids-form';
   }
 
   if (strpos($form_id, 'uiowa_search_form') !== FALSE) {
@@ -77,7 +77,7 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
       return;
     }
 
-    $form['#attributes']['class'][] = 'uids-content bg--gray';
+    $form['#attributes']['class'][] = 'uids-form bg--gray';
     $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
     // Fixes a bug with BEF, details here:
     // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
@@ -1337,9 +1337,9 @@ function uids_base_preprocess_file_link(&$variables) {
  * Implements theme_preprocess_form().
  */
 function uids_base_preprocess_form(&$variables) {
-  // Add 'uids-content' and 'uids-search' classes to search-block-form.
+  // Add 'uids-form' and 'uids-search' classes to search-block-form.
   if (isset($variables['attributes']['id']) && $variables['attributes']['id'] === 'search-block-form') {
-    $variables['attributes']['class'][] = 'uids-content uids-search';
+    $variables['attributes']['class'][] = 'uids-form uids-search';
   }
 }
 

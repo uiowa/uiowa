@@ -4,6 +4,11 @@
 
 .webform-submission-form {
 
+  // Make fields respect field width settings
+  input[size]:not([size='60']) {
+    width: inherit;
+  }
+
   span.form-required {
     position: relative;
     &:after {
@@ -85,9 +90,9 @@
   .webform-type-webform-radios-other {
     .form-type-checkbox,
     .form-type-radio:not(.form-item-radios-buttons) {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
+      //display: flex;
+      //align-items: baseline;
+      //flex-wrap: wrap;
       label {
         flex: 1;
       }

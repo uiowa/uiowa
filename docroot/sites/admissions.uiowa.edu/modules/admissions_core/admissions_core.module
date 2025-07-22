@@ -161,6 +161,14 @@ function admissions_core_entity_presave(EntityInterface $entity) {
  */
 function admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'views_exposed_form':
+      if (isset($form['#id']) && $form['#id'] == 'views-exposed-form-areas-of-study-kiosk-print') {
+        if (isset($form['academic_group'])) {
+          $form['academic_group']['#attributes']['class'][] = 'form-type-checkbox--switch';
+        }
+      }
+      break;
+
     case 'node_event_series_form':
     case 'node_event_series_edit_form':
     case 'node_major_form':
