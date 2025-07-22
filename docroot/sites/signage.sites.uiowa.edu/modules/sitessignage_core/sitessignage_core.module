@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_alter().
@@ -92,5 +93,15 @@ function sitessignage_core_og_user_validate(array &$form, FormStateInterface $fo
         $form_state->setErrorByName($name, $error_message);
       }
     }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function sitessignage_core_views_pre_render(ViewExecutable $view) {
+  if ($view->element["#view_id"] == 'user_signage_group_membership') {
+    $result = $view->result;
+//    $more_results = og_entity_bundle_field_info('signage_group');
   }
 }
