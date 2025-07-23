@@ -3,9 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.sign
     - node.type.signage_group
-    - node.type.slide
   module:
     - node
     - user
@@ -160,9 +158,7 @@ display:
             fail: empty
           validate_options:
             bundles:
-              sign: sign
               signage_group: signage_group
-              slide: slide
             access: false
             operation: view
             multiple: 0
