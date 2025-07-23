@@ -5,8 +5,27 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_signage_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!in_array($form_id, ['node_sign_edit_form', 'node_sign_form'])) {
+    return;
+  }
+
+  // We are using an entity reference view to provide suggestions for the
+  // autocomplete field widget for slides. This doesn't provide a way for us to
+  // limit newly created nodes to a particular node type. Our workaround is to
+  // set the bundle to 'slide' and change the field type to hidden.
+  if (isset($form['field_sign_slides']['widget']['actions']['bundle'])) {
+    $form['field_sign_slides']['widget']['actions']['bundle']['#value'] = 'slide';
+    $form['field_sign_slides']['widget']['actions']['bundle']['#type'] = 'hidden';
+  }
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -124,6 +143,43 @@ function sitenow_signage_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_paragraph().
+ */
+function sitenow_signage_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->bundle() == 'slide_image' &&
+    isset($variables['content']['field_slide_image'])) {
+
+    // Get the sign node from the current route.
+    $sign_node = \Drupal::routeMatch()->getParameter('node');
+
+    if ($sign_node && $sign_node->bundle() == 'sign') {
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
+    }
+
+    // Check if we have a sign node with vertical orientation.
+    if ($sign_node &&
+      $sign_node->bundle() == 'sign' &&
+      $sign_node->hasField('field_sign_orientation') &&
+      !$sign_node->get('field_sign_orientation')->isEmpty() &&
+      $sign_node->get('field_sign_orientation')->value === 'vertical') {
+
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+
+      foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+        if (is_numeric($delta)) {
+          $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+          if ($media_entity) {
+            $item = $view_builder->view($media_entity, 'vertical_9_16');
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function sitenow_signage_theme($existing, $type, $theme, $path) {
@@ -148,6 +204,17 @@ function sitenow_signage_reload_intervals_allowed_values() {
   ];
 
   return $values;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sitenow_signage_slides_size_allowed_values() {
+  $options = [
+    'horizontal' => 'Horizontal (16:9)',
+    'vertical' => 'Vertical (9:16)',
+  ];
+  return $options;
 }
 
 /**
