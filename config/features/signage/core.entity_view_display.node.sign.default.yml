@@ -3,12 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.sign.field_sign_orientation
     - field.field.node.sign.field_sign_reload_interval
     - field.field.node.sign.field_sign_slides
     - node.type.sign
   module:
     - layout_builder
     - layout_builder_restrictions
+    - options
     - sitenow_signage
     - user
   theme:
@@ -88,6 +90,7 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_sign_orientation: true
   field_sign_reload_interval: true
   field_sign_slides: true
   layout_builder__layout: true
