@@ -94,3 +94,32 @@ function sitessignage_core_og_user_validate(array &$form, FormStateInterface $fo
     }
   }
 }
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function sitessignage_core_entity_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  // Only alter full view mode for signage_group content type.
+  if ($entity->getEntityTypeId() == 'node' &&
+    $entity->bundle() == 'signage_group' &&
+    $display->getMode() == 'default') {
+
+    // Clear the existing content but keep system elements
+    foreach ($build as $key => $value) {
+      if (strpos($key, '#') !== 0 && !in_array($key, ['links', 'title'])) {
+        unset($build[$key]);
+      }
+    }
+
+    // Fetch our view and embed it into the content.
+    $view = \Drupal\views\Views::getView('signage_group_content');
+    if (is_object($view)) {
+      $view->setDisplay('page');
+      $view->setArguments([$entity->id()]);
+      $view->preExecute();
+      $view->execute();
+      $content = $view->buildRenderable();
+      $build['signage_group_content'] = $content;
+    }
+  }
+}
