@@ -2,9 +2,9 @@
 @use '../../../uids/scss/abstracts/_utilities.scss';
 
 .portrait {
-  @include utilities.flexbox;
-  @include utilities.flex-wrap(variables.$value: wrap);
-  @include utilities.flex(variables.$fg: 1, variables.$fs: 1, variables.$fb: 0);
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 0;
 
   @include utilities.breakpoint(sm) {
     @include utilities.margin(variables.$right: variables.$md, variables.$left: variables.$md);

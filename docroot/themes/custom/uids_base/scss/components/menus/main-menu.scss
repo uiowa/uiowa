@@ -51,8 +51,8 @@
 
   .menu {
     position: relative;
-    @include utilities.flexbox;
-    @include utilities.flex-direction(column);
+    display: flex;
+    flex-direction: column;
     overflow: visible;
     font-size: 1.1rem;
     @extend %no-ul-list;
