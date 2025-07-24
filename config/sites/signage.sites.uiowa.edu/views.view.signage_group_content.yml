@@ -478,8 +478,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  page_1:
-    id: page_1
+  page:
+    id: page
     display_title: Page
     display_plugin: page
     position: 1
@@ -489,6 +489,7 @@ display:
           metatags: {  }
           tokenize: false
       path: signage-group/%
+      use_admin_theme: true
     cache_metadata:
       max-age: -1
       contexts:
