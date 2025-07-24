@@ -6,69 +6,24 @@ dependencies:
     - views.view.user_signage_groups
   module:
     - layout_builder
+    - layout_builder_restrictions
     - user
     - views
   theme:
     - uids_base
 third_party_settings:
   layout_builder:
-    enabled: true
+    enabled: false
     allow_custom: false
-    sections:
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-        components:
-          -
-            uuid: 156e83da-5297-4b0c-a7d2-03e9f69c24dd
-            region: content
-            configuration:
-              id: 'extra_field_block:user:user:member_for'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: e1630bf3-3eaf-4739-8786-935118cebf1b
-            region: content
-            configuration:
-              id: 'extra_field_block:user:user:masquerade'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 65f469da-a80b-4bcd-8e6e-c1e58c0517e2
-            region: content
-            configuration:
-              id: 'views_block:user_signage_groups-user_signage_groups_block'
-              label: null
-              label_display: null
-              provider: views
-              context_mapping: {  }
-              views_label: ''
-              items_per_page: none
-              pager: some
-              exposed: {  }
-              headline:
-                headline: 'My Signage Groups'
-                hide_headline: 0
-                heading_size: h4
-                headline_style: default
-                headline_alignment: default
-                child_heading_size: h3
-              exposed_filter_values: null
-              layout_builder_styles: {  }
-            weight: 2
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: user.user.default
 targetEntityType: user
 bundle: user
