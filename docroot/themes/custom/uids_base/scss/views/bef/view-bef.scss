@@ -73,60 +73,6 @@
         }
       }
     }
-
-    &.form-item {
-      > .details-wrapper {
-        background: variables.$white;
-        overflow: auto;
-        max-height: 346px;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
-      }
-
-      summary {
-        display: flex;
-        align-items: center;
-        box-sizing: border-box;
-        width: 100%;
-        height: var(--elemHeight);
-        padding: 0.5rem;
-        margin: 0;
-        transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        color: variables.$grey;
-        border: 1px solid variables.$grey-light;
-        background-color: variables.$white;
-        box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
-        font-family: inherit;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-
-        &:before {
-          padding-left: 0;
-        }
-      }
-    }
-
-    .details-wrapper {
-      .bef-checkboxes {
-        padding: 0.5rem 0;
-
-        .form-item:first-child {
-          margin-top: 0.5rem;
-        }
-      }
-
-      .form-type-checkbox.form-item {
-        padding: 0 0.5rem;
-        margin-right: 0;
-        display: flex;
-        align-items: center;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-      }
-    }
   }
 
   .bef--secondary[open] {
@@ -140,56 +86,6 @@
     border-bottom: none;
     margin-bottom: 0;
     padding: 0 0 #{2 * variables.$xsm-sm};
-  }
-
-  summary {
-    cursor: pointer;
-    padding: 0;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    margin-top: 1.5rem;
-    display: flex;
-
-    span.summary {
-      margin-left: 1rem;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0) calc(50% - 1px), rgba(192, 192, 192, 1) calc(50%), rgba(0, 0, 0, 0) calc(50% + 1px));
-      flex-grow: 1;
-    }
-
-    &::-webkit-details-marker,
-    &::marker {
-      display: none;
-    }
-  }
-
-  summary::before {
-    padding: 0 0.6rem variables.$xsm variables.$xsm;
-    content: "\f13a";
-    color: variables.$brand-cool-gray;
-    @include utilities.fas();
-  }
-
-  &[open] > summary::before {
-    content: "\f139";
-  }
-
-  > .details-wrapper {
-    padding: 0;
-  }
-
-  &:not([class*="bef-form--sidebar"]) {
-    details.form-item {
-      .details-wrapper {
-        z-index: 500;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid variables.$grey-light;
-        position: absolute;
-        padding: 0;
-        top: calc(var(--elemHeight) - 1px);
-        width: calc(100% - 2px);
-      }
-    }
   }
 }
 // === End Summary & Details === //
