@@ -20,7 +20,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'My Signage Groups'
+      title: ''
       fields:
         title:
           id: title
@@ -200,7 +200,20 @@ display:
           entity_field: uid
           plugin_id: standard
           required: true
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: "<br>\r\n<h4>My Signage Groups</h4>"
+            format: filtered_html
+          tokenize: false
       footer: {  }
       display_extenders: {  }
     cache_metadata:
