@@ -1,0 +1,24 @@
+uuid: 59686f46-8a96-4fd6-b4c2-56928a0cb03e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_slide_duration
+field_name: field_slide_duration
+entity_type: node
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 15000
+      label: '15 seconds'
+  allowed_values_function: 'sitenow_signage_slide_durations_allowed_values'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
