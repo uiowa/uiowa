@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_sign_slides
     - node.type.sign
+    - node.type.slide
 id: node.sign.field_sign_slides
 field_name: field_sign_slides
 entity_type: node
@@ -16,10 +17,13 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: views
+  handler: unpublished
   handler_settings:
-    view:
-      view_name: slides_entity_reference
-      display_name: entity_reference_1
-      arguments: {  }
+    target_bundles:
+      slide: slide
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: 1
+    auto_create_bundle: ''
 field_type: entity_reference
