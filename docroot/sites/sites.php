@@ -7726,3 +7726,9 @@ $sites['sitesyuanliao.uiowa.ddev.site'] = 'yuanliao.sites.uiowa.edu';
 $sites['sitesyuanliao.dev.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
 $sites['sitesyuanliao.stage.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
 $sites['sitesyuanliao.prod.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
+
+// Directory aliases for burkard.lab.uiowa.edu.
+$sites['labburkard.uiowa.ddev.site'] = 'burkard.lab.uiowa.edu';
+$sites['labburkard.dev.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
+$sites['labburkard.stage.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
+$sites['labburkard.prod.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
