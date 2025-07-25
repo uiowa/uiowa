@@ -7720,3 +7720,9 @@ $sites['org-uihealthcareholden.uiowa.ddev.site'] = 'holden.uihealthcare.org';
 $sites['org-uihealthcareholden.dev.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
 $sites['org-uihealthcareholden.stage.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
 $sites['org-uihealthcareholden.prod.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
+
+// Directory aliases for yuanliao.sites.uiowa.edu.
+$sites['sitesyuanliao.uiowa.ddev.site'] = 'yuanliao.sites.uiowa.edu';
+$sites['sitesyuanliao.dev.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
+$sites['sitesyuanliao.stage.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
+$sites['sitesyuanliao.prod.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
