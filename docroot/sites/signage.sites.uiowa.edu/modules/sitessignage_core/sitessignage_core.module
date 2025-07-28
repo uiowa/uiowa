@@ -115,7 +115,7 @@ function sitessignage_core_entity_view_alter(array &$build, $entity, $display) {
     // Fetch our view and embed it into the content.
     $view = Views::getView('signage_group_content');
     if (is_object($view)) {
-      $view->setDisplay('page');
+      $view->setDisplay('block_1');
       $view->setArguments([$entity->id()]);
       $view->preExecute();
       $view->execute();
