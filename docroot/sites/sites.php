@@ -7732,3 +7732,9 @@ $sites['labburkard.uiowa.ddev.site'] = 'burkard.lab.uiowa.edu';
 $sites['labburkard.dev.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
 $sites['labburkard.stage.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
 $sites['labburkard.prod.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
+
+// Directory aliases for moneythink.tippie.uiowa.edu.
+$sites['tippiemoneythink.uiowa.ddev.site'] = 'moneythink.tippie.uiowa.edu';
+$sites['tippiemoneythink.dev.drupal.uiowa.edu'] = 'moneythink.tippie.uiowa.edu';
+$sites['tippiemoneythink.stage.drupal.uiowa.edu'] = 'moneythink.tippie.uiowa.edu';
+$sites['tippiemoneythink.prod.drupal.uiowa.edu'] = 'moneythink.tippie.uiowa.edu';
