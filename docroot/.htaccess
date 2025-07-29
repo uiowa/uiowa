@@ -138,7 +138,7 @@ AddEncoding gzip svgz
 
   # Redirect rules for diversity.uiowa.edu.
   RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteRule ^johndeerescholars$ https://provost.uiowa.edu/johndeerescholars [R=301,L]
+  RewriteRule ^johndeerescho{lars$ https://provost.uiowa.edu/johndeerescholars [R=301,L]
 
   RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
   RewriteRule ^programs/student-support/trio-student-support-services$ https://uc.uiowa.edu/trio-student-support-services [R=301,L]
@@ -159,7 +159,7 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
   RewriteRule ^igs/geocore/(.*)$ https://igs.iihr.uiowa.edu/igs/geocore/$1 [R=301,L]
 
-  RewriteCond %{HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteCond %HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
   RewriteRule ^igs/publications/(.*)$ https://igs.iihr.uiowa.edu/igs/publications/$1 [R=301,L]
 
 
