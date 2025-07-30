@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesyuanliao.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesyuanliao
+  human_name: yuanliao.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesyuanliao.prod
+drupal:
+  db:
+    database: yuanliao_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesyuanliao.prod.drupal.uiowa.edu'
+  requester: yliao13
+  site-name: 'happy statistician'
