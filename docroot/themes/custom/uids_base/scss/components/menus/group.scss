@@ -5,12 +5,12 @@
 
 .menu--group {
   .menu {
-    @include utilities.flexbox;
+    display: flex;
 
     @include utilities.margin(variables.$top: variables.$lg, variables.$left: 0, variables.$bottom: variables.$sm);
 
     li {
-      @include utilities.flexbox;
+      display: flex;
       flex: 1;
       border: 1px solid variables.$grey-light;
       border-right: none;
@@ -26,7 +26,7 @@
         text-decoration: none;
         color: variables.$med-gray;
         line-height: 1.3;
-        flex: 1;
+        flex:1 0 0;
         display: flex;
         justify-content: center;
         align-items: center;
