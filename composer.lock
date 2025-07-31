@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3a7e52541759ef76bc7fbf4b7aef667",
+    "content-hash": "32920190b0af10ddd7226b6c8def3964",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9224,34 +9224,30 @@
         },
         {
             "name": "drupal/og",
-            "version": "2.0.0-alpha1",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "2.0.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og-2.0.0-alpha1.zip",
-                "reference": "2.0.0-alpha1",
-                "shasum": "8716eaad445b1a909047afe6ff98cc1c1494237f"
+                "reference": "578b4678"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11"
             },
             "require-dev": {
                 "drupal/coder": "^8.3.16",
-                "drush/drush": "^12.5 || ^13.3",
-                "phpunit/phpunit": "^7 || ^8 || ^9 || ^10.5"
+                "drush/drush": "^12.5 || ^13.3"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
                 "drupal": {
-                    "version": "2.0.0-alpha1",
-                    "datestamp": "1744224067",
+                    "version": "2.0.0-alpha1+6-dev",
+                    "datestamp": "1752491190",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -23838,7 +23834,7 @@
         "drupal/media_library_theme_reset": 10,
         "drupal/menu_link_weight": 10,
         "drupal/moderated_content_bulk_publish": 10,
-        "drupal/og": 15,
+        "drupal/og": 20,
         "drupal/rabbit_hole": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
         "drupal/tvi": 15,
@@ -23853,9 +23849,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
