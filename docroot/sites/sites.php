@@ -7720,3 +7720,27 @@ $sites['org-uihealthcareholden.uiowa.ddev.site'] = 'holden.uihealthcare.org';
 $sites['org-uihealthcareholden.dev.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
 $sites['org-uihealthcareholden.stage.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
 $sites['org-uihealthcareholden.prod.drupal.uiowa.edu'] = 'holden.uihealthcare.org';
+
+// Directory aliases for yuanliao.sites.uiowa.edu.
+$sites['sitesyuanliao.uiowa.ddev.site'] = 'yuanliao.sites.uiowa.edu';
+$sites['sitesyuanliao.dev.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
+$sites['sitesyuanliao.stage.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
+$sites['sitesyuanliao.prod.drupal.uiowa.edu'] = 'yuanliao.sites.uiowa.edu';
+
+// Directory aliases for burkard.lab.uiowa.edu.
+$sites['labburkard.uiowa.ddev.site'] = 'burkard.lab.uiowa.edu';
+$sites['labburkard.dev.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
+$sites['labburkard.stage.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
+$sites['labburkard.prod.drupal.uiowa.edu'] = 'burkard.lab.uiowa.edu';
+
+// Directory aliases for moneythink.tippie.uiowa.edu.
+$sites['tippiemoneythink.uiowa.ddev.site'] = 'moneythink.tippie.uiowa.edu';
+$sites['tippiemoneythink.dev.drupal.uiowa.edu'] = 'moneythink.tippie.uiowa.edu';
+$sites['tippiemoneythink.stage.drupal.uiowa.edu'] = 'moneythink.tippie.uiowa.edu';
+$sites['tippiemoneythink.prod.drupal.uiowa.edu'] = 'moneythink.tippie.uiowa.edu';
+
+// Directory aliases for an.lab.uiowa.edu.
+$sites['laban.uiowa.ddev.site'] = 'an.lab.uiowa.edu';
+$sites['laban.dev.drupal.uiowa.edu'] = 'an.lab.uiowa.edu';
+$sites['laban.stage.drupal.uiowa.edu'] = 'an.lab.uiowa.edu';
+$sites['laban.prod.drupal.uiowa.edu'] = 'an.lab.uiowa.edu';
