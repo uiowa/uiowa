@@ -37,7 +37,7 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
         unset($form['roles']['widget']['#options']['node-signage_group-administrator']);
       }
       // Update the description of roles field.
-      $form['roles']['widget']['#description'] = t('Select any roles the member should have within the group.');
+      $form['roles']['widget']['#description'] = t('Select if the member should have additional permissions within the group.');
     }
   }
 }
