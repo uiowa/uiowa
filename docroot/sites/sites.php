@@ -1283,12 +1283,6 @@ $sites['interdepartmentalstudies.dev.drupal.uiowa.edu'] = 'interdepartmentalstud
 $sites['interdepartmentalstudies.stage.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
 $sites['interdepartmentalstudies.prod.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
 
-// Directory aliases for latinxstudies.uiowa.edu.
-$sites['latinxstudies.uiowa.ddev.site'] = 'latinxstudies.uiowa.edu';
-$sites['latinxstudies.dev.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
-$sites['latinxstudies.stage.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
-$sites['latinxstudies.prod.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
-
 // Directory aliases for interdisciplinaryprograms.uiowa.edu.
 $sites['interdisciplinaryprograms.uiowa.ddev.site'] = 'interdisciplinaryprograms.uiowa.edu';
 $sites['interdisciplinaryprograms.dev.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
