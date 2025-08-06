@@ -2,6 +2,17 @@ adding:
   dependencies:
     config:
       - field.field.node.slide.og_audience
-  hidden:
-    og_audience: true
+    module:
+      - og
+  content:
+    og_audience:
+      type: og_complex
+      weight: 8
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
 removing: {  }
