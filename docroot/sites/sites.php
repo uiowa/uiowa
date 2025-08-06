@@ -1277,12 +1277,6 @@ $sites['siteschinesereadingworld.dev.drupal.uiowa.edu'] = 'chinesereadingworld.s
 $sites['siteschinesereadingworld.stage.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
 $sites['siteschinesereadingworld.prod.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
 
-// Directory aliases for globalhealthstudies.uiowa.edu.
-$sites['globalhealthstudies.uiowa.ddev.site'] = 'globalhealthstudies.uiowa.edu';
-$sites['globalhealthstudies.dev.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
-$sites['globalhealthstudies.stage.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
-$sites['globalhealthstudies.prod.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
-
 // Directory aliases for interdepartmentalstudies.uiowa.edu.
 $sites['interdepartmentalstudies.uiowa.ddev.site'] = 'interdepartmentalstudies.uiowa.edu';
 $sites['interdepartmentalstudies.dev.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
