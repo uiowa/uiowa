@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_alter().
@@ -82,6 +83,30 @@ function sitessignage_core_og_user_validate(array &$form, FormStateInterface $fo
       foreach ($form_errors as $name => $error_message) {
         $form_state->setErrorByName($name, $error_message);
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function sitessignage_core_entity_view_alter(array &$build, $entity, $display) {
+  // Only alter full view mode for signage_group content type.
+  if ($entity->getEntityTypeId() == 'node' &&
+    $entity->bundle() == 'signage_group' &&
+    $display->getMode() == 'default') {
+
+    // Fetch our view and embed it into the content.
+    $view = Views::getView('signage_group_content');
+    if (is_object($view)) {
+      $view->setDisplay('block_1');
+      $view->setArguments([$entity->id()]);
+      $view->preExecute();
+      $view->execute();
+      $content = $view->buildRenderable();
+      $build['signage_group_content'] = $content;
+      // Sink it down below other fields, like the body.
+      $build['signage_group_content']['#weight'] = 10;
     }
   }
 }
