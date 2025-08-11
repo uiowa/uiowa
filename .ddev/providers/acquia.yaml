@@ -14,6 +14,14 @@
 #    ```
 #    You can also do this with `ddev config global --web-environment-add="ACQUIA_API_KEY=xxxxxxxx,ACQUIA_API_SECRET=xxxxx"`.
 #
+#    To use multiple API keys for different projects, add them to your per-project configuration
+#    using the .ddev/config.local.yaml file instead. This file is gitignored by default.
+#    ```yaml
+#    web_environment:
+#        - ACQUIA_API_KEY=xxxxxxxx
+#        - ACQUIA_API_SECRET=xxxxx
+#    ```
+#
 # 5. Add the ACQUIA_ENVIRONMENT_ID environment variable to your project `.ddev/config.yaml`, for example:
 #    ```yaml
 #    web_environment:
@@ -50,21 +58,20 @@ db_pull_command:
     # just using `acli pull:db ${ACQUIA_ENVIRONMENT_ID}`
     echo "Using ACQUIA_ENVIRONMENT_ID=${ACQUIA_ENVIRONMENT_ID}"
     set -x   # You can enable bash debugging output by uncommenting
-    db_dump=$(acli pull:db ${ACQUIA_ENVIRONMENT_ID} --no-interaction --no-import | tail -2l | xargs |  sed 's/^.* //')
-    ls /var/www/html/.ddev >/dev/null # This just refreshes stale NFS if possible
+    db_dump=$(acli pull:db ${ACQUIA_ENVIRONMENT_ID} default --no-interaction --no-import | tail -2l | xargs |  sed 's/^.* //')
     cp ${db_dump} /var/www/html/.ddev/.downloads/db.sql.gz
 
 files_import_command:
   command: |
     # set -x   # You can enable bash debugging output by uncommenting
     set -eu -o pipefail
-    acli -n pull:files ${ACQUIA_ENVIRONMENT_ID}
+    acli -n pull:files ${ACQUIA_ENVIRONMENT_ID} default
 
 # push is a dangerous command. If not absolutely needed it's better to delete these lines.
 db_push_command:
   command: |
     set -eu -o pipefail
-    export ACLI_DB_HOST=db ACLI_DB_NAME=db ACLI_DB_USER=db ACLI_DB_PASSWORD=db
+    export ACLI_DB_HOST=db ACLI_DB_NAME=db ACLI_DB_USER=root ACLI_DB_PASSWORD=root
     set -x   # You can enable bash debugging output by uncommenting
     acli push:db ${ACQUIA_ENVIRONMENT_ID} --no-interaction
 
