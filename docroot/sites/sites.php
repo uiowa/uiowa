@@ -7720,3 +7720,9 @@ $sites['labshahi.uiowa.ddev.site'] = 'shahi.lab.uiowa.edu';
 $sites['labshahi.dev.drupal.uiowa.edu'] = 'shahi.lab.uiowa.edu';
 $sites['labshahi.stage.drupal.uiowa.edu'] = 'shahi.lab.uiowa.edu';
 $sites['labshahi.prod.drupal.uiowa.edu'] = 'shahi.lab.uiowa.edu';
+
+// Directory aliases for gomezvelez.lab.uiowa.edu.
+$sites['labgomezvelez.uiowa.ddev.site'] = 'gomezvelez.lab.uiowa.edu';
+$sites['labgomezvelez.dev.drupal.uiowa.edu'] = 'gomezvelez.lab.uiowa.edu';
+$sites['labgomezvelez.stage.drupal.uiowa.edu'] = 'gomezvelez.lab.uiowa.edu';
+$sites['labgomezvelez.prod.drupal.uiowa.edu'] = 'gomezvelez.lab.uiowa.edu';
