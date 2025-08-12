@@ -91,6 +91,17 @@ function facilities_core_menu_local_tasks_alter(&$data, $route_name, RefinableCa
 function facilities_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_alert_form':
+
+      // Show or hide the field_alert_buildings_locations field based on the
+      // checkbox value.
+      $form['field_alert_buildings_locations']['#states'] = [
+        'visible' => [
+          ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+
+      break;
+
     case 'node_alert_edit_form':
 
       // Show or hide the field_alert_buildings_locations field based on the
@@ -100,6 +111,8 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
           ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],
         ],
       ];
+
+      $form['field_alert_reminder']['#markup'] = '<p>After saving your alert in the review state, notify the Strategic Communications team here: <a href="mailto:FM-Strat-Communication-Group@iowa.uiowa.edu">FM-Strat-Communication-Group@iowa.uiowa.edu</a>.</p>';
 
       break;
 
