@@ -15,31 +15,26 @@ function medicine_core_install() {
   $path_resolver = \Drupal::service('extension.path.resolver');
   $path = $path_resolver->getPath('module', 'medicine_core');
   $csv = array_map('str_getcsv', file($path . '/redirects/all_ccom_base_redirects.csv'));
-  $header = FALSE;
-
-  if ($header === TRUE) {
-    unset($csv[0]);
-  }
 
   foreach ($csv as $redirect) {
+
     /*
      * The preg_replace() here is to remove non-printable unicode characters.
      * The way this was set up before allowed for BOF, EOF, etc. to be
      * bundled in with the redirect strings, which bricked some redirects.
+     *
+     * Additionally, we trim the slashes here to prevent errant checks later.
      */
-    $source_path = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[0]);
-    $redirect_path = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[1]);
+    $source_path = trim(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[0]), '/');
+    $redirect_path = trim(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[1]), '/');
     $existing = \Drupal::service('redirect.repository')->findBySourcePath($source_path);
+
     if (empty($existing)) {
 
-      /* If we have a /node/NODE_ID path AND the two paths are not the same...
-       * I know this looks silly to evaluate `X === 1`,
-       * but this is required with preg_match().
-       * See: https://www.php.net/manual/en/function.preg-match.php#refsect1-function.preg-match-returnvalues.
-       */
+      // If we have a /node/NODE_ID path AND the two paths are not the same...
       if (
-        preg_match('/^\/node\/.*/', $redirect_path) === 1 &&
-        trim($redirect_path, "/") != trim($source_path, "/")
+        preg_match('/^\/node\/.*/', $redirect_path) &&
+        $redirect_path != $source_path
       ) {
 
         // Get the URL for that node...
