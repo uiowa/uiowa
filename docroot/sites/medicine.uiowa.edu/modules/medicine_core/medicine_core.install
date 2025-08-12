@@ -38,7 +38,7 @@ function medicine_core_install() {
       ) {
 
         // Get the URL for that node...
-        $redirect_path_url = trim(\Drupal::service('path_alias.manager')->getAliasByPath(rtrim($redirect_path, "/")), "/");
+        $redirect_path_url = trim(\Drupal::service('path_alias.manager')->getAliasByPath(rtrim($redirect_path, '/')), '/');
 
         // And check to see if we are redirecting to the same path.
         if ($source_path === $redirect_path_url) {
