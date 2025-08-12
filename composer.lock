@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d27059f6027e49008aa297114f0c2aa",
+    "content-hash": "8db767ba2d995c7ec0cc39f91e95c5dd",
     "packages": [
         {
             "name": "acquia/blt",
@@ -308,7 +308,6 @@
                 "issues": "https://github.com/acquia/memcache-settings/issues",
                 "source": "https://github.com/acquia/memcache-settings/tree/v1.2.0"
             },
-            "abandoned": true,
             "time": "2022-08-03T15:14:53+00:00"
         },
         {
@@ -524,7 +523,7 @@
             "version": "6.x-dev",
             "source": {
                 "type": "git",
-                "url": "git@github.com:FortAwesome/Font-Awesome.git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
                 "reference": "d19ab26a33b4d80f9af604e85d4194757276f01d"
             },
             "dist": {
@@ -3857,6 +3856,50 @@
             }
         },
         {
+            "name": "drupal/ckeditor_small_tag",
+            "version": "1.0.0-rc1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/ckeditor_small_tag.git",
+                "reference": "1.0.0-rc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ckeditor_small_tag-1.0.0-rc1.zip",
+                "reference": "1.0.0-rc1",
+                "shasum": "e985d7ad0fb6a7b063a25f6e47544ccddf06fa98"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.0-rc1",
+                    "datestamp": "1726132096",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "gaëlg",
+                    "homepage": "https://www.drupal.org/user/431210"
+                }
+            ],
+            "description": "CKE UI to use <small>&lt;small&gt;</small> HTML tags",
+            "homepage": "https://www.drupal.org/project/ckeditor_small_tag",
+            "support": {
+                "source": "https://git.drupalcode.org/project/ckeditor_small_tag"
+            }
+        },
+        {
             "name": "drupal/classy",
             "version": "1.0.2",
             "source": {
@@ -5503,6 +5546,10 @@
                 {
                     "name": "benjy",
                     "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
+                    "name": "jannakha",
+                    "homepage": "https://www.drupal.org/user/3085703"
                 },
                 {
                     "name": "jsacksick",
@@ -9221,34 +9268,30 @@
         },
         {
             "name": "drupal/og",
-            "version": "2.0.0-alpha1",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "2.0.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og-2.0.0-alpha1.zip",
-                "reference": "2.0.0-alpha1",
-                "shasum": "8716eaad445b1a909047afe6ff98cc1c1494237f"
+                "reference": "578b4678"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11"
             },
             "require-dev": {
                 "drupal/coder": "^8.3.16",
-                "drush/drush": "^12.5 || ^13.3",
-                "phpunit/phpunit": "^7 || ^8 || ^9 || ^10.5"
+                "drush/drush": "^12.5 || ^13.3"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
                 "drupal": {
-                    "version": "2.0.0-alpha1",
-                    "datestamp": "1744224067",
+                    "version": "2.0.0-alpha1+6-dev",
+                    "datestamp": "1752491190",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -10677,7 +10720,7 @@
             "extra": {
                 "drupal": {
                     "version": "4.2.2",
-                    "datestamp": "1732485885",
+                    "datestamp": "1750876597",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -23823,6 +23866,7 @@
         "acquia/blt-multisite": 20,
         "bower-asset/fontawesome": 20,
         "drupal/bigmenu": 5,
+        "drupal/ckeditor_small_tag": 5,
         "drupal/default_content": 15,
         "drupal/diff": 10,
         "drupal/entity_usage": 10,
@@ -23835,7 +23879,7 @@
         "drupal/media_library_theme_reset": 10,
         "drupal/menu_link_weight": 10,
         "drupal/moderated_content_bulk_publish": 10,
-        "drupal/og": 15,
+        "drupal/og": 20,
         "drupal/rabbit_hole": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
         "drupal/tvi": 15,
@@ -23850,9 +23894,9 @@
         "ext-json": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -22,23 +22,24 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $
  */
 function sitenow_signage_preprocess_field(&$variables) {
   $element = $variables['element'];
-  if ($element['#field_name'] === 'field_slide_bus_arrivals_stop') {
-    $stop_id = (int) $element[0]['#markup'];
+  switch ($element['#field_name']) {
+    case 'field_slide_bus_arrivals_stop':
+      $stop_id = (int) $element[0]['#markup'];
 
-    // Get the bus stop name from the allowed values and set label.
-    $stops = sitenow_signage_bus_stops_allowed_values();
-    $stop_name = $stops[$stop_id] ?? '';
+      // Get the bus stop name from the allowed values and set label.
+      $stops = sitenow_signage_bus_stops_allowed_values();
+      $stop_name = $stops[$stop_id] ?? '';
 
-    // Set the bus stop id as a data attribute on the container for JS.
-    $variables['items'][0]['content'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => ['bus-arrivals'],
-        'data-stop-name' => $stop_name,
-        'data-stop-id' => $stop_id,
-      ],
-      'loading_message' => [
-        '#markup' => '
+      // Set the bus stop id as a data attribute on the container for JS.
+      $variables['items'][0]['content'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['bus-arrivals'],
+          'data-stop-name' => $stop_name,
+          'data-stop-id' => $stop_id,
+        ],
+        'loading_message' => [
+          '#markup' => '
           <table>
             <thead class="headers">
               <tr>
@@ -49,11 +50,24 @@ function sitenow_signage_preprocess_field(&$variables) {
             </thead>
             <td colspan="3" >Loading bus arrival information…</td>
           </table>',
-        '#allowed_tags' => ['table', 'thead', 'tr', 'th', 'td'],
-      ],
-    ];
+          '#allowed_tags' => ['table', 'thead', 'tr', 'th', 'td'],
+        ],
+      ];
 
-    $variables['#attached']['library'][] = 'sitenow_signage/bus_arrivals';
+      $variables['#attached']['library'][] = 'sitenow_signage/bus_arrivals';
+      break;
+
+    case 'field_sign_slides':
+      foreach ($variables['items'] as &$item) {
+        $node = $item['content']['#node'];
+        // Set a reasonable default just in case.
+        $item['interval'] = '15000';
+        if ($node->hasField('field_slide_duration') && !$node->field_slide_duration->isEmpty()) {
+          $item['interval'] = $item['content']['#node']->field_slide_duration->value;
+        }
+      }
+      break;
+
   }
 }
 
@@ -124,6 +138,43 @@ function sitenow_signage_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_paragraph().
+ */
+function sitenow_signage_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->bundle() == 'slide_image' &&
+    isset($variables['content']['field_slide_image'])) {
+
+    // Get the sign node from the current route.
+    $sign_node = \Drupal::routeMatch()->getParameter('node');
+
+    if ($sign_node && $sign_node->bundle() == 'sign') {
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
+    }
+
+    // Check if we have a sign node with vertical orientation.
+    if ($sign_node &&
+      $sign_node->bundle() == 'sign' &&
+      $sign_node->hasField('field_sign_orientation') &&
+      !$sign_node->get('field_sign_orientation')->isEmpty() &&
+      $sign_node->get('field_sign_orientation')->value === 'vertical') {
+
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+
+      foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+        if (is_numeric($delta)) {
+          $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+          if ($media_entity) {
+            $item = $view_builder->view($media_entity, 'vertical_9_16');
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function sitenow_signage_theme($existing, $type, $theme, $path) {
@@ -148,6 +199,35 @@ function sitenow_signage_reload_intervals_allowed_values() {
   ];
 
   return $values;
+}
+
+/**
+ * Allowed values for slide duration field.
+ *
+ * @see \options_allowed_values()
+ */
+function sitenow_signage_slide_durations_allowed_values() {
+  $values = [
+    10000 => '10 seconds',
+    15000 => '15 seconds',
+    20000 => '20 seconds',
+    30000 => '30 seconds',
+    45000 => '45 seconds',
+    60000 => '1 minute',
+  ];
+
+  return $values;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sitenow_signage_slides_size_allowed_values() {
+  $options = [
+    'horizontal' => 'Horizontal (16:9)',
+    'vertical' => 'Vertical (9:16)',
+  ];
+  return $options;
 }
 
 /**
