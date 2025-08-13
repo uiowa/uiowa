@@ -33,7 +33,7 @@ function sitenow_signage_update_10002() {
     try {
       $parent->delete();
       \Drupal::messenger()
-        ->addMessage("Bus slide parent paragraph {$parent_id} deleted.");
+        ->addMessage("Bus slide parent {$parent_id} deleted.");
     }
     catch (\Exception $exception) {
       \Drupal::messenger()
