@@ -7726,3 +7726,9 @@ $sites['labgomezvelez.uiowa.ddev.site'] = 'gomezvelez.lab.uiowa.edu';
 $sites['labgomezvelez.dev.drupal.uiowa.edu'] = 'gomezvelez.lab.uiowa.edu';
 $sites['labgomezvelez.stage.drupal.uiowa.edu'] = 'gomezvelez.lab.uiowa.edu';
 $sites['labgomezvelez.prod.drupal.uiowa.edu'] = 'gomezvelez.lab.uiowa.edu';
+
+// Directory aliases for danceclub.org.uiowa.edu.
+$sites['orgdanceclub.uiowa.ddev.site'] = 'danceclub.org.uiowa.edu';
+$sites['orgdanceclub.dev.drupal.uiowa.edu'] = 'danceclub.org.uiowa.edu';
+$sites['orgdanceclub.stage.drupal.uiowa.edu'] = 'danceclub.org.uiowa.edu';
+$sites['orgdanceclub.prod.drupal.uiowa.edu'] = 'danceclub.org.uiowa.edu';
