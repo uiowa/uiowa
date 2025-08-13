@@ -19,10 +19,21 @@ function sitenow_signage_update_10002() {
   $paragraphs = Paragraph::loadMultiple($query);
   foreach ($paragraphs as $paragraph) {
     $id = $paragraph->id();
+    $parent = $paragraph->getParentEntity();
+    $parent_id = $parent->id();
     try {
       $paragraph->delete();
       \Drupal::messenger()
-        ->addMessage("Paragraph {$id} deleted.");
+        ->addMessage("Bus slide paragraph {$id} deleted.");
+    }
+    catch (\Exception $exception) {
+      \Drupal::messenger()
+        ->addError($exception->getMessage());
+    }
+    try {
+      $parent->delete();
+      \Drupal::messenger()
+        ->addMessage("Bus slide parent paragraph {$parent_id} deleted.");
     }
     catch (\Exception $exception) {
       \Drupal::messenger()
