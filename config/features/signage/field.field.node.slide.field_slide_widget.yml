@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_slide_widget
     - node.type.slide
     - paragraphs.paragraphs_type.slide_bus_arrivals
+    - paragraphs.paragraphs_type.slide_events
     - paragraphs.paragraphs_type.slide_image
   module:
     - entity_reference_revisions
@@ -25,24 +26,28 @@ settings:
     target_bundles:
       slide_image: slide_image
       slide_bus_arrivals: slide_bus_arrivals
+      slide_events: slide_events
     negate: 0
     target_bundles_drag_drop:
-      slide_bus_arrivals:
-        weight: -12
-        enabled: true
       slide_image:
+        weight: -15
+        enabled: true
+      slide_bus_arrivals:
+        weight: -14
+        enabled: true
+      slide_events:
         weight: -13
         enabled: true
       uiowa_collection_item:
-        weight: -11
+        weight: -12
         enabled: false
       uiowa_contact:
-        weight: -10
+        weight: -11
         enabled: false
       uiowa_slide:
-        weight: -9
+        weight: -10
         enabled: false
       uiowa_timeline_item:
-        weight: -8
+        weight: -9
         enabled: false
 field_type: entity_reference_revisions

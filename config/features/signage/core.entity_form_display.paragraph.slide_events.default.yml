@@ -1,0 +1,56 @@
+uuid: 1dab816e-b61a-4f7a-b59c-47ed82baae8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_events.field_slide_events_audiences
+    - field.field.paragraph.slide_events.field_slide_events_department
+    - field.field.paragraph.slide_events.field_slide_events_interests
+    - field.field.paragraph.slide_events.field_slide_events_keywords
+    - field.field.paragraph.slide_events.field_slide_events_location
+    - field.field.paragraph.slide_events.field_slide_events_types
+    - paragraphs.paragraphs_type.slide_events
+id: paragraph.slide_events.default
+targetEntityType: paragraph
+bundle: slide_events
+mode: default
+content:
+  field_slide_events_audiences:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_events_department:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_events_interests:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_events_keywords:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_events_location:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_events_types:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
