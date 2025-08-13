@@ -101,7 +101,11 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
         ],
       ];
 
-      $form['moderation_state']['widget'][0]['state']['#description'] = t('<p>After saving your alert in the review state, notify the Strategic Communications team at <a href="mailto:FM-Strat-Communication-Group@iowa.uiowa.edu">FM-Strat-Communication-Group@iowa.uiowa.edu</a>.</p>');
+      $email = 'FM-Strat-Communication-Group@iowa.uiowa.edu';
+      $link = Link::fromTextAndUrl($email, Url::fromUri('mailto:' . $email))->toString();
+      $form['moderation_state']['widget'][0]['state']['#description'] = t('<p>After saving your alert in the review state, notify the Strategic Communications team at @link.</p>', [
+        '@link' => $link,
+      ]);
 
       break;
 
