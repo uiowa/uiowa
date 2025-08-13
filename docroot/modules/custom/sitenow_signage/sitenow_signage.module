@@ -76,6 +76,7 @@ function sitenow_signage_preprocess_field(&$variables) {
  */
 function sitenow_signage_preprocess_node(&$variables) {
   if ($variables['node']->getType() === 'slide') {
+
     // Unset node title for slides.
     unset($variables['label']);
   }
