@@ -12,9 +12,6 @@ use Drupal\views\ViewExecutable;
  * Implements hook_form_FORM_ID_alter().
  */
 function oniowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Use the form['#id'] over $form_id because it is more specific.
-  $foo = $form_id;
-  $bar = $form['#id'];
   $view = $form_state->get('view');
   if ($view->id() === 'events') {
     if ($view->current_display === 'page_upcoming') {
