@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_slide_widget
     - node.type.slide
-    - paragraphs.paragraphs_type.slide_bus_arrivals
     - paragraphs.paragraphs_type.slide_image
   module:
     - entity_reference_revisions
@@ -24,12 +23,8 @@ settings:
   handler_settings:
     target_bundles:
       slide_image: slide_image
-      slide_bus_arrivals: slide_bus_arrivals
     negate: 0
     target_bundles_drag_drop:
-      slide_bus_arrivals:
-        weight: -12
-        enabled: true
       slide_image:
         weight: -13
         enabled: true
