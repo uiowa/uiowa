@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for sitenow_signage.
+ */
+
+use Drupal\paragraphs\Entity\Paragraph;
+
+/**
+ * Remove any bus arrival slides prior to config import.
+ */
+function sitenow_signage_update_10002() {
+  $query = \Drupal::entityQuery('paragraph')
+    ->accessCheck(TRUE)
+    ->condition('type', 'slide_bus_arrivals')
+    ->execute();
+
+  $paragraphs = Paragraph::loadMultiple($query);
+  foreach ($paragraphs as $paragraph) {
+    $id = $paragraph->id();
+    $parent = $paragraph->getParentEntity();
+    $parent_id = $parent->id();
+    try {
+      $paragraph->delete();
+      \Drupal::messenger()
+        ->addMessage("Bus slide paragraph {$id} deleted.");
+    }
+    catch (\Exception $exception) {
+      \Drupal::messenger()
+        ->addError($exception->getMessage());
+    }
+    try {
+      $parent->delete();
+      \Drupal::messenger()
+        ->addMessage("Bus slide parent {$parent_id} deleted.");
+    }
+    catch (\Exception $exception) {
+      \Drupal::messenger()
+        ->addError($exception->getMessage());
+    }
+  }
+
+}
