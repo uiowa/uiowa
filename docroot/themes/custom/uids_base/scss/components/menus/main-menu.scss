@@ -8,14 +8,14 @@
 .nav {
   @include utilities.breakpoint(sm) {
     align-items: center;
-    @include utilities.flexbox;
+    display: flex;
   }
 
   .menu {
     overflow: visible;
     font-size: variables.$base-font-size;
+    display: flex;
     @extend %no-ul-list;
-    @include utilities.flexbox;
 
     a,
     span {
@@ -34,7 +34,7 @@
 .menu-wrapper {
   @include utilities.breakpoint(sm) {
     align-items: center;
-    @include utilities.flexbox;
+    display: flex;
   }
 
   > .menu > li.menu-item--expanded > a + ul {
@@ -51,8 +51,8 @@
 
   .menu {
     position: relative;
-    @include utilities.flexbox;
-    @include utilities.flex-direction(column);
+    display: flex;
+    flex-direction: column;
     overflow: visible;
     font-size: 1.1rem;
     @extend %no-ul-list;
@@ -852,7 +852,9 @@
         font-size: 0.7rem;
         @include utilities.fas();
         line-height: 2;
-        @include utilities.center(both);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 25px;
         height: 25px;
         border-radius: 50%;
