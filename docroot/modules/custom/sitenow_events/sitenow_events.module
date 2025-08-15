@@ -1038,7 +1038,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterfac
  * @todo https://github.com/uiowa/uiowa/issues/5028
  */
 function _sitenow_events_build_options_tree(array $data, int $parent = 0) {
-  $EU = \Drupal::service('sitenow_events.Utilities');
+  $EU = \Drupal::service('uiowa_events.Utilities');
   return $EU->options_tree($data, $parent);
 }
 
@@ -1060,7 +1060,7 @@ function _sitenow_events_build_options_tree(array $data, int $parent = 0) {
  * @todo https://github.com/uiowa/uiowa/issues/5028
  */
 function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
-  $EU = \Drupal::service('sitenow_events.Utilities');
+  $EU = \Drupal::service('uiowa_events.Utilities');
   return $EU->options_list($tree, $r, $p, $options);
 }
 

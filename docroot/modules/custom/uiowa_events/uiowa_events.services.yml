@@ -11,3 +11,5 @@ services:
       - { name: cache.bin }
     factory: cache_factory:get
     arguments: ['uiowa_events']
+  uiowa_events.Utilities:
+    class: Drupal\uiowa_events\Services\Utilities

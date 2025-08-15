@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\sitenow_events\Services;
+namespace Drupal\uiowa_events\Services;
 
 /**
- * Class Utilities.
+ * Class Utilities.s
  */
 class Utilities {
 
