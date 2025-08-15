@@ -195,3 +195,15 @@ function sitenow_signage_slides_size_allowed_values() {
   ];
   return $options;
 }
+
+/**
+ * Allowed values for outlook events resources.
+ *
+ * @see options_allowed_values()
+ */
+function sitenow_signage_outlook_resources_allowed_values() {
+  $config = \Drupal::configFactory()->getEditable('uiowa_hours.settings');
+  $group = $config->get('group') ?: 'Signage';
+  $api_client = \Drupal::service('uiowa_hours.api');
+  return $api_client->getResources($group) ?: ['none' => 'No resources available'];
+}

@@ -158,7 +158,9 @@ class HoursApi {
    */
   public function getResources($group) {
     $resources = $this->request('GET', $group);
-
+    if (empty($resources) || !is_array($resources)) {
+      return [];
+    }
     // Capitalize all resources before sorting because some are already caps.
     $resources = array_map('strtoupper', $resources);
     sort($resources);
