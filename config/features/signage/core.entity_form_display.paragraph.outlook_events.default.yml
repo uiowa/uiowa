@@ -1,0 +1,30 @@
+uuid: e3ca2dff-e521-4706-a3aa-13e0112a87db
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.outlook_events.field_headline
+    - field.field.paragraph.outlook_events.field_outlook_events_resources
+    - paragraphs.paragraphs_type.outlook_events
+  module:
+    - layout_builder_custom
+id: paragraph.outlook_events.default
+targetEntityType: paragraph
+bundle: outlook_events
+mode: default
+content:
+  field_headline:
+    type: uiowa_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_outlook_events_resources:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
