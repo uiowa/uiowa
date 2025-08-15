@@ -11,6 +11,7 @@ dependencies:
   module:
     - content_moderation
     - paragraphs
+    - scheduler
 id: node.slide.minimal
 targetEntityType: node
 bundle: slide
@@ -26,7 +27,7 @@ content:
     third_party_settings: {  }
   field_slide_duration:
     type: options_select
-    weight: 7
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -58,9 +59,15 @@ content:
   og_audience:
     settings: {  }
     third_party_settings: {  }
+  publish_on:
+    type: datetime_timestamp_no_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 8
+    weight: 7
     region: content
     settings:
       display_label: true
@@ -73,16 +80,20 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  unpublish_on:
+    type: datetime_timestamp_no_default
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   created: true
   path: true
   promote: true
-  publish_on: true
   publish_state: true
   scheduler_settings: true
   simple_sitemap: true
   sticky: true
   uid: true
-  unpublish_on: true
   unpublish_state: true
   url_redirects: true
