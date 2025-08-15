@@ -10,8 +10,28 @@ dependencies:
     - node.type.slide
   module:
     - content_moderation
+    - field_group
     - paragraphs
     - scheduler
+third_party_settings:
+  field_group:
+    group_scheduling_options:
+      children:
+        - publish_on
+        - unpublish_on
+      label: 'Scheduling options'
+      region: content
+      parent_name: ''
+      weight: 6
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
 id: node.slide.minimal
 targetEntityType: node
 bundle: slide
@@ -27,7 +47,7 @@ content:
     third_party_settings: {  }
   field_slide_duration:
     type: options_select
-    weight: 7
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -56,20 +76,18 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  og_audience:
+    settings: {  }
+    third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
     weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
-  scheduler_settings:
-    weight: 4
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 8
+    weight: 7
     region: content
     settings:
       display_label: true
@@ -93,6 +111,7 @@ hidden:
   path: true
   promote: true
   publish_state: true
+  scheduler_settings: true
   simple_sitemap: true
   sticky: true
   uid: true
