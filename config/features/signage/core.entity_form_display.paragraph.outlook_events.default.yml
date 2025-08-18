@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.outlook_events.field_headline
     - field.field.paragraph.outlook_events.field_outlook_events_resource
+    - field.field.paragraph.outlook_events.field_outlook_events_use_org
     - paragraphs.paragraphs_type.outlook_events
 id: paragraph.outlook_events.default
 targetEntityType: paragraph
@@ -24,6 +25,13 @@ content:
     weight: 1
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_outlook_events_use_org:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
 hidden:
   created: true
