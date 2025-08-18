@@ -99,6 +99,11 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => t('No scheduled events for this resource.'),
+        '#attributes' => [
+          'class' => [
+            'signage-table',
+          ],
+        ],
       ];
       $markup = \Drupal::service('renderer')->render($table);
 

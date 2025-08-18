@@ -72,3 +72,80 @@
   // Default is dark overlay.
   background: rgb(0, 0, 0, .5);
 }
+
+// Signage tables.
+.signage-table {
+  $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
+  caption {
+    background-color: variables.$secondary;
+    font-size: variables.$h5-font-size;
+    font-weight: variables.$font-weight-heavy;
+    letter-spacing: 0.08rem;
+    text-align: left;
+    color: variables.$light;
+  }
+
+  thead {
+    border-top: 7px solid variables.$secondary;
+    border-bottom: 7px solid variables.$secondary;
+
+    th {
+      font-size: variables.$h6-font-size;
+      background: variables.$dark;
+      color: variables.$white;
+      letter-spacing: 0.08rem;
+
+      &:not(:last-child) {
+        border-right: 1px solid color.scale(variables.$dark, $lightness: 12%);
+      }
+
+      &:first-child,
+      &:last-child {
+
+        &:before {
+          content: '';
+          position: relative;
+          width: 100%;
+          height: 0px;
+          display: block;
+          left: 0;
+          top: 0;
+          color: transparent;
+          font-size: variables.$h6-font-size;
+          font-weight: variables.$font-weight-normal;
+          text-wrap: nowrap;
+          text-transform: none;
+          letter-spacing: normal;
+        }
+      }
+    }
+  }
+
+  table {
+    tr {
+      border-bottom: 7px solid variables.$secondary;
+      font-weight: variables.$font-weight-normal;
+
+      td {
+        font-size: variables.$h6-font-size;
+        background-color: $pitch-gray;
+        color: variables.$white;
+
+        &:not(:last-child) {
+          border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
+        }
+      }
+
+      // This sizes the columns so that they always stay small and consistent.
+      td,
+      th {
+        &:first-child,
+        &:last-child {
+          width: 1px;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
