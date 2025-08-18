@@ -37,60 +37,6 @@ function sitenow_signage_preprocess_field(&$variables) {
     case 'field_outlook_events_resource':
       $paragraph = $variables['element']['#object'];
       $headline = $paragraph->get('field_headline')->value;
-
-//      $api_client = \Drupal::service('uiowa_hours.api');
-//      $resource_data = [];
-//      $today = date('Ymd');
-//      foreach ($variables['items'] as $item) {
-//        $id = $item['content']['#markup'];
-//        $resource_data[$id] = $api_client->getHours($id);
-//      }
-//      foreach ($resource_data as $resource_id => $event) {
-//        $start = strtotime($event['iso8601Start']);
-//        $end = strtotime($event['iso8601End']);
-//
-//        // Skip events already ended.
-////        if ($end < time()) {
-////          continue;
-////        }
-//
-//        $time = date('g:i A', $start) . ' – ' . date('g:i A', $end);
-//
-//        // Meeting subject (respect private items).
-//        $subject = (!empty($event['isPrivate']) && !empty($event['organizerName']))
-//          ? $event['organizerName']
-//          : $event['summary'];
-//
-//        $rows[] = [
-//          'data' => [
-//            ['data' => $time, 'class' => ['time']],
-//            ['data' => $resource_id, 'class' => ['room']],
-//            ['data' => $subject, 'class' => ['meeting']],
-//          ],
-//          'class' => ['event-row'],
-//        ];
-//      }
-//
-//      // Sort rows by start time.
-//      usort($rows, fn($a, $b) => strtotime(strip_tags($a['data'][0]['data'])) <=> strtotime(strip_tags($b['data'][0]['data'])));
-//
-//      // Build table render array.
-//      $table = [
-//        '#type' => 'table',
-//        '#caption' => new FormattableMarkup('@caption', ['@caption' => $headline]),
-//        '#header' => [
-//          ['data' => t('Time')],
-//          ['data' => t('Room')],
-//          ['data' => t('Meeting')],
-//        ],
-//        '#rows' => $rows,
-//        '#empty' => t('No events scheduled.'),
-//        '#attributes' => ['class' => ['events-table']],
-//      ];
-//
-//      // Replace field output with table.
-//      $variables['items'] = [];
-//      $variables['table'] = $table;
       break;
 
   }
