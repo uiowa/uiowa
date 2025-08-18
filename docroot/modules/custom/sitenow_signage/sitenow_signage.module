@@ -39,6 +39,19 @@ function sitenow_signage_preprocess_field(&$variables) {
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
+      $parent_slide = $paragraph->getParentEntity();
+      $referring_item = $parent_slide->_referringItem;
+      $orientation = 'horizontal';
+      if ($referring_item) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+        $referring_field = $referring_item->getParent();
+        if ($referring_field) {
+          $parent_entity = $referring_field->getParent();
+          if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
+            $orientation = 'vertical';
+          }
+        }
+      }
       $api_client = \Drupal::service('uiowa_hours.api');
       $resource_id = $variables['items'][0]['content']['#markup'];
       $resource_data = $api_client->getHours($resource_id);
@@ -90,6 +103,11 @@ function sitenow_signage_preprocess_field(&$variables) {
         ];
       }
       if (!empty($data)) {
+        // Cap the number of rows to 15 for horizontal and 20 for vertical.
+        // @todo Fix bubble up caching related to this.
+        ($orientation === 'horizontal') ? $max = 15 : $max = 20;
+        $data = array_slice($data, 0, $max);
+
         // Build table rows.
         foreach ($data as $event) {
           $row = [
