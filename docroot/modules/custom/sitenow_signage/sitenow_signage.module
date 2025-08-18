@@ -103,9 +103,9 @@ function sitenow_signage_preprocess_field(&$variables) {
         ];
       }
       if (!empty($data)) {
-        // Cap the number of rows to 15 for horizontal and 20 for vertical.
+        // Cap the number of rows to 15 for horizontal and 25 for vertical.
         // @todo Fix bubble up caching related to this.
-        ($orientation === 'horizontal') ? $max = 15 : $max = 20;
+        ($orientation === 'horizontal') ? $max = 15 : $max = 25;
         $data = array_slice($data, 0, $max);
 
         // Build table rows.
