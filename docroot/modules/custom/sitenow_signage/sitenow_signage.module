@@ -5,7 +5,6 @@
  * Module code for SiteNow Signage.
  */
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 
@@ -34,9 +33,77 @@ function sitenow_signage_preprocess_field(&$variables) {
         }
       }
       break;
+
     case 'field_outlook_events_resource':
       $paragraph = $variables['element']['#object'];
       $headline = $paragraph->get('field_headline')->value;
+      $api_client = \Drupal::service('uiowa_hours.api');
+      $resource_id = $variables['items'][0]['content']['#markup'];
+      $resource_data = $api_client->getHours($resource_id);
+      $today = date('Ymd');
+      $rows = [];
+      // Use resource alias as room name if available.
+      if ($resource_data['data']['resourceAlias']) {
+        $resource_id = $resource_data['data']['resourceAlias'];
+      }
+      // This isn't used now and borks the foreach loop. Unset it.
+      unset($resource_data['data']['$id']);
+      unset($resource_data['data']['resourceAlias']);
+      foreach ($resource_data['data'][$today] as $event) {
+        $start = strtotime($event['iso8601Start']);
+        $end = strtotime($event['iso8601End']);
+        // Skip events already ended.
+        if ($end < time()) {
+          continue;
+        }
+
+        // Format time range.
+        $time = date('g:i a', $start) . ' – ' . date('g:i a', $end);
+
+        // Meeting subject (respect private items).
+        $subject = ($event['isPrivate'] == 1) && !empty($event['organizerName'])
+          ? $event['organizerName']
+          : $event['summary'];
+
+        // Build row, store start time for sorting.
+        $data[] = [
+          'time' => $time,
+          'start' => $start,
+          'room' => $resource_id,
+          'meeting' => $subject,
+        ];
+      }
+      if (!empty($data)) {
+        // Build table rows.
+        foreach ($data as $event) {
+          $row = [
+            'time' => $event['time'],
+            'room' => $event['room'],
+            'meeting' => $event['meeting'],
+          ];
+          $rows[] = $row;
+        }
+        // Sort rows by start time.
+        usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
+      }
+
+      $header = [
+        'time' => t('Time'),
+        'room' => t('Room'),
+        'meeting' => t('Meeting'),
+      ];
+
+      $table = [
+        '#theme' => 'table',
+        '#caption' => $headline,
+        '#header' => $header,
+        '#rows' => $rows,
+        '#empty' => t('No scheduled events for this resource.'),
+      ];
+      $markup = \Drupal::service('renderer')->render($table);
+
+      $variables['items'][0]['content']['#markup'] = $markup;
+
       break;
 
   }
