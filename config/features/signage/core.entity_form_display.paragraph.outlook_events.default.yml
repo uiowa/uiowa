@@ -4,24 +4,24 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.outlook_events.field_headline
-    - field.field.paragraph.outlook_events.field_outlook_events_resources
+    - field.field.paragraph.outlook_events.field_outlook_events_resource
     - paragraphs.paragraphs_type.outlook_events
-  module:
-    - layout_builder_custom
 id: paragraph.outlook_events.default
 targetEntityType: paragraph
 bundle: outlook_events
 mode: default
 content:
   field_headline:
-    type: uiowa_headline_widget
-    weight: 1
+    type: string_textfield
+    weight: 0
     region: content
-    settings: {  }
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-  field_outlook_events_resources:
+  field_outlook_events_resource:
     type: options_select
-    weight: 2
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }

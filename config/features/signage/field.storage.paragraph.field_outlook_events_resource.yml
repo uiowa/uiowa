@@ -5,16 +5,16 @@ dependencies:
   module:
     - options
     - paragraphs
-id: paragraph.field_outlook_events_resources
-field_name: field_outlook_events_resources
+id: paragraph.field_outlook_events_resource
+field_name: field_outlook_events_resource
 entity_type: paragraph
 type: list_string
 settings:
   allowed_values: {  }
-  allowed_values_function: 'sitenow_signage_outlook_resources_allowed_values'
+  allowed_values_function: 'sitenow_signage_outlook_resource_allowed_values'
 module: options
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

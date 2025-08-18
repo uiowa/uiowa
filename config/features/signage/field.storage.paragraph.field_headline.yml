@@ -1,16 +1,18 @@
-uuid: d58a258a-80ec-452e-93a8-662437e04a58
+uuid: fefcae00-8253-48e6-b812-b770f225a496
 langcode: en
 status: true
 dependencies:
   module:
-    - layout_builder_custom
     - paragraphs
 id: paragraph.field_headline
 field_name: field_headline
 entity_type: paragraph
-type: uiowa_headline
-settings: {  }
-module: layout_builder_custom
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
 locked: false
 cardinality: 1
 translatable: true

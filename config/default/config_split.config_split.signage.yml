@@ -12,20 +12,26 @@ storage: folder
 folder: ../config/features/signage
 module:
   sitenow_signage: 0
+  uiowa_hours: 0
 theme: {  }
 complete_list:
   - core.base_field_override.node.slide.promote
+  - core.entity_form_display.paragraph.outlook_events.default
   - core.entity_view_display.media.image.vertical_9_16
   - core.entity_view_display.media.image.widescreen_crop_no_focal_point
+  - core.entity_view_display.paragraph.outlook_events.default
   - core.entity_view_display.paragraph.slide_image.default
   - core.entity_view_mode.media.vertical_9_16
   - core.entity_view_mode.media.widescreen_crop_no_focal_point
+  - field.storage.paragraph.field_headline
+  - field.storage.paragraph.field_outlook_events_resource
   - image.style.vertical_9_16_1458_x_2592
   - image.style.widescreen_16_9_2592_x_1458
   - metatag.metatag_defaults.node__sign
   - metatag.metatag_defaults.node__slide
   - node.type.sign
   - node.type.slide
+  - paragraphs.paragraphs_type.outlook_events
   - paragraphs.paragraphs_type.slide_image
   - pathauto.pattern.sign
   - pathauto.pattern.slide
