@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.outlook_events.field_headline
+    - field.field.paragraph.outlook_events.field_outlook_events_end_time
     - field.field.paragraph.outlook_events.field_outlook_events_resource
     - field.field.paragraph.outlook_events.field_outlook_events_use_org
     - paragraphs.paragraphs_type.outlook_events
@@ -20,6 +21,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_outlook_events_end_time:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_outlook_events_resource:
     type: options_select
     weight: 1
@@ -28,7 +36,7 @@ content:
     third_party_settings: {  }
   field_outlook_events_use_org:
     type: boolean_checkbox
-    weight: 2
+    weight: 3
     region: content
     settings:
       display_label: true

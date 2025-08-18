@@ -38,6 +38,7 @@ function sitenow_signage_preprocess_field(&$variables) {
       $paragraph = $variables['element']['#object'];
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
+      $end_time = $paragraph->get('field_outlook_events_end_time')->value;
       $api_client = \Drupal::service('uiowa_hours.api');
       $resource_id = $variables['items'][0]['content']['#markup'];
       $resource_data = $api_client->getHours($resource_id);
@@ -58,8 +59,16 @@ function sitenow_signage_preprocess_field(&$variables) {
           continue;
         }
 
-        // Format time range.
-        $time = date('g:i a', $start) . ' – ' . date('g:i a', $end);
+        // Format time range based on settings.
+        $formated_date = date('g:i a', $start);
+        if ($end_time) {
+          if ($end >= strtotime('tomorrow')) {
+            $formated_date = date('M d g:i a', $start) . ' – ' . date('M d g:i a', $end);
+          }
+          else {
+            $formated_date .= ' – ' . date('g:i a', $end);
+          }
+        }
 
         // Allows overriding meeting subject with organizer name.
         if ($use_org && !empty($event['organizerName'])) {
@@ -74,7 +83,7 @@ function sitenow_signage_preprocess_field(&$variables) {
 
         // Build row, store start time for sorting.
         $data[] = [
-          'time' => $time,
+          'time' => $formated_date,
           'start' => $start,
           'room' => $resource_id,
           'meeting' => $subject,
