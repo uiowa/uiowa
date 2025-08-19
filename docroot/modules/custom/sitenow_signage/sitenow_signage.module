@@ -35,10 +35,13 @@ function sitenow_signage_preprocess_field(&$variables) {
       break;
 
     case 'field_outlook_events_resource':
+      // Get additional info necessary to overwrite the output of this field.
       $paragraph = $variables['element']['#object'];
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
+
+      // Need to traverse up to the sign node to get orientation if available.
       $parent_slide = $paragraph->getParentEntity();
       $referring_item = $parent_slide->_referringItem;
       $orientation = 'horizontal';
@@ -47,65 +50,83 @@ function sitenow_signage_preprocess_field(&$variables) {
         $referring_field = $referring_item->getParent();
         if ($referring_field) {
           $parent_entity = $referring_field->getParent();
+          // Add cache tag for the sign node so table
+          // updates when sign orientation changes.
+          $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
           if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
             $orientation = 'vertical';
           }
         }
       }
+
+      // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
-      $resource_id = $variables['items'][0]['content']['#markup'];
-      $resource_data = $api_client->getHours($resource_id);
       $today = date('Ymd');
+      $data = [];
       $rows = [];
-      // Use resource alias as room name if available.
-      if ($resource_data['data']['resourceAlias']) {
-        $resource_id = $resource_data['data']['resourceAlias'];
-      }
-      // This isn't used now and borks the foreach loop. Unset it.
-      unset($resource_data['data']['$id']);
-      unset($resource_data['data']['resourceAlias']);
-      foreach ($resource_data['data'][$today] as $event) {
-        $start = strtotime($event['iso8601Start']);
-        $end = strtotime($event['iso8601End']);
-        // Skip events already ended.
-        if ($end < time()) {
-          continue;
+
+      // Loop through each resource value.
+      foreach ($variables['items'] as $item) {
+        $resource_id = $item['content']['#markup'];
+        $resource_data = $api_client->getHours($resource_id);
+
+        // Use resource alias as room name if available.
+        if (!empty($resource_data['data']['resourceAlias'])) {
+          $resource_id = $resource_data['data']['resourceAlias'];
         }
 
-        // Format time range based on settings.
-        $formated_date = date('g:i a', $start);
-        if ($end_time) {
-          if ($end >= strtotime('tomorrow')) {
-            $formated_date = date('M d g:i a', $start) . ' – ' . date('M d g:i a', $end);
+        // This isn't used now and borks the foreach loop. Unset it.
+        unset($resource_data['data']['$id']);
+        unset($resource_data['data']['resourceAlias']);
+
+        // Loop through today's events.
+        foreach ($resource_data['data'][$today] ?? [] as $event) {
+          $start = strtotime($event['iso8601Start']);
+          $end = strtotime($event['iso8601End']);
+
+          // Skip events already ended.
+          if ($end < time()) {
+            continue;
+          }
+
+          // Format time range based on settings.
+          $formated_date = date('g:i a', $start);
+          if ($end_time) {
+            if ($end >= strtotime('tomorrow')) {
+              $formated_date = date('M d g:i a', $start) . ' – ' . date('M d g:i a', $end);
+            }
+            else {
+              $formated_date .= ' – ' . date('g:i a', $end);
+            }
+          }
+
+          // Allows overriding meeting subject with organizer name.
+          if ($use_org && !empty($event['organizerName'])) {
+            $subject = $event['organizerName'];
           }
           else {
-            $formated_date .= ' – ' . date('g:i a', $end);
+            // Meeting subject (respect private items).
+            $subject = ($event['isPrivate'] == 1) && !empty($event['organizerName'])
+              ? $event['organizerName']
+              : $event['summary'];
           }
-        }
 
-        // Allows overriding meeting subject with organizer name.
-        if ($use_org && !empty($event['organizerName'])) {
-          $subject = $event['organizerName'];
+          // Build row, store start time for sorting.
+          $data[] = [
+            'time' => $formated_date,
+            'start' => $start,
+            'room' => $resource_id,
+            'meeting' => $subject,
+          ];
         }
-        else {
-          // Meeting subject (respect private items).
-          $subject = ($event['isPrivate'] == 1) && !empty($event['organizerName'])
-            ? $event['organizerName']
-            : $event['summary'];
-        }
-
-        // Build row, store start time for sorting.
-        $data[] = [
-          'time' => $formated_date,
-          'start' => $start,
-          'room' => $resource_id,
-          'meeting' => $subject,
-        ];
       }
+
       if (!empty($data)) {
+        // Sort rows by start time.
+        usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
+
         // Cap the number of rows to 15 for horizontal and 25 for vertical.
-        // @todo Fix bubble up caching related to this.
-        ($orientation === 'horizontal') ? $max = 15 : $max = 25;
+        $max = $orientation === 'horizontal' ? 15 : 25;
         $data = array_slice($data, 0, $max);
 
         // Build table rows.
@@ -117,16 +138,14 @@ function sitenow_signage_preprocess_field(&$variables) {
           ];
           $rows[] = $row;
         }
-        // Sort rows by start time.
-        usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
       }
 
+      // Build renderable table.
       $header = [
         'time' => t('Time'),
         'room' => t('Room'),
         'meeting' => t('Meeting'),
       ];
-
       $table = [
         '#theme' => 'table',
         '#caption' => $headline,
@@ -141,7 +160,10 @@ function sitenow_signage_preprocess_field(&$variables) {
       ];
       $markup = \Drupal::service('renderer')->render($table);
 
+      // Replace the field output with table markup.
       $variables['items'][0]['content']['#markup'] = $markup;
+      // Remove the other items to avoid outputting them.
+      $variables['items'] = array_slice($variables['items'], 0, 1);
 
       break;
 
