@@ -537,7 +537,7 @@ function admissions_core_preprocess_form_element(&$variables) {
   if (isset($element['#parents']) && in_array('academic_group', $element['#parents'])) {
     $current_path = \Drupal::service('path.current')->getPath();
     if (strpos($current_path, 'kiosk') !== FALSE) {
-      $variables['attributes']['class'][] = 'form-type-checkbox--switch';
+      $variables['attributes']['class'][] = 'uids-form__checkbox--switch';
     }
   }
 }
