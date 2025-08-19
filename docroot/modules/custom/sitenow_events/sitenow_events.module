@@ -1060,8 +1060,20 @@ function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterfac
  * @todo https://github.com/uiowa/uiowa/issues/5028
  */
 function _sitenow_events_build_options_tree(array $data, int $parent = 0) {
-  $EU = \Drupal::service('uiowa_events.Utilities');
-  return $EU->options_tree($data, $parent);
+  $tree = [];
+
+  foreach ($data as $d) {
+    if ((int) $d['parent_id'] === $parent) {
+      $children = _sitenow_events_build_options_tree($data, $d['id']);
+
+      if (!empty($children)) {
+        $d['_children'] = $children;
+      }
+      $tree[] = $d;
+    }
+  }
+
+  return $tree;
 }
 
 /**
@@ -1082,8 +1094,21 @@ function _sitenow_events_build_options_tree(array $data, int $parent = 0) {
  * @todo https://github.com/uiowa/uiowa/issues/5028
  */
 function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
-  $EU = \Drupal::service('uiowa_events.Utilities');
-  return $EU->options_list($tree, $r, $p, $options);
+  foreach ($tree as $t) {
+    $dash = ((int) $t['parent_id'] === 0) ? '' : str_repeat('-', $r) . ' ';
+    $options[$t['id']] = $dash . $t['name'];
+
+    if ((int) $t['parent_id'] === $p) {
+      // Reset $r.
+      $r = 0;
+    }
+
+    if (isset($t['_children'])) {
+      _sitenow_events_build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
+    }
+  }
+
+  return $options;
 }
 
 /**
