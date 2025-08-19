@@ -127,16 +127,16 @@ function sitenow_signage_preprocess_field(&$variables) {
         // Sort rows by start time.
         usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
 
-        // Cap the number of rows to 10 for horizontal and 30 for vertical.
-        $max = $orientation === 'horizontal' ? 10 : 30;
+        // Cap the number of rows differently based on orientation.
+        $max = $orientation === 'horizontal' ? 10 : 12;
         $data = array_slice($data, 0, $max);
 
         // Build table rows.
         foreach ($data as $event) {
           $row = [
             'time' => $event['time'],
-            'room' => $event['room'],
             'meeting' => $event['meeting'],
+            'room' => $event['room'],
           ];
           $rows[] = $row;
         }
@@ -145,22 +145,25 @@ function sitenow_signage_preprocess_field(&$variables) {
       // Build renderable table.
       $header = [
         'time' => t('Time'),
-        'room' => t('Room'),
         'meeting' => t('Meeting'),
+        'room' => t('Room'),
       ];
-      $table = [
-        '#theme' => 'table',
-        '#caption' => $headline,
-        '#header' => $header,
-        '#rows' => $rows,
-        '#empty' => t('No scheduled events for this resource.'),
+      $markup['container'] = [
+        '#type' => 'container',
         '#attributes' => [
           'class' => [
             'signage-table',
           ],
         ],
       ];
-      $markup = \Drupal::service('renderer')->render($table);
+      $markup['container']['table'] = [
+        '#theme' => 'table',
+        '#caption' => $headline,
+        '#header' => $header,
+        '#rows' => $rows,
+        '#empty' => t('No scheduled events for this resource.'),
+      ];
+      $markup = \Drupal::service('renderer')->render($markup);
 
       // Replace the field output with table markup.
       $variables['items'][0]['content']['#markup'] = $markup;
@@ -183,6 +186,11 @@ function sitenow_signage_preprocess_node(&$variables) {
   if ($variables['node']->getType() === 'sign') {
     // Add a black background to the sign node.
     $variables['attributes']['class'][] = 'bg--black';
+    // Add a class for the sign orientation if it exists.
+    if ($variables['node']->hasField('field_sign_orientation') && !$variables['node']->get('field_sign_orientation')->isEmpty()) {
+      $orientation = $variables['node']->get('field_sign_orientation')->value;
+      $variables['attributes']['class'][] = 'sign-orientation--' . $orientation;
+    }
   }
 }
 

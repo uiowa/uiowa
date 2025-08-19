@@ -136,16 +136,18 @@
           border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
         }
       }
+    }
+  }
+}
 
-      // This sizes the columns so that they always stay small and consistent.
-      td,
-      th {
-        &:first-child,
-        &:last-child {
-          width: 1px;
-          white-space: nowrap;
-        }
-      }
+// Increase font sizes for vertical displays.
+.sign-orientation--vertical {
+  .signage-table {
+    caption {
+      font-size: variables.$h3-font-size;
+    }
+    th, td {
+      font-size: variables.$h4-font-size;
     }
   }
 }
