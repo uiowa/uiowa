@@ -35,6 +35,8 @@ function sitenow_signage_preprocess_field(&$variables) {
       break;
 
     case 'field_outlook_events_resource':
+      // Cache this for 1 hour.
+      $variables['#cache']['tags'][] = 'time:hourly';
       // Get additional info necessary to overwrite the output of this field.
       $paragraph = $variables['element']['#object'];
       $headline = $paragraph->get('field_headline')->value;
@@ -125,8 +127,8 @@ function sitenow_signage_preprocess_field(&$variables) {
         // Sort rows by start time.
         usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
 
-        // Cap the number of rows to 15 for horizontal and 25 for vertical.
-        $max = $orientation === 'horizontal' ? 15 : 25;
+        // Cap the number of rows to 10 for horizontal and 30 for vertical.
+        $max = $orientation === 'horizontal' ? 10 : 30;
         $data = array_slice($data, 0, $max);
 
         // Build table rows.
