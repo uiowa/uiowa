@@ -46,7 +46,7 @@
   Drupal.signageReload.updateWindow = function () {
     if (hostReachable(window.location.hostname + drupalSettings.path.baseUrl)) {
       console.log('Digital Signage: Reloading sign.')
-      document.location.reload(true);
+      document.location.reload();
     }
   };
 
