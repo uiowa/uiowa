@@ -128,7 +128,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
 
         // Cap the number of rows differently based on orientation.
-        $max = $orientation === 'horizontal' ? 10 : 12;
+        $max = $orientation === 'horizontal' ? 10 : 15;
         $data = array_slice($data, 0, $max);
 
         // Build table rows.
@@ -162,6 +162,11 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => t('No scheduled events for this resource.'),
+        '#attributes' => [
+          'class' => [
+            'data',
+          ],
+        ],
       ];
       $markup = \Drupal::service('renderer')->render($markup);
 
