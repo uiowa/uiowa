@@ -131,9 +131,14 @@
         font-size: variables.$h6-font-size;
         background-color: $pitch-gray;
         color: variables.$white;
-
         &:not(:last-child) {
           border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
+        }
+      }
+
+      &.even {
+        td {
+          background-color: color.scale($pitch-gray, $lightness: 5%);
         }
       }
     }
