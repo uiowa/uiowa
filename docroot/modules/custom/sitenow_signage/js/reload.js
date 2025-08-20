@@ -3,7 +3,6 @@
  * Reload signage signs.
  */
 
-// Namespace jQuery to avoid conflicts.
 (function (Drupal, drupalSettings, once) {
 
   // Attach reload behavior.
@@ -18,7 +17,6 @@
   // Define the behavior.
   Drupal.signageReload = function () {
     console.log('Digital Signage: Reload interval is ' + drupalSettings.signage.signReloadInterval + ' seconds');
-    // @todo Set timeout from settings.
     setInterval(Drupal.signageReload.updateWindow, drupalSettings.signage.signReloadInterval * 1000);
   };
 
