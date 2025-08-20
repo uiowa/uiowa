@@ -20,7 +20,7 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
    * {@inheritdoc}
    */
   protected function getCacheIdBase() {
-    return 'uiowa_events_api_content_hub';
+    return 'sitenow_events_api_content_hub';
   }
 
   /**
@@ -28,6 +28,13 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
    */
   public function getEvents(array $options = []): \stdClass|bool {
     return $this->get('views/events_api.json', $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEventInstances(array $options = []): \stdClass|bool {
+    return $this->get('views/event_instances_api.json', $options);
   }
 
   /**

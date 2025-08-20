@@ -7,6 +7,8 @@
 
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -210,4 +212,58 @@ function sitenow_signage_slides_size_allowed_values() {
     'vertical' => 'Vertical (9:16)',
   ];
   return $options;
+}
+
+/**
+ * Set dynamic allowed values for multiple fields.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  $options = [];
+
+  $client = \Drupal::service('sitenow_events.content_hub_api_client');
+
+  return [];
+
+}
+
+/**
+ * Helper function to build the options tree.
+ *
+ * @param array $data
+ *   Array of data to be sorted into a tree.
+ * @param int $parent
+ *   Stores the current id.
+ *
+ * @return array
+ *   Returns an associative array options tree.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function _sitenow_signage_build_options_tree(array $data, int $parent = 0) {
+  $tree = [];
+
+  foreach ($data as $d) {
+    if ((int) $d['parent_id'] === $parent) {
+      $children = _sitenow_signage_build_options_tree($data, $d['id']);
+
+      if (!empty($children)) {
+        $d['_children'] = $children;
+      }
+      $tree[] = $d;
+    }
+  }
+
+  return $tree;
 }
