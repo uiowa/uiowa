@@ -7726,3 +7726,9 @@ $sites['labldes.uiowa.ddev.site'] = 'ldes.lab.uiowa.edu';
 $sites['labldes.dev.drupal.uiowa.edu'] = 'ldes.lab.uiowa.edu';
 $sites['labldes.stage.drupal.uiowa.edu'] = 'ldes.lab.uiowa.edu';
 $sites['labldes.prod.drupal.uiowa.edu'] = 'ldes.lab.uiowa.edu';
+
+// Directory aliases for levy.lab.uiowa.edu.
+$sites['lablevy.uiowa.ddev.site'] = 'levy.lab.uiowa.edu';
+$sites['lablevy.dev.drupal.uiowa.edu'] = 'levy.lab.uiowa.edu';
+$sites['lablevy.stage.drupal.uiowa.edu'] = 'levy.lab.uiowa.edu';
+$sites['lablevy.prod.drupal.uiowa.edu'] = 'levy.lab.uiowa.edu';
