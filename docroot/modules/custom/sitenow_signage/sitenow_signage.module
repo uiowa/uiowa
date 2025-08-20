@@ -234,11 +234,48 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
 
   switch ($definition->getName()) {
     case 'field_slide_events_audiences':
-      $client = \Drupal::service('sitenow_events.content_hub_api_client');
-      $filters = $client->getFilters('filters');
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');;
 
+      $tree = _sitenow_events_build_options_tree($data['event_audience']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
 
-      $tree = _sitenow_events_build_options_tree($filters['event_audience']);
+    case 'field_slide_events_department':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['departments']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_interests':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['event_general_interest']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_keywords':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('keywords');
+
+      foreach ($data['keywords'] as $keyword) {
+        $options[$keyword['id']] = $keyword['name'];
+      }
+      break;
+
+    case 'field_slide_events_location':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getPlaces();
+
+      foreach ($data['places'] as $place) {
+        // API double-nests places for some reason.
+        $place = $place['place'];
+        $options[$place['id']] = $place['name'];
+      }
+      break;
+
+    case 'field_slide_events_types':
+      $filters = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($filters['event_types']);
       $options = _sitenow_events_build_options_list($tree);
       break;
   }
