@@ -232,9 +232,18 @@ function sitenow_signage_slides_size_allowed_values() {
 function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [];
 
-  $client = \Drupal::service('sitenow_events.content_hub_api_client');
+  switch ($definition->getName()) {
+    case 'field_slide_events_audiences':
+      $client = \Drupal::service('sitenow_events.content_hub_api_client');
+      $filters = $client->getFilters('filters');
 
-  return [];
+
+      $tree = _sitenow_events_build_options_tree($filters['event_audience']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+  }
+
+  return $options;
 
 }
 
@@ -266,4 +275,39 @@ function _sitenow_signage_build_options_tree(array $data, int $parent = 0) {
   }
 
   return $tree;
+}
+
+/**
+ * Helper function to output the options array.
+ *
+ * @param array $tree
+ *   Array of tree data to be printed.
+ * @param int $r
+ *   Basic counter.
+ * @param int $p
+ *   Parent id.
+ * @param array $options
+ *   Options array to be passed recursively.
+ *
+ * @return array
+ *   Return options with children prefixed with dashes.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function _sitenow_signage_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
+  foreach ($tree as $t) {
+    $dash = ((int) $t['parent_id'] === 0) ? '' : str_repeat('-', $r) . ' ';
+    $options[$t['id']] = $dash . $t['name'];
+
+    if ((int) $t['parent_id'] === $p) {
+      // Reset $r.
+      $r = 0;
+    }
+
+    if (isset($t['_children'])) {
+      _sitenow_signage_build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
+    }
+  }
+
+  return $options;
 }
