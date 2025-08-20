@@ -74,6 +74,10 @@
 }
 
 // Signage tables.
+// Specificity hack to override the inherit.
+div.bg--black .signage-table {
+  border-color: variables.$blk;
+}
 .signage-table {
   $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
 
@@ -123,6 +127,7 @@
   }
 
   table.data {
+    background-color: variables.$blk;
     tr {
       border-bottom: 7px solid variables.$secondary;
       font-weight: variables.$font-weight-normal;
