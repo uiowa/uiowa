@@ -78,8 +78,12 @@ function sitenow_signage_preprocess_field(&$variables) {
         }
 
         // This isn't used now and borks the foreach loop. Unset it.
-        unset($resource_data['data']['$id']);
-        unset($resource_data['data']['resourceAlias']);
+        if (isset($resource_data['data']['$id'])) {
+          unset($resource_data['data']['$id']);
+        }
+        if (isset($resource_data['data']['resourceAlias'])){
+          unset($resource_data['data']['resourceAlias']);
+        }
 
         // Loop through today's events.
         foreach ($resource_data['data'][$today] ?? [] as $event) {
@@ -310,6 +314,7 @@ function sitenow_signage_reload_intervals_allowed_values() {
     21600 => '6 hours',
     3600 => '1 hour',
     1800 => '30 minutes',
+    30 => '30 seconds (for testing purposes only)',
   ];
 
   return $values;
