@@ -139,10 +139,10 @@ class LogSearchForm extends FormBase {
     $form['#attributes'] = [
       'class' => [
         'bg--gray',
-        'uids-content',
+        'form',
         'element--padding__all--minimal',
         'block-margin__bottom--extra',
-        'uids-content--horizontal',
+        'form--horizontal',
       ],
     ];
 
@@ -151,7 +151,7 @@ class LogSearchForm extends FormBase {
       '#title' => $this->t('Start Date'),
       '#default_value' => $start_date,
       '#attributes' => ['min' => $min_date, 'max' => $max_date],
-      '#wrapper_attributes' => ['class' => ['uids-content--horizontal-flex']],
+      '#wrapper_attributes' => ['class' => ['form--horizontal-flex']],
     ];
 
     $form['end_date'] = [
@@ -159,7 +159,7 @@ class LogSearchForm extends FormBase {
       '#title' => $this->t('End Date'),
       '#default_value' => $end_date,
       '#attributes' => ['min' => $min_date, 'max' => $max_date],
-      '#wrapper_attributes' => ['class' => ['uids-content--horizontal-flex']],
+      '#wrapper_attributes' => ['class' => ['form--horizontal-flex']],
     ];
 
     $form['actions'] = [
