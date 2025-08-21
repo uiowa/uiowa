@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labldes.uiowa.ddev.site
+    protocol: https
+  machine_name: labldes
+  human_name: ldes.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labldes.prod
+drupal:
+  db:
+    database: ldes_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labldes.prod.drupal.uiowa.edu'
+  requester: ntanaka
+  site-name: 'Language Development and Experimental Syntax Lab'
