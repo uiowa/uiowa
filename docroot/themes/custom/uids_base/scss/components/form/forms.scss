@@ -3,7 +3,7 @@
 @use '../../../uids/scss/abstracts/_utilities.scss';
 @use '../../../uids/scss/components/form.scss';
 
-.uids-form {
+.form {
 
   .button--primary {
 
@@ -326,8 +326,8 @@
   border: 1px solid variables.$primary;
 }
 
-.uids-form .help-text,
-.uids-form .description {
+.form .help-text,
+.form .description {
   font-style: normal;
 }
 
@@ -388,17 +388,17 @@
 }
 
 // Horizontal form.
-.uids-form--horizontal {
+.form--horizontal {
   @include utilities.breakpoint(sm) {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     gap: 1rem;
   }
-  .uids-form--horizontal-flex {
+  .form--horizontal-flex {
     flex: 1;
   }
-  &.uids-form:not(.uids-search) .button {
+  &.form:not(.uids-search) .button {
     padding: .9rem 1.25rem 1.1rem;
     max-height: 3.45rem;
     @include utilities.breakpoint(sm) {
