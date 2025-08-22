@@ -31,7 +31,6 @@ class ScholarshipsJumpMenu extends FormBase {
       '#options' => [
         'first-year' => $this->t('First Year'),
         'transfer' => $this->t('Transfer'),
-        'international' => $this->t('International'),
       ],
       "#empty_option" => $this->t('- Select -'),
       '#ajax' => [
@@ -69,12 +68,6 @@ class ScholarshipsJumpMenu extends FormBase {
     $build_info = $form_state->getBuildInfo();
 
     if ($selectedValue = $form_state->getValue('scholarship_type')) {
-      if ($selectedValue === 'international') {
-        $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["international"]]);
-        $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
-        $response->addCommand(new RedirectCommand($url->toString()));
-        return $response;
-      }
       if ($selectedValue === 'transfer') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["transfer"]]);
         $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
