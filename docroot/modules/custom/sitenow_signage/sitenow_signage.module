@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Render\Element;
+use Drupal\media\IFrameMarkup;
 use Drupal\node\NodeInterface;
 
 /**
@@ -194,4 +195,15 @@ function sitenow_signage_slides_size_allowed_values() {
     'vertical' => 'Vertical (9:16)',
   ];
   return $options;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
+  $original = $variables['media']->__toString();
+  $original = str_replace('feature=oembed', 'feature=oembed&autoplay=1&mute=1',
+    $original);
+
+  $variables['media'] = IFrameMarkup::create($original);
 }
