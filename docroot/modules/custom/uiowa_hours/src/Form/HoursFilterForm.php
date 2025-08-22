@@ -181,6 +181,10 @@ class HoursFilterForm extends FormBase {
       ],
     ];
 
+    // This isn't used and borks the foreach loop. Unset it.
+    unset($data['$id']);
+    unset($data['resourceAlias']);
+
     if ($data === FALSE) {
       $data['closed'] = [
         '#markup' => $this->t('<p><i class="fas fa-exclamation-circle"></i> There was an error retrieving hours information. Please try again later or contact the <a href=":link">ITS Help Desk</a> if the problem persists.</p>', [
@@ -205,10 +209,6 @@ class HoursFilterForm extends FormBase {
       ];
     }
     else {
-      // This isn't used and borks the foreach loop. Unset it.
-      unset($data['$id']);
-      unset($data['resourceAlias']);
-
       // The v2 API indexes events by a string in Ymd format, e.g. 20211209.
       foreach ($data as $key => $date) {
         // Skip dates that start before $start but end on or after.
