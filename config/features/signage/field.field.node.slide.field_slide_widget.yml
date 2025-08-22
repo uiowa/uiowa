@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_slide_widget
     - node.type.slide
     - paragraphs.paragraphs_type.slide_image
+    - paragraphs.paragraphs_type.slide_video
   module:
     - entity_reference_revisions
 id: node.slide.field_slide_widget
@@ -23,10 +24,14 @@ settings:
   handler_settings:
     target_bundles:
       slide_image: slide_image
+      slide_video: slide_video
     negate: 0
     target_bundles_drag_drop:
       slide_image:
         weight: -13
+        enabled: true
+      slide_video:
+        weight: 7
         enabled: true
       uiowa_collection_item:
         weight: -11
