@@ -1,0 +1,21 @@
+uuid: 8ab39169-0455-4061-92c3-017cb3eb1fa6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.astra_room_schedule.field_astra_schedule_room
+    - paragraphs.paragraphs_type.astra_room_schedule
+id: paragraph.astra_room_schedule.default
+targetEntityType: paragraph
+bundle: astra_room_schedule
+mode: default
+content:
+  field_astra_schedule_room:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

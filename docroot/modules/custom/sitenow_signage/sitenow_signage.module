@@ -34,6 +34,61 @@ function sitenow_signage_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_astra_schedule_room':
+      // Cache this for 1 day.
+      $variables['#cache']['tags'][] = 'time:daily';
+      $today = date('Y-m-d');
+      $value = $variables['items'][0]['content']['#markup'];
+      // Split field value into building code and room id.
+      [$building_code, $room_id] = explode('-', $value);
+
+      // Load and fetch data from the MAUI API.
+      $api_client = \Drupal::service('uiowa_maui.api');
+      $data = $api_client->getRoomSchedule($today, $today, $building_code, $room_id);
+
+      if (!empty($data)) {
+        // Build table rows.
+        foreach ($data as $event) {
+          $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
+          $row = [
+            'time' => $formatted_time,
+            'event' => trim($event->title),
+          ];
+          $rows[] = $row;
+        }
+      }
+
+      // Build renderable table.
+      $header = [
+        'time' => t('Time'),
+        'event' => t('Event'),
+      ];
+      $markup['container'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'signage-table',
+          ],
+        ],
+      ];
+      $markup['container']['table'] = [
+        '#theme' => 'table',
+        '#caption' => 'Schedule for ' . $room_id,
+        '#header' => $header,
+        '#rows' => $rows,
+        '#empty' => t('No scheduled events for this room.'),
+        '#attributes' => [
+          'class' => [
+            'data',
+          ],
+        ],
+      ];
+      $markup = \Drupal::service('renderer')->render($markup);
+
+      // Replace the field output with table markup.
+      $variables['items'][0]['content']['#markup'] = $markup;
+      break;
+
   }
 }
 
@@ -194,4 +249,14 @@ function sitenow_signage_slides_size_allowed_values() {
     'vertical' => 'Vertical (9:16)',
   ];
   return $options;
+}
+
+/**
+ * Allowed values for astra room schedules.
+ *
+ * @see options_allowed_values()
+ */
+function sitenow_signage_astra_schedule_room_allowed_values() {
+  $api_client = \Drupal::service('uiowa_maui.api');
+  return $api_client->getBuildingRoomCompleteList() ?: ['none' => 'No rooms available'];
 }

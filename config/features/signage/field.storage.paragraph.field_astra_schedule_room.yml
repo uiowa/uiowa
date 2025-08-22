@@ -1,0 +1,21 @@
+uuid: 2ef29d44-9373-4fcf-bab5-0ee23403ef61
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_astra_schedule_room
+field_name: field_astra_schedule_room
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: sitenow_signage_astra_schedule_room_allowed_values
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
