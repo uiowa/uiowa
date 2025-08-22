@@ -81,7 +81,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         if (isset($resource_data['data']['$id'])) {
           unset($resource_data['data']['$id']);
         }
-        if (isset($resource_data['data']['resourceAlias'])){
+        if (isset($resource_data['data']['resourceAlias'])) {
           unset($resource_data['data']['resourceAlias']);
         }
 
@@ -99,7 +99,7 @@ function sitenow_signage_preprocess_field(&$variables) {
           $formated_date = date('g:i a', $start);
           if ($end_time) {
             if ($end >= strtotime('tomorrow')) {
-              $formated_date = date('M d g:i a', $start) . ' – ' . date('M d g:i a', $end);
+              $formated_date = date('M j g:i a', $start) . ' – ' . date('M j g:i a', $end);
             }
             else {
               $formated_date .= ' – ' . date('g:i a', $end);
