@@ -156,7 +156,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#type' => 'container',
         '#attributes' => [
           'class' => [
-            'signage-table',
+            'signage__table',
           ],
         ],
       ];
@@ -198,7 +198,7 @@ function sitenow_signage_preprocess_node(&$variables) {
     // Add a class for the sign orientation if it exists.
     if ($variables['node']->hasField('field_sign_orientation') && !$variables['node']->get('field_sign_orientation')->isEmpty()) {
       $orientation = $variables['node']->get('field_sign_orientation')->value;
-      $variables['attributes']['class'][] = 'sign-orientation--' . $orientation;
+      $variables['attributes']['class'][] = 'signage--' . $orientation;
     }
   }
 }

@@ -53,7 +53,7 @@
 }
 
 // Slideshow.
-.signage-slideshow img {
+.signage__slideshow img {
   width: 100%;
 }
 
@@ -75,10 +75,10 @@
 
 // Signage tables.
 // Specificity hack to override the inherit.
-div.bg--black .signage-table {
+div.bg--black .signage__table {
   border-color: variables.$blk;
 }
-.signage-table {
+.signage__table {
   $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
 
   caption {
@@ -151,8 +151,8 @@ div.bg--black .signage-table {
 }
 
 // Increase font sizes for vertical displays.
-.sign-orientation--vertical {
-  .signage-table {
+.signage--vertical {
+  .signage__table {
     table.data {
       caption {
         font-size: variables.$h3-font-size;
