@@ -207,7 +207,7 @@ class MauiApi extends ApiClientBase {
         $building_name = $room->buildingName;
         $building_code = $room->buildingCode;
         $room_number = $room->roomNumber;
-        $options[$building_code . '-' . $room_number] = $building_name . '-' . $room_number;
+        $options[$building_code . '-' . $room_number] = $building_name . ' - ' . $room_number;
       }
     }
     return $options;
