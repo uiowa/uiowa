@@ -1,0 +1,26 @@
+uuid: c80c5d09-44b5-43e5-bceb-817ede32fb3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.astra_room_schedule.field_astra_schedule_room
+    - paragraphs.paragraphs_type.astra_room_schedule
+  module:
+    - options
+id: paragraph.astra_room_schedule.default
+targetEntityType: paragraph
+bundle: astra_room_schedule
+mode: default
+content:
+  field_astra_schedule_room:
+    type: list_key
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
