@@ -1,0 +1,21 @@
+uuid: 86f1e664-dffb-4bf8-9ee0-7c01e87ac99e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_outlook_events_use_org
+    - paragraphs.paragraphs_type.outlook_events
+id: paragraph.outlook_events.field_outlook_events_use_org
+field_name: field_outlook_events_use_org
+entity_type: paragraph
+bundle: outlook_events
+label: 'Use Organizer Name'
+description: 'Show the Organizer (organizerName) instead of the event summary regardless of whether or not the event is marked as private.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

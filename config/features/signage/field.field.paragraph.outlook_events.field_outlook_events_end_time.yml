@@ -1,0 +1,21 @@
+uuid: 76422de8-3343-4ab9-b422-d4f6e51a6bd5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_outlook_events_end_time
+    - paragraphs.paragraphs_type.outlook_events
+id: paragraph.outlook_events.field_outlook_events_end_time
+field_name: field_outlook_events_end_time
+entity_type: paragraph
+bundle: outlook_events
+label: 'Display end time'
+description: 'Display the end time after the start time. If the end time is a future day, it will display the day as well.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
