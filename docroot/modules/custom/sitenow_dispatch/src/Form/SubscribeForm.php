@@ -80,6 +80,13 @@ class SubscribeForm extends ConfigFormBase {
       $form['phone'] = [
         '#type' => 'tel',
         '#title' => $this->t('Phone number'),
+        '#placeholder' => '(555) 123-4567',
+        '#description' => $this->t('Enter a 10-digit US phone number'),
+        '#pattern' => '^(\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$',
+        '#maxlength' => 20,
+        '#attributes' => [
+          'inputmode' => 'tel',
+        ],
       ];
     }
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
@@ -112,8 +119,11 @@ class SubscribeForm extends ConfigFormBase {
       $phone = $form_state->getValue('phone');
       $body['toPhone'] = $phone;
     }
+
+    $custom_fields = [];
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
-      $value = $form_state->getValue($custom_field->key);
+      $custom_field_values = $form_state->getValue('custom_fields');
+      $value = $custom_field_values[$custom_field->key] ?? '';
       // Checkboxes allows for multiple values, but stores them
       // as a comma delimited string in Dispatch, so first
       // implode our value(s).
@@ -122,8 +132,14 @@ class SubscribeForm extends ConfigFormBase {
         // unchecked boxes, and pass the cleaned array to implode.
         $value = implode(',', array_filter($value));
       }
-      $body[$custom_field->key] = $value;
+      $custom_fields[$custom_field->key] = $value;
     }
+
+    if (!empty($custom_fields)) {
+      $body['customFields'] = $custom_fields;
+    }
+
+    \Drupal::logger('sitenow_dispatch')->info('JSON Body: @json', ['@json' => json_encode($body)]);
 
     $this->dispatch->request('POST', "populations/$population/subscribers", [
       'body' => json_encode($body),
@@ -138,6 +154,19 @@ class SubscribeForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    $phone = $form_state->getValue('phone');
+
+    if (!empty($phone)) {
+      $digits = preg_replace('/\D/', '', $phone);
+
+      if (strlen($digits) < 10 || strlen($digits) > 11) {
+        $form_state->setErrorByName('phone', $this->t('Phone number must be 10 or 11 digits.'));
+      }
+      elseif (strlen($digits) === 11 && $digits[0] !== '1') {
+        $form_state->setErrorByName('phone', $this->t('11-digit phone numbers must start with 1.'));
+      }
+    }
+
     $email = $form_state->getValue('email');
     $population = $form_state->getValue('population');
 
