@@ -143,18 +143,25 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       break;
 
     case 'slide_events':
-      // $paragraph = $variables['elements']['#paragraph'];
-      //      $audiences = $paragraph->get('field_slide_events_audiences');
-      break;
-  }
-}
+      $paragraph = $variables['elements']['#paragraph'];
+      $filters = [];
 
-/**
- *
- */
-function sitenow_signage_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element['#paragraph_type'] === 'slide_events') {
-    $events_paragraph_form = $element['subform'];
+      $filters['event_audience'] = sitenow_signage_value_query_array($paragraph?->field_slide_events_audiences?->getValue());
+      $filters['departments'] = sitenow_signage_value_query_array($paragraph?->field_slide_events_department?->getValue());
+      $filters['event_general_interest'] = sitenow_signage_value_query_array($paragraph?->field_slide_events_interests?->getValue());
+      $filters['keywords'] = sitenow_signage_value_query_array($paragraph?->field_slide_events_keywords?->getValue());
+      $filters['place'] = sitenow_signage_value_query_array($paragraph?->field_slide_events_location?->getValue());
+      $filters['event_types'] = sitenow_signage_value_query_array($paragraph?->field_slide_events_types?->getValue());
+      $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
+      $query  = [
+        'query' => [
+          'display_id' => 'events',
+          'filters' => $filters,
+          'items_per_page' => 100,
+        ],
+      ];
+      $ope = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
+      break;
   }
 }
 
@@ -212,6 +219,26 @@ function sitenow_signage_slides_size_allowed_values() {
     'vertical' => 'Vertical (9:16)',
   ];
   return $options;
+}
+
+/**
+ * Convert initial field value structure into an array that can be given to a URL query.
+ *
+ * @param array $data
+ *   Data to be converted into value query array.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ */
+function sitenow_signage_value_query_array(array $data): array {
+  $items = [];
+  foreach ($data as $item) {;
+    if(isset($item['value'])) {
+      $items[] = $item['value'];
+    }
+  }
+
+  return $items;
 }
 
 /**
