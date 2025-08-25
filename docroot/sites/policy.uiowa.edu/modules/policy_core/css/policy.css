@@ -1,0 +1,48 @@
+﻿ol {
+  list-style-type: lower-alpha;
+}
+ol ol {
+  list-style-type: none;
+}
+ol ol li {
+  counter-increment: section-one;
+}
+ol ol li:before {
+  content: "(" counter(section-one, decimal) ") ";
+}
+ol ol ol {
+  list-style-type: none;
+}
+ol ol ol li {
+  counter-increment: section-two;
+}
+ol ol ol li:before {
+  content: "(" counter(section-two, lower-alpha) ") ";
+}
+ol ol ol ol {
+  list-style-type: none;
+}
+ol ol ol ol li {
+  counter-increment: section-three;
+}
+ol ol ol ol li:before {
+  content: "(" counter(section-three, lower-roman) ") ";
+}
+ol ol ol ol ol {
+  list-style-type: none;
+}
+ol ol ol ol ol li {
+  counter-increment: section-four;
+}
+ol ol ol ol ol li:before {
+  content: "(" counter(section-four, upper-alpha) ") ";
+}
+ol ol ol ol ol ol {
+  list-style-type: none;
+}
+ol ol ol ol ol ol li {
+  counter-increment: section-five;
+}
+ol ol ol ol ol ol li:before {
+  content: "(" counter(section-five, upper-roman) ") ";
+}

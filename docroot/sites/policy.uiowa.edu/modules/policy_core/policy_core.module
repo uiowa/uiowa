@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Policy Core module.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function policy_core_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'policy_core/policy';
+}
