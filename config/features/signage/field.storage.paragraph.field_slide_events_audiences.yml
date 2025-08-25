@@ -1,0 +1,22 @@
+uuid: eccf681b-2f0a-4047-870f-2751496566bf
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+    - sitenow_events
+id: paragraph.field_slide_events_audiences
+field_name: field_slide_events_audiences
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: _sitenow_signage_get_filter_field_options
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
