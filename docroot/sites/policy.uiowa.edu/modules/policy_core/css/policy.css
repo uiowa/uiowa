@@ -46,3 +46,7 @@ ol ol ol ol ol ol li {
 ol ol ol ol ol ol li:before {
   content: "(" counter(section-five, upper-roman) ") ";
 }
+
+ol:not([type]) {
+  list-style-type: none!important;
+}
