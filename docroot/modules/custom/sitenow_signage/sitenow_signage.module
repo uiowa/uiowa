@@ -66,11 +66,17 @@ function sitenow_signage_preprocess_field(&$variables) {
       $today = date('Ymd');
       $data = [];
       $rows = [];
+      $had_failure = FALSE;
 
       // Loop through each resource value.
       foreach ($variables['items'] as $item) {
         $resource_id = $item['content']['#markup'];
         $resource_data = $api_client->getHours($resource_id);
+
+        if ($resource_data['data'] === FALSE) {
+          $had_failure = TRUE;
+          continue;
+        }
 
         // Use resource alias as room name if available.
         if (!empty($resource_data['data']['resourceAlias'])) {
@@ -146,6 +152,16 @@ function sitenow_signage_preprocess_field(&$variables) {
         }
       }
 
+      // Choose an empty message based on whether we saw a failure.
+      if ($had_failure) {
+        $empty_message = t('<p><i class="fas fa-exclamation-circle"></i> There was an error retrieving schedule information. Please try again later or contact the <a href=":link">ITS Help Desk</a> if the problem persists.</p>', [
+          ':link' => 'https://its.uiowa.edu/contact',
+        ]);
+      }
+      else {
+        $empty_message = t('There are currently no scheduled events to display.');
+      }
+
       // Build renderable table.
       $header = [
         'time' => t('Time'),
@@ -165,7 +181,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#caption' => $headline,
         '#header' => $header,
         '#rows' => $rows,
-        '#empty' => t('There are no scheduled events to display.'),
+        '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
             'data',
