@@ -117,7 +117,7 @@ class SubscribeForm extends ConfigFormBase {
     $parameters = $this->dispatch->get("populations/$population");
     if ($parameters?->subscriptionList?->hidePhone === FALSE) {
       $phone = $form_state->getValue('phone');
-      $body['toPhone'] = $phone;
+      $body['toPhone'] = $this->formatPhoneNumber($phone);
     }
 
     $custom_fields = [];
@@ -264,6 +264,39 @@ class SubscribeForm extends ConfigFormBase {
         $form['custom_fields'][$custom_field->key]['#default_value'] = explode(',', $custom_field->defaultValue);
       }
     }
+  }
+
+  /**
+   * Format phone number to +1 XXX-XXX-XXXX format.
+   *
+   * @param string $phone
+   *   The raw phone number input.
+   *
+   * @return string
+   *   The formatted phone number.
+   */
+  protected function formatPhoneNumber($phone) {
+    $digits = preg_replace('/\D/', '', $phone);
+
+    if (empty($digits)) {
+      return '';
+    }
+
+    $length = strlen($digits);
+
+    if ($length === 7) {
+      return sprintf('%s-%s', substr($digits, 0, 3), substr($digits, 3));
+    }
+
+    if ($length === 10) {
+      return sprintf('+1 %s-%s-%s', substr($digits, 0, 3), substr($digits, 3, 3), substr($digits, 6));
+    }
+
+    if ($length === 11 && $digits[0] === '1') {
+      return $this->formatPhoneNumber(substr($digits, 1));
+    }
+
+    return $phone;
   }
 
 }
