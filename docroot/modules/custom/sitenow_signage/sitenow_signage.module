@@ -38,27 +38,39 @@ function sitenow_signage_preprocess_field(&$variables) {
       // Cache this for 1 day.
       $variables['#cache']['tags'][] = 'time:daily';
       $today = date('Y-m-d');
-      $value = $variables['items'][0]['content']['#markup'];
-      // Split field value into building code and room id.
-      [$building_code, $room_id] = explode('-', $value);
+      $had_failure = FALSE;
+      $rows = [];
+      $table_caption = 'Room Schedule';
 
-      // Load and fetch data from the MAUI API.
-      $api_client = \Drupal::service('uiowa_maui.api');
-      $data = $api_client->getRoomSchedule($today, $today, $building_code, $room_id);
+      if (!empty($variables['items'][0]['content']['#markup'])) {
+        $value = $variables['items'][0]['content']['#markup'];
+        // Split field value into building code and room id.
+        [$building_code, $room_id] = explode('-', $value);
 
-      if (!empty($data)) {
-        // Build table rows.
-        foreach ($data as $event) {
-          $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
-          $row = [
-            'time' => $formatted_time,
-            'event' => trim($event->title),
-          ];
-          $rows[] = $row;
+        $table_caption = 'Schedule for ' . $room_id;
+
+        // Load and fetch data from the MAUI API.
+        $api_client = \Drupal::service('uiowa_maui.api');
+        $data = $api_client->getRoomSchedule($today, $today, $building_code, $room_id);
+
+        if ($data === FALSE) {
+          $had_failure = TRUE;
+        }
+        elseif (!empty($data)) {
+          foreach ($data as $event) {
+            $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
+            $rows[] = [
+              'time' => $formatted_time,
+              'event' => trim($event->title),
+            ];
+          }
         }
       }
 
-      // Build renderable table.
+      $empty_message = $had_failure
+        ? t('There was an error retrieving room schedule information. Please try again later or contact the ITS Help Desk if the problem persists.')
+        : t('No scheduled events for this room.');
+
       $header = [
         'time' => t('Time'),
         'event' => t('Event'),
@@ -73,10 +85,10 @@ function sitenow_signage_preprocess_field(&$variables) {
       ];
       $markup['container']['table'] = [
         '#theme' => 'table',
-        '#caption' => 'Schedule for ' . $room_id,
+        '#caption' => $table_caption,
         '#header' => $header,
         '#rows' => $rows,
-        '#empty' => t('No scheduled events for this room.'),
+        '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
             'data',
