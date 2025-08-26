@@ -156,6 +156,7 @@ class SubscribeForm extends ConfigFormBase {
     $phone = $form_state->getValue('phone');
 
     if (!empty($phone)) {
+      // Strip all non-digit characters.
       $digits = preg_replace('/\D/', '', $phone);
 
       if (strlen($digits) !== 10) {
@@ -272,16 +273,26 @@ class SubscribeForm extends ConfigFormBase {
    *   The formatted phone number.
    */
   protected function formatPhoneNumber($phone) {
+    // Strip all non-digit characters.
     $digits = preg_replace('/\D/', '', $phone);
 
+    // Return empty string if no digits found.
     if (empty($digits)) {
       return '';
     }
 
     $length = strlen($digits);
 
+    // Only format exactly 10-digit numbers.
     if ($length === 10) {
-      return sprintf('+1 %s-%s-%s', substr($digits, 0, 3), substr($digits, 3, 3), substr($digits, 6));
+      return sprintf('+1 %s-%s-%s',
+        // First 3 digits.
+        substr($digits, 0, 3),
+        // Middle 3 digits.
+        substr($digits, 3, 3),
+        // Last 4 digits.
+        substr($digits, 6)
+      );
     }
 
     return $phone;
