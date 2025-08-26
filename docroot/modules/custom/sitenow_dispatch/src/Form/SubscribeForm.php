@@ -80,9 +80,8 @@ class SubscribeForm extends ConfigFormBase {
       $form['phone'] = [
         '#type' => 'tel',
         '#title' => $this->t('Phone number'),
-        '#placeholder' => '(555) 123-4567',
-        '#description' => $this->t('Enter a 10-digit US phone number'),
-        '#pattern' => '^(\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$',
+        '#description' => $this->t('Enter a 10-digit phone number. Example: 319-555-5555.'),
+        '#pattern' => '^(\(?[2-9][0-9]{2}\)?[-.\s]?[2-9][0-9]{2}[-.\s]?[0-9]{4})$',
         '#maxlength' => 20,
         '#attributes' => [
           'inputmode' => 'tel',
@@ -159,11 +158,8 @@ class SubscribeForm extends ConfigFormBase {
     if (!empty($phone)) {
       $digits = preg_replace('/\D/', '', $phone);
 
-      if (strlen($digits) < 10 || strlen($digits) > 11) {
-        $form_state->setErrorByName('phone', $this->t('Phone number must be 10 or 11 digits.'));
-      }
-      elseif (strlen($digits) === 11 && $digits[0] !== '1') {
-        $form_state->setErrorByName('phone', $this->t('11-digit phone numbers must start with 1.'));
+      if (strlen($digits) !== 10) {
+        $form_state->setErrorByName('phone', $this->t('Phone number must be exactly 10 digits.'));
       }
     }
 
@@ -284,16 +280,8 @@ class SubscribeForm extends ConfigFormBase {
 
     $length = strlen($digits);
 
-    if ($length === 7) {
-      return sprintf('%s-%s', substr($digits, 0, 3), substr($digits, 3));
-    }
-
     if ($length === 10) {
       return sprintf('+1 %s-%s-%s', substr($digits, 0, 3), substr($digits, 3, 3), substr($digits, 6));
-    }
-
-    if ($length === 11 && $digits[0] === '1') {
-      return $this->formatPhoneNumber(substr($digits, 1));
     }
 
     return $phone;
