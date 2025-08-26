@@ -186,7 +186,7 @@ class HoursFilterForm extends FormBase {
     unset($data['resourceAlias']);
 
     if ($data === FALSE) {
-      $data['closed'] = [
+      $render['closed'] = [
         '#markup' => $this->t('<p><i class="fas fa-exclamation-circle"></i> There was an error retrieving hours information. Please try again later or contact the <a href=":link">ITS Help Desk</a> if the problem persists.</p>', [
           ':link' => 'https://its.uiowa.edu/contact',
         ]),
