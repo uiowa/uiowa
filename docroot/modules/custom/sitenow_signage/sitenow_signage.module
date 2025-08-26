@@ -44,51 +44,52 @@ function sitenow_signage_preprocess_field(&$variables) {
 function sitenow_signage_preprocess_media__remote_video(&$variables) {
   $media = $variables['media'];
   $referring_item = $media->_referringItem;
-  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-  $referring_field = $referring_item->getParent();
-  // If the referring field exists...
-  if ($referring_field) {
-    $parent_entity = $referring_field->getParent();
-    $parent_entity = $parent_entity->getEntity();
-    // Make sure this only gets applied this media is being requested from
-    // the 'slide_video' paragraph type.
-    if ($parent_entity->getType() == 'slide_video') {
-      $src = $variables['content']['field_media_oembed_video'][0]['#attributes']['src'];
-      // Split src into URL and params.
-      [$base_url, $params] = explode('?', $src);
-      // Get the individual params.
-      $params = explode('&', $params);
-      // Convert the params into a key/value array type.
-      $param_array = [
-        'url' => '',
-        'max_width' => 0,
-        'max_height' => 0,
-        'hash' => '',
-      ];
-      foreach ($params as $param) {
-        [$key, $value] = explode('=', $param);
-        $param_array[$key] = $value;
+  if (!is_null($referring_item)) {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+    $referring_field = $referring_item->getParent();
+    // If the referring field exists...
+    if ($referring_field) {
+      $parent_entity = $referring_field->getParent();
+      $parent_entity = $parent_entity->getEntity();
+      // Make sure this only gets applied this media is being requested from
+      // the 'slide_video' paragraph type.
+      if ($parent_entity->getType() == 'slide_video') {
+        $src = $variables['content']['field_media_oembed_video'][0]['#attributes']['src'];
+        // Split src into URL and params.
+        [$base_url, $params] = explode('?', $src);
+        // Get the individual params.
+        $params = explode('&', $params);
+        // Convert the params into a key/value array type.
+        $param_array = [
+          'url' => '',
+          'max_width' => 0,
+          'max_height' => 0,
+        ];
+        foreach ($params as $param) {
+          [$key, $value] = explode('=', $param);
+          $param_array[$key] = $value;
+        }
+        // Decode the URL for processing.
+        $param_array['url'] = urldecode($param_array['url']);
+        // Set the 'setautoplay' param that we'll check for later. This ensures
+        // that only videos embedded on slides get this treatment.
+        $param_array['url'] .= '&setautoplay';
+        $iframe_url_helper = Drupal::service('media.oembed.iframe_url_helper');
+        // Regenerate the hash to convince the OEmbedIframeController that this
+        // request is legit.
+        $param_array['hash'] = $iframe_url_helper->getHash($param_array['url'], $param_array['max_width'], $param_array['max_height']);
+        // Re-encode the URL because that is how it needs to be rendered.
+        $param_array['url'] = urlencode($param_array['url']);
+        // Getting the params back together!
+        $params = [];
+        foreach ($param_array as $key => $value) {
+          $params[] = $key . '=' . $value;
+        }
+        $params = implode('&', $params);
+        // Re-assemble and reassigned the src.
+        $src = $base_url . '?' . $params;
+        $variables['content']['field_media_oembed_video'][0]['#attributes']['src'] = $src;
       }
-      // Decode the URL for processing.
-      $param_array['url'] = urldecode($param_array['url']);
-      // Set the 'setautoplay' param that we'll check for later. This ensures
-      // that only videos embedded on slides get this treatment.
-      $param_array['url'] .= '&setautoplay';
-      $iframe_url_helper = Drupal::service('media.oembed.iframe_url_helper');
-      // Regenerate the hash to convince the OEmbedIframeController that this
-      // request is legit.
-      $param_array['hash'] = $iframe_url_helper->getHash($param_array['url'], $param_array['max_width'], $param_array['max_height']);
-      // Re-encode the URL because that is how it needs to be rendered.
-      $param_array['url'] = urlencode($param_array['url']);
-      // Getting the params back together!
-      $params = [];
-      foreach ($param_array as $key => $value) {
-        $params[] = $key . '=' . $value;
-      }
-      $params = implode('&', $params);
-      // Re-assemble and reassigned the src.
-      $src = $base_url . '?' . $params;
-      $variables['content']['field_media_oembed_video'][0]['#attributes']['src'] = $src;
     }
   }
 }
