@@ -44,24 +44,7 @@ function sitenow_signage_preprocess_field(&$variables) {
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
-
-      // Need to traverse up to the sign node to get orientation if available.
-      $parent_slide = $paragraph->getParentEntity();
-      $referring_item = $parent_slide->_referringItem;
-      $orientation = 'horizontal';
-      if ($referring_item) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-        $referring_field = $referring_item->getParent();
-        if ($referring_field) {
-          $parent_entity = $referring_field->getParent();
-          // Add cache tag for the sign node so table
-          // updates when sign orientation changes.
-          $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
-          if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
-            $orientation = 'vertical';
-          }
-        }
-      }
+      $orientation = sitenow_signage_get_orientation($paragraph);
 
       // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
@@ -318,7 +301,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $filters['keywords'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue());
       $filters['place'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue());
       $filters['types'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue());
-//      $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
       $query  = [
         'query' => [
           'display_id' => 'events_in_progress',
@@ -326,7 +308,42 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           'items_per_page' => 100,
         ],
       ];
-      $ope = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
+
+      $response = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
+      if (!empty($response->events)) {
+        $rows = [];
+
+        foreach ($response->events as $key => $value) {
+          $event = object_to_array($value->event);
+          $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
+          // Base styles.
+          $styles = [
+            'card--list',
+            'card__row',
+            'card--layout-left',
+            'borderless',
+            'media--circle',
+            'media--border',
+            'media--small',
+          ];
+          $event['attributes']['class'] = $styles;
+          $event['heading_size'] = 'h2';
+          $card = sitenow_events_build_card($event);
+          $rows[] = $card;
+        }
+
+        $variables['content'] = [
+          '#type' => 'markup',
+          '#markup' => \Drupal::service('renderer')->render($rows),
+        ];
+      }
+      else {
+        $variables['content'] = [
+          '#type' => 'markup',
+          '#markup' => t('There are currently no scheduled events to display.'),
+        ];
+      }
+
       break;
   }
 }
@@ -547,7 +564,7 @@ function _sitenow_signage_build_options_list(array $tree, $r = 0, $p = NULL, arr
   return $options;
 }
 
-/*
+/**
  * Allowed values for outlook events resources.
  *
  * @see options_allowed_values()
@@ -557,4 +574,55 @@ function sitenow_signage_outlook_resource_allowed_values() {
   $group = $config->get('group') ?: 'Signage';
   $api_client = \Drupal::service('uiowa_hours.api');
   return $api_client->getResources($group) ?: ['none' => 'No resources available'];
+}
+
+/**
+ * Helper function to get sign orientation
+ *
+ * @param Drupal\paragraphs\Entity\Paragraph $paragraph
+ *   A $paragraph object.
+ *
+ * @return string
+ *   Return the orientation string.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function sitenow_signage_get_orientation(\Drupal\paragraphs\Entity\Paragraph $paragraph) {
+
+  // Need to traverse up to the sign node to get orientation if available.
+  $parent_slide = $paragraph->getParentEntity();
+  $referring_item = $parent_slide->_referringItem;
+  $orientation = 'horizontal';
+  if ($referring_item) {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+    $referring_field = $referring_item->getParent();
+    if ($referring_field) {
+      $parent_entity = $referring_field->getParent();
+      // Add cache tag for the sign node so table
+      // updates when sign orientation changes.
+      $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
+      if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
+        $orientation = 'vertical';
+      }
+    }
+  }
+
+  return $orientation;
+}
+
+// https://stackoverflow.com/a/54131002
+function object_to_array($obj) {
+  //only process if it's an object or array being passed to the function
+  if(is_object($obj) || is_array($obj)) {
+    $ret = (array) $obj;
+    foreach($ret as &$item) {
+      //recursively process EACH element regardless of type
+      $item = object_to_array($item);
+    }
+    return $ret;
+  }
+  //otherwise (i.e. for scalar values) return without modification
+  else {
+    return $obj;
+  }
 }
