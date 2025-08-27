@@ -6,12 +6,15 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use Drupal\uiowa_core\FormHelpersTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure sitenow_dispatch settings for this site.
  */
 class SubscribeForm extends ConfigFormBase {
+
+  use FormHelpersTrait;
 
   /**
    * Constructs the SubscribeForm object.
@@ -80,6 +83,11 @@ class SubscribeForm extends ConfigFormBase {
       $form['phone'] = [
         '#type' => 'tel',
         '#title' => $this->t('Phone number'),
+        '#description' => $this->t('Enter a 10-digit phone number. Example: 319-555-5555.'),
+        '#maxlength' => 20,
+        '#attributes' => [
+          'inputmode' => 'tel',
+        ],
       ];
     }
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
@@ -110,10 +118,12 @@ class SubscribeForm extends ConfigFormBase {
     $parameters = $this->dispatch->get("populations/$population");
     if ($parameters?->subscriptionList?->hidePhone === FALSE) {
       $phone = $form_state->getValue('phone');
-      $body['toPhone'] = $phone;
+      $body['toPhone'] = $this->formatPhoneNumber($phone);
     }
+
+    $custom_fields = [];
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
-      $value = $form_state->getValue($custom_field->key);
+      $value = $form_state->getValue($custom_field->key) ?? '';
       // Checkboxes allows for multiple values, but stores them
       // as a comma delimited string in Dispatch, so first
       // implode our value(s).
@@ -122,7 +132,11 @@ class SubscribeForm extends ConfigFormBase {
         // unchecked boxes, and pass the cleaned array to implode.
         $value = implode(',', array_filter($value));
       }
-      $body[$custom_field->key] = $value;
+      $custom_fields[$custom_field->key] = $value;
+    }
+
+    if (!empty($custom_fields)) {
+      $body['customFields'] = $custom_fields;
     }
 
     $this->dispatch->request('POST', "populations/$population/subscribers", [
@@ -138,6 +152,9 @@ class SubscribeForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    $phone = $form_state->getValue('phone');
+    $this->validatePhoneField($phone, $form_state, 'phone');
+
     $email = $form_state->getValue('email');
     $population = $form_state->getValue('population');
 
