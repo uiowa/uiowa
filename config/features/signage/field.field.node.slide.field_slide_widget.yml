@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_slide_widget
     - node.type.slide
     - paragraphs.paragraphs_type.astra_room_schedule
+    - paragraphs.paragraphs_type.outlook_events
     - paragraphs.paragraphs_type.slide_image
   module:
     - entity_reference_revisions
@@ -25,9 +26,13 @@ settings:
     target_bundles:
       slide_image: slide_image
       astra_room_schedule: astra_room_schedule
+      outlook_events: outlook_events
     negate: 0
     target_bundles_drag_drop:
       astra_room_schedule:
+        weight: 7
+        enabled: true
+      outlook_events:
         weight: 7
         enabled: true
       slide_image:
