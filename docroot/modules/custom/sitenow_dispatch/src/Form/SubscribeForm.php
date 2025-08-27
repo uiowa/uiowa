@@ -138,8 +138,6 @@ class SubscribeForm extends ConfigFormBase {
       $body['customFields'] = $custom_fields;
     }
 
-    \Drupal::logger('sitenow_dispatch')->info('JSON Body: @json', ['@json' => json_encode($body)]);
-
     $this->dispatch->request('POST', "populations/$population/subscribers", [
       'body' => json_encode($body),
     ]);
