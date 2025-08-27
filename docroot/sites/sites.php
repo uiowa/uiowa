@@ -7738,3 +7738,9 @@ $sites['labshyam.uiowa.ddev.site'] = 'shyam.lab.uiowa.edu';
 $sites['labshyam.dev.drupal.uiowa.edu'] = 'shyam.lab.uiowa.edu';
 $sites['labshyam.stage.drupal.uiowa.edu'] = 'shyam.lab.uiowa.edu';
 $sites['labshyam.prod.drupal.uiowa.edu'] = 'shyam.lab.uiowa.edu';
+
+// Directory aliases for foodpantry.org.uiowa.edu.
+$sites['orgfoodpantry.uiowa.ddev.site'] = 'foodpantry.org.uiowa.edu';
+$sites['orgfoodpantry.dev.drupal.uiowa.edu'] = 'foodpantry.org.uiowa.edu';
+$sites['orgfoodpantry.stage.drupal.uiowa.edu'] = 'foodpantry.org.uiowa.edu';
+$sites['orgfoodpantry.prod.drupal.uiowa.edu'] = 'foodpantry.org.uiowa.edu';
