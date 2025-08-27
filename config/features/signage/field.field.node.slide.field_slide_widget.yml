@@ -5,8 +5,9 @@ dependencies:
   config:
     - field.storage.node.field_slide_widget
     - node.type.slide
-    - paragraphs.paragraphs_type.slide_events
     - paragraphs.paragraphs_type.slide_image
+    - paragraphs.paragraphs_type.slide_events
+    - paragraphs.paragraphs_type.outlook_events
   module:
     - entity_reference_revisions
 id: node.slide.field_slide_widget
@@ -25,13 +26,17 @@ settings:
     target_bundles:
       slide_image: slide_image
       slide_events: slide_events
+      outlook_events: outlook_events
     negate: 0
     target_bundles_drag_drop:
-      slide_events:
-        weight: -14
-        enabled: true
       slide_image:
+        weight: -16
+        enabled: true
+      slide_events:
         weight: -15
+        enabled: true
+      outlook_events:
+        weight: -14
         enabled: true
       uiowa_collection_item:
         weight: -13
