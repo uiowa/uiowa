@@ -7750,3 +7750,9 @@ $sites['labmmrl.uiowa.ddev.site'] = 'mmrl.lab.uiowa.edu';
 $sites['labmmrl.dev.drupal.uiowa.edu'] = 'mmrl.lab.uiowa.edu';
 $sites['labmmrl.stage.drupal.uiowa.edu'] = 'mmrl.lab.uiowa.edu';
 $sites['labmmrl.prod.drupal.uiowa.edu'] = 'mmrl.lab.uiowa.edu';
+
+// Directory aliases for ortho-goetz.lab.uiowa.edu.
+$sites['labortho-goetz.uiowa.ddev.site'] = 'ortho-goetz.lab.uiowa.edu';
+$sites['labortho-goetz.dev.drupal.uiowa.edu'] = 'ortho-goetz.lab.uiowa.edu';
+$sites['labortho-goetz.stage.drupal.uiowa.edu'] = 'ortho-goetz.lab.uiowa.edu';
+$sites['labortho-goetz.prod.drupal.uiowa.edu'] = 'ortho-goetz.lab.uiowa.edu';
