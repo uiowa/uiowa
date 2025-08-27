@@ -6,12 +6,15 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
+use Drupal\uiowa_core\FormHelpersTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure sitenow_dispatch settings for this site.
  */
 class SubscribeForm extends ConfigFormBase {
+
+  use FormHelpersTrait;
 
   /**
    * Constructs the SubscribeForm object.
@@ -81,7 +84,6 @@ class SubscribeForm extends ConfigFormBase {
         '#type' => 'tel',
         '#title' => $this->t('Phone number'),
         '#description' => $this->t('Enter a 10-digit phone number. Example: 319-555-5555.'),
-        '#pattern' => '^(\(?[2-9][0-9]{2}\)?[-.\s]?[2-9][0-9]{2}[-.\s]?[0-9]{4})$',
         '#maxlength' => 20,
         '#attributes' => [
           'inputmode' => 'tel',
@@ -151,15 +153,7 @@ class SubscribeForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $phone = $form_state->getValue('phone');
-
-    if (!empty($phone)) {
-      // Strip all non-digit characters.
-      $digits = preg_replace('/\D/', '', $phone);
-
-      if (strlen($digits) !== 10) {
-        $form_state->setErrorByName('phone', $this->t('Phone number must be exactly 10 digits.'));
-      }
-    }
+    $this->validatePhoneField($phone, $form_state, 'phone');
 
     $email = $form_state->getValue('email');
     $population = $form_state->getValue('population');
@@ -258,41 +252,6 @@ class SubscribeForm extends ConfigFormBase {
         $form['custom_fields'][$custom_field->key]['#default_value'] = explode(',', $custom_field->defaultValue);
       }
     }
-  }
-
-  /**
-   * Format phone number to +1 XXX-XXX-XXXX format.
-   *
-   * @param string $phone
-   *   The raw phone number input.
-   *
-   * @return string
-   *   The formatted phone number.
-   */
-  protected function formatPhoneNumber($phone) {
-    // Strip all non-digit characters.
-    $digits = preg_replace('/\D/', '', $phone);
-
-    // Return empty string if no digits found.
-    if (empty($digits)) {
-      return '';
-    }
-
-    $length = strlen($digits);
-
-    // Only format exactly 10-digit numbers.
-    if ($length === 10) {
-      return sprintf('+1 %s-%s-%s',
-        // First 3 digits.
-        substr($digits, 0, 3),
-        // Middle 3 digits.
-        substr($digits, 3, 3),
-        // Last 4 digits.
-        substr($digits, 6)
-      );
-    }
-
-    return $phone;
   }
 
 }
