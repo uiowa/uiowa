@@ -121,8 +121,7 @@ class SubscribeForm extends ConfigFormBase {
 
     $custom_fields = [];
     foreach ($parameters?->subscriptionList?->customFields as $custom_field) {
-      $custom_field_values = $form_state->getValue('custom_fields');
-      $value = $custom_field_values[$custom_field->key] ?? '';
+      $value = $form_state->getValue($custom_field->key) ?? '';
       // Checkboxes allows for multiple values, but stores them
       // as a comma delimited string in Dispatch, so first
       // implode our value(s).
