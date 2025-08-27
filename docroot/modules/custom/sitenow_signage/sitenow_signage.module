@@ -301,11 +301,17 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $filters['keywords'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue());
       $filters['place'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue());
       $filters['types'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue());
+
+      $amount = 3;
+      if(sitenow_signage_get_orientation($paragraph) === 'vertical') {
+        $amount = 5;
+      }
+
       $query  = [
         'query' => [
           'display_id' => 'events_in_progress',
           'filters' => $filters,
-          'items_per_page' => 100,
+          'items_per_page' => $amount,
         ],
       ];
 
@@ -322,8 +328,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
             'card__row',
             'card--layout-left',
             'borderless',
-            'media--circle',
-            'media--border',
+            'media--widescreen',
             'media--small',
           ];
           $event['attributes']['class'] = $styles;
@@ -332,9 +337,30 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           $rows[] = $card;
         }
 
+        $events_render = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'list-container',
+              'list-container--list',
+            ],
+          ],
+        ];
+        $events_render['container'] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'uiowa-events-wrapper',
+              'list-container__inner',
+            ],
+          ],
+        ];
+        $events_render['container']['rows'] = $rows;
+
+
         $variables['content'] = [
           '#type' => 'markup',
-          '#markup' => \Drupal::service('renderer')->render($rows),
+          '#markup' => \Drupal::service('renderer')->render($events_render),
         ];
       }
       else {
