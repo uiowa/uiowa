@@ -318,10 +318,10 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $filters['keywords'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue());
       $filters['place'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue());
       $filters['types'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue());
-      $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
+//      $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
       $query  = [
         'query' => [
-          'display_id' => 'events',
+          'display_id' => 'events_in_progress',
           'filters' => $filters,
           'items_per_page' => 100,
         ],
@@ -547,6 +547,7 @@ function _sitenow_signage_build_options_list(array $tree, $r = 0, $p = NULL, arr
   return $options;
 }
 
+/*
  * Allowed values for outlook events resources.
  *
  * @see options_allowed_values()
