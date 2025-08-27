@@ -37,6 +37,9 @@ function sitenow_signage_preprocess_field(&$variables) {
     case 'field_astra_schedule_room':
       // Cache this for 1 day.
       $variables['#cache']['tags'][] = 'time:daily';
+      // Get additional info necessary to overwrite the output of this field.
+      $paragraph = $variables['element']['#object'];
+      $headline = $paragraph->get('field_headline')->value;
       $today = date('Y-m-d');
       $had_failure = FALSE;
       $rows = [];
@@ -46,8 +49,6 @@ function sitenow_signage_preprocess_field(&$variables) {
         $value = $variables['items'][0]['content']['#markup'];
         // Split field value into building code and room id.
         [$building_code, $room_id] = explode('-', $value);
-
-        $table_caption = 'Schedule for ' . $room_id;
 
         // Load and fetch data from the MAUI API.
         $api_client = \Drupal::service('uiowa_maui.api');
@@ -79,10 +80,19 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#type' => 'container',
         '#attributes' => [
           'class' => [
-            'signage-table',
+            'signage__table',
           ],
         ],
       ];
+      // Headline overrides everything if set.
+      if (!empty($headline)) {
+        $table_caption = $headline;
+      }
+      // If no headline and no failure, use room-specific caption.
+      elseif (!$had_failure && !empty($room_id)) {
+        $table_caption = 'Schedule for ' . $room_id;
+      }
+
       $markup['container']['table'] = [
         '#theme' => 'table',
         '#caption' => $table_caption,

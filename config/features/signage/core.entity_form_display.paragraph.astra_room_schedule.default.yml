@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.astra_room_schedule.field_astra_schedule_room
+    - field.field.paragraph.astra_room_schedule.field_headline
     - paragraphs.paragraphs_type.astra_room_schedule
 id: paragraph.astra_room_schedule.default
 targetEntityType: paragraph
@@ -12,9 +13,17 @@ mode: default
 content:
   field_astra_schedule_room:
     type: options_select
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_headline:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
 hidden:
   created: true
