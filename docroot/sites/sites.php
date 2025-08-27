@@ -7762,3 +7762,9 @@ $sites['labseol.uiowa.ddev.site'] = 'seol.lab.uiowa.edu';
 $sites['labseol.dev.drupal.uiowa.edu'] = 'seol.lab.uiowa.edu';
 $sites['labseol.stage.drupal.uiowa.edu'] = 'seol.lab.uiowa.edu';
 $sites['labseol.prod.drupal.uiowa.edu'] = 'seol.lab.uiowa.edu';
+
+// Directory aliases for writinguniversity.uiowa.edu.
+$sites['writinguniversity.uiowa.ddev.site'] = 'writinguniversity.uiowa.edu';
+$sites['writinguniversity.dev.drupal.uiowa.edu'] = 'writinguniversity.uiowa.edu';
+$sites['writinguniversity.stage.drupal.uiowa.edu'] = 'writinguniversity.uiowa.edu';
+$sites['writinguniversity.prod.drupal.uiowa.edu'] = 'writinguniversity.uiowa.edu';
