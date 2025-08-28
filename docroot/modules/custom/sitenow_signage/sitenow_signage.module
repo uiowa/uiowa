@@ -90,7 +90,7 @@ function sitenow_signage_preprocess_field(&$variables) {
       }
       // If no headline and no failure, use room-specific caption.
       elseif (!$had_failure && !empty($room_id)) {
-        $table_caption = 'Schedule for ' . $room_id;
+        $table_caption = 'Schedule for room ' . $room_id;
       }
 
       $markup['container']['table'] = [
