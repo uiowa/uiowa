@@ -1,0 +1,46 @@
+uuid: e3ca2dff-e521-4706-a3aa-13e0112a87db
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.outlook_events.field_headline
+    - field.field.paragraph.outlook_events.field_outlook_events_end_time
+    - field.field.paragraph.outlook_events.field_outlook_events_resource
+    - field.field.paragraph.outlook_events.field_outlook_events_use_org
+    - paragraphs.paragraphs_type.outlook_events
+id: paragraph.outlook_events.default
+targetEntityType: paragraph
+bundle: outlook_events
+mode: default
+content:
+  field_headline:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_outlook_events_end_time:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_outlook_events_resource:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_outlook_events_use_org:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
