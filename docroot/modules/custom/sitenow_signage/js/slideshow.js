@@ -1,7 +1,13 @@
+/**
+ * @file
+ * JavaScript for the slideshow block.
+ */
+
 (function (Drupal) {
   Drupal.behaviors.signageSlideshow = {
-    attach: function (context) {
+    attach: function (context, settings) {
       context.querySelectorAll('.signage__slideshow').forEach(function (element) {
+        // Initialize Splide with the settings.
         const splide = new Splide(element, {
           autoplay: true,
           interval: 5000,
@@ -9,6 +15,7 @@
           pauseOnHover: false,
           drag: false,
           speed: 1500,
+          slideFocus: false,
           arrows: false,
           pagination: false,
           rewind: true,
