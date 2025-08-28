@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: writinguniversity.uiowa.ddev.site
+    protocol: https
+  machine_name: writinguniversity
+  human_name: writinguniversity.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: writinguniversity.prod
+drupal:
+  db:
+    database: writinguniversity_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://writinguniversity.prod.drupal.uiowa.edu'
+  requester: bdickey
+  site-name: 'The Writing University'

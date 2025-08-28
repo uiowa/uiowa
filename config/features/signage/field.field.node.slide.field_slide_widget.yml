@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_slide_widget
     - node.type.slide
+    - paragraphs.paragraphs_type.outlook_events
     - paragraphs.paragraphs_type.slide_image
     - paragraphs.paragraphs_type.slide_video
   module:
@@ -25,8 +26,12 @@ settings:
     target_bundles:
       slide_image: slide_image
       slide_video: slide_video
+      outlook_events: outlook_events
     negate: 0
     target_bundles_drag_drop:
+      outlook_events:
+        weight: 7
+        enabled: true
       slide_image:
         weight: -13
         enabled: true

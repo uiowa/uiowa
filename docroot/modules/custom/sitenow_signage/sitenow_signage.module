@@ -35,6 +35,168 @@ function sitenow_signage_preprocess_field(&$variables) {
         }
       }
       break;
+
+    case 'field_outlook_events_resource':
+      // Cache this for 1 hour.
+      $variables['#cache']['tags'][] = 'time:hourly';
+      // Get additional info necessary to overwrite the output of this field.
+      $paragraph = $variables['element']['#object'];
+      $headline = $paragraph->get('field_headline')->value;
+      $use_org = $paragraph->get('field_outlook_events_use_org')->value;
+      $end_time = $paragraph->get('field_outlook_events_end_time')->value;
+
+      // Need to traverse up to the sign node to get orientation if available.
+      $parent_slide = $paragraph->getParentEntity();
+      $referring_item = $parent_slide->_referringItem;
+      $orientation = 'horizontal';
+      if ($referring_item) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+        $referring_field = $referring_item->getParent();
+        if ($referring_field) {
+          $parent_entity = $referring_field->getParent();
+          // Add cache tag for the sign node so table
+          // updates when sign orientation changes.
+          $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
+          if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
+            $orientation = 'vertical';
+          }
+        }
+      }
+
+      // Load and fetch data from the Hours API.
+      $api_client = \Drupal::service('uiowa_hours.api');
+      $today = date('Ymd');
+      $data = [];
+      $rows = [];
+      $had_failure = FALSE;
+
+      // Loop through each resource value.
+      foreach ($variables['items'] as $item) {
+        $resource_id = $item['content']['#markup'];
+        $resource_data = $api_client->getHours($resource_id);
+
+        if ($resource_data['data'] === FALSE) {
+          $had_failure = TRUE;
+          continue;
+        }
+
+        // Use resource alias as room name if available.
+        if (!empty($resource_data['data']['resourceAlias'])) {
+          $resource_id = $resource_data['data']['resourceAlias'];
+        }
+
+        // This isn't used now and borks the foreach loop. Unset it.
+        if (isset($resource_data['data']['$id'])) {
+          unset($resource_data['data']['$id']);
+        }
+        if (isset($resource_data['data']['resourceAlias'])) {
+          unset($resource_data['data']['resourceAlias']);
+        }
+
+        // Loop through today's events.
+        foreach ($resource_data['data'][$today] ?? [] as $event) {
+          $start = strtotime($event['iso8601Start']);
+          $end = strtotime($event['iso8601End']);
+
+          // Skip events already ended.
+          if ($end < time()) {
+            continue;
+          }
+
+          // Format time range based on settings.
+          $formatted_date = date('g:i a', $start);
+          if ($end_time) {
+            if ($end >= strtotime('tomorrow')) {
+              $formatted_date = date('M j g:i a', $start) . ' – ' . date('M j g:i a', $end);
+            }
+            else {
+              $formatted_date .= ' – ' . date('g:i a', $end);
+            }
+          }
+
+          // Allows overriding meeting subject with organizer name.
+          if ($use_org && !empty($event['organizerName'])) {
+            $subject = $event['organizerName'];
+          }
+          else {
+            // Meeting subject (respect private items).
+            $subject = ($event['isPrivate'] == 1) && !empty($event['organizerName'])
+              ? $event['organizerName']
+              : $event['summary'];
+          }
+
+          // Build row, store start time for sorting.
+          $data[] = [
+            'time' => $formatted_date,
+            'start' => $start,
+            'room' => $resource_id,
+            'meeting' => $subject,
+          ];
+        }
+      }
+
+      if (!empty($data)) {
+        // Sort rows by start time.
+        usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
+
+        // Cap the number of rows differently based on orientation.
+        $max = $orientation === 'horizontal' ? 10 : 15;
+        $data = array_slice($data, 0, $max);
+
+        // Build table rows.
+        foreach ($data as $event) {
+          $row = [
+            'time' => $event['time'],
+            'meeting' => $event['meeting'],
+            'room' => $event['room'],
+          ];
+          $rows[] = $row;
+        }
+      }
+
+      // Choose an empty message based on whether we saw a failure.
+      if ($had_failure) {
+        $empty_message = t('There was an error retrieving schedule information. Please try again later or contact the ITS Help Desk if the problem persists.');
+      }
+      else {
+        $empty_message = t('There are currently no scheduled events to display.');
+      }
+
+      // Build renderable table.
+      $header = [
+        'time' => t('Time'),
+        'meeting' => t('Meeting'),
+        'room' => t('Room'),
+      ];
+      $markup['container'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'signage__table',
+          ],
+        ],
+      ];
+      $markup['container']['table'] = [
+        '#theme' => 'table',
+        '#caption' => $headline,
+        '#header' => $header,
+        '#rows' => $rows,
+        '#empty' => $empty_message,
+        '#attributes' => [
+          'class' => [
+            'data',
+          ],
+        ],
+      ];
+      $markup = \Drupal::service('renderer')->render($markup);
+
+      // Replace the field output with table markup.
+      $variables['items'][0]['content']['#markup'] = $markup;
+      // Remove the other items to avoid outputting them.
+      $variables['items'] = array_slice($variables['items'], 0, 1);
+
+      break;
+
   }
 }
 
@@ -128,6 +290,11 @@ function sitenow_signage_preprocess_node(&$variables) {
   if ($variables['node']->getType() === 'sign') {
     // Add a black background to the sign node.
     $variables['attributes']['class'][] = 'bg--black';
+    // Add a class for the sign orientation if it exists.
+    if ($variables['node']->hasField('field_sign_orientation') && !$variables['node']->get('field_sign_orientation')->isEmpty()) {
+      $orientation = $variables['node']->get('field_sign_orientation')->value;
+      $variables['attributes']['class'][] = 'signage--' . $orientation;
+    }
   }
 }
 
@@ -274,4 +441,16 @@ function sitenow_signage_slides_size_allowed_values() {
     'vertical' => 'Vertical (9:16)',
   ];
   return $options;
+}
+
+/**
+ * Allowed values for outlook events resources.
+ *
+ * @see options_allowed_values()
+ */
+function sitenow_signage_outlook_resource_allowed_values() {
+  $config = \Drupal::configFactory()->getEditable('uiowa_hours.settings');
+  $group = $config->get('group') ?: 'Signage';
+  $api_client = \Drupal::service('uiowa_hours.api');
+  return $api_client->getResources($group) ?: ['none' => 'No resources available'];
 }
