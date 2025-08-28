@@ -441,7 +441,8 @@ _:future,
   background: transparent;
 
   >*:nth-child(2) {
-    @include utilities.center(vertical);
+    display: flex;
+    align-items: center;
 
     @include utilities.breakpoint(sm) {
       padding-right: 3rem;
