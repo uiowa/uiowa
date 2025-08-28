@@ -22,14 +22,17 @@
         });
 
         splide.on('move', (newIndex, prevIndex) => {
-          pauseVideo(splide.Components.Slides.getAt(prevIndex).slide);
-          playVideo(splide.Components.Slides.getAt(newIndex).slide);
+          pauseIfVideo(splide.Components.Slides.getAt(prevIndex).slide);
+          playIfVideo(splide.Components.Slides.getAt(newIndex).slide);
         });
 
         splide.mount();
       });
 
-      function pauseVideo(slide) {
+      /**
+       * If a slide is an oembed video, pause it.
+       */
+      function pauseIfVideo(slide) {
         const iframe = slide.querySelector('iframe.media-oembed-content');
         if (iframe) {
           iframe.dataset.originalSrc = iframe.src;
@@ -37,7 +40,10 @@
         }
       }
 
-      function playVideo(slide) {
+      /**
+       * If the slide is an oembed video, play it.
+       */
+      function playIfVideo(slide) {
         const iframe = slide.querySelector('iframe.media-oembed-content');
         if (iframe && iframe.dataset.originalSrc) {
           iframe.src = iframe.dataset.originalSrc;

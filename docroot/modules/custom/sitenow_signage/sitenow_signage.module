@@ -6,14 +6,36 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\media\IFrameMarkup;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_form_alter().
+ */
+function sitenow_signage_form_alter(
+  &$form,
+  FormStateInterface $form_state,
+  $form_id
+) {
+  if (in_array($form_id, ['node_slide_form', 'node_slide_edit_form'])) {
+    if (isset($form['field_slide_duration_other'])) {
+      $form['field_slide_duration_other']['#states'] = [
+        'visible' => [
+          ':input[id="edit-field-slide-duration"]' => [
+            'value' => '0',
+          ],
+        ],
+      ];
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $form_id) {
+function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Update the custom alerts description text to note that
   // custom alerts will not display on signs.
   $form['custom_alert_display']['#description'] = $form['custom_alert_display']['#description'] . ' Custom alerts will not render on signs.';
@@ -30,7 +52,10 @@ function sitenow_signage_preprocess_field(&$variables) {
         $node = $item['content']['#node'];
         // Set a reasonable default just in case.
         $item['interval'] = '15000';
-        if ($node->hasField('field_slide_duration') && !$node->field_slide_duration->isEmpty()) {
+        if ($node->hasField('field_slide_duration_other') && !$node->field_slide_duration_other->isEmpty()) {
+          $item['interval'] = $item['content']['#node']->field_slide_duration_other->value * 1000;
+        }
+        elseif ($node->hasField('field_slide_duration') && !$node->field_slide_duration->isEmpty()) {
           $item['interval'] = $item['content']['#node']->field_slide_duration->value;
         }
       }
@@ -427,6 +452,7 @@ function sitenow_signage_slide_durations_allowed_values() {
     30000 => '30 seconds',
     45000 => '45 seconds',
     60000 => '1 minute',
+    0 => 'Other',
   ];
 
   return $values;
