@@ -200,7 +200,8 @@ class MauiApi extends ApiClientBase {
    *   An array of rooms prefixed with the building they are in.
    */
   public function getBuildingRoomCompleteList() {
-    $data = $this->get('/pub/registrar/courses/AstraBldgRmCompleteList/list');
+    $api_options = ['cache_length' => 86400];
+    $data = $this->get('/pub/registrar/courses/AstraBldgRmCompleteList/list', $api_options);
     $options = [];
     if ($data) {
       foreach ($data as $room) {
