@@ -57,9 +57,7 @@
 
 {{ page_top }}
 {{ page }}
-{% if page_bottom %}
-  <div {{ uiowa_attribute.addClass(header_classes) }}>{{ page_bottom }}</div>
-{% endif %}
+{% if page_bottom %}<div {{ uiowa_attribute.addClass(header_classes) }}>{{ page_bottom }}</div>{% endif %}
 <js-bottom-placeholder token="{{ placeholder_token }}">
   </body>
 </html>
