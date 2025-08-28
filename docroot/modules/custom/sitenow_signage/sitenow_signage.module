@@ -76,14 +76,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         'time' => t('Time'),
         'event' => t('Event'),
       ];
-      $markup['container'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'signage__table',
-          ],
-        ],
-      ];
+
       // Headline overrides everything if set.
       if (!empty($headline)) {
         $table_caption = $headline;
@@ -101,7 +94,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
-            'signage__table--data',
+            'signage__table',
           ],
         ],
       ];
@@ -243,14 +236,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         'meeting' => t('Meeting'),
         'room' => t('Room'),
       ];
-      $markup['container'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'signage__table',
-          ],
-        ],
-      ];
+
       $markup['container']['table'] = [
         '#theme' => 'table',
         '#caption' => $headline,
@@ -259,7 +245,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
-            'signage__table--data',
+            'signage__table',
           ],
         ],
       ];

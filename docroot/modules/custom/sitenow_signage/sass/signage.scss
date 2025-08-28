@@ -78,8 +78,31 @@
 div.bg--black .signage__table {
   border-color: variables.$blk;
 }
+
+// Table wrapper class.
 .signage__table {
   $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
+  background-color: variables.$blk;
+  tr {
+    border-bottom: 7px solid variables.$secondary;
+    font-weight: variables.$font-weight-normal;
+
+    td {
+      font-size: variables.$h6-font-size;
+      background-color: $pitch-gray;
+      color: variables.$white;
+      &:not(:last-child) {
+        border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
+      }
+    }
+
+    &.even {
+      td {
+        background-color: color.scale($pitch-gray, $lightness: 5%);
+      }
+    }
+  }
 
   caption {
     background-color: variables.$secondary;
@@ -126,40 +149,18 @@ div.bg--black .signage__table {
     }
   }
 
-  table.signage__table--data {
-    background-color: variables.$blk;
-    tr {
-      border-bottom: 7px solid variables.$secondary;
-      font-weight: variables.$font-weight-normal;
-
-      td {
-        font-size: variables.$h6-font-size;
-        background-color: $pitch-gray;
-        color: variables.$white;
-        &:not(:last-child) {
-          border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
-        }
-      }
-
-      &.even {
-        td {
-          background-color: color.scale($pitch-gray, $lightness: 5%);
-        }
-      }
-    }
-  }
 }
+
 
 // Increase font sizes for vertical displays.
 .signage--vertical {
   .signage__table {
-    table.signage__table--data {
-      caption {
-        font-size: variables.$h3-font-size;
-      }
-      th, td {
-        font-size: variables.$h4-font-size;
-      }
+    caption {
+      font-size: variables.$h3-font-size;
+    }
+
+    th, td {
+      font-size: variables.$h4-font-size;
     }
   }
 }
