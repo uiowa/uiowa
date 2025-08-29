@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\media\IFrameMarkup;
 use Drupal\node\NodeInterface;
 
 /**
@@ -431,31 +430,30 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
   // original incoming URL.
   $url = \Drupal::request()->query->get('url');
   $params = UrlHelper::parse($url)['query'];
-  $original = $variables['media']->__toString();
+
   // Check if the custom query param is present.
   if (isset($params['setautoplay'])) {
-    // Check if this is YouTube or Vimeo.
-    if (strpos($original, 'feature=oembed') !== FALSE) {
-      // YouTube: Extract video ID and add autoplay, loop, mute, and playlist params.
+    /** @var \Drupal\media\OEmbed\Resource $resource */
+    $resource = $variables['resource'];
+
+    if ($resource->getProvider()->getName() === 'YouTube') {
+      // YouTube: Extract video ID, add autoplay, loop, mute, playlist params.
+      $original = (string) $variables['media'];
       if (preg_match('/\/embed\/([a-zA-Z0-9_-]+)/', $original, $matches)) {
         $video_id = $matches[1];
-        $original = str_replace('feature=oembed', "feature=oembed&autoplay=1&loop=1&mute=1&playlist={$video_id}", $original);
-      }
-      else {
-        // Fallback if video ID extraction fails.
-        $original = str_replace('feature=oembed', 'feature=oembed&autoplay=1&loop=1&mute=1', $original);
+        $variables['media'] = str_replace('?feature=oembed', "?feature=oembed&autoplay=1&loop=1&mute=1&playlist={$video_id}", $original);
       }
     }
-    else {
-      // Vimeo: Add autoplay to iframe src.
+    elseif ($resource->getProvider()->getName() === 'Vimeo') {
+      // Vimeo: Add autoplay, loop, muted to iframe src.
+      $original = (string) $variables['media'];
       if (preg_match('/src="([^"]*)"/', $original, $matches)) {
         $iframe_src = $matches[1];
         $separator = strpos($iframe_src, '?') !== FALSE ? '&' : '?';
         $new_iframe_src = $iframe_src . $separator . 'autoplay=1&loop=1&muted=1';
-        $original = str_replace($iframe_src, $new_iframe_src, $original);
+        $variables['media'] = str_replace($iframe_src, $new_iframe_src, $original);
       }
     }
-    $variables['media'] = IFrameMarkup::create($original);
   }
 }
 
