@@ -59,9 +59,15 @@ function sitenow_signage_validate_duration_other($element, FormStateInterface $f
 function sitenow_signage_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
   if ($entity_form['#entity_type'] === 'node' && $entity_form['#bundle'] === 'slide') {
     if (isset($entity_form['field_slide_duration_other'])) {
+      // Generate unique IDs.
+      $unique_id = uniqid('slide_duration_');
+
+      $entity_form['field_slide_duration']['widget']['#id'] = $unique_id . '_trigger';
+      $entity_form['field_slide_duration_other']['#id'] = $unique_id . '_target';
+
       $entity_form['field_slide_duration_other']['#states'] = [
         'visible' => [
-          'select[name*="[field_slide_duration]"]' => ['value' => '0'],
+          '#' . $unique_id . '_trigger' => ['value' => '0'],
         ],
       ];
     }
@@ -109,11 +115,13 @@ function sitenow_signage_preprocess_field(&$variables) {
         $node = $item['content']['#node'];
         // Set a reasonable default just in case.
         $item['interval'] = '15000';
-        if ($node->hasField('field_slide_duration_other') && !$node->field_slide_duration_other->isEmpty()) {
-          $item['interval'] = $item['content']['#node']->field_slide_duration_other->value * 1000;
+        if ($node->hasField('field_slide_duration_other') &&
+          $node->field_slide_duration_other->value > 0) {
+          $item['interval'] = $node->field_slide_duration_other->value * 1000;
         }
-        elseif ($node->hasField('field_slide_duration') && !$node->field_slide_duration->isEmpty()) {
-          $item['interval'] = $item['content']['#node']->field_slide_duration->value;
+        elseif ($node->hasField('field_slide_duration') &&
+          $node->field_slide_duration->value > 0) {
+          $item['interval'] = $node->field_slide_duration->value;
         }
         // Capture the first slide's interval.
         if ($first_slide_interval === NULL) {
