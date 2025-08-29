@@ -7,10 +7,12 @@
   Drupal.behaviors.signageSlideshow = {
     attach: function (context, settings) {
       context.querySelectorAll('.signage__slideshow').forEach(function (element) {
+        // Get the first slide interval from drupalSettings, fallback to 5000.
+        const firstSlideInterval = settings.signageSlideshow?.firstSlideInterval || 5000;
         // Initialize Splide with the settings.
         const splide = new Splide(element, {
           autoplay: true,
-          interval: 5000,
+          interval: firstSlideInterval,
           type: 'fade',
           pauseOnHover: false,
           drag: false,

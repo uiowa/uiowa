@@ -63,6 +63,7 @@ function sitenow_signage_preprocess_field(&$variables) {
   $element = $variables['element'];
   switch ($element['#field_name']) {
     case 'field_sign_slides':
+      $first_slide_interval = NULL;
       foreach ($variables['items'] as &$item) {
         $node = $item['content']['#node'];
         // Set a reasonable default just in case.
@@ -73,7 +74,13 @@ function sitenow_signage_preprocess_field(&$variables) {
         elseif ($node->hasField('field_slide_duration') && !$node->field_slide_duration->isEmpty()) {
           $item['interval'] = $item['content']['#node']->field_slide_duration->value;
         }
+        // Capture the first slide's interval.
+        if ($first_slide_interval === NULL) {
+          $first_slide_interval = $item['interval'];
+        }
       }
+      // Pass the first slide interval to slideshow.js.
+      $variables['#attached']['drupalSettings']['signageSlideshow']['firstSlideInterval'] = $first_slide_interval;
       break;
 
     case 'field_outlook_events_resource':
