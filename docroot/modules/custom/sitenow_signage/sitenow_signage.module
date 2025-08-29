@@ -696,15 +696,15 @@ function sitenow_signage_get_orientation(Paragraph $paragraph) {
  * Helper function to convert objects recursively to arrays.
  * This is roughly 1.5-2x faster than json_decode() + json_encode().
  *
- * @param object $obj
+ * @param mixed $obj
  *   Any object.
  *
- * @return object|array
+ * @return array|mixed Returns an object that is being converted into a array
  *   Returns an object that is being converted into a array
  *   until the complete object is only an array, then it
  *   returns an array.
  */
-function object_to_array(object $obj): object|array {
+function object_to_array(mixed $obj): mixed {
   // Only process if it's an object or array being passed to the function.
   if (is_object($obj) || is_array($obj)) {
     $ret = (array) $obj;
