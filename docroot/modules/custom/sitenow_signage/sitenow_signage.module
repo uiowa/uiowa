@@ -17,7 +17,7 @@ use Drupal\node\NodeInterface;
 function sitenow_signage_form_alter(
   &$form,
   FormStateInterface $form_state,
-  $form_id
+  $form_id,
 ) {
   if (in_array($form_id, ['node_slide_form', 'node_slide_edit_form'])) {
     if (isset($form['field_slide_duration_other'])) {
@@ -258,9 +258,14 @@ function sitenow_signage_preprocess_media__remote_video(&$variables) {
         }
         // Decode the URL for processing.
         $param_array['url'] = urldecode($param_array['url']);
-        // Set the 'setautoplay' param that we'll check for later. This ensures
-        // that only videos embedded on slides get this treatment.
-        $param_array['url'] .= '&setautoplay';
+
+        if (strpos($param_array['url'], '?') !== FALSE) {
+          $param_array['url'] .= '&setautoplay';
+        }
+        else {
+          $param_array['url'] .= '?setautoplay';
+        }
+
         $iframe_url_helper = Drupal::service('media.oembed.iframe_url_helper');
         // Regenerate the hash to convince the OEmbedIframeController that this
         // request is legit.
@@ -290,16 +295,23 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
   // original incoming URL.
   $url = \Drupal::request()->query->get('url');
   $params = UrlHelper::parse($url)['query'];
-
   $original = $variables['media']->__toString();
   // Check if the custom query param is present.
   if (isset($params['setautoplay'])) {
-    // It is! Now we add the parameters to the URL that we wanted all along.
-    // What a crazy amount of work to just be able to add these parameters to
-    // only the OEmbed URLs we want altered!
-    $original = str_replace('feature=oembed', 'feature=oembed&autoplay=1&mute=1',
-      $original);
-
+    // Check if this is YouTube or Vimeo.
+    if (strpos($original, 'feature=oembed') !== FALSE) {
+      // YouTube: Add autoplay and mute to existing feature=oembed.
+      $original = str_replace('feature=oembed', 'feature=oembed&autoplay=1&mute=1', $original);
+    }
+    else {
+      // Vimeo: Add autoplay to iframe src.
+      if (preg_match('/src="([^"]*)"/', $original, $matches)) {
+        $iframe_src = $matches[1];
+        $separator = strpos($iframe_src, '?') !== FALSE ? '&' : '?';
+        $new_iframe_src = $iframe_src . $separator . 'autoplay=1&loop=1&muted=1';
+        $original = str_replace($iframe_src, $new_iframe_src, $original);
+      }
+    }
     $variables['media'] = IFrameMarkup::create($original);
   }
 }
