@@ -436,8 +436,15 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
   if (isset($params['setautoplay'])) {
     // Check if this is YouTube or Vimeo.
     if (strpos($original, 'feature=oembed') !== FALSE) {
-      // YouTube: Add autoplay and mute to existing feature=oembed.
-      $original = str_replace('feature=oembed', 'feature=oembed&autoplay=1&mute=1', $original);
+      // YouTube: Extract video ID and add autoplay, loop, mute, and playlist params.
+      if (preg_match('/\/embed\/([a-zA-Z0-9_-]+)/', $original, $matches)) {
+        $video_id = $matches[1];
+        $original = str_replace('feature=oembed', "feature=oembed&autoplay=1&loop=1&mute=1&playlist={$video_id}", $original);
+      }
+      else {
+        // Fallback if video ID extraction fails.
+        $original = str_replace('feature=oembed', 'feature=oembed&autoplay=1&loop=1&mute=1', $original);
+      }
     }
     else {
       // Vimeo: Add autoplay to iframe src.
