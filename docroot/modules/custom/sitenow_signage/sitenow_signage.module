@@ -5,6 +5,7 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -28,6 +29,26 @@ function sitenow_signage_form_alter(
           ],
         ],
       ];
+
+      // Clear the field when duration is not "0".
+      $form['field_slide_duration_other']['widget']['#element_validate'][] = 'sitenow_signage_validate_duration_other';
+    }
+  }
+}
+
+/**
+ * Custom validation function for sitenow_signage_form_alter.
+ */
+function sitenow_signage_validate_duration_other($element, FormStateInterface $form_state, $form) {
+  $duration_values = $form_state->getValue('field_slide_duration');
+
+  // Check if duration field has a value other than "0".
+  if (!empty($duration_values) && isset($duration_values[0]['value'])) {
+    $duration_value = $duration_values[0]['value'];
+
+    if ($duration_value !== '0') {
+      // Clear the field_slide_duration_other field.
+      $form_state->setValue('field_slide_duration_other', []);
     }
   }
 }
@@ -43,6 +64,26 @@ function sitenow_signage_inline_entity_form_entity_form_alter(&$entity_form, &$f
           'select[name*="[field_slide_duration]"]' => ['value' => '0'],
         ],
       ];
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_signage_entity_presave(EntityInterface $entity) {
+  // Only process slide nodes.
+  if ($entity->getEntityTypeId() === 'node' && $entity->bundle() === 'slide') {
+
+    // Check if the entity has both duration fields.
+    if ($entity->hasField('field_slide_duration') && $entity->hasField('field_slide_duration_other')) {
+
+      $duration_value = $entity->get('field_slide_duration')->value;
+
+      // If duration is not "0", clear field_slide_duration_other.
+      if ($duration_value !== '0' && $duration_value !== 0) {
+        $entity->get('field_slide_duration_other')->setValue([]);
+      }
     }
   }
 }
