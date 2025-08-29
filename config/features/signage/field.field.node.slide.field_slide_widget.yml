@@ -8,6 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.slide_image
     - paragraphs.paragraphs_type.slide_events
     - paragraphs.paragraphs_type.outlook_events
+    - paragraphs.paragraphs_type.astra_room_schedule
   module:
     - entity_reference_revisions
 id: node.slide.field_slide_widget
@@ -27,15 +28,19 @@ settings:
       slide_image: slide_image
       slide_events: slide_events
       outlook_events: outlook_events
+      astra_room_schedule: astra_room_schedule
     negate: 0
     target_bundles_drag_drop:
       slide_image:
-        weight: -16
+        weight: -17
         enabled: true
       slide_events:
-        weight: -15
+        weight: -16
         enabled: true
       outlook_events:
+        weight: -15
+        enabled: true
+      astra_room_schedule:
         weight: -14
         enabled: true
       uiowa_collection_item:

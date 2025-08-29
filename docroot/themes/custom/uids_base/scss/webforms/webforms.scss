@@ -3,13 +3,21 @@
 @use '../../uids/scss/abstracts/_utilities.scss';
 
 .webform-submission-form {
-  label {
-    font-size: 1.1rem;
-    font-weight: variables.$font-weight-bold;
-    line-height: 1.6;
+
+  // Make fields respect field width settings
+  input[size]:not([size='60']) {
+    width: inherit;
   }
+
+  &.form [type=checkbox][class*="webform-scale"] + label[for],
+  &.form [type=radio][class*="webform-scale"] + label[for],
+  &.form [type=radio] + label[for].webform-options-display-buttons-label {
+    flex: none;
+  }
+
   span.form-required {
     position: relative;
+
     &:after {
       margin: 0 variables.$xsm;
       content: "*";
@@ -17,35 +25,28 @@
       vertical-align: middle;
     }
   }
+
   .webform-options-display-two-columns div.form-item,
   .webform-options-display-three-columns div.form-item {
     margin-bottom: 1rem;
   }
+
   .webform-options-display-one-column,
   .webform-options-display-side-by-side,
   .webform-options-display-buttons-horizontal,
   .webform-options-display-buttons-vertical {
     margin-top: -.5rem;
   }
+
   .fieldgroup {
     border: none;
     padding: 0;
-    & .fieldset-legend {
-      display: block;
-      font-size: 1.1rem;
-      font-weight: variables.$font-weight-bold;
-      line-height: 1.6;
-    }
-  }
-
-  // Make fields respect field width settings
-  input[size]:not([size='60']) {
-    width: inherit;
   }
 
   .webform-element-help {
     background: variables.$brand-cool-gray;
     border: 2px solid variables.$brand-cool-gray;
+
     &:hover,
     &:focus {
       border: 2px solid variables.$info;
@@ -57,23 +58,11 @@
   // Help/Description
   // --------------------------------
   .help-text,
-  .description,
   .field-prefix,
   .field-suffix {
     font-size: 0.9rem;
     line-height: 1.4;
     clear: both;
-  }
-  .description {
-    margin: variables.$xsm 0;
-    flex-basis: 100%;
-  }
-  input + .description,
-  input + .field-prefix,
-  input + .field-suffix {
-    position: relative;
-    top: -0.75rem;
-    inset-block-start: -0.75rem;
   }
 
   // --------------------------------
@@ -84,6 +73,7 @@
       line-height: 1.6;
     }
   }
+
   .description .webform-element-more {
     margin-top: variables.$xsm;
     margin-block-start: variables.$xsm;
@@ -92,51 +82,25 @@
   // --------------------------------
   // Checkboxes
   // --------------------------------
-  [type=checkbox], [type=radio] {
-    height: 1.2rem;
-    min-width: 1.2rem;
-    margin: 0 .35rem 0 .25rem;
-    -webkit-transform: scale(1.3, 1.3);
-  }
-  .form-type-checkbox,
-  .form-type-radio {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  [type='checkbox']+label,
-  [type='radio']+label {
-    font-weight: variables.$font-weight-normal;
-  }
+
   .webform-type-checkboxes,
   .webform-checkboxes-other,
   .webform-type-radios,
   .webform-type-webform-radios-other {
     .form-type-checkbox,
     .form-type-radio:not(.form-item-radios-buttons) {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
       label {
         flex: 1;
       }
     }
+
     & legend {
       margin-bottom: variables.$xsm;
     }
+
     & .fieldset-wrapper {
       margin-left: 0;
       margin-inline-start: 0;
-    }
-  }
-  .webform-options-display-side-by-side {
-    .form-type-checkbox,
-    .form-type-radio {
-      display: inline-flex;
-      flex-wrap: wrap;
-      label {
-        flex: 1;
-      }
     }
   }
 
@@ -175,32 +139,6 @@
   }
 
   // --------------------------------
-  // Error
-  // --------------------------------
-  [type='text'].error,
-  [type='password'].error,
-  [type='date'].error,
-  [type='datetime'].error,
-  [type='datetime-local'].error,
-  [type='month'].error,
-  [type='week'].error,
-  [type='email'].error,
-  [type='number'].error,
-  [type='search'].error,
-  [type='tel'].error,
-  [type='time'].error,
-  [type='url'].error,
-  textarea.error,
-  select.error {
-    border: 1px solid variables.$danger;
-    background-color: variables.$danger-light;
-    &:focus {
-      border: 1px solid variables.$danger;
-      box-shadow: 0 0 5px variables.$danger-light;
-    }
-  }
-
-  // --------------------------------
   // Scale
   // --------------------------------
   .webform-scale {
@@ -210,10 +148,12 @@
         background-color: variables.$light;
         color: variables.$secondary;
       }
+
       [class*="bg--black"] & {
-        background-color: color.scale(#FFCD00, variables.$lightness: 40%);
+        background-color: color.scale(#FFCD00, variables.$lightness:40%);
       }
     }
+
     & input:checked:focus + label {
       box-shadow: 0 0 5px #cacaca;
     }
@@ -225,30 +165,37 @@
   .webform-button--next,
   .webform-button--previous {
     @include utilities.bttn--secondary;
+
     [class*="bg--black"] & {
       background: variables.$light;
       color: variables.$secondary;
     }
   }
+
   .webform-progress-tracker .progress-text,
   .webform-progress-tracker .progress-step.is-active .progress-text,
   .webform-progress-tracker .progress-step.is-complete .progress-text {
     color: currentColor;
   }
-  .webform-progress-tracker .progress-step  .progress-marker:before {
+
+  .webform-progress-tracker .progress-step .progress-marker:before {
     padding: 1rem;
   }
-  .webform-progress-tracker .progress-step  .progress-marker:after {
+
+  .webform-progress-tracker .progress-step .progress-marker:after {
     top: .8rem;
   }
+
   .webform-progress-tracker .progress-step.is-active .progress-marker::before {
     background-color: variables.$primary;
     color: variables.$secondary;
+
     [class*="bg--gold"] & {
       background: variables.$secondary;
       color: #fff;
     }
   }
+
   // --------------------------------
   // Horizontal rules
   // --------------------------------
@@ -260,29 +207,32 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
       border-block-end: 1px solid rgba(255, 255, 255, 0.3);
     }
+
     &--thick {
       @extend .webform-horizontal-rule--thin;
       border-top-width: 4px;
+
       [class*="bg--black"] & {
         border-top-color: rgba(255, 255, 255, 0.8);
         border-block-start-color: rgba(255, 255, 255, 0.8);
       }
     }
+
     &--glyph:after {
       [class*="bg--gray"] & {
         background-color: variables.$light;
       }
+
       [class*="bg--gold"] & {
         background-color: variables.$primary;
       }
+
       [class*="bg--black"] & {
         background-color: variables.$secondary;
       }
     }
   }
 }
-
-
 
 // --------------------------------
 // Preview
@@ -321,7 +271,7 @@
   margin: 0.625rem 0;
   // Hide the close link in favor of the close button provided by alert component.
   .webform-message__link {
-    display: none!important;
+    display: none !important;
   }
 }
 
