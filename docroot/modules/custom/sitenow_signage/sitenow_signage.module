@@ -301,6 +301,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $filters['keywords'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue());
       $filters['place'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue());
       $filters['types'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue());
+      $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
 
       $amount = 3;
       if(sitenow_signage_get_orientation($paragraph) === 'vertical') {
@@ -309,7 +310,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
       $query  = [
         'query' => [
-          'display_id' => 'events_in_progress',
+          'display_id' => 'events',
           'filters' => $filters,
           'items_per_page' => $amount,
         ],
@@ -322,7 +323,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         foreach ($response->events as $key => $value) {
           $event = object_to_array($value->event);
           $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
-          // Base styles.
           $styles = [
             'card--list',
             'card__row',
@@ -330,6 +330,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
             'borderless',
             'media--widescreen',
             'media--small',
+            'bg--darkmode'
           ];
           $event['attributes']['class'] = $styles;
           $event['heading_size'] = 'h2';
@@ -337,25 +338,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           $rows[] = $card;
         }
 
-        $events_render = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'list-container',
-              'list-container--list',
-            ],
-          ],
-        ];
-        $events_render['container'] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'uiowa-events-wrapper',
-              'list-container__inner',
-            ],
-          ],
-        ];
-        $events_render['container']['rows'] = $rows;
+        $events_render = $rows;
 
 
         $variables['content'] = [
@@ -636,8 +619,20 @@ function sitenow_signage_get_orientation(\Drupal\paragraphs\Entity\Paragraph $pa
   return $orientation;
 }
 
-// https://stackoverflow.com/a/54131002
-function object_to_array($obj) {
+/**
+ * Helper function to convert objects recursively to arrays.
+ * This is roughly 1.5-2x faster than json_decode() + json_encode().
+ *
+ * @param object $obj
+ *   Any object.
+ *
+ * @return object|array
+ *   Returns an object that is being converted into a array
+ *   until the complete object is only an array, then it
+ *   returns an array.
+ */
+function object_to_array(object $obj): object|array
+{
   //only process if it's an object or array being passed to the function
   if(is_object($obj) || is_array($obj)) {
     $ret = (array) $obj;
@@ -647,6 +642,7 @@ function object_to_array($obj) {
     }
     return $ret;
   }
+
   //otherwise (i.e. for scalar values) return without modification
   else {
     return $obj;

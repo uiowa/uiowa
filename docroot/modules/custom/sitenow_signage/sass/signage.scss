@@ -2,6 +2,8 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 @use 'sass:color';
 
+$pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
 // Sign header.
 .page-node-type-sign {
   // Adjust margins to be smaller for signage.
@@ -79,7 +81,7 @@ div.bg--black .signage__table {
   border-color: variables.$blk;
 }
 .signage__table {
-  $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
 
   caption {
     background-color: variables.$secondary;
@@ -166,4 +168,14 @@ div.bg--black .signage__table {
 
 .paragraph--type--slide-events {
   padding: 2rem;
+
+  .column-container {
+    &:not(:first-child) {
+      margin-top: 2rem;
+    }
+
+    .card {
+      background-color: color.scale($pitch-gray, $lightness: 5%);
+    }
+  }
 }
