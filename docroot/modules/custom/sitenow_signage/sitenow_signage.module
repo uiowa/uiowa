@@ -359,6 +359,9 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $paragraph = $variables['elements']['#paragraph'];
       $filters = [];
 
+      $headline = $paragraph?->field_headline?->getValue();
+      $headline = $headline[0]['value'] ?? '';
+
       $filters['audiences'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue());
       $filters['department'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_department?->getValue());
       $filters['interests'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_interests?->getValue());
@@ -402,7 +405,22 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           $rows[] = $card;
         }
 
-        $events_render = $rows;
+        $events_render = [
+          '#type' => 'container',
+        ];
+
+        if (!empty($headline)) {
+          $events_render['headline'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => [
+              'class' => 'slide-events--headline',
+            ],
+            '#value' => t($headline),
+          ];
+        }
+
+        $events_render['events'] = $rows;
 
         $variables['content'] = [
           '#type' => 'markup',

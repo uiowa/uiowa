@@ -6,6 +6,8 @@ $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
 
 // Sign header.
 .page-node-type-sign {
+  background-color: var(--brand-secondary);
+
   // Adjust margins to be smaller for signage.
   .page__container--full.layout__container .layout__spacing_container {
     margin-left: 0;
@@ -167,15 +169,27 @@ div.bg--black .signage__table {
 }
 
 .paragraph--type--slide-events {
-  padding: 2rem;
+  padding: 7px 0;
+
+  .slide-events--headline {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: .08rem;
+    text-transform: uppercase;
+    padding: 1.05rem;
+  }
 
   .column-container {
     &:not(:first-child) {
-      margin-top: 2rem;
+      margin-top: 7px;
+    }
+
+    &:nth-child(2n) .card {
+      background-color: color.scale($pitch-gray, $lightness: 5%);
     }
 
     .card {
-      background-color: color.scale($pitch-gray, $lightness: 5%);
+      background-color: $pitch-gray;
     }
   }
 }
