@@ -5,6 +5,7 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -304,11 +305,11 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
 
       $amount = 3;
-      if(sitenow_signage_get_orientation($paragraph) === 'vertical') {
+      if (sitenow_signage_get_orientation($paragraph) === 'vertical') {
         $amount = 5;
       }
 
-      $query  = [
+      $query = [
         'query' => [
           'display_id' => 'events',
           'filters' => $filters,
@@ -330,7 +331,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
             'borderless',
             'media--widescreen',
             'media--small',
-            'bg--darkmode'
+            'bg--darkmode',
           ];
           $event['attributes']['class'] = $styles;
           $event['heading_size'] = 'h2';
@@ -339,7 +340,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         }
 
         $events_render = $rows;
-
 
         $variables['content'] = [
           '#type' => 'markup',
@@ -425,9 +425,9 @@ function sitenow_signage_slides_size_allowed_values() {
 function sitenow_signage_value_query_string(array $data): string {
   $items = '';
   foreach ($data as $item) {
-    if(isset($item['value'])) {
+    if (isset($item['value'])) {
       if (strlen($items) > 0) {
-        $items = $items . ',' .  $item['value'];
+        $items = $items . ',' . $item['value'];
       }
       else {
         $items = $item['value'];
@@ -458,7 +458,7 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
 
   switch ($definition->getName()) {
     case 'field_slide_events_audiences':
-      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');;
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
 
       $tree = _sitenow_events_build_options_tree($data['event_audience']);
       $options = _sitenow_events_build_options_list($tree);
@@ -586,7 +586,7 @@ function sitenow_signage_outlook_resource_allowed_values() {
 }
 
 /**
- * Helper function to get sign orientation
+ * Helper function to get sign orientation.
  *
  * @param Drupal\paragraphs\Entity\Paragraph $paragraph
  *   A $paragraph object.
@@ -596,7 +596,7 @@ function sitenow_signage_outlook_resource_allowed_values() {
  *
  * @todo https://github.com/uiowa/uiowa/issues/5028
  */
-function sitenow_signage_get_orientation(\Drupal\paragraphs\Entity\Paragraph $paragraph) {
+function sitenow_signage_get_orientation(Paragraph $paragraph) {
 
   // Need to traverse up to the sign node to get orientation if available.
   $parent_slide = $paragraph->getParentEntity();
@@ -631,19 +631,18 @@ function sitenow_signage_get_orientation(\Drupal\paragraphs\Entity\Paragraph $pa
  *   until the complete object is only an array, then it
  *   returns an array.
  */
-function object_to_array(object $obj): object|array
-{
-  //only process if it's an object or array being passed to the function
-  if(is_object($obj) || is_array($obj)) {
+function object_to_array(object $obj): object|array {
+  // Only process if it's an object or array being passed to the function.
+  if (is_object($obj) || is_array($obj)) {
     $ret = (array) $obj;
-    foreach($ret as &$item) {
-      //recursively process EACH element regardless of type
+    foreach ($ret as &$item) {
+      // Recursively process EACH element regardless of type.
       $item = object_to_array($item);
     }
     return $ret;
   }
 
-  //otherwise (i.e. for scalar values) return without modification
+  // Otherwise (i.e. for scalar values) return without modification.
   else {
     return $obj;
   }
