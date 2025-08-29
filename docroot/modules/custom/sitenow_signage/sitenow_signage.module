@@ -34,6 +34,76 @@ function sitenow_signage_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_astra_schedule_room':
+      // Cache this for 1 day.
+      $variables['#cache']['tags'][] = 'time:daily';
+      // Get additional info necessary to overwrite the output of this field.
+      $paragraph = $variables['element']['#object'];
+      $headline = $paragraph->get('field_headline')->value;
+      $today = date('Y-m-d');
+      $had_failure = FALSE;
+      $rows = [];
+
+      if (!empty($variables['items'][0]['content']['#markup'])) {
+        $value = $variables['items'][0]['content']['#markup'];
+        if ($value !== 'none') {
+          // Split field value into building code and room id.
+          [$building_code, $room_id] = explode('-', $value);
+
+          // Load and fetch data from the MAUI API.
+          $api_client = \Drupal::service('uiowa_maui.api');
+          $data = $api_client->getRoomSchedule($today, $today, $building_code, $room_id);
+
+          if ($data === FALSE) {
+            $had_failure = TRUE;
+          }
+          elseif (!empty($data)) {
+            foreach ($data as $event) {
+              $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
+              $rows[] = [
+                'time' => $formatted_time,
+                'event' => trim($event->title),
+              ];
+            }
+          }
+
+          // Room specific table caption.
+          $table_caption = 'Schedule for room ' . $room_id;
+        }
+      }
+
+      $empty_message = $had_failure
+        ? t('There was an error retrieving room schedule information. Please try again later or contact the ITS Help Desk if the problem persists.')
+        : t('No scheduled events for this room.');
+
+      $header = [
+        'time' => t('Time'),
+        'event' => t('Event'),
+      ];
+
+      // Headline overrides table caption if set.
+      if (!empty($headline)) {
+        $table_caption = $headline;
+      }
+
+      $markup['container']['table'] = [
+        '#theme' => 'table',
+        '#caption' => $table_caption ?? 'Room Schedule',
+        '#header' => $header,
+        '#rows' => $rows,
+        '#empty' => $empty_message,
+        '#attributes' => [
+          'class' => [
+            'signage__table',
+          ],
+        ],
+      ];
+      $markup = \Drupal::service('renderer')->render($markup);
+
+      // Replace the field output with table markup.
+      $variables['items'][0]['content']['#markup'] = $markup;
+      break;
+
     case 'field_outlook_events_resource':
       // Cache this for 1 hour.
       $variables['#cache']['tags'][] = 'time:hourly';
@@ -166,14 +236,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         'meeting' => t('Meeting'),
         'room' => t('Room'),
       ];
-      $markup['container'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'signage__table',
-          ],
-        ],
-      ];
+
       $markup['container']['table'] = [
         '#theme' => 'table',
         '#caption' => $headline,
@@ -182,7 +245,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
-            'data',
+            'signage__table',
           ],
         ],
       ];
@@ -360,6 +423,16 @@ function sitenow_signage_slides_size_allowed_values() {
     'vertical' => 'Vertical (9:16)',
   ];
   return $options;
+}
+
+/**
+ * Allowed values for astra room schedules.
+ *
+ * @see options_allowed_values()
+ */
+function sitenow_signage_astra_schedule_room_allowed_values() {
+  $api_client = \Drupal::service('uiowa_maui.api');
+  return $api_client->getBuildingRoomCompleteList() ?: ['none' => 'No rooms available'];
 }
 
 /**
