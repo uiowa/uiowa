@@ -33,6 +33,21 @@ function sitenow_signage_form_alter(
 }
 
 /**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function sitenow_signage_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  if ($entity_form['#entity_type'] === 'node' && $entity_form['#bundle'] === 'slide') {
+    if (isset($entity_form['field_slide_duration_other'])) {
+      $entity_form['field_slide_duration_other']['#states'] = [
+        'visible' => [
+          'select[name*="[field_slide_duration]"]' => ['value' => '0'],
+        ],
+      ];
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
