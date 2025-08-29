@@ -53,7 +53,7 @@ class EventsProcessor extends EntityProcessorBase {
    */
   public function __construct() {
     parent::__construct();
-    $this->apiClient = \Drupal::service('uiowa_events.content_hub_api_client');
+    $this->apiClient = \Drupal::service('sitenow_events.content_hub_api_client');
     $this->timezone = new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE);
   }
 

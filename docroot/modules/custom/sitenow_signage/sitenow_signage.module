@@ -5,8 +5,11 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -112,24 +115,7 @@ function sitenow_signage_preprocess_field(&$variables) {
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
-
-      // Need to traverse up to the sign node to get orientation if available.
-      $parent_slide = $paragraph->getParentEntity();
-      $referring_item = $parent_slide->_referringItem;
-      $orientation = 'horizontal';
-      if ($referring_item) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-        $referring_field = $referring_item->getParent();
-        if ($referring_field) {
-          $parent_entity = $referring_field->getParent();
-          // Add cache tag for the sign node so table
-          // updates when sign orientation changes.
-          $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
-          if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
-            $orientation = 'vertical';
-          }
-        }
-      }
+      $orientation = sitenow_signage_get_orientation($paragraph);
 
       // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
@@ -257,7 +243,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       $variables['items'] = array_slice($variables['items'], 0, 1);
 
       break;
-
   }
 }
 
@@ -338,34 +323,118 @@ function sitenow_signage_preprocess_page(&$variables) {
 function sitenow_signage_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
 
-  if ($paragraph->bundle() == 'slide_image' &&
-    isset($variables['content']['field_slide_image'])) {
+  switch ($paragraph->bundle()) {
+    case 'slide_image':
+      if (isset($variables['content']['field_slide_image'])) {
 
-    // Get the sign node from the current route.
-    $sign_node = \Drupal::routeMatch()->getParameter('node');
+        // Get the sign node from the current route.
+        $sign_node = \Drupal::routeMatch()->getParameter('node');
 
-    if ($sign_node && $sign_node->bundle() == 'sign') {
-      $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
-    }
+        if ($sign_node && $sign_node->bundle() == 'sign') {
+          $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
+        }
 
-    // Check if we have a sign node with vertical orientation.
-    if ($sign_node &&
-      $sign_node->bundle() == 'sign' &&
-      $sign_node->hasField('field_sign_orientation') &&
-      !$sign_node->get('field_sign_orientation')->isEmpty() &&
-      $sign_node->get('field_sign_orientation')->value === 'vertical') {
+        // Check if we have a sign node with vertical orientation.
+        if ($sign_node &&
+          $sign_node->bundle() == 'sign' &&
+          $sign_node->hasField('field_sign_orientation') &&
+          !$sign_node->get('field_sign_orientation')->isEmpty() &&
+          $sign_node->get('field_sign_orientation')->value === 'vertical') {
 
-      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+          $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
 
-      foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
-        if (is_numeric($delta)) {
-          $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
-          if ($media_entity) {
-            $item = $view_builder->view($media_entity, 'vertical_9_16');
+          foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+            if (is_numeric($delta)) {
+              $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+              if ($media_entity) {
+                $item = $view_builder->view($media_entity, 'vertical_9_16');
+              }
+            }
           }
         }
       }
-    }
+      break;
+
+    case 'slide_events':
+      $paragraph = $variables['elements']['#paragraph'];
+      $filters = [];
+
+      $headline = $paragraph?->field_headline?->getValue();
+      $headline = $headline[0]['value'] ?? '';
+
+      $filters['audiences'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue());
+      $filters['department'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_department?->getValue());
+      $filters['interests'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_interests?->getValue());
+      $filters['keywords'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue());
+      $filters['place'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue());
+      $filters['types'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue());
+      $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
+
+      $amount = 3;
+      if (sitenow_signage_get_orientation($paragraph) === 'vertical') {
+        $amount = 5;
+      }
+
+      $query = [
+        'query' => [
+          'display_id' => 'events',
+          'filters' => $filters,
+          'items_per_page' => $amount,
+        ],
+      ];
+
+      $response = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
+      if (!empty($response->events)) {
+        $rows = [];
+
+        foreach ($response->events as $key => $value) {
+          $event = sitenow_signage_object_to_array($value->event);
+          $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
+          $styles = [
+            'card--list',
+            'card__row',
+            'card--layout-left',
+            'borderless',
+            'media--widescreen',
+            'media--small',
+            'bg--darkmode',
+          ];
+          $event['attributes']['class'] = $styles;
+          $event['heading_size'] = 'h2';
+          $card = sitenow_events_build_card($event);
+          $rows[] = $card;
+        }
+
+        $events_render = [
+          '#type' => 'container',
+        ];
+
+        if (!empty($headline)) {
+          $events_render['headline'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => [
+              'class' => 'slide-events--headline',
+            ],
+            '#value' => t($headline),
+          ];
+        }
+
+        $events_render['events'] = $rows;
+
+        $variables['content'] = [
+          '#type' => 'markup',
+          '#markup' => \Drupal::service('renderer')->render($events_render),
+        ];
+      }
+      else {
+        $variables['content'] = [
+          '#type' => 'markup',
+          '#markup' => t('There are currently no scheduled events to display.'),
+        ];
+      }
+
+      break;
   }
 }
 
@@ -426,6 +495,166 @@ function sitenow_signage_slides_size_allowed_values() {
 }
 
 /**
+ * Convert initial field value structure into an array that can be given to a URL query.
+ *
+ * @param array $data
+ *   Data to be converted into value query array.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ */
+function sitenow_signage_value_query_string(array $data): string {
+  $items = '';
+  foreach ($data as $item) {
+    if (isset($item['value'])) {
+      if (strlen($items) > 0) {
+        $items = $items . ',' . $item['value'];
+      }
+      else {
+        $items = $item['value'];
+      }
+    }
+  }
+
+  return $items;
+}
+
+/**
+ * Set dynamic allowed values for multiple fields.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  $options = [];
+
+  switch ($definition->getName()) {
+    case 'field_slide_events_audiences':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['event_audience']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_department':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['departments']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_interests':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['event_general_interest']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_keywords':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('keywords');
+
+      foreach ($data['keywords'] as $keyword) {
+        $options[$keyword['id']] = $keyword['name'];
+      }
+      break;
+
+    case 'field_slide_events_location':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getPlaces();
+
+      foreach ($data['places'] as $place) {
+        // API double-nests places for some reason.
+        $place = $place['place'];
+        $options[$place['id']] = $place['name'];
+      }
+      break;
+
+    case 'field_slide_events_types':
+      $filters = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($filters['event_types']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+  }
+
+  return $options;
+
+}
+
+/**
+ * Helper function to build the options tree.
+ *
+ * @param array $data
+ *   Array of data to be sorted into a tree.
+ * @param int $parent
+ *   Stores the current id.
+ *
+ * @return array
+ *   Returns an associative array options tree.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function _sitenow_signage_build_options_tree(array $data, int $parent = 0) {
+  $tree = [];
+
+  foreach ($data as $d) {
+    if ((int) $d['parent_id'] === $parent) {
+      $children = _sitenow_signage_build_options_tree($data, $d['id']);
+
+      if (!empty($children)) {
+        $d['_children'] = $children;
+      }
+      $tree[] = $d;
+    }
+  }
+
+  return $tree;
+}
+
+/**
+ * Helper function to output the options array.
+ *
+ * @param array $tree
+ *   Array of tree data to be printed.
+ * @param int $r
+ *   Basic counter.
+ * @param int $p
+ *   Parent id.
+ * @param array $options
+ *   Options array to be passed recursively.
+ *
+ * @return array
+ *   Return options with children prefixed with dashes.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function _sitenow_signage_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
+  foreach ($tree as $t) {
+    $dash = ((int) $t['parent_id'] === 0) ? '' : str_repeat('-', $r) . ' ';
+    $options[$t['id']] = $dash . $t['name'];
+
+    if ((int) $t['parent_id'] === $p) {
+      // Reset $r.
+      $r = 0;
+    }
+
+    if (isset($t['_children'])) {
+      _sitenow_signage_build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
+    }
+  }
+
+  return $options;
+}
+
+/**
  * Allowed values for astra room schedules.
  *
  * @see options_allowed_values()
@@ -445,4 +674,69 @@ function sitenow_signage_outlook_resource_allowed_values() {
   $group = $config->get('group') ?: 'Signage';
   $api_client = \Drupal::service('uiowa_hours.api');
   return $api_client->getResources($group) ?: ['none' => 'No resources available'];
+}
+
+/**
+ * Helper function to get sign orientation.
+ *
+ * @param Drupal\paragraphs\Entity\Paragraph $paragraph
+ *   A $paragraph object.
+ *
+ * @return string
+ *   Return the orientation string.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function sitenow_signage_get_orientation(Paragraph $paragraph) {
+
+  // Need to traverse up to the sign node to get orientation if available.
+  $parent_slide = $paragraph->getParentEntity();
+  $referring_item = $parent_slide->_referringItem;
+  $orientation = 'horizontal';
+  if ($referring_item) {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+    $referring_field = $referring_item->getParent();
+    if ($referring_field) {
+      $parent_entity = $referring_field->getParent();
+      // Add cache tag for the sign node so table
+      // updates when sign orientation changes.
+      $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
+      if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
+        $orientation = 'vertical';
+      }
+    }
+  }
+
+  return $orientation;
+}
+
+/**
+ * Fast object to array conversion function.
+ *
+ * Helper function to convert objects recursively to arrays.
+ * This is roughly 1.5-2x faster than json_decode() + json_encode().
+ *
+ * @param mixed $obj
+ *   Any object.
+ *
+ * @return array|mixed
+ *   Returns an object that is being converted into an array
+ *   until the complete object is only an array, then it
+ *   returns an array.
+ */
+function sitenow_signage_object_to_array(mixed $obj): mixed {
+  // Only process if it's an object or array being passed to the function.
+  if (is_object($obj) || is_array($obj)) {
+    $ret = (array) $obj;
+    foreach ($ret as &$item) {
+      // Recursively process EACH element regardless of type.
+      $item = sitenow_signage_object_to_array($item);
+    }
+    return $ret;
+  }
+
+  // Otherwise (i.e. for scalar values) return without modification.
+  else {
+    return $obj;
+  }
 }
