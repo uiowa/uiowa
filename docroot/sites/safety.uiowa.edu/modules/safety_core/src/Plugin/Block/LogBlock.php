@@ -7,7 +7,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Cache\Cache;
 use Drupal\safety_core\Controller\CleryController;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Symfony\Component\HttpFoundation\RequestStack;

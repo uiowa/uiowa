@@ -13,12 +13,15 @@ folder: ../config/features/signage
 module:
   sitenow_signage: 0
   uiowa_hours: 0
+  uiowa_maui: 0
 theme: {  }
 complete_list:
   - core.base_field_override.node.slide.promote
+  - core.entity_form_display.paragraph.astra_room_schedule.default
   - core.entity_form_display.paragraph.outlook_events.default
   - core.entity_view_display.media.image.vertical_9_16
   - core.entity_view_display.media.image.widescreen_crop_no_focal_point
+  - core.entity_view_display.paragraph.astra_room_schedule.default
   - core.entity_view_display.paragraph.outlook_events.default
   - core.entity_view_display.paragraph.slide_image.default
   - core.entity_view_mode.media.vertical_9_16
@@ -30,6 +33,7 @@ complete_list:
   - metatag.metatag_defaults.node__slide
   - node.type.sign
   - node.type.slide
+  - paragraphs.paragraphs_type.astra_room_schedule
   - paragraphs.paragraphs_type.outlook_events
   - paragraphs.paragraphs_type.slide_image
   - paragraphs.paragraphs_type.slide_video
@@ -43,6 +47,7 @@ complete_list:
   - 'field.storage.node.field_sign_*'
   - 'field.storage.node.field_slide_*'
   - 'field.storage.paragraph.field_slide_*'
+  - 'field.storage.paragraph.field_astra_*'
   - 'field.storage.paragraph.field_outlook_events_*'
 partial_list:
   - administerusersbyrole.settings
