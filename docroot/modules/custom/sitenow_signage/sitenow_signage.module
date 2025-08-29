@@ -259,6 +259,8 @@ function sitenow_signage_preprocess_media__remote_video(&$variables) {
         // Decode the URL for processing.
         $param_array['url'] = urldecode($param_array['url']);
 
+        // Set the 'setautoplay' param that we'll check for later. This ensures
+        // that only videos embedded on slides get this treatment.
         if (strpos($param_array['url'], '?') !== FALSE) {
           $param_array['url'] .= '&setautoplay';
         }
