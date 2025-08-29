@@ -43,28 +43,32 @@ function sitenow_signage_preprocess_field(&$variables) {
       $today = date('Y-m-d');
       $had_failure = FALSE;
       $rows = [];
-      $table_caption = 'Room Schedule';
 
       if (!empty($variables['items'][0]['content']['#markup'])) {
         $value = $variables['items'][0]['content']['#markup'];
-        // Split field value into building code and room id.
-        [$building_code, $room_id] = explode('-', $value);
+        if ($value !== 'none') {
+          // Split field value into building code and room id.
+          [$building_code, $room_id] = explode('-', $value);
 
-        // Load and fetch data from the MAUI API.
-        $api_client = \Drupal::service('uiowa_maui.api');
-        $data = $api_client->getRoomSchedule($today, $today, $building_code, $room_id);
+          // Load and fetch data from the MAUI API.
+          $api_client = \Drupal::service('uiowa_maui.api');
+          $data = $api_client->getRoomSchedule($today, $today, $building_code, $room_id);
 
-        if ($data === FALSE) {
-          $had_failure = TRUE;
-        }
-        elseif (!empty($data)) {
-          foreach ($data as $event) {
-            $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
-            $rows[] = [
-              'time' => $formatted_time,
-              'event' => trim($event->title),
-            ];
+          if ($data === FALSE) {
+            $had_failure = TRUE;
           }
+          elseif (!empty($data)) {
+            foreach ($data as $event) {
+              $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
+              $rows[] = [
+                'time' => $formatted_time,
+                'event' => trim($event->title),
+              ];
+            }
+          }
+
+          // Room specific table caption.
+          $table_caption = 'Schedule for room ' . $room_id;
         }
       }
 
@@ -77,18 +81,14 @@ function sitenow_signage_preprocess_field(&$variables) {
         'event' => t('Event'),
       ];
 
-      // Headline overrides everything if set.
+      // Headline overrides table caption if set.
       if (!empty($headline)) {
         $table_caption = $headline;
-      }
-      // If no headline and no failure, use room-specific caption.
-      elseif (!$had_failure && !empty($room_id)) {
-        $table_caption = 'Schedule for room ' . $room_id;
       }
 
       $markup['container']['table'] = [
         '#theme' => 'table',
-        '#caption' => $table_caption,
+        '#caption' => $table_caption ?? 'Room Schedule',
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => $empty_message,
