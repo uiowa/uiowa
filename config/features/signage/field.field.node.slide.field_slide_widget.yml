@@ -8,13 +8,14 @@ dependencies:
     - paragraphs.paragraphs_type.astra_room_schedule
     - paragraphs.paragraphs_type.outlook_events
     - paragraphs.paragraphs_type.slide_image
+    - paragraphs.paragraphs_type.slide_video
   module:
     - entity_reference_revisions
 id: node.slide.field_slide_widget
 field_name: field_slide_widget
 entity_type: node
 bundle: slide
-label: 'Slide Content'
+label: Content
 description: ''
 required: true
 translatable: false
@@ -27,6 +28,7 @@ settings:
       slide_image: slide_image
       astra_room_schedule: astra_room_schedule
       outlook_events: outlook_events
+      slide_video: slide_video
     negate: 0
     target_bundles_drag_drop:
       astra_room_schedule:
@@ -37,6 +39,9 @@ settings:
         enabled: true
       slide_image:
         weight: -13
+        enabled: true
+      slide_video:
+        weight: 7
         enabled: true
       uiowa_collection_item:
         weight: -11
