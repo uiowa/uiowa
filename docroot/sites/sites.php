@@ -7774,3 +7774,9 @@ $sites['orgwomeninhealthcare.uiowa.ddev.site'] = 'womeninhealthcare.org.uiowa.ed
 $sites['orgwomeninhealthcare.dev.drupal.uiowa.edu'] = 'womeninhealthcare.org.uiowa.edu';
 $sites['orgwomeninhealthcare.stage.drupal.uiowa.edu'] = 'womeninhealthcare.org.uiowa.edu';
 $sites['orgwomeninhealthcare.prod.drupal.uiowa.edu'] = 'womeninhealthcare.org.uiowa.edu';
+
+// Directory aliases for intellectualfreedom.center.uiowa.edu.
+$sites['centerintellectualfreedom.uiowa.ddev.site'] = 'intellectualfreedom.center.uiowa.edu';
+$sites['centerintellectualfreedom.dev.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
+$sites['centerintellectualfreedom.stage.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
+$sites['centerintellectualfreedom.prod.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
