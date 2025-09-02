@@ -437,19 +437,27 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
     $resource = $variables['resource'];
 
     if ($resource->getProvider()->getName() === 'YouTube') {
-      // YouTube: Extract video ID, add autoplay, loop, mute, playlist params.
+      // YouTube: add autoplay, loop, mute, playlist params.
       $original = (string) $variables['media'];
-      if (preg_match('/\/embed\/([a-zA-Z0-9_-]+)/', $original, $matches)) {
-        $video_id = $matches[1];
-        $variables['media'] = str_replace('?feature=oembed', "?feature=oembed&autoplay=1&loop=1&mute=1&playlist={$video_id}", $original);
+
+      // Extract video ID for playlist parameter for single videos only.
+      $playlist_param = '';
+      if (!str_contains($original, 'list=') && preg_match('/\/embed\/([a-zA-Z0-9_-]+)/', $original, $matches)) {
+        $playlist_param = '&playlist=' . $matches[1];
       }
+
+      $variables['media'] = preg_replace(
+        '/src="([^"]*)"/',
+        'src="$1&autoplay=1&loop=1&mute=1' . $playlist_param . '"',
+        $original
+      );
     }
     elseif ($resource->getProvider()->getName() === 'Vimeo') {
       // Vimeo: Add autoplay, loop, muted to iframe src.
       $original = (string) $variables['media'];
       if (preg_match('/src="([^"]*)"/', $original, $matches)) {
         $iframe_src = $matches[1];
-        $separator = strpos($iframe_src, '?') !== FALSE ? '&' : '?';
+        $separator = str_contains($iframe_src, '?') ? '&' : '?';
         $new_iframe_src = $iframe_src . $separator . 'autoplay=1&loop=1&muted=1';
         $variables['media'] = str_replace($iframe_src, $new_iframe_src, $original);
       }
