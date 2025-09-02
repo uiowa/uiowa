@@ -448,7 +448,7 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
 
       $variables['media'] = preg_replace(
         '/src="([^"]*)"/',
-        'src="$1&autoplay=1&loop=1&mute=1' . $playlist_param . '"',
+        'src="$1&autoplay=1&loop=1&mute=1&controls=0' . $playlist_param . '"',
         $original
       );
     }
@@ -458,7 +458,7 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
       if (preg_match('/src="([^"]*)"/', $original, $matches)) {
         $iframe_src = $matches[1];
         $separator = str_contains($iframe_src, '?') ? '&' : '?';
-        $new_iframe_src = $iframe_src . $separator . 'autoplay=1&loop=1&muted=1';
+        $new_iframe_src = $iframe_src . $separator . 'autoplay=1&loop=1&muted=1&controls=0';
         $variables['media'] = str_replace($iframe_src, $new_iframe_src, $original);
       }
     }
