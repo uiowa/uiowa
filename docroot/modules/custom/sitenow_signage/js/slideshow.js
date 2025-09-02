@@ -52,7 +52,7 @@
        */
       function pauseIfVideo(slide) {
         const iframe = slide.querySelector('iframe.media-oembed-content');
-        if (iframe) {
+        if (iframe && iframe.src && iframe.src !== 'about:blank') {
           iframe.dataset.originalSrc = iframe.src;
           iframe.src = 'about:blank';
         }
@@ -63,7 +63,7 @@
        */
       function playIfVideo(slide) {
         const iframe = slide.querySelector('iframe.media-oembed-content');
-        if (iframe && iframe.dataset.originalSrc) {
+        if (iframe && iframe.dataset.originalSrc && iframe.src === 'about:blank') {
           iframe.src = iframe.dataset.originalSrc;
         }
       }
