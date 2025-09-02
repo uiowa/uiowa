@@ -390,6 +390,12 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         foreach ($response->events as $key => $value) {
           $event = sitenow_signage_object_to_array($value->event);
           $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
+
+          // We don't want media or decriptions.
+          if (!empty($event['media'])) { unset($event['media']);}
+          if (!empty($event['description'])) { unset($event['description']);}
+          if (!empty($event['description_text'])) { unset($event['description_text']);}
+
           $styles = [
             'card--list',
             'card__row',
@@ -398,6 +404,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
             'media--widescreen',
             'media--small',
             'bg--darkmode',
+            'card--centered',
           ];
           $event['attributes']['class'] = $styles;
           $event['heading_size'] = 'h2';

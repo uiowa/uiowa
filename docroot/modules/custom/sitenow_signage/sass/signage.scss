@@ -169,6 +169,7 @@ div.bg--black .signage__table {
 }
 
 .paragraph--type--slide-events {
+
   .slide-events--headline {
     font-size: 1.4rem;
     font-weight: 900;
@@ -178,12 +179,20 @@ div.bg--black .signage__table {
   }
 
   .column-container {
-    &:not(:first-child) {
-      margin-top: 7px;
+    .headline {
+      font-size: variables.$h2-font-size;
     }
 
-    .card {
-      background-color: $pitch-gray;
+    .card__subtitle {
+      font-size: variables.$h3-font-size;
+    }
+
+    .card__meta {
+      font-size: variables.$h4-font-size;
+    }
+
+    &:not(:first-child) {
+      margin-top: 7px;
     }
   }
 }
