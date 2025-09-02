@@ -51,9 +51,14 @@
        * If a slide is an oembed video, pause it.
        */
       function pauseIfVideo(slide) {
+        // Check if iframe exists to avoid null errors,
+        // Checks if src exists to avoid storing undefined,
+        // Checks if src isn't blank to avoid storing blank as original.
         const iframe = slide.querySelector('iframe.media-oembed-content');
         if (iframe && iframe.src && iframe.src !== 'about:blank') {
+          // Save the current video URL to restore later.
           iframe.dataset.originalSrc = iframe.src;
+          // Replace the video URL with 'about:blank' to stop the video from loading/playing and pauses it.
           iframe.src = 'about:blank';
         }
       }
@@ -63,7 +68,11 @@
        */
       function playIfVideo(slide) {
         const iframe = slide.querySelector('iframe.media-oembed-content');
+        // Check if iframe exists to avoid null errors,
+        // Check that we have original URL to avoid restoring nothing,
+        // Check if src is currently blank to avoid overwriting working video.
         if (iframe && iframe.dataset.originalSrc && iframe.src === 'about:blank') {
+          // Restores the video URL to make the video load and start playing again.
           iframe.src = iframe.dataset.originalSrc;
         }
       }
