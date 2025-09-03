@@ -338,8 +338,8 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         if ($sign_node &&
           $sign_node->bundle() == 'sign' &&
           $sign_node->hasField('field_sign_orientation') &&
-          !$sign_node->get('field_sign_orientation')->isEmpty() &&
-          $sign_node->get('field_sign_orientation')->value === 'vertical') {
+          !$sign_node->get('field_sign_orientation')?->isEmpty() &&
+          $sign_node->field_sign_orientation?->value === 'vertical') {
 
           $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
 
