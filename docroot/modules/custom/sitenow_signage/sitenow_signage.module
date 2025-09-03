@@ -20,7 +20,6 @@ function sitenow_signage_form_alter(
   $form_id,
 ) {
   if (in_array($form_id, ['node_slide_form', 'node_slide_edit_form'])) {
-    $form['#attached']['library'][] = 'sitenow_signage/duration';
     if (isset($form['field_slide_duration_other'])) {
       $form['field_slide_duration_other']['#states'] = [
         'visible' => [
