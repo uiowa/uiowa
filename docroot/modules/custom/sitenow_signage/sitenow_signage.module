@@ -383,11 +383,11 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       ];
 
       $response = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
-      if (!empty($response->events)) {
+      if (!empty($response['events'])) {
         $rows = [];
 
-        foreach ($response->events as $key => $value) {
-          $event = sitenow_signage_object_to_array($value->event);
+        foreach ($response['events'] as $key => $value) {
+          $event = $value['event'];
           $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
 
           $styles = [
@@ -782,35 +782,4 @@ function sitenow_signage_get_orientation(Paragraph $paragraph) {
   }
 
   return $orientation;
-}
-
-/**
- * Fast object to array conversion function.
- *
- * Helper function to convert objects recursively to arrays.
- * This is roughly 1.5-2x faster than json_decode() + json_encode().
- *
- * @param mixed $obj
- *   Any object.
- *
- * @return array|mixed
- *   Returns an object that is being converted into an array
- *   until the complete object is only an array, then it
- *   returns an array.
- */
-function sitenow_signage_object_to_array(mixed $obj): mixed {
-  // Only process if it's an object or array being passed to the function.
-  if (is_object($obj) || is_array($obj)) {
-    $ret = (array) $obj;
-    foreach ($ret as &$item) {
-      // Recursively process EACH element regardless of type.
-      $item = sitenow_signage_object_to_array($item);
-    }
-    return $ret;
-  }
-
-  // Otherwise (i.e. for scalar values) return without modification.
-  else {
-    return $obj;
-  }
 }

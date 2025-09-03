@@ -33,8 +33,8 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
   /**
    * {@inheritdoc}
    */
-  public function getEventInstances(array $options = []): \stdClass|bool {
-    return $this->get('views/event_instances_api.json', $options) ?: FALSE;
+  public function getEventInstances(array $options = []): array|bool {
+    return uiowa_core_object_to_array($this->get('views/event_instances_api.json', $options)) ?: FALSE;
   }
 
   /**

@@ -1904,3 +1904,35 @@ function uiowa_core_config_schema_info_alter(&$schemas) {
     ],
   ];
 }
+
+
+/**
+ * Fast object to array conversion function.
+ *
+ * Helper function to convert objects recursively to arrays.
+ * This is roughly 1.5-2x faster than json_decode() + json_encode().
+ *
+ * @param mixed $obj
+ *   Any object.
+ *
+ * @return array|mixed
+ *   Returns an object that is being converted into an array
+ *   until the complete object is only an array, then it
+ *   returns an array.
+ */
+function uiowa_core_object_to_array(mixed $obj): mixed {
+  // Only process if it's an object or array being passed to the function.
+  if (is_object($obj) || is_array($obj)) {
+    $ret = (array) $obj;
+    foreach ($ret as &$item) {
+      // Recursively process EACH element regardless of type.
+      $item = uiowa_core_object_to_array($item);
+    }
+    return $ret;
+  }
+
+  // Otherwise (i.e. for scalar values) return without modification.
+  else {
+    return $obj;
+  }
+}
