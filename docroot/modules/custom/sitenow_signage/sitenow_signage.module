@@ -390,30 +390,98 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           $event = sitenow_signage_object_to_array($value->event);
           $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
 
-          // We don't want media or decriptions.
-          if (!empty($event['media'])) { unset($event['media']);}
-          if (!empty($event['description'])) { unset($event['description']);}
-          if (!empty($event['description_text'])) { unset($event['description_text']);}
-
           $styles = [
-            'card--list',
+            'card',
             'card__row',
-            'card--layout-left',
             'borderless',
-            'media--widescreen',
-            'media--small',
             'bg--darkmode',
             'card--centered',
           ];
-          $event['attributes']['class'] = $styles;
-          $event['heading_size'] = 'h2';
-          $card = sitenow_events_build_card($event);
+
+          $card = [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => $styles,
+            ],
+          ];
+          $card['#attached']['library'][] = 'uids_base/card';
+          $card['body'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => 'card__body',
+            ],
+          ];
+          $card['body']['headline'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => [
+              'class' => [
+                'headline',
+                'headline--serif'
+              ],
+            ],
+            '#value' => t($event['title']),
+          ];
+          $card['body']['details'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => 'card__details',
+            ],
+          ];
+          $card['body']['details']['subtitle'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => 'card__subtitle',
+            ],
+            '#value' => sitenow_events_format_instance([
+              'start' => $event['instance_start'],
+              'end' => $event['instance_end'],
+              'last_date' => $event['last_date'],
+              'all_day' => $event['instance_all_day'],
+            ]),
+          ];
+          $card['body']['details']['meta'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => 'card__meta',
+            ],
+          ];
+          $card['body']['details']['meta']['prefix'] = [
+            '#type' => 'markup',
+            '#markup' => '<div class="fa-field-item">',
+          ];
+          if ($event['virtual'] === TRUE) {
+            $card['body']['details']['meta']['icon'] = [
+              '#type' => 'markup',
+              '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
+            ];
+            $card['body']['details']['meta']['location'] = [
+              '#type' => 'markup',
+              '#markup' => t('Virtual'),
+            ];
+          }
+          elseif (!is_null($event['location_name'])) {
+            $card['body']['details']['meta']['icon'] = [
+              '#type' => 'markup',
+              '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
+            ];
+            $card['body']['details']['meta']['location'] = [
+              '#type' => 'markup',
+              '#markup' => $event['location_name'],
+            ];
+          }
+          $card['body']['details']['meta']['suffix'] = [
+            '#type' => 'markup',
+            '#markup' => '</div>',
+          ];
+
           $rows[] = $card;
         }
-
-        $events_render = [
-          '#type' => 'container',
-        ];
 
         if (!empty($headline)) {
           $events_render['headline'] = [
