@@ -359,8 +359,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $paragraph = $variables['elements']['#paragraph'];
       $filters = [];
 
-      $headline = $paragraph?->field_headline?->getValue();
-      $headline = $headline[0]['value'] ?? '';
+      $headline = $paragraph?->field_headline?->value ?? '';
 
       $filters['audiences'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue());
       $filters['department'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_department?->getValue());
