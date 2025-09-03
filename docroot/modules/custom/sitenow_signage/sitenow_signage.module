@@ -20,6 +20,7 @@ function sitenow_signage_form_alter(
   $form_id,
 ) {
   if (in_array($form_id, ['node_slide_form', 'node_slide_edit_form'])) {
+    $form['#attached']['library'][] = 'sitenow_signage/duration';
     if (isset($form['field_slide_duration_other'])) {
       $form['field_slide_duration_other']['#states'] = [
         'visible' => [
@@ -114,7 +115,33 @@ function sitenow_signage_preprocess_field(&$variables) {
         $node = $item['content']['#node'];
         // Set a reasonable default just in case.
         $item['interval'] = '15000';
-        if ($node->hasField('field_slide_duration_other') &&
+
+        // Check if this slide has a video and get its duration.
+        $video_duration = 0;
+
+        if ($node->hasField('field_slide_widget') && !$node->get('field_slide_widget')->isEmpty()) {
+          foreach ($node->get('field_slide_widget') as $paragraph_item) {
+            $paragraph = $paragraph_item->entity;
+            if ($paragraph && $paragraph->bundle() === 'slide_video') {
+              // Get the media entity from the video paragraph.
+              if ($paragraph->hasField('field_slide_video') && !$paragraph->get('field_slide_video')->isEmpty()) {
+                $media_entity = $paragraph->get('field_slide_video')->entity;
+                if ($media_entity) {
+                  $video_duration = sitenow_signage_get_video_duration($media_entity);
+                  if ($video_duration > 0) {
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // Duration priority: video duration > manual other duration > manual preset duration.
+        if ($video_duration > 0) {
+          $item['interval'] = $video_duration;
+        }
+        elseif ($node->hasField('field_slide_duration_other') &&
           $node->field_slide_duration_other->value > 0) {
           $item['interval'] = $node->field_slide_duration_other->value * 1000;
         }
@@ -122,6 +149,7 @@ function sitenow_signage_preprocess_field(&$variables) {
           $node->field_slide_duration->value > 0) {
           $item['interval'] = $node->field_slide_duration->value;
         }
+
         // Capture the first slide's interval.
         if ($first_slide_interval === NULL) {
           $first_slide_interval = $item['interval'];
@@ -359,6 +387,98 @@ function sitenow_signage_preprocess_field(&$variables) {
 }
 
 /**
+ * Get video duration using only the methods that work.
+ */
+function sitenow_signage_get_video_duration($media_entity) {
+  $duration = 0;
+
+  if ($media_entity->hasField('field_media_oembed_video')) {
+    $oembed_field = $media_entity->get('field_media_oembed_video');
+    if (!$oembed_field->isEmpty()) {
+      $url = $oembed_field->value;
+
+      if (str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be')) {
+        $duration = sitenow_signage_get_youtube_duration($url);
+      }
+      elseif (str_contains($url, 'vimeo.com')) {
+        $duration = sitenow_signage_get_vimeo_duration($url);
+      }
+    }
+  }
+
+  return $duration;
+}
+
+/**
+ * Get YouTube duration from lengthSeconds in page JavaScript.
+ */
+function sitenow_signage_get_youtube_duration($url) {
+  // Extract video ID.
+  preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches);
+
+  if (!isset($matches[1])) {
+    return 0;
+  }
+
+  $video_id = $matches[1];
+
+  try {
+    $watch_url = "https://www.youtube.com/watch?v={$video_id}";
+
+    $client = \Drupal::httpClient();
+    $response = $client->request('GET', $watch_url, [
+      'headers' => ['User-Agent' => 'Mozilla/5.0 (compatible; DrupalBot/1.0)'],
+      'timeout' => 10,
+      'http_errors' => FALSE,
+    ]);
+
+    if ($response->getStatusCode() !== 200) {
+      return 0;
+    }
+
+    $html = (string) $response->getBody();
+
+    // Look for lengthSeconds pattern.
+    if (preg_match('/"lengthSeconds":"(\d+)"/', $html, $duration_matches)) {
+      return (int) $duration_matches[1] * 1000;
+    }
+  }
+  catch (Exception $e) {
+    return 0;
+  }
+
+  return 0;
+}
+
+/**
+ * Get Vimeo duration from oEmbed API.
+ */
+function sitenow_signage_get_vimeo_duration($url) {
+  try {
+    $oembed_url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($url);
+
+    $client = \Drupal::httpClient();
+    $response = $client->request('GET', $oembed_url, ['http_errors' => FALSE]);
+
+    if ($response->getStatusCode() !== 200) {
+      return 0;
+    }
+
+    $body = (string) $response->getBody();
+    $data = json_decode($body, TRUE);
+
+    if (isset($data['duration'])) {
+      return (int) $data['duration'] * 1000;
+    }
+  }
+  catch (Exception $e) {
+    return 0;
+  }
+
+  return 0;
+}
+
+/**
  * Implements hook_preprocess_media().
  */
 function sitenow_signage_preprocess_media__remote_video(&$variables) {
@@ -394,7 +514,7 @@ function sitenow_signage_preprocess_media__remote_video(&$variables) {
 
         // Set the 'setautoplay' param that we'll check for later. This ensures
         // that only videos embedded on slides get this treatment.
-        if (strpos($param_array['url'], '?') !== FALSE) {
+        if (str_contains($param_array['url'], '?')) {
           $param_array['url'] .= '&setautoplay';
         }
         else {
