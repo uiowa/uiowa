@@ -121,8 +121,20 @@ function sitessignage_core_preprocess_block__local_actions_block(&$variables) {
   if ($route_match->getRouteName() == 'entity.node.canonical') {
     $node = $route_match->getParameter('node');
     if ($node->bundle() !== 'signage_group') {
-      unset($variables['content']['signage_sitenow.group_add_sign']);
-      unset($variables['content']['signage_sitenow.group_add_slide']);
+      unset($variables['content']['sitessignage_core.group_add_sign']);
+      unset($variables['content']['sitessignage_core.group_add_slide']);
+    }
+    else {
+      foreach (['sign', 'slide'] as $type) {
+        if (isset($variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'])) {
+          /** @var \Drupal\Core\Url $url */
+          $url = $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'];
+          $options = $url->getOptions();
+          $options['query']['group'] = $node->id();
+          $url->setOptions($options);
+          $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'] = $url;
+        }
+      }
     }
   }
 }
