@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slide_events.field_headline
     - field.field.paragraph.slide_events.field_slide_events_audiences
     - field.field.paragraph.slide_events.field_slide_events_department
     - field.field.paragraph.slide_events.field_slide_events_interests
@@ -15,6 +16,14 @@ targetEntityType: paragraph
 bundle: slide_events
 mode: default
 content:
+  field_headline:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_slide_events_audiences:
     type: options_select
     weight: 1

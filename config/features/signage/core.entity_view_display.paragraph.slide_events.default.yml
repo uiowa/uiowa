@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slide_events.field_headline
     - field.field.paragraph.slide_events.field_slide_events_audiences
     - field.field.paragraph.slide_events.field_slide_events_department
     - field.field.paragraph.slide_events.field_slide_events_interests
@@ -10,13 +11,19 @@ dependencies:
     - field.field.paragraph.slide_events.field_slide_events_location
     - field.field.paragraph.slide_events.field_slide_events_types
     - paragraphs.paragraphs_type.slide_events
-  module:
-    - options
 id: paragraph.slide_events.default
 targetEntityType: paragraph
 bundle: slide_events
 mode: default
-content: {  }
+content:
+  field_headline:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
