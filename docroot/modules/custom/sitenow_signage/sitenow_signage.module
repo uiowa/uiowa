@@ -5,8 +5,6 @@
  * Module code for SiteNow Signage.
  */
 
-use Drupal\Core\TypedData\TraversableTypedDataInterface;
-use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Render\Element;
@@ -124,7 +122,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       // Add cache tag for the sign node so table
       // updates when sign orientation changes.
       $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
-
 
       // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
@@ -768,7 +765,7 @@ function sitenow_signage_outlook_resource_allowed_values() {
 /**
  * Helper function to get sign orientation.
  *
- * @param Node|NULL $sign_node
+ * @param \Drupal\node\Entity\Node|null $sign_node
  *   A Node to get the orientation of.
  *
  * @return string
@@ -796,7 +793,7 @@ function sitenow_signage_get_orientation(Node|NULL $sign_node): string {
  * @param Drupal\paragraphs\Entity\Paragraph $paragraph
  *   A $paragraph object.
  *
- * @return Node|NULL
+ * @return \Drupal\node\Entity\Node|null
  *   Returns the parent Node.
  *
  * @todo https://github.com/uiowa/uiowa/issues/5028
