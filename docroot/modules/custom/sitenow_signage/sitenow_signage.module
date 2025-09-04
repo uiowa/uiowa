@@ -5,6 +5,9 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\Core\TypedData\TraversableTypedDataInterface;
+use Drupal\Core\TypedData\TypedDataInterface;
+use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
@@ -115,7 +118,13 @@ function sitenow_signage_preprocess_field(&$variables) {
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
-      $orientation = sitenow_signage_get_orientation($paragraph);
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      $orientation = sitenow_signage_get_orientation($sign_node);
+
+      // Add cache tag for the sign node so table
+      // updates when sign orientation changes.
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+
 
       // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
@@ -335,11 +344,11 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         }
 
         // Check if we have a sign node with vertical orientation.
-        if ($sign_node &&
+        if (
+          $sign_node &&
           $sign_node->bundle() == 'sign' &&
-          $sign_node->hasField('field_sign_orientation') &&
-          !$sign_node->get('field_sign_orientation')?->isEmpty() &&
-          $sign_node->field_sign_orientation?->value === 'vertical') {
+          sitenow_signage_get_orientation($sign_node) === 'vertical'
+        ) {
 
           $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
 
@@ -370,7 +379,14 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
 
       $amount = 3;
-      if (sitenow_signage_get_orientation($paragraph) === 'vertical') {
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      $orientation = sitenow_signage_get_orientation($sign_node);
+
+      // Add cache tag for the sign node so table
+      // updates when sign orientation changes.
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+
+      if ($orientation === 'vertical') {
         $amount = 5;
       }
 
@@ -752,33 +768,51 @@ function sitenow_signage_outlook_resource_allowed_values() {
 /**
  * Helper function to get sign orientation.
  *
- * @param Drupal\paragraphs\Entity\Paragraph $paragraph
- *   A $paragraph object.
+ * @param Node|NULL $sign_node
+ *   A Node to get the orientation of.
  *
  * @return string
  *   Return the orientation string.
  *
  * @todo https://github.com/uiowa/uiowa/issues/5028
  */
-function sitenow_signage_get_orientation(Paragraph $paragraph) {
+function sitenow_signage_get_orientation(Node|NULL $sign_node): string {
 
   // Need to traverse up to the sign node to get orientation if available.
-  $parent_slide = $paragraph->getParentEntity();
-  $referring_item = $parent_slide->_referringItem;
   $orientation = 'horizontal';
-  if ($referring_item) {
-    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-    $referring_field = $referring_item->getParent();
-    if ($referring_field) {
-      $parent_entity = $referring_field->getParent();
-      // Add cache tag for the sign node so table
-      // updates when sign orientation changes.
-      $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
-      if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
-        $orientation = 'vertical';
-      }
+
+  if ($sign_node) {
+    if ($sign_node->get('field_sign_orientation')?->value === 'vertical') {
+      $orientation = 'vertical';
     }
   }
 
   return $orientation;
+}
+
+/**
+ * Helper function to get sign orientation.
+ *
+ * @param Drupal\paragraphs\Entity\Paragraph $paragraph
+ *   A $paragraph object.
+ *
+ * @return Node|NULL
+ *   Returns the parent data structure; i. e. either complex data or a list.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function sitenow_signage_get_paragraph_node(Paragraph $paragraph) : Node|NULL {
+  // Need to traverse up to the sign node to get orientation if available.
+  $parent_slide = $paragraph->getParentEntity();
+  $referring_item = $parent_slide->_referringItem;
+
+  if ($referring_item) {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+    $referring_field = $referring_item->getParent();
+    if ($referring_field) {
+      return $referring_field->getParent()->getEntity();
+    }
+  }
+
+  return NULL;
 }
