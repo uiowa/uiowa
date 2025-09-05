@@ -481,6 +481,16 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
         'label' => t('Duration'),
         'weight' => 3,
       ];
+      $fields['publish_on'] = [
+        'type' => 'field',
+        'label' => t('Publish on'),
+        'weight' => 4,
+      ];
+      $fields['unpublish_on'] = [
+        'type' => 'field',
+        'label' => t('Unpublish on'),
+        'weight' => 5,
+      ];
     }
   }
 }
