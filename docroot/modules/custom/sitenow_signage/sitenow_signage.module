@@ -446,3 +446,41 @@ function sitenow_signage_outlook_resource_allowed_values() {
   $api_client = \Drupal::service('uiowa_hours.api');
   return $api_client->getResources($group) ?: ['none' => 'No resources available'];
 }
+
+/**
+ * Alter the fields used to represent an entity in the IEF table.
+ *
+ * @param array $fields
+ *   The fields, keyed by field name.
+ * @param array $context
+ *   An array with the following keys:
+ *   - parent_entity_type: The type of the parent entity.
+ *   - parent_bundle: The bundle of the parent entity.
+ *   - field_name: The name of the reference field on which IEF is operating.
+ *   - entity_type: The type of the referenced entities.
+ *   - allowed_bundles: Bundles allowed on the reference field.
+ *
+ * @see \Drupal\inline_entity_form\InlineFormInterface::getTableFields()
+ */
+function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['field_name'] === 'field_sign_slides') {
+    // Add additional fields to the slide IEF.
+    if (in_array('slide', $context['allowed_bundles'])) {
+      $fields['field_slide_description'] = [
+        'type' => 'field',
+        'label' => t('Description'),
+        'weight' => 1,
+      ];
+      $fields['uid'] = [
+        'type' => 'field',
+        'label' => t('Author'),
+        'weight' => 2,
+      ];
+      $fields['field_slide_duration'] = [
+        'type' => 'field',
+        'label' => t('Duration'),
+        'weight' => 3,
+      ];
+    }
+  }
+}
