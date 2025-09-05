@@ -399,7 +399,7 @@ function sitenow_signage_get_video_duration($media_entity) {
  * Get YouTube duration using YouTube Data API.
  */
 function sitenow_signage_get_youtube_duration($url) {
-  $api_key = \Drupal::config('signage.settings')->get('youtube_api_key');
+  $api_key = \Drupal::config('sitenow_signage.settings')->get('youtube_api_key');
 
   if (!preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
     return 0;
