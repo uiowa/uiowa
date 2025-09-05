@@ -110,3 +110,31 @@ function sitessignage_core_entity_view_alter(array &$build, $entity, $display) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitessignage_core_preprocess_block__local_actions_block(&$variables) {
+  // Get the current route node and check its bundle type.
+  /** @var \Drupal\Core\Routing\RouteMatch $route_match */
+  $route_match = \Drupal::service('current_route_match');
+  if ($route_match->getRouteName() == 'entity.node.canonical') {
+    $node = $route_match->getParameter('node');
+    if ($node->bundle() !== 'signage_group') {
+      unset($variables['content']['sitessignage_core.group_add_sign']);
+      unset($variables['content']['sitessignage_core.group_add_slide']);
+    }
+    else {
+      foreach (['sign', 'slide'] as $type) {
+        if (isset($variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'])) {
+          /** @var \Drupal\Core\Url $url */
+          $url = $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'];
+          $options = $url->getOptions();
+          $options['query']['group'] = $node->id();
+          $url->setOptions($options);
+          $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'] = $url;
+        }
+      }
+    }
+  }
+}
