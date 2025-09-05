@@ -2,8 +2,12 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 @use 'sass:color';
 
+$pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
 // Sign header.
 .page-node-type-sign {
+  background-color: var(--brand-secondary);
+
   // Adjust margins to be smaller for signage.
   .page__container--full.layout__container .layout__spacing_container {
     margin-left: 0;
@@ -80,7 +84,7 @@ div.bg--black .signage__table {
 }
 
 .signage__table {
-  $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
 
   background-color: variables.$blk;
   tr {
@@ -161,5 +165,43 @@ div.bg--black .signage__table {
     th, td {
       font-size: variables.$h4-font-size;
     }
+  }
+}
+
+.paragraph--type--slide-events {
+
+  .slide-events--headline {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: .08rem;
+    text-transform: uppercase;
+    padding: 1.05rem;
+  }
+
+  .headline {
+    font-size: variables.$h2-font-size;
+  }
+
+  .card__subtitle {
+    font-size: variables.$h3-font-size;
+    opacity: 1;
+    color: var(--brand-primary);
+  }
+
+  .card__meta {
+    font-size: variables.$h4-font-size;
+
+    .fa-field-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .svg-inline--fa {
+      height: variables.$h5-font-size;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-top: 7px;
   }
 }
