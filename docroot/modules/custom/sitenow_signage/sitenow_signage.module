@@ -363,9 +363,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
     case 'slide_events':
       $filters = [];
-
-      $headline = $paragraph?->field_headline?->value ?? '';
-
       $filters['audiences'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue());
       $filters['department'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_department?->getValue());
       $filters['interests'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_interests?->getValue());
@@ -494,20 +491,9 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           $rows[] = $card;
         }
 
-        if (!empty($headline)) {
-          $events_render['headline'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'h2',
-            '#attributes' => [
-              'class' => 'slide-events--headline',
-            ],
-            '#value' => t($headline),
-          ];
-        }
-
         $events_render['events'] = $rows;
 
-        $variables['content'] = [
+        $variables['content']['content'] = [
           '#type' => 'markup',
           '#markup' => \Drupal::service('renderer')->render($events_render),
         ];
@@ -530,6 +516,10 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
   return [
     'field__node__field_sign_slides__sign__default' => [
       'template' => 'field--node--field-sign-slides--sign--default',
+      'base hook' => 'field',
+    ],
+    'field__paragraph__field_headline__slide_events' => [
+      'template' => 'field--paragraph--field-headline--slide-events',
       'base hook' => 'field',
     ],
   ];
