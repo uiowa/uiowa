@@ -32,26 +32,6 @@ function sitenow_signage_form_alter(
           ],
         ],
       ];
-
-      // Clear the field when duration is not "0".
-      $form['field_slide_duration_other']['widget']['#element_validate'][] = 'sitenow_signage_validate_duration_other';
-    }
-  }
-}
-
-/**
- * Custom validation function for sitenow_signage_form_alter.
- */
-function sitenow_signage_validate_duration_other($element, FormStateInterface $form_state, $form) {
-  $duration_values = $form_state->getValue('field_slide_duration');
-
-  // Check if duration field has a value other than "0".
-  if (!empty($duration_values) && isset($duration_values[0]['value'])) {
-    $duration_value = $duration_values[0]['value'];
-
-    if ($duration_value !== '0') {
-      // Clear the field_slide_duration_other field.
-      $form_state->setValue('field_slide_duration_other', []);
     }
   }
 }
@@ -60,6 +40,7 @@ function sitenow_signage_validate_duration_other($element, FormStateInterface $f
  * Implements hook_inline_entity_form_entity_form_alter().
  */
 function sitenow_signage_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  // Show/hide the field_slide_duration_other field for IEF.
   if ($entity_form['#entity_type'] === 'node' && $entity_form['#bundle'] === 'slide') {
     if (isset($entity_form['field_slide_duration_other'])) {
       // Generate unique IDs.
@@ -88,9 +69,35 @@ function sitenow_signage_entity_presave(EntityInterface $entity) {
     if ($entity->hasField('field_slide_duration') && $entity->hasField('field_slide_duration_other')) {
 
       $duration_value = $entity->get('field_slide_duration')->value;
+      $has_video = FALSE;
+      $video_duration = 0;
 
-      // If duration is not "0", clear field_slide_duration_other.
-      if ($duration_value !== '0' && $duration_value !== 0) {
+      // Check if this slide has a video paragraph.
+      if ($entity->hasField('field_slide_widget') && !$entity->get('field_slide_widget')->isEmpty()) {
+        foreach ($entity->get('field_slide_widget') as $paragraph_item) {
+          $paragraph = $paragraph_item->entity;
+          if ($paragraph && $paragraph->bundle() === 'slide_video') {
+            $has_video = TRUE;
+            // Get the media entity from the video paragraph.
+            if ($paragraph->hasField('field_slide_video') && !$paragraph->get('field_slide_video')->isEmpty()) {
+              $media_entity = $paragraph->get('field_slide_video')->entity;
+              if ($media_entity) {
+                $video_duration = sitenow_signage_get_video_duration($media_entity);
+                if ($video_duration > 0) {
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // If this slide has a video paragraph, set the video duration in field_slide_duration_other.
+      if ($has_video && $video_duration > 0) {
+        $entity->set('field_slide_duration_other', $video_duration / 1000);
+      }
+      // If no video and duration is not "0", clear field_slide_duration_other.
+      elseif (!$has_video && $duration_value !== '0' && $duration_value !== 0) {
         $entity->get('field_slide_duration_other')->setValue([]);
       }
     }
@@ -119,32 +126,8 @@ function sitenow_signage_preprocess_field(&$variables) {
         // Set a reasonable default just in case.
         $item['interval'] = '15000';
 
-        // Check if this slide has a video and get its duration.
-        $video_duration = 0;
-
-        if ($node->hasField('field_slide_widget') && !$node->get('field_slide_widget')->isEmpty()) {
-          foreach ($node->get('field_slide_widget') as $paragraph_item) {
-            $paragraph = $paragraph_item->entity;
-            if ($paragraph && $paragraph->bundle() === 'slide_video') {
-              // Get the media entity from the video paragraph.
-              if ($paragraph->hasField('field_slide_video') && !$paragraph->get('field_slide_video')->isEmpty()) {
-                $media_entity = $paragraph->get('field_slide_video')->entity;
-                if ($media_entity) {
-                  $video_duration = sitenow_signage_get_video_duration($media_entity);
-                  if ($video_duration > 0) {
-                    break;
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        // Duration priority: video duration > manual other duration > manual preset duration.
-        if ($video_duration > 0) {
-          $item['interval'] = $video_duration;
-        }
-        elseif ($node->hasField('field_slide_duration_other') &&
+        // Duration priority: manual other duration > manual preset duration.
+        if ($node->hasField('field_slide_duration_other') &&
           $node->field_slide_duration_other->value > 0) {
           $item['interval'] = $node->field_slide_duration_other->value * 1000;
         }
@@ -390,7 +373,7 @@ function sitenow_signage_preprocess_field(&$variables) {
 }
 
 /**
- * Get video duration using only the methods that work.
+ * Get video duration.
  */
 function sitenow_signage_get_video_duration($media_entity) {
   $duration = 0;
@@ -413,44 +396,42 @@ function sitenow_signage_get_video_duration($media_entity) {
 }
 
 /**
- * Get YouTube duration from lengthSeconds in page JavaScript.
+ * Get YouTube duration using YouTube Data API.
  */
 function sitenow_signage_get_youtube_duration($url) {
-  // Extract video ID.
-  preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches);
+  $api_key = \Drupal::config('sitenow_signage.settings')->get('youtube_api_key');
 
-  if (!isset($matches[1])) {
+  if (!preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
     return 0;
   }
 
-  $video_id = $matches[1];
-
   try {
-    $watch_url = "https://www.youtube.com/watch?v={$video_id}";
+    // Make HTTP GET request to YouTube Data API v3 to fetch video details.
+    $response = \Drupal::httpClient()->request('GET',
+      "https://www.googleapis.com/youtube/v3/videos?id={$matches[1]}&part=contentDetails&key={$api_key}",
+      ['timeout' => 10, 'http_errors' => FALSE]
+    );
 
-    $client = \Drupal::httpClient();
-    $response = $client->request('GET', $watch_url, [
-      'headers' => ['User-Agent' => 'Mozilla/5.0 (compatible; DrupalBot/1.0)'],
-      'timeout' => 10,
-      'http_errors' => FALSE,
-    ]);
+    // Decode JSON response body into array.
+    $data = json_decode($response->getBody(), TRUE);
 
-    if ($response->getStatusCode() !== 200) {
+    // Check if request was successful.
+    if ($response->getStatusCode() !== 200 ||
+      json_last_error() !== JSON_ERROR_NONE ||
+      empty($data['items'][0]['contentDetails']['duration'])) {
       return 0;
     }
 
-    $html = (string) $response->getBody();
+    // Create DateInterval object from ISO 8601 duration string like "PT5M33S".
+    $interval = new DateInterval($data['items'][0]['contentDetails']['duration']);
+    // Calculate total seconds by converting hours, minutes, and seconds to seconds.
+    $seconds = ($interval->h * 3600) + ($interval->i * 60) + $interval->s;
 
-    // Look for lengthSeconds pattern.
-    if (preg_match('/"lengthSeconds":"(\d+)"/', $html, $duration_matches)) {
-      return (int) $duration_matches[1] * 1000;
-    }
+    return $seconds;
   }
-  catch (Exception $e) {
+  catch (Exception) {
     return 0;
   }
-
-  return 0;
 }
 
 /**
@@ -471,10 +452,10 @@ function sitenow_signage_get_vimeo_duration($url) {
     $data = json_decode($body, TRUE);
 
     if (isset($data['duration'])) {
-      return (int) $data['duration'] * 1000;
+      return (int) $data['duration'];
     }
   }
-  catch (Exception $e) {
+  catch (Exception) {
     return 0;
   }
 
