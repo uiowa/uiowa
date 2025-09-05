@@ -172,6 +172,10 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP_HOST} ^(www\.)?medicine\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
   RewriteRule ^iowaprotocols/(.+)$ https://iowaprotocols.medicine.uiowa.edu/protocols/$1 [R=301,L]
 
+  # Redirect opsmanual.uiowa.edu to policy.uiowa.edu.
+  RewriteCond %{HTTP_HOST} opsmanual\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteRule ^(.*)$ https://policy.uiowa.edu/$1 [L,R=301]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
