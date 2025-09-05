@@ -567,6 +567,14 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['properties']['markup']['message_id']['#access'] = FALSE;
       }
 
+      // Add additional help text to the captcha element.
+      if (isset($form['properties']['captcha'])) {
+        $form['properties']['captcha']['captcha_type']['#help'] = t('Currently the Default challenge is the Math challenge type.');
+        $form['properties']['captcha']['captcha_type']['#description'] = t('See our <a href="@link" target="_blank" rel="noopener">SiteNow CAPTCHA documentation</a> for more information.', [
+          '@link' => 'https://sitenow.uiowa.edu/node/646#captcha',
+        ]);
+      }
+
       // Custom validation for webform components.
       $form['#validate'][] = '_sitenow_webform_validate';
       break;
