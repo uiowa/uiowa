@@ -491,12 +491,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           $rows[] = $card;
         }
 
-        $events_render['events'] = $rows;
-
-        $variables['content']['content'] = [
-          '#type' => 'markup',
-          '#markup' => \Drupal::service('renderer')->render($events_render),
-        ];
+        $variables['content']['events'] = $rows;
       }
       else {
         $variables['content'] = [
