@@ -11,19 +11,19 @@ no_patching: false
 storage: folder
 folder: ../config/sites/uiowa.edu
 module:
-  key: 0
   schema_organization: 0
-  turnstile: 0
   uiowa_edu_core: 0
 theme: {  }
 complete_list:
   - block_content.type.uiowa_vertical_video
   - config_split.config_split.site
   - field.storage.taxonomy_term.field_a_z_list_link
+  - key.key.paid_campaign_cloudflare_turnstile
   - taxonomy.vocabulary.a_z_list
   - views.view.a_z_list
   - 'field.storage.block_content.field_uiowa_vertical_*'
 partial_list:
   - metatag.metatag_defaults.front
   - simple_sitemap.custom_links.default
+  - turnstile.settings
   - 'user.role.*'
