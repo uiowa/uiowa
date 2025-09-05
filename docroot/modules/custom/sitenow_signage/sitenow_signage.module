@@ -494,7 +494,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         $variables['content']['events'] = $rows;
       }
       else {
-        $variables['content'] = [
+        $variables['content']['events'] = [
           '#type' => 'markup',
           '#markup' => t('There are currently no scheduled events to display.'),
         ];
