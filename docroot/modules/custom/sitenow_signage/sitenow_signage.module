@@ -362,7 +362,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       break;
 
     case 'slide_events':
-      $paragraph = $variables['elements']['#paragraph'];
       $filters = [];
 
       $headline = $paragraph?->field_headline?->value ?? '';
