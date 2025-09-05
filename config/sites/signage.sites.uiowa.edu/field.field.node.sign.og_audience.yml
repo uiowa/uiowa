@@ -7,7 +7,12 @@ dependencies:
     - node.type.sign
     - node.type.signage_group
   module:
+    - epp
     - og
+third_party_settings:
+  epp:
+    value: '[current-page:query:group]'
+    on_update: 0
 id: node.sign.og_audience
 field_name: og_audience
 entity_type: node
