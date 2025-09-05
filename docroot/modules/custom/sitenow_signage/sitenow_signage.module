@@ -393,105 +393,31 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
       $response = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
       if (!empty($response['events'])) {
-        $rows = [];
 
         foreach ($response['events'] as $key => $value) {
           $event = $value['event'];
-          $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
-
-          $styles = [
-            'card',
+          $event['attributes']['class'] = [
             'card__row',
             'borderless',
             'bg--darkmode',
+            'headline--serif',
           ];
+          $event['heading_size'] = 'h3';
+          $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
 
-          $card = [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#attributes' => [
-              'class' => $styles,
-            ],
-          ];
-          $card['#attached']['library'][] = 'uids_base/card';
-          $card['body'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#attributes' => [
-              'class' => 'card__body',
-            ],
-          ];
-          $card['body']['headline'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'h2',
-            '#attributes' => [
-              'class' => [
-                'headline',
-                'headline--serif',
-              ],
-            ],
-            '#value' => t($event['title']),
-          ];
-          $card['body']['details'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#attributes' => [
-              'class' => 'card__details',
-            ],
-          ];
-          $card['body']['details']['subtitle'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#attributes' => [
-              'class' => 'card__subtitle',
-            ],
-            '#value' => sitenow_events_format_instance([
-              'start' => $event['instance_start'],
-              'end' => $event['instance_end'],
-              'last_date' => $event['last_date'],
-              'all_day' => $event['instance_all_day'],
-            ]),
-          ];
-          $card['body']['details']['meta'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#attributes' => [
-              'class' => 'card__meta',
-            ],
-          ];
-          $card['body']['details']['meta']['prefix'] = [
-            '#type' => 'markup',
-            '#markup' => '<div class="fa-field-item">',
-          ];
-          if ($event['virtual'] === TRUE) {
-            $card['body']['details']['meta']['icon'] = [
-              '#type' => 'markup',
-              '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
-            ];
-            $card['body']['details']['meta']['location'] = [
-              '#type' => 'markup',
-              '#markup' => t('Virtual'),
-            ];
+          // Unset the properties we don't want to display.
+          foreach ([
+            'description',
+            'media',
+            'summary',
+          ] as $property) {
+            if (isset($event[$property])) {
+              unset($event[$property]);
+            }
           }
-          elseif (!is_null($event['location_name'])) {
-            $card['body']['details']['meta']['icon'] = [
-              '#type' => 'markup',
-              '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
-            ];
-            $card['body']['details']['meta']['location'] = [
-              '#type' => 'markup',
-              '#markup' => $event['location_name'],
-            ];
-          }
-          $card['body']['details']['meta']['suffix'] = [
-            '#type' => 'markup',
-            '#markup' => '</div>',
-          ];
 
-          $rows[] = $card;
+          $variables['content'][] = sitenow_events_build_card($event);
         }
-
-        $variables['content']['events'] = $rows;
       }
       else {
         $variables['content']['events'] = [
