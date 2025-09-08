@@ -338,6 +338,13 @@ function sitenow_signage_preprocess_page(&$variables) {
 function sitenow_signage_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
 
+  // @todo Restrict this with further checks to prevent it
+  //   bleeding into other node edit forms.
+  if (\Drupal::routeMatch()->getRouteName() === 'entity.node.edit_form') {
+    $variables['content'] = $paragraph->getParagraphType()->label();
+    return;
+  }
+
   if ($paragraph->bundle() == 'slide_image' &&
     isset($variables['content']['field_slide_image'])) {
 
@@ -448,48 +455,41 @@ function sitenow_signage_outlook_resource_allowed_values() {
 }
 
 /**
- * Alter the fields used to represent an entity in the IEF table.
- *
- * @param array $fields
- *   The fields, keyed by field name.
- * @param array $context
- *   An array with the following keys:
- *   - parent_entity_type: The type of the parent entity.
- *   - parent_bundle: The bundle of the parent entity.
- *   - field_name: The name of the reference field on which IEF is operating.
- *   - entity_type: The type of the referenced entities.
- *   - allowed_bundles: Bundles allowed on the reference field.
- *
- * @see \Drupal\inline_entity_form\InlineFormInterface::getTableFields()
+ * Implements hook_inline_entity_form_table_fields_alter().
  */
 function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, array $context) {
   if ($context['field_name'] === 'field_sign_slides') {
     // Add additional fields to the slide IEF.
     if (in_array('slide', $context['allowed_bundles'])) {
+      $fields['field_slide_widget'] = [
+        'type' => 'field',
+        'label' => t('Type'),
+        'weight' => 1,
+      ];
       $fields['field_slide_description'] = [
         'type' => 'field',
         'label' => t('Description'),
-        'weight' => 1,
+        'weight' => 2,
       ];
       $fields['uid'] = [
         'type' => 'field',
         'label' => t('Author'),
-        'weight' => 2,
+        'weight' => 3,
       ];
       $fields['field_slide_duration'] = [
         'type' => 'field',
         'label' => t('Duration'),
-        'weight' => 3,
+        'weight' => 4,
       ];
       $fields['publish_on'] = [
         'type' => 'field',
         'label' => t('Publish on'),
-        'weight' => 4,
+        'weight' => 5,
       ];
       $fields['unpublish_on'] = [
         'type' => 'field',
         'label' => t('Unpublish on'),
-        'weight' => 5,
+        'weight' => 6,
       ];
     }
   }
