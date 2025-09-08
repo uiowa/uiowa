@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..1a07faabe 100644
+index 4031da475..ee81cf0c0 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
@@ -23,18 +23,19 @@ index 4031da475..1a07faabe 100644
  # Protect files and directories from prying eyes.
  <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config|yarn\.lock|package\.json)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
    <IfModule mod_authz_core.c>
-@@ -35,8 +49,8 @@ AddEncoding gzip svgz
+@@ -35,9 +49,8 @@ AddEncoding gzip svgz
    # Enable expirations.
    ExpiresActive On
  
 -  # Cache all files for 1 year after access.
 -  ExpiresDefault "access plus 1 year"
-+  # Cache all files for 10 minutes after access.
-+  ExpiresDefault "access plus 10 minutes"
- 
+-
++ # Cache all files for 10 minutes after access.
++ ExpiresDefault "access plus 10 minutes"
    <FilesMatch \.php$>
      # Do not allow PHP scripts to be cached unless they explicitly send cache
-@@ -60,6 +74,111 @@ AddEncoding gzip svgz
+     # headers themselves. Otherwise all scripts would have to overwrite the
+@@ -60,6 +73,112 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
  
@@ -96,10 +97,11 @@ index 4031da475..1a07faabe 100644
 +  RewriteCond %{REQUEST_URI} ^/itu$ [NC]
 +  RewriteRule ^itu(.*)$ https://itu.physics.uiowa.edu/$1 [L,R=301]
 +
-+   # Redirect www andwritinguniversity.org to writinguniversity.uiowa.edu.
++ # Redirect www and writinguniversity.org to writinguniversity.uiowa.edu.
 +  RewriteCond %{HTTP_HOST} ^(www\.|)writinguniversity\.org$ [NC]
-+  RewriteRule ^(.*)$ https://www.writinguniversity.uiowa.edu/$1 [L,R=301]
-+# add code block snippet
++  RewriteRule ^(.*)$  writing\.((prod|stage|dev)\.drupal\.)?uiowa\.edu/$1 [L,R=301]
++
++ # Adding Redirect  writinguniversity.org to writinguniversity.uiowa.edu/about-us/writing-iowa
 +  RewriteCond %{HTTP_HOST} writing\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
 +  RewriteRule ^ https://writinguniversity.uiowa.edu/about-us/writing-iowa [L,R=301]
 +
