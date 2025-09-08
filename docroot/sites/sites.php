@@ -7792,3 +7792,9 @@ $sites['orggardeningclub.uiowa.ddev.site'] = 'gardeningclub.org.uiowa.edu';
 $sites['orggardeningclub.dev.drupal.uiowa.edu'] = 'gardeningclub.org.uiowa.edu';
 $sites['orggardeningclub.stage.drupal.uiowa.edu'] = 'gardeningclub.org.uiowa.edu';
 $sites['orggardeningclub.prod.drupal.uiowa.edu'] = 'gardeningclub.org.uiowa.edu';
+
+// Directory aliases for iyws.program.uiowa.edu.
+$sites['programiyws.uiowa.ddev.site'] = 'iyws.program.uiowa.edu';
+$sites['programiyws.dev.drupal.uiowa.edu'] = 'iyws.program.uiowa.edu';
+$sites['programiyws.stage.drupal.uiowa.edu'] = 'iyws.program.uiowa.edu';
+$sites['programiyws.prod.drupal.uiowa.edu'] = 'iyws.program.uiowa.edu';
