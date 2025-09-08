@@ -7780,3 +7780,9 @@ $sites['centerintellectualfreedom.uiowa.ddev.site'] = 'intellectualfreedom.cente
 $sites['centerintellectualfreedom.dev.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
 $sites['centerintellectualfreedom.stage.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
 $sites['centerintellectualfreedom.prod.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
+
+// Directory aliases for bunsawat.lab.uiowa.edu.
+$sites['labbunsawat.uiowa.ddev.site'] = 'bunsawat.lab.uiowa.edu';
+$sites['labbunsawat.dev.drupal.uiowa.edu'] = 'bunsawat.lab.uiowa.edu';
+$sites['labbunsawat.stage.drupal.uiowa.edu'] = 'bunsawat.lab.uiowa.edu';
+$sites['labbunsawat.prod.drupal.uiowa.edu'] = 'bunsawat.lab.uiowa.edu';
