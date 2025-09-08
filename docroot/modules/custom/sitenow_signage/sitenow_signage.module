@@ -398,9 +398,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         foreach ($response['events'] as $key => $value) {
           $event = $value['event'];
           $event['attributes']['class'] = [
-            'card__row',
             'borderless',
-            'bg--darkmode',
             'headline--serif',
           ];
           $event['heading_size'] = 'h3';
