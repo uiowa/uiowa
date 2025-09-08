@@ -376,8 +376,10 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
       $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Add cache tag for the sign node so table
-      // updates when sign orientation changes.
+      // Cache is refreshed each hour.
+      $variables['#cache']['tags'][] = 'time:hourly';
+
+      // Cache is refreshed when the sign node is saved.
       $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
 
       if ($orientation === 'vertical') {
@@ -395,6 +397,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $response = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
       if (!empty($response['events'])) {
 
+        // Build cards for each event and add to the content output.
         foreach ($response['events'] as $key => $value) {
           $event = $value['event'];
           $event['attributes']['class'] = [
@@ -419,6 +422,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         }
       }
       else {
+        // Set output for when there is no events.
         $variables['content']['events'] = [
           '#type' => 'markup',
           '#markup' => t('There are currently no scheduled events to display.'),
