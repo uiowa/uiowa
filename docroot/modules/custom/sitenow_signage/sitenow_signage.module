@@ -400,12 +400,7 @@ function sitenow_signage_get_video_duration($media_entity) {
  */
 function sitenow_signage_get_youtube_duration($url) {
   $api_key = \Drupal::config('sitenow_signage.settings')->get('youtube_api_key');
-
-  if (empty($api_key)) {
-    \Drupal::logger('sitenow_signage')->warning('YouTube API key not configured.');
-    return 0;
-  }
-
+  
   if (!preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
     return 0;
   }
