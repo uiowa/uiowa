@@ -401,6 +401,11 @@ function sitenow_signage_get_video_duration($media_entity) {
 function sitenow_signage_get_youtube_duration($url) {
   $api_key = \Drupal::config('sitenow_signage.settings')->get('youtube_api_key');
 
+  if (empty($api_key)) {
+    \Drupal::logger('sitenow_signage')->warning('YouTube API key not configured.');
+    return 0;
+  }
+
   if (!preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
     return 0;
   }
@@ -418,8 +423,17 @@ function sitenow_signage_get_youtube_duration($url) {
     $data = json_decode($response->getBody(), TRUE);
 
     // Check if request was successful.
-    if ($response->getStatusCode() !== 200 ||
-      json_last_error() !== JSON_ERROR_NONE ||
+    // Log API response code for server errors, auth issues, quota exceeded.
+    if ($response->getStatusCode() !== 200) {
+      \Drupal::logger('sitenow_signage')->warning('YouTube API returned status @status: @endpoint', [
+        '@status' => $response->getStatusCode(),
+        '@endpoint' => $endpoint
+      ]);
+      return 0;
+    }
+
+    // Silent return for content/data issues (corrupted JSON, missing video data).
+    if (json_last_error() !== JSON_ERROR_NONE ||
       empty($data['items'][0]['contentDetails']['duration'])) {
       return 0;
     }
@@ -450,7 +464,12 @@ function sitenow_signage_get_vimeo_duration($url) {
     $client = \Drupal::httpClient();
     $response = $client->request('GET', $oembed_url, ['http_errors' => FALSE]);
 
+    // Log API response code for server errors, auth issues, quota exceeded.
     if ($response->getStatusCode() !== 200) {
+      \Drupal::logger('sitenow_signage')->warning('Vimeo API returned status @status: @endpoint', [
+        '@status' => $response->getStatusCode(),
+        '@endpoint' => $oembed_url
+      ]);
       return 0;
     }
 
