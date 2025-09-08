@@ -362,14 +362,15 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       break;
 
     case 'slide_events':
-      $filters = [];
-      $filters['audiences'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue());
-      $filters['department'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_department?->getValue());
-      $filters['interests'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_interests?->getValue());
-      $filters['keywords'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue());
-      $filters['place'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue());
-      $filters['types'] = sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue());
-      $filters['enddate'] = ['value' => ['date' => '01-01-2100']];
+      $filters = [
+        'audiences' => sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue()),
+        'department' => sitenow_signage_value_query_string($paragraph?->field_slide_events_department?->getValue()),
+        'interests' => sitenow_signage_value_query_string($paragraph?->field_slide_events_interests?->getValue()),
+        'keywords' => sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue()),
+        'place' => sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue()),
+        'types' => sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue()),
+        'enddate' => ['value' => ['date' => '01-01-2100']],
+      ];
 
       $amount = 3;
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
@@ -501,7 +502,7 @@ function sitenow_signage_slides_size_allowed_values() {
  * @return array
  *   An array of possible key and value options.
  */
-function sitenow_signage_value_query_string(array $data): string {
+function sitenow_signage_value_query_string(?array $data): string {
   $items = '';
   foreach ($data as $item) {
     if (isset($item['value'])) {

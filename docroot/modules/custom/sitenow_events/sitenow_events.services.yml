@@ -11,11 +11,3 @@ services:
       - { name: cache.bin }
     factory: cache_factory:get
     arguments: [ 'sitenow_events' ]
-  # @todo Remove this.
-  cache.uievents:
-    class: Drupal\Core\Cache\CacheBackendInterface
-    tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
-    arguments:
-      - uievents

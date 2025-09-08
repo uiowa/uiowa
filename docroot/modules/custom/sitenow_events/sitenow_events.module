@@ -526,7 +526,7 @@ function sitenow_events_build_card(array $event): array {
 
   $card = [
     '#type' => 'card',
-    '#attributes' => $event['attributes'],
+    '#attributes' => $event['attributes'] ?? [],
     '#title' => $event['title'],
     '#url' => $event['url'],
     '#headline_level' => $event['heading_size'],
@@ -784,7 +784,7 @@ function sitenow_events_load(
     $endpoint = "{$endpoint}?{$query}";
   }
 
-  if ($cached = \Drupal::cache('uievents')->get($endpoint)) {
+  if ($cached = \Drupal::cache('sitenow_events')->get($endpoint)) {
     $data = $cached->data;
   }
   else {
@@ -798,7 +798,7 @@ function sitenow_events_load(
       // Create a cache item set to 5 minutes.
       if ($cache !== FALSE) {
         $request_time = \Drupal::time()->getRequestTime();
-        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
+        \Drupal::cache('sitenow_events')->set($endpoint, $data, $request_time + 300);
       }
     }
     catch (ConnectException $e) {

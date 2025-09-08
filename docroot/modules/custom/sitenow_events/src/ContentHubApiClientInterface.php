@@ -10,11 +10,19 @@ use Drupal\uiowa_core\ApiClientInterface;
 interface ContentHubApiClientInterface extends ApiClientInterface {
 
   /**
-   * Get all buildings.
+   * Get all events.
    *
    * @return \stdClass|bool
    *   The events object.
    */
   public function getEvents(): \stdClass|bool;
+
+  /**
+   * Get all events with instances.
+   *
+   * @return array|bool
+   *   The array of event objects.
+   */
+  public function getEventInstances(): array|bool;
 
 }
