@@ -405,12 +405,14 @@ function sitenow_signage_get_youtube_duration($url) {
     return 0;
   }
 
+  $endpoint = "https://www.googleapis.com/youtube/v3/videos?id={$matches[1]}&part=contentDetails&key={$api_key}";
+
   try {
     // Make HTTP GET request to YouTube Data API v3 to fetch video details.
-    $response = \Drupal::httpClient()->request('GET',
-      "https://www.googleapis.com/youtube/v3/videos?id={$matches[1]}&part=contentDetails&key={$api_key}",
-      ['timeout' => 10, 'http_errors' => FALSE]
-    );
+    $response = \Drupal::httpClient()->request('GET', $endpoint, [
+      'timeout' => 10,
+      'http_errors' => FALSE,
+    ]);
 
     // Decode JSON response body into array.
     $data = json_decode($response->getBody(), TRUE);
@@ -429,7 +431,11 @@ function sitenow_signage_get_youtube_duration($url) {
 
     return $seconds;
   }
-  catch (Exception) {
+  catch (Exception $e) {
+    \Drupal::logger('sitenow_signage')->error('YouTube API connection failed for @endpoint: @message', [
+      '@endpoint' => $endpoint,
+      '@message' => $e->getMessage(),
+    ]);
     return 0;
   }
 }
@@ -438,9 +444,9 @@ function sitenow_signage_get_youtube_duration($url) {
  * Get Vimeo duration from oEmbed API.
  */
 function sitenow_signage_get_vimeo_duration($url) {
-  try {
-    $oembed_url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($url);
+  $oembed_url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($url);
 
+  try {
     $client = \Drupal::httpClient();
     $response = $client->request('GET', $oembed_url, ['http_errors' => FALSE]);
 
@@ -455,7 +461,11 @@ function sitenow_signage_get_vimeo_duration($url) {
       return (int) $data['duration'];
     }
   }
-  catch (Exception) {
+  catch (Exception $e) {
+    \Drupal::logger('sitenow_signage')->error('Vimeo API connection failed for @endpoint: @message', [
+      '@endpoint' => $oembed_url,
+      '@message' => $e->getMessage(),
+    ]);
     return 0;
   }
 
