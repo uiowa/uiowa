@@ -1,5 +1,5 @@
 (function (Drupal) {
-  "use strict";
+  'use strict';
 
   Drupal.behaviors.slideDurationToggle = {
     attach: function (context) {
@@ -14,17 +14,19 @@
       // Merge both duration elements.
       const allDurationFields = [...durationField, ...durationOtherField];
 
-      allDurationFields.forEach((element) => {
-        const container = element.closest(".js-form-item") || element;
+      allDurationFields.forEach(function (element) {
+        const container = element.closest('.js-form-item') || element;
 
         if (hasVideo) {
-          container.classList.add("js-hide");
+          // Hide.
+          container.classList.add('js-hide');
           container.tabIndex = -1;
-          container.setAttribute("aria-hidden", "true");
+          container.setAttribute('aria-hidden', 'true');
         } else {
-          container.classList.remove("js-hide");
-          container.removeAttribute("tabindex");
-          container.removeAttribute("aria-hidden");
+          // Show.
+          container.classList.remove('js-hide');
+          container.removeAttribute('tabindex');
+          container.removeAttribute('aria-hidden');
         }
       });
     },
