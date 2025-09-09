@@ -86,7 +86,7 @@ Before starting updates, make sure your local environment is on a feature branch
 ## Updating core patched files
 
 - Remove the `core_htaccess.patch` line from `post-drupal-scaffold-cmd` in the composer.json file and run `ddev composer install`.
-- Commit this with git but do not push.
+- Commit the .htaccess change only with git but do not push.
 - Re-add the line back to composer and re-run `ddev composer install`.
 - Make edits to the .htaccess file.
 - `git diff docroot/.htaccess > patches/core_htaccess.patch`
