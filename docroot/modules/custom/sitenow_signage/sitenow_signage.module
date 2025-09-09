@@ -465,9 +465,11 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
         'label' => t('Duration'),
         'weight' => 2,
       ];
+      // Remove the default Status field. We'll add that info with scheduling.
+      unset($fields['status']);
       $fields['publish_on'] = [
         'type' => 'callback',
-        'label' => t('Schedule'),
+        'label' => t('Publishing schedule'),
         'weight' => 3,
         'callback' => 'sitenow_signage_ief_schedule_callback',
       ];
@@ -480,10 +482,17 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
  */
 function sitenow_signage_ief_schedule_callback($entity, $variables) {
   $strings = [];
+
+  // Grab and format our publication information.
+  $published = ($entity->isPublished()) ? "Published" : "Unpublished";
+  $strings[] = "<strong>Status</strong>: {$published}";
+
+  // Do the same with the scheduling information.
   foreach (['publish_on', 'unpublish_on'] as $field) {
     if ($entity->hasField($field) && !$entity->get($field)->isEmpty()) {
+      $label = str_replace('_', ' ', ucfirst($field));
       $value = date('M j, Y g:i a', $entity->get($field)->value);
-      $strings[] = str_replace('_', ' ', ucfirst($field)) . ": {$value}";
+      $strings[] = "<strong>{$label}:</strong> {$value}";
     }
   }
   $full_message = implode('<br>', $strings);
