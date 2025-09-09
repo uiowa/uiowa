@@ -499,7 +499,7 @@ function sitenow_signage_ief_schedule_callback($entity, $variables) {
 
   return [
     '#type' => 'markup',
-    '#markup' => $full_message,
+    '#markup' => "<small>{$full_message}</small>",
   ];
 }
 
