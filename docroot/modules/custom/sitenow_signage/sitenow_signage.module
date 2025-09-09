@@ -426,6 +426,8 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         $variables['content']['events'] = [
           '#type' => 'markup',
           '#markup' => t('There are currently no scheduled events to display.'),
+          '#prefix' => '<div class="element--padding__left--minimal element--padding__right--minimal">',
+          '#suffix' => '</div>',
         ];
       }
 
