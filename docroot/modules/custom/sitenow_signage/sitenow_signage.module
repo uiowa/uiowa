@@ -521,7 +521,7 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
     $thumbnail_uri = $media_entity->get('thumbnail')?->entity?->getFileUri();
     return [
       '#theme' => 'image_style',
-      '#style_name' => 'thumbnail',
+      '#style_name' => 'media_library',
       '#uri' => $thumbnail_uri,
     ];
   }
