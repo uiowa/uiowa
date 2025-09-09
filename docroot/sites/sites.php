@@ -7804,3 +7804,9 @@ $sites['athleticssportspsych.uiowa.ddev.site'] = 'sportspsych.athletics.uiowa.ed
 $sites['athleticssportspsych.dev.drupal.uiowa.edu'] = 'sportspsych.athletics.uiowa.edu';
 $sites['athleticssportspsych.stage.drupal.uiowa.edu'] = 'sportspsych.athletics.uiowa.edu';
 $sites['athleticssportspsych.prod.drupal.uiowa.edu'] = 'sportspsych.athletics.uiowa.edu';
+
+// Directory aliases for doorn.lab.uiowa.edu.
+$sites['labdoorn.uiowa.ddev.site'] = 'doorn.lab.uiowa.edu';
+$sites['labdoorn.dev.drupal.uiowa.edu'] = 'doorn.lab.uiowa.edu';
+$sites['labdoorn.stage.drupal.uiowa.edu'] = 'doorn.lab.uiowa.edu';
+$sites['labdoorn.prod.drupal.uiowa.edu'] = 'doorn.lab.uiowa.edu';
