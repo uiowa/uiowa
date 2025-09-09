@@ -466,30 +466,20 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
         'label' => t('Type'),
         'weight' => 1,
       ];
-      $fields['field_slide_description'] = [
-        'type' => 'field',
-        'label' => t('Description'),
-        'weight' => 2,
-      ];
-      $fields['uid'] = [
-        'type' => 'field',
-        'label' => t('Author'),
-        'weight' => 3,
-      ];
       $fields['field_slide_duration'] = [
         'type' => 'field',
         'label' => t('Duration'),
-        'weight' => 4,
+        'weight' => 2,
       ];
       $fields['publish_on'] = [
         'type' => 'field',
         'label' => t('Publish on'),
-        'weight' => 5,
+        'weight' => 3,
       ];
       $fields['unpublish_on'] = [
         'type' => 'field',
         'label' => t('Unpublish on'),
-        'weight' => 6,
+        'weight' => 4,
       ];
     }
   }
