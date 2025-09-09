@@ -497,9 +497,14 @@ function sitenow_signage_ief_schedule_callback($entity, $variables) {
  * Callback function to render slide type.
  */
 function sitenow_signage_ief_slide_type_callback($entity, $variables) {
-  // @todo Include some error checking here instead of just
-  //   grabbing all willy nilly.
-  $paragraph = $entity->get('field_slide_widget')->entity;
+  // If we don't have the field, or if it's empty,
+  // say so.
+  if (!$entity->hasField('field_slide_widget') || $entity->get('field_slide_widget')->isEmpty()) {
+    return [
+      '#markup' => t('No slide attached.'),
+    ];
+  }
+  $paragraph = $entity->get('field_slide_widget')?->entity;
   return [
     '#markup' => $paragraph->getParagraphType()->label(),
   ];
