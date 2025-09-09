@@ -412,6 +412,9 @@ function sitenow_signage_get_youtube_duration($url) {
     $response = \Drupal::httpClient()->request('GET', $endpoint, [
       'timeout' => 10,
       'http_errors' => FALSE,
+      'headers' => [
+        'Referer' => \Drupal::request()->getSchemeAndHttpHost(),
+      ],
     ]);
 
     // Decode JSON response body into array.
