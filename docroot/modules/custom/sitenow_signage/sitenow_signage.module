@@ -338,13 +338,6 @@ function sitenow_signage_preprocess_page(&$variables) {
 function sitenow_signage_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
 
-  // @todo Restrict this with further checks to prevent it
-  //   bleeding into other node edit forms.
-  if (\Drupal::routeMatch()->getRouteName() === 'entity.node.edit_form') {
-    $variables['content'] = $paragraph->getParagraphType()->label();
-    return;
-  }
-
   if ($paragraph->bundle() == 'slide_image' &&
     isset($variables['content']['field_slide_image'])) {
 
@@ -462,9 +455,10 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
     // Add additional fields to the slide IEF.
     if (in_array('slide', $context['allowed_bundles'])) {
       $fields['field_slide_widget'] = [
-        'type' => 'field',
+        'type' => 'callback',
         'label' => t('Type'),
         'weight' => 1,
+        'callback' => 'sitenow_signage_ief_slide_type_callback',
       ];
       $fields['field_slide_duration'] = [
         'type' => 'field',
@@ -472,15 +466,41 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
         'weight' => 2,
       ];
       $fields['publish_on'] = [
-        'type' => 'field',
-        'label' => t('Publish on'),
+        'type' => 'callback',
+        'label' => t('Schedule'),
         'weight' => 3,
-      ];
-      $fields['unpublish_on'] = [
-        'type' => 'field',
-        'label' => t('Unpublish on'),
-        'weight' => 4,
+        'callback' => 'sitenow_signage_ief_schedule_callback',
       ];
     }
   }
+}
+
+/**
+ * Callback function to render combined schedule fields.
+ */
+function sitenow_signage_ief_schedule_callback($entity, $variables) {
+  $strings = [];
+  foreach (['publish_on', 'unpublish_on'] as $field) {
+    if ($entity->hasField($field) && !$entity->get($field)->isEmpty()) {
+      $value = date('M j, Y g:i a', $entity->get($field)->value);
+      $strings[] = str_replace('_', ' ', ucfirst($field)) . ": {$value}";
+    }
+  }
+  $full_message = implode('<br>', $strings);
+
+  return [
+    '#markup' => $full_message,
+  ];
+}
+
+/**
+ * Callback function to render slide type.
+ */
+function sitenow_signage_ief_slide_type_callback($entity, $variables) {
+  // @todo Include some error checking here instead of just
+  //   grabbing all willy nilly.
+  $paragraph = $entity->get('field_slide_widget')->entity;
+  return [
+    '#markup' => $paragraph->getParagraphType()->label(),
+  ];
 }
