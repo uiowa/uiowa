@@ -505,6 +505,17 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
     ];
   }
   $paragraph = $entity->get('field_slide_widget')?->entity;
+  // If it's an image, grab the thumbnail and return
+  // a render array with that instead.
+  if ($paragraph->getParagraphType()->id() === 'slide_image') {
+    $media_entity = $paragraph->get('field_slide_image')->entity;
+    $thumbnail_uri = $media_entity->get('thumbnail')?->entity?->getFileUri();
+    return [
+      '#theme' => 'image_style',
+      '#style_name' => 'thumbnail',
+      '#uri' => $thumbnail_uri,
+    ];
+  }
   return [
     '#markup' => $paragraph->getParagraphType()->label(),
   ];
