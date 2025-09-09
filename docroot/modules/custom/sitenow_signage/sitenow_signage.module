@@ -498,6 +498,7 @@ function sitenow_signage_ief_schedule_callback($entity, $variables) {
   $full_message = implode('<br>', $strings);
 
   return [
+    '#type' => 'markup',
     '#markup' => $full_message,
   ];
 }
@@ -510,6 +511,7 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
   // say so.
   if (!$entity->hasField('field_slide_widget') || $entity->get('field_slide_widget')->isEmpty()) {
     return [
+      '#type' => 'markup',
       '#markup' => t('No slide attached.'),
     ];
   }
@@ -526,6 +528,7 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
     ];
   }
   return [
+    '#type' => 'markup',
     '#markup' => $paragraph->getParagraphType()->label(),
   ];
 }
