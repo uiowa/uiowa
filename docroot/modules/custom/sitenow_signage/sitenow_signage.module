@@ -481,8 +481,6 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
  * Callback function to render combined schedule fields.
  */
 function sitenow_signage_ief_schedule_callback($entity, $variables) {
-  $strings = [];
-
   // Grab and format our publication information.
   $published = ($entity->isPublished()) ? "Published" : "Unpublished";
   $strings[] = "<strong>Status</strong>: {$published}";
@@ -495,11 +493,15 @@ function sitenow_signage_ief_schedule_callback($entity, $variables) {
       $strings[] = "<strong>{$label}:</strong> {$value}";
     }
   }
+  $smallify = count($strings) > 1;
   $full_message = implode('<br>', $strings);
+  if ($smallify) {
+    $full_message = "<small>{$full_message}</small>";
+  }
 
   return [
     '#type' => 'markup',
-    '#markup' => "<small>{$full_message}</small>",
+    '#markup' => $full_message,
   ];
 }
 
