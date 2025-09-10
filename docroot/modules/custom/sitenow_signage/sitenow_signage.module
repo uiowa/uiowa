@@ -96,7 +96,8 @@ function sitenow_signage_entity_presave(EntityInterface $entity) {
         }
       }
 
-      // If this slide has a video paragraph, set the video duration in field_slide_duration_other.
+      // If this slide has a video paragraph,
+      // set the video duration in field_slide_duration_other.
       if ($has_video && $video_duration > 0) {
         $entity->set('field_slide_duration_other', $video_duration);
       }
@@ -421,7 +422,8 @@ function sitenow_signage_get_youtube_duration($url) {
       return 0;
     }
 
-    // Silent return for content/data issues (corrupted JSON, missing video data).
+    // Silent return for content/data issues
+    // (corrupted JSON, missing video data).
     if (json_last_error() !== JSON_ERROR_NONE ||
       empty($data['items'][0]['contentDetails']['duration'])) {
       return 0;
@@ -429,7 +431,8 @@ function sitenow_signage_get_youtube_duration($url) {
 
     // Create DateInterval object from ISO 8601 duration string like "PT5M33S".
     $interval = new DateInterval($data['items'][0]['contentDetails']['duration']);
-    // Calculate total seconds by converting hours, minutes, and seconds to seconds.
+    // Calculate total seconds by
+    // converting hours, minutes, and seconds to seconds.
     $seconds = ($interval->h * 3600) + ($interval->i * 60) + $interval->s;
 
     return $seconds;
@@ -834,7 +837,8 @@ function sitenow_signage_slides_size_allowed_values() {
 /**
  * Convert field array to query array.
  *
- * Convert initial field value structure into an array that can be given to a URL query.
+ * Convert initial field value structure into an array
+ * that can be given to a URL query.
  *
  * @param array $data
  *   Data to be converted into value query array.
