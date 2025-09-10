@@ -2,8 +2,45 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 @use 'sass:color';
 
+$pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
+// Container for signs.
+.signage__slideshow {
+  img {
+    width: 100%;
+  }
+
+  .slide__headline {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: .08rem;
+    text-transform: uppercase;
+    padding: 2rem 2rem 1rem;
+  }
+}
+
+// Empty sign block iowa logo.
+.signage--empty {
+  .logo--tab {
+    width: 100%;
+    height: auto;
+  }
+
+  .logo-icon {
+    height: 150px;
+  }
+}
+
 // Sign header.
 .page-node-type-sign {
+  //background-color: var(--brand-secondary);
+
+  // Adjust padding to be smaller for signage.
+  .layout.layout__container {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
   // Adjust margins to be smaller for signage.
   .page__container--full.layout__container .layout__spacing_container {
     margin-left: 0;
@@ -11,38 +48,8 @@
   }
 
   // Adjust column gap to be smaller for signage.
-  .layout {
-    &[class*="twocol"],
-    &[class*="threecol"] {
-      .layout__spacing_container {
-        @include utilities.breakpoint(md) {
-          column-gap: variables.$mobile-width-gutter;
-        }
-      }
-    }
-
-    // Removes the empty sign fallback if there is content in the sign.
-    + .signage--empty {
-      display: none;
-    }
-  }
-
-  // Empty sign block iowa logo.
-  .signage--empty {
-    .logo--tab {
-      width: 100%;
-      height: auto;
-    }
-
-    .logo-icon {
-      height: 150px;
-    }
-  }
-
-  // Adjust padding to be smaller for signage.
-  .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
-    padding-bottom: 0;
-    padding-top: 0;
+  .layout + .signage--empty {
+    display: none;
   }
 
   // Set sign background to black.
@@ -50,11 +57,6 @@
     background: variables.$secondary;
   }
 
-}
-
-// Slideshow.
-.signage__slideshow img {
-  width: 100%;
 }
 
 .node--type-slide.node--unpublished:after {
@@ -80,9 +82,10 @@ div.bg--black .signage__table {
 }
 
 .signage__table {
-  $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
-
   background-color: variables.$blk;
+  td, th {
+    padding: 1rem 2rem;
+  }
   tr {
     border-bottom: 7px solid variables.$secondary;
     font-weight: variables.$font-weight-normal;
@@ -110,10 +113,10 @@ div.bg--black .signage__table {
     letter-spacing: 0.08rem;
     text-align: left;
     color: variables.$light;
+    padding: 2rem;
   }
 
   thead {
-    border-top: 7px solid variables.$secondary;
     border-bottom: 7px solid variables.$secondary;
 
     th {
@@ -161,5 +164,39 @@ div.bg--black .signage__table {
     th, td {
       font-size: variables.$h4-font-size;
     }
+  }
+}
+
+.paragraph--type--slide-events {
+
+  .card.borderless:not([class*=bg--]) {
+    padding: 1rem 2rem;
+  }
+
+  .card .headline {
+    font-size: variables.$h2-font-size;
+  }
+
+  .card__subtitle {
+    font-size: variables.$h3-font-size;
+    opacity: 1;
+    color: var(--brand-primary);
+  }
+
+  .card__meta {
+    font-size: variables.$h4-font-size;
+
+    .fa-field-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .svg-inline--fa {
+      height: variables.$h5-font-size;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-top: 7px;
   }
 }
