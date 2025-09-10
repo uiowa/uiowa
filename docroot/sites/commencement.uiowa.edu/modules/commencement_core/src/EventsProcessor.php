@@ -5,8 +5,8 @@ namespace Drupal\commencement_core;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\sitenow_events\ContentHubApiClientInterface;
 use Drupal\uiowa_core\EntityProcessorBase;
-use Drupal\uiowa_events\ContentHubApiClientInterface;
 
 /**
  * Sync event information.
@@ -44,7 +44,7 @@ class EventsProcessor extends EntityProcessorBase {
   /**
    * The Content Hub API client.
    *
-   * @var \Drupal\uiowa_events\ContentHubApiClientInterface
+   * @var \Drupal\sitenow_events\ContentHubApiClientInterface
    */
   protected ContentHubApiClientInterface $apiClient;
 
@@ -53,7 +53,7 @@ class EventsProcessor extends EntityProcessorBase {
    */
   public function __construct() {
     parent::__construct();
-    $this->apiClient = \Drupal::service('uiowa_events.content_hub_api_client');
+    $this->apiClient = \Drupal::service('sitenow_events.content_hub_api_client');
     $this->timezone = new \DateTimeZone(DateTimeItemInterface::STORAGE_TIMEZONE);
   }
 

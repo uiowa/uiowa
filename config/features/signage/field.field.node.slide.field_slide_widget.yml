@@ -7,14 +7,16 @@ dependencies:
     - node.type.slide
     - paragraphs.paragraphs_type.astra_room_schedule
     - paragraphs.paragraphs_type.outlook_events
+    - paragraphs.paragraphs_type.slide_events
     - paragraphs.paragraphs_type.slide_image
+    - paragraphs.paragraphs_type.slide_video
   module:
     - entity_reference_revisions
 id: node.slide.field_slide_widget
 field_name: field_slide_widget
 entity_type: node
 bundle: slide
-label: 'Slide Content'
+label: 'Content'
 description: ''
 required: true
 translatable: false
@@ -25,29 +27,37 @@ settings:
   handler_settings:
     target_bundles:
       slide_image: slide_image
-      astra_room_schedule: astra_room_schedule
+      slide_video: slide_video
+      slide_events: slide_events
       outlook_events: outlook_events
+      astra_room_schedule: astra_room_schedule
     negate: 0
     target_bundles_drag_drop:
       astra_room_schedule:
-        weight: 7
+        weight: -15
         enabled: true
       outlook_events:
-        weight: 7
+        weight: -16
+        enabled: true
+      slide_events:
+        weight: -17
         enabled: true
       slide_image:
-        weight: -13
+        weight: -19
+        enabled: true
+      slide_video:
+        weight: -18
         enabled: true
       uiowa_collection_item:
-        weight: -11
+        weight: -14
         enabled: false
       uiowa_contact:
-        weight: -10
+        weight: -13
         enabled: false
       uiowa_slide:
-        weight: -9
+        weight: -12
         enabled: false
       uiowa_timeline_item:
-        weight: -8
+        weight: -11
         enabled: false
 field_type: entity_reference_revisions
