@@ -7780,3 +7780,33 @@ $sites['centerintellectualfreedom.uiowa.ddev.site'] = 'intellectualfreedom.cente
 $sites['centerintellectualfreedom.dev.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
 $sites['centerintellectualfreedom.stage.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
 $sites['centerintellectualfreedom.prod.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
+
+// Directory aliases for bunsawat.lab.uiowa.edu.
+$sites['labbunsawat.uiowa.ddev.site'] = 'bunsawat.lab.uiowa.edu';
+$sites['labbunsawat.dev.drupal.uiowa.edu'] = 'bunsawat.lab.uiowa.edu';
+$sites['labbunsawat.stage.drupal.uiowa.edu'] = 'bunsawat.lab.uiowa.edu';
+$sites['labbunsawat.prod.drupal.uiowa.edu'] = 'bunsawat.lab.uiowa.edu';
+
+// Directory aliases for gardeningclub.org.uiowa.edu.
+$sites['orggardeningclub.uiowa.ddev.site'] = 'gardeningclub.org.uiowa.edu';
+$sites['orggardeningclub.dev.drupal.uiowa.edu'] = 'gardeningclub.org.uiowa.edu';
+$sites['orggardeningclub.stage.drupal.uiowa.edu'] = 'gardeningclub.org.uiowa.edu';
+$sites['orggardeningclub.prod.drupal.uiowa.edu'] = 'gardeningclub.org.uiowa.edu';
+
+// Directory aliases for iyws.program.uiowa.edu.
+$sites['programiyws.uiowa.ddev.site'] = 'iyws.program.uiowa.edu';
+$sites['programiyws.dev.drupal.uiowa.edu'] = 'iyws.program.uiowa.edu';
+$sites['programiyws.stage.drupal.uiowa.edu'] = 'iyws.program.uiowa.edu';
+$sites['programiyws.prod.drupal.uiowa.edu'] = 'iyws.program.uiowa.edu';
+
+// Directory aliases for sportspsych.athletics.uiowa.edu.
+$sites['athleticssportspsych.uiowa.ddev.site'] = 'sportspsych.athletics.uiowa.edu';
+$sites['athleticssportspsych.dev.drupal.uiowa.edu'] = 'sportspsych.athletics.uiowa.edu';
+$sites['athleticssportspsych.stage.drupal.uiowa.edu'] = 'sportspsych.athletics.uiowa.edu';
+$sites['athleticssportspsych.prod.drupal.uiowa.edu'] = 'sportspsych.athletics.uiowa.edu';
+
+// Directory aliases for doorn.lab.uiowa.edu.
+$sites['labdoorn.uiowa.ddev.site'] = 'doorn.lab.uiowa.edu';
+$sites['labdoorn.dev.drupal.uiowa.edu'] = 'doorn.lab.uiowa.edu';
+$sites['labdoorn.stage.drupal.uiowa.edu'] = 'doorn.lab.uiowa.edu';
+$sites['labdoorn.prod.drupal.uiowa.edu'] = 'doorn.lab.uiowa.edu';
