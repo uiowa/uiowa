@@ -1013,54 +1013,47 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
   if ($context['field_name'] === 'field_sign_slides') {
     // Add additional fields to the slide IEF.
     if (in_array('slide', $context['allowed_bundles'])) {
-      $fields['field_slide_widget'] = [
+      // Remove the default Title field. We'll add that with formatting.
+      unset($fields['label']);
+      $fields['title'] = [
+        'type' => 'callback',
+        'label' => t('Title'),
+        'weight' => 0,
+        'callback' => 'sitenow_signage_ief_slide_title_callback',
+      ];
+      $fields['slide_type'] = [
         'type' => 'callback',
         'label' => t('Type'),
         'weight' => 1,
         'callback' => 'sitenow_signage_ief_slide_type_callback',
       ];
-      $fields['field_slide_duration'] = [
-        'type' => 'field',
+      $fields['slide_duration'] = [
+        'type' => 'callback',
         'label' => t('Duration'),
         'weight' => 2,
+        'callback' => 'sitenow_signage_ief_slide_duration_callback',
       ];
       // Remove the default Status field. We'll add that info with scheduling.
       unset($fields['status']);
-      $fields['publish_on'] = [
+      $fields['slide_publication'] = [
         'type' => 'callback',
         'label' => t('Publishing schedule'),
         'weight' => 3,
-        'callback' => 'sitenow_signage_ief_schedule_callback',
+        'callback' => 'sitenow_signage_ief_slide_publication_callback',
       ];
     }
   }
 }
 
 /**
- * Callback function to render combined schedule fields.
+ * Callback function to format the title field.
  */
-function sitenow_signage_ief_schedule_callback($entity, $variables) {
-  // Grab and format our publication information.
-  $published = ($entity->isPublished()) ? "Published" : "Unpublished";
-  $strings[] = "<strong>Status</strong>: {$published}";
+function sitenow_signage_ief_slide_title_callback($entity, $variables) {
 
-  // Do the same with the scheduling information.
-  foreach (['publish_on', 'unpublish_on'] as $field) {
-    if ($entity->hasField($field) && !$entity->get($field)->isEmpty()) {
-      $label = str_replace('_', ' ', ucfirst($field));
-      $value = date('M j, Y g:i a', $entity->get($field)->value);
-      $strings[] = "<strong>{$label}:</strong> {$value}";
-    }
-  }
-  $smallify = count($strings) > 1;
-  $full_message = implode('<br>', $strings);
-  if ($smallify) {
-    $full_message = "<small>{$full_message}</small>";
-  }
-
+  $title = $entity->label();
   return [
     '#type' => 'markup',
-    '#markup' => $full_message,
+    '#markup' => "<small>{$title}</small>",
   ];
 }
 
@@ -1088,8 +1081,50 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
       '#uri' => $thumbnail_uri,
     ];
   }
+  $label = $paragraph->getParagraphType()->label();
   return [
     '#type' => 'markup',
-    '#markup' => $paragraph->getParagraphType()->label(),
+    '#markup' => "<small>{$label}</small>",
+  ];
+}
+
+/**
+ * Callback function to format the duration field.
+ */
+function sitenow_signage_ief_slide_duration_callback($entity, $variables) {
+  /** @var \Drupal\Core\Field\FieldStorageDefinitionInterface $field_definition */
+  $field_definition = $entity->field_slide_duration
+    ->getFieldDefinition()
+    ->getFieldStorageDefinition();
+  $field_allowed_options = options_allowed_values($field_definition, $entity);
+
+  $duration = $field_allowed_options[$entity->field_slide_duration->value];
+  return [
+    '#type' => 'markup',
+    '#markup' => "<small>{$duration}</small>",
+  ];
+}
+
+/**
+ * Callback function to render combined schedule fields.
+ */
+function sitenow_signage_ief_slide_publication_callback($entity, $variables) {
+  // Grab and format our publication information.
+  $published = ($entity->isPublished()) ? "Published" : "Unpublished";
+  $strings[] = "<strong>Status</strong>: {$published}";
+
+  // Do the same with the scheduling information.
+  foreach (['publish_on', 'unpublish_on'] as $field) {
+    if ($entity->hasField($field) && !$entity->get($field)->isEmpty()) {
+      $label = str_replace('_', ' ', ucfirst($field));
+      $value = date('M j, Y g:i a', $entity->get($field)->value);
+      $strings[] = "<strong>{$label}:</strong> {$value}";
+    }
+  }
+  $full_message = implode('<br>', $strings);
+
+  return [
+    '#type' => 'markup',
+    '#markup' => "<small>{$full_message}</small>",
   ];
 }
