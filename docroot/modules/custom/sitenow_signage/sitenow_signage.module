@@ -1037,7 +1037,7 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
       unset($fields['status']);
       $fields['slide_publication'] = [
         'type' => 'callback',
-        'label' => t('Publishing schedule'),
+        'label' => t('Schedule'),
         'weight' => 3,
         'callback' => 'sitenow_signage_ief_slide_publication_callback',
       ];
@@ -1111,12 +1111,12 @@ function sitenow_signage_ief_slide_duration_callback($entity, $variables) {
 function sitenow_signage_ief_slide_publication_callback($entity, $variables) {
   // Grab and format our publication information.
   $published = ($entity->isPublished()) ? "Published" : "Unpublished";
-  $strings[] = "<strong>Status</strong>: {$published}";
+  $strings[] = "<strong>{$published}</strong>";
 
   // Do the same with the scheduling information.
   foreach (['publish_on', 'unpublish_on'] as $field) {
     if ($entity->hasField($field) && !$entity->get($field)->isEmpty()) {
-      $label = str_replace('_', ' ', ucfirst($field));
+      $label = str_replace('_on', ' ', ucfirst($field));
       $value = date('M j, Y g:i a', $entity->get($field)->value);
       $strings[] = "<strong>{$label}:</strong> {$value}";
     }
