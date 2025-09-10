@@ -5,13 +5,113 @@
  * Module code for SiteNow Signage.
  */
 
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_signage_form_alter(
+  &$form,
+  FormStateInterface $form_state,
+  $form_id,
+) {
+  if (in_array($form_id, ['node_sign_form', 'node_sign_edit_form'])) {
+    $form['#attached']['library'][] = 'sitenow_signage/duration-sign';
+  }
+  if (in_array($form_id, ['node_slide_form', 'node_slide_edit_form'])) {
+    $form['#attached']['library'][] = 'sitenow_signage/duration-slide';
+    if (isset($form['field_slide_duration_other'])) {
+      $form['field_slide_duration_other']['#states'] = [
+        'visible' => [
+          ':input[id="edit-field-slide-duration"]' => [
+            'value' => '0',
+          ],
+        ],
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function sitenow_signage_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  // Show/hide the field_slide_duration_other field for IEF.
+  if ($entity_form['#entity_type'] === 'node' && $entity_form['#bundle'] === 'slide') {
+    if (isset($entity_form['field_slide_duration_other'])) {
+      // Generate unique IDs.
+      $unique_id = uniqid('slide_duration_');
+
+      $entity_form['field_slide_duration']['widget']['#id'] = $unique_id . '_trigger';
+      $entity_form['field_slide_duration_other']['#id'] = $unique_id . '_target';
+
+      $entity_form['field_slide_duration_other']['#states'] = [
+        'visible' => [
+          '#' . $unique_id . '_trigger' => ['value' => '0'],
+        ],
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_signage_entity_presave(EntityInterface $entity) {
+  // Only process slide nodes.
+  if ($entity->getEntityTypeId() === 'node' && $entity->bundle() === 'slide') {
+
+    // Check if the entity has both duration fields.
+    if ($entity->hasField('field_slide_duration') && $entity->hasField('field_slide_duration_other')) {
+
+      $duration_value = $entity->get('field_slide_duration')->value;
+      $has_video = FALSE;
+      $video_duration = 0;
+
+      // Check if this slide has a video paragraph.
+      if ($entity->hasField('field_slide_widget') && !$entity->get('field_slide_widget')->isEmpty()) {
+        foreach ($entity->get('field_slide_widget') as $paragraph_item) {
+          $paragraph = $paragraph_item->entity;
+          if ($paragraph && $paragraph->bundle() === 'slide_video') {
+            $has_video = TRUE;
+            // Get the media entity from the video paragraph.
+            if ($paragraph->hasField('field_slide_video') && !$paragraph->get('field_slide_video')->isEmpty()) {
+              $media_entity = $paragraph->get('field_slide_video')->entity;
+              if ($media_entity) {
+                $video_duration = sitenow_signage_get_video_duration($media_entity);
+                if ($video_duration > 0) {
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // If this slide has a video paragraph, set the video duration in field_slide_duration_other.
+      if ($has_video && $video_duration > 0) {
+        $entity->set('field_slide_duration_other', $video_duration);
+      }
+      // If no video and duration is not "0", clear field_slide_duration_other.
+      elseif (!$has_video && $duration_value !== '0' && $duration_value !== 0) {
+        $entity->get('field_slide_duration_other')->setValue([]);
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, $form_state, $form_id) {
+function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Update the custom alerts description text to note that
   // custom alerts will not display on signs.
   $form['custom_alert_display']['#description'] = $form['custom_alert_display']['#description'] . ' Custom alerts will not render on signs.';
@@ -24,14 +124,29 @@ function sitenow_signage_preprocess_field(&$variables) {
   $element = $variables['element'];
   switch ($element['#field_name']) {
     case 'field_sign_slides':
+      $first_slide_interval = NULL;
       foreach ($variables['items'] as &$item) {
         $node = $item['content']['#node'];
         // Set a reasonable default just in case.
         $item['interval'] = '15000';
-        if ($node->hasField('field_slide_duration') && !$node->field_slide_duration->isEmpty()) {
-          $item['interval'] = $item['content']['#node']->field_slide_duration->value;
+
+        // Duration priority: manual other duration > manual preset duration.
+        if ($node->hasField('field_slide_duration_other') &&
+          $node->field_slide_duration_other->value > 0) {
+          $item['interval'] = $node->field_slide_duration_other->value * 1000;
+        }
+        elseif ($node->hasField('field_slide_duration') &&
+          $node->field_slide_duration->value > 0) {
+          $item['interval'] = $node->field_slide_duration->value;
+        }
+
+        // Capture the first slide's interval.
+        if ($first_slide_interval === NULL) {
+          $first_slide_interval = $item['interval'];
         }
       }
+      // Pass the first slide interval to slideshow.js.
+      $variables['#attached']['drupalSettings']['signageSlideshow']['firstSlideInterval'] = $first_slide_interval;
       break;
 
     case 'field_astra_schedule_room':
@@ -112,24 +227,12 @@ function sitenow_signage_preprocess_field(&$variables) {
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Need to traverse up to the sign node to get orientation if available.
-      $parent_slide = $paragraph->getParentEntity();
-      $referring_item = $parent_slide->_referringItem;
-      $orientation = 'horizontal';
-      if ($referring_item) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-        $referring_field = $referring_item->getParent();
-        if ($referring_field) {
-          $parent_entity = $referring_field->getParent();
-          // Add cache tag for the sign node so table
-          // updates when sign orientation changes.
-          $variables['#cache']['tags'][] = 'node:' . $parent_entity->get('nid')->value;
-          if ($parent_entity->get('field_sign_orientation')->value == 'vertical') {
-            $orientation = 'vertical';
-          }
-        }
-      }
+      // Add cache tag for the sign node so table
+      // updates when sign orientation changes.
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
 
       // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
@@ -257,7 +360,230 @@ function sitenow_signage_preprocess_field(&$variables) {
       $variables['items'] = array_slice($variables['items'], 0, 1);
 
       break;
+  }
+}
 
+/**
+ * Get video duration.
+ */
+function sitenow_signage_get_video_duration($media_entity) {
+  $duration = 0;
+
+  if ($media_entity->hasField('field_media_oembed_video')) {
+    $oembed_field = $media_entity->get('field_media_oembed_video');
+    if (!$oembed_field->isEmpty()) {
+      $url = $oembed_field->value;
+
+      if (str_contains($url, 'youtube.com') || str_contains($url, 'youtu.be')) {
+        $duration = sitenow_signage_get_youtube_duration($url);
+      }
+      elseif (str_contains($url, 'vimeo.com')) {
+        $duration = sitenow_signage_get_vimeo_duration($url);
+      }
+    }
+  }
+
+  return $duration;
+}
+
+/**
+ * Get YouTube duration using YouTube Data API.
+ */
+function sitenow_signage_get_youtube_duration($url) {
+  $api_key = \Drupal::config('sitenow_signage.settings')->get('youtube_api_key');
+
+  if (!preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $url, $matches)) {
+    return 0;
+  }
+
+  $endpoint = "https://www.googleapis.com/youtube/v3/videos?id={$matches[1]}&part=contentDetails&key={$api_key}";
+
+  try {
+    // Make HTTP GET request to YouTube Data API v3 to fetch video details.
+    $response = \Drupal::httpClient()->request('GET', $endpoint, [
+      'timeout' => 10,
+      'http_errors' => FALSE,
+      'headers' => [
+        'Referer' => \Drupal::request()->getSchemeAndHttpHost(),
+      ],
+    ]);
+
+    // Decode JSON response body into array.
+    $data = json_decode($response->getBody(), TRUE);
+
+    // Check if request was successful.
+    // Log API response code for server errors, auth issues, quota exceeded.
+    if ($response->getStatusCode() !== 200) {
+      \Drupal::logger('sitenow_signage')->warning('YouTube API returned status @status: @endpoint', [
+        '@status' => $response->getStatusCode(),
+        '@endpoint' => $endpoint,
+      ]);
+      return 0;
+    }
+
+    // Silent return for content/data issues (corrupted JSON, missing video data).
+    if (json_last_error() !== JSON_ERROR_NONE ||
+      empty($data['items'][0]['contentDetails']['duration'])) {
+      return 0;
+    }
+
+    // Create DateInterval object from ISO 8601 duration string like "PT5M33S".
+    $interval = new DateInterval($data['items'][0]['contentDetails']['duration']);
+    // Calculate total seconds by converting hours, minutes, and seconds to seconds.
+    $seconds = ($interval->h * 3600) + ($interval->i * 60) + $interval->s;
+
+    return $seconds;
+  }
+  catch (Exception $e) {
+    \Drupal::logger('sitenow_signage')->error('YouTube API connection failed for @endpoint: @message', [
+      '@endpoint' => $endpoint,
+      '@message' => $e->getMessage(),
+    ]);
+    return 0;
+  }
+}
+
+/**
+ * Get Vimeo duration from oEmbed API.
+ */
+function sitenow_signage_get_vimeo_duration($url) {
+  $oembed_url = 'https://vimeo.com/api/oembed.json?url=' . urlencode($url);
+
+  try {
+    $client = \Drupal::httpClient();
+    $response = $client->request('GET', $oembed_url, ['http_errors' => FALSE]);
+
+    // Log API response code for server errors, auth issues, quota exceeded.
+    if ($response->getStatusCode() !== 200) {
+      \Drupal::logger('sitenow_signage')->warning('Vimeo API returned status @status: @endpoint', [
+        '@status' => $response->getStatusCode(),
+        '@endpoint' => $oembed_url,
+      ]);
+      return 0;
+    }
+
+    $body = (string) $response->getBody();
+    $data = json_decode($body, TRUE);
+
+    if (isset($data['duration'])) {
+      return (int) $data['duration'];
+    }
+  }
+  catch (Exception $e) {
+    \Drupal::logger('sitenow_signage')->error('Vimeo API connection failed for @endpoint: @message', [
+      '@endpoint' => $oembed_url,
+      '@message' => $e->getMessage(),
+    ]);
+    return 0;
+  }
+
+  return 0;
+}
+
+/**
+ * Implements hook_preprocess_media().
+ */
+function sitenow_signage_preprocess_media__remote_video(&$variables) {
+  $media = $variables['media'];
+  $referring_item = $media->_referringItem;
+  if (!is_null($referring_item)) {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+    $referring_field = $referring_item->getParent();
+    // If the referring field exists...
+    if ($referring_field) {
+      $parent_entity = $referring_field->getParent();
+      $parent_entity = $parent_entity->getEntity();
+      // Make sure this only gets applied this media is being requested from
+      // the 'slide_video' paragraph type.
+      if ($parent_entity->getType() == 'slide_video') {
+        $src = $variables['content']['field_media_oembed_video'][0]['#attributes']['src'];
+        // Split src into URL and params.
+        [$base_url, $params] = explode('?', $src);
+        // Get the individual params.
+        $params = explode('&', $params);
+        // Convert the params into a key/value array type.
+        $param_array = [
+          'url' => '',
+          'max_width' => 0,
+          'max_height' => 0,
+        ];
+        foreach ($params as $param) {
+          [$key, $value] = explode('=', $param);
+          $param_array[$key] = $value;
+        }
+        // Decode the URL for processing.
+        $param_array['url'] = urldecode($param_array['url']);
+
+        // Set the 'setautoplay' param that we'll check for later. This ensures
+        // that only videos embedded on slides get this treatment.
+        if (str_contains($param_array['url'], '?')) {
+          $param_array['url'] .= '&setautoplay';
+        }
+        else {
+          $param_array['url'] .= '?setautoplay';
+        }
+
+        $iframe_url_helper = Drupal::service('media.oembed.iframe_url_helper');
+        // Regenerate the hash to convince the OEmbedIframeController that this
+        // request is legit.
+        $param_array['hash'] = $iframe_url_helper->getHash($param_array['url'], $param_array['max_width'], $param_array['max_height']);
+        // Re-encode the URL because that is how it needs to be rendered.
+        $param_array['url'] = urlencode($param_array['url']);
+        // Getting the params back together!
+        $params = [];
+        foreach ($param_array as $key => $value) {
+          $params[] = $key . '=' . $value;
+        }
+        $params = implode('&', $params);
+        // Re-assemble and reassigned the src.
+        $src = $base_url . '?' . $params;
+        $variables['content']['field_media_oembed_video'][0]['#attributes']['src'] = $src;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
+  // Unfortunately after convincing OEmbedIframeController that our request was
+  // legit, it re-generates the URL, and our changes get lost. So, we grab the
+  // original incoming URL.
+  $url = \Drupal::request()->query->get('url');
+  $params = UrlHelper::parse($url)['query'];
+
+  // Check if the custom query param is present.
+  if (isset($params['setautoplay'])) {
+    /** @var \Drupal\media\OEmbed\Resource $resource */
+    $resource = $variables['resource'];
+
+    if ($resource->getProvider()->getName() === 'YouTube') {
+      // YouTube: add autoplay, loop, mute, playlist params.
+      $original = (string) $variables['media'];
+
+      // Extract video ID for playlist parameter for single videos only.
+      $playlist_param = '';
+      if (!str_contains($original, 'list=') && preg_match('/\/embed\/([a-zA-Z0-9_-]+)/', $original, $matches)) {
+        $playlist_param = '&playlist=' . $matches[1];
+      }
+
+      $variables['media'] = preg_replace(
+        '/src="([^"]*)"/',
+        'src="$1&autoplay=1&loop=1&mute=1&controls=0' . $playlist_param . '"',
+        $original
+      );
+    }
+    elseif ($resource->getProvider()->getName() === 'Vimeo') {
+      // Vimeo: Add autoplay, loop, muted to iframe src.
+      $original = (string) $variables['media'];
+      if (preg_match('/src="([^"]*)"/', $original, $matches)) {
+        $iframe_src = $matches[1];
+        $separator = str_contains($iframe_src, '?') ? '&' : '?';
+        $new_iframe_src = $iframe_src . $separator . 'autoplay=1&loop=1&muted=1&controls=0';
+        $variables['media'] = str_replace($iframe_src, $new_iframe_src, $original);
+      }
+    }
   }
 }
 
@@ -338,34 +664,109 @@ function sitenow_signage_preprocess_page(&$variables) {
 function sitenow_signage_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
 
-  if ($paragraph->bundle() == 'slide_image' &&
-    isset($variables['content']['field_slide_image'])) {
+  switch ($paragraph->bundle()) {
+    case 'slide_image':
+      if (isset($variables['content']['field_slide_image'])) {
 
-    // Get the sign node from the current route.
-    $sign_node = \Drupal::routeMatch()->getParameter('node');
+        // Get the sign node from the current route.
+        $sign_node = \Drupal::routeMatch()->getParameter('node');
 
-    if ($sign_node && $sign_node->bundle() == 'sign') {
-      $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
-    }
+        if ($sign_node && $sign_node->bundle() == 'sign') {
+          $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
+        }
 
-    // Check if we have a sign node with vertical orientation.
-    if ($sign_node &&
-      $sign_node->bundle() == 'sign' &&
-      $sign_node->hasField('field_sign_orientation') &&
-      !$sign_node->get('field_sign_orientation')->isEmpty() &&
-      $sign_node->get('field_sign_orientation')->value === 'vertical') {
+        // Check if we have a sign node with vertical orientation.
+        if (
+          $sign_node &&
+          $sign_node->bundle() == 'sign' &&
+          sitenow_signage_get_orientation($sign_node) === 'vertical'
+        ) {
 
-      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+          $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
 
-      foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
-        if (is_numeric($delta)) {
-          $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
-          if ($media_entity) {
-            $item = $view_builder->view($media_entity, 'vertical_9_16');
+          foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+            if (is_numeric($delta)) {
+              $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+              if ($media_entity) {
+                $item = $view_builder->view($media_entity, 'vertical_9_16');
+              }
+            }
           }
         }
       }
-    }
+      break;
+
+    case 'slide_events':
+      $filters = [
+        'audiences' => sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue()),
+        'department' => sitenow_signage_value_query_string($paragraph?->field_slide_events_department?->getValue()),
+        'interests' => sitenow_signage_value_query_string($paragraph?->field_slide_events_interests?->getValue()),
+        'keywords' => sitenow_signage_value_query_string($paragraph?->field_slide_events_keywords?->getValue()),
+        'place' => sitenow_signage_value_query_string($paragraph?->field_slide_events_location?->getValue()),
+        'types' => sitenow_signage_value_query_string($paragraph?->field_slide_events_types?->getValue()),
+        'enddate' => ['value' => ['date' => '01-01-2100']],
+      ];
+
+      $amount = 3;
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      $orientation = sitenow_signage_get_orientation($sign_node);
+
+      // Cache is refreshed each hour.
+      $variables['#cache']['tags'][] = 'time:hourly';
+
+      // Cache is refreshed when the sign node is saved.
+      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+
+      if ($orientation === 'vertical') {
+        $amount = 5;
+      }
+
+      $query = [
+        'query' => [
+          'display_id' => 'events',
+          'filters' => $filters,
+          'items_per_page' => $amount,
+        ],
+      ];
+
+      $response = \Drupal::service('sitenow_events.content_hub_api_client')->getEventInstances($query);
+      if (!empty($response['events'])) {
+
+        // Build cards for each event and add to the content output.
+        foreach ($response['events'] as $key => $value) {
+          $event = $value['event'];
+          $event['attributes']['class'] = [
+            'borderless',
+            'headline--serif',
+          ];
+          $event['heading_size'] = 'h3';
+          $event['sitenow_events_config'] = \Drupal::config('sitenow_events.settings');
+
+          // Unset the properties we don't want to display.
+          foreach ([
+            'description',
+            'media',
+            'summary',
+          ] as $property) {
+            if (isset($event[$property])) {
+              unset($event[$property]);
+            }
+          }
+
+          $variables['content'][] = sitenow_events_build_card($event);
+        }
+      }
+      else {
+        // Set output for when there is no events.
+        $variables['content']['events'] = [
+          '#type' => 'markup',
+          '#markup' => t('There are currently no scheduled events to display.'),
+          '#prefix' => '<div class="element--padding__left--minimal element--padding__right--minimal">',
+          '#suffix' => '</div>',
+        ];
+      }
+
+      break;
   }
 }
 
@@ -376,6 +777,10 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
   return [
     'field__node__field_sign_slides__sign__default' => [
       'template' => 'field--node--field-sign-slides--sign--default',
+      'base hook' => 'field',
+    ],
+    'field__paragraph__field_headline__slide_events' => [
+      'template' => 'field--paragraph--field-headline--slide-events',
       'base hook' => 'field',
     ],
   ];
@@ -409,6 +814,7 @@ function sitenow_signage_slide_durations_allowed_values() {
     30000 => '30 seconds',
     45000 => '45 seconds',
     60000 => '1 minute',
+    0 => 'Other',
   ];
 
   return $values;
@@ -423,6 +829,103 @@ function sitenow_signage_slides_size_allowed_values() {
     'vertical' => 'Vertical (9:16)',
   ];
   return $options;
+}
+
+/**
+ * Convert field array to query array.
+ *
+ * Convert initial field value structure into an array that can be given to a URL query.
+ *
+ * @param array $data
+ *   Data to be converted into value query array.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ */
+function sitenow_signage_value_query_string(?array $data): string {
+  $items = '';
+  foreach ($data as $item) {
+    if (isset($item['value'])) {
+      if (strlen($items) > 0) {
+        $items = $items . ',' . $item['value'];
+      }
+      else {
+        $items = $item['value'];
+      }
+    }
+  }
+
+  return $items;
+}
+
+/**
+ * Set dynamic allowed values for multiple fields.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  $options = [];
+
+  switch ($definition->getName()) {
+    case 'field_slide_events_audiences':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['event_audience']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_department':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['departments']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_interests':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($data['event_general_interest']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_events_keywords':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('keywords');
+
+      foreach ($data['keywords'] as $keyword) {
+        $options[$keyword['id']] = $keyword['name'];
+      }
+      break;
+
+    case 'field_slide_events_location':
+      $data = \Drupal::service('sitenow_events.content_hub_api_client')->getPlaces();
+
+      foreach ($data['places'] as $place) {
+        // API double-nests places for some reason.
+        $place = $place['place'];
+        $options[$place['id']] = $place['name'];
+      }
+      break;
+
+    case 'field_slide_events_types':
+      $filters = \Drupal::service('sitenow_events.content_hub_api_client')->getFilters('filters');
+
+      $tree = _sitenow_events_build_options_tree($filters['event_types']);
+      $options = _sitenow_events_build_options_list($tree);
+      break;
+  }
+
+  return $options;
+
 }
 
 /**
@@ -445,6 +948,58 @@ function sitenow_signage_outlook_resource_allowed_values() {
   $group = $config->get('group') ?: 'Signage';
   $api_client = \Drupal::service('uiowa_hours.api');
   return $api_client->getResources($group) ?: ['none' => 'No resources available'];
+}
+
+/**
+ * Helper function to get sign orientation.
+ *
+ * @param \Drupal\node\Entity\Node|null $sign_node
+ *   A Node to get the orientation of.
+ *
+ * @return string
+ *   Return the orientation string.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function sitenow_signage_get_orientation(Node|NULL $sign_node): string {
+
+  // Need to traverse up to the sign node to get orientation if available.
+  $orientation = 'horizontal';
+
+  if ($sign_node) {
+    if ($sign_node->get('field_sign_orientation')?->value === 'vertical') {
+      $orientation = 'vertical';
+    }
+  }
+
+  return $orientation;
+}
+
+/**
+ * Helper function to get sign orientation.
+ *
+ * @param Drupal\paragraphs\Entity\Paragraph $paragraph
+ *   A $paragraph object.
+ *
+ * @return \Drupal\node\Entity\Node|null
+ *   Returns the parent Node.
+ *
+ * @todo https://github.com/uiowa/uiowa/issues/5028
+ */
+function sitenow_signage_get_paragraph_node(Paragraph $paragraph) : Node|NULL {
+  // Need to traverse up to the sign node to get orientation if available.
+  $parent_slide = $paragraph->getParentEntity();
+  $referring_item = $parent_slide->_referringItem;
+
+  if ($referring_item) {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+    $referring_field = $referring_item->getParent();
+    if ($referring_field) {
+      return $referring_field->getParent()->getEntity();
+    }
+  }
+
+  return NULL;
 }
 
 /**

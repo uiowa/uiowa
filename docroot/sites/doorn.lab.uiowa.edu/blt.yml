@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdoorn.uiowa.ddev.site
+    protocol: https
+  machine_name: labdoorn
+  human_name: doorn.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdoorn.prod
+drupal:
+  db:
+    database: doorn_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdoorn.prod.drupal.uiowa.edu'
+  requester: sepreston
+  site-name: 'Doorn Lab'

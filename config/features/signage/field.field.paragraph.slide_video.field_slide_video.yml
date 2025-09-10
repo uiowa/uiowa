@@ -1,0 +1,29 @@
+uuid: 4b8190f3-eda2-4984-a134-02b35a796dbd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slide_video
+    - media.type.remote_video
+    - paragraphs.paragraphs_type.slide_video
+id: paragraph.slide_video.field_slide_video
+field_name: field_slide_video
+entity_type: paragraph
+bundle: slide_video
+label: Video
+description: "If you're adding a YouTube playlist, ensure it's the only slide in your slideshow. This will allow the playlist to loop. <br /><br />"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      remote_video: remote_video
+    sort:
+      field: name
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
