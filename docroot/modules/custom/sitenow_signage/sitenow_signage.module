@@ -1092,13 +1092,25 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
  * Callback function to format the duration field.
  */
 function sitenow_signage_ief_slide_duration_callback($entity, $variables) {
-  /** @var \Drupal\Core\Field\FieldStorageDefinitionInterface $field_definition */
-  $field_definition = $entity->field_slide_duration
-    ->getFieldDefinition()
-    ->getFieldStorageDefinition();
-  $field_allowed_options = options_allowed_values($field_definition, $entity);
+  $duration_value = $entity->field_slide_duration->value;
 
-  $duration = $field_allowed_options[$entity->field_slide_duration->value];
+  if ($duration_value === '0') {
+    // A duration value of '0' indicates the "other" duration field
+    // was used, and we need to get and format its value.
+    $num_seconds = $entity->field_slide_duration_other->value;
+    $duration = "{$num_seconds} seconds";
+  }
+  else {
+    // In order to get a regular duration field's human-readable
+    // value, we need to get the field definition's allowed options
+    // and compare with the field's stored value.
+    /** @var \Drupal\Core\Field\FieldStorageDefinitionInterface $field_definition */
+    $field_definition = $entity->field_slide_duration
+      ->getFieldDefinition()
+      ->getFieldStorageDefinition();
+    $field_allowed_options = options_allowed_values($field_definition, $entity);
+    $duration = $field_allowed_options[$entity->field_slide_duration->value];
+  }
   return [
     '#type' => 'markup',
     '#markup' => "<small>{$duration}</small>",
