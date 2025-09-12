@@ -1092,8 +1092,17 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
  * Callback function to format the duration field.
  */
 function sitenow_signage_ief_slide_duration_callback($entity, $variables) {
-  $duration_value = $entity->field_slide_duration->value;
+  // If it's a video duration gets handled separately,
+  // and should be displayed as 'Other' to avoid confusion.
+  $paragraph = $entity->get('field_slide_widget')?->entity;
+  if ($paragraph->getParagraphType()->id() === 'slide_video') {
+    return [
+      '#type' => 'markup',
+      '#markup' => "<small>Other</small>",
+    ];
+  }
 
+  $duration_value = $entity->field_slide_duration->value;
   if ($duration_value === '0') {
     // A duration value of '0' indicates the "other" duration field
     // was used, and we need to get and format its value.
