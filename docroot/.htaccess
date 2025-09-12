@@ -307,6 +307,10 @@ AddEncoding gzip svgz
   Header always set X-Content-Type-Options nosniff
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
+  # Cache static files
+  <FilesMatch "\.(txt|rtf|doc|docx|ppt|pptx|csv|xls|xlsx|pdf|odf|odg|odp|ods|odt|fodt|fods|fodp|fodg|key|numbers|pages|vtt|zip|json|ics|ical|png|gif|jpg|jpeg|mp3|wav|aac|mp4)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
   # Declare HTTP Strict Transport Security (STS) header as recommended by Acquia.
   # https://acquia.my.site.com/s/article/360004119254-How-To-enable-HSTS-for-your-Drupal-site.
   Header always set Strict-Transport-Security "max-age=31536000;"
