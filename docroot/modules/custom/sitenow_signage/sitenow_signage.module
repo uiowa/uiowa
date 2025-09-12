@@ -1117,7 +1117,7 @@ function sitenow_signage_ief_slide_publication_callback($entity, $variables) {
   foreach (['publish_on', 'unpublish_on'] as $field) {
     if ($entity->hasField($field) && !$entity->get($field)->isEmpty()) {
       $label = str_replace('_on', ' ', ucfirst($field));
-      $value = date('M j, Y g:i a', $entity->get($field)->value);
+      $value = date('m/d/Y g:i a', $entity->get($field)->value);
       $strings[] = "<strong>{$label}:</strong> {$value}";
     }
   }
