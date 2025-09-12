@@ -29,25 +29,29 @@ function sitenow_signage_form_alter(
     // The IEF table display isn't a form in the traditional sense,
     // so to add classes to its actions buttons we need to traverse
     // down from here.
-    foreach (array_keys($form['field_sign_slides']['widget']['entities']) as $entity_key) {
-      if (str_starts_with($entity_key, '#')) {
-        continue;
-      }
-      foreach (array_keys($form['field_sign_slides']['widget']['entities'][$entity_key]['actions']) as $action_key) {
-        if (str_starts_with($action_key, '#')) {
+    if (isset($form['field_sign_slides']['widget']['entities'])) {
+      foreach (array_keys($form['field_sign_slides']['widget']['entities']) as $entity_key) {
+        if (str_starts_with($entity_key, '#')) {
           continue;
         }
-        // Now that we're on each action, check for existing
-        // attributes and classes, and add our 'button--small'
-        // class accordingly.
-        if (!isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes'])) {
-          $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes'] = [];
-        }
-        if (!isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'])) {
-          $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'] = ['button--small'];
-        }
-        else {
-          $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'][] = 'button--small';
+        if (isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'])) {
+          foreach (array_keys($form['field_sign_slides']['widget']['entities'][$entity_key]['actions']) as $action_key) {
+            if (str_starts_with($action_key, '#')) {
+              continue;
+            }
+            // Now that we're on each action, check for existing
+            // attributes and classes, and add our 'button--small'
+            // class accordingly.
+            if (!isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes'])) {
+              $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes'] = [];
+            }
+            if (!isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'])) {
+              $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'] = ['button--small'];
+            }
+            else {
+              $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'][] = 'button--small';
+            }
+          }
         }
       }
     }
