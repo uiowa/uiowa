@@ -1044,14 +1044,6 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
   if ($context['field_name'] === 'field_sign_slides') {
     // Add additional fields to the slide IEF.
     if (in_array('slide', $context['allowed_bundles'])) {
-      // Remove the default Title field. We'll add that with formatting.
-      unset($fields['label']);
-      $fields['title'] = [
-        'type' => 'callback',
-        'label' => t('Title'),
-        'weight' => 0,
-        'callback' => 'sitenow_signage_ief_slide_title_callback',
-      ];
       $fields['slide_type'] = [
         'type' => 'callback',
         'label' => t('Type'),
@@ -1074,17 +1066,6 @@ function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, a
       ];
     }
   }
-}
-
-/**
- * Callback function to format the title field.
- */
-function sitenow_signage_ief_slide_title_callback($entity, $variables) {
-  $title = $entity->label();
-  return [
-    '#type' => 'markup',
-    '#markup' => "<small>{$title}</small>",
-  ];
 }
 
 /**
@@ -1114,7 +1095,7 @@ function sitenow_signage_ief_slide_type_callback($entity, $variables) {
   $label = $paragraph->getParagraphType()->label();
   return [
     '#type' => 'markup',
-    '#markup' => "<small>{$label}</small>",
+    '#markup' => $label,
   ];
 }
 
@@ -1128,7 +1109,7 @@ function sitenow_signage_ief_slide_duration_callback($entity, $variables) {
   if ($paragraph->getParagraphType()->id() === 'slide_video') {
     return [
       '#type' => 'markup',
-      '#markup' => "<small>Other</small>",
+      '#markup' => "Other",
     ];
   }
 
@@ -1152,7 +1133,7 @@ function sitenow_signage_ief_slide_duration_callback($entity, $variables) {
   }
   return [
     '#type' => 'markup',
-    '#markup' => "<small>{$duration}</small>",
+    '#markup' => $duration,
   ];
 }
 
@@ -1176,6 +1157,6 @@ function sitenow_signage_ief_slide_publication_callback($entity, $variables) {
 
   return [
     '#type' => 'markup',
-    '#markup' => "<small>{$full_message}</small>",
+    '#markup' => $full_message,
   ];
 }
