@@ -261,7 +261,7 @@ function sitenow_signage_preprocess_field(&$variables) {
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
 
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
-      if($sign_node && $sign_node->bundle() == 'sign') {
+      if ($sign_node && $sign_node->bundle() == 'sign') {
         $orientation = sitenow_signage_get_orientation($sign_node);
 
         // Add cache tag for the sign node so table
@@ -743,7 +743,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $amount = 3;
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
 
-      if($sign_node && $sign_node->bundle() == 'sign') {
+      if ($sign_node && $sign_node->bundle() == 'sign') {
         $orientation = sitenow_signage_get_orientation($sign_node);
 
         // Cache is refreshed each hour.
