@@ -603,6 +603,11 @@ function sitenow_signage_preprocess_node(&$variables) {
       $orientation = $variables['node']->get('field_sign_orientation')->value;
       $variables['attributes']['class'][] = 'signage--' . $orientation;
     }
+    // If the user is logged in and the full node is being displayed, attach
+    // the 'reduced-motion-warning' library.
+    if (\Drupal::currentUser()->isAuthenticated() && $variables['view_mode'] === 'full') {
+      $variables['#attached']['library'][] = 'sitenow_signage/reduced-motion-warning';
+    }
   }
 }
 
@@ -616,15 +621,15 @@ function sitenow_signage_preprocess_page(&$variables) {
     $admin_context = \Drupal::service('router.admin_context');
     if (!$admin_context->isAdminRoute()) {
       // Unset regions for viewing logged in.
-      foreach ([
-        'header',
-        'after_content',
-        'pre_footer',
-        'footer_first',
-        'footer_second',
-      ] as $region) {
-        unset($variables['page'][$region]);
-      }
+//      foreach ([
+//        'header',
+//        'after_content',
+//        'pre_footer',
+//        'footer_first',
+//        'footer_second',
+//      ] as $region) {
+//        unset($variables['page'][$region]);
+//      }
 
       // Add signage stylesheet.
       $variables['#attached']['library'][] = 'sitenow_signage/signage';
@@ -639,11 +644,11 @@ function sitenow_signage_preprocess_page(&$variables) {
 
       // Check that user is logged out before unsetting anything.
       if (\Drupal::currentUser()->isAnonymous()) {
-        // Attach the signage alert overrides library.
-        $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
 
         // Check if the query string contains the 'signage-display' parameter.
         if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
+          // Attach the signage alert overrides library.
+          $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
           // Unset remaining regions except content for logged out users.
           foreach (Element::children($variables['page']) as $key) {
             if ($key !== 'content') {

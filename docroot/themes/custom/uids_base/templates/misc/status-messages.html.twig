@@ -26,7 +26,8 @@
  */
 #}
 {{ attach_library('uids_base/status-messages') }}
-
+<div data-drupal-messages class="messages-list">
+  <div class="messages-list__wrapper">
 {% for type, messages in message_list %}
 
   {% set alert_content %}
@@ -49,3 +50,5 @@
   } only %}
 
 {% endfor %}
+  </div>
+</div>
