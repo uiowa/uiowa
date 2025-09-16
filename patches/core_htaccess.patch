@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..d9eed5b53 100644
+index 4031da475..cc94ecfe0 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
@@ -23,6 +23,17 @@ index 4031da475..d9eed5b53 100644
  # Protect files and directories from prying eyes.
  <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config|yarn\.lock|package\.json)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
    <IfModule mod_authz_core.c>
+@@ -35,8 +49,8 @@ AddEncoding gzip svgz
+   # Enable expirations.
+   ExpiresActive On
+ 
+-  # Cache all files for 1 year after access.
+-  ExpiresDefault "access plus 1 year"
++  # Cache all files for 60 minutes after access.
++  ExpiresDefault "access plus 60 minutes"
+ 
+   <FilesMatch \.php$>
+     # Do not allow PHP scripts to be cached unless they explicitly send cache
 @@ -60,6 +74,112 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
@@ -147,14 +158,10 @@ index 4031da475..d9eed5b53 100644
    </IfModule>
  </IfModule>
  
-@@ -183,4 +307,11 @@ AddEncoding gzip svgz
+@@ -183,4 +307,7 @@ AddEncoding gzip svgz
    Header always set X-Content-Type-Options nosniff
    # Disable Proxy header, since it's an attack vector.
    RequestHeader unset Proxy
-+  # Cache static files
-+  <FilesMatch "\.(txt|rtf|doc|docx|ppt|pptx|csv|xls|xlsx|pdf|odf|odg|odp|ods|odt|fodt|fods|fodp|fodg|key|numbers|pages|vtt|zip|json|ics|ical|png|gif|jpg|jpeg|mp3|wav|aac|mp4)$">
-+    Header set Cache-Control "public, max-age=3600, must-revalidate"
-+  </FilesMatch>
 +  # Declare HTTP Strict Transport Security (STS) header as recommended by Acquia.
 +  # https://acquia.my.site.com/s/article/360004119254-How-To-enable-HSTS-for-your-Drupal-site.
 +  Header always set Strict-Transport-Security "max-age=31536000;"
