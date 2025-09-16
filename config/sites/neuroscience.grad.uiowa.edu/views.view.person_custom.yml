@@ -19,7 +19,6 @@ dependencies:
     - node.type.person
     - sitenow_people.person_type.faculty
     - sitenow_people.person_type.student
-    - system.menu.main
     - taxonomy.vocabulary.department
     - taxonomy.vocabulary.research_areas
   module:
@@ -1462,10 +1461,12 @@ display:
         filter_groups: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: people/faculty
       menu:
-        type: normal
+        type: none
         title: Faculty
         description: ''
         weight: -50
@@ -2234,10 +2235,12 @@ display:
       relationships: {  }
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: people/students/former
       menu:
-        type: normal
+        type: none
         title: 'Past students'
         description: ''
         weight: -30
@@ -2952,10 +2955,12 @@ display:
           required: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: people/students
       menu:
-        type: normal
+        type: none
         title: Students
         description: ''
         weight: -40
