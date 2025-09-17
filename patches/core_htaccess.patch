@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..11dc42cf2 100644
+index 4031da475..cc94ecfe0 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
@@ -23,6 +23,17 @@ index 4031da475..11dc42cf2 100644
  # Protect files and directories from prying eyes.
  <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config|yarn\.lock|package\.json)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
    <IfModule mod_authz_core.c>
+@@ -35,8 +49,8 @@ AddEncoding gzip svgz
+   # Enable expirations.
+   ExpiresActive On
+ 
+-  # Cache all files for 1 year after access.
+-  ExpiresDefault "access plus 1 year"
++  # Cache all files for 60 minutes after access.
++  ExpiresDefault "access plus 60 minutes"
+ 
+   <FilesMatch \.php$>
+     # Do not allow PHP scripts to be cached unless they explicitly send cache
 @@ -60,6 +74,112 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
