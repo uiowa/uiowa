@@ -659,15 +659,15 @@ function sitenow_signage_preprocess_page(&$variables) {
     $admin_context = \Drupal::service('router.admin_context');
     if (!$admin_context->isAdminRoute()) {
       // Unset regions for viewing logged in.
-//      foreach ([
-//        'header',
-//        'after_content',
-//        'pre_footer',
-//        'footer_first',
-//        'footer_second',
-//      ] as $region) {
-//        unset($variables['page'][$region]);
-//      }
+      foreach ([
+        'header',
+        'after_content',
+        'pre_footer',
+        'footer_first',
+        'footer_second',
+      ] as $region) {
+        unset($variables['page'][$region]);
+      }
 
       // Add signage stylesheet.
       $variables['#attached']['library'][] = 'sitenow_signage/signage';
