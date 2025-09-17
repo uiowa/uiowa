@@ -4160,3 +4160,25 @@ function sitenow_update_10023() {
     }
   }
 }
+
+
+function sitenow_update_10024() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $sitenow_v2_split = 'config_split:sitenow_v2';
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->get('uiowa_core.settings');
+
+  // Check if this is NOT a sitenow_v2 site
+  if (!isset($filters[$sitenow_v2_split]) || !$filters[$sitenow_v2_split]['status']) {
+    // Get the current replicate allowed types
+    $allowed_types = $config->get('uiowa_core.replicate_allowed');
+
+    // Return page and article types if they exist in config
+    $page_article_types = array_intersect(['page', 'article'], $allowed_types ?: []);
+    return $page_article_types;
+  }
+
+  return [];
+}
