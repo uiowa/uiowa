@@ -259,12 +259,15 @@ function sitenow_signage_preprocess_field(&$variables) {
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
-      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
-      $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Add cache tag for the sign node so table
-      // updates when sign orientation changes.
-      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      if ($sign_node && $sign_node->bundle() == 'sign') {
+        $orientation = sitenow_signage_get_orientation($sign_node);
+
+        // Add cache tag for the sign node so table
+        // updates when sign orientation changes.
+        $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+      }
 
       // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
@@ -707,22 +710,18 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
         if ($sign_node && $sign_node->bundle() == 'sign') {
           $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
-        }
 
-        // Check if we have a sign node with vertical orientation.
-        if (
-          $sign_node &&
-          $sign_node->bundle() == 'sign' &&
-          sitenow_signage_get_orientation($sign_node) === 'vertical'
-        ) {
+          // Check if we have a sign node with vertical orientation.
+          if (sitenow_signage_get_orientation($sign_node) === 'vertical') {
 
-          $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+            $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
 
-          foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
-            if (is_numeric($delta)) {
-              $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
-              if ($media_entity) {
-                $item = $view_builder->view($media_entity, 'vertical_9_16');
+            foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+              if (is_numeric($delta)) {
+                $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+                if ($media_entity) {
+                  $item = $view_builder->view($media_entity, 'vertical_9_16');
+                }
               }
             }
           }
@@ -743,16 +742,19 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
       $amount = 3;
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
-      $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Cache is refreshed each hour.
-      $variables['#cache']['tags'][] = 'time:hourly';
+      if ($sign_node && $sign_node->bundle() == 'sign') {
+        $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Cache is refreshed when the sign node is saved.
-      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+        // Cache is refreshed each hour.
+        $variables['#cache']['tags'][] = 'time:hourly';
 
-      if ($orientation === 'vertical') {
-        $amount = 5;
+        // Cache is refreshed when the sign node is saved.
+        $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+
+        if ($orientation === 'vertical') {
+          $amount = 5;
+        }
       }
 
       $query = [
