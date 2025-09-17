@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsung.uiowa.ddev.site
+    protocol: https
+  machine_name: labsung
+  human_name: sung.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsung.prod
+drupal:
+  db:
+    database: sung_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsung.prod.drupal.uiowa.edu'
+  requester: sgkehoe
+  site-name: 'Sung Lab'
