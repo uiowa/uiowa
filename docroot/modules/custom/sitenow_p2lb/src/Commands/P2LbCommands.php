@@ -159,6 +159,16 @@ class P2LbCommands extends DrushCommands {
     $config_import->getOutput();
     drupal_flush_all_caches();
 
+    $uiowa_core_settings = $this->configFactory->getEditable('uiowa_core.settings');
+    $allowed = $uiowa_core_settings->get('uiowa_core.replicate_allowed');
+    if (!is_array($allowed)) {
+      $allowed = [];
+    }
+    if(!in_array('page', $allowed)){
+      $allowed[] = 'page';
+      $uiowa_core_settings->set('uiowa_core.replicate_allowed', $allowed)->save();
+    }
+
     // Switch user back.
     $this->accountSwitcher->switchBack();
   }
