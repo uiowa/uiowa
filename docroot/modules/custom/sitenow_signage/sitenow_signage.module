@@ -661,44 +661,28 @@ function sitenow_signage_preprocess_page(&$variables) {
     // Only modify the page if it is not an admin route.
     $admin_context = \Drupal::service('router.admin_context');
     if (!$admin_context->isAdminRoute()) {
-      // Unset regions for viewing logged in.
-      foreach ([
-        'header',
-        'after_content',
-        'pre_footer',
-        'footer_first',
-        'footer_second',
-      ] as $region) {
-        unset($variables['page'][$region]);
-      }
-
       // Add signage stylesheet.
       $variables['#attached']['library'][] = 'sitenow_signage/signage';
       // Attach the slideshow library.
       $variables['#attached']['library'][] = 'sitenow_signage/slideshow';
 
-      // Attach reload library and set the reload interval from the node.
-      // @todo Move this into the anonymous user condition below.
-      $variables['#attached']['library'][] = 'sitenow_signage/reload';
-      $reload_interval = $variables['node']->field_sign_reload_interval?->value ?? 5 * 60 * 60;
-      $variables['#attached']['drupalSettings']['signage']['signReloadInterval'] = $reload_interval;
-
-      // Check that user is logged out before unsetting anything.
+      // If the user is logged out, we adjust the display to be appropriate for
+      // signage displays.
       if (\Drupal::currentUser()->isAnonymous()) {
-
-        // Check if the query string contains the 'signage-display' parameter.
-        if (isset(\Drupal::request()?->query?->all()['signage-display'])) {
-          // Attach the signage alert overrides library.
-          $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
-          // Unset remaining regions except content for logged out users.
-          foreach (Element::children($variables['page']) as $key) {
-            if ($key !== 'content') {
-              unset($variables['page'][$key]);
-            }
+        // Unset remaining regions except content for logged out users.
+        foreach (Element::children($variables['page']) as $key) {
+          if ($key !== 'content') {
+            unset($variables['page'][$key]);
           }
-          // Add a cache context so that the page is cached separately.
-          $variables['#cache']['contexts'][] = 'url.query_args:signage-display';
         }
+
+        // Attach the signage alert overrides library.
+        $variables['#attached']['library'][] = 'sitenow_signage/signage_alerts';
+
+        // Attach reload library and set the reload interval from the node.
+        $variables['#attached']['library'][] = 'sitenow_signage/reload';
+        $reload_interval = $variables['node']->field_sign_reload_interval?->value ?? 5 * 60 * 60;
+        $variables['#attached']['drupalSettings']['signage']['signReloadInterval'] = $reload_interval;
       }
     }
   }
