@@ -4161,7 +4161,7 @@ function sitenow_update_10023() {
   }
 }
 
-
+// Add 'page' to replicate allowed if not present and not sitenow_v2.
 function sitenow_update_10024() {
   $config_split_manager = \Drupal::service('config_split.manager');
   $sitenow_v2 = $config_split_manager->getSplitConfig('sitenow_v2');
@@ -4171,12 +4171,13 @@ function sitenow_update_10024() {
   if ($sitenow_v2 && $sitenow_v2->get('status')) {
     return;
   }
-
+  // Get current allowed array.
   $allowed = $config->get('uiowa_core.replicate_allowed');
   // if array continue otherwise make array.
   if (!is_array($allowed)) {
     $allowed = [];
   }
+  // If page not in array add it and save.
   if(!in_array('page', $allowed)){
       $allowed[] = 'page';
       $config->set('uiowa_core.replicate_allowed', $allowed)->save();
