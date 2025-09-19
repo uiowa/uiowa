@@ -3,6 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.slide.field_slide_description
+    - field.field.node.slide.field_slide_duration
+    - field.field.node.slide.field_slide_duration_other
     - field.field.node.slide.field_slide_widget
     - node.type.slide
   module:
@@ -20,11 +23,14 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_slide_description: true
+  field_slide_duration: true
+  field_slide_duration_other: true
   links: true
   search_api_excerpt: true

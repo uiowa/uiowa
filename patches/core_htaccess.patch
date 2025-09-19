@@ -1,11 +1,11 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..832ca8f34 100644
+index 4031da475..cc94ecfe0 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
  # Apache/PHP/Drupal settings:
  #
-
+ 
 +# Block these IP addresses.
 +# https://docs.acquia.com/cloud-platform/arch/security/restrict/#blocking-by-ip-with-mod-rewrite-in-htaccess
 +<ifmodule mod_setenvif.c>
@@ -23,10 +23,21 @@ index 4031da475..832ca8f34 100644
  # Protect files and directories from prying eyes.
  <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config|yarn\.lock|package\.json)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
    <IfModule mod_authz_core.c>
-@@ -60,6 +74,84 @@ AddEncoding gzip svgz
+@@ -35,8 +49,8 @@ AddEncoding gzip svgz
+   # Enable expirations.
+   ExpiresActive On
+ 
+-  # Cache all files for 1 year after access.
+-  ExpiresDefault "access plus 1 year"
++  # Cache all files for 60 minutes after access.
++  ExpiresDefault "access plus 60 minutes"
+ 
+   <FilesMatch \.php$>
+     # Do not allow PHP scripts to be cached unless they explicitly send cache
+@@ -60,6 +74,112 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
-
+ 
 +  # Return a 403 for autodiscover requests.
 +  RewriteCond %{REQUEST_URI} /autodiscover/autodiscover.xml [NC]
 +  RewriteRule ^ - [F,L]
@@ -85,9 +96,13 @@ index 4031da475..832ca8f34 100644
 +  RewriteCond %{REQUEST_URI} ^/itu$ [NC]
 +  RewriteRule ^itu(.*)$ https://itu.physics.uiowa.edu/$1 [L,R=301]
 +
-+  # Redirect www and writinguniversity.uiowa.edu to writinguniversity.org.
-+  RewriteCond %{HTTP_HOST} ^(www\.|)writinguniversity\.uiowa\.edu$ [NC]
-+  RewriteRule ^(.*)$ https://www.writinguniversity.org/$1 [L,R=301]
++  # Redirect www and writinguniversity.org to writinguniversity.uiowa.edu.
++  RewriteCond %{HTTP_HOST} ^(www\.|)writinguniversity\.org$ [NC]
++  RewriteRule ^(.*)$ https://writinguniversity.uiowa.edu/$1 [L,R=301]
++
++  # Adding Redirect writing.uiowa.edu to writinguniversity.uiowa.edu/about-us/writing-iowa
++  RewriteCond %{HTTP_HOST} writing\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^ https://writinguniversity.uiowa.edu/about-us/writing-iowa [L,R=301]
 +
 +  # Redirect rules for diversity.uiowa.edu.
 +  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
@@ -105,10 +120,34 @@ index 4031da475..832ca8f34 100644
 +  RewriteCond %{HTTP_HOST} diversity\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
 +  RewriteRule ^(.*)$ https://ocrc.uiowa.edu/ [R=301,L]
 +
++  # Redirect rules for the IIHR.
++  RewriteCond %{HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^igs/geosam/(.*)$ https://igs.iihr.uiowa.edu/igs/geosam/$1 [R=301,L]
++
++  RewriteCond %{HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^igs/geocore/(.*)$ https://igs.iihr.uiowa.edu/igs/geocore/$1 [R=301,L]
++
++  RewriteCond %{HTTP_HOST} iihr\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^igs/publications/(.*)$ https://igs.iihr.uiowa.edu/igs/publications/$1 [R=301,L]
++
++  # Redirect rules for medicine
++  RewriteCond %{HTTP_HOST} ^(www\.)?medicine\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^iowaprotocols/?$ https://iowaprotocols.medicine.uiowa.edu [R=301,L]
++
++  RewriteCond %{HTTP_HOST} ^(www\.)?medicine\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^iowaprotocols/content(/.*)?$ https://iowaprotocols.medicine.uiowa.edu/protocols$1 [R=301,L]
++
++  RewriteCond %{HTTP_HOST} ^(www\.)?medicine\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^iowaprotocols/(.+)$ https://iowaprotocols.medicine.uiowa.edu/protocols/$1 [R=301,L]
++
++  # Redirect opsmanual.uiowa.edu to policy.uiowa.edu.
++  RewriteCond %{HTTP_HOST} opsmanual\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteRule ^(.*)$ https://policy.uiowa.edu/$1 [L,R=301]
++
    # Set "protossl" to "s" if we were accessed via https://.  This is used later
    # if you enable "www." stripping or enforcement, in order to ensure that
    # you don't bounce between http and https.
-@@ -168,6 +260,10 @@ AddEncoding gzip svgz
+@@ -168,6 +288,10 @@ AddEncoding gzip svgz
        # Force proxies to cache gzipped & non-gzipped css/js files separately.
        Header append Vary Accept-Encoding
      </FilesMatch>
@@ -118,8 +157,8 @@ index 4031da475..832ca8f34 100644
 +    </FilesMatch>
    </IfModule>
  </IfModule>
-
-@@ -183,4 +279,7 @@ AddEncoding gzip svgz
+ 
+@@ -183,4 +307,7 @@ AddEncoding gzip svgz
    Header always set X-Content-Type-Options nosniff
    # Disable Proxy header, since it's an attack vector.
    RequestHeader unset Proxy

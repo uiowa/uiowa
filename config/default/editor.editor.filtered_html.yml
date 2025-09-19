@@ -6,6 +6,7 @@ dependencies:
     - filter.format.filtered_html
   module:
     - ckeditor5
+    - ckeditor_small_tag
 format: filtered_html
 editor: ckeditor5
 settings:
@@ -17,6 +18,7 @@ settings:
       - alignment
       - superscript
       - subscript
+      - small
       - removeFormat
       - specialCharacters
       - '|'
@@ -103,6 +105,7 @@ settings:
       properties:
         reversed: true
         startIndex: true
+        styles: true
       multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags:
@@ -110,15 +113,15 @@ settings:
         - '<dl>'
         - '<dt>'
         - '<dd>'
-        - '<mark>'
+        - '<mark class>'
         - '<pre class>'
         - '<span class role>'
         - '<small class>'
         - '<iframe src width height allowfullscreen title loading seamless sandbox="allow-same-origin allow-scripts allow-popups">'
         - '<div class>'
         - '<blockquote cite class>'
-        - '<ul type class>'
-        - '<ol type class>'
+        - '<ul class>'
+        - '<ol class>'
         - '<hr class>'
         - '<table border summary id role="presentation grid" aria-label aria-labelledby class>'
         - '<caption id>'

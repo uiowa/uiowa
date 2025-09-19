@@ -2,100 +2,61 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 @use 'sass:color';
 
+$pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
+// Container for signs.
+.signage__slideshow {
+  img {
+    width: 100%;
+  }
+
+  .slide__headline {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: .08rem;
+    text-transform: uppercase;
+    padding: 2rem 2rem 1rem;
+  }
+}
+
+// Empty sign block iowa logo.
+.signage--empty {
+  .logo--tab {
+    width: 100%;
+    height: auto;
+  }
+
+  .logo-icon {
+    height: 150px;
+  }
+}
+
 // Sign header.
 .page-node-type-sign {
+  //background-color: var(--brand-secondary);
+
+  // Adjust padding to be smaller for signage.
+  .layout.layout__container {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
   // Adjust margins to be smaller for signage.
   .page__container--full.layout__container .layout__spacing_container {
-    margin-left: variables.$mobile-width-gutter;
-    margin-right: variables.$mobile-width-gutter;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   // Adjust column gap to be smaller for signage.
-  .layout {
-    &[class*="twocol"],
-    &[class*="threecol"] {
-      .layout__spacing_container {
-        @include utilities.breakpoint(md) {
-          column-gap: variables.$mobile-width-gutter;
-        }
-      }
-    }
-  }
-
-  // Adjust padding to be smaller for signage.
-  .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
-    padding-bottom: 0;
-    padding-top: variables.$mobile-width-gutter;
+  .layout + .signage--empty {
+    display: none;
   }
 
   // Set sign background to black.
   main.content__container {
-    --darkmode-bg: #1e1e1e;
-    background: var(--darkmode-bg);
-
-    .region-content {
-      background: var(--darkmode-bg);
-    }
-
-    // TODO: figure out how to change classes, this shouldn;t be shipped.
-    .layout__container:not(:first-child) {
-      background: var(--darkmode-bg);
-    }
+    background: variables.$secondary;
   }
 
-  .sign--header {
-    display: flex !important;
-    align-items: flex-start;
-    gap: 1rem;
-    flex-wrap: wrap;
-
-    .block {
-      flex-basis: auto!important;
-    }
-
-    .site-name {
-      @include utilities.breakpoint(page-container) {
-        padding-top: .3rem;
-        font-weight: 400;
-      }
-    }
-  }
-}
-
-// Date/time block.
-.block-datetime-block,
-// Target datetime block when editing layout.
-.block-datetime-block.layout-builder-block-locked {
-  text-align: right;
-}
-
-.date-time {
-  font-size: 1.2rem;
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-
-  &  > span:first-child {
-    margin-right: 0.5rem;
-  }
-
-  #datespan,
-  #timespan {
-    display: inline-block;
-    vertical-align: middle;
-    border: 1px solid variables.$secondary;
-    font-family: variables.$font-family-caps-bold;
-    padding: 0.5rem .7rem;
-    border-radius: 3px;
-    color: variables.$secondary;
-    text-transform: uppercase;
-    font-weight: variables.$font-weight-heavy;
-  }
-}
-
-// Slideshow.
-.signage-slideshow img {
-  width: 100%;
 }
 
 .node--type-slide.node--unpublished:after {
@@ -114,25 +75,49 @@
   background: rgb(0, 0, 0, .5);
 }
 
-// Bus arrivals widget.
-.bus-arrivals {
-  .bg-dark-gray {
-    background-color: variables.$dark-gray;
-    color: variables.$white;
+// Signage tables.
+// Specificity hack to override the inherit.
+div.bg--black .signage__table {
+  border-color: variables.$blk;
+}
+
+.signage__table {
+  background-color: variables.$blk;
+  td, th {
+    padding: 1rem 2rem;
+  }
+  tr {
+    border-bottom: 7px solid variables.$secondary;
+    font-weight: variables.$font-weight-normal;
+
+    td {
+      font-size: variables.$h6-font-size;
+      background-color: $pitch-gray;
+      color: variables.$white;
+      &:not(:last-child) {
+        border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
+      }
+    }
+
+    &.even {
+      td {
+        background-color: color.scale($pitch-gray, $lightness: 5%);
+      }
+    }
   }
 
-  caption.predictions-title {
-    background-color: var(--darkmode-bg);
+  caption {
+    background-color: variables.$secondary;
     font-size: variables.$h5-font-size;
     font-weight: variables.$font-weight-heavy;
     letter-spacing: 0.08rem;
     text-align: left;
     color: variables.$light;
+    padding: 2rem;
   }
 
-  thead.headers {
-    border-top: 7px solid var(--darkmode-bg);
-    border-bottom: 7px solid var(--darkmode-bg);
+  thead {
+    border-bottom: 7px solid variables.$secondary;
 
     th {
       font-size: variables.$h6-font-size;
@@ -146,71 +131,72 @@
 
       &:first-child,
       &:last-child {
-        display: flex;
-        flex-direction: column;
-        position: relative;
 
         &:before {
           content: '';
           position: relative;
           width: 100%;
           height: 0px;
+          display: block;
           left: 0;
           top: 0;
           color: transparent;
           font-size: variables.$h6-font-size;
-          font-weight: variables.$font-weight-medium;
+          font-weight: variables.$font-weight-normal;
           text-wrap: nowrap;
           text-transform: none;
           letter-spacing: normal;
         }
       }
-
-      &:first-child:before {
-          content: 'Coralville Transit';
-      }
-
-      &:last-child:before {
-          content: '000 Minutes';
-          font-weight: variables.$font-weight-normal;
-      }
     }
   }
 
-  tbody {
-    tr {
-      &.prediction {
-        border-bottom: 7px solid var(--darkmode-bg);
+}
 
-        .agency {
-          font-weight: variables.$font-weight-medium;
-        }
 
-        &.uiowa .agency {
-          color: variables.$primary;
-        }
-
-        &.coralville .agency {
-          color: #4bbaff;
-        }
-      }
-
-      td {
-        font-size: variables.$h6-font-size;
-
-        &:not(:last-child) {
-          border-right: 1px solid color.scale(variables.$dark-gray, $lightness: 10%);
-        }
-      }
-
-      td,
-      th {
-        &:first-child,
-        &:last-child {
-          width: 1%;
-          white-space: nowrap;
-        }
-      }
+// Increase font sizes for vertical displays.
+.signage--vertical {
+  .signage__table {
+    caption {
+      font-size: variables.$h3-font-size;
     }
+
+    th, td {
+      font-size: variables.$h4-font-size;
+    }
+  }
+}
+
+.paragraph--type--slide-events {
+
+  .card.borderless:not([class*=bg--]) {
+    padding: 1rem 2rem;
+  }
+
+  .card .headline {
+    font-size: variables.$h2-font-size;
+  }
+
+  .card__subtitle {
+    font-size: variables.$h3-font-size;
+    opacity: 1;
+    color: var(--brand-primary);
+  }
+
+  .card__meta {
+    font-size: variables.$h4-font-size;
+
+    .fa-field-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .svg-inline--fa {
+      height: variables.$h5-font-size;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-top: 7px;
   }
 }

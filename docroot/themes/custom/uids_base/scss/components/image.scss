@@ -17,5 +17,11 @@
 figure.block-inline-blockuiowa-image.caption {
   @include utilities.breakpoint(sm) {
     width: 100%;
+    height: min-content;
+  }
+  &.element--cover {
+    @include utilities.breakpoint(sm) {
+      height: auto;
+    }
   }
 }

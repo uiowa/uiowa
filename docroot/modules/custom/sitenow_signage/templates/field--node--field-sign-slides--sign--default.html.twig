@@ -1,9 +1,9 @@
-<div{{ attributes.addClass(['signage-slideshow', 'splide']) }}>
+<div{{ attributes.addClass(['signage__slideshow', 'splide']) }}>
   <div class="splide__wrapper">
     <div class="splide__track">
       <div class="splide__list">
         {% for item in items %}
-          <div class="splide__slide"{{ item.attributes }}>{{ item.content }}</div>
+          <div class="splide__slide" data-splide-interval="{{ item.interval }}"{{ item.attributes }}>{{ item.content }}</div>
         {% endfor %}
       </div>
     </div>

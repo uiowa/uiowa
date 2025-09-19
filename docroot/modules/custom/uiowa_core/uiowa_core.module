@@ -252,7 +252,7 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
           $request_time = \Drupal::time()->getRequestTime();
           if ($archive_time > $request_time) {
             $entity->moderation_state = $entity->original->moderation_state->value;
-            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "unpublished" moderation state. Switching back to "@fallback_state."', [
               '@label' => $entity->label(),
               '@set_state' => $set_state,
               '@fallback_state' => $entity->original->moderation_state->value,
@@ -783,13 +783,13 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         $state = 'published';
       }
       elseif ($node->get('unpublish_on')?->value) {
-        $state = 'archived';
+        $state = 'unpublished';
       }
 
       if (!empty($state)) {
         $message = 'This content is currently scheduled to be ' . $state . '.';
         if ($node->moderation_state?->value) {
-          $message .= ' Editors are restricted from editing until published.';
+          $message .= ' Editors are restricted from editing until after scheduled.';
         }
         \Drupal::messenger()
           ->addStatus($message);
@@ -798,30 +798,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   }
 
   if ($route_name === 'entity.node.edit_form' || $route_name === 'node.add') {
-    // Update help text for scheduler on content types and if moderation
-    // is enabled, hide the publish/unpublish state fields.
-    $hide_classes = ['js', 'js-hide'];
-    if (isset($form['publish_on'])) {
-      $additional_published_help_text = t('Note: this content will transition to a published state within a one-hour window of the selected date and time.');
-      $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
-      $form['publish_state']['#attributes']['class'] = (!empty($form['publish_state']['#attributes']['class']) ? array_merge($form['publish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
-    }
-    if (isset($form['unpublish_on'])) {
-      if (isset($form['unpublish_state'])) {
-        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Archive on');
-        $state = 'archived';
-        $form['unpublish_state']['#attributes']['class'] = (!empty($form['unpublish_state']['#attributes']['class']) ? array_merge($form['unpublish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
-      }
-      else {
-        $state = 'unpublished';
-      }
-
-      $additional_unpublished_help_text = t('Note: this content will transition to an @state state within a one-hour window of the selected date and time.', [
-        '@state' => $state,
-      ]);
-      $form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
-
-    }
+    uiowa_core_scheduler_help_text($form);
   }
 
   switch ($form_id) {
@@ -1029,7 +1006,8 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
             $perms ??= $group['permissions'];
             if ($perms) {
 
-              // Disable them. We don't want users to have access to configure this.
+              // Disable them.
+              // We don't want users to have access to configure this.
               $group['permissions']['#access'] = FALSE;
             }
           }
@@ -1037,6 +1015,29 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
 
       break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_details().
+ */
+function uiowa_core_preprocess_details(&$variables) {
+  // This function adds a new 'details-multi-select' class to style the details with checkbox
+  // dropdowns as seen on pages like classrooms.uiowa.edu/spaces/find-university-classroom.
+  // Check if the element contains form checkboxes and add multi-select class.
+  $has_checkboxes = FALSE;
+
+  if (isset($variables['element']) && is_array($variables['element'])) {
+    foreach ($variables['element'] as $key => $child) {
+      if (is_array($child) && isset($child['#type']) && $child['#type'] === 'checkboxes') {
+        $has_checkboxes = TRUE;
+        break;
+      }
+    }
+  }
+
+  if ($has_checkboxes) {
+    $variables['attributes']['class'][] = 'form__details--multi-select';
   }
 }
 
@@ -1078,6 +1079,15 @@ function _uiowa_core_process_element(array $element, FormStateInterface $form_st
   $checkboxes['administrator']['#access'] = FALSE;
 
   return $checkboxes;
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function uiowa_core_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  if ($entity_form['#entity_type'] === 'node' && $entity_form['#bundle'] === 'slide') {
+    uiowa_core_scheduler_help_text($entity_form);
+  }
 }
 
 /**
@@ -1265,7 +1275,8 @@ function uiowa_core_preprocess_block(&$variables) {
         $path = $request->getPathInfo();
         $internal_path = $path_alias_manager->getPathByAlias($path);
 
-        // Check if the path matches a node pattern and determine if it's unpublished.
+        // Check if the path matches a node pattern
+        // and determine if it's unpublished.
         if (preg_match('/node\/(\d+)/', $internal_path, $matches)) {
           $node = Node::load($matches[1]);
           if ($node instanceof Node && !$node->isPublished()) {
@@ -1849,6 +1860,27 @@ function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_
 }
 
 /**
+ * Helper function to add help text and adjust scheduler fields.
+ *
+ * @param array $form
+ *   The form array.
+ */
+function uiowa_core_scheduler_help_text(array &$form): void {
+  $hide_classes = ['js', 'js-hide'];
+  foreach (['publish', 'unpublish'] as $state) {
+    if (isset($form["{$state}_on"])) {
+      // Update help text for scheduler on content types.
+      $additional_help_text = t('Note: this content will be @stateed at the top of the hour after the time you select. (e.g., 2:43 p.m. will go live at 3:00 p.m.).', [
+        '@state' => $state,
+      ]);
+      $form["{$state}_on"]['widget'][0]['value']['#description'] .= '<p>' . $additional_help_text . '</p>';
+      // If moderation is enabled, hide the publish/unpublish state fields.
+      $form["{$state}_state"]['#attributes']['class'] = (!empty($form["{$state}_state"]['#attributes']['class']) ? array_merge($form["{$state}_state"]['#attributes']['class'], $hide_classes) : $hide_classes);
+    }
+  }
+}
+
+/**
  * Implements hook_config_schema_info_alter().
  */
 function uiowa_core_config_schema_info_alter(&$schemas) {
@@ -1871,4 +1903,35 @@ function uiowa_core_config_schema_info_alter(&$schemas) {
       ],
     ],
   ];
+}
+
+/**
+ * Fast object to array conversion function.
+ *
+ * Helper function to convert objects recursively to arrays.
+ * This is roughly 1.5-2x faster than json_decode() + json_encode().
+ *
+ * @param mixed $obj
+ *   Any object.
+ *
+ * @return array|mixed
+ *   Returns an object that is being converted into an array
+ *   until the complete object is only an array, then it
+ *   returns an array.
+ */
+function uiowa_core_object_to_array(mixed $obj): mixed {
+  // Only process if it's an object or array being passed to the function.
+  if (is_object($obj) || is_array($obj)) {
+    $ret = (array) $obj;
+    foreach ($ret as &$item) {
+      // Recursively process EACH element regardless of type.
+      $item = uiowa_core_object_to_array($item);
+    }
+    return $ret;
+  }
+
+  // Otherwise (i.e. for scalar values) return without modification.
+  else {
+    return $obj;
+  }
 }

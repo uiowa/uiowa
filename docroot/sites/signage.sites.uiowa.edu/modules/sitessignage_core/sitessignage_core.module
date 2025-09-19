@@ -8,26 +8,12 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_alter().
  */
 function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-
-  // Define the forms to remove the "Other groups" field from.
-  $og_audience_other_groups_forms = ['node_sign_form', 'node_sign_edit_form', 'node_slide_form', 'node_slide_edit_form'];
-
-  // If our form ID is in the relevant list of form IDs...
-  if (in_array($form_id, $og_audience_other_groups_forms, TRUE)) {
-
-    // If our form has other_groups defined...
-    if (isset($form['og_audience']['other_groups'])) {
-
-      // Remove access from the other groups field.
-      $form['og_audience']['other_groups']['#access'] = FALSE;
-    }
-  }
-
   if ($form_id == 'og_membership_default_add_form') {
     if (isset($form['uid']['widget'][0]['target_id'])) {
       // Update the description of the uid field.
@@ -39,14 +25,20 @@ function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['#validate'][] = 'sitessignage_core_og_user_validate';
     }
 
-    // Update the description of roles field.
-    if (isset($form['roles']['widget'])) {
-      $form['roles']['widget']['#description'] = t('Select any roles the member should have within the group.');
-    }
-
     // Remove access to the state field.
     if (isset($form['state'])) {
       $form['state']['#access'] = FALSE;
+    }
+  }
+
+  if ($form_id == 'og_membership_default_edit_form' || $form_id == 'og_membership_default_add_form') {
+    if (isset($form['roles']['widget'])) {
+      // Remove the administrator role from the options.
+      if (isset($form['roles']['widget']['#options'])) {
+        unset($form['roles']['widget']['#options']['node-signage_group-administrator']);
+      }
+      // Update the description of roles field.
+      $form['roles']['widget']['#description'] = t('Select if the member should have additional permissions within the group.');
     }
   }
 }
@@ -90,6 +82,58 @@ function sitessignage_core_og_user_validate(array &$form, FormStateInterface $fo
 
       foreach ($form_errors as $name => $error_message) {
         $form_state->setErrorByName($name, $error_message);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function sitessignage_core_entity_view_alter(array &$build, $entity, $display) {
+  // Only alter full view mode for signage_group content type.
+  if ($entity->getEntityTypeId() == 'node' &&
+    $entity->bundle() == 'signage_group' &&
+    $display->getMode() == 'default') {
+
+    // Fetch our view and embed it into the content.
+    $view = Views::getView('signage_group_content');
+    if (is_object($view)) {
+      $view->setDisplay('block_1');
+      $view->setArguments([$entity->id()]);
+      $view->preExecute();
+      $view->execute();
+      $content = $view->buildRenderable();
+      $build['signage_group_content'] = $content;
+      // Sink it down below other fields, like the body.
+      $build['signage_group_content']['#weight'] = 10;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitessignage_core_preprocess_block__local_actions_block(&$variables) {
+  // Get the current route node and check its bundle type.
+  /** @var \Drupal\Core\Routing\RouteMatch $route_match */
+  $route_match = \Drupal::service('current_route_match');
+  if ($route_match->getRouteName() == 'entity.node.canonical') {
+    $node = $route_match->getParameter('node');
+    if ($node->bundle() !== 'signage_group') {
+      unset($variables['content']['sitessignage_core.group_add_sign']);
+      unset($variables['content']['sitessignage_core.group_add_slide']);
+    }
+    else {
+      foreach (['sign', 'slide'] as $type) {
+        if (isset($variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'])) {
+          /** @var \Drupal\Core\Url $url */
+          $url = $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'];
+          $options = $url->getOptions();
+          $options['query']['group'] = $node->id();
+          $url->setOptions($options);
+          $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'] = $url;
+        }
       }
     }
   }

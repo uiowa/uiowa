@@ -178,14 +178,22 @@ abstract class ApiClientBase implements ApiClientInterface {
    */
   public function get($endpoint, array $options = [], $type = 'json') {
     $cache_id = $this->getRequestCacheId($endpoint, $options);
+    // Allow per-request cache override via options.
+    $cache_length = NULL;
+    if (isset($options['cache_length'])) {
+      $cache_length = (int) $options['cache_length'];
+      unset($options['cache_length']);
+    }
+
     if ($cache = $this->cache->get($cache_id)) {
       $data = $cache->data;
     }
     else {
       $data = $this->request('GET', $endpoint, $options, $type);
       if ($data) {
-        // Cache for time specified by cacheLength.
-        $this->cache->set($cache_id, $data, time() + $this->cacheLength);
+        // Cache for time specified by cacheLength or through get() options.
+        $expire = time() + ($cache_length ?? $this->cacheLength);
+        $this->cache->set($cache_id, $data, $expire);
       }
     }
 

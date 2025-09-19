@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labshyam.uiowa.ddev.site
+    protocol: https
+  machine_name: labshyam
+  human_name: shyam.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labshyam.prod
+drupal:
+  db:
+    database: shyam_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labshyam.prod.drupal.uiowa.edu'
+  requester: rshyam
+  site-name: shyamlab

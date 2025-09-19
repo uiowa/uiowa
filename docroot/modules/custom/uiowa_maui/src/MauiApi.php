@@ -194,6 +194,27 @@ class MauiApi extends ApiClientBase {
   }
 
   /**
+   * Get a list of all rooms by building.
+   *
+   * @return array
+   *   An array of rooms prefixed with the building they are in.
+   */
+  public function getBuildingRoomCompleteList() {
+    $api_options = ['cache_length' => 86400];
+    $data = $this->get('/pub/registrar/courses/AstraBldgRmCompleteList/list', $api_options);
+    $options = [];
+    if ($data) {
+      foreach ($data as $room) {
+        $building_name = $room->buildingName;
+        $building_code = $room->buildingCode;
+        $room_number = $room->roomNumber;
+        $options[$building_code . '-' . $room_number] = $building_name . ' - ' . $room_number;
+      }
+    }
+    return $options;
+  }
+
+  /**
    * Get room data based on building ID and room ID.
    *
    * @param string $building_id
