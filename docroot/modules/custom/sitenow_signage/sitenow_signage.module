@@ -645,7 +645,7 @@ function sitenow_signage_preprocess_node(&$variables) {
     if (\Drupal::currentUser()->isAuthenticated() && $variables['view_mode'] === 'full') {
       // Add a message to the user warning about reduced motion settings and
       // linking to the article about it.
-      \Drupal::messenger()->addWarning(t('If you have "reduced motion" enabled in your operating system preferences, the slideshow may not function as expected. For more information, see the <a href=":link" target="_blank" rel="noopener">support article</a>.', [
+      \Drupal::messenger()->addWarning(t('If you have "reduced motion" enabled in your operating system preferences, the slideshow may not function as expected. For more information, see the <a href=":link">support article</a>.', [
         ':link' => 'https://its.uiowa.edu/services/digital-signage/sign-slideshow-not-rotating-between-slides',
       ]));
     }
