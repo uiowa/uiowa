@@ -135,13 +135,15 @@ abbr[title]::after {
 .iowa-bar__container {
   margin: initial;
   padding: 0 !important;
+  display: flex!important;
 }
 
 .iowa-bar__below {
   border-block-end: none;
 }
 
-.iowa-bar__below .site-name {
+.iowa-bar__below .site-name,
+.iowa-bar--full .site-name {
   padding-block: 0;
   padding-inline-start: 1.25rem !important;
   font-size: 18pt !important;
@@ -154,8 +156,9 @@ abbr[title]::after {
   }
 }
 
+.iowa-bar__below .iowa-bar__container,
 .iowa-bar__below .iowa-bar__container {
-  min-height: auto;
+  height: auto;
 }
 
 .logo--tab {
