@@ -4161,7 +4161,9 @@ function sitenow_update_10023() {
   }
 }
 
-// Add 'page' to replicate allowed if not present and not sitenow_v2.
+/**
+ * Add 'page' to replicate allowed if not present and not sitenow_v2.
+ */
 function sitenow_update_10024() {
   $config_split_manager = \Drupal::service('config_split.manager');
   $sitenow_v2 = $config_split_manager->getSplitConfig('sitenow_v2');
