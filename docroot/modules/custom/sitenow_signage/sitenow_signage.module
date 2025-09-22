@@ -647,6 +647,8 @@ function sitenow_signage_preprocess_node(&$variables) {
       \Drupal::messenger()->addWarning(t('If you have "reduced motion" enabled in your operating system preferences, the slideshow may not function as expected. For more information, see the <a href=":link">support article</a>.', [
         ':link' => 'https://its.uiowa.edu/services/digital-signage/sign-slideshow-not-rotating-between-slides',
       ]));
+      // Set cache max-age to 0 so this message is not cached.
+      $variables['#cache']['max-age'] = 0;
     }
   }
 }
