@@ -152,8 +152,15 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
     $html .= '</body></html>';
 
     $dompdf = new Dompdf();
-    $dompdf->loadHtml($html);
-    $dompdf->render();
+    try {
+      $dompdf->loadHtml($html);
+      $dompdf->render();
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('policy_core')->error('PDF generation failed: @message', ['@message' => $e->getMessage()]);
+      \Drupal::messenger()->addError(t('Unable to generate the PDF.'));
+      return;
+    }
 
     $directory = 'public://exports';
     $destination = $directory . '/policy-manual.pdf';
@@ -221,7 +228,7 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
           $nid = $link->getRouteParameters()['node'] ?? NULL;
           if ($nid) {
             $node = Node::load($nid);
-            if ($node && $node->isPublished() && $node->bundle() === $node_type) {
+            if ($node instanceof Node && $node->isPublished() && $node->bundle() === $node_type) {
               $nodes[] = $node;
             }
           }
