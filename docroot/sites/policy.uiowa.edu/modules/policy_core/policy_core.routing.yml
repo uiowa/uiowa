@@ -1,0 +1,21 @@
+policy_core.policy_manual_page:
+  path: '/admin/policy-manual'
+  defaults:
+    _controller: '\Drupal\policy_core\Controller\DownloadController::policyManualPage'
+    _title: 'Policy Manual Download Status'
+  requirements:
+    _permission: 'access administration pages'
+policy_core.policy_manual_page_finish:
+  path: '/admin/policy-manual/finish'
+  defaults:
+    _controller: '\Drupal\policy_core\Controller\DownloadController::policyManualPageFinish'
+    _title: 'Policy Manual Finished'
+  requirements:
+    _permission: 'access administration pages'
+policy_core.download_policy_manual:
+  path: '/admin/policy-manual/download'
+  defaults:
+    _controller: '\Drupal\policy_core\Controller\DownloadController::downloadPolicyManual'
+    _title: 'Policy Manual Download'
+  requirements:
+    _permission: 'access administration pages'
