@@ -166,7 +166,7 @@ class P2LbCommands extends DrushCommands {
       $allowed = [];
     }
     // Add 'page' if it is not already present.
-    if(!in_array('page', $allowed)){
+    if (!in_array('page', $allowed)) {
       $allowed[] = 'page';
       $uiowa_core_settings->set('uiowa_core.replicate_allowed', $allowed)->save();
     }

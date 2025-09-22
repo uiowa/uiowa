@@ -4175,13 +4175,13 @@ function sitenow_update_10024() {
   }
   // Get current allowed array.
   $allowed = $config->get('uiowa_core.replicate_allowed');
-  // if array continue otherwise make array.
+  // If array continue otherwise make array.
   if (!is_array($allowed)) {
     $allowed = [];
   }
   // If page not in array add it and save.
-  if(!in_array('page', $allowed)){
-      $allowed[] = 'page';
-      $config->set('uiowa_core.replicate_allowed', $allowed)->save();
+  if (!in_array('page', $allowed)) {
+    $allowed[] = 'page';
+    $config->set('uiowa_core.replicate_allowed', $allowed)->save();
   }
 }
