@@ -2,10 +2,12 @@
 
 namespace Drupal\policy_core\Controller;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 use Drupal\Core\Batch\BatchBuilder;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -138,13 +140,23 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
   public static function batchFinished($success, $results, $operations): void {
     $messenger = \Drupal::messenger();
     $fs = \Drupal::service('file_system');
+    $theme_handler = \Drupal::service('theme_handler');
 
     if (!$success) {
       $messenger->addError(t('An error occurred during PDF generation.'));
       return;
     }
 
-    $html = '<html><head><style> body { font-family: sans-serif; } .pdf-page { page-break-after: always; } .pdf-page:last-child { page-break-after: auto; } </style></head><body>';
+    // Include print.css from the uids_base.
+    // Not including policy specific print styles to keep breadcrumb hidden.
+    $theme_path = $theme_handler->getTheme('uids_base')->getPath();
+    $print_styles = file_get_contents($theme_path . '/assets/css/theme/print.css');
+    $print_styles .= '\n' . '.pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
+
+    $style = '<style>' . Html::escape($print_styles) . '</style>';
+
+    $html = '<html><head>' . $style . '</head><body>';
+
     foreach ($results['temp_files'] as $temp_file) {
       $html .= file_get_contents($temp_file);
       unlink($temp_file);
@@ -216,23 +228,36 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
   protected static function getNodesByMenuOrder(string $menu_name, string $node_type, string $root): array {
     $menu_tree = \Drupal::menuTree();
 
+    // Load the tree starting at the given root.
     $parameters = (new MenuTreeParameters())->setRoot($root);
     $tree = $menu_tree->load($menu_name, $parameters);
 
+    // Apply manipulators to sort by weight and check access.
+    $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
+    $tree = $menu_tree->transform($tree, $manipulators);
+
     $nodes = [];
 
-    $traverse = function ($tree_items, &$nodes) use (&$traverse, $node_type) {
+    // Traverse recursively.
+    $traverse = function (array $tree_items, array &$nodes) use (&$traverse, $node_type) {
       foreach ($tree_items as $item) {
         $link = $item->link;
         if ($link->getRouteName() === 'entity.node.canonical') {
           $nid = $link->getRouteParameters()['node'] ?? NULL;
           if ($nid) {
             $node = Node::load($nid);
-            if ($node instanceof Node && $node->isPublished() && $node->bundle() === $node_type) {
+            if ($node instanceof NodeInterface &&
+              $node->isPublished() &&
+              $node->bundle() === $node_type) {
               $nodes[] = $node;
             }
           }
         }
+
+        // Dive into subtree if present.
         if (!empty($item->subtree)) {
           $traverse($item->subtree, $nodes);
         }
@@ -241,7 +266,10 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
 
     $traverse($tree, $nodes);
 
-    // Dedupe nodes because of anchor links.
+    // Remove the first node, "Table of Contents".
+    array_shift($nodes);
+
+    // De-dupe nodes in case of anchor variants.
     $seen = [];
     $unique_nodes = [];
     foreach ($nodes as $node) {
