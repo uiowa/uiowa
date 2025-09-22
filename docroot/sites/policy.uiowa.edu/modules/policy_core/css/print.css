@@ -4,7 +4,15 @@ nav.breadcrumb {
   display:block !important;
   margin-top: 0;
 }
-
-nav.breadcrumb  a:not(.bttn):not(.photoswipe)[href]:after {
+/* Remove url from displaying for breadcrumb links */
+nav.breadcrumb a:not(.bttn):not(.photoswipe)[href]:after {
+  content: "";
+}
+/* Hide current page in breadcrumbs */
+nav.breadcrumb li:not(:has(a)) {
+  display: none;
+}
+/* Hide dividing line for second to last child */
+nav.breadcrumb li:nth-last-child(2):after {
   content: "";
 }
