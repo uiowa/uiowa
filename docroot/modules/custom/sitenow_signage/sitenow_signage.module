@@ -25,6 +25,37 @@ function sitenow_signage_form_alter(
 ) {
   if (in_array($form_id, ['node_sign_form', 'node_sign_edit_form'])) {
     $form['#attached']['library'][] = 'sitenow_signage/duration-sign';
+
+    // The IEF table display isn't a form in the traditional sense,
+    // so to add classes to its actions buttons we need to traverse
+    // down from here.
+    if (isset($form['field_sign_slides']['widget']['entities'])) {
+      foreach (array_keys($form['field_sign_slides']['widget']['entities']) as $entity_key) {
+        if (str_starts_with($entity_key, '#')) {
+          continue;
+        }
+        if (isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'])) {
+          foreach (array_keys($form['field_sign_slides']['widget']['entities'][$entity_key]['actions']) as $action_key) {
+            if (str_starts_with($action_key, '#')) {
+              continue;
+            }
+            // Now that we're on each action, check for existing
+            // attributes and classes, and add our 'button--small'
+            // class accordingly.
+            if (!isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes'])) {
+              $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes'] = [];
+            }
+            if (!isset($form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'])) {
+              $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'] = ['button--small'];
+            }
+            else {
+              $form['field_sign_slides']['widget']['entities'][$entity_key]['actions'][$action_key]['#attributes']['class'][] = 'button--small';
+            }
+          }
+        }
+      }
+    }
+
   }
   if (in_array($form_id, ['node_slide_form', 'node_slide_edit_form'])) {
     $form['#attached']['library'][] = 'sitenow_signage/duration-slide';
@@ -96,7 +127,8 @@ function sitenow_signage_entity_presave(EntityInterface $entity) {
         }
       }
 
-      // If this slide has a video paragraph, set the video duration in field_slide_duration_other.
+      // If this slide has a video paragraph,
+      // set the video duration in field_slide_duration_other.
       if ($has_video && $video_duration > 0) {
         $entity->set('field_slide_duration_other', $video_duration);
       }
@@ -227,12 +259,15 @@ function sitenow_signage_preprocess_field(&$variables) {
       $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
-      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
-      $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Add cache tag for the sign node so table
-      // updates when sign orientation changes.
-      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      if ($sign_node && $sign_node->bundle() == 'sign') {
+        $orientation = sitenow_signage_get_orientation($sign_node);
+
+        // Add cache tag for the sign node so table
+        // updates when sign orientation changes.
+        $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+      }
 
       // Load and fetch data from the Hours API.
       $api_client = \Drupal::service('uiowa_hours.api');
@@ -421,7 +456,8 @@ function sitenow_signage_get_youtube_duration($url) {
       return 0;
     }
 
-    // Silent return for content/data issues (corrupted JSON, missing video data).
+    // Silent return for content/data issues
+    // (corrupted JSON, missing video data).
     if (json_last_error() !== JSON_ERROR_NONE ||
       empty($data['items'][0]['contentDetails']['duration'])) {
       return 0;
@@ -429,7 +465,8 @@ function sitenow_signage_get_youtube_duration($url) {
 
     // Create DateInterval object from ISO 8601 duration string like "PT5M33S".
     $interval = new DateInterval($data['items'][0]['contentDetails']['duration']);
-    // Calculate total seconds by converting hours, minutes, and seconds to seconds.
+    // Calculate total seconds by
+    // converting hours, minutes, and seconds to seconds.
     $seconds = ($interval->h * 3600) + ($interval->i * 60) + $interval->s;
 
     return $seconds;
@@ -673,22 +710,18 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
         if ($sign_node && $sign_node->bundle() == 'sign') {
           $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
-        }
 
-        // Check if we have a sign node with vertical orientation.
-        if (
-          $sign_node &&
-          $sign_node->bundle() == 'sign' &&
-          sitenow_signage_get_orientation($sign_node) === 'vertical'
-        ) {
+          // Check if we have a sign node with vertical orientation.
+          if (sitenow_signage_get_orientation($sign_node) === 'vertical') {
 
-          $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+            $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
 
-          foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
-            if (is_numeric($delta)) {
-              $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
-              if ($media_entity) {
-                $item = $view_builder->view($media_entity, 'vertical_9_16');
+            foreach ($variables['content']['field_slide_image'] as $delta => &$item) {
+              if (is_numeric($delta)) {
+                $media_entity = $paragraph->get('field_slide_image')->get($delta)->entity;
+                if ($media_entity) {
+                  $item = $view_builder->view($media_entity, 'vertical_9_16');
+                }
               }
             }
           }
@@ -709,16 +742,19 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
       $amount = 3;
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
-      $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Cache is refreshed each hour.
-      $variables['#cache']['tags'][] = 'time:hourly';
+      if ($sign_node && $sign_node->bundle() == 'sign') {
+        $orientation = sitenow_signage_get_orientation($sign_node);
 
-      // Cache is refreshed when the sign node is saved.
-      $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+        // Cache is refreshed each hour.
+        $variables['#cache']['tags'][] = 'time:hourly';
 
-      if ($orientation === 'vertical') {
-        $amount = 5;
+        // Cache is refreshed when the sign node is saved.
+        $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+
+        if ($orientation === 'vertical') {
+          $amount = 5;
+        }
       }
 
       $query = [
@@ -834,7 +870,8 @@ function sitenow_signage_slides_size_allowed_values() {
 /**
  * Convert field array to query array.
  *
- * Convert initial field value structure into an array that can be given to a URL query.
+ * Convert initial field value structure into an array
+ * that can be given to a URL query.
  *
  * @param array $data
  *   Data to be converted into value query array.
@@ -1000,4 +1037,128 @@ function sitenow_signage_get_paragraph_node(Paragraph $paragraph) : Node|NULL {
   }
 
   return NULL;
+}
+
+/**
+ * Implements hook_inline_entity_form_table_fields_alter().
+ */
+function sitenow_signage_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['field_name'] === 'field_sign_slides') {
+    // Add additional fields to the slide IEF.
+    if (in_array('slide', $context['allowed_bundles'])) {
+      $fields['slide_type'] = [
+        'type' => 'callback',
+        'label' => t('Type'),
+        'weight' => 1,
+        'callback' => 'sitenow_signage_ief_slide_type_callback',
+      ];
+      $fields['slide_duration'] = [
+        'type' => 'callback',
+        'label' => t('Duration'),
+        'weight' => 2,
+        'callback' => 'sitenow_signage_ief_slide_duration_callback',
+      ];
+      // Remove the default Status field. We'll add that info with scheduling.
+      unset($fields['status']);
+      $fields['slide_publication'] = [
+        'type' => 'callback',
+        'label' => t('Schedule'),
+        'weight' => 3,
+        'callback' => 'sitenow_signage_ief_slide_publication_callback',
+      ];
+    }
+  }
+}
+
+/**
+ * Callback function to render slide type.
+ */
+function sitenow_signage_ief_slide_type_callback($entity, $variables) {
+  // If we don't have the field, or if it's empty,
+  // say so.
+  if (!$entity->hasField('field_slide_widget') || $entity->get('field_slide_widget')->isEmpty()) {
+    return [
+      '#type' => 'markup',
+      '#markup' => t('No slide attached.'),
+    ];
+  }
+  $paragraph = $entity->get('field_slide_widget')?->entity;
+  // If it's an image, grab the thumbnail and return
+  // a render array with that instead.
+  if ($paragraph->getParagraphType()->id() === 'slide_image') {
+    $media_entity = $paragraph->get('field_slide_image')->entity;
+    $thumbnail_uri = $media_entity->get('thumbnail')?->entity?->getFileUri();
+    return [
+      '#theme' => 'image_style',
+      '#style_name' => 'thumbnail',
+      '#uri' => $thumbnail_uri,
+    ];
+  }
+  $label = $paragraph->getParagraphType()->label();
+  return [
+    '#type' => 'markup',
+    '#markup' => $label,
+  ];
+}
+
+/**
+ * Callback function to format the duration field.
+ */
+function sitenow_signage_ief_slide_duration_callback($entity, $variables) {
+  // If it's a video duration gets handled separately,
+  // and should be displayed as 'Other' to avoid confusion.
+  $paragraph = $entity->get('field_slide_widget')?->entity;
+  if ($paragraph->getParagraphType()->id() === 'slide_video') {
+    return [
+      '#type' => 'markup',
+      '#markup' => "Other",
+    ];
+  }
+
+  $duration_value = $entity->field_slide_duration->value;
+  if ($duration_value === '0') {
+    // A duration value of '0' indicates the "other" duration field
+    // was used, and we need to get and format its value.
+    $num_seconds = $entity->field_slide_duration_other->value;
+    $duration = "{$num_seconds} seconds";
+  }
+  else {
+    // In order to get a regular duration field's human-readable
+    // value, we need to get the field definition's allowed options
+    // and compare with the field's stored value.
+    /** @var \Drupal\Core\Field\FieldStorageDefinitionInterface $field_definition */
+    $field_definition = $entity->field_slide_duration
+      ->getFieldDefinition()
+      ->getFieldStorageDefinition();
+    $field_allowed_options = options_allowed_values($field_definition, $entity);
+    $duration = $field_allowed_options[$entity->field_slide_duration->value];
+  }
+  return [
+    '#type' => 'markup',
+    '#markup' => $duration,
+  ];
+}
+
+/**
+ * Callback function to render combined schedule fields.
+ */
+function sitenow_signage_ief_slide_publication_callback($entity, $variables) {
+  // Grab and format our publication information.
+  $published = ($entity->isPublished()) ? "Published" : "Unpublished";
+  $strings[] = "<strong>{$published}</strong>";
+
+  // Do the same with the scheduling information.
+  foreach (['publish_on', 'unpublish_on'] as $field) {
+    if ($entity->hasField($field) && !$entity->get($field)->isEmpty()) {
+      $label = str_replace('_on', '', ucfirst($field));
+      $value = date('m/d/Y g:i a', $entity->get($field)->value);
+      $strings[] = "<strong>{$label}:</strong> {$value}";
+    }
+  }
+  $full_message = implode('<br>', $strings);
+
+  return [
+    '#type' => 'markup',
+    '#markup' => $full_message,
+  ];
 }
