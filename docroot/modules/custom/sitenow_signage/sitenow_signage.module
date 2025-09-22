@@ -10,7 +10,6 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -670,10 +669,14 @@ function sitenow_signage_preprocess_page(&$variables) {
       // signage displays.
       if (\Drupal::currentUser()->isAnonymous()) {
         // Unset remaining regions except content for logged out users.
-        foreach (Element::children($variables['page']) as $key) {
-          if ($key !== 'content') {
-            unset($variables['page'][$key]);
-          }
+        foreach ([
+          'header',
+          'after_content',
+          'pre_footer',
+          'footer_first',
+          'footer_second',
+        ] as $region) {
+          unset($variables['page'][$region]);
         }
 
         // Attach the signage alert overrides library.
