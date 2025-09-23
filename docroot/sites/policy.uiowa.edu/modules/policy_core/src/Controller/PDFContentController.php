@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Policy Manual download utility.
  */
-class DownloadController extends ControllerBase implements ContainerInjectionInterface {
+class PDFContentController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
    * The file system service.
@@ -54,9 +54,9 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
   }
 
   /**
-   * Policy manual status page.
+   * PDF Content Status Page.
    */
-  public function policyManualPage(Request $request) {
+  public function pdfContent(Request $request) {
     $file_path = 'public://exports/policy-manual.pdf';
     $real_path = $this->fileSystem->realpath($file_path);
 
@@ -71,13 +71,13 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
       $markup['download'] = [
         '#type' => 'link',
         '#title' => $this->t('Download PDF'),
-        '#url' => Url::fromRoute('policy_core.download_policy_manual'),
+        '#url' => Url::fromRoute('policy_core.pdf_content_download'),
         '#attributes' => ['class' => ['button', 'button--primary']],
       ];
       $markup['regenerate'] = [
         '#type' => 'link',
         '#title' => $this->t('Regenerate PDF'),
-        '#url' => Url::fromRoute('policy_core.policy_manual_page', [], ['query' => ['regenerate' => 1]]),
+        '#url' => Url::fromRoute('policy_core.pdf_content', [], ['query' => ['regenerate' => 1]]),
         '#attributes' => ['class' => ['button']],
       ];
       return $markup;
@@ -107,7 +107,7 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
       ->setFinishCallback([static::class, 'batchFinished']);
 
     batch_set($batch_builder->toArray());
-    return batch_process(Url::fromRoute('policy_core.policy_manual_page_finish')->toString());
+    return batch_process(Url::fromRoute('policy_core.pdf_content_finish')->toString());
   }
 
   /**
@@ -185,7 +185,7 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
   /**
    * Download the stored copy.
    */
-  public function downloadPolicyManual(): BinaryFileResponse {
+  public function pdfContentDownload(): BinaryFileResponse {
     $file_path = 'public://exports/policy-manual.pdf';
     $real_path = $this->fileSystem->realpath($file_path);
 
@@ -205,7 +205,7 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
   /**
    * Finish page after batch.
    */
-  public function policyManualPageFinish(): array {
+  public function pdfContentFinish(): array {
     $markup = [
       '#type' => 'container',
     ];
@@ -215,7 +215,7 @@ class DownloadController extends ControllerBase implements ContainerInjectionInt
     $markup['download'] = [
       '#type' => 'link',
       '#title' => $this->t('Download PDF'),
-      '#url' => Url::fromRoute('policy_core.download_policy_manual'),
+      '#url' => Url::fromRoute('policy_core.pdf_content_download'),
       '#attributes' => ['class' => ['button', 'button--primary']],
     ];
     return $markup;
