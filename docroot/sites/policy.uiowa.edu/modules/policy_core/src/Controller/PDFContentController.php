@@ -254,7 +254,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
   /**
    * Fetch nodes by menu order.
    */
-  protected static function getNodesByMenuOrder(string $menu_name, string $node_type, string $root): array {
+  public static function getNodesByMenuOrder(string $menu_name, string $node_type, string $root): array {
     $menu_tree = \Drupal::menuTree();
 
     // Load the tree starting at the given root.
