@@ -16,7 +16,7 @@
  */
 #}
 
-{% if not menu_is_empty %}
+{% if menu_has_enabled_items %}
   <nav role="navigation" aria-label="Site main navigation">
     <h2 class="visually-hidden">Site Main Navigation</h2>
     <ul id="{{ id }}" class="{{ menu_classes }}">
