@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.signage_group.body
+    - field.field.node.signage_group.field_group_email
     - node.type.signage_group
   module:
     - content_moderation
@@ -29,6 +30,14 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_group_email:
+    type: email_default
+    weight: 122
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default

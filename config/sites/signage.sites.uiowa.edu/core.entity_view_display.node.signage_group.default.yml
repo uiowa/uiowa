@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.signage_group.body
+    - field.field.node.signage_group.field_group_email
     - node.type.signage_group
   module:
     - text
@@ -19,6 +20,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_group_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
     region: content
   links:
     settings: {  }
