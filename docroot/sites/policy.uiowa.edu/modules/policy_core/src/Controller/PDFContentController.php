@@ -2,7 +2,6 @@
 
 namespace Drupal\policy_core\Controller;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 use Drupal\Core\Batch\BatchBuilder;
@@ -23,6 +22,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Policy Manual download utility.
  */
 class PDFContentController extends ControllerBase implements ContainerInjectionInterface {
+
+  /**
+   * File storage paths.
+   */
+  const EXPORT_DIR = 'public://exports';
+  const EXPORT_FILE = 'policy-manual.pdf';
+  const TEMP_DIR = 'private://policy_pdf_batches';
 
   /**
    * The file system service.
@@ -57,7 +63,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
    * PDF Content Status Page.
    */
   public function pdfContent(Request $request) {
-    $file_path = 'public://exports/policy-manual.pdf';
+    $file_path = self::EXPORT_DIR . '/' . self::EXPORT_FILE;
     $real_path = $this->fileSystem->realpath($file_path);
 
     if (file_exists($real_path) && !$request->query->get('regenerate')) {
@@ -146,7 +152,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       $html .= '<div class="pdf-page">' . $renderer->render($render_array) . '</div>';
     }
 
-    $temp_dir = 'private://policy_pdf_batches';
+    $temp_dir = self::TEMP_DIR;
     $fs->prepareDirectory($temp_dir, FileSystemInterface::CREATE_DIRECTORY);
     $temp_file = tempnam($fs->realpath($temp_dir), 'batch_') . '.html';
     file_put_contents($temp_file, $html);
@@ -174,7 +180,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     $print_styles = file_get_contents($theme_path . '/assets/css/theme/print.css');
     $print_styles .= '.pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
 
-    $style = '<style>' . Html::escape($print_styles) . '</style>';
+    $style = '<style>' . $print_styles . '</style>';
 
     $html = '<html><head>' . $style . '</head><body>';
 
@@ -195,8 +201,8 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       return;
     }
 
-    $directory = 'public://exports';
-    $destination = $directory . '/policy-manual.pdf';
+    $directory = self::EXPORT_DIR;
+    $destination = self::EXPORT_DIR . '/' . self::EXPORT_FILE;
     $fs->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
     file_put_contents($fs->realpath($destination), $dompdf->output());
 
@@ -207,7 +213,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
    * Download the stored copy.
    */
   public function pdfContentDownload(): BinaryFileResponse {
-    $file_path = 'public://exports/policy-manual.pdf';
+    $file_path = self::EXPORT_DIR . '/' . self::EXPORT_FILE;
     $real_path = $this->fileSystem->realpath($file_path);
 
     if (file_exists($real_path)) {
@@ -291,16 +297,10 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     array_shift($nodes);
 
     // De-dupe nodes in case of anchor variants.
-    $seen = [];
-    $unique_nodes = [];
-    foreach ($nodes as $node) {
-      if (!isset($seen[$node->id()])) {
-        $unique_nodes[] = $node;
-        $seen[$node->id()] = TRUE;
-      }
-    }
-
-    return $unique_nodes;
+    return array_values(array_reduce($nodes, function ($keep, $node) {
+      $keep[$node->id()] = $node;
+      return $keep;
+    }, []));
   }
 
 }
