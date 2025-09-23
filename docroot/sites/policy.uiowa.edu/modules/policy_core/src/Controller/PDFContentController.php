@@ -122,6 +122,27 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       $render_array = \Drupal::entityTypeManager()
         ->getViewBuilder('node')
         ->view($node, 'pdf');
+
+      // Add menu parent title if available.
+      $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+      $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node->id()]);
+      if (!empty($links)) {
+        $link = reset($links);
+        $parent = $link->getParent();
+        if ($parent && $parent !== '') {
+          $title = $menu_link_manager->createInstance($parent)->getTitle();
+          // Override "Table of Contents" title for PDF output.
+          if ($title === 'Table of Contents') {
+            $title = 'Policy Manual';
+          }
+          $parent_title = [
+            '#markup' => '<h1>' . $title . '</h1>',
+            '#allowed_tags' => ['h1'],
+          ];
+          $render_array['parent_title'] = $parent_title;
+        }
+      }
+
       $html .= '<div class="pdf-page">' . $renderer->render($render_array) . '</div>';
     }
 

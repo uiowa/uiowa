@@ -11,3 +11,15 @@
 function policy_core_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'policy_core/policy';
 }
+
+/**
+ * Implements hook_theme().
+ */
+function policy_core_theme($existing, $type, $theme, $path) {
+  return [
+    'node__pdf' => [
+      'template' => 'node--pdf',
+      'base hook' => 'node',
+    ],
+  ];
+}
