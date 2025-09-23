@@ -90,11 +90,11 @@ class PDFContentControllerTest extends KernelTestBase {
     ]);
     $link4->save();
 
-    $nodes = PDFContentController::getNodesByMenuOrder('main', 'page', 'menu_link_content:' . $parent_uuid);
+    $results = PDFContentController::getNodesByMenuOrder('main', 'page', 'menu_link_content:' . $parent_uuid);
 
-    $this->assertCount(2, $nodes, 'Expected two nodes back as first node is removed and unpublished is not included.');
-    $this->assertEquals($node4->id(), $nodes[0]->id(), 'Expected node 4 to be first due to weight.');
-    $this->assertEquals($node2->id(), $nodes[1]->id(), 'Expected node 2 to be second due to weight.');
+    $this->assertCount(2, $results, 'Expected two nodes back as first node is removed and unpublished is not included.');
+    $this->assertEquals($node4->id(), $results[0]['node']->id(), 'Expected node 4 to be first due to weight.');
+    $this->assertEquals($node2->id(), $results[1]['node']->id(), 'Expected node 2 to be second due to weight.');
 
   }
 

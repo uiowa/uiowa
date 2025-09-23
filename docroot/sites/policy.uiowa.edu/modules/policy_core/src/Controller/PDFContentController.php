@@ -129,26 +129,14 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     foreach ($nodes_chunk as $node) {
       $render_array = \Drupal::entityTypeManager()
         ->getViewBuilder('node')
-        ->view($node, 'pdf');
+        ->view($node['node'], 'pdf');
 
-      // Add menu parent title if available.
-      $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
-      $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node->id()]);
-      if (!empty($links)) {
-        $link = reset($links);
-        $parent = $link->getParent();
-        if ($parent && $parent !== '') {
-          $title = $menu_link_manager->createInstance($parent)->getTitle();
-          // Override "Table of Contents" title for PDF output.
-          if ($title === 'Table of Contents') {
-            $title = 'Policy Manual';
-          }
-          $parent_title = [
-            '#markup' => '<h1>' . $title . '</h1>',
-            '#allowed_tags' => ['h1'],
-          ];
-          $render_array['parent_title'] = $parent_title;
-        }
+      $parent_title = $node['parent_title'];
+      if ($parent_title) {
+        $render_array['parent_title'] = [
+          '#markup' => '<h1>' . $parent_title . '</h1>',
+          '#allowed_tags' => ['h1'],
+        ];
       }
 
       $html .= '<div class="pdf-page">' . $renderer->render($render_array) . '</div>';
@@ -252,13 +240,23 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
   }
 
   /**
-   * Fetch nodes by menu order.
+   * Fetch nodes by menu order with parent title.
+   *
+   * Returns an array of associative items:
+   *   [
+   *     'node' => NodeInterface,
+   *     'parent_title' => string|null,
+   *   ]
    */
   public static function getNodesByMenuOrder(string $menu_name, string $node_type, string $root): array {
     $menu_tree = \Drupal::menuTree();
 
     // Load the tree starting at the given root.
-    $parameters = (new MenuTreeParameters())->setRoot($root);
+    $parameters = (new MenuTreeParameters())
+      ->setRoot($root)
+      ->excludeRoot()
+      ->onlyEnabledLinks();
+
     $tree = $menu_tree->load($menu_name, $parameters);
 
     // Apply manipulators to sort by weight and check access.
@@ -268,39 +266,47 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     ];
     $tree = $menu_tree->transform($tree, $manipulators);
 
-    $nodes = [];
+    $results = [];
 
     // Traverse recursively.
-    $traverse = function (array $tree_items, array &$nodes) use (&$traverse, $node_type) {
+    $traverse = function (array $tree_items, array &$results, ?string $parent_title = NULL) use (&$traverse, $node_type) {
       foreach ($tree_items as $item) {
         $link = $item->link;
+
+        // Get the menu parent title if not set.
+        if ($link->getTitle() && $parent_title === NULL) {
+          $parent_title = $link->getTitle();
+          // Override "Table of Contents".
+          if ($parent_title === 'Table of Contents') {
+            $parent_title = 'Policy Manual';
+          }
+        }
+
         if ($link->getRouteName() === 'entity.node.canonical') {
           $nid = $link->getRouteParameters()['node'] ?? NULL;
           if ($nid) {
             $node = Node::load($nid);
-            if ($node instanceof NodeInterface &&
-              $node->isPublished() &&
-              $node->bundle() === $node_type) {
-              $nodes[] = $node;
+            if ($node instanceof NodeInterface && $node->isPublished() && $node->bundle() === $node_type) {
+              $results[] = [
+                'node' => $node,
+                'parent_title' => $parent_title,
+              ];
             }
           }
         }
 
         // Dive into subtree if present.
         if (!empty($item->subtree)) {
-          $traverse($item->subtree, $nodes);
+          $traverse($item->subtree, $results, $parent_title);
         }
       }
     };
 
-    $traverse($tree, $nodes);
-
-    // Remove the first node, "Table of Contents".
-    array_shift($nodes);
+    $traverse($tree, $results);
 
     // De-dupe nodes in case of anchor variants.
-    return array_values(array_reduce($nodes, function ($keep, $node) {
-      $keep[$node->id()] = $node;
+    return array_values(array_reduce($results, function ($keep, $item) {
+      $keep[$item['node']->id()] = $item;
       return $keep;
     }, []));
   }
