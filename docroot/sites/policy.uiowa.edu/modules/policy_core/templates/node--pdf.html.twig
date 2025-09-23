@@ -86,14 +86,14 @@
 
 <div{{ attributes.addClass(classes) }}>
 
-  {% if content.parent_title %}
-    {{ content.parent_title }}
-  {% endif %}
-
   {{ title_prefix }}
   {% if label and not page %}
     <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      {% if content.parent_title %}
+        {{ content.parent_title }} - <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      {% else %}
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      {% endif %}
     </h2>
   {% endif %}
   {{ title_suffix }}

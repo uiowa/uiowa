@@ -129,14 +129,25 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     foreach ($nodes_chunk as $node) {
       $render_array = \Drupal::entityTypeManager()
         ->getViewBuilder('node')
-        ->view($node['node'], 'pdf');
+        ->view($node, 'pdf');
 
-      $parent_title = $node['parent_title'];
-      if ($parent_title) {
-        $render_array['parent_title'] = [
-          '#markup' => '<h1>' . $parent_title . '</h1>',
-          '#allowed_tags' => ['h1'],
-        ];
+      // Add menu parent title if available.
+      $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+      $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node->id()]);
+      if (!empty($links)) {
+        $link = reset($links);
+        $parent = $link->getParent();
+        if ($parent && $parent !== '') {
+          $title = $menu_link_manager->createInstance($parent)->getTitle();
+          // Override "Table of Contents" title for PDF output.
+          if ($title === 'Table of Contents') {
+            $title = 'Policy Manual';
+          }
+          $parent_title = [
+            '#markup' => $title,
+          ];
+          $render_array['parent_title'] = $parent_title;
+        }
       }
 
       $html .= '<div class="pdf-page">' . $renderer->render($render_array) . '</div>';
@@ -164,11 +175,11 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       return;
     }
 
-    // Include print.css from the uids_base.
-    // Not including policy specific print styles to keep breadcrumb hidden.
+    // Include global.css from uids_base (includes print.css).
+    // Not including policy-specific print styles to keep breadcrumb hidden.
     $theme_path = $theme_handler->getTheme('uids_base')->getPath();
-    $print_styles = file_get_contents($theme_path . '/assets/css/theme/print.css');
-    $print_styles .= '.pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
+    $print_styles = file_get_contents($theme_path . '/assets/css/global.css');
+    $print_styles .= '.block-system-breadcrumb-block {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
 
     $style = '<style>' . $print_styles . '</style>';
 
@@ -240,23 +251,14 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
   }
 
   /**
-   * Fetch nodes by menu order with parent title.
-   *
-   * Returns an array of associative items:
-   *   [
-   *     'node' => NodeInterface,
-   *     'parent_title' => string|null,
-   *   ]
+   * Fetch nodes by menu order.
    */
   public static function getNodesByMenuOrder(string $menu_name, string $node_type, string $root): array {
     $menu_tree = \Drupal::menuTree();
 
     // Load the tree starting at the given root.
     $parameters = (new MenuTreeParameters())
-      ->setRoot($root)
-      ->excludeRoot()
-      ->onlyEnabledLinks();
-
+      ->setRoot($root);
     $tree = $menu_tree->load($menu_name, $parameters);
 
     // Apply manipulators to sort by weight and check access.
@@ -269,44 +271,41 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     $results = [];
 
     // Traverse recursively.
-    $traverse = function (array $tree_items, array &$results, ?string $parent_title = NULL) use (&$traverse, $node_type) {
+    $traverse = function (array $tree_items, array &$results) use (&$traverse, $node_type) {
       foreach ($tree_items as $item) {
         $link = $item->link;
 
-        // Get the menu parent title if not set.
-        if ($link->getTitle() && $parent_title === NULL) {
-          $parent_title = $link->getTitle();
-          // Override "Table of Contents".
-          if ($parent_title === 'Table of Contents') {
-            $parent_title = 'Policy Manual';
-          }
+        // Skip over disabled and subtree links.
+        if (!$link->isEnabled()) {
+          continue;
         }
-
         if ($link->getRouteName() === 'entity.node.canonical') {
           $nid = $link->getRouteParameters()['node'] ?? NULL;
           if ($nid) {
             $node = Node::load($nid);
-            if ($node instanceof NodeInterface && $node->isPublished() && $node->bundle() === $node_type) {
-              $results[] = [
-                'node' => $node,
-                'parent_title' => $parent_title,
-              ];
+            if ($node instanceof NodeInterface &&
+              $node->isPublished() &&
+              $node->bundle() === $node_type) {
+              $results[] = $node;
             }
           }
         }
 
         // Dive into subtree if present.
         if (!empty($item->subtree)) {
-          $traverse($item->subtree, $results, $parent_title);
+          $traverse($item->subtree, $results);
         }
       }
     };
 
     $traverse($tree, $results);
 
+    // Remove the first node (root "Table of Contents" link).
+    array_shift($results);
+
     // De-dupe nodes in case of anchor variants.
     return array_values(array_reduce($results, function ($keep, $item) {
-      $keep[$item['node']->id()] = $item;
+      $keep[$item->id()] = $item;
       return $keep;
     }, []));
   }
