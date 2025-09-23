@@ -29,6 +29,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
   const EXPORT_DIR = 'public://exports';
   const EXPORT_FILE = 'policy-manual.pdf';
   const TEMP_DIR = 'private://policy_pdf_batches';
+  const ROOT_MPID = 'menu_link_content:74d425e3-eac8-434d-ac03-cc0f63c32563';
 
   /**
    * The file system service.
@@ -96,9 +97,10 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     // Start the batch process.
     $batch_builder = new BatchBuilder();
-    // Start at the "Table of Contents" menu section.
-    $mlid = 'menu_link_content:74d425e3-eac8-434d-ac03-cc0f63c32563';
-    $nodes = self::getNodesByMenuOrder('main', 'page', $mlid);
+    // Starting menu link plugin ID.
+    // Format as `menu_link_content:{uuid}`.
+    $mpid = self::ROOT_MPID;
+    $nodes = self::getNodesByMenuOrder('main', 'page', $mpid);
 
     $batch_size = 20;
     foreach (array_chunk($nodes, $batch_size) as $chunk) {
