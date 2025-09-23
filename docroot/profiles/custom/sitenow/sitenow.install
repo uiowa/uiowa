@@ -4182,6 +4182,7 @@ function sitenow_update_10024() {
   // If page not in array add it and save.
   if (!in_array('page', $allowed)) {
     $allowed[] = 'page';
-    $config->set('uiowa_core.replicate_allowed', $allowed)->save();
+    $config->set('uiowa_core.replicate_allowed', $allowed)
+      ->save();
   }
 }

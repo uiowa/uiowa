@@ -154,12 +154,14 @@ class P2LbCommands extends DrushCommands {
 
     // Programmatically run `cim`.
     $alias = Drush::aliasManager()->getSelf();
-    $config_import = Drush::processManager()->drush($alias, 'cim');
+    $config_import = Drush::processManager()
+      ->drush($alias, 'cim');
     $config_import->run($config_import->showRealtime());
     $config_import->getOutput();
     drupal_flush_all_caches();
     // Ensure 'page' is in the replicate allowed content types.
-    $uiowa_core_settings = $this->configFactory->getEditable('uiowa_core.settings');
+    $uiowa_core_settings = $this->configFactory
+      ->getEditable('uiowa_core.settings');
     $allowed = $uiowa_core_settings->get('uiowa_core.replicate_allowed');
     // Ensure we have an array to work with.
     if (!is_array($allowed)) {
@@ -168,7 +170,8 @@ class P2LbCommands extends DrushCommands {
     // Add 'page' if it is not already present.
     if (!in_array('page', $allowed)) {
       $allowed[] = 'page';
-      $uiowa_core_settings->set('uiowa_core.replicate_allowed', $allowed)->save();
+      $uiowa_core_settings->set('uiowa_core.replicate_allowed', $allowed)
+        ->save();
     }
 
     // Switch user back.
