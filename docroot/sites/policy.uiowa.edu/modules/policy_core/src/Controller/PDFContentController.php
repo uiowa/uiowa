@@ -172,7 +172,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     // Not including policy specific print styles to keep breadcrumb hidden.
     $theme_path = $theme_handler->getTheme('uids_base')->getPath();
     $print_styles = file_get_contents($theme_path . '/assets/css/theme/print.css');
-    $print_styles .= '\n' . '.pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
+    $print_styles .= '.pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
 
     $style = '<style>' . Html::escape($print_styles) . '</style>';
 
