@@ -21,64 +21,11 @@ theme: {  }
 complete_list:
   - block.block.uids_base_views_block__user_signage_groups_block
   - config_split.config_split.site
-  - core.entity_view_display.user.user.default
-  - field.field.node.sign.og_audience
-  - field.field.node.slide.og_audience
-  - node.type.signage_group
-  - robotstxt.settings
-  - views.view.signage_groups
-  - views.view.signage_group_content
-  - views.view.user_signage_groups
-  - core.base_field_override.node.sign.promote
-  - core.base_field_override.node.slide.promote
-  - core.entity_form_display.node.sign.default
-  - core.entity_form_display.node.slide.default
-  - core.entity_form_display.node.slide.minimal
-  - core.entity_form_display.paragraph.astra_room_schedule.default
-  - core.entity_form_display.paragraph.outlook_events.default
-  - core.entity_form_display.paragraph.slide_events.default
-  - core.entity_form_display.paragraph.slide_image.default
-  - core.entity_form_display.paragraph.slide_video.default
   - core.entity_view_display.media.image.vertical_9_16
   - core.entity_view_display.media.image.widescreen_crop_no_focal_point
-  - core.entity_view_display.node.sign.default
-  - core.entity_view_display.node.sign.teaser
-  - core.entity_view_display.node.slide.default
-  - core.entity_view_display.node.slide.teaser
-  - core.entity_view_display.paragraph.astra_room_schedule.default
-  - core.entity_view_display.paragraph.outlook_events.default
-  - core.entity_view_display.paragraph.slide_events.default
-  - core.entity_view_display.paragraph.slide_image.default
-  - core.entity_view_display.paragraph.slide_image.preview
-  - core.entity_view_display.paragraph.slide_video.default
+  - core.entity_view_display.user.user.default
   - core.entity_view_mode.media.vertical_9_16
   - core.entity_view_mode.media.widescreen_crop_no_focal_point
-  - entity_browser.browser.signage_slide_browser
-  - field.field.node.sign.field_sign_orientation
-  - field.field.node.sign.field_sign_reload_interval
-  - field.field.node.sign.field_sign_slides
-  - field.field.node.slide.field_slide_description
-  - field.field.node.slide.field_slide_duration
-  - field.field.node.slide.field_slide_duration_other
-  - field.field.node.slide.field_slide_widget
-  - field.field.paragraph.astra_room_schedule.field_astra_schedule_room
-  - field.field.paragraph.astra_room_schedule.field_headline
-  - field.field.paragraph.outlook_events.field_headline
-  - field.field.paragraph.outlook_events.field_outlook_events_end_time
-  - field.field.paragraph.outlook_events.field_outlook_events_resource
-  - field.field.paragraph.outlook_events.field_outlook_events_use_org
-  - field.field.paragraph.slide_events.field_headline
-  - field.field.paragraph.slide_events.field_slide_events_audiences
-  - field.field.paragraph.slide_events.field_slide_events_department
-  - field.field.paragraph.slide_events.field_slide_events_interests
-  - field.field.paragraph.slide_events.field_slide_events_keywords
-  - field.field.paragraph.slide_events.field_slide_events_location
-  - field.field.paragraph.slide_events.field_slide_events_types
-  - field.field.paragraph.slide_image.field_slide_image
-  - field.field.paragraph.slide_video.field_slide_video
-  - field.storage.node.field_sign_orientation
-  - field.storage.node.field_sign_reload_interval
-  - field.storage.node.field_sign_slides
   - field.storage.node.field_slide_description
   - field.storage.node.field_slide_duration
   - field.storage.node.field_slide_duration_other
@@ -88,19 +35,12 @@ complete_list:
   - field.storage.paragraph.field_outlook_events_end_time
   - field.storage.paragraph.field_outlook_events_resource
   - field.storage.paragraph.field_outlook_events_use_org
-  - field.storage.paragraph.field_slide_events_audiences
-  - field.storage.paragraph.field_slide_events_department
-  - field.storage.paragraph.field_slide_events_interests
-  - field.storage.paragraph.field_slide_events_keywords
-  - field.storage.paragraph.field_slide_events_location
-  - field.storage.paragraph.field_slide_events_types
-  - field.storage.paragraph.field_slide_image
-  - field.storage.paragraph.field_slide_video
   - image.style.vertical_9_16_1458_x_2592
   - image.style.widescreen_16_9_2592_x_1458
   - metatag.metatag_defaults.node__sign
   - metatag.metatag_defaults.node__slide
   - node.type.sign
+  - node.type.signage_group
   - node.type.slide
   - paragraphs.paragraphs_type.astra_room_schedule
   - paragraphs.paragraphs_type.outlook_events
@@ -111,16 +51,19 @@ complete_list:
   - pathauto.pattern.slide
   - rabbit_hole.behavior_settings.node_type_sign
   - rabbit_hole.behavior_settings.node_type_slide
+  - robotstxt.settings
   - sitenow_signage.settings
   - system.action.user_add_role_action.sign_manager
   - system.action.user_remove_role_action.sign_manager
   - user.role.sign_manager
+  - views.view.signage_groups
+  - views.view.signage_group_content
   - views.view.signage_slide_content
   - views.view.slides_entity_reference
+  - views.view.user_signage_groups
+  - 'field.storage.node.field_sign_*'
+  - 'field.storage.node.field_slide_*'
+  - 'field.storage.paragraph.field_slide_*'
 partial_list:
   - administerusersbyrole.settings
   - views.view.og_members_overview
-  - 'core.entity_view_display.node.sign.*'
-  - 'core.form_view_display.node.sign.*'
-  - 'core.entity_view_display.node.slide.*'
-  - 'core.form_view_display.node.slide.*'
