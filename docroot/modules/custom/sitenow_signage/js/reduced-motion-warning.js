@@ -1,6 +1,6 @@
 /**
  * @file
- * JavaScript for the slideshow block.
+ * JavaScript for the detecting if prefers-reduced-motion is enabled.
  */
 
 (function (Drupal, once) {
