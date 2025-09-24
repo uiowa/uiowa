@@ -2,6 +2,7 @@
 
 namespace Drupal\policy_core\Controller;
 
+use Drupal\Core\Asset\AttachedAssets;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 use Drupal\Core\Batch\BatchBuilder;
@@ -163,9 +164,26 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       return;
     }
 
-    // Global-styling is loaded via twig in the node--pdf.html.twig.
+    $asset_resolver = \Drupal::service('asset.resolver');
+    $css_optimizer = \Drupal::service('asset.css.optimizer');
+
+    $assets = (new AttachedAssets())->setLibraries([
+      'classy/node',
+      'uids_base/global-styling',
+      'uids_base/node-type-page',
+      'policy_core/pdf',
+    ]);
+    $print_styles = '';
+
+    foreach ($asset_resolver->getCssAssets($assets, FALSE) as $asset) {
+      // Skip over external.
+      if ($asset['type'] === 'file' && $asset['preprocess']) {
+        $print_styles .= $css_optimizer->optimize($asset);
+      }
+    }
+
     // Not including policy-specific print styles to keep breadcrumb hidden.
-    $print_styles = '.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
+    $print_styles .= '.block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
 
     $style = '<style>' . $print_styles . '</style>';
 
