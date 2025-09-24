@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrt-neurorehab.uiowa.ddev.site
+    protocol: https
+  machine_name: labrt-neurorehab
+  human_name: rt-neurorehab.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrt-neurorehab.prod
+drupal:
+  db:
+    database: rt_neurorehab_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labrt-neurorehab.prod.drupal.uiowa.edu'
+  requester: shussain
+  site-name: 'Real-Time NeuroRehabilitation Laboratory'
