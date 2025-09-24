@@ -1,0 +1,46 @@
+uuid: 8de434ac-6a7b-4b49-bbeb-d6cd2c5bb7b5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.map_point.field_map_point_category
+    - field.field.paragraph.map_point.field_map_point_geo
+    - field.field.paragraph.map_point.field_map_point_name
+    - paragraphs.paragraphs_type.map_point
+  module:
+    - geofield
+id: paragraph.map_point.default
+targetEntityType: paragraph
+bundle: map_point
+mode: default
+content:
+  field_map_point_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_map_point_geo:
+    type: geofield_default
+    label: above
+    settings:
+      output_format: wkt
+      output_escape: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_map_point_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

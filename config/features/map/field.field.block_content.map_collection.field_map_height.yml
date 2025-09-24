@@ -1,0 +1,25 @@
+uuid: 9788b6a4-d905-434c-b269-143067744dcc
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.map_collection
+    - field.storage.block_content.field_map_height
+id: block_content.map_collection.field_map_height
+field_name: field_map_height
+entity_type: block_content
+bundle: map_collection
+label: 'Map Height'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 600
+default_value_callback: ''
+settings:
+  min: 200
+  max: 800
+  prefix: ''
+  suffix: pixels
+field_type: integer

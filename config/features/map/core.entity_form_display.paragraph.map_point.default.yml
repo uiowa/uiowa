@@ -1,0 +1,40 @@
+uuid: 81f87995-1321-4474-9840-f99e60048898
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.map_point.field_map_point_category
+    - field.field.paragraph.map_point.field_map_point_geo
+    - field.field.paragraph.map_point.field_map_point_name
+    - paragraphs.paragraphs_type.map_point
+  module:
+    - geofield
+id: paragraph.map_point.default
+targetEntityType: paragraph
+bundle: map_point
+mode: default
+content:
+  field_map_point_category:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_map_point_geo:
+    type: geofield_latlon
+    weight: 2
+    region: content
+    settings:
+      html5_geolocation: true
+    third_party_settings: {  }
+  field_map_point_name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
