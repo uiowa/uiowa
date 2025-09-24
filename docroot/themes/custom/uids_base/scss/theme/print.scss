@@ -135,13 +135,20 @@ abbr[title]::after {
 .iowa-bar__container {
   margin: initial;
   padding: 0 !important;
+  display: flex!important;
+}
+
+.iowa-bar--full .iowa-bar__container {
+  align-items: inherit;
+  flex-wrap: nowrap;
 }
 
 .iowa-bar__below {
   border-block-end: none;
 }
 
-.iowa-bar__below .site-name {
+.iowa-bar__below .site-name,
+.iowa-bar--full .site-name {
   padding-block: 0;
   padding-inline-start: 1.25rem !important;
   font-size: 18pt !important;
@@ -158,11 +165,21 @@ abbr[title]::after {
   min-height: auto;
 }
 
+.iowa-bar--full .site-name {
+  margin: 0!important;
+}
+
 .logo--tab {
-  height: 70px !important;
-  padding-block: 25px !important;
+  height: 38px !important;
+  padding-block: 8px !important;
   padding-inline: 1.25rem !important;
-  width: 109px !important;
+  margin-block-end: 0 !important;
+  width: 104px !important;
+}
+
+.iowa-bar--full .logo--tab {
+  width: 91px !important;
+  padding-block: 8px !important;
 }
 
 .logo-icon {
