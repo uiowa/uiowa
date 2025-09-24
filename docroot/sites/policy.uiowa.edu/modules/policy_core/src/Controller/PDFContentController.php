@@ -157,18 +157,15 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
   public static function batchFinished($success, $results, $operations): void {
     $messenger = \Drupal::messenger();
     $fs = \Drupal::service('file_system');
-    $theme_handler = \Drupal::service('theme_handler');
 
     if (!$success) {
       $messenger->addError(t('An error occurred during PDF generation.'));
       return;
     }
 
-    // Include global.css from uids_base (includes print.css).
+    // Global-styling is loaded via twig in the node--pdf.html.twig.
     // Not including policy-specific print styles to keep breadcrumb hidden.
-    $theme_path = $theme_handler->getTheme('uids_base')->getPath();
-    $print_styles = file_get_contents($theme_path . '/assets/css/global.css');
-    $print_styles .= '.block-system-breadcrumb-block {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
+    $print_styles = '.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
 
     $style = '<style>' . $print_styles . '</style>';
 
