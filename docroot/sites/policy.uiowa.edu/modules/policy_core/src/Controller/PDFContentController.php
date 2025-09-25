@@ -2,7 +2,6 @@
 
 namespace Drupal\policy_core\Controller;
 
-use Drupal\Core\Asset\AttachedAssets;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 use Drupal\Core\Batch\BatchBuilder;
@@ -164,32 +163,17 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       return;
     }
 
-    $asset_resolver = \Drupal::service('asset.resolver');
-
-    // Include the following libraries for styling.
-    $assets = (new AttachedAssets())->setLibraries([
-      'uids_base/global-styling',
-      'uids_base/node-type-page',
-    ]);
     $print_styles = '';
 
-    foreach ($asset_resolver->getCssAssets($assets, FALSE) as $asset) {
-      // Skip over external.
-      if ($asset['type'] === 'file') {
-        $print_styles .= '<style>' . file_get_contents($asset['data']) . '</style>';
-      }
-    }
-
-    // Not including policy-specific print styles to keep breadcrumb hidden.
-    // PDF-specific overrides.
-    $print_styles .= '<style>.block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
-
-    // Special handling for fonts.
+    // Include local fonts.
     $path_resolver = \Drupal::service('extension.path.resolver');
     $path = $path_resolver->getPath('module', 'policy_core');
     $font_css = '/' . $path . '/css/pdf.css';
-
     $print_styles .= '<link rel="stylesheet" href="' . $font_css . '" />';
+
+    // Not including policy-specific print.css to keep breadcrumb hidden.
+    // Inline overrides.
+    $print_styles .= '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
 
     $html = '<html><head>' . $print_styles . '</head><body>';
 

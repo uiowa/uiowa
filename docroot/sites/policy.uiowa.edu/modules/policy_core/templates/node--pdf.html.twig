@@ -88,7 +88,7 @@
 
   {{ title_prefix }}
   {% if label and not page %}
-    <h1{{ title_attributes }} class="page-title headline--serif headline">
+    <h1{{ title_attributes }}>
       {% if content.parent_title %}
         {{ content.parent_title }} – <a href="{{ url }}" rel="bookmark">{{ label }}</a>
       {% else %}
