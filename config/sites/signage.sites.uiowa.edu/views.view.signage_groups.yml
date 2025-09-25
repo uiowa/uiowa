@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_group_email
+    - field.storage.node.field_signage_group_email
     - node.type.signage_group
   module:
     - node
@@ -87,10 +87,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_group_email:
-          id: field_group_email
-          table: node__field_group_email
-          field: field_group_email
+        field_signage_group_email:
+          id: field_signage_group_email
+          table: node__field_signage_group_email
+          field: field_signage_group_email
           relationship: none
           group_type: group
           admin_label: ''
@@ -240,7 +240,7 @@ display:
           default_row_class: true
           columns:
             title: title
-            field_group_email: field_group_email
+            field_signage_group_email: field_signage_group_email
           default: '-1'
           info:
             title:
@@ -250,7 +250,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_group_email:
+            field_signage_group_email:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -287,7 +287,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_group_email'
+        - 'config:field.storage.node.field_signage_group_email'
   block_1:
     id: block_1
     display_title: Block
@@ -324,4 +324,4 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_group_email'
+        - 'config:field.storage.node.field_signage_group_email'
