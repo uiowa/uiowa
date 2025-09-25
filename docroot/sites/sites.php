@@ -7810,3 +7810,15 @@ $sites['labsung.uiowa.ddev.site'] = 'sung.lab.uiowa.edu';
 $sites['labsung.dev.drupal.uiowa.edu'] = 'sung.lab.uiowa.edu';
 $sites['labsung.stage.drupal.uiowa.edu'] = 'sung.lab.uiowa.edu';
 $sites['labsung.prod.drupal.uiowa.edu'] = 'sung.lab.uiowa.edu';
+
+// Directory aliases for christinacho.lab.uiowa.edu.
+$sites['labchristinacho.uiowa.ddev.site'] = 'christinacho.lab.uiowa.edu';
+$sites['labchristinacho.dev.drupal.uiowa.edu'] = 'christinacho.lab.uiowa.edu';
+$sites['labchristinacho.stage.drupal.uiowa.edu'] = 'christinacho.lab.uiowa.edu';
+$sites['labchristinacho.prod.drupal.uiowa.edu'] = 'christinacho.lab.uiowa.edu';
+
+// Directory aliases for rt-neurorehab.lab.uiowa.edu.
+$sites['labrt-neurorehab.uiowa.ddev.site'] = 'rt-neurorehab.lab.uiowa.edu';
+$sites['labrt-neurorehab.dev.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
+$sites['labrt-neurorehab.stage.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
+$sites['labrt-neurorehab.prod.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';

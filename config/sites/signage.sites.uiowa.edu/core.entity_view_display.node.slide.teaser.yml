@@ -1,30 +1,22 @@
-uuid: 93adb4c2-aa98-4b69-a34d-ad2993c2da57
+uuid: 6c66f695-5765-4168-9ea4-6f2afe93c7fa
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.field.node.slide.field_slide_description
     - field.field.node.slide.field_slide_duration
     - field.field.node.slide.field_slide_duration_other
     - field.field.node.slide.field_slide_widget
+    - field.field.node.slide.og_audience
     - node.type.slide
   module:
-    - entity_reference_revisions
     - user
-id: node.slide.default
+id: node.slide.teaser
 targetEntityType: node
 bundle: slide
-mode: default
-content:
-  field_slide_widget:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 0
-    region: content
+mode: teaser
+content: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
@@ -32,5 +24,7 @@ hidden:
   field_slide_description: true
   field_slide_duration: true
   field_slide_duration_other: true
+  field_slide_widget: true
   links: true
+  og_audience: true
   search_api_excerpt: true
