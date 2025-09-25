@@ -54,19 +54,22 @@
 
 {% block horizontal_nav %}
   {% if header_nav in['horizontal', 'mega'] %}
-    {{ attach_library('uids_base/mega-menu') }}
-    {{ attach_library('uids_base/horizontal-menu') }}
-    {% set nav_attributes = create_attribute() %}
-    {% set nav_classes = [
-      'nav--horizontal',
-      'nav--' ~ header_nav,
-    ] %}
+    {% set primary_menu_content = page.primary_menu|render %}
+    {% if primary_menu_content|striptags|trim is not empty %}
+      {{ attach_library('uids_base/mega-menu') }}
+      {{ attach_library('uids_base/horizontal-menu') }}
+      {% set nav_attributes = create_attribute() %}
+      {% set nav_classes = [
+        'nav--horizontal',
+        'nav--' ~ header_nav,
+      ] %}
 
-    <nav{{ nav_attributes.addClass(nav_classes) }} aria-label="Primary menu">
-      <div class="page__container">
-        {{ page.primary_menu }}
-      </div>
-    </nav>
+      <nav{{ nav_attributes.addClass(nav_classes) }} aria-label="Primary menu">
+        <div class="page__container">
+          {{ page.primary_menu }}
+        </div>
+      </nav>
+    {% endif %}
   {% endif %}
 
 {% endblock %}
