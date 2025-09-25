@@ -83,19 +83,18 @@
 ]
 %}
 {{ attach_library('classy/node') }}
-{{ attach_library('uids_base/global-styling') }}
 
 <div{{ attributes.addClass(classes) }}>
 
   {{ title_prefix }}
   {% if label and not page %}
-    <h2{{ title_attributes }}>
+    <h1{{ title_attributes }} class="page-title headline--serif headline">
       {% if content.parent_title %}
         {{ content.parent_title }} – <a href="{{ url }}" rel="bookmark">{{ label }}</a>
       {% else %}
         <a href="{{ url }}" rel="bookmark">{{ label }}</a>
       {% endif %}
-    </h2>
+    </h1>
   {% endif %}
   {{ title_suffix }}
 

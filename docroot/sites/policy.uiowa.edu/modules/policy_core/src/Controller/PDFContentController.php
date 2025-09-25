@@ -166,27 +166,32 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     $asset_resolver = \Drupal::service('asset.resolver');
 
+    // Include the following libraries for styling.
     $assets = (new AttachedAssets())->setLibraries([
-      'classy/node',
       'uids_base/global-styling',
       'uids_base/node-type-page',
-      'policy_core/pdf',
     ]);
     $print_styles = '';
 
     foreach ($asset_resolver->getCssAssets($assets, FALSE) as $asset) {
       // Skip over external.
       if ($asset['type'] === 'file') {
-        $print_styles .= file_get_contents($asset['data']);
+        $print_styles .= '<style>' . file_get_contents($asset['data']) . '</style>';
       }
     }
 
     // Not including policy-specific print styles to keep breadcrumb hidden.
-    $print_styles .= '.block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }';
+    // PDF-specific overrides.
+    $print_styles .= '<style>.block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
 
-    $style = '<style>' . $print_styles . '</style>';
+    // Special handling for fonts.
+    $path_resolver = \Drupal::service('extension.path.resolver');
+    $path = $path_resolver->getPath('module', 'policy_core');
+    $font_css = '/' . $path . '/css/pdf.css';
 
-    $html = '<html><head>' . $style . '</head><body>';
+    $print_styles .= '<link rel="stylesheet" href="' . $font_css . '" />';
+
+    $html = '<html><head>' . $print_styles . '</head><body>';
 
     foreach ($results['temp_files'] as $temp_file) {
       $html .= file_get_contents($temp_file);
@@ -194,9 +199,11 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     }
     $html .= '</body></html>';
 
-    $dompdf = new Dompdf();
+    $dompdf = new Dompdf(['chroot' => DRUPAL_ROOT]);
+
     try {
       $dompdf->loadHtml($html);
+      $dompdf->setBasePath(DRUPAL_ROOT . '/' . $path . '/css');
       $dompdf->render();
     }
     catch (\Exception $e) {
