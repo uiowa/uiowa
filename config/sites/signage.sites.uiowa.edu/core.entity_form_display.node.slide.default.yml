@@ -7,9 +7,11 @@ dependencies:
     - field.field.node.slide.field_slide_duration
     - field.field.node.slide.field_slide_duration_other
     - field.field.node.slide.field_slide_widget
+    - field.field.node.slide.og_audience
     - node.type.slide
   module:
     - content_moderation
+    - og
     - paragraphs
     - path
     - scheduler
@@ -70,6 +72,16 @@ content:
     weight: 15
     region: content
     settings: {  }
+    third_party_settings: {  }
+  og_audience:
+    type: og_complex
+    weight: 121
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
