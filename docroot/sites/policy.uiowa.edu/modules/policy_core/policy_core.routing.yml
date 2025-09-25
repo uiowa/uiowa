@@ -1,0 +1,21 @@
+policy_core.pdf_content:
+  path: '/admin/pdf-content'
+  defaults:
+    _controller: '\Drupal\policy_core\Controller\PDFContentController::pdfContent'
+    _title: 'Policy Manual Download Status'
+  requirements:
+    _permission: 'access administration pages'
+policy_core.pdf_content_finish:
+  path: '/admin/pdf-content/finish'
+  defaults:
+    _controller: '\Drupal\policy_core\Controller\PDFContentController::pdfContentFinish'
+    _title: 'Policy Manual Finished'
+  requirements:
+    _permission: 'access administration pages'
+policy_core.pdf_content_download:
+  path: '/admin/pdf-content/download'
+  defaults:
+    _controller: '\Drupal\policy_core\Controller\PDFContentController::pdfContentDownload'
+    _title: 'Policy Manual Download'
+  requirements:
+    _permission: 'access administration pages'
