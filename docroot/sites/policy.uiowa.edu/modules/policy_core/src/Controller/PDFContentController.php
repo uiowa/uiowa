@@ -165,7 +165,6 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     }
 
     $asset_resolver = \Drupal::service('asset.resolver');
-    $css_optimizer = \Drupal::service('asset.css.optimizer');
 
     $assets = (new AttachedAssets())->setLibraries([
       'classy/node',
@@ -177,8 +176,8 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     foreach ($asset_resolver->getCssAssets($assets, FALSE) as $asset) {
       // Skip over external.
-      if ($asset['type'] === 'file' && $asset['preprocess']) {
-        $print_styles .= $css_optimizer->optimize($asset);
+      if ($asset['type'] === 'file') {
+        $print_styles .= file_get_contents($asset['data']);
       }
     }
 
