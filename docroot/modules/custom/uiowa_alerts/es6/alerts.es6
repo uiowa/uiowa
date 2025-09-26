@@ -61,15 +61,8 @@ Drupal.behaviors.uiowaAlerts = {
           // Get the hawk alert content.
           const alertContent = hawkAlertContent(item);
 
-          // Use Drupal.theme.message to create the themed message.
-          const themedMessage = Drupal.theme.message(
-            { text: alertContent },
-            {
-              id: id,
-              type: 'warning',
-              dismissible: false
-            }
-          );
+          // Use custom function to create themed message with error styling but warning semantics.
+          const themedMessage = createAlertThemedMessage(alertContent, id);
 
           // Add the themed message to the messages container.
           messagesWrapper.appendChild(themedMessage);
@@ -83,6 +76,25 @@ Drupal.behaviors.uiowaAlerts = {
           //Then set existing alerts to the new alerts for the next cycle.
           existingAlerts = newAlerts;
         })
+      }
+
+      // Creates a themed message with error styling but with warning Drupal semantics.
+      function createAlertThemedMessage(content, id) {
+        const themedMessage = Drupal.theme.message(
+          { text: content },
+          {
+            id: id,
+            type: 'warning',
+            dismissible: false
+          }
+        );
+
+        // Override the CSS classes to use error/danger styling.
+        const currentClasses = themedMessage.getAttribute('class');
+        const updatedClasses = currentClasses.replace('alert--warning', 'alert--danger');
+        themedMessage.setAttribute('class', updatedClasses);
+
+        return themedMessage;
       }
 
       // Gets existing alerts tracked in the messages wrapper.
