@@ -58,11 +58,8 @@ Drupal.behaviors.uiowaAlerts = {
             return;
           }
 
-          // Get the hawk alert content (without the alert wrapper)
+          // Get the hawk alert content.
           const alertContent = hawkAlertContent(item);
-
-          // Set all hawk alerts to danger type (red alert)
-          const messageType = 'error';
 
           // Use Drupal.theme.message to create the themed message.
           const themedMessage = Drupal.theme.message(
@@ -74,7 +71,7 @@ Drupal.behaviors.uiowaAlerts = {
             }
           );
 
-          // Add the themed message to the messages container
+          // Add the themed message to the messages container.
           messagesWrapper.appendChild(themedMessage);
 
           // Look for differences in existing and new alerts and remove any closed alerts.
