@@ -58,14 +58,24 @@ Drupal.behaviors.uiowaAlerts = {
             return;
           }
 
-          // Get the crafted alert markup
-          const alert = alertMarkup(item);
+          // Get the hawk alert content (without the alert wrapper)
+          const alertContent = hawkAlertContent(item);
 
-          // And add it to the Drupal messages section with its unique ID and message type.
-          messages.add(alert, {
-            id: id,
-            type: 'warning'
-          });
+          // Set all hawk alerts to danger type (red alert)
+          const messageType = 'error';
+
+          // Use Drupal.theme.message to create the themed message.
+          const themedMessage = Drupal.theme.message(
+            { text: alertContent },
+            {
+              id: id,
+              type: 'warning',
+              dismissible: false
+            }
+          );
+
+          // Add the themed message to the messages container
+          messagesWrapper.appendChild(themedMessage);
 
           // Look for differences in existing and new alerts and remove any closed alerts.
           const difference = existingAlerts.filter(existingAlert => !newAlerts.includes(existingAlert));
@@ -82,16 +92,16 @@ Drupal.behaviors.uiowaAlerts = {
       // Returns an array of DOM elements.
       function getExistingAlerts() {
         const existing = [];
-        messagesWrapper.querySelectorAll('.messages').forEach( (existingAlert) => {
+        messagesWrapper.querySelectorAll('[data-drupal-message-id]').forEach( (existingAlert) => {
           existing.push(existingAlert.getAttribute('data-drupal-message-id'));
         });
 
         return existing;
       }
 
-      // Takes a JSON item and creates the markup for an alert.
-      // Returns a string of HTML.
-      function alertMarkup(responseJSONItem) {
+      // Takes a JSON item and creates just the CONTENT for a hawk alert.
+      // Returns a string of HTML content (no alert wrapper).
+      function hawkAlertContent(responseJSONItem) {
         const item = responseJSONItem;
         const date = new Date(item.attributes.date); // parse the ISO 8601 timestamp
 
@@ -103,15 +113,7 @@ Drupal.behaviors.uiowaAlerts = {
         const month = monthFormatter.format(date);
         const time = timeFormatter.format(date).replace('AM', 'a.m.').replace('PM', 'p.m.');
 
-        // Return a fully constructed HTML string to be rendered as an alert.
         return `
-        <div class="alert alert--icon alert--danger">
-          <div class="alert__icon">
-            <span class="fa-stack fa-1x">
-              <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
-              <span role="presentation" class="fas fa-stack-1x fa-inverse fa-exclamation"></span>
-            </span>
-          </div>
           <div class="hawk-alert-message" role="region" aria-label="hawk alert message">
             <h2 class="headline headline--serif">
               <span class="hawk-alert-heading">
@@ -120,10 +122,10 @@ Drupal.behaviors.uiowaAlerts = {
             </h2>
             <p><em><span class="hawk-alert-date">${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span></em><br />
               <span class="hawk-alert-body">${item.attributes.alert}</span>
-              <a class="hawk-alert-link alert-link" href=${item.attributes.more_info_link}>Visit ${item.attributes.more_info_link} for more information.</a></p>
+              <a class="hawk-alert-link alert-link" href="${item.attributes.more_info_link}">Visit ${item.attributes.more_info_link} for more information.</a></p>
           </div>
-        </div>
-      `;
+        `;
       }
     });
-}};
+  }
+};
