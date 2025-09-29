@@ -4001,12 +4001,6 @@ $sites['lawjgrj.dev.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
 $sites['lawjgrj.stage.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
 $sites['lawjgrj.prod.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
 
-// Directory aliases for iyws.clas.uiowa.edu.
-$sites['clasiyws.uiowa.ddev.site'] = 'iyws.clas.uiowa.edu';
-$sites['clasiyws.dev.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
-$sites['clasiyws.stage.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
-$sites['clasiyws.prod.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
-
 // Directory aliases for hrmsf.research.uiowa.edu.
 $sites['researchhrmsf.uiowa.ddev.site'] = 'hrmsf.research.uiowa.edu';
 $sites['researchhrmsf.dev.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
