@@ -61,11 +61,20 @@ Drupal.behaviors.uiowaAlerts = {
           // Get the hawk alert content.
           const alertContent = hawkAlertContent(item);
 
-          // Use custom function to create themed message with error styling but warning semantics.
-          const themedMessage = createAlertThemedMessage(alertContent, id);
+          // Add the content to Drupal's message system with warning type.
+          messages.add(alertContent, {
+            id: id,
+            type: 'warning',
+            dismissible: false
+          });
 
-          // Add the themed message to the messages container.
-          messagesWrapper.appendChild(themedMessage);
+          // Override the CSS classes to use error/danger styling.
+          const addedMessage = messagesWrapper.querySelector(`[data-drupal-message-id="${id}"]`);
+          if (addedMessage) {
+            const currentClasses = addedMessage.getAttribute('class');
+            const updatedClasses = currentClasses.replace('alert--warning', 'alert--danger');
+            addedMessage.setAttribute('class', updatedClasses);
+          }
 
           // Look for differences in existing and new alerts and remove any closed alerts.
           const difference = existingAlerts.filter(existingAlert => !newAlerts.includes(existingAlert));
@@ -76,25 +85,6 @@ Drupal.behaviors.uiowaAlerts = {
           //Then set existing alerts to the new alerts for the next cycle.
           existingAlerts = newAlerts;
         })
-      }
-
-      // Creates a themed message with error styling but with warning Drupal semantics.
-      function createAlertThemedMessage(content, id) {
-        const themedMessage = Drupal.theme.message(
-          { text: content },
-          {
-            id: id,
-            type: 'warning',
-            dismissible: false
-          }
-        );
-
-        // Override the CSS classes to use error/danger styling.
-        const currentClasses = themedMessage.getAttribute('class');
-        const updatedClasses = currentClasses.replace('alert--warning', 'alert--danger');
-        themedMessage.setAttribute('class', updatedClasses);
-
-        return themedMessage;
       }
 
       // Gets existing alerts tracked in the messages wrapper.
