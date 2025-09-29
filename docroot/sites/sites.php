@@ -7822,3 +7822,9 @@ $sites['labrt-neurorehab.uiowa.ddev.site'] = 'rt-neurorehab.lab.uiowa.edu';
 $sites['labrt-neurorehab.dev.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
 $sites['labrt-neurorehab.stage.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
 $sites['labrt-neurorehab.prod.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
+
+// Directory aliases for robinson.lab..uiowa.edu.
+$sites['labrobinson.uiowa.ddev.site'] = 'robinson.lab..uiowa.edu';
+$sites['labrobinson.dev.drupal.uiowa.edu'] = 'robinson.lab..uiowa.edu';
+$sites['labrobinson.stage.drupal.uiowa.edu'] = 'robinson.lab..uiowa.edu';
+$sites['labrobinson.prod.drupal.uiowa.edu'] = 'robinson.lab..uiowa.edu';
