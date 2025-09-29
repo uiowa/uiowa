@@ -52,7 +52,7 @@
     messageWrapper.setAttribute('class', alertClasses.join(' '));
     messageWrapper.setAttribute(
       'role',
-      type === 'error' || type === 'warning' ? 'alert' : 'alert',
+      type === 'error' || type === 'warning' ? 'alert' : 'status',
     );
     messageWrapper.setAttribute('aria-label', `${type} message`);
     messageWrapper.setAttribute('data-drupal-message-id', id);

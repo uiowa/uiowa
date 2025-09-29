@@ -47,6 +47,7 @@
     'alert_content' : alert_content,
     'alert_dismissible' : true,
     'alert_type': type,
+    'alert_role': (type == 'error' or type == 'warning') ? 'alert' : 'status',
   } only %}
 
 {% endfor %}
