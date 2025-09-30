@@ -41,9 +41,10 @@
     {% endif %}
   {% endset %}
 
-  {% set message_attributes = create_attribute() %}
+
+  {% set attributes = create_attribute() %}
   {% include '@uids_base/uids/alert.html.twig' with {
-    'attributes': message_attributes,
+    'attributes': attributes,
     'alert_content' : alert_content,
     'alert_dismissible' : true,
     'alert_type': type,
