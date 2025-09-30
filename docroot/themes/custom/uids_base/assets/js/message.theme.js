@@ -38,15 +38,20 @@
       alertClasses.push('alert--dismissible');
     }
 
-    // Map Drupal message types to UIDS alert types.
+    // Map Drupal message types to UIDS alert types and icons.
+    let icon = '';
     if (type === 'status') {
       alertClasses.push('alert--success');
+      icon = 'fa-check';
     } else if (type === 'warning') {
       alertClasses.push('alert--warning');
+      icon = 'fa-exclamation-triangle';
     } else if (type === 'info') {
       alertClasses.push('alert--info');
+      icon = 'fa-info';
     } else if (type === 'error') {
       alertClasses.push('alert--danger');
+      icon = 'fa-exclamation';
     }
 
     messageWrapper.setAttribute('class', alertClasses.join(' '));
@@ -57,18 +62,6 @@
     messageWrapper.setAttribute('aria-label', `${type} message`);
     messageWrapper.setAttribute('data-drupal-message-id', id);
     messageWrapper.setAttribute('data-drupal-message-type', type);
-
-    // Determine the icon based on message type.
-    let icon = '';
-    if (type === 'status') {
-      icon = 'fa-check';
-    } else if (type === 'warning') {
-      icon = 'fa-exclamation-triangle';
-    } else if (type === 'info') {
-      icon = 'fa-info';
-    } else if (type === 'error') {
-      icon = 'fa-exclamation';
-    }
 
     // Build the HTML structure to match the alert.html.twig template.
     const closeButton = dismissible
