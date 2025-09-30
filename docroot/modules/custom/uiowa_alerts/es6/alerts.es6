@@ -98,7 +98,7 @@ Drupal.behaviors.uiowaAlerts = {
         return existing;
       }
 
-      // Takes a JSON item and creates just the CONTENT for a hawk alert.
+      // Takes a JSON item and creates just the content for a hawk alert.
       // Returns a string of HTML content (no alert wrapper).
       function hawkAlertContent(responseJSONItem) {
         const item = responseJSONItem;
