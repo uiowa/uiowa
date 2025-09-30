@@ -8,6 +8,7 @@ dependencies:
   module:
     - node
     - search_api
+    - layoutbuilder_search_api
 id: sitenow_intranet_search_index
 name: 'Sitenow Intranet Search Index'
 description: ''
@@ -21,6 +22,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.body
+  field_uiowa_text_area:
+    label: 'Layoutbuilder Block Content: Text Area » Text Area'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_layoutbuilder_references_uiowa_text_area:field_uiowa_text_area'
+    type: text
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -40,6 +46,8 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  custom_value: {  }
+  entity_type: {  }
   ignorecase:
     weights:
       preprocess_index: -20
@@ -47,8 +55,30 @@ processor_settings:
     all_fields: true
     fields:
       - body
+      - field_uiowa_text_area
       - title
   language_with_fallback: {  }
+  layout_builder_references:
+    block_content_types:
+      uiowa_text_area: uiowa_text_area
+      featured_content: 0
+      uiowa_aggregator: 0
+      uiowa_banner: 0
+      uiowa_button: 0
+      uiowa_card: 0
+      uiowa_collection: 0
+      uiowa_cta: 0
+      uiowa_event: 0
+      uiowa_events: 0
+      uiowa_hero: 0
+      uiowa_image: 0
+      uiowa_image_gallery: 0
+      uiowa_page_title_hero: 0
+      uiowa_quote: 0
+      uiowa_slider: 0
+      uiowa_spacer_separator: 0
+      uiowa_statistic: 0
+      uiowa_timeline: 0
   rendered_item: {  }
 tracker_settings:
   default:
