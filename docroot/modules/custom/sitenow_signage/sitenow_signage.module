@@ -959,7 +959,11 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       break;
 
     case 'field_slide_building':
-      $filters = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms('211');
+      $options = [
+        1 => '0001',
+        2 => '0002',
+        3 => '0003'
+      ];
       break;
 
     case 'field_slide_event_types':
@@ -971,11 +975,16 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       break;
 
     case 'field_slide_rooms':
-      $options = [
-        1 => '0001',
-        2 => '0002',
-        3 => '0003'
-      ];
+      // TODO: Do we need to change this every time we select a new room?
+      $rooms = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms('211');
+      $room_ids = [];
+      foreach ($rooms as $room) {
+        if (isset($room['roomId'])) {
+          $room_ids[] = $room['roomId'];
+        }
+      }
+
+      $options = $room_ids;
       break;
   }
 
