@@ -171,8 +171,8 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     // Include local fonts.
     $path_resolver = \Drupal::service('extension.path.resolver');
     $path = $path_resolver->getPath('module', 'policy_core');
-    $font_css = '/' . $path . '/css/pdf.css';
-    $print_styles .= '<link rel="stylesheet" href="' . $font_css . '" />';
+    $font_css = DRUPAL_ROOT . '/' . $path . '/css/pdf.css';
+    $print_styles .= '<style>' . file_get_contents($font_css) . '</style>';
 
     // Not including policy-specific print.css to keep breadcrumb hidden.
     // Inline overrides.
@@ -190,7 +190,6 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     try {
       $dompdf->loadHtml($html);
-      $dompdf->setBasePath(DRUPAL_ROOT . '/' . $path . '/css');
       $dompdf->render();
     }
     catch (\Exception $e) {
