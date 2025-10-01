@@ -1,0 +1,61 @@
+uuid: cc9447b8-bf1f-463e-bfac-498e40f1f337
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.map_collection
+    - field.field.block_content.map_collection.field_map_center
+    - field.field.block_content.map_collection.field_map_features
+    - field.field.block_content.map_collection.field_map_height
+    - field.field.block_content.map_collection.field_map_zoom
+  module:
+    - geofield
+    - inline_entity_form
+id: block_content.map_collection.default
+targetEntityType: block_content
+bundle: map_collection
+mode: default
+content:
+  field_map_center:
+    type: geofield_latlon
+    weight: 3
+    region: content
+    settings:
+      html5_geolocation: true
+    third_party_settings: {  }
+  field_map_features:
+    type: inline_entity_form_simple
+    weight: 4
+    region: content
+    settings:
+      form_mode: default
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      collapsible: false
+      collapsed: false
+      revision: false
+    third_party_settings: {  }
+  field_map_height:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_map_zoom:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

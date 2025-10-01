@@ -1,0 +1,30 @@
+uuid: 1d792df7-2c02-422e-9ffc-abc054ed9100
+langcode: en
+status: false
+dependencies: {  }
+id: map
+label: Map
+description: 'The map block feature.'
+weight: 80
+stackable: true
+storage: folder
+folder: ../config/features/map
+module: {  }
+theme: {  }
+complete_list:
+  - block_content.type.map_collection
+  - core.entity_form_display.block_content.map_collection.default
+  - core.entity_form_display.paragraph.map_point.default
+  - core.entity_form_display.taxonomy_term.map_category.default
+  - core.entity_view_display.block_content.map_collection.default
+  - core.entity_view_display.paragraph.map_point.default
+  - field.field.block_content.map_collection.field_map_center
+  - field.field.block_content.map_collection.field_map_features
+  - field.field.block_content.map_collection.field_map_height
+  - field.field.block_content.map_collection.field_map_zoom
+  - field.field.paragraph.map_point.field_map_point_category
+  - field.field.paragraph.map_point.field_map_point_geo
+  - field.field.paragraph.map_point.field_map_point_name
+  - paragraphs.paragraphs_type.map_point
+  - taxonomy.vocabulary.map_category
+partial_list: {  }
