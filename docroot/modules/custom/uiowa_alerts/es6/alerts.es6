@@ -64,17 +64,9 @@ Drupal.behaviors.uiowaAlerts = {
           // Add the content to Drupal's message system with warning type.
           messages.add(alertContent, {
             id: id,
-            type: 'warning',
+            type: 'error',
             dismissible: false
           });
-
-          // Override the CSS classes to use error/danger styling.
-          const addedMessage = messagesWrapper.querySelector(`[data-drupal-message-id="${id}"]`);
-          if (addedMessage) {
-            const currentClasses = addedMessage.getAttribute('class');
-            const updatedClasses = currentClasses.replace('alert--warning', 'alert--danger');
-            addedMessage.setAttribute('class', updatedClasses);
-          }
 
           // Look for differences in existing and new alerts and remove any closed alerts.
           const difference = existingAlerts.filter(existingAlert => !newAlerts.includes(existingAlert));
@@ -97,7 +89,7 @@ Drupal.behaviors.uiowaAlerts = {
 
         return existing;
       }
-      
+
       // Returns a string of alert HTML.
       function hawkAlertContent(responseJSONItem) {
         const item = responseJSONItem;
