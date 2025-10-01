@@ -1,0 +1,42 @@
+adding:
+  dependencies:
+    config:
+      - field.field.paragraph.slide_mazevo_events.field_slide_building
+      - field.field.paragraph.slide_mazevo_events.field_slide_display_end_time
+      - field.field.paragraph.slide_mazevo_events.field_slide_display_room_column
+      - field.field.paragraph.slide_mazevo_events.field_slide_event_types
+      - field.field.paragraph.slide_mazevo_events.field_slide_rooms
+  content:
+    field_slide_building:
+      type: options_select
+      weight: 0
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_slide_display_end_time:
+      type: boolean_checkbox
+      weight: 3
+      region: content
+      settings:
+        display_label: true
+      third_party_settings: {  }
+    field_slide_display_room_column:
+      type: boolean_checkbox
+      weight: 4
+      region: content
+      settings:
+        display_label: true
+      third_party_settings: {  }
+    field_slide_event_types:
+      type: options_select
+      weight: 2
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_slide_rooms:
+      type: options_select
+      weight: 1
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+removing: {  }

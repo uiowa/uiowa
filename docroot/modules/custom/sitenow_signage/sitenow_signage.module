@@ -957,6 +957,30 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       $tree = _sitenow_events_build_options_tree($filters['event_types']);
       $options = _sitenow_events_build_options_list($tree);
       break;
+
+    case 'field_slide_building':
+      $options = [
+        1 => 'UCC',
+        2 => 'PCO',
+        3 => 'IMU'
+      ];
+      break;
+
+    case 'field_slide_event_types':
+      $options = [
+        1 => 'Big',
+        2 => 'Medium',
+        3 => 'Small'
+      ];
+      break;
+
+    case 'field_slide_rooms':
+      $options = [
+        1 => '0001',
+        2 => '0002',
+        3 => '0003'
+      ];
+      break;
   }
 
   return $options;
