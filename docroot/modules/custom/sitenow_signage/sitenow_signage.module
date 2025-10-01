@@ -959,11 +959,7 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       break;
 
     case 'field_slide_building':
-      $options = [
-        1 => 'UCC',
-        2 => 'PCO',
-        3 => 'IMU'
-      ];
+      $filters = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms('211');
       break;
 
     case 'field_slide_event_types':
