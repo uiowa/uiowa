@@ -97,9 +97,8 @@ Drupal.behaviors.uiowaAlerts = {
 
         return existing;
       }
-
-      // Takes a JSON item and creates just the content for a hawk alert.
-      // Returns a string of HTML content (no alert wrapper).
+      
+      // Returns a string of alert HTML.
       function hawkAlertContent(responseJSONItem) {
         const item = responseJSONItem;
         const date = new Date(item.attributes.date); // parse the ISO 8601 timestamp
