@@ -155,6 +155,9 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
    * Batch finished callback.
    */
   public static function batchFinished($success, $results, $operations): void {
+    // Increase the memory limit temporarily for PDF generation.
+    ini_set('memory_limit', '512M');
+
     $messenger = \Drupal::messenger();
     $fs = \Drupal::service('file_system');
 
