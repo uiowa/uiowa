@@ -4001,12 +4001,6 @@ $sites['lawjgrj.dev.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
 $sites['lawjgrj.stage.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
 $sites['lawjgrj.prod.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
 
-// Directory aliases for iyws.clas.uiowa.edu.
-$sites['clasiyws.uiowa.ddev.site'] = 'iyws.clas.uiowa.edu';
-$sites['clasiyws.dev.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
-$sites['clasiyws.stage.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
-$sites['clasiyws.prod.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
-
 // Directory aliases for hrmsf.research.uiowa.edu.
 $sites['researchhrmsf.uiowa.ddev.site'] = 'hrmsf.research.uiowa.edu';
 $sites['researchhrmsf.dev.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
@@ -7822,3 +7816,21 @@ $sites['labrt-neurorehab.uiowa.ddev.site'] = 'rt-neurorehab.lab.uiowa.edu';
 $sites['labrt-neurorehab.dev.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
 $sites['labrt-neurorehab.stage.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
 $sites['labrt-neurorehab.prod.drupal.uiowa.edu'] = 'rt-neurorehab.lab.uiowa.edu';
+
+// Directory aliases for robinson.lab.uiowa.edu.
+$sites['labrobinson.uiowa.ddev.site'] = 'robinson.lab.uiowa.edu';
+$sites['labrobinson.dev.drupal.uiowa.edu'] = 'robinson.lab.uiowa.edu';
+$sites['labrobinson.stage.drupal.uiowa.edu'] = 'robinson.lab.uiowa.edu';
+$sites['labrobinson.prod.drupal.uiowa.edu'] = 'robinson.lab.uiowa.edu';
+
+// Directory aliases for tippietech.org.uiowa.edu.
+$sites['orgtippietech.uiowa.ddev.site'] = 'tippietech.org.uiowa.edu';
+$sites['orgtippietech.dev.drupal.uiowa.edu'] = 'tippietech.org.uiowa.edu';
+$sites['orgtippietech.stage.drupal.uiowa.edu'] = 'tippietech.org.uiowa.edu';
+$sites['orgtippietech.prod.drupal.uiowa.edu'] = 'tippietech.org.uiowa.edu';
+
+// Directory aliases for writing.uiowa.edu.
+$sites['writing.uiowa.ddev.site'] = 'writing.uiowa.edu';
+$sites['writing.dev.drupal.uiowa.edu'] = 'writing.uiowa.edu';
+$sites['writing.stage.drupal.uiowa.edu'] = 'writing.uiowa.edu';
+$sites['writing.prod.drupal.uiowa.edu'] = 'writing.uiowa.edu';
