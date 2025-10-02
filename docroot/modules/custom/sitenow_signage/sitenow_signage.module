@@ -958,14 +958,6 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       $options = _sitenow_events_build_options_list($tree);
       break;
 
-    case 'field_slide_building':
-      $options = [
-        1 => '0001',
-        2 => '0002',
-        3 => '0003'
-      ];
-      break;
-
     case 'field_slide_event_types':
       $options = [
         1 => 'Big',
@@ -980,7 +972,9 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       $room_ids = [];
       foreach ($rooms as $room) {
         if (isset($room['roomId'])) {
-          $room_ids[] = $room['roomId'];
+          $key = $room['buildingId'] . '-' . $room['roomId'];
+          $value = $room['buildingDescription'] . ' - ' . $room['description'];
+          $room_ids[$key] = $value;
         }
       }
 
