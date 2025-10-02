@@ -166,19 +166,13 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       return;
     }
 
-    $print_styles = '';
-
-    // Include local fonts.
-    $path_resolver = \Drupal::service('extension.path.resolver');
-    $path = $path_resolver->getPath('module', 'policy_core');
-    $font_css = DRUPAL_ROOT . '/' . $path . '/css/pdf.css';
-    $print_styles .= '<style>' . file_get_contents($font_css) . '</style>';
+    $fonts = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">';
 
     // Not including policy-specific print.css to keep breadcrumb hidden.
     // Inline overrides.
-    $print_styles .= '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
+    $print_styles = '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
 
-    $html = '<html><head>' . $print_styles . '</head><body>';
+    $html = '<html><head>' . $fonts . $print_styles . '</head><body>';
 
     foreach ($results['temp_files'] as $temp_file) {
       $html .= file_get_contents($temp_file);
@@ -186,7 +180,16 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     }
     $html .= '</body></html>';
 
-    $dompdf = new Dompdf(['chroot' => DRUPAL_ROOT]);
+    $file_system = \Drupal::service('file_system');
+    $tmp = $file_system->getTempDirectory();
+
+    $dompdf = new Dompdf([
+      'isRemoteEnabled' => TRUE,
+      'fontDir' => $tmp,
+      'fontCache' => $tmp,
+      'tempDir' => $tmp,
+      'chroot' => DRUPAL_ROOT,
+    ]);
 
     try {
       $dompdf->loadHtml($html);
