@@ -52,12 +52,23 @@ class EventItemProcessor extends EntityItemProcessorBase {
    * {@inheritdoc}
    */
   protected static function prepareUpdatedValues(array &$values, $entity, $record): void {
-    // If the event end time is being updated, ensure the start time is
-    // included in the update values.
-    if (isset($values['field_event_when']['end_value'])
-      && !isset($values['field_event_when']['value'])
-      && property_exists($record, 'start')) {
-      $values['field_event_when']['value'] = $record->start;
+    // If any values for the date field are being updated, ensure that both
+    // start and end are included in the update values.
+    if (isset($values['field_event_when'])) {
+      // If the event start time is being updated, ensure the end time is
+      // updated too.
+      if (isset($values['field_event_when']['value'])
+        && !isset($values['field_event_when']['end_value'])
+        && property_exists($record, 'end')) {
+        $values['field_event_when']['end_value'] = $record->end;
+      }
+      // If the event end time is being updated, ensure the start time is
+      // updated too.
+      if (isset($values['field_event_when']['end_value'])
+        && !isset($values['field_event_when']['value'])
+        && property_exists($record, 'start')) {
+        $values['field_event_when']['value'] = $record->start;
+      }
     }
   }
 
