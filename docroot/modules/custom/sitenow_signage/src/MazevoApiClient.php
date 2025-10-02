@@ -88,11 +88,15 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
   /**
    * {@inheritdoc}
    */
-  public function getRooms($building_id) {
-    $options = [
-      'json' => [
+  public function getRooms($building_id = NULL) {
+    $json = json_decode('{}');
+    if ($building_id) {
+      $json = [
         'buildingId' => $building_id,
-        ],
+      ];
+    }
+    $options = [
+      'json' => $json,
     ];
     $data = $this->request('POST', 'PublicConfiguration/Rooms', $options, 'json');
     return json_decode(json_encode($data), TRUE);

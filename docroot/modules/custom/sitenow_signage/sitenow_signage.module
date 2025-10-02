@@ -967,8 +967,7 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       break;
 
     case 'field_slide_rooms':
-      // TODO: Do we need to change this every time we select a new room?
-      $rooms = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms('211');
+      $rooms = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms();
       $room_ids = [];
       foreach ($rooms as $room) {
         if (isset($room['roomId'])) {
@@ -978,6 +977,7 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
         }
       }
 
+      asort($room_ids);
       $options = $room_ids;
       break;
   }
