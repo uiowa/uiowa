@@ -15,6 +15,15 @@ trait ApiAuthKeyTrait {
   protected ?string $apiKey = NULL;
 
   /**
+   * The header parameter name for the api token.
+   *
+   * @return string
+   */
+  protected function headerParameterName(): string {
+    return 'x-auth-token';
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getKey(): string|null {
@@ -37,7 +46,7 @@ trait ApiAuthKeyTrait {
       // Merge additional options with default but allow overriding.
       $options = array_merge([
         'headers' => [
-          'x-auth-token' => $this->apiKey,
+          $this->headerParameterName() => $this->apiKey,
         ],
       ], $options);
     }

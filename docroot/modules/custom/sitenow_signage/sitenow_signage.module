@@ -957,6 +957,38 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       $tree = _sitenow_events_build_options_tree($filters['event_types']);
       $options = _sitenow_events_build_options_list($tree);
       break;
+
+    case 'field_slide_event_types':
+      $event_types = \Drupal::service('sitenow_signage.mazevo_api_client')->getEventTypes();
+      $enabled_types = [];
+      foreach ($event_types as $type) {
+        if (
+          isset($type['id']) &&
+          isset($type['description']) &&
+          isset($type['disabled']) &&
+          !$type['disabled']
+        ) {
+          $enabled_types[$type['id']] = $type['description'];
+        }
+      }
+      asort($enabled_types);
+      $options = $enabled_types;
+      break;
+
+    case 'field_slide_rooms':
+      $rooms = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms();
+      $room_ids = [];
+      foreach ($rooms as $room) {
+        if (isset($room['roomId'])) {
+          $key = $room['buildingId'] . '-' . $room['roomId'];
+          $value = $room['buildingDescription'] . ' - ' . $room['description'];
+          $room_ids[$key] = $value;
+        }
+      }
+
+      asort($room_ids);
+      $options = $room_ids;
+      break;
   }
 
   return $options;

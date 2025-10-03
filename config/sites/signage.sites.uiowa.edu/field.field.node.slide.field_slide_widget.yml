@@ -9,6 +9,7 @@ dependencies:
     - paragraphs.paragraphs_type.outlook_events
     - paragraphs.paragraphs_type.slide_events
     - paragraphs.paragraphs_type.slide_image
+    - paragraphs.paragraphs_type.slide_mazevo_events
     - paragraphs.paragraphs_type.slide_video
   module:
     - entity_reference_revisions
@@ -31,33 +32,37 @@ settings:
       slide_events: slide_events
       outlook_events: outlook_events
       astra_room_schedule: astra_room_schedule
+      slide_mazevo_events: slide_mazevo_events
     negate: 0
     target_bundles_drag_drop:
       astra_room_schedule:
-        weight: -15
-        enabled: true
-      outlook_events:
-        weight: -16
-        enabled: true
-      slide_events:
         weight: -17
         enabled: true
-      slide_image:
-        weight: -19
-        enabled: true
-      slide_video:
+      outlook_events:
         weight: -18
         enabled: true
+      slide_events:
+        weight: -19
+        enabled: true
+      slide_image:
+        weight: -21
+        enabled: true
+      slide_mazevo_events:
+        weight: -16
+        enabled: true
+      slide_video:
+        weight: -20
+        enabled: true
       uiowa_collection_item:
-        weight: -14
+        weight: -15
         enabled: false
       uiowa_contact:
-        weight: -13
+        weight: -14
         enabled: false
       uiowa_slide:
-        weight: -12
+        weight: -13
         enabled: false
       uiowa_timeline_item:
-        weight: -11
+        weight: -12
         enabled: false
 field_type: entity_reference_revisions
