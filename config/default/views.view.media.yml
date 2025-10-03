@@ -115,8 +115,8 @@ display:
           entity_type: media
           entity_field: mid
           plugin_id: field
-          label: ''
-          exclude: true
+          label: ID
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -184,8 +184,8 @@ display:
           label: 'Media name'
           exclude: false
           alter:
-            alter_text: true
-            text: '{{ name }} ({{ mid }})'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -891,14 +891,30 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            thumbnail__target_id: thumbnail__target_id
+            mid: mid
             name: name
             bundle: bundle
-            changed: changed
             uid: uid
             status: status
-            thumbnail__target_id: thumbnail__target_id
+            changed: changed
+            operations: operations
           default: changed
           info:
+            thumbnail__target_id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            mid:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             name:
               sortable: true
               default_sort_order: asc
@@ -913,15 +929,8 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            changed:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
             uid:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -934,9 +943,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            thumbnail__target_id:
-              sortable: false
-              default_sort_order: asc
+            changed:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
               align: ''
               separator: ''
               empty_column: false
@@ -978,7 +992,10 @@ display:
     position: 1
     display_options:
       display_description: ''
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: admin/content/media
     cache_metadata:
       max-age: -1

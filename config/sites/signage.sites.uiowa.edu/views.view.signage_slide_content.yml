@@ -88,8 +88,8 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: field
-          label: ''
-          exclude: true
+          label: ID
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -157,8 +157,8 @@ display:
           label: Title
           exclude: false
           alter:
-            alter_text: true
-            text: '{{ title }} ({{ nid }})'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -641,12 +641,11 @@ display:
           default_row_class: true
           columns:
             entity_browser_select: entity_browser_select
-            field_image: field_image
+            nid: nid
             title: title
-            body: body
+            field_slide_duration: field_slide_duration
+            field_slide_description: field_slide_description
             uid: uid
-            type: type
-            moderation_state: moderation_state
             changed: changed
           default: changed
           info:
@@ -655,8 +654,8 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_image:
-              sortable: false
+            nid:
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -669,7 +668,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            body:
+            field_slide_duration:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_slide_description:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -677,20 +683,6 @@ display:
               empty_column: false
               responsive: ''
             uid:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            type:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            moderation_state:
               sortable: true
               default_sort_order: asc
               align: ''
