@@ -959,11 +959,20 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       break;
 
     case 'field_slide_event_types':
-      $options = [
-        1 => 'Big',
-        2 => 'Medium',
-        3 => 'Small'
-      ];
+      $event_types = \Drupal::service('sitenow_signage.mazevo_api_client')->getEventTypes();
+      $enabled_types = [];
+      foreach ($event_types as $type) {
+        if (
+          isset($type['id']) &&
+          isset($type['description']) &&
+          isset($type['disabled']) &&
+          !$type['disabled']
+        ) {
+          $enabled_types[$type['id']] = $type['description'];
+        }
+      }
+      asort($enabled_types);
+      $options = $enabled_types;
       break;
 
     case 'field_slide_rooms':

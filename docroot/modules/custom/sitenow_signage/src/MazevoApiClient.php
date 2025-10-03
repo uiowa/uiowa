@@ -64,30 +64,6 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
   /**
    * {@inheritdoc}
    */
-  public function getFilters($display_id) {
-    $options = [
-      'query' => [
-        'display_id' => $display_id,
-      ],
-    ];
-    return json_decode(json_encode($this->get('views/filters_api.json', $options)), TRUE);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getBuildings($display_id) {
-    $options = [
-      'query' => [
-        'display_id' => $display_id,
-      ],
-    ];
-    return json_decode(json_encode($this->get('views/filters_api.json', $options)), TRUE);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getRooms($building_id = NULL) {
     $json = json_decode('{}');
     if ($building_id) {
@@ -98,20 +74,15 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
     $options = [
       'json' => $json,
     ];
-    $data = $this->request('POST', 'PublicConfiguration/Rooms', $options, 'json');
+    $data = $this->post('PublicConfiguration/Rooms', $options);
     return json_decode(json_encode($data), TRUE);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPlaces() {
-    $options = [
-      'query' => [
-        'display_id' => 'places',
-      ],
-    ];
-    return json_decode(json_encode($this->get('views/places_api.json', $options)), TRUE);
+  public function getEventTypes() {
+    $data = $this->get('PublicConfiguration/EventTypes', []);
+    return json_decode(json_encode($data), TRUE);
   }
-
 }

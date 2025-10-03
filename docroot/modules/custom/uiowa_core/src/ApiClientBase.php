@@ -177,6 +177,20 @@ abstract class ApiClientBase implements ApiClientInterface {
    * {@inheritdoc}
    */
   public function get($endpoint, array $options = [], $type = 'json') {
+    return $this->methodlessRequest($endpoint, $options, $type, 'GET');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function post($endpoint, array $options = [], $type = 'json') {
+    return $this->methodlessRequest($endpoint, $options, $type, 'POST');
+  }
+
+  /**
+   *
+   */
+  public function methodlessRequest($endpoint, array $options = [], $type = 'json', $method = 'GET') {
     $cache_id = $this->getRequestCacheId($endpoint, $options);
     // Allow per-request cache override via options.
     $cache_length = NULL;
@@ -189,7 +203,7 @@ abstract class ApiClientBase implements ApiClientInterface {
       $data = $cache->data;
     }
     else {
-      $data = $this->request('GET', $endpoint, $options, $type);
+      $data = $this->request($method, $endpoint, $options, $type);
       if ($data) {
         // Cache for time specified by cacheLength or through get() options.
         $expire = time() + ($cache_length ?? $this->cacheLength);
