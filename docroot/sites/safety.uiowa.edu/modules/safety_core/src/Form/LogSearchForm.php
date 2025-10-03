@@ -139,7 +139,6 @@ class LogSearchForm extends FormBase {
     $form['#attributes'] = [
       'class' => [
         'bg--gray',
-        'form',
         'element--padding__all--minimal',
         'block-margin__bottom--extra',
         'form--horizontal',
