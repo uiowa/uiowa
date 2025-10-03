@@ -171,9 +171,10 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     $font_css = DRUPAL_ROOT . '/' . $path . '/css/policy.css';
     $print_styles = '<style>' . file_get_contents($font_css) . '</style>';
     // Inline overrides.
-    $print_styles .= '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; } a[href^="/"]::after { content: "(https://policy.uiowa.edu" attr(href) ")"; }</style>';
+    $print_styles .= '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
 
-    $html = '<html><head>' . $fonts . $print_styles . '</head><body>';
+    $base_url = 'https://policy.uiowa.edu/';
+    $html = '<html><head><base href="' . $base_url . '">' . $fonts . $print_styles . '</head><body>';
 
     foreach ($results['temp_files'] as $temp_file) {
       $html .= file_get_contents($temp_file);
