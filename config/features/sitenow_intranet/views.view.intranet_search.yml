@@ -249,7 +249,10 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
+            expose_fields: false
             placeholder: ''
+            searched_fields_id: ''
+            value_maxlength: 128
           is_grouped: false
           group_info:
             label: ''
@@ -265,8 +268,7 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - body
-            - title
+            - rendered_item
       style:
         type: default
       row:
@@ -298,6 +300,7 @@ display:
       tags:
         - 'config:field.storage.node.body'
         - 'config:search_api.index.sitenow_intranet_search_index'
+        - 'search_api_list:sitenow_intranet_search_index'
   page_1:
     id: page_1
     display_title: Page
@@ -320,3 +323,4 @@ display:
       tags:
         - 'config:field.storage.node.body'
         - 'config:search_api.index.sitenow_intranet_search_index'
+        - 'search_api_list:sitenow_intranet_search_index'
