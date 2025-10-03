@@ -166,8 +166,12 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     $fonts = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">';
 
     // Not including policy-specific print.css to keep breadcrumb hidden.
+    $path_resolver = \Drupal::service('extension.path.resolver');
+    $path = $path_resolver->getPath('module', 'policy_core');
+    $font_css = DRUPAL_ROOT . '/' . $path . '/css/policy.css';
+    $print_styles = '<style>' . file_get_contents($font_css) . '</style>';
     // Inline overrides.
-    $print_styles = '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
+    $print_styles .= '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; } a[href^="/"]::after { content: "(https://policy.uiowa.edu" attr(href) ")"; }</style>';
 
     $html = '<html><head>' . $fonts . $print_styles . '</head><body>';
 
