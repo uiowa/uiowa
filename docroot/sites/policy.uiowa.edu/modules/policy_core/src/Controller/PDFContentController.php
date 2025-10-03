@@ -168,8 +168,8 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     // Not including policy-specific print.css to keep breadcrumb hidden.
     $path_resolver = \Drupal::service('extension.path.resolver');
     $path = $path_resolver->getPath('module', 'policy_core');
-    $font_css = DRUPAL_ROOT . '/' . $path . '/css/policy.css';
-    $print_styles = '<style>' . file_get_contents($font_css) . '</style>';
+    $policy_css = DRUPAL_ROOT . '/' . $path . '/css/policy.css';
+    $print_styles = '<style>' . file_get_contents($policy_css) . '</style>';
     // Inline overrides.
     $print_styles .= '<style>body {font-family: "Roboto", sans-serif;} h1 {font-family: "Zilla Slab", serif}.block.block-menu, .block-system-breadcrumb-block, .block-field-blocknodepagetitle {display: none !important;} .pdf-page { page-break-after: always !important; } .pdf-page:last-child { page-break-after: auto !important; }</style>';
 
