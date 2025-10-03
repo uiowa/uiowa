@@ -14,32 +14,43 @@ use Drupal\views\Views;
  * Implements hook_form_alter().
  */
 function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  if ($form_id == 'og_membership_default_add_form') {
-    if (isset($form['uid']['widget'][0]['target_id'])) {
-      // Update the description of the uid field.
-      $form['uid']['widget'][0]['target_id']['#description'] = t('Enter the HawkID of the member you wish to add. If no user account exists for the HawkID, one will be created. HawkIDs can be found using the <a href=":url">University of Iowa Directory Search</a>.', [
-        ':url' => Url::fromUri('https://iam.uiowa.edu/whitepages/search')->toString(),
-      ]);
+  switch ($form_id) {
+    case 'node_slide_edit_form':
+    case 'node_slide_form':
+      // Disable access to the path field for the slide content type.
+      $form['path']['#access'] = FALSE;
+      break;
 
-      // Add a custom element processor.
-      $form['#validate'][] = 'sitessignage_core_og_user_validate';
-    }
+    case 'og_membership_default_add_form':
+    case 'og_membership_default_edit_form':
+      // Only apply to the "add" form.
+      if ($form_id === 'og_membership_default_add_form') {
+        if (isset($form['uid']['widget'][0]['target_id'])) {
+          // Update the description of the uid field.
+          $form['uid']['widget'][0]['target_id']['#description'] = t('Enter the HawkID of the member you wish to add. If no user account exists for the HawkID, one will be created. HawkIDs can be found using the <a href=":url">University of Iowa Directory Search</a>.', [
+            ':url' => Url::fromUri('https://iam.uiowa.edu/whitepages/search')->toString(),
+          ]);
 
-    // Remove access to the state field.
-    if (isset($form['state'])) {
-      $form['state']['#access'] = FALSE;
-    }
-  }
+          // Add a custom element processor.
+          $form['#validate'][] = 'sitessignage_core_og_user_validate';
+        }
 
-  if ($form_id == 'og_membership_default_edit_form' || $form_id == 'og_membership_default_add_form') {
-    if (isset($form['roles']['widget'])) {
-      // Remove the administrator role from the options.
-      if (isset($form['roles']['widget']['#options'])) {
-        unset($form['roles']['widget']['#options']['node-signage_group-administrator']);
+        // Remove access to the state field.
+        if (isset($form['state'])) {
+          $form['state']['#access'] = FALSE;
+        }
       }
-      // Update the description of roles field.
-      $form['roles']['widget']['#description'] = t('Select if the member should have additional permissions within the group.');
-    }
+
+      if (isset($form['roles']['widget'])) {
+        // Remove the administrator role from the options.
+        if (isset($form['roles']['widget']['#options'])) {
+          unset($form['roles']['widget']['#options']['node-signage_group-administrator']);
+        }
+        // Update the description of roles field.
+        $form['roles']['widget']['#description'] = t('Select if the member should have additional permissions within the group.');
+      }
+      break;
+
   }
 }
 
