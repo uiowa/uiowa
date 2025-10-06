@@ -137,7 +137,7 @@ AddEncoding gzip svgz
   RewriteRule ^(.*)$ https://writinguniversity.uiowa.edu/$1 [L,R=301]
 
   # Adding Redirect writing.uiowa.edu to writinguniversity.uiowa.edu/about-us/writing-iowa
-  RewriteCond %{HTTP_HOST} writing\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteCond %{HTTP_HOST} writing\.((stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
   RewriteRule ^ https://writinguniversity.uiowa.edu/about-us/writing-iowa [L,R=301]
 
   # Redirect rules for diversity.uiowa.edu.
