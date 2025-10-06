@@ -73,13 +73,14 @@
 #}
 {%
   set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  ]
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  'form',
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+]
 %}
 {{ attach_library('classy/node') }}
 
@@ -87,9 +88,13 @@
 
   {{ title_prefix }}
   {% if label and not page %}
-    <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
+    <h1{{ title_attributes }}>
+      {% if content.parent_title %}
+        {{ content.parent_title }} – <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      {% else %}
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      {% endif %}
+    </h1>
   {% endif %}
   {{ title_suffix }}
 
@@ -104,7 +109,7 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    {{ content }}
+    {{ content | without('parent_title') }}
   </div>
 
 </div>
