@@ -394,6 +394,144 @@ function sitenow_signage_preprocess_field(&$variables) {
       $variables['items'] = array_slice($variables['items'], 0, 1);
 
       break;
+
+    case 'field_slide_mazevo_rooms':
+      // Cache this for 1 hour.
+      $variables['#cache']['tags'][] = 'time:hourly';
+      // Get additional info necessary to overwrite the output of this field.
+      $paragraph = $variables['element']['#object'];
+
+
+      ///////
+      $filters = [
+        'rooms' => $paragraph?->get('field_slide_mazevo_rooms')?->value,
+        'types' => $paragraph?->get('field_slide_mazevo_event_types')?->value,
+      ];
+
+      $request_body = [
+        'buildingIds' => [],
+        'roomIds' => [],
+        'eventTypeIds' => [],
+        'start' => date('c', strtotime('midnight today')),
+        'end' => date('c', strtotime('midnight tomorrow')),
+      ];
+
+      if (isset($filters['rooms'])) {
+        $rooms = $filters['rooms'];
+        foreach ($rooms as $room) {
+          if (isset($room['value'])) {
+            $building_and_room = explode('-', $room['value']);
+
+            // We add them this way so that we don't have duplicates in the array.
+            $building_and_room[0] ? $request_body['buildingIds'][$building_and_room[0]] = 0 : NULL;
+            $building_and_room[1] ? $request_body['roomIds'][$building_and_room[1]] = 0 : NULL;
+          }
+        }
+      }
+
+      // Get the keys so that we get the non-duplicitous ids.
+      $request_body['buildingIds'] = array_keys($request_body['buildingIds']);
+      $request_body['roomIds'] = array_keys($request_body['roomIds']);
+
+      if (isset($filters['types'])) {
+        foreach ($filters['types'] as $type) {
+          if (isset($type['value'])) {
+            $request_body['eventTypeIds'][] = $type['value'];
+          }
+        }
+      }
+
+      $events = \Drupal::service('sitenow_signage.mazevo_api_client')->getEvents($request_body);
+      $events = json_decode(json_encode($events), TRUE);
+      /// ///////
+
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      $had_failure = FALSE;
+
+
+      if ($sign_node && $sign_node->bundle() == 'sign') {
+        $orientation = sitenow_signage_get_orientation($sign_node);
+
+        // Add cache tag for the sign node so table
+        // updates when sign orientation changes.
+        $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+      }
+
+      // Loop through today's events.
+      foreach ($events as $event) {
+        $start = strtotime($event['dateTimeStart']);
+        $end = strtotime($event['dateTimeEnd']);
+
+        // Skip events already ended.
+        if ($end < time()) {
+          continue;
+        }
+
+        // Format time range based on settings.
+        $formatted_date = date('g:i a', $start) . ' – ' . date('g:i a', $end);
+
+        // Build row, store start time for sorting.
+        $data[] = [
+          'time' => $formatted_date,
+          'start' => $start,
+          'meeting' => $event['eventName'],
+          'room' => $event['roomDescription'],
+        ];
+      }
+
+
+      if (!empty($data)) {
+        // Sort rows by start time.
+        usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
+
+        // Cap the number of rows differently based on orientation.
+        $max = $orientation === 'horizontal' ? 10 : 15;
+        $data = array_slice($data, 0, $max);
+
+        // Build table rows.
+        foreach ($data as $event) {
+          $row = [
+            'time' => $event['time'],
+            'meeting' => $event['meeting'],
+            'room' => $event['room'],
+          ];
+          $rows[] = $row;
+        }
+      }
+
+      // Choose an empty message based on whether we saw a failure.
+      if ($had_failure) {
+        $empty_message = t('There was an error retrieving schedule information. Please try again later or contact the ITS Help Desk if the problem persists.');
+      }
+      else {
+        $empty_message = t('There are currently no scheduled events to display.');
+      }
+
+      // Build renderable table.
+      $header = [
+        'time' => t('Time'),
+        'meeting' => t('Meeting'),
+        'room' => t('Room'),
+      ];
+
+      $markup['container']['table'] = [
+        '#theme' => 'table',
+        '#header' => $header,
+        '#rows' => $rows,
+        '#empty' => $empty_message,
+        '#attributes' => [
+          'class' => [
+            'signage__table',
+          ],
+        ],
+      ];
+      $markup = \Drupal::service('renderer')->render($markup);
+
+      // Replace the field output with table markup.
+      $variables['items'][0]['content']['#markup'] = $markup;
+      // Remove the other items to avoid outputting them.
+      $variables['items'] = array_slice($variables['items'], 0, 1);
+      break;
   }
 }
 
@@ -800,13 +938,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         ];
       }
 
-      break;
-
-    case 'slide_mazevo_events':
-      $filters = [
-        'rooms' => $paragraph?->field_slide_mazevo_rooms?->getValue(),
-      ];
-      $foo = 'bar';
       break;
   }
 }

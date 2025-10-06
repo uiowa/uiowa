@@ -57,8 +57,16 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
   /**
    * {@inheritdoc}
    */
-  public function getEvents(array $options = []): \stdClass|bool {
-    return $this->get('views/events_api.json', $options);
+  public function getEvents(array $body = []): \stdClass|bool {
+    $json = json_decode('{}');
+    if ($body) {
+      $json = $body;
+    }
+    $options = [
+      'json' => $json,
+    ];
+
+    return (object) $this->post('PublicEvent/getevents', $options);
   }
 
   /**
