@@ -4186,3 +4186,10 @@ function sitenow_update_10024() {
       ->save();
   }
 }
+
+/**
+ * Flush all caches for new JS alerts for uids_base.
+ */
+function sitenow_update_10025() {
+  drupal_flush_all_caches();
+}

@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..cc94ecfe0 100644
+index 4031da475..66f6c0438 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
@@ -101,7 +101,7 @@ index 4031da475..cc94ecfe0 100644
 +  RewriteRule ^(.*)$ https://writinguniversity.uiowa.edu/$1 [L,R=301]
 +
 +  # Adding Redirect writing.uiowa.edu to writinguniversity.uiowa.edu/about-us/writing-iowa
-+  RewriteCond %{HTTP_HOST} writing\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteCond %{HTTP_HOST} writing\.((stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
 +  RewriteRule ^ https://writinguniversity.uiowa.edu/about-us/writing-iowa [L,R=301]
 +
 +  # Redirect rules for diversity.uiowa.edu.
