@@ -801,6 +801,13 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       }
 
       break;
+
+    case 'slide_mazevo_events':
+      $filters = [
+        'rooms' => $paragraph?->field_slide_mazevo_rooms?->getValue(),
+      ];
+      $foo = 'bar';
+      break;
   }
 }
 
@@ -958,7 +965,7 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       $options = _sitenow_events_build_options_list($tree);
       break;
 
-    case 'field_slide_event_types':
+    case 'field_slide_mazevo_event_types':
       $event_types = \Drupal::service('sitenow_signage.mazevo_api_client')->getEventTypes();
       $enabled_types = [];
       foreach ($event_types as $type) {
@@ -975,7 +982,7 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
       $options = $enabled_types;
       break;
 
-    case 'field_slide_rooms':
+    case 'field_slide_mazevo_rooms':
       $rooms = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms();
       $room_ids = [];
       foreach ($rooms as $room) {

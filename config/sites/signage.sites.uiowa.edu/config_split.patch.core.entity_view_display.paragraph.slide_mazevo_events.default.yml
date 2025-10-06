@@ -1,14 +1,14 @@
 adding:
   dependencies:
     config:
-      - field.field.paragraph.slide_mazevo_events.field_slide_display_end_time
-      - field.field.paragraph.slide_mazevo_events.field_slide_display_room_column
-      - field.field.paragraph.slide_mazevo_events.field_slide_event_types
-      - field.field.paragraph.slide_mazevo_events.field_slide_rooms
+      - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_display_end
+      - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_room_column
+      - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_event_types
+      - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_rooms
     module:
       - options
   content:
-    field_slide_display_end_time:
+    field_slide_mazevo_display_end:
       type: boolean
       label: above
       settings:
@@ -18,7 +18,7 @@ adding:
       third_party_settings: {  }
       weight: 3
       region: content
-    field_slide_display_room_column:
+    field_slide_mazevo_room_column:
       type: boolean
       label: above
       settings:
@@ -28,14 +28,14 @@ adding:
       third_party_settings: {  }
       weight: 4
       region: content
-    field_slide_event_types:
+    field_slide_mazevo_event_types:
       type: list_default
       label: above
       settings: {  }
       third_party_settings: {  }
       weight: 2
       region: content
-    field_slide_rooms:
+    field_slide_mazevo_rooms:
       type: list_default
       label: above
       settings: {  }
