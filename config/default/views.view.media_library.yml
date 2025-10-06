@@ -545,52 +545,7 @@ display:
         - 'url.query_args:sort_by'
         - user
         - user.permissions
-      tags:
-        - 'config:core.entity_view_display.media.audio.default'
-        - 'config:core.entity_view_display.media.audio.media_library'
-        - 'config:core.entity_view_display.media.facebook.default'
-        - 'config:core.entity_view_display.media.facebook.media_library'
-        - 'config:core.entity_view_display.media.file.default'
-        - 'config:core.entity_view_display.media.file.media_library'
-        - 'config:core.entity_view_display.media.image.default'
-        - 'config:core.entity_view_display.media.image.full__no_crop'
-        - 'config:core.entity_view_display.media.image.full__square'
-        - 'config:core.entity_view_display.media.image.full__ultrawide'
-        - 'config:core.entity_view_display.media.image.full__widescreen'
-        - 'config:core.entity_view_display.media.image.image_gallery'
-        - 'config:core.entity_view_display.media.image.large'
-        - 'config:core.entity_view_display.media.image.large__no_crop'
-        - 'config:core.entity_view_display.media.image.large__square'
-        - 'config:core.entity_view_display.media.image.large__ultrawide'
-        - 'config:core.entity_view_display.media.image.large__widescreen'
-        - 'config:core.entity_view_display.media.image.media_library'
-        - 'config:core.entity_view_display.media.image.medium'
-        - 'config:core.entity_view_display.media.image.medium__no_crop'
-        - 'config:core.entity_view_display.media.image.medium__square'
-        - 'config:core.entity_view_display.media.image.medium__ultrawide'
-        - 'config:core.entity_view_display.media.image.medium__widescreen'
-        - 'config:core.entity_view_display.media.image.small'
-        - 'config:core.entity_view_display.media.image.small__no_crop'
-        - 'config:core.entity_view_display.media.image.small__square'
-        - 'config:core.entity_view_display.media.image.small__ultrawide'
-        - 'config:core.entity_view_display.media.image.small__widescreen'
-        - 'config:core.entity_view_display.media.image.thumbnail'
-        - 'config:core.entity_view_display.media.instagram.default'
-        - 'config:core.entity_view_display.media.instagram.media_library'
-        - 'config:core.entity_view_display.media.panopto.default'
-        - 'config:core.entity_view_display.media.panopto.large'
-        - 'config:core.entity_view_display.media.panopto.media_library'
-        - 'config:core.entity_view_display.media.panopto.medium'
-        - 'config:core.entity_view_display.media.panopto.small'
-        - 'config:core.entity_view_display.media.remote_video.default'
-        - 'config:core.entity_view_display.media.remote_video.large'
-        - 'config:core.entity_view_display.media.remote_video.media_library'
-        - 'config:core.entity_view_display.media.remote_video.medium'
-        - 'config:core.entity_view_display.media.remote_video.small'
-        - 'config:core.entity_view_display.media.twitter.default'
-        - 'config:core.entity_view_display.media.twitter.media_library'
-        - 'config:core.entity_view_display.media.video.default'
-        - 'config:core.entity_view_display.media.video.media_library'
+      tags: {  }
   page:
     id: page
     display_title: Page
@@ -873,8 +828,364 @@ display:
           empty_zero: false
           hide_alter_empty: true
           view_mode: media_library
+        mid:
+          id: mid
+          table: media_field_data
+          field: mid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: mid
+          plugin_id: field
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      filters:
+        status:
+          id: status
+          table: media_field_data
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: status
+          plugin_id: boolean
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Publishing status'
+            description: null
+            use_operator: false
+            operator: status_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: status
+            required: true
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: true
+          group_info:
+            label: Published
+            description: ''
+            identifier: status
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Published
+                operator: '='
+                value: '1'
+              2:
+                title: Unpublished
+                operator: '='
+                value: '0'
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: combine
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: Name/ID
+            description: ''
+            use_operator: false
+            operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: combine
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+              sign_manager: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            name: name
+            mid: mid
+        bundle:
+          id: bundle
+          table: media_field_data
+          field: bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: bundle
+          plugin_id: bundle
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: bundle_op
+            label: 'Media type'
+            description: ''
+            use_operator: false
+            operator: bundle_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: type
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: 'Media type'
+            description: null
+            identifier: bundle
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1: {  }
+              2: {  }
+              3: {  }
+        langcode:
+          id: langcode
+          table: media_field_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: langcode
+          plugin_id: language
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: langcode_op
+            label: Language
+            description: ''
+            use_operator: false
+            operator: langcode_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: langcode
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              administrator: '0'
+              authenticated: authenticated
+              anonymous: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        status_extra:
+          id: status_extra
+          table: media_field_data
+          field: status_extra
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          plugin_id: media_status
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_tags_target_id:
+          id: field_tags_target_id
+          table: media__field_tags
+          field: field_tags_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_tags_target_id_op
+            label: Tags
+            description: ''
+            use_operator: false
+            operator: field_tags_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_tags_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          vid: tags
+          type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: 0
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       defaults:
         fields: false
+        filters: false
+        filter_groups: false
       display_extenders: {  }
       path: admin/content/media-grid
     cache_metadata:
@@ -887,52 +1198,7 @@ display:
         - 'url.query_args:sort_by'
         - user
         - user.permissions
-      tags:
-        - 'config:core.entity_view_display.media.audio.default'
-        - 'config:core.entity_view_display.media.audio.media_library'
-        - 'config:core.entity_view_display.media.facebook.default'
-        - 'config:core.entity_view_display.media.facebook.media_library'
-        - 'config:core.entity_view_display.media.file.default'
-        - 'config:core.entity_view_display.media.file.media_library'
-        - 'config:core.entity_view_display.media.image.default'
-        - 'config:core.entity_view_display.media.image.full__no_crop'
-        - 'config:core.entity_view_display.media.image.full__square'
-        - 'config:core.entity_view_display.media.image.full__ultrawide'
-        - 'config:core.entity_view_display.media.image.full__widescreen'
-        - 'config:core.entity_view_display.media.image.image_gallery'
-        - 'config:core.entity_view_display.media.image.large'
-        - 'config:core.entity_view_display.media.image.large__no_crop'
-        - 'config:core.entity_view_display.media.image.large__square'
-        - 'config:core.entity_view_display.media.image.large__ultrawide'
-        - 'config:core.entity_view_display.media.image.large__widescreen'
-        - 'config:core.entity_view_display.media.image.media_library'
-        - 'config:core.entity_view_display.media.image.medium'
-        - 'config:core.entity_view_display.media.image.medium__no_crop'
-        - 'config:core.entity_view_display.media.image.medium__square'
-        - 'config:core.entity_view_display.media.image.medium__ultrawide'
-        - 'config:core.entity_view_display.media.image.medium__widescreen'
-        - 'config:core.entity_view_display.media.image.small'
-        - 'config:core.entity_view_display.media.image.small__no_crop'
-        - 'config:core.entity_view_display.media.image.small__square'
-        - 'config:core.entity_view_display.media.image.small__ultrawide'
-        - 'config:core.entity_view_display.media.image.small__widescreen'
-        - 'config:core.entity_view_display.media.image.thumbnail'
-        - 'config:core.entity_view_display.media.instagram.default'
-        - 'config:core.entity_view_display.media.instagram.media_library'
-        - 'config:core.entity_view_display.media.panopto.default'
-        - 'config:core.entity_view_display.media.panopto.large'
-        - 'config:core.entity_view_display.media.panopto.media_library'
-        - 'config:core.entity_view_display.media.panopto.medium'
-        - 'config:core.entity_view_display.media.panopto.small'
-        - 'config:core.entity_view_display.media.remote_video.default'
-        - 'config:core.entity_view_display.media.remote_video.large'
-        - 'config:core.entity_view_display.media.remote_video.media_library'
-        - 'config:core.entity_view_display.media.remote_video.medium'
-        - 'config:core.entity_view_display.media.remote_video.small'
-        - 'config:core.entity_view_display.media.twitter.default'
-        - 'config:core.entity_view_display.media.twitter.media_library'
-        - 'config:core.entity_view_display.media.video.default'
-        - 'config:core.entity_view_display.media.video.media_library'
+      tags: {  }
   widget:
     id: widget
     display_title: Widget
@@ -1041,6 +1307,137 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+        mid:
+          id: mid
+          table: media_field_data
+          field: mid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: mid
+          plugin_id: field
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        name:
+          id: name
+          table: media_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: name
+          plugin_id: field
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
       access:
         type: perm
         options:
@@ -1127,36 +1524,40 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        name:
-          id: name
-          table: media_field_data
-          field: name
+        combine:
+          id: combine
+          table: views
+          field: combine
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: media
-          entity_field: name
-          plugin_id: string
+          plugin_id: combine
           operator: contains
           value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: name_op
-            label: Name
+            operator_id: combine_op
+            label: Name/ID
             description: ''
             use_operator: false
-            operator: name_op
+            operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: name
+            identifier: combine
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
               administrator: '0'
+              sign_manager: '0'
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -1169,6 +1570,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          fields:
+            mid: mid
+            name: name
         default_langcode:
           id: default_langcode
           table: media_field_data
@@ -1309,52 +1713,7 @@ display:
         - url.query_args
         - 'url.query_args:sort_by'
         - user.permissions
-      tags:
-        - 'config:core.entity_view_display.media.audio.default'
-        - 'config:core.entity_view_display.media.audio.media_library'
-        - 'config:core.entity_view_display.media.facebook.default'
-        - 'config:core.entity_view_display.media.facebook.media_library'
-        - 'config:core.entity_view_display.media.file.default'
-        - 'config:core.entity_view_display.media.file.media_library'
-        - 'config:core.entity_view_display.media.image.default'
-        - 'config:core.entity_view_display.media.image.full__no_crop'
-        - 'config:core.entity_view_display.media.image.full__square'
-        - 'config:core.entity_view_display.media.image.full__ultrawide'
-        - 'config:core.entity_view_display.media.image.full__widescreen'
-        - 'config:core.entity_view_display.media.image.image_gallery'
-        - 'config:core.entity_view_display.media.image.large'
-        - 'config:core.entity_view_display.media.image.large__no_crop'
-        - 'config:core.entity_view_display.media.image.large__square'
-        - 'config:core.entity_view_display.media.image.large__ultrawide'
-        - 'config:core.entity_view_display.media.image.large__widescreen'
-        - 'config:core.entity_view_display.media.image.media_library'
-        - 'config:core.entity_view_display.media.image.medium'
-        - 'config:core.entity_view_display.media.image.medium__no_crop'
-        - 'config:core.entity_view_display.media.image.medium__square'
-        - 'config:core.entity_view_display.media.image.medium__ultrawide'
-        - 'config:core.entity_view_display.media.image.medium__widescreen'
-        - 'config:core.entity_view_display.media.image.small'
-        - 'config:core.entity_view_display.media.image.small__no_crop'
-        - 'config:core.entity_view_display.media.image.small__square'
-        - 'config:core.entity_view_display.media.image.small__ultrawide'
-        - 'config:core.entity_view_display.media.image.small__widescreen'
-        - 'config:core.entity_view_display.media.image.thumbnail'
-        - 'config:core.entity_view_display.media.instagram.default'
-        - 'config:core.entity_view_display.media.instagram.media_library'
-        - 'config:core.entity_view_display.media.panopto.default'
-        - 'config:core.entity_view_display.media.panopto.large'
-        - 'config:core.entity_view_display.media.panopto.media_library'
-        - 'config:core.entity_view_display.media.panopto.medium'
-        - 'config:core.entity_view_display.media.panopto.small'
-        - 'config:core.entity_view_display.media.remote_video.default'
-        - 'config:core.entity_view_display.media.remote_video.large'
-        - 'config:core.entity_view_display.media.remote_video.media_library'
-        - 'config:core.entity_view_display.media.remote_video.medium'
-        - 'config:core.entity_view_display.media.remote_video.small'
-        - 'config:core.entity_view_display.media.twitter.default'
-        - 'config:core.entity_view_display.media.twitter.media_library'
-        - 'config:core.entity_view_display.media.video.default'
-        - 'config:core.entity_view_display.media.video.media_library'
+      tags: {  }
   widget_table:
     id: widget_table
     display_title: 'Widget (table)'
@@ -1387,18 +1746,137 @@ display:
             image_style: media_library
             image_loading:
               attribute: lazy
+        mid:
+          id: mid
+          table: media_field_data
+          field: mid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: mid
+          plugin_id: field
+          label: ID
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         name:
           id: name
           table: media_field_data
           field: name
           relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: media
           entity_field: name
           plugin_id: field
           label: Name
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
           type: string
           settings:
             link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         uid:
           id: uid
           table: media_field_revision
@@ -1520,36 +1998,40 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        name:
-          id: name
-          table: media_field_data
-          field: name
+        combine:
+          id: combine
+          table: views
+          field: combine
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: media
-          entity_field: name
-          plugin_id: string
+          plugin_id: combine
           operator: contains
           value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: name_op
-            label: Name
+            operator_id: combine_op
+            label: Name/ID
             description: ''
             use_operator: false
-            operator: name_op
+            operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: name
+            identifier: combine
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
               administrator: '0'
+              sign_manager: '0'
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -1562,6 +2044,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          fields:
+            mid: mid
+            name: name
         default_langcode:
           id: default_langcode
           table: media_field_data
