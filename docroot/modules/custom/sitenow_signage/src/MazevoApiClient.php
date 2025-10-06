@@ -85,4 +85,5 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
     $data = $this->get('PublicConfiguration/EventTypes', []);
     return json_decode(json_encode($data), TRUE);
   }
+
 }
