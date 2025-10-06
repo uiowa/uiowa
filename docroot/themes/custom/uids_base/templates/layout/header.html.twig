@@ -54,7 +54,6 @@
 
 {% block horizontal_nav %}
   {% if header_nav in['horizontal', 'mega'] %}
-    {% set primary_menu_content = page.primary_menu|render %}
     {% if logged_in or page.primary_menu|render|striptags|trim is not empty %}
       {{ attach_library('uids_base/mega-menu') }}
       {{ attach_library('uids_base/horizontal-menu') }}
