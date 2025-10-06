@@ -1,0 +1,44 @@
+uuid: 2154771c-3e8e-499e-a96f-23a15774d1f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_display_end
+    - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_event_types
+    - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_room_column
+    - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_rooms
+    - paragraphs.paragraphs_type.slide_mazevo_events
+id: paragraph.slide_mazevo_events.default
+targetEntityType: paragraph
+bundle: slide_mazevo_events
+mode: default
+content:
+  field_slide_mazevo_display_end:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_slide_mazevo_event_types:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_mazevo_room_column:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_slide_mazevo_rooms:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
