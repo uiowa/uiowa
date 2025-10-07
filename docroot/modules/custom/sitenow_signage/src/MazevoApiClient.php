@@ -10,7 +10,7 @@ use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * The Content Hub API service.
+ * The Mazevo API service.
  */
 class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface {
 
