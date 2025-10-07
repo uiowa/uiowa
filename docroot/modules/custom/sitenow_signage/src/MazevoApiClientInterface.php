@@ -10,7 +10,7 @@ use Drupal\uiowa_core\ApiClientInterface;
 interface MazevoApiClientInterface extends ApiClientInterface {
 
   /**
-   * Get all buildings.
+   * Get events.
    *
    * @return \stdClass|bool
    *   The events object.
