@@ -5,7 +5,7 @@ namespace Drupal\sitenow_signage;
 use Drupal\uiowa_core\ApiClientInterface;
 
 /**
- * A Content Hub API client interface.
+ * A Mazevo API client interface.
  */
 interface MazevoApiClientInterface extends ApiClientInterface {
 
