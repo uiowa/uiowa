@@ -442,11 +442,11 @@ function sitenow_signage_preprocess_field(&$variables) {
       }
 
       $events = \Drupal::service('sitenow_signage.mazevo_api_client')->getEvents($request_body);
-      $events = json_decode(json_encode($events), TRUE);
+      $events = !$events ? $events : json_decode(json_encode($events), TRUE);
       /// ///////
 
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
-      $had_failure = FALSE;
+      $had_failure = FALSE === $events;
 
 
       if ($sign_node && $sign_node->bundle() == 'sign') {
@@ -525,10 +525,12 @@ function sitenow_signage_preprocess_field(&$variables) {
           ],
         ],
       ];
+
       $markup = \Drupal::service('renderer')->render($markup);
 
       // Replace the field output with table markup.
       $variables['items'][0]['content']['#markup'] = $markup;
+
       // Remove the other items to avoid outputting them.
       $variables['items'] = array_slice($variables['items'], 0, 1);
       break;
