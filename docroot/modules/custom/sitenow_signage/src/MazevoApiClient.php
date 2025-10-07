@@ -86,8 +86,12 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
     $options = [
       'json' => $json,
     ];
-    $data = $this->post('PublicConfiguration/Rooms', $options);
-    return json_decode(json_encode($data), TRUE);
+    $result = $this->post('PublicConfiguration/Rooms', $options);
+
+    // Only decode if the call succeeded.
+    $result = !$result ? $result : json_decode(json_encode($result), TRUE);
+
+    return $result;
   }
 
   /**

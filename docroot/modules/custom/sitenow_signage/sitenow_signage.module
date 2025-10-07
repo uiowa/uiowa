@@ -153,6 +153,10 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, FormStateInter
  */
 function sitenow_signage_preprocess_field(&$variables) {
   $element = $variables['element'];
+
+  // Set a fallback for orientation.
+  $orientation = 'horizontal';
+
   switch ($element['#field_name']) {
     case 'field_sign_slides':
       $first_slide_interval = NULL;
@@ -165,8 +169,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         if ($node->hasField('field_slide_duration_other') &&
           $node->field_slide_duration_other->value > 0) {
           $item['interval'] = $node->field_slide_duration_other->value * 1000;
-        }
-        elseif ($node->hasField('field_slide_duration') &&
+        } elseif ($node->hasField('field_slide_duration') &&
           $node->field_slide_duration->value > 0) {
           $item['interval'] = $node->field_slide_duration->value;
         }
@@ -202,8 +205,7 @@ function sitenow_signage_preprocess_field(&$variables) {
 
           if ($data === FALSE) {
             $had_failure = TRUE;
-          }
-          elseif (!empty($data)) {
+          } elseif (!empty($data)) {
             foreach ($data as $event) {
               $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
               $rows[] = [
@@ -313,8 +315,7 @@ function sitenow_signage_preprocess_field(&$variables) {
           if ($end_time) {
             if ($end >= strtotime('tomorrow')) {
               $formatted_date = date('M j g:i a', $start) . ' – ' . date('M j g:i a', $end);
-            }
-            else {
+            } else {
               $formatted_date .= ' – ' . date('g:i a', $end);
             }
           }
@@ -322,8 +323,7 @@ function sitenow_signage_preprocess_field(&$variables) {
           // Allows overriding meeting subject with organizer name.
           if ($use_org && !empty($event['organizerName'])) {
             $subject = $event['organizerName'];
-          }
-          else {
+          } else {
             // Meeting subject (respect private items).
             $subject = ($event['isPrivate'] == 1) && !empty($event['organizerName'])
               ? $event['organizerName']
@@ -362,8 +362,7 @@ function sitenow_signage_preprocess_field(&$variables) {
       // Choose an empty message based on whether we saw a failure.
       if ($had_failure) {
         $empty_message = t('There was an error retrieving schedule information. Please try again later or contact the ITS Help Desk if the problem persists.');
-      }
-      else {
+      } else {
         $empty_message = t('There are currently no scheduled events to display.');
       }
 
@@ -406,6 +405,10 @@ function sitenow_signage_preprocess_field(&$variables) {
         'types' => $paragraph?->get('field_slide_mazevo_event_types')?->value,
       ];
 
+      // If there is only one value, we need to still ensure it is an array.
+      $filters['rooms'] = is_array($filters['rooms']) ? $filters['rooms'] : array($filters['rooms']);
+      $filters['types'] = is_array($filters['types']) ? $filters['types'] : array($filters['types']);
+
       $request_body = [
         'buildingIds' => [],
         'roomIds' => [],
@@ -414,7 +417,7 @@ function sitenow_signage_preprocess_field(&$variables) {
         'end' => date('c', strtotime('midnight tomorrow')),
       ];
 
-      if (isset($filters['rooms'])) {
+      if (isset($filters['rooms']) && $filters['rooms']) {
         $rooms = $filters['rooms'];
         foreach ($rooms as $room) {
           if (isset($room['value'])) {
@@ -447,7 +450,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
       $had_failure = FALSE === $events;
 
-
       if ($sign_node && $sign_node->bundle() == 'sign') {
         $orientation = sitenow_signage_get_orientation($sign_node);
 
@@ -456,45 +458,49 @@ function sitenow_signage_preprocess_field(&$variables) {
         $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
       }
 
-      // Loop through today's events.
-      foreach ($events as $event) {
-        $start = strtotime($event['dateTimeStart']);
-        $end = strtotime($event['dateTimeEnd']);
 
-        // Skip events already ended.
-        if ($end < time()) {
-          continue;
+      $rows = [];
+      if (!$had_failure) {
+        // Loop through today's events.
+        foreach ($events as $event) {
+          $start = strtotime($event['dateTimeStart']);
+          $end = strtotime($event['dateTimeEnd']);
+
+          // Skip events already ended.
+          if ($end < time()) {
+            continue;
+          }
+
+          // Format time range based on settings.
+          $formatted_date = date('g:i a', $start) . ' – ' . date('g:i a', $end);
+
+          // Build row, store start time for sorting.
+          $data[] = [
+            'time' => $formatted_date,
+            'start' => $start,
+            'meeting' => $event['eventName'],
+            'room' => $event['roomDescription'],
+          ];
         }
 
-        // Format time range based on settings.
-        $formatted_date = date('g:i a', $start) . ' – ' . date('g:i a', $end);
 
-        // Build row, store start time for sorting.
-        $data[] = [
-          'time' => $formatted_date,
-          'start' => $start,
-          'meeting' => $event['eventName'],
-          'room' => $event['roomDescription'],
-        ];
-      }
+        if (!empty($data)) {
+          // Sort rows by start time.
+          usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
 
+          // Cap the number of rows differently based on orientation.
+          $max = $orientation === 'horizontal' ? 10 : 15;
+          $data = array_slice($data, 0, $max);
 
-      if (!empty($data)) {
-        // Sort rows by start time.
-        usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
-
-        // Cap the number of rows differently based on orientation.
-        $max = $orientation === 'horizontal' ? 10 : 15;
-        $data = array_slice($data, 0, $max);
-
-        // Build table rows.
-        foreach ($data as $event) {
-          $row = [
-            'time' => $event['time'],
-            'meeting' => $event['meeting'],
-            'room' => $event['room'],
-          ];
-          $rows[] = $row;
+          // Build table rows.
+          foreach ($data as $event) {
+            $row = [
+              'time' => $event['time'],
+              'meeting' => $event['meeting'],
+              'room' => $event['room'],
+            ];
+            $rows[] = $row;
+          }
         }
       }
 
@@ -1113,15 +1119,18 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
     case 'field_slide_mazevo_rooms':
       $rooms = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms();
       $room_ids = [];
-      foreach ($rooms as $room) {
-        if (isset($room['roomId'])) {
-          $key = $room['buildingId'] . '-' . $room['roomId'];
-          $value = $room['buildingDescription'] . ' - ' . $room['description'];
-          $room_ids[$key] = $value;
+      if ($rooms) {
+        foreach ($rooms as $room) {
+          if (isset($room['roomId'])) {
+            $key = $room['buildingId'] . '-' . $room['roomId'];
+            $value = $room['buildingDescription'] . ' - ' . $room['description'];
+            $room_ids[$key] = $value;
+          }
         }
+
+        asort($room_ids);
       }
 
-      asort($room_ids);
       $options = $room_ids;
       break;
   }
