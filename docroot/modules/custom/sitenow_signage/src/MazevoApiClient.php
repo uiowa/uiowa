@@ -66,6 +66,8 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
       'json' => $json,
     ];
     $result = $this->post('PublicEvent/getevents', $options);
+
+    // Only cast to an object if the call succeeded.
     $result = !$result ? $result : (object) $result;
 
     return $result;

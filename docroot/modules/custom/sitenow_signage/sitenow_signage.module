@@ -401,8 +401,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       // Get additional info necessary to overwrite the output of this field.
       $paragraph = $variables['element']['#object'];
 
-
-      ///////
       $filters = [
         'rooms' => $paragraph?->get('field_slide_mazevo_rooms')?->value,
         'types' => $paragraph?->get('field_slide_mazevo_event_types')?->value,
@@ -442,8 +440,9 @@ function sitenow_signage_preprocess_field(&$variables) {
       }
 
       $events = \Drupal::service('sitenow_signage.mazevo_api_client')->getEvents($request_body);
+
+      // only try and decode if the call succeeded.
       $events = !$events ? $events : json_decode(json_encode($events), TRUE);
-      /// ///////
 
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
       $had_failure = FALSE === $events;
