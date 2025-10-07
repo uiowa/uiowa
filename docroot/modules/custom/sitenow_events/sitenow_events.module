@@ -598,37 +598,48 @@ function sitenow_events_build_card(array $event): array {
   $card['#meta']['#prefix'] = '<div class="fa-field-item">';
   $card['#meta']['#suffix'] = '</div>';
 
-  // Limit what html is allowed.
-  $allowed_tags = ['a', 'strong', 'em'];
+  $card_description = NULL;
 
-  if (isset($event['summary'])) {
-    // @todo remove 'card__description' attribute once v2 is no longer.
-    // https://github.com/uiowa/uiowa/issues/6288
-    $card['#content']['description'] = [
+  // Use summary when available (plain text).
+  if (!empty($event['summary'])) {
+    // Sanitize but preserve line breaks.
+    $summary = nl2br(Xss::filter($event['summary']));
+
+    $card_description = [
       '#type' => 'html_tag',
       '#tag' => 'div',
-      '#value' => Xss::filter($event['summary'], $allowed_tags),
+      '#value' => $summary,
       '#attributes' => [
-        'class' => 'card__description',
+        'class' => ['card__description'],
       ],
     ];
   }
-  elseif (isset($event['description'])) {
-    $event['description'] = Xss::filter($event['description'], $allowed_tags);
+  // Fallback to description if summary not present.
+  elseif (!empty($event['description'])) {
+    // Limit what html is allowed.
+    $allowed_tags = ['p', 'br', 'strong', 'em', 'b', 'i', 'a'];
+
+    // Sanitize but preserve basic markup.
+    $filtered_description = Xss::filter($event['description'], $allowed_tags);
 
     // Use smart_trim's helper to safely truncate without breaking HTML.
     $truncate = new TruncateHTML();
-    $trim_suffix = '...';
+    $trimmed_description = $truncate->truncateChars($filtered_description, 500, '...');
+
     // @todo remove 'card__description' attribute once v2 is no longer.
     // https://github.com/uiowa/uiowa/issues/6288
-    $card['#content']['description'] = [
+    $card_description = [
       '#type' => 'html_tag',
       '#tag' => 'div',
-      '#value' => $truncate->truncateChars($event['description'], 500, $trim_suffix),
+      '#value' => $trimmed_description,
       '#attributes' => [
-        'class' => 'card__description',
+        'class' => ['card__description'],
       ],
     ];
+  }
+
+  if ($card_description) {
+    $card['#content']['description'] = $card_description;
   }
 
   if ($event['canceled'] === TRUE) {
