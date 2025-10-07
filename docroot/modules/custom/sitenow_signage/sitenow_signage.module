@@ -366,7 +366,8 @@ function sitenow_signage_preprocess_field(&$variables) {
       // Choose an empty message based on whether we saw a failure.
       if ($had_failure) {
         $empty_message = t('There was an error retrieving schedule information. Please try again later or contact the ITS Help Desk if the problem persists.');
-      } else {
+      }
+      else {
         $empty_message = t('There are currently no scheduled events to display.');
       }
 
