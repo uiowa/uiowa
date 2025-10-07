@@ -169,7 +169,8 @@ function sitenow_signage_preprocess_field(&$variables) {
         if ($node->hasField('field_slide_duration_other') &&
           $node->field_slide_duration_other->value > 0) {
           $item['interval'] = $node->field_slide_duration_other->value * 1000;
-        } elseif ($node->hasField('field_slide_duration') &&
+        }
+        elseif ($node->hasField('field_slide_duration') &&
           $node->field_slide_duration->value > 0) {
           $item['interval'] = $node->field_slide_duration->value;
         }
@@ -205,7 +206,8 @@ function sitenow_signage_preprocess_field(&$variables) {
 
           if ($data === FALSE) {
             $had_failure = TRUE;
-          } elseif (!empty($data)) {
+          }
+          elseif (!empty($data)) {
             foreach ($data as $event) {
               $formatted_time = trim($event->startTime) . ' – ' . trim($event->endTime);
               $rows[] = [
@@ -315,7 +317,8 @@ function sitenow_signage_preprocess_field(&$variables) {
           if ($end_time) {
             if ($end >= strtotime('tomorrow')) {
               $formatted_date = date('M j g:i a', $start) . ' – ' . date('M j g:i a', $end);
-            } else {
+            }
+            else {
               $formatted_date .= ' – ' . date('g:i a', $end);
             }
           }
@@ -323,7 +326,8 @@ function sitenow_signage_preprocess_field(&$variables) {
           // Allows overriding meeting subject with organizer name.
           if ($use_org && !empty($event['organizerName'])) {
             $subject = $event['organizerName'];
-          } else {
+          }
+          else {
             // Meeting subject (respect private items).
             $subject = ($event['isPrivate'] == 1) && !empty($event['organizerName'])
               ? $event['organizerName']
