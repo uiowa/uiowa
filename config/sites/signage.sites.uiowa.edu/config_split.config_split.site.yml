@@ -1,0 +1,71 @@
+uuid: d72d7aad-2265-4e46-8800-1087d8e24cd9
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: signage.sites.uiowa.edu
+description: ''
+weight: 70
+stackable: true
+no_patching: false
+storage: folder
+folder: ../config/sites/signage.sites.uiowa.edu
+module:
+  og: 0
+  og_ui: 0
+  sitenow_signage: 0
+  sitessignage_core: 0
+  uiowa_hours: 0
+  uiowa_maui: 0
+theme: {  }
+complete_list:
+  - block.block.uids_base_views_block__user_signage_groups_block
+  - config_split.config_split.site
+  - core.entity_view_display.media.image.vertical_9_16
+  - core.entity_view_display.media.image.widescreen_crop_no_focal_point
+  - core.entity_view_display.user.user.default
+  - core.entity_view_mode.media.vertical_9_16
+  - core.entity_view_mode.media.widescreen_crop_no_focal_point
+  - field.storage.node.field_slide_description
+  - field.storage.node.field_slide_duration
+  - field.storage.node.field_slide_duration_other
+  - field.storage.node.field_slide_widget
+  - field.storage.paragraph.field_astra_schedule_room
+  - field.storage.paragraph.field_headline
+  - field.storage.paragraph.field_outlook_events_end_time
+  - field.storage.paragraph.field_outlook_events_resource
+  - field.storage.paragraph.field_outlook_events_use_org
+  - image.style.vertical_9_16_1458_x_2592
+  - image.style.widescreen_16_9_2592_x_1458
+  - metatag.metatag_defaults.node__sign
+  - metatag.metatag_defaults.node__slide
+  - node.type.sign
+  - node.type.signage_group
+  - node.type.slide
+  - paragraphs.paragraphs_type.astra_room_schedule
+  - paragraphs.paragraphs_type.outlook_events
+  - paragraphs.paragraphs_type.slide_events
+  - paragraphs.paragraphs_type.slide_image
+  - paragraphs.paragraphs_type.slide_video
+  - pathauto.pattern.sign
+  - pathauto.pattern.slide
+  - rabbit_hole.behavior_settings.node.signage_group
+  - rabbit_hole.behavior_settings.node_type_sign
+  - rabbit_hole.behavior_settings.node_type_slide
+  - robotstxt.settings
+  - sitenow_signage.settings
+  - system.action.user_add_role_action.sign_manager
+  - system.action.user_remove_role_action.sign_manager
+  - user.role.sign_manager
+  - views.view.signage_groups
+  - views.view.signage_group_content
+  - views.view.signage_slide_content
+  - views.view.slides_entity_reference
+  - views.view.user_signage_groups
+  - 'field.storage.node.field_sign_*'
+  - 'field.storage.node.field_slide_*'
+  - 'field.storage.node.field_signage_group_*'
+  - 'field.storage.paragraph.field_slide_*'
+partial_list:
+  - administerusersbyrole.settings
+  - views.view.og_members_overview

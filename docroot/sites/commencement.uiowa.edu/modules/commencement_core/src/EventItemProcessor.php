@@ -28,11 +28,12 @@ class EventItemProcessor extends EntityItemProcessorBase {
   ];
 
   /**
-   * Process the body field.
+   * {@inheritdoc}
    */
   public static function process($entity, $record): bool {
     $updated = parent::process($entity, $record);
 
+    // Handle the body field.
     if (isset($record->description)) {
       if ($entity->get('body')->value !== $record->description) {
         // Set both value and format for the body field.
@@ -45,6 +46,30 @@ class EventItemProcessor extends EntityItemProcessorBase {
     }
 
     return $updated;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static function prepareUpdatedValues(array &$values, $entity, $record): void {
+    // If any values for the date field are being updated, ensure that both
+    // start and end are included in the update values.
+    if (isset($values['field_event_when'])) {
+      // If the event start time is being updated, ensure the end time is
+      // updated too.
+      if (isset($values['field_event_when']['value'])
+        && !isset($values['field_event_when']['end_value'])
+        && property_exists($record, 'end')) {
+        $values['field_event_when']['end_value'] = $record->end;
+      }
+      // If the event end time is being updated, ensure the start time is
+      // updated too.
+      if (isset($values['field_event_when']['end_value'])
+        && !isset($values['field_event_when']['value'])
+        && property_exists($record, 'start')) {
+        $values['field_event_when']['value'] = $record->start;
+      }
+    }
   }
 
 }

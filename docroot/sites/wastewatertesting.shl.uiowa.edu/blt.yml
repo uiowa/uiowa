@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: shlwastewatertesting.uiowa.ddev.site
+    protocol: https
+  machine_name: shlwastewatertesting
+  human_name: wastewatertesting.shl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: shlwastewatertesting.prod
+drupal:
+  db:
+    database: wastewatertesting_shl_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://shlwastewatertesting.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Wastewater Testing'

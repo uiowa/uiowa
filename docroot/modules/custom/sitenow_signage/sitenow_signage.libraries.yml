@@ -1,13 +1,8 @@
+# Signage
 signage:
   css:
     theme:
       assets/css/signage.css: { preprocess: false }
-datetime:
-  js:
-    assets/js/datetime.js: { preprocess: false  }
-  dependencies:
-    - core/jquery
-    - core/once
 
 # Splide
 splide:
@@ -16,14 +11,39 @@ splide:
   css:
     theme:
       /libraries/splidejs--splide/dist/css/splide.min.css: { preprocess: false }
-  dependencies: {  }
+
+# Show/hide duration
+duration-sign:
+  js:
+    js/sign-duration.js: { preprocess: false }
+duration-slide:
+  js:
+    js/slide-duration.js: { preprocess: false }
 
 # Slideshow
 slideshow:
   js:
-    assets/js/slideshow.js: { preprocess: false }
+    js/slideshow.js: { preprocess: false }
   dependencies:
     - sitenow_signage/splide
+
+# Reload
+reload:
+  js:
+    js/reload.js: { preprocess: false }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+# Reduced motion
+reduced-motion-warning:
+  js:
+    js/reduced-motion-warning.js: { preprocess: false }
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/drupal.message
 
 # Hawk Alerts
 signage_alerts:

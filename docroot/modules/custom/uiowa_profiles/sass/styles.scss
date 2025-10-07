@@ -13,8 +13,8 @@
 .breadcrumb::after {
   display: table;
   content: ' ';
-  @include utilities.flex($fb: 0);
-  @include utilities.order($int: 1);
+  flex:1 0 0;
+  order: 1;
 }
 
 .breadcrumb::after {
@@ -24,7 +24,6 @@
 .breadcrumb li {
   float: left;
   cursor: default;
-  //text-transform: uppercase;
   color: variables.$secondary;
   font-size: variables.$small-font-size;
 }

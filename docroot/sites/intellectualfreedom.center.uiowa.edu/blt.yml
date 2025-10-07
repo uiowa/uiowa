@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: centerintellectualfreedom.uiowa.ddev.site
+    protocol: https
+  machine_name: centerintellectualfreedom
+  human_name: intellectualfreedom.center.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: centerintellectualfreedom.prod
+drupal:
+  db:
+    database: intellectualfreedom_center_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://centerintellectualfreedom.prod.drupal.uiowa.edu'
+  requester: mjoneill
+  site-name: 'Center for Intellectual Freedom'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgfoodpantry.uiowa.ddev.site
+    protocol: https
+  machine_name: orgfoodpantry
+  human_name: foodpantry.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgfoodpantry.prod
+drupal:
+  db:
+    database: foodpantry_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgfoodpantry.prod.drupal.uiowa.edu'
+  requester: bewoldt
+  site-name: 'Food Pantry at Iowa'
