@@ -58,6 +58,7 @@ class FinalExamScheduleForm extends FormBase {
     $wrapper_id = $this->getFormId() . '-wrapper';
     $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
     $form['#suffix'] = '</div>';
+    $form['#cache']['tags'] = ['time:daily'];
 
     $form['#id'] = 'correspondence-form';
 
@@ -84,12 +85,33 @@ class FinalExamScheduleForm extends FormBase {
     ];
 
     $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
-    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
-      $form['final_exam']['empty'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>No final exams found.</p>',
-      ];
-      return $form;
+
+    switch ($data['_status']) {
+      case 'ok':
+        $data = $data['_data'];
+        break;
+
+      case 'empty':
+        $form['final_exam']['empty'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>No final exams found.</p>',
+        ];
+        return $form;
+
+      case 'timeout':
+        $form['final_exam']['empty'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>The Exam schedule is currently unavailable due to a timeout. Please try again later.</p>',
+        ];
+        return $form;
+
+      case 'error':
+      default:
+        $form['final_exam']['empty'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>The Exam schedule is currently unavailable. Please try again later.</p>',
+        ];
+        return $form;
     }
 
     $search = $form_state->getValue('search') ?? '';
@@ -167,7 +189,6 @@ class FinalExamScheduleForm extends FormBase {
       ],
     ];
 
-    $data = $data['NewDataSet']['Table'];
     $allowed_tags = [
       'a',
       'strong',
