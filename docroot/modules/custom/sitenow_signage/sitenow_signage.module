@@ -410,6 +410,11 @@ function sitenow_signage_preprocess_field(&$variables) {
         'types' => $paragraph?->field_slide_mazevo_event_types?->getValue(),
       ];
 
+      $configuration = [
+        'end_time' => $paragraph?->get('field_slide_mazevo_display_end')?->value,
+        'room_column' => $paragraph?->get('field_slide_mazevo_room_column')?->value,
+      ];
+
       // If there is only one value, we need to still ensure it is an array.
       $filters['rooms'] = is_array($filters['rooms']) ? $filters['rooms'] : array($filters['rooms']);
       $filters['types'] = is_array($filters['types']) ? $filters['types'] : array($filters['types']);
@@ -480,12 +485,17 @@ function sitenow_signage_preprocess_field(&$variables) {
           $formatted_date = date('g:i a', $start) . ' – ' . date('g:i a', $end);
 
           // Build row, store start time for sorting.
-          $data[] = [
+          $row = [
             'time' => $formatted_date,
             'start' => $start,
             'meeting' => $event['eventName'],
-            'room' => $event['roomDescription'],
           ];
+
+          if ($configuration['room_column']) {
+            $row['room_column'] = $event['roomDescription'];
+          }
+
+          $data[] = $row;
         }
 
 
@@ -493,19 +503,14 @@ function sitenow_signage_preprocess_field(&$variables) {
           // Sort rows by start time.
           usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
 
+          // Remove the start.
+          foreach ($data as &$row) {
+            unset($row['start']);
+          }
+
           // Cap the number of rows differently based on orientation.
           $max = $orientation === 'horizontal' ? 10 : 15;
           $data = array_slice($data, 0, $max);
-
-          // Build table rows.
-          foreach ($data as $event) {
-            $row = [
-              'time' => $event['time'],
-              'meeting' => $event['meeting'],
-              'room' => $event['room'],
-            ];
-            $rows[] = $row;
-          }
         }
       }
 
@@ -521,13 +526,16 @@ function sitenow_signage_preprocess_field(&$variables) {
       $header = [
         'time' => t('Time'),
         'meeting' => t('Meeting'),
-        'room' => t('Room'),
       ];
+
+      if ($configuration['room_column']) {
+        $header['room'] = t('Room');
+      }
 
       $markup['container']['table'] = [
         '#theme' => 'table',
         '#header' => $header,
-        '#rows' => $rows,
+        '#rows' => $data,
         '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
