@@ -406,8 +406,8 @@ function sitenow_signage_preprocess_field(&$variables) {
       $paragraph = $variables['element']['#object'];
 
       $filters = [
-        'rooms' => $paragraph?->get('field_slide_mazevo_rooms')?->value,
-        'types' => $paragraph?->get('field_slide_mazevo_event_types')?->value,
+        'rooms' => $paragraph?->field_slide_mazevo_rooms?->getValue(),
+        'types' => $paragraph?->field_slide_mazevo_event_types?->getValue(),
       ];
 
       // If there is only one value, we need to still ensure it is an array.
