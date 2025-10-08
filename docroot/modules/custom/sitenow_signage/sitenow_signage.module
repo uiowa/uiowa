@@ -469,7 +469,7 @@ function sitenow_signage_preprocess_field(&$variables) {
       }
 
 
-      $rows = [];
+      $data = [];
       if (!$had_failure) {
         // Loop through today's events.
         foreach ($events as $event) {
@@ -482,7 +482,12 @@ function sitenow_signage_preprocess_field(&$variables) {
           }
 
           // Format time range based on settings.
-          $formatted_date = date('g:i a', $start) . ' – ' . date('g:i a', $end);
+          $formatted_date = date('g:i a', $start);
+
+          // Add the end time if user has that option checked.
+          if ($configuration['end_time']) {
+            $formatted_date .= ' – ' . date('g:i a', $end);
+          }
 
           // Build row, store start time for sorting.
           $row = [
