@@ -92,6 +92,9 @@ class FinalExamScheduleForm extends FormBase {
         break;
 
       default:
+        // Set a shorter cache time for errors.
+        // Block/Node save will clear cache as a fallback.
+        $form['#cache']['tags'] = ['time:hourly'];
         $form['final_exam']['empty'] = [
           '#type' => 'markup',
           '#markup' => '<p>' . $data['_message'] . '</p>',
