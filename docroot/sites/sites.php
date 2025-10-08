@@ -7846,3 +7846,9 @@ $sites['orghfes.uiowa.ddev.site'] = 'hfes.org.uiowa.edu';
 $sites['orghfes.dev.drupal.uiowa.edu'] = 'hfes.org.uiowa.edu';
 $sites['orghfes.stage.drupal.uiowa.edu'] = 'hfes.org.uiowa.edu';
 $sites['orghfes.prod.drupal.uiowa.edu'] = 'hfes.org.uiowa.edu';
+
+// Directory aliases for dsp.org.uiowa.edu.
+$sites['orgdsp.uiowa.ddev.site'] = 'dsp.org.uiowa.edu';
+$sites['orgdsp.dev.drupal.uiowa.edu'] = 'dsp.org.uiowa.edu';
+$sites['orgdsp.stage.drupal.uiowa.edu'] = 'dsp.org.uiowa.edu';
+$sites['orgdsp.prod.drupal.uiowa.edu'] = 'dsp.org.uiowa.edu';
