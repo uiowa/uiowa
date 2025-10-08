@@ -7840,3 +7840,9 @@ $sites['labmoon.uiowa.ddev.site'] = 'moon.lab.uiowa.edu';
 $sites['labmoon.dev.drupal.uiowa.edu'] = 'moon.lab.uiowa.edu';
 $sites['labmoon.stage.drupal.uiowa.edu'] = 'moon.lab.uiowa.edu';
 $sites['labmoon.prod.drupal.uiowa.edu'] = 'moon.lab.uiowa.edu';
+
+// Directory aliases for hfes.org.uiowa.edu.
+$sites['orghfes.uiowa.ddev.site'] = 'hfes.org.uiowa.edu';
+$sites['orghfes.dev.drupal.uiowa.edu'] = 'hfes.org.uiowa.edu';
+$sites['orghfes.stage.drupal.uiowa.edu'] = 'hfes.org.uiowa.edu';
+$sites['orghfes.prod.drupal.uiowa.edu'] = 'hfes.org.uiowa.edu';
