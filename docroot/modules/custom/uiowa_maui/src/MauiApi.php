@@ -363,7 +363,7 @@ class MauiApi extends ApiClientBase {
     // the output differently for each scenario.
     if ($data === FALSE) {
       return [
-        '_status' => 'timeout',
+        '_status' => 'error',
         '_message' => 'The exam schedule request timed out or failed. Please try again later.',
       ];
     }

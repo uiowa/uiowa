@@ -91,25 +91,10 @@ class FinalExamScheduleForm extends FormBase {
         $data = $data['_data'];
         break;
 
-      case 'empty':
-        $form['final_exam']['empty'] = [
-          '#type' => 'markup',
-          '#markup' => '<p>No final exams found.</p>',
-        ];
-        return $form;
-
-      case 'timeout':
-        $form['final_exam']['empty'] = [
-          '#type' => 'markup',
-          '#markup' => '<p>The Exam schedule is currently unavailable due to a timeout. Please try again later.</p>',
-        ];
-        return $form;
-
-      case 'error':
       default:
         $form['final_exam']['empty'] = [
           '#type' => 'markup',
-          '#markup' => '<p>The Exam schedule is currently unavailable. Please try again later.</p>',
+          '#markup' => '<p>' . $data['_message'] . '</p>',
         ];
         return $form;
     }
