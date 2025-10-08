@@ -823,8 +823,8 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       ];
 
       // If there is only one value, we need to still ensure it is an array.
-      $filters['rooms'] = is_array($filters['rooms']) ? $filters['rooms'] : array($filters['rooms']);
-      $filters['types'] = is_array($filters['types']) ? $filters['types'] : array($filters['types']);
+      $filters['rooms'] = is_array($filters['rooms']) ? $filters['rooms'] : [$filters['rooms']];
+      $filters['types'] = is_array($filters['types']) ? $filters['types'] : [$filters['types']];
 
       $request_body = [
         'buildingIds' => [],
@@ -861,7 +861,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
       $events = \Drupal::service('sitenow_signage.mazevo_api_client')->getEvents($request_body);
 
-      // only try and decode if the call succeeded.
+      // Only try and decode if the call succeeded.
       $events = !$events ? $events : json_decode(json_encode($events), TRUE);
 
       $sign_node = sitenow_signage_get_paragraph_node($paragraph);
@@ -874,7 +874,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         // updates when sign orientation changes.
         $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
       }
-
 
       $data = [];
       if (!$had_failure) {
@@ -909,7 +908,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
 
           $data[] = $row;
         }
-
 
         if (!empty($data)) {
           // Sort rows by start time.
