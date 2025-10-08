@@ -7834,3 +7834,9 @@ $sites['writing.uiowa.ddev.site'] = 'writing.uiowa.edu';
 $sites['writing.dev.drupal.uiowa.edu'] = 'writing.uiowa.edu';
 $sites['writing.stage.drupal.uiowa.edu'] = 'writing.uiowa.edu';
 $sites['writing.prod.drupal.uiowa.edu'] = 'writing.uiowa.edu';
+
+// Directory aliases for moon.lab.uiowa.edu.
+$sites['labmoon.uiowa.ddev.site'] = 'moon.lab.uiowa.edu';
+$sites['labmoon.dev.drupal.uiowa.edu'] = 'moon.lab.uiowa.edu';
+$sites['labmoon.stage.drupal.uiowa.edu'] = 'moon.lab.uiowa.edu';
+$sites['labmoon.prod.drupal.uiowa.edu'] = 'moon.lab.uiowa.edu';
