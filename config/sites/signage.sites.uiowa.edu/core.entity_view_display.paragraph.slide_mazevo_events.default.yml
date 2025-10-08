@@ -8,49 +8,17 @@ dependencies:
     - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_room_column
     - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_rooms
     - paragraphs.paragraphs_type.slide_mazevo_events
-  module:
-    - options
 id: paragraph.slide_mazevo_events.default
 targetEntityType: paragraph
 bundle: slide_mazevo_events
 mode: default
-content:
-  field_slide_mazevo_display_end:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  field_slide_mazevo_event_types:
-    type: list_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_slide_mazevo_room_column:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  field_slide_mazevo_rooms:
-    type: list_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
+content: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_slide_mazevo_display_end: true
+  field_slide_mazevo_event_types: true
+  field_slide_mazevo_room_column: true
+  field_slide_mazevo_rooms: true
   search_api_excerpt: true
