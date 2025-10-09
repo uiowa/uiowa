@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Dompdf\Dompdf;
+use iio\libmergepdf\Merger;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\File\FileSystemInterface;
@@ -103,8 +104,13 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     $nodes = self::getNodesByMenuOrder('main', 'page', $mpid);
 
     $batch_size = 20;
+    $order = 0;
     foreach (array_chunk($nodes, $batch_size) as $chunk) {
-      $batch_builder->addOperation([static::class, 'batchProcess'], [$chunk]);
+      $batch_builder->addOperation([static::class, 'batchProcess'], [
+        $chunk,
+        $order,
+      ]);
+      $order++;
     }
 
     $batch_builder
@@ -121,50 +127,11 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
   /**
    * Batch operation callback.
    */
-  public static function batchProcess(array $nodes_chunk, array &$context): void {
+  public static function batchProcess(array $nodes_chunk, int $order, array &$context): void {
     $renderer = \Drupal::service('renderer');
     $fs = \Drupal::service('file_system');
 
-    $html = '';
-    foreach ($nodes_chunk as $node) {
-      $render_array = \Drupal::entityTypeManager()
-        ->getViewBuilder('node')
-        ->view($node['node'], 'pdf');
-
-      $parent_title = $node['parent_title'];
-      if ($parent_title) {
-        $parent_markup = [
-          '#markup' => $parent_title,
-        ];
-        $render_array['parent_title'] = $parent_markup;
-      }
-
-      $html .= '<div class="pdf-page">' . $renderer->render($render_array) . '</div>';
-    }
-
-    $temp_dir = self::TEMP_DIR;
-    $fs->prepareDirectory($temp_dir, FileSystemInterface::CREATE_DIRECTORY);
-    $temp_file = tempnam($fs->realpath($temp_dir), 'batch_') . '.html';
-    file_put_contents($temp_file, $html);
-
-    $context['results']['temp_files'][] = $temp_file;
-    $context['message'] = t('Processed @count nodes in this batch.', ['@count' => count($nodes_chunk)]);
-  }
-
-  /**
-   * Batch finished callback.
-   */
-  public static function batchFinished($success, $results, $operations): void {
-    // Increase the memory limit temporarily for PDF generation.
     ini_set('memory_limit', '512M');
-
-    $messenger = \Drupal::messenger();
-    $fs = \Drupal::service('file_system');
-
-    if (!$success) {
-      $messenger->addError(t('An error occurred during PDF generation.'));
-      return;
-    }
 
     $fonts = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">';
 
@@ -178,15 +145,21 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     $base_url = 'https://policy.uiowa.edu/';
     $html = '<html><head><base href="' . $base_url . '">' . $fonts . $print_styles . '</head><body>';
+    foreach ($nodes_chunk as $node) {
+      $render_array = \Drupal::entityTypeManager()
+        ->getViewBuilder('node')
+        ->view($node['node'], 'pdf');
 
-    foreach ($results['temp_files'] as $temp_file) {
-      $html .= file_get_contents($temp_file);
-      unlink($temp_file);
+      $parent_title = $node['parent_title'];
+      if ($parent_title) {
+        $render_array['parent_title'] = ['#markup' => $parent_title];
+      }
+
+      $html .= '<div class="pdf-page">' . $renderer->render($render_array) . '</div>';
     }
     $html .= '</body></html>';
 
-    $file_system = \Drupal::service('file_system');
-    $tmp = $file_system->getTempDirectory();
+    $tmp = $fs->getTempDirectory();
 
     $dompdf = new Dompdf([
       'isRemoteEnabled' => TRUE,
@@ -196,34 +169,92 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       'chroot' => DRUPAL_ROOT,
     ]);
 
-    $start = microtime(TRUE);
-    $startMem = memory_get_usage();
+    $pdf_stream_path = $tmp . '/batch_' . $order . '.pdf';
 
     try {
       $dompdf->loadHtml($html);
       $dompdf->render();
+      file_put_contents($pdf_stream_path, $dompdf->output());
     }
     catch (\Exception $e) {
-      \Drupal::logger('policy_core')->error('PDF generation failed: @message', ['@message' => $e->getMessage()]);
-      \Drupal::messenger()->addError(t('Unable to generate the PDF.'));
+      \Drupal::logger('policy_core')
+        ->error('PDF generation failed for chunk @order: @message', [
+          '@order' => $order,
+          '@message' => $e->getMessage(),
+        ]);
+      $context['results']['pdf_files'][] = [
+        'order' => $order,
+        'path' => NULL,
+      ];
+      $context['message'] = t('PDF generation failed for chunk @order.', ['@order' => $order]);
       return;
     }
 
-    $end = microtime(TRUE);
-    $endMem = memory_get_usage();
+    // Store chunk info in results so they can merge in order.
+    $context['results']['pdf_files'][] = [
+      'order' => $order,
+      'path' => $pdf_stream_path,
+    ];
 
-    $directory = self::EXPORT_DIR;
-    $destination = self::EXPORT_DIR . '/' . self::EXPORT_FILE;
-    $fs->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
-    file_put_contents($fs->realpath($destination), $dompdf->output());
+    $context['message'] = t('Processed @count nodes in this batch.', ['@count' => count($nodes_chunk)]);
+  }
 
-    $time = round($end - $start, 4) . ' seconds';
-    $memory = ($endMem - $startMem) . ' bytes';
+  /**
+   * Batch finished callback.
+   */
+  public static function batchFinished($success, $results, $operations): void {
+    $messenger = \Drupal::messenger();
+    $fs = \Drupal::service('file_system');
 
-    $messenger->addStatus(t('PDF generation completed successfully. Final PDF process took: @time (@memory).', [
-      '@time' => $time,
-      '@memory' => $memory,
-    ]));
+    if (!$success || empty($results['pdf_files'])) {
+      $messenger->addError(t('An error occurred during PDF generation.'));
+      return;
+    }
+
+    // Sort files by their original order to preserve menu order.
+    usort($results['pdf_files'], function ($a, $b) {
+      return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
+    });
+
+    try {
+      $merger = new Merger();
+
+      foreach ($results['pdf_files'] as $pdf_info) {
+        if (empty($pdf_info['path'])) {
+          // Skip failed chunk entries.
+          continue;
+        }
+        $real = $fs->realpath($pdf_info['path']);
+        if ($real && file_exists($real)) {
+          $merger->addFile($real);
+        }
+      }
+
+      $merged_pdf = $merger->merge();
+
+      // Cleanup temp files after merge.
+      foreach ($results['pdf_files'] as $pdf_info) {
+        if (empty($pdf_info['path'])) {
+          continue;
+        }
+        $real = $fs->realpath($pdf_info['path']);
+        if ($real && file_exists($real)) {
+          @unlink($real);
+        }
+      }
+
+      $directory = self::EXPORT_DIR;
+      $destination = self::EXPORT_DIR . '/' . self::EXPORT_FILE;
+      $fs->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
+      file_put_contents($fs->realpath($destination), $merged_pdf);
+
+      $messenger->addStatus(t('PDF generation completed successfully.'));
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('policy_core')
+        ->error('Failed to complete PDF generation: @message', ['@message' => $e->getMessage()]);
+      $messenger->addError(t('Failed to complete PDF generation.'));
+    }
   }
 
   /**
