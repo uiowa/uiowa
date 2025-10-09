@@ -443,7 +443,7 @@ class AcademicCalendarController extends ControllerBase {
         ],
         'badges' => [
           '#type' => 'markup',
-          '#markup' => '<span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span>',
+          '#markup' => '<p><span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span></p>',
         ],
       ],
     ];
