@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slide_mazevo_events.field_headline
     - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_display_end
     - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_event_types
     - field.field.paragraph.slide_mazevo_events.field_slide_mazevo_room_column
@@ -13,6 +14,14 @@ targetEntityType: paragraph
 bundle: slide_mazevo_events
 mode: default
 content:
+  field_headline:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_slide_mazevo_display_end:
     type: boolean_checkbox
     weight: 2
