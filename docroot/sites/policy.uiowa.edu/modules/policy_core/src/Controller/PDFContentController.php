@@ -196,6 +196,9 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       'chroot' => DRUPAL_ROOT,
     ]);
 
+    $start = microtime(TRUE);
+    $startMem = memory_get_usage();
+
     try {
       $dompdf->loadHtml($html);
       $dompdf->render();
@@ -206,12 +209,21 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       return;
     }
 
+    $end = microtime(TRUE);
+    $endMem = memory_get_usage();
+
     $directory = self::EXPORT_DIR;
     $destination = self::EXPORT_DIR . '/' . self::EXPORT_FILE;
     $fs->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
     file_put_contents($fs->realpath($destination), $dompdf->output());
 
-    $messenger->addStatus(t('PDF generation completed successfully.'));
+    $time = round($end - $start, 4) . ' seconds';
+    $memory = ($endMem - $startMem) . ' bytes';
+
+    $messenger->addStatus(t('PDF generation completed successfully. Final PDF process took: @time (@memory).', [
+      '@time' => $time,
+      '@memory' => $memory,
+    ]));
   }
 
   /**
