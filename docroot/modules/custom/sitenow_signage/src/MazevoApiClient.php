@@ -51,7 +51,7 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
    * {@inheritdoc}
    */
   protected function getCacheIdBase() {
-    return 'sitenow_signage_api';
+    return 'sitenow_signage_api_mazevo';
   }
 
   /**
@@ -64,6 +64,7 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
     }
     $options = [
       'json' => $json,
+      'cache_length' => 86400,
     ];
     $result = $this->post('PublicEvent/getevents', $options);
 
