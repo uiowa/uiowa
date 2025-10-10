@@ -17,13 +17,6 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
   use ApiAuthKeyTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  protected function headerParameterName(): string {
-    return 'x-api-key';
-  }
-
-  /**
    * Constructs a DispatchApiClient object.
    *
    * @param \GuzzleHttp\ClientInterface $client
@@ -69,7 +62,7 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
     $result = $this->post('PublicEvent/getevents', $options);
 
     // Only cast to an object if the call succeeded.
-    $result = !$result ? $result : (object) $result;
+    $result = $result === FALSE ? $result : (object) $result;
 
     return $result;
   }
@@ -101,6 +94,21 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
   public function getEventTypes() {
     $data = $this->get('PublicConfiguration/EventTypes', []);
     return json_decode(json_encode($data), TRUE);
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addAuthToOptions(array &$options = []): void {
+    if (!is_null($this->apiKey)) {
+      // Merge additional options with default but allow overriding.
+      $options = array_merge([
+        'headers' => [
+          'x-api-key' => $this->apiKey,
+        ],
+      ], $options);
+    }
   }
 
 }
