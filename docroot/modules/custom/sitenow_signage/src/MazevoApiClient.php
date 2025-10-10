@@ -17,7 +17,7 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
   use ApiAuthKeyTrait;
 
   /**
-   * {@inheritdoc }
+   * {@inheritdoc}
    */
   protected function headerParameterName(): string {
     return 'x-api-key';

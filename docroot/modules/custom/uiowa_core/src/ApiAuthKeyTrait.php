@@ -18,6 +18,7 @@ trait ApiAuthKeyTrait {
    * The header parameter name for the api token.
    *
    * @return string
+   *  The header api token key.
    */
   protected function headerParameterName(): string {
     return 'x-auth-token';
