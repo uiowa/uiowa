@@ -191,18 +191,18 @@ abstract class ApiClientBase implements ApiClientInterface {
    * Performs either a 'GET' or 'POST' request and returns response data.
    *
    * @param string $endpoint
-   *    The endpoint.
+   *   The endpoint.
    * @param array $options
-   *    The options.
+   *   The options.
    * @param string $type
-   *    The application to accept, e.g. json or xml.
+   *   The application to accept, e.g. json or xml.
    * @param string $method
-   *     The request method, either 'GET' or 'POST'
+   *   The request method, either 'GET' or 'POST'.
    *
    * @return false|mixed
-   *    The response data or FALSE.
+   *   The response data or FALSE.
    */
-  public function methodlessRequest(string $endpoint, array $options = [], string $type = 'json', string $method = 'GET'): mixed{
+  public function methodlessRequest(string $endpoint, array $options = [], string $type = 'json', string $method = 'GET'): mixed {
     $cache_id = $this->getRequestCacheId($endpoint, $options);
     // Allow per-request cache override via options.
     $cache_length = NULL;
