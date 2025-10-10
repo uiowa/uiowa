@@ -96,7 +96,6 @@ class MazevoApiClient extends ApiClientBase implements MazevoApiClientInterface 
     return json_decode(json_encode($data), TRUE);
   }
 
-
   /**
    * {@inheritdoc}
    */
