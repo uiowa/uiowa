@@ -133,6 +133,10 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     ini_set('memory_limit', '512M');
 
+    // Start the clock!
+    $start_time = microtime(TRUE);
+    $start_memory = memory_get_usage(TRUE);
+
     $fonts = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">';
 
     // Not including policy-specific print.css to keep breadcrumb hidden.
@@ -145,11 +149,14 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     $base_url = 'https://policy.uiowa.edu/';
     $html = '<html><head><base href="' . $base_url . '">' . $fonts . $print_styles . '</head><body>';
+
+    // Fetch each node and render it as part of the chunk.
     foreach ($nodes_chunk as $node) {
       $render_array = \Drupal::entityTypeManager()
         ->getViewBuilder('node')
         ->view($node['node'], 'pdf');
 
+      // Add parent title for use in the template if available.
       $parent_title = $node['parent_title'];
       if ($parent_title) {
         $render_array['parent_title'] = ['#markup' => $parent_title];
@@ -171,6 +178,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
 
     $pdf_stream_path = $tmp . '/batch_' . $order . '.pdf';
 
+    // Generate the PDF for this chunk.
     try {
       $dompdf->loadHtml($html);
       $dompdf->render();
@@ -185,15 +193,25 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       $context['results']['pdf_files'][] = [
         'order' => $order,
         'path' => NULL,
+        'time' => 0,
+        'memory' => 0,
       ];
       $context['message'] = t('PDF generation failed for chunk @order.', ['@order' => $order]);
       return;
     }
 
+    // Compute time and memory for this batch.
+    $end_time = microtime(TRUE);
+    $end_memory = memory_get_usage(TRUE);
+    $time = round($end_time - $start_time, 4);
+    $memory = ($end_memory - $start_memory);
+
     // Store chunk info in results so they can merge in order.
     $context['results']['pdf_files'][] = [
       'order' => $order,
       'path' => $pdf_stream_path,
+      'time' => $time,
+      'memory' => $memory,
     ];
 
     $context['message'] = t('Processed @count nodes in this batch.', ['@count' => count($nodes_chunk)]);
@@ -206,6 +224,14 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     $messenger = \Drupal::messenger();
     $fs = \Drupal::service('file_system');
 
+    // Track time and memory for this last bit.
+    $start_time = microtime(TRUE);
+    $start_memory = memory_get_usage(TRUE);
+
+    // Get ready to add it all together.
+    $total_time = 0;
+    $total_memory = 0;
+
     if (!$success || empty($results['pdf_files'])) {
       $messenger->addError(t('An error occurred during PDF generation.'));
       return;
@@ -216,14 +242,19 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
       return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
     });
 
+    // Merge all the PDF chunks.
     try {
       $merger = new Merger();
 
       foreach ($results['pdf_files'] as $pdf_info) {
+        // Add to time and memory of each batch.
+        $total_time += $pdf_info['time'] ?? 0;
+        $total_memory += $pdf_info['memory'] ?? 0;
         if (empty($pdf_info['path'])) {
           // Skip failed chunk entries.
           continue;
         }
+        // Add each PDF chunk to the merger.
         $real = $fs->realpath($pdf_info['path']);
         if ($real && file_exists($real)) {
           $merger->addFile($real);
@@ -243,12 +274,24 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
         }
       }
 
+      // Export the final PDF.
       $directory = self::EXPORT_DIR;
       $destination = self::EXPORT_DIR . '/' . self::EXPORT_FILE;
       $fs->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
       file_put_contents($fs->realpath($destination), $merged_pdf);
 
-      $messenger->addStatus(t('PDF generation completed successfully.'));
+      // Stop the clock!
+      $end_time = microtime(TRUE);
+      $end_memory = memory_get_usage(TRUE);
+      $time = round($end_time - $start_time, 4);
+      $memory = ($end_memory - $start_memory);
+      $total_time += $time;
+      $total_memory += $memory;
+
+      $messenger->addStatus(t('PDF generation completed successfully. @time (@memory)', [
+        '@time' => round($total_time, 2) . ' seconds',
+        '@memory' => round(($total_memory) / 1024 / 1024, 2) . ' MB',
+      ]));
     }
     catch (\Exception $e) {
       \Drupal::logger('policy_core')
