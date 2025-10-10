@@ -436,17 +436,14 @@ class AcademicCalendarController extends ControllerBase {
           '#markup' => $start,
         ],
       ],
-      '#meta' => [
-        'description' => [
-          '#type' => 'markup',
-          '#markup' => $event->description,
-        ],
-
-      ],
       '#content' => [
         'body' => [
           '#type' => 'markup',
-          '#markup' => '<span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span>',
+          '#markup' => $event->description,
+        ],
+        'badges' => [
+          '#type' => 'markup',
+          '#markup' => '<p><span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span></p>',
         ],
       ],
     ];
