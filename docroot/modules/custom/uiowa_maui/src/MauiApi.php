@@ -359,7 +359,36 @@ class MauiApi extends ApiClientBase {
       ],
     ];
     $data = $this->get($endpoint, $options, 'xml');
-    return $data;
+    // The request() within get() already logs, but we need to handle
+    // the output differently for each scenario.
+    if ($data === FALSE) {
+      return [
+        '_status' => 'error',
+        '_message' => 'The exam schedule request timed out or failed. Please try again later.',
+      ];
+    }
+
+    // A response but no data.
+    if (isset($data['a']) && empty($data['a'])) {
+      return [
+        '_status' => 'empty',
+        '_message' => 'No final exams found.',
+      ];
+    }
+
+    // We have data!
+    if (isset($data['NewDataSet']['Table'])) {
+      return [
+        '_status' => 'ok',
+        '_data' => $data['NewDataSet']['Table'],
+      ];
+    }
+
+    // Anything else.
+    return [
+      '_status' => 'error',
+      '_message' => 'Unexpected response from the upstream source.',
+    ];
   }
 
   /**
