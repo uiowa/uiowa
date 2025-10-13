@@ -216,6 +216,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               $form['layout_builder_style_headline_size']['#weight'] = 89;
             }
 
+            // Add adjust gradient checkbox.
+            _layout_builder_custom_add_gradient_midpoint_checkbox($form, $form_state);
+
             $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
             break;
 
@@ -593,6 +596,44 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     $cookie_domain = getenv('AH_SITE_ENVIRONMENT') ? '.uiowa.edu' : '.uiowa.ddev.site';
     $form['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = $cookie_domain;
   }
+}
+
+/**
+ * Add adjust gradient midpoint checkbox.
+ */
+function _layout_builder_custom_add_gradient_midpoint_checkbox(&$form, FormStateInterface $form_state) {
+  // Check if gradient midpoint field has a value.
+  $has_midpoint_value = !empty($form['layout_builder_style_banner_gradient_midpoint']['#default_value']);
+
+  $form['adjust_gradient_midpoint'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Adjust gradient midpoint'),
+    '#default_value' => $has_midpoint_value,
+    '#weight' => 94,
+    '#attributes' => [
+      'class' => ['adjust-gradient-checkbox'],
+    ],
+  ];
+
+  // Add states to show/hide gradient midpoint based on checkbox.
+  if (isset($form['layout_builder_style_banner_gradient_midpoint'])) {
+    $form['layout_builder_style_banner_gradient_midpoint']['#weight'] = 95;
+    $form['layout_builder_style_banner_gradient_midpoint']['#states'] = [
+      'visible' => [
+        ':input[name="adjust_gradient_midpoint"]' => ['checked' => TRUE],
+      ],
+    ];
+
+    $form['layout_builder_style_banner_gradient_midpoint']['#description'] = t('Override where the gradient is positioned on the image.');
+  }
+
+  // Only show checkbox when media overlay is selected.
+  $form['adjust_gradient_midpoint']['#states'] = [
+    'visible' => [
+      ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
+      ':input[name="layout_builder_style_media_overlay"]' => ['!value' => ''],
+    ],
+  ];
 }
 
 /**
