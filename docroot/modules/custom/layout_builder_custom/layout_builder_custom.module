@@ -219,6 +219,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Add adjust gradient checkbox.
             _layout_builder_custom_add_gradient_midpoint_checkbox($form, $form_state);
 
+            // Add banner layout radio buttons.
+            _layout_builder_custom_add_banner_layout_radios($form, $form_state, $component);
+
             $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
             break;
 
@@ -633,6 +636,86 @@ function _layout_builder_custom_add_gradient_midpoint_checkbox(&$form, FormState
       ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
       ':input[name="layout_builder_style_media_overlay"]' => ['!value' => ''],
     ],
+  ];
+}
+
+/**
+ * Add banner layout radio buttons to the form.
+ */
+function _layout_builder_custom_add_banner_layout_radios(&$form, FormStateInterface $form_state, $component) {
+  // Get the current styles array from the component.
+  $selectedStyles = $component->get('layout_builder_styles_style') ?? [];
+
+  // Get current alignment values.
+  $current_horizontal = 'horizontal_alignment_center';
+  $current_vertical = 'vertical_alignment_center';
+
+  foreach ($selectedStyles as $style) {
+    if (strpos($style, 'horizontal_alignment_') === 0) {
+      $current_horizontal = $style;
+    }
+    elseif (strpos($style, 'vertical_alignment_') === 0) {
+      $current_vertical = $style;
+    }
+  }
+
+  // Map layout combinations to radio values.
+  $layout_map = [
+    'center-center' => ['horizontal_alignment_center', 'vertical_alignment_center'],
+    'center-bottom' => ['horizontal_alignment_center', 'vertical_alignment_bottom'],
+    'center-top' => ['horizontal_alignment_center', 'vertical_alignment_top'],
+    'left-center' => ['horizontal_alignment_left', 'vertical_alignment_center'],
+    'left-bottom' => ['horizontal_alignment_left', 'vertical_alignment_bottom'],
+    'left-top' => ['horizontal_alignment_left', 'vertical_alignment_top'],
+  ];
+
+  // Find matching layout key.
+  $current_layout = 'center-center';
+  foreach ($layout_map as $layout_key => [$horizontal, $vertical]) {
+    if ($horizontal === $current_horizontal && $vertical === $current_vertical) {
+      $current_layout = $layout_key;
+      break;
+    }
+  }
+
+  $form['banner_layout'] = [
+    '#type' => 'radios',
+    '#title' => t('Banner Layout'),
+    '#options' => [
+      'center-center' => t('Center / Center'),
+      'center-bottom' => t('Center / Bottom'),
+      'center-top' => t('Center / Top'),
+      'left-center' => t('Left / Center'),
+      'left-bottom' => t('Left / Bottom'),
+      'left-top' => t('Left / Top'),
+    ],
+    '#default_value' => $current_layout,
+    '#weight' => 88,
+    '#attributes' => ['class' => ['banner-layout-radios']],
+  ];
+
+  // Get headline type from selected styles.
+  $current_headline_type = 'headline_bold_serif';
+  foreach ($selectedStyles as $style) {
+    if (strpos($style, 'headline_') === 0) {
+      $current_headline_type = $style;
+      break;
+    }
+  }
+
+  $form['heading_style'] = [
+    '#type' => 'radios',
+    '#title' => t('Heading Styles'),
+    '#options' => [
+      'headline_all_caps' => t('All caps'),
+      'headline_all_caps_highlight' => t('All caps, highlighted'),
+      'headline_bold_serif' => t('Bold serif (default)'),
+      'headline_bold_serif_highlight' => t('Bold serif, highlighted'),
+      'headline_underline' => t('Bold serif, underlined'),
+    ],
+    '#default_value' => $current_headline_type,
+    '#weight' => 90,
+    '#attributes' => ['class' => ['heading-style-radios']],
   ];
 }
 
