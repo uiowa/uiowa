@@ -165,6 +165,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         /** @var \Drupal\layout_builder\SectionComponent $component */
         $component = $form_object->getCurrentComponent();
         $block = $component->getPlugin();
+
+        // Add heading before style options, but not for banner.
+        if ($block->getPluginId() !== 'inline_block:uiowa_banner') {
+          _layout_builder_custom_add_lbs_heading($form);
+        }
+
         // Section component unique ID is stored in third-party settings.
         $wrapper_id = Html::getUniqueId('unique-id-wrapper');
         $form['unique_id'] = [
