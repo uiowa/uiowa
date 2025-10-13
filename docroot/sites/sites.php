@@ -7852,3 +7852,9 @@ $sites['orgdsp.uiowa.ddev.site'] = 'dsp.org.uiowa.edu';
 $sites['orgdsp.dev.drupal.uiowa.edu'] = 'dsp.org.uiowa.edu';
 $sites['orgdsp.stage.drupal.uiowa.edu'] = 'dsp.org.uiowa.edu';
 $sites['orgdsp.prod.drupal.uiowa.edu'] = 'dsp.org.uiowa.edu';
+
+// Directory aliases for treehuggermag.sites.uiowa.edu.
+$sites['sitestreehuggermag.uiowa.ddev.site'] = 'treehuggermag.sites.uiowa.edu';
+$sites['sitestreehuggermag.dev.drupal.uiowa.edu'] = 'treehuggermag.sites.uiowa.edu';
+$sites['sitestreehuggermag.stage.drupal.uiowa.edu'] = 'treehuggermag.sites.uiowa.edu';
+$sites['sitestreehuggermag.prod.drupal.uiowa.edu'] = 'treehuggermag.sites.uiowa.edu';
