@@ -193,6 +193,18 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             if (isset($form['layout_builder_style_media_overlay'])) {
               $form["layout_builder_style_media_overlay"]["#empty_option"] = t('No gradient (default)');
             }
+
+            // Hide the banner fields that we are now controlling with radio selects.
+            if (isset($form['layout_builder_style_horizontal_alignment'])) {
+              $form['layout_builder_style_horizontal_alignment']['#access'] = FALSE;
+            }
+            if (isset($form['layout_builder_style_vertical_alignment'])) {
+              $form['layout_builder_style_vertical_alignment']['#access'] = FALSE;
+            }
+            if (isset($form['layout_builder_style_headline_type'])) {
+              $form['layout_builder_style_headline_type']['#access'] = FALSE;
+            }
+
             // Move headline size option to top of display options.
             if (isset($form['layout_builder_style_headline_size'])) {
               $form['layout_builder_style_headline_size']['#weight'] = 89;
