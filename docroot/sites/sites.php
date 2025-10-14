@@ -7858,3 +7858,9 @@ $sites['sitestreehuggermag.uiowa.ddev.site'] = 'treehuggermag.sites.uiowa.edu';
 $sites['sitestreehuggermag.dev.drupal.uiowa.edu'] = 'treehuggermag.sites.uiowa.edu';
 $sites['sitestreehuggermag.stage.drupal.uiowa.edu'] = 'treehuggermag.sites.uiowa.edu';
 $sites['sitestreehuggermag.prod.drupal.uiowa.edu'] = 'treehuggermag.sites.uiowa.edu';
+
+// Directory aliases for ama.tippie.uiowa.edu.
+$sites['tippieama.uiowa.ddev.site'] = 'ama.tippie.uiowa.edu';
+$sites['tippieama.dev.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
+$sites['tippieama.stage.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
+$sites['tippieama.prod.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
