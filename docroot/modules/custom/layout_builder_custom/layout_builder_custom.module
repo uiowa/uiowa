@@ -135,7 +135,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Hide all block labels.
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
-      unset($form['settings']['admin_label']['#title']);
+      $form['settings']['admin_label']['#access'] = FALSE;
       // Hide ones implemented by Views because ListBlock has headline.
       // @todo Investigate whether this can be added to ListBlock. See
       //   https://github.com/uiowa/uiowa/issues/5035
@@ -177,6 +177,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           '#title' => t('Unique ID'),
           '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
           '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
+          '#weight' => -52,
           '#ajax' => [
             'callback' => '_layout_builder_custom_unique_id',
             'wrapper' => $wrapper_id,
@@ -192,18 +193,117 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             if (isset($form['layout_builder_style_background'])) {
               $form['layout_builder_style_background']['#access'] = FALSE;
             }
-            // Replace -none- text with no gradient label.
-            if (isset($form['layout_builder_style_media_overlay'])) {
-              $form["layout_builder_style_media_overlay"]["#empty_option"] = t('No gradient (default)');
-            }
-
-            // Move headline size option to top of display options.
-            if (isset($form['layout_builder_style_headline_size'])) {
-              $form['layout_builder_style_headline_size']['#weight'] = 89;
-            }
 
             // Add adjust gradient checkbox.
             _layout_builder_custom_add_gradient_midpoint_checkbox($form, $form_state);
+
+            // Set negative weight for entire block_form container to position at top.
+            if (isset($form['settings']['block_form'])) {
+              $form['settings']['block_form']['#weight'] = -55;
+
+              // GROUP Background - add heading inside block_form container.
+              $form['settings']['block_form']['background_group_heading'] = [
+                '#type' => 'html_tag',
+                '#tag' => 'h3',
+                '#value' => t('Background'),
+                '#weight' => 0,
+                '#attributes' => ['class' => ['layout-builder-style-heading']],
+              ];
+            }
+
+            if (isset($form['layout_builder_style_media_overlay'])) {
+              $form['layout_builder_style_media_overlay']['#weight'] = 90;
+              // Replace -none- text with no gradient label.
+              $form['layout_builder_style_media_overlay']["#empty_option"] = t('No gradient (default)');
+            }
+
+            if (isset($form['layout_builder_style_banner_gradient'])) {
+              $form['layout_builder_style_banner_gradient']['#weight'] = 91;
+            }
+
+            if (isset($form['adjust_gradient_midpoint'])) {
+              $form['adjust_gradient_midpoint']['#weight'] = 92;
+            }
+
+            if (isset($form['layout_builder_style_banner_gradient_midpoint'])) {
+              $form['layout_builder_style_banner_gradient_midpoint']['#weight'] = 93;
+            }
+
+            // GROUP Layout.
+            $form['layout_group_heading'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'h3',
+              '#value' => t('Layout'),
+              '#weight' => 94,
+              '#attributes' => ['class' => ['layout-builder-style-heading']],
+            ];
+
+            if (isset($form['layout_builder_style_horizontal_alignment'])) {
+              $form['layout_builder_style_horizontal_alignment']['#type'] = 'radios';
+              $form['layout_builder_style_horizontal_alignment']['#weight'] = 95;
+            }
+
+            if (isset($form['layout_builder_style_vertical_alignment'])) {
+              $form['layout_builder_style_vertical_alignment']['#type'] = 'radios';
+              $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
+            }
+
+            if (isset($form['layout_builder_style_container'])) {
+              $form['layout_builder_style_container']['#weight'] = 97;
+            }
+
+            if (isset($form['layout_builder_style_banner_height'])) {
+              $form['layout_builder_style_banner_height']['#weight'] = 98;
+            }
+
+
+            // GROUP Heading.
+            $form['heading_group_heading'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'h3',
+              '#value' => t('Heading'),
+              '#weight' => 99,
+              '#attributes' => ['class' => ['layout-builder-style-heading']],
+            ];
+
+            if (isset($form['layout_builder_style_headline_type'])) {
+              $form['layout_builder_style_headline_type']['#type'] = 'radios';
+              $form['layout_builder_style_headline_type']['#weight'] = 100;
+            }
+
+            if (isset($form['layout_builder_style_headline_size'])) {
+              $form['layout_builder_style_headline_size']['#weight'] = 101;
+            }
+
+            // GROUP Style options.
+            $form['style_options_group_heading'] = [
+              '#type' => 'html_tag',
+              '#tag' => 'h3',
+              '#value' => t('Style options'),
+              '#weight' => 102,
+              '#attributes' => ['class' => ['layout-builder-style-heading']],
+            ];
+
+            if (isset($form['layout_builder_style_button_style'])) {
+              $form['layout_builder_style_button_style']['#weight'] = 103;
+            }
+
+            if (isset($form['layout_builder_style_button_font'])) {
+              $form['layout_builder_style_button_font']['#weight'] = 104;
+            }
+
+            if (isset($form['layout_builder_style_margin'])) {
+              $form['layout_builder_style_margin']['#weight'] = 105;
+            }
+
+            if (isset($form['layout_builder_style_default'])) {
+              $form['layout_builder_style_default']['#weight'] = 106;
+            }
+
+            // Make sure the actions (buttons) come after everything.
+            if (isset($form['actions'])) {
+              $form['actions']['#weight'] = 200;
+            }
 
             $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
             break;
@@ -1042,8 +1142,25 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
             'color-pattern' => t('Color / Pattern'),
           ],
           '#default_value' => $default_bg_type,
-          '#weight' => 4,
+          '#weight' => 10,
         ];
+
+        // Set explicit weights for all existing fields to control order.
+        if (isset($element['field_uiowa_banner_pre_title'])) {
+          $element['field_uiowa_banner_pre_title']['#weight'] = -100;
+        }
+        if (isset($element['field_uiowa_banner_title'])) {
+          $element['field_uiowa_banner_title']['#weight'] = -90;
+        }
+        if (isset($element['field_uiowa_banner_excerpt'])) {
+          $element['field_uiowa_banner_excerpt']['#weight'] = -80;
+        }
+        if (isset($element['field_uiowa_banner_link'])) {
+          $element['field_uiowa_banner_link']['#weight'] = -70;
+        }
+        if (isset($element['langcode'])) {
+          $element['langcode']['#weight'] = 100;
+        }
 
         // Add select dropdown for color/pattern options.
         $element['background_options'] = [
@@ -1058,7 +1175,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
               ],
             ],
           ],
-          '#weight' => 5,
+          '#weight' => 20,
         ];
 
         $element['field_uiowa_banner_image'] = [
@@ -1072,7 +1189,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
               //   is set to 'image'. See
               //   https://github.com/uiowa/uiowa/issues/5039
           ],
-          '#weight' => 6,
+          '#weight' => 30,
         ] + $element['field_uiowa_banner_image'];
 
         $element['field_uiowa_banner_autoplay'] = [
@@ -1083,7 +1200,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
               ],
             ],
           ],
-          '#weight' => 7,
+          '#weight' => 40,
         ] + $element['field_uiowa_banner_autoplay'];
 
         unset($element['field_uiowa_banner_image']['widget']['#title']);
@@ -1113,6 +1230,9 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
           'visible' => [
             ':input[name="settings[block_form][background_type]"]' => [
               'value' => 'media',
+            ],
+            ':input[name="layout_builder_style_media_overlay"]' => [
+              '!value' => '',
             ],
           ],
         ];
