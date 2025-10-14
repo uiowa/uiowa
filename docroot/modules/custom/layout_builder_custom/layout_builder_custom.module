@@ -885,37 +885,79 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
 
     switch ($block->getPluginId()) {
       case 'inline_block:uiowa_banner':
-        $background_option = $form_state->getValue([
+        // Banner layout radio selection.
+        $banner_layout = $form_state->getValue('banner_layout');
+        if ($banner_layout) {
+          $layout_map = [
+            'center-center' => ['horizontal_alignment_center', 'vertical_alignment_center'],
+            'center-bottom' => ['horizontal_alignment_center', 'vertical_alignment_bottom'],
+            'center-top' => ['horizontal_alignment_center', 'vertical_alignment_top'],
+            'left-center' => ['horizontal_alignment_left', 'vertical_alignment_center'],
+            'left-bottom' => ['horizontal_alignment_left', 'vertical_alignment_bottom'],
+            'left-top' => ['horizontal_alignment_left', 'vertical_alignment_top'],
+          ];
+
+          if (isset($layout_map[$banner_layout])) {
+            [$horizontal, $vertical] = $layout_map[$banner_layout];
+            $form_state->setValue('layout_builder_style_horizontal_alignment', $horizontal);
+            $form_state->setValue('layout_builder_style_vertical_alignment', $vertical);
+          }
+        }
+
+        // Heading style radio selection.
+        $heading_style = $form_state->getValue('heading_style');
+        if ($heading_style) {
+          $form_state->setValue('layout_builder_style_headline_type', $heading_style);
+        }
+
+        // Gradient midpoint checkbox.
+        $adjust_gradient = $form_state->getValue('adjust_gradient_midpoint');
+        if (!$adjust_gradient) {
+          // Clear the gradient midpoint value if checkbox is unchecked.
+          $form_state->setValue('layout_builder_style_banner_gradient_midpoint', '');
+        }
+
+        $background_type = $form_state->getValue([
           'settings',
           'block_form',
-          'background_options',
+          'background_type',
         ]);
-        if ($background_option) {
+
+        if ($background_type) {
           $form_media_selection = [
             'settings',
             'block_form',
             'field_uiowa_banner_image',
             'selection',
           ];
-          if ($background_option === 'image') {
-            if (!$form_state->getValue($form_media_selection)) {
-              // If an image wasn't uploaded, revert to default of 'black'.
-              // @todo Add feedback for user that they didn't upload an image.
-              // @todo Add validation to check whether image uploaded or not. See
-              //   https://github.com/uiowa/uiowa/issues/5012
-              $background_option = 'block_background_style_black';
-            }
 
+          $background_style = 'block_background_style_black';
+
+          if ($background_type === 'media') {
+            if ($form_state->getValue($form_media_selection)) {
+              $background_style = 'image';
+            }
+            // @todo Add feedback for user that they didn't upload an image.
+            // @todo Add validation to check whether image uploaded or not. See
+            // https://github.com/uiowa/uiowa/issues/5012
           }
-          else {
+          elseif ($background_type === 'color-pattern') {
             // If a non-image background was selected, remove the reference.
             // @todo Trigger file deletion if the media item is unused elsewhere. See
-            //   https://github.com/uiowa/uiowa/issues/5013
-            $form_state->unsetValue($form_media_selection);
+            // https://github.com/uiowa/uiowa/issues/5013
+            $background_option = $form_state->getValue([
+              'settings',
+              'block_form',
+              'background_options',
+            ]);
+
+            if ($background_option) {
+              $background_style = $background_option;
+              $form_state->unsetValue($form_media_selection);
+            }
           }
-          // Set layout_builder_style_background to
-          // value of our duplicate select.
-          $form_state->setValue('layout_builder_style_background', $background_option);
+
+          $form_state->setValue('layout_builder_style_background', $background_style);
         }
         break;
 
@@ -1076,62 +1118,88 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         // @phpstan-ignore-next-line
         $selectedStyles = $component->get('layout_builder_styles_style');
 
-        $style_options = ['image' => 'Image or Video'];
+        // Build color/pattern options from layout builder styles.
+        $color_pattern_options = [
+          'block_background_style_light' => 'White',
+          'block_background_style_black' => 'Black',
+          'block_background_style_gold' => 'Gold',
+          'block_background_style_gray' => 'Gray',
+        ];
+
         foreach ($all_styles as $style) {
           if ($style->getGroup() === 'background') {
             $restrictions = $style->getBlockRestrictions();
-            /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
             if (empty($restrictions) || in_array('inline_block:uiowa_banner', $restrictions)) {
-              $style_options[$style->id()] = $style->label();
+              $color_pattern_options[$style->id()] = $style->label();
             }
           }
         }
 
-        $default_bg = 'image';
+        // Determine default background type and value.
+        $default_bg_type = 'media';
+        $default_bg_value = 'block_background_style_light';
 
         if (is_array($selectedStyles)) {
           foreach ($selectedStyles as $selectedStyle) {
-            if (array_key_exists($selectedStyle, $style_options)) {
-              $default_bg = $selectedStyle;
+            if (array_key_exists($selectedStyle, $color_pattern_options)) {
+              $default_bg_type = 'color-pattern';
+              $default_bg_value = $selectedStyle;
+              break;
             }
           }
         }
 
+        // Add radio buttons for background type selection.
+        $element['background_type'] = [
+          '#type' => 'radios',
+          '#title' => t('Background'),
+          '#options' => [
+            'media' => t('Image / Video'),
+            'color-pattern' => t('Color / Pattern'),
+          ],
+          '#default_value' => $default_bg_type,
+          '#weight' => 4,
+        ];
+
+        // Add select dropdown for color/pattern options.
         $element['background_options'] = [
           '#type' => 'select',
-          '#title' => t('Background'),
-          '#options' => $style_options,
-          '#default_value' => $default_bg,
-          '#weight' => 4,
+          '#title' => t('Background style'),
+          '#options' => $color_pattern_options,
+          '#default_value' => $default_bg_value,
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][background_type]"]' => [
+                'value' => 'color-pattern',
+              ],
+            ],
+          ],
+          '#weight' => 5,
         ];
 
         $element['field_uiowa_banner_image'] = [
           '#states' => [
             'visible' => [
-              ':input[name="settings[block_form][background_options]"]' => [
-                'value' => 'image',
+              ':input[name="settings[block_form][background_type]"]' => [
+                'value' => 'media',
               ],
             ],
               // @todo Conditionally require media field when 'background_options'
               //   is set to 'image'. See
               //   https://github.com/uiowa/uiowa/issues/5039
           ],
-          '#weight' => 5,
+          '#weight' => 6,
         ] + $element['field_uiowa_banner_image'];
 
         $element['field_uiowa_banner_autoplay'] = [
-          '#attributes' => [
-            'class' => [
-              'js-hide',
-            ],
-            'tabindex' => [
-              '-1',
-            ],
-            'aria-hidden' => [
-              'true',
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][background_type]"]' => [
+                'value' => 'media',
+              ],
             ],
           ],
-          '#weight' => 6,
+          '#weight' => 7,
         ] + $element['field_uiowa_banner_autoplay'];
 
         unset($element['field_uiowa_banner_image']['widget']['#title']);
@@ -1151,16 +1219,16 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
         $form_state->getCompleteForm()['layout_builder_style_media_overlay']['#states'] = [
           'visible' => [
-            ':input[name="settings[block_form][background_options]"]' => [
-              'value' => 'image',
+            ':input[name="settings[block_form][background_type]"]' => [
+              'value' => 'media',
             ],
           ],
         ];
 
         $form_state->getCompleteForm()['layout_builder_style_banner_gradient']['#states'] = [
           'visible' => [
-            ':input[name="settings[block_form][background_options]"]' => [
-              'value' => 'image',
+            ':input[name="settings[block_form][background_type]"]' => [
+              'value' => 'media',
             ],
           ],
         ];
