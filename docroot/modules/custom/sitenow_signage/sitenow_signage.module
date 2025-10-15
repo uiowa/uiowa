@@ -153,6 +153,10 @@ function sitenow_signage_form_uiowa_alerts_settings_alter(&$form, FormStateInter
  */
 function sitenow_signage_preprocess_field(&$variables) {
   $element = $variables['element'];
+
+  // Set a fallback for orientation.
+  $orientation = 'horizontal';
+
   switch ($element['#field_name']) {
     case 'field_sign_slides':
       $first_slide_interval = NULL;
@@ -694,6 +698,12 @@ function sitenow_signage_preprocess_page(&$variables) {
  */
 function sitenow_signage_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
+  if (!$paragraph) {
+    $paragraph = $variables['elements']['#paragraph'];
+  }
+
+  // Set a fallback for orientation.
+  $orientation = 'horizontal';
 
   switch ($paragraph->bundle()) {
     case 'slide_image':
@@ -797,6 +807,161 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       }
 
       break;
+
+    case 'slide_mazevo_events':
+      // Cache this for 1 hour.
+      $variables['#cache']['tags'][] = 'time:hourly';
+
+      $filters = [
+        'rooms' => $paragraph?->field_slide_mazevo_rooms?->getValue(),
+        'types' => $paragraph?->field_slide_mazevo_event_types?->getValue(),
+      ];
+
+      $configuration = [
+        'end_time' => $paragraph?->get('field_slide_mazevo_display_end')?->value,
+        'room_column' => $paragraph?->get('field_slide_mazevo_room_column')?->value,
+      ];
+
+      // If there is only one value, we need to still ensure it is an array.
+      $filters['rooms'] = is_array($filters['rooms']) ? $filters['rooms'] : [$filters['rooms']];
+      $filters['types'] = is_array($filters['types']) ? $filters['types'] : [$filters['types']];
+
+      $request_body = [
+        'buildingIds' => [],
+        'roomIds' => [],
+        'eventTypeIds' => [],
+        'start' => date('c', strtotime('midnight today')),
+        'end' => date('c', strtotime('midnight tomorrow')),
+      ];
+
+      if (isset($filters['rooms']) && $filters['rooms']) {
+        $rooms = $filters['rooms'];
+        foreach ($rooms as $room) {
+          if (isset($room['value'])) {
+            $building_and_room = explode('-', $room['value']);
+
+            // We add them this way so that we don't have duplicates in the array.
+            $building_and_room[0] ? $request_body['buildingIds'][$building_and_room[0]] = 0 : NULL;
+            $building_and_room[1] ? $request_body['roomIds'][$building_and_room[1]] = 0 : NULL;
+          }
+        }
+      }
+
+      // Get the keys so that we get the non-duplicitous ids.
+      $request_body['buildingIds'] = array_keys($request_body['buildingIds']);
+      $request_body['roomIds'] = array_keys($request_body['roomIds']);
+
+      if (isset($filters['types'])) {
+        foreach ($filters['types'] as $type) {
+          if (isset($type['value'])) {
+            $request_body['eventTypeIds'][] = $type['value'];
+          }
+        }
+      }
+
+      $events = \Drupal::service('sitenow_signage.mazevo_api_client')->getEvents($request_body);
+
+      // Only try and decode if the call succeeded.
+      $events = !$events ? $events : json_decode(json_encode($events), TRUE);
+
+      $sign_node = sitenow_signage_get_paragraph_node($paragraph);
+      $had_failure = FALSE === $events;
+
+      if ($sign_node && $sign_node->bundle() == 'sign') {
+        $orientation = sitenow_signage_get_orientation($sign_node);
+
+        // Add cache tag for the sign node so table
+        // updates when sign orientation changes.
+        $variables['#cache']['tags'][] = 'node:' . $sign_node->get('nid')->value;
+      }
+
+      $data = [];
+      if (!$had_failure) {
+        // Loop through today's events.
+        foreach ($events as $event) {
+          $start = strtotime($event['dateTimeStart']);
+          $end = strtotime($event['dateTimeEnd']);
+
+          // Skip events already ended.
+          if ($end < time()) {
+            continue;
+          }
+
+          // Format time range based on settings.
+          $formatted_date = date('g:i a', $start);
+
+          // Add the end time if user has that option checked.
+          if ($configuration['end_time']) {
+            $formatted_date .= ' – ' . date('g:i a', $end);
+          }
+
+          // Build row, store start time for sorting.
+          $row = [
+            'time' => $formatted_date,
+            'start' => $start,
+            'meeting' => $event['eventName'],
+          ];
+
+          if ($configuration['room_column']) {
+            $row['room_column'] = $event['roomDescription'];
+          }
+
+          $data[] = $row;
+        }
+
+        if (!empty($data)) {
+          // Sort rows by start time.
+          usort($data, fn($a, $b) => $a['start'] <=> $b['start']);
+
+          // Remove the start.
+          foreach ($data as &$row) {
+            unset($row['start']);
+          }
+
+          // Cap the number of rows differently based on orientation.
+          $max = $orientation === 'horizontal' ? 10 : 15;
+          $data = array_slice($data, 0, $max);
+        }
+      }
+
+      // Choose an empty message based on whether we saw a failure.
+      if ($had_failure) {
+        $empty_message = t('There was an error retrieving schedule information. Please try again later or contact the ITS Help Desk if the problem persists.');
+      }
+      else {
+        $empty_message = t('There are currently no scheduled events to display.');
+      }
+
+      // Build renderable table.
+      $header = [
+        'time' => t('Time'),
+        'meeting' => t('Meeting'),
+      ];
+
+      if ($configuration['room_column']) {
+        $header['room'] = t('Room');
+      }
+
+      $markup['container']['table'] = [
+        '#theme' => 'table',
+        '#header' => $header,
+        '#caption' => t('Schedule of events'),
+        '#rows' => $data,
+        '#empty' => $empty_message,
+        '#attributes' => [
+          'class' => [
+            'mazevo__events',
+            'signage__table',
+          ],
+        ],
+      ];
+
+      $markup = \Drupal::service('renderer')->render($markup);
+
+      // Replace the field output with table markup.
+      $variables['content'][] = ['#markup' => $markup];
+
+      break;
   }
 }
 
@@ -811,6 +976,10 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
     ],
     'field__paragraph__field_headline__slide_events' => [
       'template' => 'field--paragraph--field-headline--slide-events',
+      'base hook' => 'field',
+    ],
+    'field__paragraph__field_headline__slide_mazevo_events' => [
+      'template' => 'field--paragraph--field-headline--slide-mazevo-events',
       'base hook' => 'field',
     ],
   ];
@@ -952,6 +1121,41 @@ function _sitenow_signage_get_filter_field_options(FieldStorageDefinitionInterfa
 
       $tree = _sitenow_events_build_options_tree($filters['event_types']);
       $options = _sitenow_events_build_options_list($tree);
+      break;
+
+    case 'field_slide_mazevo_event_types':
+      $event_types = \Drupal::service('sitenow_signage.mazevo_api_client')->getEventTypes();
+      $enabled_types = [];
+      foreach ($event_types as $type) {
+        if (
+          isset($type['id']) &&
+          isset($type['description']) &&
+          isset($type['disabled']) &&
+          !$type['disabled']
+        ) {
+          $enabled_types[$type['id']] = $type['description'];
+        }
+      }
+      asort($enabled_types);
+      $options = $enabled_types;
+      break;
+
+    case 'field_slide_mazevo_rooms':
+      $rooms = \Drupal::service('sitenow_signage.mazevo_api_client')->getRooms();
+      $room_ids = [];
+      if ($rooms) {
+        foreach ($rooms as $room) {
+          if (isset($room['roomId'])) {
+            $key = $room['buildingId'] . '-' . $room['roomId'];
+            $value = $room['buildingDescription'] . ' - ' . $room['description'];
+            $room_ids[$key] = $value;
+          }
+        }
+
+        asort($room_ids);
+      }
+
+      $options = $room_ids;
       break;
   }
 
