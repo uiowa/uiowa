@@ -127,9 +127,28 @@
   width: auto;
 }
 
-/**
- * Drag handle styling.
- */
+#drupal-off-canvas-wrapper .form .fieldgroup {
+  border: none !important;
+}
+
+#drupal-off-canvas-wrapper  .form [type=checkbox],
+#drupal-off-canvas-wrapper .form [type=radio] {
+  height: 1.2rem;
+  min-width: 1.2rem;
+  margin: .25rem .35rem 0 .25rem;
+  -webkit-transform: scale(1.3, 1.3);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+#drupal-off-canvas-wrapper .layout-builder-style-heading {
+  font-size: 1.5rem!important;
+  border-bottom: none!important;
+}
+  /**
+   * Drag handle styling.
+   */
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-handle {
   width: 15px;
   height: calc(100% + 52px);

@@ -45,22 +45,42 @@ class BannerBlockFormHandler {
       ];
     }
 
-    if (isset($form['layout_builder_style_media_overlay'])) {
-      $form['layout_builder_style_media_overlay']['#weight'] = 90;
+    // Create a details element for gradient options.
+    $form['gradient_options'] = [
+      '#type' => 'details',
+      '#title' => t('Gradient options'),
+      '#weight' => 90,
+      '#open' => FALSE,
+      '#states' => [
+        'visible' => [
+          ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
+        ],
+      ],
+    ];
+
+    // Duplicate gradient fields into gradient options container.
+    self::createDuplicateField($form, 'layout_builder_style_media_overlay', 'gradient_options');
+    self::createDuplicateField($form, 'layout_builder_style_banner_gradient', 'gradient_options');
+    self::createDuplicateField($form, 'layout_builder_style_adjust_gradient_midpoint', 'gradient_options');
+    self::createDuplicateField($form, 'layout_builder_style_banner_gradient_midpoint', 'gradient_options');
+
+    // Set weights and special properties for gradient fields.
+    if (isset($form['gradient_options']['layout_builder_style_media_overlay_duplicate'])) {
+      $form['gradient_options']['layout_builder_style_media_overlay_duplicate']['#weight'] = 1;
       // Replace -none- text with no gradient label.
-      $form['layout_builder_style_media_overlay']["#empty_option"] = t('No gradient (default)');
+      $form['gradient_options']['layout_builder_style_media_overlay_duplicate']["#empty_option"] = t('No gradient (default)');
     }
 
-    if (isset($form['layout_builder_style_banner_gradient'])) {
-      $form['layout_builder_style_banner_gradient']['#weight'] = 91;
+    if (isset($form['gradient_options']['layout_builder_style_banner_gradient_duplicate'])) {
+      $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#weight'] = 2;
     }
 
-    if (isset($form['adjust_gradient_midpoint'])) {
-      $form['adjust_gradient_midpoint']['#weight'] = 92;
+    if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
+      $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#weight'] = 3;
     }
 
-    if (isset($form['layout_builder_style_banner_gradient_midpoint'])) {
-      $form['layout_builder_style_banner_gradient_midpoint']['#weight'] = 93;
+    if (isset($form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate'])) {
+      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#weight'] = 4;
     }
 
     // Layout group.
@@ -82,47 +102,45 @@ class BannerBlockFormHandler {
       $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
     }
 
-    if (isset($form['layout_builder_style_container'])) {
-      $form['layout_builder_style_container']['#weight'] = 97;
-    }
+    // Create a details element for layout settings.
+    $form['layout_settings'] = [
+      '#type' => 'details',
+      '#title' => t('Layout settings'),
+      '#weight' => 97,
+      '#open' => FALSE,
+    ];
 
-    if (isset($form['layout_builder_style_banner_height'])) {
-      $form['layout_builder_style_banner_height']['#weight'] = 98;
-    }
+    // Duplicate fields into layout settings container.
+    self::createDuplicateField($form, 'layout_builder_style_container', 'layout_settings');
+    self::createDuplicateField($form, 'layout_builder_style_banner_height', 'layout_settings');
 
     // Headline styles - placed in block_form to appear after title field.
     if (isset($form['layout_builder_style_headline_type'])) {
       $form['layout_builder_style_headline_type']['#type'] = 'radios';
     }
 
-    if (isset($form['layout_builder_style_headline_size'])) {
-      // Weight is set in processElement after we know the title field weight.
-    }
-
-    // Style group.
+    // Styles heading.
     $form['style_options_group_heading'] = [
       '#type' => 'html_tag',
       '#tag' => 'h3',
-      '#value' => t('Style options'),
+      '#value' => t('Styles'),
       '#weight' => 102,
       '#attributes' => ['class' => ['layout-builder-style-heading']],
     ];
 
-    if (isset($form['layout_builder_style_button_style'])) {
-      $form['layout_builder_style_button_style']['#weight'] = 103;
-    }
+    // Create a details element for style options.
+    $form['style_options'] = [
+      '#type' => 'details',
+      '#title' => t('Style options'),
+      '#weight' => 102,
+      '#open' => FALSE,
+    ];
 
-    if (isset($form['layout_builder_style_button_font'])) {
-      $form['layout_builder_style_button_font']['#weight'] = 104;
-    }
-
-    if (isset($form['layout_builder_style_margin'])) {
-      $form['layout_builder_style_margin']['#weight'] = 105;
-    }
-
-    if (isset($form['layout_builder_style_default'])) {
-      $form['layout_builder_style_default']['#weight'] = 106;
-    }
+    // Duplicate fields into style options container.
+    self::createDuplicateField($form, 'layout_builder_style_button_style', 'style_options');
+    self::createDuplicateField($form, 'layout_builder_style_button_font', 'style_options');
+    self::createDuplicateField($form, 'layout_builder_style_margin', 'style_options');
+    self::createDuplicateField($form, 'layout_builder_style_default', 'style_options');
 
     // Make sure the actions (buttons) come after everything.
     if (isset($form['actions'])) {
@@ -130,6 +148,44 @@ class BannerBlockFormHandler {
     }
 
     $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
+  }
+
+  /**
+   * Creates a duplicate field in a container and hides the original.
+   *
+   * @param array $form
+   *   The form array.
+   * @param string $original_field_name
+   *   The name of the original field.
+   * @param string $container_name
+   *   The name of the container to place the duplicate in.
+   */
+  private static function createDuplicateField(array &$form, $original_field_name, $container_name) {
+    $duplicate_field_name = $original_field_name . '_duplicate';
+
+    if (isset($form[$original_field_name])) {
+      $form[$container_name][$duplicate_field_name] = $form[$original_field_name];
+      $form[$container_name][$duplicate_field_name]['#parents'] = [$duplicate_field_name];
+      // Hide the original field.
+      $form[$original_field_name]['#access'] = FALSE;
+    }
+  }
+
+  /**
+   * Syncs duplicate field values back to their original fields.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   * @param array $field_mappings
+   *   Array of field names to sync (original field name as key).
+   */
+  private static function syncDuplicateFields(FormStateInterface $form_state, array $field_mappings) {
+    foreach ($field_mappings as $original_field => $duplicate_field) {
+      $duplicate_value = $form_state->getValue($duplicate_field);
+      if ($duplicate_value !== NULL) {
+        $form_state->setValue($original_field, $duplicate_value);
+      }
+    }
   }
 
   /**
@@ -141,6 +197,22 @@ class BannerBlockFormHandler {
    *   The form state.
    */
   public static function validateForm(array &$form, FormStateInterface $form_state) {
+    // Sync duplicated fields to original fields.
+    $field_mappings = [
+      'layout_builder_style_container' => 'layout_builder_style_container_duplicate',
+      'layout_builder_style_banner_height' => 'layout_builder_style_banner_height_duplicate',
+      'layout_builder_style_button_style' => 'layout_builder_style_button_style_duplicate',
+      'layout_builder_style_button_font' => 'layout_builder_style_button_font_duplicate',
+      'layout_builder_style_margin' => 'layout_builder_style_margin_duplicate',
+      'layout_builder_style_default' => 'layout_builder_style_default_duplicate',
+      'layout_builder_style_media_overlay' => 'layout_builder_style_media_overlay_duplicate',
+      'layout_builder_style_banner_gradient' => 'layout_builder_style_banner_gradient_duplicate',
+      'layout_builder_style_adjust_gradient_midpoint' => 'layout_builder_style_adjust_gradient_midpoint_duplicate',
+      'layout_builder_style_banner_gradient_midpoint' => 'layout_builder_style_banner_gradient_midpoint_duplicate',
+    ];
+
+    self::syncDuplicateFields($form_state, $field_mappings);
+
     $link_set = FALSE;
     $link_text = FALSE;
 
@@ -196,7 +268,7 @@ class BannerBlockFormHandler {
     }
 
     // Gradient midpoint checkbox.
-    $adjust_gradient = $form_state->getValue('adjust_gradient_midpoint');
+    $adjust_gradient = $form_state->getValue('layout_builder_style_adjust_gradient_midpoint');
     if (!$adjust_gradient) {
       // Clear the gradient midpoint value if checkbox is unchecked.
       $form_state->setValue('layout_builder_style_banner_gradient_midpoint', '');
@@ -258,7 +330,7 @@ class BannerBlockFormHandler {
     // Check if gradient midpoint field has a value.
     $has_midpoint_value = !empty($form['layout_builder_style_banner_gradient_midpoint']['#default_value']);
 
-    $form['adjust_gradient_midpoint'] = [
+    $form['layout_builder_style_adjust_gradient_midpoint'] = [
       '#type' => 'checkbox',
       '#title' => t('Adjust gradient midpoint'),
       '#default_value' => $has_midpoint_value,
@@ -269,24 +341,24 @@ class BannerBlockFormHandler {
     ];
 
     // Add states to show/hide gradient midpoint based on checkbox.
-    if (isset($form['layout_builder_style_banner_gradient_midpoint'])) {
-      $form['layout_builder_style_banner_gradient_midpoint']['#weight'] = 95;
-      $form['layout_builder_style_banner_gradient_midpoint']['#states'] = [
+    if (isset($form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate'])) {
+      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#states'] = [
         'visible' => [
-          ':input[name="adjust_gradient_midpoint"]' => ['checked' => TRUE],
+          ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
         ],
       ];
 
-      $form['layout_builder_style_banner_gradient_midpoint']['#description'] = t('Override where the gradient is positioned on the image.');
+      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#description'] = t('Override where the gradient is positioned on the image.');
     }
 
     // Only show checkbox when media overlay is selected.
-    $form['adjust_gradient_midpoint']['#states'] = [
-      'visible' => [
-        ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
-        ':input[name="layout_builder_style_media_overlay"]' => ['!value' => ''],
-      ],
-    ];
+    if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
+      $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#states'] = [
+        'visible' => [
+          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
+        ],
+      ];
+    }
   }
 
   /**

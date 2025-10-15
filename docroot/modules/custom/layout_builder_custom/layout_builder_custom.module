@@ -135,8 +135,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Hide all block labels.
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
-      unset($form['settings']['admin_label']['#title']);
-      // $form['settings']['admin_label']['#access'] = FALSE;
+      unset($form['settings']['admin_label']);
       // Hide ones implemented by Views because ListBlock has headline.
       // @todo Investigate whether this can be added to ListBlock. See
       //   https://github.com/uiowa/uiowa/issues/5035
@@ -526,6 +525,24 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Set layout builder style default settings.
           if ($form_id === 'layout_builder_add_block') {
             $form[$key]['#default_value'] = [$settings['default']];
+          }
+        }
+
+        // Also check for duplicate fields in any details containers.
+        $key_duplicate = $key . '_duplicate';
+        foreach ($form as $container_name => $container) {
+          if (is_array($container) && isset($container[$key_duplicate])) {
+            if (isset($settings['default'])) {
+              // If the default option exists, add the text there.
+              if (isset($form[$container_name][$key_duplicate]['#options'][$settings['default']])) {
+                $form[$container_name][$key_duplicate]['#options'][$settings['default']] .= ' (default)';
+              }
+
+              // Set layout builder style default settings.
+              if ($form_id === 'layout_builder_add_block') {
+                $form[$container_name][$key_duplicate]['#default_value'] = [$settings['default']];
+              }
+            }
           }
         }
       }
