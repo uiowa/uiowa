@@ -93,12 +93,10 @@ class BannerBlockFormHandler {
     ];
 
     if (isset($form['layout_builder_style_horizontal_alignment'])) {
-      $form['layout_builder_style_horizontal_alignment']['#type'] = 'radios';
       $form['layout_builder_style_horizontal_alignment']['#weight'] = 95;
     }
 
     if (isset($form['layout_builder_style_vertical_alignment'])) {
-      $form['layout_builder_style_vertical_alignment']['#type'] = 'radios';
       $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
     }
 
@@ -113,11 +111,6 @@ class BannerBlockFormHandler {
     // Duplicate fields into layout settings container.
     self::createDuplicateField($form, 'layout_builder_style_container', 'layout_settings');
     self::createDuplicateField($form, 'layout_builder_style_banner_height', 'layout_settings');
-
-    // Headline styles - placed in block_form to appear after title field.
-    if (isset($form['layout_builder_style_headline_type'])) {
-      $form['layout_builder_style_headline_type']['#type'] = 'radios';
-    }
 
     // Styles heading.
     $form['style_options_group_heading'] = [
