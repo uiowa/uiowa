@@ -945,10 +945,12 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       $markup['container']['table'] = [
         '#theme' => 'table',
         '#header' => $header,
+        '#caption' => t('Schedule of events'),
         '#rows' => $data,
         '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
+            'mazevo__events',
             'signage__table',
           ],
         ],
