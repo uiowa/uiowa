@@ -185,6 +185,34 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           ],
         ];
 
+        // Modifications to $lb_styles_extra_settings based on block plugin.
+        switch ($block->getPluginId()) {
+          case 'inline_block:uiowa_card':
+            // Stacked by default.
+            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
+            break;
+          // Set square to default for image gallery.
+          case 'inline_block:uiowa_image_gallery':
+            $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
+            break;
+
+          // Media left, media circle, and no border are the defaults.
+          case 'inline_block:uiowa_events':
+          case 'views_block:events-card_list':
+          case 'views_block:events_list_block-card_list':
+          case 'views_block:people_list_block-list_card':
+            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_left';
+            $lb_styles_extra_settings['media_format']['default'] = 'media_format_circle';
+            $lb_styles_extra_settings['border']['default'] = 'no_border';
+            break;
+
+          // No border is the default.
+          case 'inline_block:uiowa_aggregator':
+          case 'views_block:article_list_block-list_article':
+            $lb_styles_extra_settings['border']['default'] = 'no_border';
+            break;
+        }
+
         // Loop through map of default styles and append text indicating
         // that they are the defaults if appropriate.
         // This ensures duplicates inherit the correct defaults when they're created.
@@ -263,9 +291,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Set help text for media position.
             $form['layout_builder_style_card_media_position']['#description'] = t('<a target="_blank" href="https://sitenow.uiowa.edu/documentation/layout-builder/card-block">The media position will change based on the width of the layout column.</a>');
 
-            // Stacked by default.
-            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
-
             // Set '#states' for card image size.
             $form['layout_builder_style_media_size']['#states'] = [
               'visible' => [
@@ -317,30 +342,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               if ($form['settings']['override']['items_per_page']) {
                 $form['settings']['override']['items_per_page']['#default_value'] = 10;
               }
-            }
-
-            // Set defaults for blocks with card-related styles.
-            switch ($block->getPluginId()) {
-              // Set square to default for image gallery.
-              case 'inline_block:uiowa_image_gallery':
-                $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
-                break;
-
-              // Media left, media circle, and no border are the defaults.
-              case 'inline_block:uiowa_events':
-              case 'views_block:events-card_list':
-              case 'views_block:events_list_block-card_list':
-              case 'views_block:people_list_block-list_card':
-                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_left';
-                $lb_styles_extra_settings['media_format']['default'] = 'media_format_circle';
-                $lb_styles_extra_settings['border']['default'] = 'no_border';
-                break;
-
-              // No border is the default.
-              case 'inline_block:uiowa_aggregator':
-              case 'views_block:article_list_block-list_article':
-                $lb_styles_extra_settings['border']['default'] = 'no_border';
-                break;
             }
 
             if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
