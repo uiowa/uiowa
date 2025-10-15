@@ -1,0 +1,13 @@
+services:
+  sitenow_signage.mazevo_api_client:
+    class: Drupal\sitenow_signage\MazevoApiClient
+    arguments: ['@http_client', '@logger.channel.sitenow_signage', '@cache.sitenow_signage', '@config.factory']
+  logger.channel.sitenow_signage:
+    parent: logger.channel_base
+    arguments: [ 'sitenow_signage' ]
+  cache.sitenow_signage:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['sitenow_signage']
