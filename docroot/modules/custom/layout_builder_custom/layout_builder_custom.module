@@ -185,6 +185,43 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           ],
         ];
 
+        // Loop through map of default styles and append text indicating
+        // that they are the defaults if appropriate.
+        // This ensures duplicates inherit the correct defaults when they're created.
+        foreach ($lb_styles_extra_settings as $key => $settings) {
+          // The key that is used in the form array.
+          $key = 'layout_builder_style_' . $key;
+          // If the style group is set...
+          if (isset($form[$key])) {
+            if (isset($settings['default'])) {
+              // If an alternative label has been added for the empty option,
+              // use it instead.
+              if (isset($settings['empty_label']) && isset($form[$key]['#empty_option'])) {
+                $form[$key]['#empty_option'] = t('@label', [
+                  '@label' => $settings['empty_label'],
+                ]);
+              }
+
+              // If the default option is exists, add the text there.
+              if (isset($form[$key]['#options'][$settings['default']])) {
+                $form[$key]['#options'][$settings['default']] .= ' (default)';
+              }
+              // Otherwise, if the empty option should be the default, add
+              // the text there.
+              elseif ($settings['default'] === '[empty]' && isset($settings['empty_label']) && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
+                $form[$key]['#empty_option'] = t('@empty_option (default)', [
+                  '@empty_option' => $form[$key]['#empty_option']->render(),
+                ], $form[$key]['#empty_option']->getOptions());
+              }
+            }
+
+            // Set layout builder style default settings.
+            if ($form_id === 'layout_builder_add_block') {
+              $form[$key]['#default_value'] = [$settings['default']];
+            }
+          }
+        }
+
         // Form modifications per block plugin and bundle.
         switch ($block->getPluginId()) {
           case 'inline_block:uiowa_banner':
@@ -493,59 +530,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         }
       }
 
-      // Loop through map of default styles and append text indicating
-      // that they are the defaults if appropriate.
-      foreach ($lb_styles_extra_settings as $key => $settings) {
-        // The key that is used in the form array.
-        $key = 'layout_builder_style_' . $key;
-        // If the style group is set...
-        if (isset($form[$key])) {
-          if (isset($settings['default'])) {
-            // If an alternative label has been added for the empty option,
-            // use it instead.
-            if (isset($settings['empty_label']) && isset($form[$key]['#empty_option'])) {
-              $form[$key]['#empty_option'] = t('@label', [
-                '@label' => $settings['empty_label'],
-              ]);
-            }
-
-            // If the default option is exists, add the text there.
-            if (isset($form[$key]['#options'][$settings['default']])) {
-              $form[$key]['#options'][$settings['default']] .= ' (default)';
-            }
-            // Otherwise, if the empty option should be the default, add
-            // the text there.
-            elseif ($settings['default'] === '[empty]' && isset($settings['empty_label']) && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
-              $form[$key]['#empty_option'] = t('@empty_option (default)', [
-                '@empty_option' => $form[$key]['#empty_option']->render(),
-              ], $form[$key]['#empty_option']->getOptions());
-            }
-          }
-
-          // Set layout builder style default settings.
-          if ($form_id === 'layout_builder_add_block') {
-            $form[$key]['#default_value'] = [$settings['default']];
-          }
-        }
-
-        // Also check for duplicate fields in any details containers.
-        $key_duplicate = $key . '_duplicate';
-        foreach ($form as $container_name => $container) {
-          if (is_array($container) && isset($container[$key_duplicate])) {
-            if (isset($settings['default'])) {
-              // If the default option exists, add the text there.
-              if (isset($form[$container_name][$key_duplicate]['#options'][$settings['default']])) {
-                $form[$container_name][$key_duplicate]['#options'][$settings['default']] .= ' (default)';
-              }
-
-              // Set layout builder style default settings.
-              if ($form_id === 'layout_builder_add_block') {
-                $form[$container_name][$key_duplicate]['#default_value'] = [$settings['default']];
-              }
-            }
-          }
-        }
-      }
 
       $form['settings'] += [
         '#weight' => 0,
