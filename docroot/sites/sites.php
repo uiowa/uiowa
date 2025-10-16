@@ -7852,3 +7852,9 @@ $sites['tippieama.uiowa.ddev.site'] = 'ama.tippie.uiowa.edu';
 $sites['tippieama.dev.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
 $sites['tippieama.stage.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
 $sites['tippieama.prod.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
+
+// Directory aliases for hyesunyou.sites.uiowa.edu.
+$sites['siteshyesunyou.uiowa.ddev.site'] = 'hyesunyou.sites.uiowa.edu';
+$sites['siteshyesunyou.dev.drupal.uiowa.edu'] = 'hyesunyou.sites.uiowa.edu';
+$sites['siteshyesunyou.stage.drupal.uiowa.edu'] = 'hyesunyou.sites.uiowa.edu';
+$sites['siteshyesunyou.prod.drupal.uiowa.edu'] = 'hyesunyou.sites.uiowa.edu';
