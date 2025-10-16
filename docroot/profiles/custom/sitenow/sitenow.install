@@ -4223,12 +4223,10 @@ function sitenow_update_10026() {
 
     // Set background_type if it needs updating.
     $expected_bg_type = $has_color_pattern ? 'color-pattern' : 'media';
-    $current_bg_type = $configuration['block_form']['background_type'] ?? 'media';
+    $current_bg_type = $component->getThirdPartySetting('layout_builder_custom', 'background_type') ?? 'media';
 
     if ($current_bg_type !== $expected_bg_type) {
-      $configuration['block_form'] = $configuration['block_form'] ?? [];
-      $configuration['block_form']['background_type'] = $expected_bg_type;
-      $component->set('configuration', $configuration);
+      $component->setThirdPartySetting('layout_builder_custom', 'background_type', $expected_bg_type);
     }
   });
 }

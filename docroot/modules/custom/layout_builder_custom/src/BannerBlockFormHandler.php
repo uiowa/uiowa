@@ -288,8 +288,8 @@ class BannerBlockFormHandler {
       if ($background_type === 'media') {
         // Check if media was selected.
         if ($form_state->getValue($form_media_selection)) {
-          // Set background to 'image' when media is selected.
-          $form_state->setValue('layout_builder_style_background', 'image');
+          // Clear any background style when media is selected.
+          $form_state->setValue('layout_builder_style_background', '');
         }
         else {
           // Default to black background if no media selected.
@@ -300,17 +300,19 @@ class BannerBlockFormHandler {
         // https://github.com/uiowa/uiowa/issues/5012
       }
       elseif ($background_type === 'color-pattern') {
-        // For color-pattern, use the value from layout_builder_style_background field.
-        // The field itself handles the selection, so we just need to ensure
-        // the media reference is removed if it was previously set.
-        $background_style = $form_state->getValue('layout_builder_style_background');
-
-        // If a background style is selected, remove any media reference.
-        if ($background_style && $background_style !== 'image') {
-          $form_state->unsetValue($form_media_selection);
-        }
+        // For color-pattern, clear any media reference if it was previously set.
+        $form_state->unsetValue($form_media_selection);
         // @todo Trigger file deletion if the media item is unused elsewhere. See
         // https://github.com/uiowa/uiowa/issues/5013
+      }
+    }
+
+    // Save background_type as a third-party setting.
+    if ($background_type) {
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof ConfigureBlockFormBase) {
+        $component = $form_object->getCurrentComponent();
+        $component->setThirdPartySetting('layout_builder_custom', 'background_type', $background_type);
       }
     }
   }
@@ -389,14 +391,16 @@ class BannerBlockFormHandler {
     $plugin = $component->getPlugin();
     $configuration = $plugin->getConfiguration();
 
-    if (!empty($configuration['block_form']['background_type'])) {
-      $default_bg_type = $configuration['block_form']['background_type'];
+    // Check third-party settings first, then fallback to layout builder styles.
+    $stored_background_type = $component->getThirdPartySetting('layout_builder_custom', 'background_type');
+    if (!empty($stored_background_type)) {
+      $default_bg_type = $stored_background_type;
     }
     else {
       // Check if there's a background style set that indicates color-pattern.
       if (!empty($configuration['layout_builder_style_background'])) {
         $bg_value = $configuration['layout_builder_style_background'];
-        if ($bg_value !== 'image' && $bg_value !== 'block_background_style_black') {
+        if ($bg_value !== 'block_background_style_black') {
           $default_bg_type = 'color-pattern';
         }
       }
