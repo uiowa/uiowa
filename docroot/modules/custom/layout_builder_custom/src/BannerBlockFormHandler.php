@@ -73,7 +73,7 @@ class BannerBlockFormHandler {
         ],
       ];
     }
-     // Adjust gradient midpoint checkbox.
+    // Adjust gradient midpoint checkbox.
     if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
       $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#weight'] = 3;
       $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#states'] = [
@@ -105,13 +105,11 @@ class BannerBlockFormHandler {
     if (isset($form['layout_builder_style_horizontal_alignment'])) {
       $form['layout_builder_style_horizontal_alignment']['#weight'] = 95;
 
-      // Apply default value for radio buttons if none is set.
       $form_object = $form_state->getFormObject();
       if ($form_object instanceof ConfigureBlockFormBase) {
         $component = $form_object->getCurrentComponent();
         $plugin = $component->getPlugin();
         if (method_exists($plugin, 'getConfiguration')) {
-          // @phpstan-ignore-next-line
           $configuration = $plugin->getConfiguration();
           $current_value = $configuration['layout_builder_style_horizontal_alignment'] ?? NULL;
           if (empty($current_value)) {
@@ -122,22 +120,16 @@ class BannerBlockFormHandler {
           }
         }
       }
-      if (!isset($form['layout_builder_style_horizontal_alignment']['#default_value'])) {
-        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-        $form['layout_builder_style_horizontal_alignment']['#default_value'] = $extra_settings['horizontal_alignment']['default'] ?? NULL;
-      }
     }
 
     if (isset($form['layout_builder_style_vertical_alignment'])) {
       $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
 
-      // Apply default value for radio buttons if none is set.
       $form_object = $form_state->getFormObject();
       if ($form_object instanceof ConfigureBlockFormBase) {
         $component = $form_object->getCurrentComponent();
         $plugin = $component->getPlugin();
         if (method_exists($plugin, 'getConfiguration')) {
-          // @phpstan-ignore-next-line
           $configuration = $plugin->getConfiguration();
           $current_value = $configuration['layout_builder_style_vertical_alignment'] ?? NULL;
           if (empty($current_value)) {
@@ -147,10 +139,6 @@ class BannerBlockFormHandler {
             }
           }
         }
-      }
-      if (!isset($form['layout_builder_style_vertical_alignment']['#default_value'])) {
-        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-        $form['layout_builder_style_vertical_alignment']['#default_value'] = $extra_settings['vertical_alignment']['default'] ?? NULL;
       }
     }
 
@@ -411,7 +399,6 @@ class BannerBlockFormHandler {
 
       $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#description'] = t('Override where the gradient is positioned on the image.');
     }
-
 
   }
 
