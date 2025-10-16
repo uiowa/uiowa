@@ -87,10 +87,54 @@ class BannerBlockFormHandler {
 
     if (isset($form['layout_builder_style_horizontal_alignment'])) {
       $form['layout_builder_style_horizontal_alignment']['#weight'] = 95;
+
+      // Apply default value for radio buttons if none is set.
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof ConfigureBlockFormBase) {
+        $component = $form_object->getCurrentComponent();
+        $plugin = $component->getPlugin();
+        if (method_exists($plugin, 'getConfiguration')) {
+          // @phpstan-ignore-next-line
+          $configuration = $plugin->getConfiguration();
+          $current_value = $configuration['layout_builder_style_horizontal_alignment'] ?? NULL;
+          if (empty($current_value)) {
+            $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+            if (isset($extra_settings['horizontal_alignment']['default'])) {
+              $form['layout_builder_style_horizontal_alignment']['#default_value'] = $extra_settings['horizontal_alignment']['default'];
+            }
+          }
+        }
+      }
+      if (!isset($form['layout_builder_style_horizontal_alignment']['#default_value'])) {
+        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+        $form['layout_builder_style_horizontal_alignment']['#default_value'] = $extra_settings['horizontal_alignment']['default'] ?? NULL;
+      }
     }
 
     if (isset($form['layout_builder_style_vertical_alignment'])) {
       $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
+
+      // Apply default value for radio buttons if none is set.
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof ConfigureBlockFormBase) {
+        $component = $form_object->getCurrentComponent();
+        $plugin = $component->getPlugin();
+        if (method_exists($plugin, 'getConfiguration')) {
+          // @phpstan-ignore-next-line
+          $configuration = $plugin->getConfiguration();
+          $current_value = $configuration['layout_builder_style_vertical_alignment'] ?? NULL;
+          if (empty($current_value)) {
+            $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+            if (isset($extra_settings['vertical_alignment']['default'])) {
+              $form['layout_builder_style_vertical_alignment']['#default_value'] = $extra_settings['vertical_alignment']['default'];
+            }
+          }
+        }
+      }
+      if (!isset($form['layout_builder_style_vertical_alignment']['#default_value'])) {
+        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+        $form['layout_builder_style_vertical_alignment']['#default_value'] = $extra_settings['vertical_alignment']['default'] ?? NULL;
+      }
     }
 
     // Create a details element for layout settings.
@@ -390,7 +434,11 @@ class BannerBlockFormHandler {
     // Determine default background type based on existing values.
     $default_bg_type = 'media';
     $plugin = $component->getPlugin();
-    $configuration = $plugin->getConfiguration();
+    $configuration = [];
+    if (method_exists($plugin, 'getConfiguration')) {
+      // @phpstan-ignore-next-line
+      $configuration = $plugin->getConfiguration();
+    }
 
     // Check third-party settings first, then fallback to layout builder styles.
     $stored_background_type = $component->getThirdPartySetting('layout_builder_custom', 'background_type');
@@ -400,8 +448,7 @@ class BannerBlockFormHandler {
     else {
       // Check if there's a background style set that indicates color-pattern.
       if (!empty($configuration['layout_builder_style_background'])) {
-        $bg_value = $configuration['layout_builder_style_background'];
-        // Any background style (including black) is color-pattern type
+        // Any background style (including black) is color-pattern type.
         $default_bg_type = 'color-pattern';
       }
     }
@@ -433,6 +480,20 @@ class BannerBlockFormHandler {
       $element['layout_builder_style_headline_type']['#weight'] = -85;
       // Set #tree to FALSE so the value overrides the original in form state.
       $element['layout_builder_style_headline_type']['#tree'] = FALSE;
+
+      // Apply default value for radio buttons if none is set.
+      $current_value = $configuration['layout_builder_style_headline_type'] ?? NULL;
+      if (empty($current_value)) {
+        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+        if (isset($extra_settings['headline_type']['default'])) {
+          $element['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'];
+        }
+      }
+      if (!isset($element['layout_builder_style_headline_type']['#default_value'])) {
+        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+        $element['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'] ?? NULL;
+      }
+
       // Hide the original field.
       $complete_form['layout_builder_style_headline_type']['#access'] = FALSE;
     }
