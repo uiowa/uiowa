@@ -292,8 +292,9 @@ class BannerBlockFormHandler {
           $form_state->setValue('layout_builder_style_background', '');
         }
         else {
-          // Default to black background if no media selected.
+          // If no media selected, switch to color-pattern with black background.
           $form_state->setValue('layout_builder_style_background', 'block_background_style_black');
+          $background_type = 'color-pattern';
         }
         // @todo Add feedback for user that they didn't upload an image.
         // @todo Add validation to check whether image uploaded or not. See
@@ -400,9 +401,8 @@ class BannerBlockFormHandler {
       // Check if there's a background style set that indicates color-pattern.
       if (!empty($configuration['layout_builder_style_background'])) {
         $bg_value = $configuration['layout_builder_style_background'];
-        if ($bg_value !== 'block_background_style_black') {
-          $default_bg_type = 'color-pattern';
-        }
+        // Any background style (including black) is color-pattern type
+        $default_bg_type = 'color-pattern';
       }
     }
 
