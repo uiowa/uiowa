@@ -4193,3 +4193,42 @@ function sitenow_update_10024() {
 function sitenow_update_10025() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Set background_type field for existing banner blocks with color/pattern backgrounds.
+ */
+function sitenow_update_10026() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_banner', function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+    $configuration = $component->get('configuration');
+
+    // Determine if this block uses color/pattern background
+    // Anything not 'image' is color-pattern.
+    $has_color_pattern = FALSE;
+
+    if (!empty($configuration['layout_builder_style_background'])) {
+      $bg_value = $configuration['layout_builder_style_background'];
+      $has_color_pattern = ($bg_value !== 'image');
+    }
+
+    // Also check styles array - look for any block_background_style.
+    if (!$has_color_pattern && is_array($styles)) {
+      foreach ($styles as $style) {
+        if (str_starts_with($style, 'block_background_style_')) {
+          $has_color_pattern = TRUE;
+          break;
+        }
+      }
+    }
+
+    // Set background_type if it needs updating.
+    $expected_bg_type = $has_color_pattern ? 'color-pattern' : 'media';
+    $current_bg_type = $configuration['block_form']['background_type'] ?? 'media';
+
+    if ($current_bg_type !== $expected_bg_type) {
+      $configuration['block_form'] = $configuration['block_form'] ?? [];
+      $configuration['block_form']['background_type'] = $expected_bg_type;
+      $component->set('configuration', $configuration);
+    }
+  });
+}

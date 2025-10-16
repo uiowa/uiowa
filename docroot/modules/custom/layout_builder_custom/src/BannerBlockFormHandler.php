@@ -4,7 +4,6 @@ namespace Drupal\layout_builder_custom;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
-use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 
 /**
  * Handles form alterations for the uiowa_banner block.
@@ -22,12 +21,6 @@ class BannerBlockFormHandler {
    *   The form ID.
    */
   public static function formAlter(array &$form, FormStateInterface $form_state, $form_id) {
-    // We provide a field that provides background options, so
-    // this is hidden.
-    if (isset($form['layout_builder_style_background'])) {
-      $form['layout_builder_style_background']['#access'] = FALSE;
-    }
-
     // Add adjust gradient checkbox.
     self::addGradientMidpointCheckbox($form, $form_state);
 
@@ -134,6 +127,17 @@ class BannerBlockFormHandler {
     self::createDuplicateField($form, 'layout_builder_style_button_font', 'style_options');
     self::createDuplicateField($form, 'layout_builder_style_margin', 'style_options');
     self::createDuplicateField($form, 'layout_builder_style_default', 'style_options');
+
+    // Set up layout_builder_style_background field visibility based on background_type.
+    if (isset($form['layout_builder_style_background'])) {
+      $form['layout_builder_style_background']['#states'] = [
+        'visible' => [
+          ':input[name="settings[block_form][background_type]"]' => ['value' => 'color-pattern'],
+        ],
+      ];
+      // Move it to appear right after the background_type radio buttons.
+      $form['layout_builder_style_background']['#weight'] = -50;
+    }
 
     // Make sure the actions (buttons) come after everything.
     if (isset($form['actions'])) {
@@ -281,33 +285,33 @@ class BannerBlockFormHandler {
         'selection',
       ];
 
-      $background_style = 'block_background_style_black';
-
       if ($background_type === 'media') {
+        // Check if media was selected.
         if ($form_state->getValue($form_media_selection)) {
-          $background_style = 'image';
+          // Set background to 'image' when media is selected.
+          $form_state->setValue('layout_builder_style_background', 'image');
+        }
+        else {
+          // Default to black background if no media selected.
+          $form_state->setValue('layout_builder_style_background', 'block_background_style_black');
         }
         // @todo Add feedback for user that they didn't upload an image.
         // @todo Add validation to check whether image uploaded or not. See
         // https://github.com/uiowa/uiowa/issues/5012
       }
       elseif ($background_type === 'color-pattern') {
-        // If a non-image background was selected, remove the reference.
-        // @todo Trigger file deletion if the media item is unused elsewhere. See
-        // https://github.com/uiowa/uiowa/issues/5013
-        $background_option = $form_state->getValue([
-          'settings',
-          'block_form',
-          'background_options',
-        ]);
+        // For color-pattern, use the value from layout_builder_style_background field.
+        // The field itself handles the selection, so we just need to ensure
+        // the media reference is removed if it was previously set.
+        $background_style = $form_state->getValue('layout_builder_style_background');
 
-        if ($background_option) {
-          $background_style = $background_option;
+        // If a background style is selected, remove any media reference.
+        if ($background_style && $background_style !== 'image') {
           $form_state->unsetValue($form_media_selection);
         }
+        // @todo Trigger file deletion if the media item is unused elsewhere. See
+        // https://github.com/uiowa/uiowa/issues/5013
       }
-
-      $form_state->setValue('layout_builder_style_background', $background_style);
     }
   }
 
@@ -379,40 +383,21 @@ class BannerBlockFormHandler {
       $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] =
         t('Heading');
     }
-    // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled? See
-    //   https://github.com/uiowa/uiowa/issues/5038
-    $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
-    // @phpstan-ignore-next-line
-    $selectedStyles = $component->get('layout_builder_styles_style');
-
-    // Build color/pattern options from layout builder styles.
-    $color_pattern_options = [
-      'block_background_style_light' => 'White',
-      'block_background_style_black' => 'Black',
-      'block_background_style_gold' => 'Gold',
-      'block_background_style_gray' => 'Gray',
-    ];
-
-    foreach ($all_styles as $style) {
-      if ($style->getGroup() === 'background') {
-        $restrictions = $style->getBlockRestrictions();
-        if (empty($restrictions) || in_array('inline_block:uiowa_banner', $restrictions)) {
-          $color_pattern_options[$style->id()] = $style->label();
-        }
-      }
-    }
-
-    // Determine default background type and value.
+    // Determine default background type based on existing values.
     $default_bg_type = 'media';
-    $default_bg_value = 'block_background_style_light';
+    $plugin = $component->getPlugin();
+    $configuration = $plugin->getConfiguration();
 
-    if (is_array($selectedStyles)) {
-      foreach ($selectedStyles as $selectedStyle) {
-        if (array_key_exists($selectedStyle, $color_pattern_options)) {
+    if (!empty($configuration['block_form']['background_type'])) {
+      $default_bg_type = $configuration['block_form']['background_type'];
+    }
+    else {
+      // Check if there's a background style set that indicates color-pattern.
+      if (!empty($configuration['layout_builder_style_background'])) {
+        $bg_value = $configuration['layout_builder_style_background'];
+        if ($bg_value !== 'image' && $bg_value !== 'block_background_style_black') {
           $default_bg_type = 'color-pattern';
-          $default_bg_value = $selectedStyle;
-          break;
         }
       }
     }
@@ -467,32 +452,25 @@ class BannerBlockFormHandler {
       $element['langcode']['#weight'] = 100;
     }
 
-    // Add select dropdown for color/pattern options.
-    $element['background_options'] = [
-      '#type' => 'select',
-      '#title' => t('Background style'),
-      '#options' => $color_pattern_options,
-      '#default_value' => $default_bg_value,
-      '#states' => [
+    // Move layout_builder_style_background into block_form for proper positioning.
+    if (isset($complete_form['layout_builder_style_background'])) {
+      $element['layout_builder_style_background'] = $complete_form['layout_builder_style_background'];
+      $element['layout_builder_style_background']['#weight'] = 20;
+      $element['layout_builder_style_background']['#tree'] = FALSE;
+      $element['layout_builder_style_background']['#states'] = [
         'visible' => [
-          ':input[name="settings[block_form][background_type]"]' => [
-            'value' => 'color-pattern',
-          ],
+          ':input[name="settings[block_form][background_type]"]' => ['value' => 'color-pattern'],
         ],
-      ],
-      '#weight' => 20,
-    ];
+      ];
+      // Hide the original field.
+      $complete_form['layout_builder_style_background']['#access'] = FALSE;
+    }
 
     $element['field_uiowa_banner_image'] = [
       '#states' => [
         'visible' => [
-          ':input[name="settings[block_form][background_type]"]' => [
-            'value' => 'media',
-          ],
+          ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
         ],
-          // @todo Conditionally require media field when 'background_options'
-          //   is set to 'image'. See
-          //   https://github.com/uiowa/uiowa/issues/5039
       ],
       '#weight' => 30,
     ] + $element['field_uiowa_banner_image'];
@@ -500,9 +478,7 @@ class BannerBlockFormHandler {
     $element['field_uiowa_banner_autoplay'] = [
       '#states' => [
         'visible' => [
-          ':input[name="settings[block_form][background_type]"]' => [
-            'value' => 'media',
-          ],
+          ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
         ],
       ],
       '#weight' => 40,
@@ -525,20 +501,14 @@ class BannerBlockFormHandler {
 
     $form_state->getCompleteForm()['layout_builder_style_media_overlay']['#states'] = [
       'visible' => [
-        ':input[name="settings[block_form][background_type]"]' => [
-          'value' => 'media',
-        ],
+        ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
       ],
     ];
 
     $form_state->getCompleteForm()['layout_builder_style_banner_gradient']['#states'] = [
       'visible' => [
-        ':input[name="settings[block_form][background_type]"]' => [
-          'value' => 'media',
-        ],
-        ':input[name="layout_builder_style_media_overlay"]' => [
-          '!value' => '',
-        ],
+        ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
+        ':input[name="layout_builder_style_media_overlay"]' => ['!value' => ''],
       ],
     ];
 
