@@ -899,12 +899,6 @@ $sites['orglegalclinic.dev.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
 $sites['orglegalclinic.stage.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
 $sites['orglegalclinic.prod.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
 
-// Directory aliases for liberalartsbeyondbars.sites.uiowa.edu.
-$sites['sitesliberalartsbeyondbars.uiowa.ddev.site'] = 'liberalartsbeyondbars.sites.uiowa.edu';
-$sites['sitesliberalartsbeyondbars.dev.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
-$sites['sitesliberalartsbeyondbars.stage.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
-$sites['sitesliberalartsbeyondbars.prod.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
-
 // Directory aliases for majorshadowuiowa.org.uiowa.edu.
 $sites['orgmajorshadowuiowa.uiowa.ddev.site'] = 'majorshadowuiowa.org.uiowa.edu';
 $sites['orgmajorshadowuiowa.dev.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
