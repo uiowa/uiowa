@@ -41,7 +41,7 @@ class BannerBlockFormHandler {
         '#tag' => 'h3',
         '#value' => t('Background'),
         '#weight' => 0,
-        '#attributes' => ['class' => ['layout-builder-style-heading']],
+        '#attributes' => ['class' => ['heading-a']],
       ];
     }
 
@@ -89,7 +89,7 @@ class BannerBlockFormHandler {
       '#tag' => 'h3',
       '#value' => t('Layout'),
       '#weight' => 94,
-      '#attributes' => ['class' => ['layout-builder-style-heading']],
+      '#attributes' => ['class' => ['heading-a']],
     ];
 
     if (isset($form['layout_builder_style_horizontal_alignment'])) {
@@ -118,7 +118,7 @@ class BannerBlockFormHandler {
       '#tag' => 'h3',
       '#value' => t('Styles'),
       '#weight' => 102,
-      '#attributes' => ['class' => ['layout-builder-style-heading']],
+      '#attributes' => ['class' => ['heading-a']],
     ];
 
     // Create a details element for style options.
