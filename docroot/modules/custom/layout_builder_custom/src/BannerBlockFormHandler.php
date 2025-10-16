@@ -64,16 +64,33 @@ class BannerBlockFormHandler {
       $form['gradient_options']['layout_builder_style_media_overlay_duplicate']["#empty_option"] = t('No gradient (default)');
     }
 
+    // Hide the media overlay until a gradient is selected.
     if (isset($form['gradient_options']['layout_builder_style_banner_gradient_duplicate'])) {
       $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#weight'] = 2;
+      $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#states'] = [
+        'visible' => [
+          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
+        ],
+      ];
     }
-
+     // Adjust gradient midpoint checkbox.
     if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
       $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#weight'] = 3;
+      $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#states'] = [
+        'visible' => [
+          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
+        ],
+      ];
     }
-
+    // Gradient overlay input selector.
     if (isset($form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate'])) {
       $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#weight'] = 4;
+      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#states'] = [
+        'visible' => [
+          ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
+        ],
+      ];
+
     }
 
     // Layout group.
@@ -395,14 +412,7 @@ class BannerBlockFormHandler {
       $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#description'] = t('Override where the gradient is positioned on the image.');
     }
 
-    // Only show checkbox when media overlay is selected.
-    if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
-      $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#states'] = [
-        'visible' => [
-          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
-        ],
-      ];
-    }
+
   }
 
   /**
