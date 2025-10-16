@@ -941,12 +941,6 @@ $sites['labissuree.dev.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
 $sites['labissuree.stage.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
 $sites['labissuree.prod.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
 
-// Directory aliases for covidtesting.shl.uiowa.edu.
-$sites['shlcovidtesting.uiowa.ddev.site'] = 'covidtesting.shl.uiowa.edu';
-$sites['shlcovidtesting.dev.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
-$sites['shlcovidtesting.stage.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
-$sites['shlcovidtesting.prod.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
-
 // Directory aliases for iowasummermusiccamps.uiowa.edu.
 $sites['iowasummermusiccamps.uiowa.ddev.site'] = 'iowasummermusiccamps.uiowa.edu';
 $sites['iowasummermusiccamps.dev.drupal.uiowa.edu'] = 'iowasummermusiccamps.uiowa.edu';
