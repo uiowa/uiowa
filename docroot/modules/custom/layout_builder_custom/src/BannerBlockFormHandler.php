@@ -467,7 +467,7 @@ class BannerBlockFormHandler {
     // Add radio buttons for background type selection.
     $element['background_type'] = [
       '#type' => 'radios',
-      '#title' => t('Background'),
+      '#title' => t('Background type'),
       '#options' => [
         'media' => t('Image / Video'),
         'color-pattern' => t('Color / Pattern'),
@@ -590,6 +590,11 @@ class BannerBlockFormHandler {
 
     // Handle field_styles_gradient_midpoint field placement and behavior.
     if (isset($element['field_styles_gradient_midpoint'])) {
+      // Set custom empty option text.
+      if (isset($element['field_styles_gradient_midpoint']['widget']['#options']['_none'])) {
+        $element['field_styles_gradient_midpoint']['widget']['#options']['_none'] = '- Select -';
+      }
+
       // Move the field to gradient options if the container exists in form.
       $form = &$form_state->getCompleteForm();
       if (isset($form['gradient_options'])) {
@@ -600,6 +605,7 @@ class BannerBlockFormHandler {
             ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
           ],
         ];
+
         // Hide the original field.
         $element['field_styles_gradient_midpoint']['#access'] = FALSE;
       }
