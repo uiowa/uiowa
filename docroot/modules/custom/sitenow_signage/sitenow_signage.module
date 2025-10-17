@@ -653,6 +653,13 @@ function sitenow_signage_preprocess_node(&$variables) {
   }
 }
 
+function sitenow_signage_preprocess_html(&$variables) {
+  // Used to apply specific styles for logged out users.
+  if (\Drupal::currentUser()->isAnonymous()) {
+    $variables['attributes']['class'][] = 'not-logged-in';
+  }
+}
+
 /**
  * Implements hook_preprocess_HOOK().
  */
