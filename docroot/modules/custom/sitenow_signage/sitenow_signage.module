@@ -832,6 +832,7 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         'eventTypeIds' => [],
         'start' => date('c', strtotime('midnight today')),
         'end' => date('c', strtotime('midnight tomorrow')),
+        'statusIds' => [],
       ];
 
       if (isset($filters['rooms']) && $filters['rooms']) {
@@ -858,6 +859,14 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           }
         }
       }
+      // Limit it by event status so private, cancelled,
+      // and other nonpublic events aren't advertised.
+      // Confirmed: 335.
+      // Confirmed - Set Change: 468.
+      $request_body['statusIds'] = [
+        335,
+        468,
+      ];
 
       $events = \Drupal::service('sitenow_signage.mazevo_api_client')->getEvents($request_body);
 
