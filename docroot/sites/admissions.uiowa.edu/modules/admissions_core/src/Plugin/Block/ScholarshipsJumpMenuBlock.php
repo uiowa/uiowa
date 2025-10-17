@@ -64,7 +64,6 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
     $config = $this->getConfiguration();
     $paths = [
       'transfer' => $config['transfer_path'],
-      'international' => $config['international_path'],
       'resident' => $config['resident_path'],
       'nonresident' => $config['nonresident_path'],
     ];
@@ -95,21 +94,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
       '#default_value' => $transfer_entity ?? NULL,
       '#required' => TRUE,
     ];
-    if (isset($config['international_path'])) {
-      $international_entity = $this->entityTypeManager->getStorage('node')->load($config['international_path']);
-    }
-    $form['international_path'] = [
-      '#type' => 'entity_autocomplete',
-      '#title' => $this->t('International Path'),
-      '#description' => $this->t('Url for the international option'),
-      '#target_type' => 'node',
-      '#selection_handler' => 'default',
-      '#selection_settings' => [
-        'target_bundles' => ['page'],
-      ],
-      '#default_value' => $international_entity ?? NULL,
-      '#required' => TRUE,
-    ];
+
     if (isset($config['resident_path'])) {
       $resident_entity = $this->entityTypeManager->getStorage('node')->load($config['resident_path']);
     }
@@ -152,7 +137,6 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
     $this->configuration['transfer_path'] = $values['transfer_path'];
-    $this->configuration['international_path'] = $values['international_path'];
     $this->configuration['nonresident_path'] = $values['nonresident_path'];
     $this->configuration['resident_path'] = $values['resident_path'];
   }

@@ -1,0 +1,37 @@
+uuid: 5b1a03ef-df1c-41a5-bdc9-7380dd01fa56
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_events.field_headline
+    - field.field.paragraph.slide_events.field_slide_events_audiences
+    - field.field.paragraph.slide_events.field_slide_events_department
+    - field.field.paragraph.slide_events.field_slide_events_interests
+    - field.field.paragraph.slide_events.field_slide_events_keywords
+    - field.field.paragraph.slide_events.field_slide_events_location
+    - field.field.paragraph.slide_events.field_slide_events_types
+    - paragraphs.paragraphs_type.slide_events
+id: paragraph.slide_events.default
+targetEntityType: paragraph
+bundle: slide_events
+mode: default
+content:
+  field_headline:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_slide_events_audiences: true
+  field_slide_events_department: true
+  field_slide_events_interests: true
+  field_slide_events_keywords: true
+  field_slide_events_location: true
+  field_slide_events_types: true
+  search_api_excerpt: true

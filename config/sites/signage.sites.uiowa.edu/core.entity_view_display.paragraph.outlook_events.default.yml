@@ -1,0 +1,32 @@
+uuid: 83aef0d7-01cc-4fa2-bb46-f31fa50d7088
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.outlook_events.field_headline
+    - field.field.paragraph.outlook_events.field_outlook_events_end_time
+    - field.field.paragraph.outlook_events.field_outlook_events_resource
+    - field.field.paragraph.outlook_events.field_outlook_events_use_org
+    - paragraphs.paragraphs_type.outlook_events
+  module:
+    - options
+id: paragraph.outlook_events.default
+targetEntityType: paragraph
+bundle: outlook_events
+mode: default
+content:
+  field_outlook_events_resource:
+    type: list_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_headline: true
+  field_outlook_events_end_time: true
+  field_outlook_events_use_org: true
+  search_api_excerpt: true

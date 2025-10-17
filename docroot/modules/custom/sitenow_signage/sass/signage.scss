@@ -1,86 +1,205 @@
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
 @use "../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use 'sass:color';
+
+$pitch-gray: color.scale(variables.$blk, $lightness: 13%);
+
+// Container for signs.
+.signage__slideshow {
+  img {
+    width: 100%;
+  }
+
+  .slide__headline {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: .08rem;
+    text-transform: uppercase;
+    padding: 2rem 2rem 1rem;
+  }
+}
+
+// Empty sign block iowa logo.
+.signage--empty {
+  .logo--tab {
+    width: 100%;
+    height: auto;
+  }
+
+  .logo-icon {
+    height: 150px;
+  }
+}
 
 // Sign header.
 .page-node-type-sign {
+  //background-color: var(--brand-secondary);
+
+  // Adjust padding to be smaller for signage.
+  .layout.layout__container {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
   // Adjust margins to be smaller for signage.
   .page__container--full.layout__container .layout__spacing_container {
-    margin-left: variables.$mobile-width-gutter;
-    margin-right: variables.$mobile-width-gutter;
+    margin-left: 0;
+    margin-right: 0;
   }
+
   // Adjust column gap to be smaller for signage.
-  .layout {
-    &[class*="twocol"],
-    &[class*="threecol"] {
-      .layout__spacing_container {
-        @include utilities.breakpoint(md) {
-          column-gap: variables.$mobile-width-gutter;
+  .layout + .signage--empty {
+    display: none;
+  }
+
+  // Set sign background to black.
+  main.content__container {
+    background: variables.$secondary;
+  }
+
+}
+
+.node--type-slide.node--unpublished:after {
+  display: block;
+  position: absolute;
+  padding: 30px;
+  top: 0;
+  left: 0;
+  font-size: variables.$h3-font-size;
+  font-family: variables.$font-family-sans-serif;
+  content: "Unpublished";
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  will-change: opacity;
+  // Default is dark overlay.
+  background: rgb(0, 0, 0, .5);
+}
+
+// Signage tables.
+// Specificity hack to override the inherit.
+div.bg--black .signage__table {
+  border-color: variables.$blk;
+}
+
+.signage__table {
+  background-color: variables.$blk;
+  td, th {
+    padding: 1rem 2rem;
+  }
+  tr {
+    border-bottom: 7px solid variables.$secondary;
+    font-weight: variables.$font-weight-normal;
+
+    td {
+      font-size: variables.$h6-font-size;
+      background-color: $pitch-gray;
+      color: variables.$white;
+      &:not(:last-child) {
+        border-right: 1px solid color.scale($pitch-gray, $lightness: 12%);
+      }
+    }
+
+    &.even {
+      td {
+        background-color: color.scale($pitch-gray, $lightness: 5%);
+      }
+    }
+  }
+
+  caption {
+    background-color: variables.$secondary;
+    font-size: variables.$h5-font-size;
+    font-weight: variables.$font-weight-heavy;
+    letter-spacing: 0.08rem;
+    text-align: left;
+    color: variables.$light;
+    padding: 2rem;
+  }
+
+  thead {
+    border-bottom: 7px solid variables.$secondary;
+
+    th {
+      font-size: variables.$h6-font-size;
+      background: variables.$dark;
+      color: variables.$white;
+      letter-spacing: 0.08rem;
+
+      &:not(:last-child) {
+        border-right: 1px solid color.scale(variables.$dark, $lightness: 12%);
+      }
+
+      &:first-child,
+      &:last-child {
+
+        &:before {
+          content: '';
+          position: relative;
+          width: 100%;
+          height: 0px;
+          display: block;
+          left: 0;
+          top: 0;
+          color: transparent;
+          font-size: variables.$h6-font-size;
+          font-weight: variables.$font-weight-normal;
+          text-wrap: nowrap;
+          text-transform: none;
+          letter-spacing: normal;
         }
       }
     }
   }
-  // Adjust padding to be smaller for signage.
-  .layout.layout__container:not(.layout--twocol--75-25.bg--gold) {
-    padding-bottom: 0;
-    padding-top: variables.$mobile-width-gutter;
-  }
-  // Set sign background to black.
-  main.content__container {
-    background: variables.$secondary;
-    .region-content {
-      background: #fff;
-    }
-  }
-  .sign--header {
-    display: flex !important;
-    align-items: flex-start;
-    gap: 1rem;
-    flex-wrap: wrap;
-    .block {
-      flex-basis: auto!important;
-    }
-    .site-name {
-      @include utilities.breakpoint(page-container) {
-        padding-top: .3rem;
-        font-weight: 400;
-      }
-    }
+
+  &.mazevo__events caption {
+    @include utilities.element-invisible;
   }
 }
 
 
-// Date/time block.
-.block-datetime-block,
-// Target datetime block when editing layout.
-.block-datetime-block.layout-builder-block-locked {
-  text-align: right;
-}
+// Increase font sizes for vertical displays.
+.signage--vertical {
+  .signage__table {
+    caption {
+      font-size: variables.$h3-font-size;
+    }
 
-.date-time {
-  font-size: 1.2rem;
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-
-  &  > span:first-child {
-    margin-right: 0.5rem;
-  }
-
-  #datespan,
-  #timespan {
-    display: inline-block;
-    vertical-align: middle;
-    border: 1px solid variables.$secondary;
-    font-family: variables.$font-family-caps-bold;
-    padding: 0.5rem .7rem;
-    border-radius: 3px;
-    color: variables.$secondary;
-    text-transform: uppercase;
-    font-weight: variables.$font-weight-heavy;
+    th, td {
+      font-size: variables.$h4-font-size;
+    }
   }
 }
 
-// Slideshow block.
-.signage-slideshow img {
-  width: 100%;
+.paragraph--type--slide-events {
+
+  .card.borderless:not([class*=bg--]) {
+    padding: 1rem 2rem;
+  }
+
+  .card .headline {
+    font-size: variables.$h2-font-size;
+  }
+
+  .card__subtitle {
+    font-size: variables.$h3-font-size;
+    opacity: 1;
+    color: var(--brand-primary);
+  }
+
+  .card__meta {
+    font-size: variables.$h4-font-size;
+
+    .fa-field-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .svg-inline--fa {
+      height: variables.$h5-font-size;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-top: 7px;
+  }
 }

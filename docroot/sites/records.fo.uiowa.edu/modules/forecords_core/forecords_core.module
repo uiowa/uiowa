@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Custom functionality the records.fo.uiowa.edu website.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\forecords_core\Entity\Record;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function forecords_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['record'])) {
+    $bundles['node']['record']['class'] = Record::class;
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function forecords_core_entity_insert(EntityInterface $entity): void {
+  if ($entity instanceof NodeInterface) {
+    if ($entity->getEntityTypeId() === 'node' && $entity->bundle() === 'record') {
+      // Regenerate the records export file when a new record is created.
+      \Drupal::service('forecords_core.records_export')->generateRecordsExport();
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function forecords_core_entity_update(EntityInterface $entity): void {
+  if ($entity instanceof NodeInterface) {
+    if ($entity->getEntityTypeId() === 'node' && $entity->bundle() === 'record') {
+      // Regenerate the records export file when a record is updated.
+      \Drupal::service('forecords_core.records_export')->generateRecordsExport();
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function forecords_core_entity_delete(EntityInterface $entity): void {
+  if ($entity instanceof NodeInterface) {
+    if ($entity->getEntityTypeId() === 'node' && $entity->bundle() === 'record') {
+      // Regenerate the records export file when a record is deleted.
+      \Drupal::service('forecords_core.records_export')->generateRecordsExport();
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function forecords_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form['#id'] === 'views-exposed-form-record-block-record') {
+    $form['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}

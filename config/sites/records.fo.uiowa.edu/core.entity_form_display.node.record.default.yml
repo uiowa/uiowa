@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.record.field_record_category
     - field.field.node.record.field_record_confidential
     - field.field.node.record.field_record_files_maintained_by
-    - field.field.node.record.field_record_ui_retention_guide
+    - field.field.node.record.field_record_ui_retention_guides
     - field.field.node.record.field_record_vital
     - field.field.node.record.field_record_year_updated
     - field.field.node.record.rabbit_hole__settings
@@ -74,12 +74,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_record_ui_retention_guide:
-    type: string_textfield
+  field_record_ui_retention_guides:
+    type: text_textarea
     weight: 6
     region: content
     settings:
-      size: 60
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_record_vital:

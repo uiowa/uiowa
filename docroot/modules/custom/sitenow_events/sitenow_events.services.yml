@@ -1,8 +1,13 @@
 services:
-  cache.uievents:
+  sitenow_events.content_hub_api_client:
+    class: Drupal\sitenow_events\ContentHubApiClient
+    arguments: [ '@http_client', '@logger.channel.sitenow_events', '@cache.sitenow_events', '@config.factory' ]
+  logger.channel.sitenow_events:
+    parent: logger.channel_base
+    arguments: [ 'sitenow_events' ]
+  cache.sitenow_events:
     class: Drupal\Core\Cache\CacheBackendInterface
     tags:
       - { name: cache.bin }
     factory: cache_factory:get
-    arguments:
-      - uievents
+    arguments: [ 'sitenow_events' ]

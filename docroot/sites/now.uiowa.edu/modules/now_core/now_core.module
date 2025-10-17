@@ -199,6 +199,11 @@ function now_core_node_presave($entity) {
       $alt_state = ($entity->original->moderation_state->value === 'published') ? 'archived' : $entity->original->moderation_state->value;
     }
     $entity->moderation_state = $alt_state;
+
+    // Change state for messaging purposes.
+    if ($alt_state == 'archived') {
+      $alt_state = 'unpublished';
+    }
     // Add a user message along with changing this state.
     \Drupal::messenger()->addWarning(
       t("Content is under embargo and cannot be published at this time. It has been set to the @alt_state moderation state.",

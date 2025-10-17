@@ -6,30 +6,14 @@ id: signage
 label: Signage
 description: 'Configuration for signage functionality.'
 weight: 80
-stackable: false
+stackable: true
 no_patching: false
 storage: folder
 folder: ../config/features/signage
 module:
   sitenow_signage: 0
+  uiowa_hours: 0
+  uiowa_maui: 0
 theme: {  }
-complete_list:
-  - core.base_field_override.node.slide.promote
-  - field.field.node.sign.field_sign_display_title
-  - field.field.node.sign.field_sign_hide_header
-  - field.field.node.slide.field_image
-  - field.storage.node.field_sign_display_title
-  - field.storage.node.field_sign_hide_header
-  - node.type.sign
-  - node.type.slide
-  - pathauto.pattern.sign
-  - pathauto.pattern.slide
-  - rabbit_hole.behavior_settings.node_type_sign
-  - rabbit_hole.behavior_settings.node_type_slide
-  - system.action.user_add_role_action.sign_manager
-  - system.action.user_remove_role_action.sign_manager
-  - 'core.entity_form_display.node.slide.*'
-  - 'core.entity_view_display.node.slide.*'
-  - 'field.storage.node.field_sign_*'
-partial_list:
-  - 'user.role.*'
+complete_list: {  }
+partial_list: {  }

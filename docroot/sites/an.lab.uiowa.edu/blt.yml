@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: laban.uiowa.ddev.site
+    protocol: https
+  machine_name: laban
+  human_name: an.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: laban.prod
+drupal:
+  db:
+    database: an_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://laban.prod.drupal.uiowa.edu'
+  requester: guoan
+  site-name: 'An Lab'

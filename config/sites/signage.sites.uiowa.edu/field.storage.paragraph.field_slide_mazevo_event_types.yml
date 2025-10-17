@@ -1,0 +1,21 @@
+uuid: 8200c99e-33fe-4597-bb22-a9e0cc64692f
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_slide_mazevo_event_types
+field_name: field_slide_mazevo_event_types
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: _sitenow_signage_get_filter_field_options
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

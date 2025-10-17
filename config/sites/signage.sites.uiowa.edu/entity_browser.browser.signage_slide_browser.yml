@@ -1,0 +1,31 @@
+uuid: a2c47b7a-8ca5-40af-8a4e-eb4109df90ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.signage_slide_content
+  module:
+    - views
+name: signage_slide_browser
+label: 'Slide Browser'
+display: modal
+display_configuration:
+  width: ''
+  height: ''
+  link_text: 'Select slides'
+  auto_open: true
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: single
+widget_selector_configuration: {  }
+widgets:
+  5b8f18af-610a-4ff0-a554-e45bfb1a5422:
+    id: view
+    uuid: 5b8f18af-610a-4ff0-a554-e45bfb1a5422
+    label: Slides
+    weight: 1
+    settings:
+      submit_text: 'Add slides'
+      auto_select: false
+      view: signage_slide_content
+      view_display: entity_browser_featured

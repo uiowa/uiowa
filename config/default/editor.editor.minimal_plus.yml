@@ -6,6 +6,7 @@ dependencies:
     - filter.format.minimal_plus
   module:
     - ckeditor5
+    - ckeditor_small_tag
 format: minimal_plus
 editor: ckeditor5
 settings:
@@ -18,6 +19,7 @@ settings:
       - alignment
       - superscript
       - subscript
+      - small
       - specialCharacters
       - '|'
       - bulletedList
@@ -53,6 +55,7 @@ settings:
       properties:
         reversed: false
         startIndex: false
+        styles: false
       multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags:
