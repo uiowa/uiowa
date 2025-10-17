@@ -409,9 +409,6 @@ class BannerBlockFormHandler {
       '#title' => t('Adjust gradient midpoint'),
       '#default_value' => $default_value,
       '#weight' => 94,
-      '#attributes' => [
-        'class' => ['adjust-gradient-checkbox'],
-      ],
     ];
 
   }
