@@ -7,6 +7,23 @@
   Drupal.behaviors.signageSlideshow = {
     attach: function (context, settings) {
       context.querySelectorAll('.signage__slideshow').forEach(function (element) {
+
+        // Override prefers-reduced-motion for Splide.
+        const originalMatchMedia = window.matchMedia;
+        window.matchMedia = function (query) {
+          if (query === '(prefers-reduced-motion: reduce)') {
+            return {
+              matches: false,
+              media: query,
+              onchange: null,
+              addEventListener: () => {},
+              removeEventListener: () => {},
+              dispatchEvent: () => false,
+            };
+          }
+          return originalMatchMedia(query);
+        };
+
         // Get the first slide interval from drupalSettings, fallback to 5000.
         const firstSlideInterval = settings.signageSlideshow?.firstSlideInterval || 5000;
         // Initialize Splide with the settings.
