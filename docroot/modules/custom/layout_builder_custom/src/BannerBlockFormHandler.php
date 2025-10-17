@@ -35,7 +35,7 @@ class BannerBlockFormHandler {
         '#value' => t('Background'),
         '#weight' => 0,
         '#attributes' => ['class' => ['heading-a']],
-        '#prefix' => '<div class="wrapper">',
+        '#prefix' => '<div class="grouped-styles--wrapper">',
       ];
     }
 
@@ -45,7 +45,7 @@ class BannerBlockFormHandler {
       '#title' => t('Gradient options'),
       '#weight' => 50,
       '#open' => FALSE,
-      '#attributes' => ['class' => ['details--gradient']],
+      '#attributes' => ['class' => ['grouped-styles--details__gradient ']],
       '#states' => [
         'visible' => [
           ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
@@ -103,7 +103,7 @@ class BannerBlockFormHandler {
       '#value' => t('Layout'),
       '#weight' => 94,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="wrapper">',
+      '#prefix' => '<div class="grouped-styles--wrapper">',
     ];
 
     if (isset($form['layout_builder_style_horizontal_alignment'])) {
@@ -151,7 +151,7 @@ class BannerBlockFormHandler {
       '#type' => 'details',
       '#title' => t('Layout settings'),
       '#weight' => 97,
-      '#attributes' => ['class' => ['details--banner']],
+      '#attributes' => ['class' => ['grouped-styles--details']],
       '#open' => FALSE,
       '#suffix' => '</div>',
     ];
@@ -167,14 +167,14 @@ class BannerBlockFormHandler {
       '#value' => t('Styles'),
       '#weight' => 102,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="wrapper">',
+      '#prefix' => '<div class="grouped-styles--wrapper">',
     ];
 
     // Create a details element for style options.
     $form['style_options'] = [
       '#type' => 'details',
       '#title' => t('Style options'),
-      '#attributes' => ['class' => ['details--banner']],
+      '#attributes' => ['class' => ['grouped-styles--details']],
       '#weight' => 102,
       '#open' => FALSE,
       '#suffix' => '</div>',

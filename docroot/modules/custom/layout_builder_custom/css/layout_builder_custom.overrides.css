@@ -127,11 +127,6 @@
   width: auto;
 }
 
-#drupal-off-canvas-wrapper .form fieldset.fieldgroup,
-#drupal-off-canvas-wrapper .form fieldset.media-library-widget {
-  border: none !important;
-}
-
 #drupal-off-canvas-wrapper  .form [type=checkbox],
 #drupal-off-canvas-wrapper .form [type=radio] {
   height: 1.2rem;
@@ -144,40 +139,46 @@
 }
 
 /* Banner */
-#drupal-off-canvas-wrapper .wrapper {
+#drupal-off-canvas-wrapper .grouped-styles--wrapper fieldset.fieldgroup,
+#drupal-off-canvas-wrapper .grouped-styles--wrapper fieldset.media-library-widget {
+  border: none !important;
+  padding-left: 0;
+}
+
+#drupal-off-canvas-wrapper .grouped-styles--wrapper {
   padding: 1.5rem;
   padding-bottom: 0;
-  border: 1px solid #ccc;
+  border: 1px solid hsl(0deg 0% 80% / 65%);
   margin-top: 2rem;
   background: #000;
 }
 
-#drupal-off-canvas-wrapper .field--name-field-uiowa-banner-link + .wrapper {
+#drupal-off-canvas-wrapper .field--name-field-uiowa-banner-link + .grouped-styles--wrapper {
   padding-bottom:1.5rem;
 }
 
-#drupal-off-canvas-wrapper  details.details--banner {
+#drupal-off-canvas-wrapper  details.grouped-styles--details {
   padding: 0 !important;
   margin: 0 !important;
   margin-top: 1rem !important;
   background: none!important;
 }
 
-#drupal-off-canvas-wrapper  details.details--banner summary {
+#drupal-off-canvas-wrapper  details.grouped-styles--details summary {
   margin-inline: -23px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid  hsla(0,0%,100%,.325);
   background: none;
 }
 
-#drupal-off-canvas-wrapper  details.details--gradient {
+#drupal-off-canvas-wrapper  details.grouped-styles--details__gradient {
   margin: 0px;
   padding-top: 0;
-  border: 1px solid #ccc;
+  border: 1px solid hsl(0deg 0% 80% / 65%);
   border-top: 0;
   background: #000;
 }
 
-#drupal-off-canvas-wrapper  details.details--gradient summary {
+#drupal-off-canvas-wrapper  details.grouped-styles--details__gradient summary {
   background: none;
 }
 
