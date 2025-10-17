@@ -127,7 +127,8 @@
   width: auto;
 }
 
-#drupal-off-canvas-wrapper .form .fieldgroup {
+#drupal-off-canvas-wrapper .form fieldset.fieldgroup,
+#drupal-off-canvas-wrapper .form fieldset.media-library-widget {
   border: none !important;
 }
 
@@ -140,6 +141,44 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0;
+}
+
+/* Banner */
+#drupal-off-canvas-wrapper .wrapper {
+  padding: 1.5rem;
+  padding-bottom: 0;
+  border: 1px solid #ccc;
+  margin-top: 2rem;
+  background: #000;
+}
+
+#drupal-off-canvas-wrapper .field--name-field-uiowa-banner-link + .wrapper {
+  padding-bottom:1.5rem;
+}
+
+#drupal-off-canvas-wrapper  details.details--banner {
+  padding: 0 !important;
+  margin: 0 !important;
+  margin-top: 1rem !important;
+  background: none!important;
+}
+
+#drupal-off-canvas-wrapper  details.details--banner summary {
+  margin-inline: -23px;
+  border-top: 1px solid #ccc;
+  background: none;
+}
+
+#drupal-off-canvas-wrapper  details.details--gradient {
+  margin: 0px;
+  padding-top: 0;
+  border: 1px solid #ccc;
+  border-top: 0;
+  background: #000;
+}
+
+#drupal-off-canvas-wrapper  details.details--gradient summary {
+  background: none;
 }
 
   /**

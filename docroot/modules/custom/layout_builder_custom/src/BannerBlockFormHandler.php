@@ -35,6 +35,7 @@ class BannerBlockFormHandler {
         '#value' => t('Background'),
         '#weight' => 0,
         '#attributes' => ['class' => ['heading-a']],
+        '#prefix' => '<div class="wrapper">',
       ];
     }
 
@@ -42,13 +43,15 @@ class BannerBlockFormHandler {
     $form['gradient_options'] = [
       '#type' => 'details',
       '#title' => t('Gradient options'),
-      '#weight' => 90,
+      '#weight' => 50,
       '#open' => FALSE,
+      '#attributes' => ['class' => ['details--gradient']],
       '#states' => [
         'visible' => [
           ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
         ],
       ],
+      '#suffix' => '</div>',
     ];
 
     // Duplicate gradient fields into gradient options container.
@@ -100,6 +103,7 @@ class BannerBlockFormHandler {
       '#value' => t('Layout'),
       '#weight' => 94,
       '#attributes' => ['class' => ['heading-a']],
+      '#prefix' => '<div class="wrapper">',
     ];
 
     if (isset($form['layout_builder_style_horizontal_alignment'])) {
@@ -147,7 +151,9 @@ class BannerBlockFormHandler {
       '#type' => 'details',
       '#title' => t('Layout settings'),
       '#weight' => 97,
+      '#attributes' => ['class' => ['details--banner']],
       '#open' => FALSE,
+      '#suffix' => '</div>',
     ];
 
     // Duplicate fields into layout settings container.
@@ -161,14 +167,17 @@ class BannerBlockFormHandler {
       '#value' => t('Styles'),
       '#weight' => 102,
       '#attributes' => ['class' => ['heading-a']],
+      '#prefix' => '<div class="wrapper">',
     ];
 
     // Create a details element for style options.
     $form['style_options'] = [
       '#type' => 'details',
       '#title' => t('Style options'),
+      '#attributes' => ['class' => ['details--banner']],
       '#weight' => 102,
       '#open' => FALSE,
+      '#suffix' => '</div>',
     ];
 
     // Duplicate fields into style options container.
