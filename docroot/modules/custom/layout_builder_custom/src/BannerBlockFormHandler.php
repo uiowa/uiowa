@@ -85,16 +85,6 @@ class BannerBlockFormHandler {
         ],
       ];
     }
-    // Gradient overlay input selector.
-    if (isset($form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate'])) {
-      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#weight'] = 4;
-      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#states'] = [
-        'visible' => [
-          ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
-        ],
-      ];
-
-    }
 
     // Layout group.
     $form['layout_group_heading'] = [
@@ -263,7 +253,6 @@ class BannerBlockFormHandler {
       'layout_builder_style_media_overlay' => 'layout_builder_style_media_overlay_duplicate',
       'layout_builder_style_banner_gradient' => 'layout_builder_style_banner_gradient_duplicate',
       'layout_builder_style_adjust_gradient_midpoint' => 'layout_builder_style_adjust_gradient_midpoint_duplicate',
-      'layout_builder_style_banner_gradient_midpoint' => 'layout_builder_style_banner_gradient_midpoint_duplicate',
     ];
 
     self::syncDuplicateFields($form_state, $field_mappings);
@@ -324,9 +313,19 @@ class BannerBlockFormHandler {
 
     // Gradient midpoint checkbox.
     $adjust_gradient = $form_state->getValue('layout_builder_style_adjust_gradient_midpoint');
+
+    // Save checkbox state as a third-party setting.
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof ConfigureBlockFormBase) {
+      $component = $form_object->getCurrentComponent();
+      $component->setThirdPartySetting('layout_builder_custom', 'adjust_gradient_midpoint', $adjust_gradient ? 1 : 0);
+    }
+
     if (!$adjust_gradient) {
       // Clear the gradient midpoint value if checkbox is unchecked.
       $form_state->setValue('layout_builder_style_banner_gradient_midpoint', '');
+      // Also clear the field_styles_gradient_midpoint value if checkbox is unchecked.
+      $form_state->setValue(['settings', 'block_form', 'field_styles_gradient_midpoint'], []);
     }
 
     $background_type = $form_state->getValue([
@@ -385,29 +384,35 @@ class BannerBlockFormHandler {
    *   The form state.
    */
   protected static function addGradientMidpointCheckbox(array &$form, FormStateInterface $form_state) {
-    // Check if gradient midpoint field has a value.
-    $has_midpoint_value = !empty($form['layout_builder_style_banner_gradient_midpoint']['#default_value']);
+    // Get the saved checkbox state from third-party settings.
+    $default_value = FALSE;
+    $form_object = $form_state->getFormObject();
+
+    if ($form_object instanceof ConfigureBlockFormBase) {
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      $component = $form_object->getCurrentComponent();
+
+      // Check third-party settings for the checkbox state.
+      $stored_checkbox_value = $component->getThirdPartySetting('layout_builder_custom', 'adjust_gradient_midpoint');
+      if ($stored_checkbox_value !== NULL) {
+        $default_value = (bool) $stored_checkbox_value;
+      }
+      else {
+        // If no saved state exists, fallback to checking if gradient midpoint field has a value.
+        $has_midpoint_value = !empty($form['layout_builder_style_banner_gradient_midpoint']['#default_value']);
+        $default_value = $has_midpoint_value;
+      }
+    }
 
     $form['layout_builder_style_adjust_gradient_midpoint'] = [
       '#type' => 'checkbox',
       '#title' => t('Adjust gradient midpoint'),
-      '#default_value' => $has_midpoint_value,
+      '#default_value' => $default_value,
       '#weight' => 94,
       '#attributes' => [
         'class' => ['adjust-gradient-checkbox'],
       ],
     ];
-
-    // Add states to show/hide gradient midpoint based on checkbox.
-    if (isset($form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate'])) {
-      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#states'] = [
-        'visible' => [
-          ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
-        ],
-      ];
-
-      $form['gradient_options']['layout_builder_style_banner_gradient_midpoint_duplicate']['#description'] = t('Override where the gradient is positioned on the image.');
-    }
 
   }
 
@@ -582,6 +587,23 @@ class BannerBlockFormHandler {
         ':input[name="layout_builder_style_media_overlay"]' => ['!value' => ''],
       ],
     ];
+
+    // Handle field_styles_gradient_midpoint field placement and behavior.
+    if (isset($element['field_styles_gradient_midpoint'])) {
+      // Move the field to gradient options if the container exists in form.
+      $form = &$form_state->getCompleteForm();
+      if (isset($form['gradient_options'])) {
+        $form['gradient_options']['field_styles_gradient_midpoint'] = $element['field_styles_gradient_midpoint'];
+        $form['gradient_options']['field_styles_gradient_midpoint']['#weight'] = 4;
+        $form['gradient_options']['field_styles_gradient_midpoint']['#states'] = [
+          'visible' => [
+            ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
+          ],
+        ];
+        // Hide the original field.
+        $element['field_styles_gradient_midpoint']['#access'] = FALSE;
+      }
+    }
 
     return $element;
   }
