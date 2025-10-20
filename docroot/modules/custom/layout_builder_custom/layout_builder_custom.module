@@ -135,7 +135,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Hide all block labels.
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
-      unset($form['settings']['admin_label']);
+      unset($form['settings']['admin_label']['#title']);
+
+      // Move the admin label up for all blocks.
+      if (isset($form['settings']['admin_label'])) {
+        $form['settings']['admin_label']['#weight'] = -100;
+      }
+
       // Hide ones implemented by Views because ListBlock has headline.
       // @todo Investigate whether this can be added to ListBlock. See
       //   https://github.com/uiowa/uiowa/issues/5035
@@ -454,9 +460,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               // Unset the layout builder style heading.
               unset($form['lbs_heading']);
             }
-
-            // Move the admin label up.
-            $form['settings']['admin_label']['#weight'] = -20;
 
             // Adjustments to advanced settings.
             // Adjust name advanced options section.
