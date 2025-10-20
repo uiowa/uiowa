@@ -4,6 +4,7 @@ namespace Drupal\registrar_core\Plugin\Block;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -35,6 +36,13 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
   protected $formBuilder;
 
   /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Constructs a new FinalExamScheduleBlock instance.
    *
    * @param array $configuration
@@ -47,11 +55,14 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    *   The MAUI API service.
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form builder service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder, ConfigFactoryInterface $config_factory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
     $this->formBuilder = $formBuilder;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -64,6 +75,7 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_definition,
       $container->get('uiowa_maui.api'),
       $container->get('form_builder'),
+      $container->get('config.factory'),
     );
   }
 
@@ -82,7 +94,8 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       '#title' => $this->t('Session'),
       '#type' => 'select',
       '#options' => $sessions,
-      '#default_value' => $this->configuration['session'] ?? NULL,
+      '#default_value' => $this->configFactory->get('registrar.final_exam_schedule')?->get('session') ?? NULL,
+      '#description' => $this->t('The session schedule to use. <em>Note: This will affect all final exam schedule blocks</em>.'),
       '#required' => TRUE,
     ];
 
@@ -94,7 +107,15 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
-    $this->configuration['session'] = $form_state->getValue('session');
+    $session = $form_state->getValue('session');
+    $old_session = $this->configFactory->get('registrar.final_exam_schedule.session');
+    if ($session !== $old_session) {
+      $config = $this->configFactory->getEditable('registrar.final_exam_schedule');
+      $config->set('session', $session)
+        ->save();
+    }
+    // @todo Update this to use a site-wide config value,
+    //   as well as in the build process.
     $this->configuration['session_name'] = $form['settings']['session']['#options'][$form_state->getValue('session')];
   }
 
