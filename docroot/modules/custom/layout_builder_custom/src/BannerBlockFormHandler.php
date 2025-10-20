@@ -96,40 +96,36 @@ class BannerBlockFormHandler {
       '#prefix' => '<div class="grouped-styles--wrapper">',
     ];
 
-    if (isset($form['layout_builder_style_horizontal_alignment'])) {
-      $form['layout_builder_style_horizontal_alignment']['#weight'] = 95;
+    // Handle both horizontal and vertical alignment defaults.
+    $alignments = [
+      'horizontal_alignment' => 95,
+      'vertical_alignment' => 96,
+    ];
 
-      $form_object = $form_state->getFormObject();
-      if ($form_object instanceof ConfigureBlockFormBase) {
-        $component = $form_object->getCurrentComponent();
-        $plugin = $component->getPlugin();
-        if (method_exists($plugin, 'getConfiguration')) {
-          $configuration = $plugin->getConfiguration();
-          $current_value = $configuration['layout_builder_style_horizontal_alignment'] ?? NULL;
-          if (empty($current_value)) {
-            $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-            if (isset($extra_settings['horizontal_alignment']['default'])) {
-              $form['layout_builder_style_horizontal_alignment']['#default_value'] = $extra_settings['horizontal_alignment']['default'];
+    foreach ($alignments as $alignment_type => $weight) {
+      $form_field = "layout_builder_style_{$alignment_type}";
+
+      if (isset($form[$form_field])) {
+        $form[$form_field]['#weight'] = $weight;
+
+        $form_object = $form_state->getFormObject();
+        if ($form_object instanceof ConfigureBlockFormBase) {
+          $component = $form_object->getCurrentComponent();
+          $styles = $component->get('layout_builder_styles_style') ?? [];
+
+          // Check if alignment is already set.
+          $has_alignment = FALSE;
+          foreach ($styles as $style) {
+            if (str_starts_with($style, "{$alignment_type}_")) {
+              $has_alignment = TRUE;
+              break;
             }
           }
-        }
-      }
-    }
 
-    if (isset($form['layout_builder_style_vertical_alignment'])) {
-      $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
-
-      $form_object = $form_state->getFormObject();
-      if ($form_object instanceof ConfigureBlockFormBase) {
-        $component = $form_object->getCurrentComponent();
-        $plugin = $component->getPlugin();
-        if (method_exists($plugin, 'getConfiguration')) {
-          $configuration = $plugin->getConfiguration();
-          $current_value = $configuration['layout_builder_style_vertical_alignment'] ?? NULL;
-          if (empty($current_value)) {
+          if (!$has_alignment) {
             $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-            if (isset($extra_settings['vertical_alignment']['default'])) {
-              $form['layout_builder_style_vertical_alignment']['#default_value'] = $extra_settings['vertical_alignment']['default'];
+            if (isset($extra_settings[$alignment_type]['default'])) {
+              $form[$form_field]['#default_value'] = $extra_settings[$alignment_type]['default'];
             }
           }
         }
