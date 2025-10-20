@@ -111,7 +111,9 @@ class BannerBlockFormHandler {
         $form_object = $form_state->getFormObject();
         if ($form_object instanceof ConfigureBlockFormBase) {
           $component = $form_object->getCurrentComponent();
-          $styles = $component->get('layout_builder_styles_style') ?? [];
+
+          $additional = $component->get('additional') ?? [];
+          $styles = $additional['layout_builder_styles_style'] ?? [];
 
           // Check if alignment is already set.
           $has_alignment = FALSE;
