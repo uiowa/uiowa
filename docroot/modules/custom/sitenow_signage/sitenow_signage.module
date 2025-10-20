@@ -832,6 +832,14 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         'eventTypeIds' => [],
         'start' => date('c', strtotime('midnight today')),
         'end' => date('c', strtotime('midnight tomorrow')),
+        // Limit it by event status so private, cancelled,
+        // and other nonpublic events aren't advertised.
+        // Confirmed: 335.
+        // Confirmed - Set Change: 468.
+        'statusIds' => [
+          335,
+          468,
+        ],
       ];
 
       if (isset($filters['rooms']) && $filters['rooms']) {
