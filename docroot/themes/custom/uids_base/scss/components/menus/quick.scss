@@ -62,8 +62,10 @@
 
 .search-is-open .region-under-search .menu--quick-links {
   @include utilities.breakpoint(md) {
-    @include utilities.element-invisible-off;
-    overflow: unset;
+    clip: auto;
+    height: auto;
+    width: auto;
+    overflow: auto;
     position: absolute !important;
   }
 }
