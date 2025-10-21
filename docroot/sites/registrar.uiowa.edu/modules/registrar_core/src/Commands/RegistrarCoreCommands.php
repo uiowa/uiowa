@@ -73,7 +73,7 @@ class RegistrarCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function getFinalExam() {
-    $session_id = $this->configFactory->get('registrar_core.settings')->get('session_id');
+    $session_id = $this->configFactory->get('registrar_core.final_exam_schedule')->get('session_id');
     $data = $this->mauiApi->getFinalExamSchedule($session_id);
 
     switch ($data['_status']) {

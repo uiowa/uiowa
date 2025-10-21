@@ -90,11 +90,11 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
       $sessions[$session->legacyCode] = Html::escape($session->shortDescription);
     }
 
-    $form['session'] = [
+    $form['session_id'] = [
       '#title' => $this->t('Session'),
       '#type' => 'select',
       '#options' => $sessions,
-      '#default_value' => $this->configFactory->get('registrar.final_exam_schedule')?->get('session') ?? NULL,
+      '#default_value' => $this->configFactory->get('registrar_core.final_exam_schedule')?->get('session_id') ?? NULL,
       '#description' => $this->t('The session schedule to use. <em>Note: This will affect all final exam schedule blocks</em>.'),
       '#required' => TRUE,
     ];
@@ -107,25 +107,25 @@ class FinalExamScheduleBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
-    $session = $form_state->getValue('session');
-    $old_session = $this->configFactory->get('registrar.final_exam_schedule.session');
+    $session = $form_state->getValue('session_id');
+    $old_session = $this->configFactory->get('registrar_core.final_exam_schedule')
+      ->get('session_id');
     if ($session !== $old_session) {
-      $config = $this->configFactory->getEditable('registrar.final_exam_schedule');
-      $config->set('session', $session)
-        ->save();
+      $config = $this->configFactory->getEditable('registrar_core.final_exam_schedule');
+      $config->set('session_id', $session);
+      $config->set('session_name', $form['settings']['session_id']['#options'][$form_state->getValue('session_id')]);
+      $config->save();
     }
-    // @todo Update this to use a site-wide config value,
-    //   as well as in the build process.
-    $this->configuration['session_name'] = $form['settings']['session']['#options'][$form_state->getValue('session')];
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
+    $config = $this->configFactory->get('registrar_core.final_exam_schedule');
     $build['form'] = $this->formBuilder->getForm('Drupal\registrar_core\Form\FinalExamScheduleForm', [
-      'session_id' => $this->configuration['session'],
-      'session_name' => $this->configuration['session_name'],
+      'session_id' => $config->get('session_id'),
+      'session_name' => $config->get('session_name'),
     ]);
     return $build;
   }
