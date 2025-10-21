@@ -3,6 +3,7 @@
 namespace Drupal\registrar_core\Form;
 
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,24 +15,35 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Form for the final exams schedule block.
  */
 class FinalExamScheduleForm extends FormBase {
+
   /**
    * The MAUI API service.
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $maui;
+  protected $mauiApi;
+
+  /**
+   * The cache.uiowa_maui service.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $mauiCache;
 
   /**
    * Constructs the SettingsForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
-   * @param \Drupal\uiowa_maui\MauiApi $maui
+   * @param \Drupal\uiowa_maui\MauiApi $maui_api
    *   The MAUI API service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $maui_cache
+   *   The cache.uiowa_maui service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, MauiApi $maui) {
+  public function __construct(ConfigFactoryInterface $config_factory, MauiApi $maui_api, CacheBackendInterface $maui_cache) {
     $this->configFactory = $config_factory;
-    $this->maui = $maui;
+    $this->mauiApi = $maui_api;
+    $this->mauiCache = $maui_cache;
   }
 
   /**
@@ -41,6 +53,7 @@ class FinalExamScheduleForm extends FormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('uiowa_maui.api'),
+      $container->get('cache.uiowa_maui'),
     );
   }
 
@@ -84,7 +97,14 @@ class FinalExamScheduleForm extends FormBase {
       '#markup' => "<p><strong>Session:</strong> {$session_name}</p>",
     ];
 
-    $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
+    // Check for cached session data.
+    $session_id = $session_info['session_id'];
+    $cid = "uiowa_maui:request:final_exam_schedule:{$session_id}";
+    $data = $this->mauiCache->get($cid);
+    // If there wasn't cached data, try to fetch it now.
+    if (empty($data)) {
+      $data = $this->mauiApi->getFinalExamSchedule($session_id);
+    }
 
     switch ($data['_status']) {
       case 'ok':

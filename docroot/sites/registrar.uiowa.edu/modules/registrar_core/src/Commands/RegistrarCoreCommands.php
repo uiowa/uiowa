@@ -87,7 +87,7 @@ class RegistrarCoreCommands extends DrushCommands {
     }
 
     // Create a cache item set to 24 hours.
-    $cid = 'uiowa_maui:request:final_exam_schedule';
+    $cid = "uiowa_maui:request:final_exam_schedule:{$session_id}";
     $request_time = $this->time->getRequestTime();
     $this->mauiCache->set($cid, $data, $request_time + 86400);
   }
