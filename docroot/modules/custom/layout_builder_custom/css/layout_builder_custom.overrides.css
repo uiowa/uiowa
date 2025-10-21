@@ -51,7 +51,7 @@
   width: calc(100% - 1px) !important;
   height: calc(100% - (var(--off-canvas-title-padding) * 2 + 1.4rem)) !important;
   overflow: auto;
-  padding: calc(var(--off-canvas-padding) * 0.5) var(--off-canvas-padding) var(--off-canvas-padding) ;
+  padding: calc(var(--off-canvas-padding) * 0.5) var(--off-canvas-padding) var(--off-canvas-padding);
 }
 
 #drupal-off-canvas-wrapper .ui-dialog-titlebar {
@@ -127,7 +127,7 @@
   width: auto;
 }
 
-#drupal-off-canvas-wrapper  .form [type=checkbox],
+#drupal-off-canvas-wrapper .form [type=checkbox],
 #drupal-off-canvas-wrapper .form [type=radio] {
   height: 1.2rem;
   min-width: 1.2rem;
@@ -138,54 +138,65 @@
   padding: 0;
 }
 
-/* Banner */
+/**
+ * Banner block.
+ */
+
+/* Remove border and padding for main radio buttons within the grouped styles wrapper. */
 #drupal-off-canvas-wrapper .grouped-styles--wrapper fieldset.fieldgroup,
 #drupal-off-canvas-wrapper .grouped-styles--wrapper fieldset.media-library-widget {
   border: none !important;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
+/* Faux group styles */
 #drupal-off-canvas-wrapper .grouped-styles--wrapper {
   padding-inline: 1.5rem;
   padding-block-start: 1rem;
-  padding-bottom: 0;
-  border: 1px solid hsl(0deg 0% 80% / 65%);
-  margin-top: 2rem;
+  margin-block-start: 2rem;
   background-color: var(--off-canvas-title-background-color);
 }
 
+/* Add spacing between link field and first styles grouping. */
 #drupal-off-canvas-wrapper .field--name-field-uiowa-banner-link + .grouped-styles--wrapper {
-  padding-bottom:1.5rem;
+  padding-block-end: 1.5rem;
 }
 
-#drupal-off-canvas-wrapper  details.grouped-styles--details {
-  padding: 0 !important;
-  margin: 0 !important;
-  margin-top: 1rem !important;
-  background: none!important;
-}
-
-#drupal-off-canvas-wrapper  details.grouped-styles--details summary {
-  margin-inline: -23px;
-  border-top: 1px solid  hsla(0,0%,100%,.325);
+/* Separate details styles because the gradient details has */
+/* layout builder hidden inputs between fields */
+#drupal-off-canvas-wrapper details.grouped-styles--details {
+  padding: 0;
+  margin: 0;
+  margin-block-start: 1rem;
   background: none;
 }
 
-#drupal-off-canvas-wrapper  details.grouped-styles--details__gradient {
-  margin: 0px;
-  padding-top: 0;
-  border: 1px solid hsl(0deg 0% 80% / 65%);
-  border-top: 0;
+#drupal-off-canvas-wrapper details.grouped-styles--details__gradient {
+  margin: 0;
+  padding-block-start: 0;
+  border-block-start: 1px solid hsla(0, 0%, 100%, .325);
   background-color: var(--off-canvas-title-background-color);
 }
 
-#drupal-off-canvas-wrapper  details.grouped-styles--details__gradient summary {
+/* Summary styles */
+#drupal-off-canvas-wrapper details.grouped-styles--details__gradient summary {
   background: none;
 }
 
-  /**
-   * Drag handle styling.
-   */
+#drupal-off-canvas-wrapper details.grouped-styles--details summary {
+  margin-inline: -23px;
+  background: none;
+  border-top: 1px solid hsla(0, 0%, 100%, .325);
+}
+
+/* Bottom padding for details */
+#drupal-off-canvas-wrapper details .details-wrapper {
+  padding-block-end: 1.5rem;
+}
+
+/**
+ * Drag handle styling.
+ */
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-handle {
   width: 15px;
   height: calc(100% + 52px);
@@ -224,6 +235,6 @@
 }
 
 .ui-dialog.ui-dialog-off-canvas:not(.ui-dialog-resizing) {
-  left: auto!important;
+  left: auto !important;
   right: 0;
 }
