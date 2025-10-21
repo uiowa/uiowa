@@ -69,12 +69,39 @@
           }
         }
 
+        // Handle media overlay changes to auto-set gradient midpoint.
+        function handleMediaOverlayChange() {
+          if (mediaOverlay && gradientMidpointSelect) {
+            const overlayValue = mediaOverlay.value;
+
+            // Only auto-set if currently at default/none
+            if (gradientMidpointSelect.value === "_none" && overlayValue) {
+              let midpointValue = "40%";
+
+              if (overlayValue === "media_overlay_left_to_right") {
+                midpointValue = "70%";
+              }
+
+              gradientMidpointSelect.value = midpointValue;
+            } else if (!overlayValue) {
+              // Clear midpoint when overlay is cleared.
+              gradientMidpointSelect.value = "_none";
+            }
+          }
+        }
+
+        // Bind change event to media overlay dropdown.
+        if (mediaOverlay) {
+          mediaOverlay.addEventListener("change", handleMediaOverlayChange);
+        }
+
         // Bind change event to all background type radio buttons.
         backgroundTypeInputs.forEach(function (input) {
           input.addEventListener('change', handleBackgroundChange);
         });
 
         handleBackgroundChange();
+        handleMediaOverlayChange();
       });
     },
   };
