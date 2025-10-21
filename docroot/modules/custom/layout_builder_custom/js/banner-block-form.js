@@ -36,17 +36,19 @@
         const mediaOverlay = context.querySelector('select[name="layout_builder_style_media_overlay_duplicate"]');
         const overlayCheckboxes = context.querySelectorAll('input[name^="layout_builder_style_banner_gradient"]');
         const adjustGradientCheckbox = context.querySelector('input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]');
-        const gradientMidpointSelect = context.querySelector('select[name="settings[block_form][field_styles_gradient_midpoint]"]');
+        const gradientMidpointRadios = context.querySelectorAll('input[name="settings[block_form][field_styles_gradient_midpoint]"]');
         const backgroundStyleSelect = context.querySelector('select[name="layout_builder_style_background"]');
 
         // Handle changes in the background type.
         function handleBackgroundChange() {
-          const checkedInput = context.querySelector('input[name="settings[block_form][background_type]"]:checked');
+          const checkedInput = context.querySelector(
+            'input[name="settings[block_form][background_type]"]:checked',
+          );
 
-          if (checkedInput && checkedInput.value !== 'media') {
+          if (checkedInput && checkedInput.value !== "media") {
             // Clear the overlay dropdown.
             if (mediaOverlay) {
-              mediaOverlay.value = '';
+              mediaOverlay.value = "";
             }
             // Uncheck all gradient checkboxes.
             overlayCheckboxes.forEach(function (checkbox) {
@@ -55,37 +57,52 @@
             // Uncheck adjust gradient midpoint checkbox and trigger change for States API.
             if (adjustGradientCheckbox) {
               adjustGradientCheckbox.checked = false;
-              adjustGradientCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+              adjustGradientCheckbox.dispatchEvent(
+                new Event("change", { bubbles: true }),
+              );
             }
-            // Clear gradient midpoint select list.
-            if (gradientMidpointSelect) {
-              gradientMidpointSelect.value = '_none';
-            }
-          } else if (checkedInput && checkedInput.value === 'media') {
+            // Clear gradient midpoint radio buttons.
+            gradientMidpointRadios.forEach(function (radio) {
+              radio.checked = false;
+            });
+          } else if (checkedInput && checkedInput.value === "media") {
             // Clear the background style when media is selected.
             if (backgroundStyleSelect) {
-              backgroundStyleSelect.value = '';
+              backgroundStyleSelect.value = "";
             }
           }
         }
 
         // Handle media overlay changes to auto-set gradient midpoint.
         function handleMediaOverlayChange() {
-          if (mediaOverlay && gradientMidpointSelect) {
+          if (mediaOverlay && gradientMidpointRadios.length > 0) {
             const overlayValue = mediaOverlay.value;
 
-            // Only auto-set if currently at default/none
-            if (gradientMidpointSelect.value === "_none" && overlayValue) {
+            // Check if any radio is currently selected.
+            const currentlySelected = context.querySelector(
+              'input[name="settings[block_form][field_styles_gradient_midpoint]"]:checked',
+            );
+
+            // Only auto-set if no option is currently selected.
+            if (!currentlySelected && overlayValue) {
               let midpointValue = "40%";
 
               if (overlayValue === "media_overlay_left_to_right") {
                 midpointValue = "70%";
               }
 
-              gradientMidpointSelect.value = midpointValue;
+              // Find and select the radio button.
+              const targetRadio = context.querySelector(
+                `input[name="settings[block_form][field_styles_gradient_midpoint]"][value="${midpointValue}"]`,
+              );
+              if (targetRadio) {
+                targetRadio.checked = true;
+              }
             } else if (!overlayValue) {
               // Clear midpoint when overlay is cleared.
-              gradientMidpointSelect.value = "_none";
+              gradientMidpointRadios.forEach(function (radio) {
+                radio.checked = false;
+              });
             }
           }
         }

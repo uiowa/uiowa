@@ -42,7 +42,7 @@ class BannerBlockFormHandler {
     // Create a details element for gradient options.
     $form['gradient_options'] = [
       '#type' => 'details',
-      '#title' => t('Gradient options'),
+      '#title' => t('Overlay options'),
       '#weight' => 50,
       '#open' => FALSE,
       '#attributes' => ['class' => ['grouped-styles--details__gradient ']],
@@ -67,15 +67,13 @@ class BannerBlockFormHandler {
       $form['gradient_options']['layout_builder_style_media_overlay_duplicate']["#empty_option"] = t('No gradient (default)');
     }
 
-    // Hide the media overlay until a gradient is selected.
+    // Show banner gradient when background type is media.
     if (isset($form['gradient_options']['layout_builder_style_banner_gradient_duplicate'])) {
       $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#weight'] = 2;
-      $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#states'] = [
-        'visible' => [
-          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
-        ],
-      ];
+      // Visually hide the fieldset legend span.
+      $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#title_display'] = 'invisible';
     }
+
     // Adjust gradient midpoint checkbox.
     if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
       $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#weight'] = 3;
@@ -580,15 +578,14 @@ class BannerBlockFormHandler {
     $form_state->getCompleteForm()['layout_builder_style_banner_gradient']['#states'] = [
       'visible' => [
         ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
-        ':input[name="layout_builder_style_media_overlay"]' => ['!value' => ''],
       ],
     ];
 
     // Handle field_styles_gradient_midpoint field placement and behavior.
     if (isset($element['field_styles_gradient_midpoint'])) {
-      // Set custom empty option text.
+      // Remove the _none option from the original element.
       if (isset($element['field_styles_gradient_midpoint']['widget']['#options']['_none'])) {
-        $element['field_styles_gradient_midpoint']['widget']['#options']['_none'] = '- Select -';
+        unset($element['field_styles_gradient_midpoint']['widget']['#options']['_none']);
       }
 
       // Move the field to gradient options if the container exists in form.
@@ -599,8 +596,17 @@ class BannerBlockFormHandler {
         $form['gradient_options']['field_styles_gradient_midpoint']['#states'] = [
           'visible' => [
             ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
+            ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
           ],
         ];
+
+        // Remove the _none option from the moved field as well.
+        if (isset($form['gradient_options']['field_styles_gradient_midpoint']['widget']['#options']['_none'])) {
+          unset($form['gradient_options']['field_styles_gradient_midpoint']['widget']['#options']['_none']);
+        }
+
+        // Visually hide the fieldset legend span.
+        $form['gradient_options']['field_styles_gradient_midpoint']['widget']['#title_display'] = 'invisible';
 
         // Hide the original field.
         $element['field_styles_gradient_midpoint']['#access'] = FALSE;
