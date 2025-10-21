@@ -45,10 +45,10 @@
             'input[name="settings[block_form][background_type]"]:checked',
           );
 
-          if (checkedInput && checkedInput.value !== "media") {
+          if (checkedInput && checkedInput.value !== 'media') {
             // Clear the overlay dropdown.
             if (mediaOverlay) {
-              mediaOverlay.value = "";
+              mediaOverlay.value = '';
             }
             // Uncheck all gradient checkboxes.
             overlayCheckboxes.forEach(function (checkbox) {
@@ -58,14 +58,14 @@
             if (adjustGradientCheckbox) {
               adjustGradientCheckbox.checked = false;
               adjustGradientCheckbox.dispatchEvent(
-                new Event("change", { bubbles: true }),
+                new Event('change', { bubbles: true }),
               );
             }
             // Clear gradient midpoint radio buttons.
             gradientMidpointRadios.forEach(function (radio) {
               radio.checked = false;
             });
-          } else if (checkedInput && checkedInput.value === "media") {
+          } else if (checkedInput && checkedInput.value === 'media') {
             // Clear the background style when media is selected.
             if (backgroundStyleSelect) {
               backgroundStyleSelect.value = "";
