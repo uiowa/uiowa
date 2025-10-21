@@ -629,9 +629,9 @@ function admissions_core_update_10001() {
 }
 
 /**
- * Update AoS career placement text.
+ * Update AoS student org number and AoS career placement text.
  */
-function admissions_core_update_10002() {
+function admissions_core_update_10004() {
   $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
 
   $ids = $query
@@ -644,50 +644,19 @@ function admissions_core_update_10002() {
     $entities = $controller->loadMultiple($ids);
 
     foreach ($entities as $entity) {
-      $document = Html::load($entity->field_area_of_study_career->value);
-      $xpath = new \DOMXPath($document);
+      $careerValue = Html::load($entity->field_area_of_study_career->value);
+      $opportunityValue = Html::load($entity->field_area_of_study_opportunity->value);
+      $careerXpath = new \DOMXPath($careerValue);
+      $opportunityXpath = new \DOMXPath($opportunityValue);
       $modified = FALSE;
-      foreach ($xpath->query('//text()') as $textNode) {
+      foreach ($careerXpath->query('//text()') as $textNode) {
         $new_value = str_replace('Iowa graduates have a 96 percent job/grad school placement rate within six months of graduation', 'Within six months of graduating, 96 percent of Iowa graduates are employed, continuing education, or not seeking work', $textNode->nodeValue);
         if ($new_value !== $textNode->nodeValue) {
           $textNode->nodeValue = $new_value;
           $modified = TRUE;
         }
       }
-      if ($modified) {
-        $html = Html::serialize($document);
-        $entity->field_area_of_study_career->value = $html;
-        $entity->setNewRevision(TRUE);
-        $entity->setRevisionUserId(1);
-        $entity->setRevisionLogMessage('Automated save.');
-        $entity->save();
-
-        \Drupal::logger('admissions_core')->notice('The node {nid} was programmatically updated.', ['nid' => $entity->id()]);
-      }
-    }
-  }
-}
-
-/**
- * Update AoS student org number.
- */
-function admissions_core_update_10003() {
-  $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
-
-  $ids = $query
-    ->condition('type', 'area_of_study')
-    ->accessCheck()
-    ->execute();
-
-  if ($ids) {
-    $controller = \Drupal::entityTypeManager()->getStorage('node');
-    $entities = $controller->loadMultiple($ids);
-
-    foreach ($entities as $entity) {
-      $document = Html::load($entity->field_area_of_study_opportunity->value);
-      $xpath = new \DOMXPath($document);
-      $modified = FALSE;
-      foreach ($xpath->query('//text()') as $textNode) {
+      foreach ($opportunityXpath->query('//text()') as $textNode) {
         $new_value = str_replace('In addition to more than 500', 'In addition to more than 600', $textNode->nodeValue);
         if ($new_value !== $textNode->nodeValue) {
           $textNode->nodeValue = $new_value;
@@ -695,8 +664,10 @@ function admissions_core_update_10003() {
         }
       }
       if ($modified) {
-        $html = Html::serialize($document);
-        $entity->field_area_of_study_opportunity->value = $html;
+        $htmlCareer = Html::serialize($careerValue);
+        $entity->field_area_of_study_career->value = $htmlCareer;
+        $htmlOpportunity = Html::serialize($opportunityValue);
+        $entity->field_area_of_study_opportunity->value = $htmlOpportunity;
         $entity->setNewRevision(TRUE);
         $entity->setRevisionUserId(1);
         $entity->setRevisionLogMessage('Automated save.');
