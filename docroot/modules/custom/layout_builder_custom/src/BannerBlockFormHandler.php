@@ -150,6 +150,14 @@ class BannerBlockFormHandler {
     self::createDuplicateField($form, 'layout_builder_style_margin', 'style_options');
     self::createDuplicateField($form, 'layout_builder_style_default', 'style_options');
 
+    // Duplicate headline fields into headline group.
+    self::createDuplicateField($form, 'layout_builder_style_headline_type', 'headline_group');
+    self::createDuplicateField($form, 'layout_builder_style_headline_size', 'headline_group');
+
+    // Duplicate button fields into button group.
+    self::createDuplicateField($form, 'layout_builder_style_button_style', 'button_group');
+    self::createDuplicateField($form, 'layout_builder_style_button_font', 'button_group');
+
     // =========================================================================
     // SET ALL VISIBILITY STATES
     // =========================================================================
@@ -178,30 +186,6 @@ class BannerBlockFormHandler {
       ];
     }
 
-    // =========================================================================
-    // ASSIGN FIELDS TO GROUPS
-    // =========================================================================
-    // Assign headline style fields to headline group.
-    if (isset($form['layout_builder_style_headline_type'])) {
-      $form['layout_builder_style_headline_type']['#group'] = 'headline_group';
-      $form['layout_builder_style_headline_type']['#prefix'] = '<div class="block-form-group__container block-form-group__container--connected">';
-    }
-
-    if (isset($form['layout_builder_style_headline_size'])) {
-      $form['layout_builder_style_headline_size']['#group'] = 'headline_group';
-      $form['layout_builder_style_headline_size']['#suffix'] = '</div>';
-    }
-
-    // Assign button fields to button group.
-    if (isset($form['layout_builder_style_button_style'])) {
-      $form['layout_builder_style_button_style']['#group'] = 'button_group';
-      $form['layout_builder_style_button_style']['#prefix'] = '<div class="block-form-group__container block-form-group__container--connected">';
-    }
-
-    if (isset($form['layout_builder_style_button_font'])) {
-      $form['layout_builder_style_button_font']['#group'] = 'button_group';
-      $form['layout_builder_style_button_font']['#suffix'] = '</div>';
-    }
     // =========================================================================
     // SET WEIGHTS AND FINAL ADJUSTMENTS
     // =========================================================================
@@ -348,6 +332,10 @@ class BannerBlockFormHandler {
       'layout_builder_style_media_overlay',
       'layout_builder_style_banner_gradient',
       'layout_builder_style_adjust_gradient_midpoint',
+      'layout_builder_style_headline_type',
+      'layout_builder_style_headline_size',
+      'layout_builder_style_button_style',
+      'layout_builder_style_button_font',
     ];
 
     self::syncDuplicateFields($form_state, $fields_to_sync);
@@ -537,8 +525,9 @@ class BannerBlockFormHandler {
     }
 
     // =========================================================================
-    // ASSIGN BLOCK FIELDS TO GROUPS
+    // ASSIGN FIELDS TO GROUPS
     // =========================================================================
+    // Assign block fields to groups.
     if (isset($element['field_uiowa_banner_pre_title'])) {
       $element['field_uiowa_banner_pre_title']['#group'] = 'headline_group';
       $element['field_uiowa_banner_pre_title']['#weight'] = 61;
