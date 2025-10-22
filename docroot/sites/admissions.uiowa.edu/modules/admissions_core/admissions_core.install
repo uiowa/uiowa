@@ -645,9 +645,7 @@ function admissions_core_update_10002() {
 
     foreach ($entities as $entity) {
       $careerValue = Html::load($entity->field_area_of_study_career->value);
-      $opportunityValue = Html::load($entity->field_area_of_study_opportunity->value);
       $careerXpath = new \DOMXPath($careerValue);
-      $opportunityXpath = new \DOMXPath($opportunityValue);
       $modified = FALSE;
       foreach ($careerXpath->query('//text()') as $textNode) {
         $new_value = str_replace('Iowa graduates have a 96 percent job/grad school placement rate within six months of graduation', 'Within six months of graduating, 96 percent of Iowa graduates are employed, continuing education, or not seeking work', $textNode->nodeValue);
@@ -656,6 +654,8 @@ function admissions_core_update_10002() {
           $modified = TRUE;
         }
       }
+      $opportunityValue = Html::load($entity->field_area_of_study_opportunity->value);
+      $opportunityXpath = new \DOMXPath($opportunityValue);
       foreach ($opportunityXpath->query('//text()') as $textNode) {
         $new_value = str_replace('In addition to more than 500', 'In addition to more than 600', $textNode->nodeValue);
         if ($new_value !== $textNode->nodeValue) {
