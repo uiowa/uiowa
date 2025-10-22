@@ -145,7 +145,6 @@
  *
  * block-form-group (Block)
  * ├── block-form-group__container (Element - main grouping wrapper)
- * │   └── block-form-group__container--connected (Modifier - adjacent/connected sections)
  * └── block-form-group__collapsible (Element - details/accordion)
  *     └── block-form-group__collapsible--overlay (Modifier - gradient/overlay variant)
  */
@@ -173,11 +172,6 @@
 /* Remove bottom padding for containers that have collapsible details inside */
 #drupal-off-canvas-wrapper .block-form-group__container:has(.block-form-group__collapsible) {
   padding-block-end: 0;
-}
-
-/* Connected containers - removes margin for visually adjacent sections that should appear as one group */
-#drupal-off-canvas-wrapper .block-form-group__container--connected {
-  margin-block-start: 0;
 }
 
 /* Add padding for the link field */
