@@ -152,13 +152,23 @@
 #drupal-off-canvas-wrapper .grouped-styles--wrapper {
   padding-inline: 1.5rem;
   padding-block-start: 1rem;
+  padding-block-end: 1rem;
   margin-block-start: 2rem;
   background-color: var(--off-canvas-title-background-color);
 }
+/* Remove bottom padding for groups that contain details */
+#drupal-off-canvas-wrapper .grouped-styles--wrapper:has(.grouped-styles--details) {
+  padding-block-end: 0;
+}
 
-/* Add spacing between link field and first styles grouping. */
-#drupal-off-canvas-wrapper .field--name-field-uiowa-banner-link + .grouped-styles--wrapper {
-  padding-block-end: 1.5rem;
+/* Remove margin for connecting two associated wrappers that should be grouped */
+#drupal-off-canvas-wrapper .grouped-styles--wrapper.grouped-styles--sibling {
+  margin-block-start:  0;
+}
+
+/* Add padding for the link field */
+#drupal-off-canvas-wrapper .grouped-styles--wrapper .field--name-field-uiowa-banner-link {
+  padding: 1rem;
 }
 
 /* Separate details styles because the gradient details has */
