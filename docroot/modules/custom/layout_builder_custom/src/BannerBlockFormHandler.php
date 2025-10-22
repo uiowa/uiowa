@@ -31,7 +31,7 @@ class BannerBlockFormHandler {
     $form['headline_group'] = [
       '#type' => 'container',
       '#weight' => 55,
-      '#attributes' => ['class' => ['grouped-styles--wrapper']],
+      '#attributes' => ['class' => ['block-form-group__container']],
     ];
 
     $form['headline_group']['headline_group_heading'] = [
@@ -45,7 +45,7 @@ class BannerBlockFormHandler {
     $form['excerpt_group'] = [
       '#type' => 'container',
       '#weight' => 61,
-      '#attributes' => ['class' => ['grouped-styles--wrapper']],
+      '#attributes' => ['class' => ['block-form-group__container']],
     ];
 
     $form['excerpt_group']['excerpt_group_heading'] = [
@@ -59,7 +59,7 @@ class BannerBlockFormHandler {
     $form['button_group'] = [
       '#type' => 'container',
       '#weight' => 70,
-      '#attributes' => ['class' => ['grouped-styles--wrapper']],
+      '#attributes' => ['class' => ['block-form-group__container']],
     ];
 
     $form['button_group']['button_group_heading'] = [
@@ -78,7 +78,7 @@ class BannerBlockFormHandler {
         '#value' => t('Background'),
         '#weight' => 0,
         '#attributes' => ['class' => ['heading-a']],
-        '#prefix' => '<div class="grouped-styles--wrapper">',
+        '#prefix' => '<div class="block-form-group__container">',
       ];
     }
 
@@ -88,7 +88,7 @@ class BannerBlockFormHandler {
       '#title' => t('Overlay options'),
       '#weight' => 50,
       '#open' => FALSE,
-      '#attributes' => ['class' => ['grouped-styles--details__gradient ']],
+      '#attributes' => ['class' => ['block-form-group__collapsible', 'block-form-group__collapsible--overlay']],
       '#suffix' => '</div>',
     ];
 
@@ -99,7 +99,7 @@ class BannerBlockFormHandler {
       '#value' => t('Layout'),
       '#weight' => 94,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="grouped-styles--wrapper">',
+      '#prefix' => '<div class="block-form-group__container">',
     ];
 
     // Layout settings details element.
@@ -107,7 +107,7 @@ class BannerBlockFormHandler {
       '#type' => 'details',
       '#title' => t('Layout settings'),
       '#weight' => 97,
-      '#attributes' => ['class' => ['grouped-styles--details']],
+      '#attributes' => ['class' => ['block-form-group__collapsible']],
       '#open' => FALSE,
       '#suffix' => '</div>',
     ];
@@ -119,14 +119,14 @@ class BannerBlockFormHandler {
       '#value' => t('Styles'),
       '#weight' => 102,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="grouped-styles--wrapper">',
+      '#prefix' => '<div class="block-form-group__container">',
     ];
 
     // Style options details element.
     $form['style_options'] = [
       '#type' => 'details',
       '#title' => t('Style options'),
-      '#attributes' => ['class' => ['grouped-styles--details']],
+      '#attributes' => ['class' => ['block-form-group__collapsible']],
       '#weight' => 102,
       '#open' => FALSE,
       '#suffix' => '</div>',
@@ -183,7 +183,7 @@ class BannerBlockFormHandler {
     // Assign headline style fields to headline group.
     if (isset($form['layout_builder_style_headline_type'])) {
       $form['layout_builder_style_headline_type']['#group'] = 'headline_group';
-      $form['layout_builder_style_headline_type']['#prefix'] = '<div class="grouped-styles--wrapper grouped-styles--sibling">';
+      $form['layout_builder_style_headline_type']['#prefix'] = '<div class="block-form-group__container block-form-group__container--connected">';
     }
 
     if (isset($form['layout_builder_style_headline_size'])) {
@@ -194,14 +194,13 @@ class BannerBlockFormHandler {
     // Assign button fields to button group.
     if (isset($form['layout_builder_style_button_style'])) {
       $form['layout_builder_style_button_style']['#group'] = 'button_group';
-      $form['layout_builder_style_button_style']['#prefix'] = '<div class="grouped-styles--wrapper grouped-styles--sibling">';
+      $form['layout_builder_style_button_style']['#prefix'] = '<div class="block-form-group__container block-form-group__container--connected">';
     }
 
     if (isset($form['layout_builder_style_button_font'])) {
       $form['layout_builder_style_button_font']['#group'] = 'button_group';
       $form['layout_builder_style_button_font']['#suffix'] = '</div>';
     }
-
     // =========================================================================
     // SET WEIGHTS AND FINAL ADJUSTMENTS
     // =========================================================================

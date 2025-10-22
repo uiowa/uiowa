@@ -139,66 +139,81 @@
 }
 
 /**
- * Banner block.
+ * Banner block form styles.
+ *
+ * BEM Hierarchy:
+ *
+ * block-form-group (Block)
+ * ├── block-form-group__container (Element - main grouping wrapper)
+ * │   └── block-form-group__container--connected (Modifier - adjacent/connected sections)
+ * └── block-form-group__collapsible (Element - details/accordion)
+ *     └── block-form-group__collapsible--overlay (Modifier - gradient/overlay variant)
  */
 
-/* Remove border and padding for main radio buttons within the grouped styles wrapper. */
+/* Remove border and padding for main radio buttons within the form group containers. */
 #drupal-off-canvas-wrapper fieldset {
   border: none !important;
   padding-inline-start: 0;
+  margin-block-start: 0;
 }
 
-/* Faux group styles */
-#drupal-off-canvas-wrapper .grouped-styles--wrapper {
+/* Block form group container - creates visual grouping */
+#drupal-off-canvas-wrapper .block-form-group__container {
   padding-inline: 1.5rem;
   padding-block-start: 1rem;
   padding-block-end: 1rem;
   margin-block-start: 2rem;
   background-color: var(--off-canvas-title-background-color);
 }
-/* Remove bottom padding for groups that contain details */
-#drupal-off-canvas-wrapper .grouped-styles--wrapper:has(.grouped-styles--details) {
+
+/* Remove bottom padding for containers that have collapsible details inside */
+#drupal-off-canvas-wrapper .block-form-group__container:has(.block-form-group__collapsible) {
   padding-block-end: 0;
 }
 
-/* Remove margin for connecting two associated wrappers that should be grouped */
-#drupal-off-canvas-wrapper .grouped-styles--wrapper.grouped-styles--sibling {
-  margin-block-start:  0;
+/* Connected containers - removes margin for visually adjacent sections that should appear as one group */
+#drupal-off-canvas-wrapper .block-form-group__container--connected {
+  margin-block-start: 0;
 }
 
 /* Add padding for the link field */
-#drupal-off-canvas-wrapper .grouped-styles--wrapper .field--name-field-uiowa-banner-link {
+#drupal-off-canvas-wrapper .block-form-group__container .field--name-field-uiowa-banner-link {
   padding: 1rem;
 }
 
-/* Separate details styles because the gradient details has */
-/* layout builder hidden inputs between fields */
-#drupal-off-canvas-wrapper details.grouped-styles--details {
+/* Collapsible details element - standard styling */
+#drupal-off-canvas-wrapper details.block-form-group__collapsible {
   padding: 0;
   margin: 0;
   margin-block-start: 1rem;
   background: none;
 }
 
-#drupal-off-canvas-wrapper details.grouped-styles--details__gradient {
+/* Overlay collapsible - special styling for gradient/overlay options */
+#drupal-off-canvas-wrapper details.block-form-group__collapsible--overlay {
   margin: 0;
   padding-block-start: 0;
   border-block-start: 1px solid hsla(0, 0%, 100%, .325);
   background-color: var(--off-canvas-title-background-color);
 }
 
-/* Summary styles */
-#drupal-off-canvas-wrapper details.grouped-styles--details__gradient summary {
+/* Summary for overlay collapsible */
+#drupal-off-canvas-wrapper details.block-form-group__collapsible--overlay summary {
+  margin: 0;
   background: none;
 }
 
-#drupal-off-canvas-wrapper details.grouped-styles--details summary {
-  margin-inline: -23px;
+/* Summary for standard collapsible */
+#drupal-off-canvas-wrapper details.block-form-group__collapsible summary {
   background: none;
   border-top: 1px solid hsla(0, 0%, 100%, .325);
 }
 
-/* Bottom padding for details */
+#drupal-off-canvas-wrapper details.block-form-group__collapsible--overlay .details-wrapper {
+  padding: 1.5rem;
+}
+
+/* Bottom padding for all details wrappers */
 #drupal-off-canvas-wrapper details .details-wrapper {
   padding-block-end: 1.5rem;
 }
