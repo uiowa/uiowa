@@ -7858,3 +7858,15 @@ $sites['siteshyesunyou.uiowa.ddev.site'] = 'hyesunyou.sites.uiowa.edu';
 $sites['siteshyesunyou.dev.drupal.uiowa.edu'] = 'hyesunyou.sites.uiowa.edu';
 $sites['siteshyesunyou.stage.drupal.uiowa.edu'] = 'hyesunyou.sites.uiowa.edu';
 $sites['siteshyesunyou.prod.drupal.uiowa.edu'] = 'hyesunyou.sites.uiowa.edu';
+
+// Directory aliases for fma.tippie.uiowa.edu.
+$sites['tippiefma.uiowa.ddev.site'] = 'fma.tippie.uiowa.edu';
+$sites['tippiefma.dev.drupal.uiowa.edu'] = 'fma.tippie.uiowa.edu';
+$sites['tippiefma.stage.drupal.uiowa.edu'] = 'fma.tippie.uiowa.edu';
+$sites['tippiefma.prod.drupal.uiowa.edu'] = 'fma.tippie.uiowa.edu';
+
+// Directory aliases for vita.tippie.uiowa.edu.
+$sites['tippievita.uiowa.ddev.site'] = 'vita.tippie.uiowa.edu';
+$sites['tippievita.dev.drupal.uiowa.edu'] = 'vita.tippie.uiowa.edu';
+$sites['tippievita.stage.drupal.uiowa.edu'] = 'vita.tippie.uiowa.edu';
+$sites['tippievita.prod.drupal.uiowa.edu'] = 'vita.tippie.uiowa.edu';
