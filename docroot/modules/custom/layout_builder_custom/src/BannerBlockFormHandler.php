@@ -24,9 +24,77 @@ class BannerBlockFormHandler {
     // Add adjust gradient checkbox.
     self::addGradientMidpointCheckbox($form, $form_state);
 
+    // Move banner fields out of block_form to main form level.
+    // Headline group.
+    $form['headline_group'] = [
+      '#type' => 'container',
+      '#weight' => 55,
+      '#attributes' => ['class' => ['grouped-styles--wrapper']],
+    ];
+
+    $form['headline_group']['headline_group_heading'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#value' => t('Headline'),
+      '#attributes' => ['class' => ['heading-a']],
+    ];
+
+    // Assign headline style fields to headline group (they're at root form level).
+    if (isset($form['layout_builder_style_headline_type'])) {
+      $form['layout_builder_style_headline_type']['#group'] = 'headline_group';
+      $form['layout_builder_style_headline_type']['#weight'] = 60;
+      $form['layout_builder_style_headline_type']['#prefix'] = '<div class="grouped-styles--wrapper grouped-styles--sibling">';
+    }
+
+    if (isset($form['layout_builder_style_headline_size'])) {
+      $form['layout_builder_style_headline_size']['#group'] = 'headline_group';
+      $form['layout_builder_style_headline_size']['#weight'] = 60;
+      $form['layout_builder_style_headline_size']['#suffix'] = '</div>';
+    }
+
+    // Excerpt group.
+    $form['excerpt_group'] = [
+      '#type' => 'container',
+      '#weight' => 61,
+      '#attributes' => ['class' => ['grouped-styles--wrapper']],
+    ];
+
+    $form['excerpt_group']['excerpt_group_heading'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#value' => t('Excerpt'),
+      '#attributes' => ['class' => ['heading-a']],
+    ];
+
+    // Button group.
+    $form['button_group'] = [
+      '#type' => 'container',
+      '#weight' => 70,
+      '#attributes' => ['class' => ['grouped-styles--wrapper']],
+    ];
+
+    $form['button_group']['button_group_heading'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#weight' => -70,
+      '#value' => t('Buttons'),
+      '#attributes' => ['class' => ['heading-a']],
+    ];
+
+    // Assign button fields to button group (they're at root form level).
+    if (isset($form['layout_builder_style_button_style'])) {
+      $form['layout_builder_style_button_style']['#group'] = 'button_group';
+      $form['layout_builder_style_button_style']['#weight'] = 71;
+      $form['layout_builder_style_button_style']['#prefix'] = '<div class="grouped-styles--wrapper grouped-styles--sibling">';
+    }
+    if (isset($form['layout_builder_style_button_font'])) {
+      $form['layout_builder_style_button_font']['#group'] = 'button_group';
+      $form['layout_builder_style_button_font']['#weight'] = 72;
+      $form['layout_builder_style_button_font']['#suffix'] = '</div>';
+    }
+
     // Set negative weight for entire block_form container to position at top.
     if (isset($form['settings']['block_form'])) {
-      $form['settings']['block_form']['#weight'] = -55;
 
       // Background group - add heading inside block_form container.
       $form['settings']['block_form']['background_group_heading'] = [
@@ -167,9 +235,7 @@ class BannerBlockFormHandler {
       '#suffix' => '</div>',
     ];
 
-    // Duplicate fields into style options container.
-    self::createDuplicateField($form, 'layout_builder_style_button_style', 'style_options');
-    self::createDuplicateField($form, 'layout_builder_style_button_font', 'style_options');
+    // Duplicate remaining style fields into style options container.
     self::createDuplicateField($form, 'layout_builder_style_margin', 'style_options');
     self::createDuplicateField($form, 'layout_builder_style_default', 'style_options');
 
@@ -218,11 +284,12 @@ class BannerBlockFormHandler {
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
-   * @param array $field_mappings
+   * @param array $field_names
    *   Array of field names to sync (original field name as key).
    */
-  private static function syncDuplicateFields(FormStateInterface $form_state, array $field_mappings) {
-    foreach ($field_mappings as $original_field => $duplicate_field) {
+  private static function syncDuplicateFields(FormStateInterface $form_state, array $field_names) {
+    foreach ($field_names as $original_field) {
+      $duplicate_field = $original_field . '_duplicate';
       $duplicate_value = $form_state->getValue($duplicate_field);
       if ($duplicate_value !== NULL) {
         $form_state->setValue($original_field, $duplicate_value);
@@ -240,19 +307,17 @@ class BannerBlockFormHandler {
    */
   public static function validateForm(array &$form, FormStateInterface $form_state) {
     // Sync duplicated fields to original fields.
-    $field_mappings = [
-      'layout_builder_style_container' => 'layout_builder_style_container_duplicate',
-      'layout_builder_style_banner_height' => 'layout_builder_style_banner_height_duplicate',
-      'layout_builder_style_button_style' => 'layout_builder_style_button_style_duplicate',
-      'layout_builder_style_button_font' => 'layout_builder_style_button_font_duplicate',
-      'layout_builder_style_margin' => 'layout_builder_style_margin_duplicate',
-      'layout_builder_style_default' => 'layout_builder_style_default_duplicate',
-      'layout_builder_style_media_overlay' => 'layout_builder_style_media_overlay_duplicate',
-      'layout_builder_style_banner_gradient' => 'layout_builder_style_banner_gradient_duplicate',
-      'layout_builder_style_adjust_gradient_midpoint' => 'layout_builder_style_adjust_gradient_midpoint_duplicate',
+    $fields_to_sync = [
+      'layout_builder_style_container',
+      'layout_builder_style_banner_height',
+      'layout_builder_style_margin',
+      'layout_builder_style_default',
+      'layout_builder_style_media_overlay',
+      'layout_builder_style_banner_gradient',
+      'layout_builder_style_adjust_gradient_midpoint',
     ];
 
-    self::syncDuplicateFields($form_state, $field_mappings);
+    self::syncDuplicateFields($form_state, $fields_to_sync);
 
     $link_set = FALSE;
     $link_text = FALSE;
@@ -403,7 +468,7 @@ class BannerBlockFormHandler {
 
     $form['layout_builder_style_adjust_gradient_midpoint'] = [
       '#type' => 'checkbox',
-      '#title' => t('Adjust gradient midpoint'),
+      '#title' => t('Customize gradient midpoint'),
       '#default_value' => $default_value,
       '#weight' => 94,
     ];
@@ -430,20 +495,50 @@ class BannerBlockFormHandler {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     $component = $form_object->getCurrentComponent();
 
-    if (isset($element['field_uiowa_banner_title'])) {
-      // Update the label for the Heading sizes to remove Size label.
-      $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] =
-        t('Heading');
-    }
-
-    // Determine default background type based on existing values.
-    $default_bg_type = 'media';
+    $complete_form = &$form_state->getCompleteForm();
     $plugin = $component->getPlugin();
     $configuration = [];
     if (method_exists($plugin, 'getConfiguration')) {
       // @phpstan-ignore-next-line
       $configuration = $plugin->getConfiguration();
     }
+
+    if (isset($element['field_uiowa_banner_pre_title'])) {
+      $element['field_uiowa_banner_pre_title']['#group'] = 'headline_group';
+      $element['field_uiowa_banner_pre_title']['#weight'] = 61;
+    }
+    if (isset($element['field_uiowa_banner_title'])) {
+      $element['field_uiowa_banner_title']['#group'] = 'headline_group';
+      $element['field_uiowa_banner_title']['#weight'] = 62;
+      // Update the label for the Heading sizes to remove Size label.
+      if (isset($element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'])) {
+        $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] = t('Level');
+      }
+    }
+
+    // Assign link field to button group.
+    if (isset($element['field_uiowa_banner_link'])) {
+      $element['field_uiowa_banner_link']['#group'] = 'button_group';
+      $element['field_uiowa_banner_link']['#weight'] = 70;
+    }
+
+    if (isset($complete_form['layout_builder_style_headline_type'])) {
+      // Apply default value for radio buttons if none is set.
+      $current_value = $configuration['layout_builder_style_headline_type'] ?? NULL;
+      if (empty($current_value)) {
+        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+        if (isset($extra_settings['headline_type']['default'])) {
+          $complete_form['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'];
+        }
+      }
+      if (!isset($complete_form['layout_builder_style_headline_type']['#default_value'])) {
+        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
+        $complete_form['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'] ?? NULL;
+      }
+    }
+
+    // Determine default background type based on existing values.
+    $default_bg_type = 'media';
 
     // Check third-party settings first, then fallback to layout builder styles.
     $stored_background_type = $component->getThirdPartySetting('layout_builder_custom', 'background_type');
@@ -470,53 +565,13 @@ class BannerBlockFormHandler {
       '#weight' => 10,
     ];
 
-    // Set explicit weights for all existing fields to control order.
-    if (isset($element['field_uiowa_banner_pre_title'])) {
-      $element['field_uiowa_banner_pre_title']['#weight'] = -100;
-    }
-    if (isset($element['field_uiowa_banner_title'])) {
-      $element['field_uiowa_banner_title']['#weight'] = -90;
-    }
-
-    // Move headline style fields into block_form to appear after title.
-    $complete_form = &$form_state->getCompleteForm();
-    if (isset($complete_form['layout_builder_style_headline_type'])) {
-      $element['layout_builder_style_headline_type'] = $complete_form['layout_builder_style_headline_type'];
-      $element['layout_builder_style_headline_type']['#weight'] = -85;
-      // Set #tree to FALSE so the value overrides the original in form state.
-      $element['layout_builder_style_headline_type']['#tree'] = FALSE;
-
-      // Apply default value for radio buttons if none is set.
-      $current_value = $configuration['layout_builder_style_headline_type'] ?? NULL;
-      if (empty($current_value)) {
-        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-        if (isset($extra_settings['headline_type']['default'])) {
-          $element['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'];
-        }
-      }
-      if (!isset($element['layout_builder_style_headline_type']['#default_value'])) {
-        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-        $element['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'] ?? NULL;
-      }
-
-      // Hide the original field.
-      $complete_form['layout_builder_style_headline_type']['#access'] = FALSE;
-    }
-
-    if (isset($complete_form['layout_builder_style_headline_size'])) {
-      $element['layout_builder_style_headline_size'] = $complete_form['layout_builder_style_headline_size'];
-      $element['layout_builder_style_headline_size']['#weight'] = -84;
-      // Set #tree to FALSE so the value overrides the original in form state.
-      $element['layout_builder_style_headline_size']['#tree'] = FALSE;
-      // Hide the original field.
-      $complete_form['layout_builder_style_headline_size']['#access'] = FALSE;
-    }
-
+    // Assign excerpt field to excerpt group.
     if (isset($element['field_uiowa_banner_excerpt'])) {
-      $element['field_uiowa_banner_excerpt']['#weight'] = -80;
+      $element['field_uiowa_banner_excerpt']['#group'] = 'excerpt_group';
+      $element['field_uiowa_banner_excerpt']['#weight'] = 62;
     }
     if (isset($element['field_uiowa_banner_link'])) {
-      $element['field_uiowa_banner_link']['#weight'] = -70;
+      $element['field_uiowa_banner_link']['#weight'] = -69;
     }
     if (isset($element['langcode'])) {
       $element['langcode']['#weight'] = 100;
