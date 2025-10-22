@@ -3,6 +3,7 @@
 namespace Drupal\layout_builder_custom;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 
 /**
@@ -105,7 +106,7 @@ class BannerBlockFormHandler {
     // Layout settings details element.
     $form['layout_settings'] = [
       '#type' => 'details',
-      '#title' => t('Layout settings'),
+      '#title' => new TranslatableMarkup('<span class="element-invisible">Layout</span> Options'),
       '#weight' => 97,
       '#attributes' => ['class' => ['block-form-group__collapsible']],
       '#open' => FALSE,
@@ -125,7 +126,7 @@ class BannerBlockFormHandler {
     // Style options details element.
     $form['style_options'] = [
       '#type' => 'details',
-      '#title' => t('Style options'),
+      '#title' => new TranslatableMarkup('<span class="element-invisible">Style</span> Options'),
       '#attributes' => ['class' => ['block-form-group__collapsible']],
       '#weight' => 102,
       '#open' => FALSE,
@@ -555,6 +556,7 @@ class BannerBlockFormHandler {
     if (isset($element['field_uiowa_banner_excerpt'])) {
       $element['field_uiowa_banner_excerpt']['#group'] = 'excerpt_group';
       $element['field_uiowa_banner_excerpt']['#weight'] = 62;
+      $element['field_uiowa_banner_excerpt']['widget'][0]['#title_display'] = 'invisible';
     }
 
     if (isset($element['field_uiowa_banner_link'])) {
