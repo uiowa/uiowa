@@ -82,12 +82,11 @@ class RegistrarCoreCommands extends DrushCommands {
 
     switch ($data['_status']) {
       case 'ok':
-      case 'empty':
         $data = $data['_data'];
         break;
 
       default:
-        // Handle errored results.
+        // Handle errored or empty results.
         $arguments = [
           '@status' => $data['_status'],
           '@session_id' => $session_id,
