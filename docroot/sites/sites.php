@@ -7864,3 +7864,9 @@ $sites['tippieama.uiowa.ddev.site'] = 'ama.tippie.uiowa.edu';
 $sites['tippieama.dev.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
 $sites['tippieama.stage.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
 $sites['tippieama.prod.drupal.uiowa.edu'] = 'ama.tippie.uiowa.edu';
+
+// Directory aliases for fma.tippie.uiowa.edu.
+$sites['tippiefma.uiowa.ddev.site'] = 'fma.tippie.uiowa.edu';
+$sites['tippiefma.dev.drupal.uiowa.edu'] = 'fma.tippie.uiowa.edu';
+$sites['tippiefma.stage.drupal.uiowa.edu'] = 'fma.tippie.uiowa.edu';
+$sites['tippiefma.prod.drupal.uiowa.edu'] = 'fma.tippie.uiowa.edu';
