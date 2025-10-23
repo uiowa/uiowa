@@ -24,10 +24,6 @@ class BannerBlockFormHandler {
   public static function formAlter(array &$form, FormStateInterface $form_state, $form_id) {
     // Add adjust gradient checkbox.
     self::addGradientMidpointCheckbox($form, $form_state);
-    // Hide admin label in favor of custom heading.
-    unset($form['settings']['admin_label']);
-    // Move unique_id to the bottom.
-    $form['unique_id']['#weight'] = 210;
 
     // =========================================================================
     // WEIGHTS
@@ -317,6 +313,12 @@ class BannerBlockFormHandler {
     if (isset($form['layout_builder_style_background'])) {
       $form['layout_builder_style_background']['#weight'] = -50;
     }
+
+    // Hide admin label in favor of custom heading.
+    unset($form['settings']['admin_label']);
+
+    // Move unique_id to the bottom.
+    $form['unique_id']['#weight'] = 210;
 
     // Make sure the actions (buttons) come after everything.
     if (isset($form['actions'])) {
