@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstrivecardio-study.uiowa.ddev.site
+    protocol: https
+  machine_name: labstrivecardio-study
+  human_name: strivecardio-study.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstrivecardio-study.prod
+drupal:
+  db:
+    database: strivecardio_study_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labstrivecardio-study.prod.drupal.uiowa.edu'
+  requester: jgorzelitz
+  site-name: 'STRIVE Cardio website'

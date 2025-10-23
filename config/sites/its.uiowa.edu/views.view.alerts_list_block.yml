@@ -303,6 +303,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 10
           total_pages: null
           id: 0
@@ -642,7 +643,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -931,6 +931,7 @@ display:
               autosubmit: false
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               input_required: false
               allow_secondary: true
@@ -943,35 +944,47 @@ display:
                 advanced:
                   placeholder_text: Search
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
+                  hide_label: false
               field_alert_date_value:
                 plugin_id: bef_datepicker
                 advanced:
                   placeholder_text: 'Starts on or after'
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_alert_date_end_value:
                 plugin_id: bef_datepicker
                 advanced:
                   placeholder_text: 'Ends on or before'
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_alert_service_affected_target_id:
                 plugin_id: default
                 advanced:
                   placeholder_text: 'Service(s) affected'
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
               field_alert_category_target_id:
                 plugin_id: bef
                 advanced:
                   sort_options: false
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: true
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
@@ -981,8 +994,11 @@ display:
                   placeholder_text: 'Building(s) affected'
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: true
+                  hide_label: false
       cache:
         type: custom_tag
         options:
@@ -1324,64 +1340,6 @@ display:
               direction: ASC
             auto_create: false
             auto_create_bundle: ''
-        field_alert_category_target_id:
-          id: field_alert_category_target_id
-          table: node__field_alert_category
-          field: field_alert_category_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_alert_category_target_id_op
-            label: Categories
-            description: ''
-            use_operator: false
-            operator: field_alert_category_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_alert_category_target_id
-            required: false
-            remember: true
-            multiple: true
-            remember_roles:
-              authenticated: authenticated
-              anonymous: anonymous
-              viewer: viewer
-              editor: editor
-              publisher: publisher
-              webmaster: webmaster
-              administrator: administrator
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: alert_categories
-          type: select
-          hierarchy: false
-          limit: true
-          error_message: true
-          save_lineage: false
-          force_deepest: false
-          parent: null
-          level_labels: ''
-          hierarchy_depth: 0
-          required_depth: 0
-          none_label: '- Please select -'
         field_alert_building_target_id:
           id: field_alert_building_target_id
           table: node__field_alert_building
@@ -1430,6 +1388,64 @@ display:
           reduce_duplicates: false
           vid: building
           type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+        field_alert_category_target_id:
+          id: field_alert_category_target_id
+          table: node__field_alert_category
+          field: field_alert_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_alert_category_target_id_op
+            label: Categories
+            description: ''
+            use_operator: false
+            operator: field_alert_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_alert_category_target_id
+            required: false
+            remember: true
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: anonymous
+              viewer: viewer
+              editor: editor
+              publisher: publisher
+              webmaster: webmaster
+              administrator: administrator
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: alert_categories
+          type: select
           hierarchy: false
           limit: true
           error_message: true
@@ -1490,7 +1506,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1888,18 +1903,16 @@ display:
         footer: false
       display_description: ''
       footer:
-        area:
-          id: area
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: area
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: text
-          empty: false
-          content:
-            value: "<p><strong>Legend: </strong><span class=\"badge badge--orange\">Service Outage</span> <span class=\"badge badge--blue\">Service Degradation</span> <span class=\"badge badge--green\">Planned Maintenance</span> <span class=\"badge badge--cool-gray\">Service Announcement</span>\r\n</p>"
-            format: filtered_html
+          plugin_id: text_custom
+          empty: true
+          content: '&nbsp;'
           tokenize: false
       display_extenders:
         metatag_display_extender:
@@ -1974,7 +1987,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -2619,7 +2631,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -3217,7 +3228,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -3504,7 +3514,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: '<p>There are currently no services scheduled for maintenance over the next 7 days.</p>'
+            value: '<p>There are currently no services scheduled for maintenance.</p>'
             format: filtered_html
           tokenize: false
       sorts:
@@ -3840,7 +3850,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: text
-          empty: false
+          empty: true
           content:
             value: '<p>Services scheduled for maintenance over the next 7 days.</p>'
             format: filtered_html
@@ -3875,7 +3885,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -4162,7 +4171,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: '<p>There are currently no service announcements for the next 7 days.</p>'
+            value: '<p>There are currently no service announcements.</p>'
             format: filtered_html
           tokenize: false
       sorts:
@@ -4443,7 +4452,20 @@ display:
         filter_groups: false
         header: false
       display_description: ''
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: '<p>Service announcements scheduled for the next 7 days.</p>'
+            format: filtered_html
+          tokenize: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -4475,7 +4497,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

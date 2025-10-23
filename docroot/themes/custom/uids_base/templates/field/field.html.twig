@@ -94,7 +94,7 @@
             <span role="presentation" class="{{ field_icon }} fa-stack-1x"></span>
           </span>
         {% else %}
-          <span role="presentation" class="field__icon fas {{ field_icon }}"></span>
+          <span role="presentation" {% if field_icon_title %}title="{{ field_icon_title }}"{% endif %} class="field__icon fas {{ field_icon }}"></span>
         {% endif %}
       {% endif %}
     {% endblock %}

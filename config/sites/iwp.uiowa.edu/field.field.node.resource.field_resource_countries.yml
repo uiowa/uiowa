@@ -1,0 +1,29 @@
+uuid: eae733f8-9327-4c49-b9cf-6e0e3d3f9170
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_resource_countries
+    - node.type.resource
+    - taxonomy.vocabulary.writer_bio_countries
+id: node.resource.field_resource_countries
+field_name: field_resource_countries
+entity_type: node
+bundle: resource
+label: Countries
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      writer_bio_countries: writer_bio_countries
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

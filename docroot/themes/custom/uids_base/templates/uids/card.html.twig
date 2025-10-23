@@ -19,6 +19,11 @@
 
   {% block body %}
     <div class="card__body">
+      {% if pre_title is not empty %}
+      <div class="card__pre-title">
+        {{ pre_title }}
+      </div>
+      {% endif %}
       {% block heading %}
         {% if headline %}
           <header>

@@ -7,9 +7,8 @@ use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
-use Drupal\migrate\Plugin\migrate\process\FileCopy;
 use Drupal\migrate\Plugin\MigrateProcessInterface;
+use Drupal\migrate\Plugin\migrate\process\FileCopy;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
 
@@ -140,7 +139,8 @@ class CreateMediaFromFile extends FileCopy {
       // Check if we're skipping on error.
       if ($this->configuration['skip_on_error']) {
         $migrate_executable->saveMessage("File $source could not be imported to $destination. Operation failed with message: " . $e->getMessage());
-        throw new MigrateSkipProcessException($e->getMessage());
+        $this->stopPipeline();
+        return NULL;
       }
       else {
         // Pass the error back on again.

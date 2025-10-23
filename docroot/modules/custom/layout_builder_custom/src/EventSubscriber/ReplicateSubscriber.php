@@ -175,8 +175,10 @@ class ReplicateSubscriber implements EventSubscriberInterface {
             // we can do a keys, flip, direct index instead of a full search.
             $index = array_flip(array_keys($replicant_components))[$old_uuid];
             // If it's the first component, then insert the new
-            // and remove the old, similar to if it was alone.
-            if ($index === 0) {
+            // and remove the old, similar to if it was alone. Similarly,
+            // if it's the last component, we can just put it at the end
+            // and remove the old.
+            if ($index === 0 || $index === count($components) - 1) {
               $section->insertAfterComponent($old_uuid, $new_component);
               $section->removeComponent($old_uuid);
             }
@@ -185,9 +187,19 @@ class ReplicateSubscriber implements EventSubscriberInterface {
               $section->removeComponent($old_uuid);
               // Get the uuid of the component at the adjusted index.
               $uuid = array_keys($components)[$index];
-              // Add the new component to the section, directly after
-              // the existing component so that it will be in the right order.
-              $section->insertAfterComponent($uuid, $new_component);
+              // Check that the uuid exists in the region.
+              $region_components = $section->getComponentsByRegion($component->getRegion());
+              if (!is_null($uuid) && isset($region_components[$uuid])) {
+                // Add the new component to the section, directly after
+                // the existing component so that it will be in the right order.
+                $section->insertAfterComponent($uuid, $new_component);
+              }
+              else {
+                // If we didn't find a uuid
+                // or the uuid didn't exist in the region,
+                // then just append the new component to the section.
+                $section->appendComponent($new_component);
+              }
             }
           }
         }

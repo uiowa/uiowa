@@ -20,12 +20,26 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
   /** @var Drupal\Core\Access\AccessResultInterface $access */
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
+  $default_paths = [
+    '/admin',
+    '/admin/*',
+    '/batch',
+    '/node/add*',
+    '/node/*/*',
+    '/user/*/*',
+  ];
+
+  $description_addition = '<br /><br /><strong>The default SiteNow pages to exclude are:</strong><br>' .
+    implode('<br>', $default_paths);
+
+  $form['tracking']['page_visibility_settings']['google_analytics_visibility_request_path_pages']['#description'] .= $description_addition;
+
   if ($access->isForbidden()) {
     $form['advanced']['#access'] = FALSE;
-
     // Disable access to all tracking config except dimensions and metrics.
+    $allowed_children = ['parameters', 'page_visibility_settings'];
     foreach (Element::children($form['tracking']) as $child) {
-      if ($child != 'parameters') {
+      if (!in_array($child, $allowed_children)) {
         $form['tracking'][$child]['#access'] = FALSE;
       }
     }

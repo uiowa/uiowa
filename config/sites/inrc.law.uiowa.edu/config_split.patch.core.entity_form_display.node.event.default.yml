@@ -1,0 +1,51 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.event.field_event_contact_email
+      - field.field.node.event.field_event_contact_name
+      - field.field.node.event.field_event_contact_phone
+      - field.field.node.event.field_event_cost
+      - field.field.node.event.field_event_sponsor
+    module:
+      - telephone
+  content:
+    field_event_contact_email:
+      type: email_default
+      weight: 34
+      region: content
+      settings:
+        placeholder: ''
+        size: 60
+      third_party_settings: {  }
+    field_event_contact_name:
+      type: string_textfield
+      weight: 32
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_event_contact_phone:
+      type: telephone_default
+      weight: 33
+      region: content
+      settings:
+        placeholder: ''
+      third_party_settings: {  }
+    field_event_cost:
+      type: string_textfield
+      weight: 30
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_event_sponsor:
+      type: string_textfield
+      weight: 31
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+removing: {  }

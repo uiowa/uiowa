@@ -51,7 +51,7 @@ class Achievement extends BaseNodeSource {
       }
       elseif (in_array($filemime, ['video/oembed', 'application/octet-stream'])) {
         $body = $row->getSourceProperty('body');
-        $body[0]['value'] = $this->createVideo($media[0]['fid']) . $body[0]['value'];
+        $body[0]['value'] = $this->constructInlineEntity($this->createVideoMediaEntity($media[0]['fid'])) . $body[0]['value'];
         $row->setSourceProperty('body', $body);
       }
     }
@@ -243,7 +243,7 @@ class Achievement extends BaseNodeSource {
         // If we're adding the headline separately,
         // remove it from the rest of the text, so we don't duplicate.
         $match[2] = str_replace('<strong>' . $value . '</strong>', '', $match[2]);
-      };
+      }
       $headline = '<h4 class="' . $headline_classes . '">';
       $headline .= '<span class="headline__heading">';
       $headline .= $headline_text;

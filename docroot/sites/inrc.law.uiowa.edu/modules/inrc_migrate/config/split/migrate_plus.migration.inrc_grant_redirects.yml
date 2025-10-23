@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies: {  }
+id: inrc_grant_redirects
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - inrc
+migration_group: sitenow_migrate
+label: 'Grant Redirects'
+source:
+  plugin: inrc_grant
+  node_type: grant
+  constants:
+    redirect_prefix: 'internal:/node/'
+    dash: '-'
+    status_code: 301
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: inrc_grant
+  redirect_source:
+    plugin: get
+    source: alias
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+migration_dependencies:
+  required:
+    - inrc_grant

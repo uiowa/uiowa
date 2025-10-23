@@ -116,7 +116,7 @@ class NodeAlertDispatchForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?NodeInterface $node = NULL) {
     $config = $this->config('facilities_core.settings');
     $this->node = $node;
 
@@ -133,6 +133,15 @@ class NodeAlertDispatchForm extends FormBase {
     if (!$communication_id) {
       $form['no_communication_id'] = [
         '#markup' => $this->t('A Dispatch communication ID has not been entered. Please select a communication ID in settings.'),
+      ];
+
+      return $form;
+    }
+
+    // Check if the node is published.
+    if (!$this->node->isPublished()) {
+      $form['not_published'] = [
+        '#markup' => $this->t('This alert must be published before it can be scheduled for an e-mail notification.'),
       ];
 
       return $form;

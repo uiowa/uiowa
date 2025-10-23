@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgccsc.uiowa.ddev.site
+    protocol: https
+  machine_name: orgccsc
+  human_name: ccsc.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgccsc.prod
+drupal:
+  db:
+    database: ccsc_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgccsc.prod.drupal.uiowa.edu'
+  requester: sekoppy
+  site-name: 'Cross-Cultural Student Coalition'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: pharmacyintranet.uiowa.ddev.site
+    protocol: https
+  machine_name: pharmacyintranet
+  human_name: intranet.pharmacy.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: pharmacyintranet.prod
+drupal:
+  db:
+    database: intranet_pharmacy_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://pharmacyintranet.prod.drupal.uiowa.edu'
+  requester: bkelley
+  site-name: intranet.pharmacy.uiowa.edu

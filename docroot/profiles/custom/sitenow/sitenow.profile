@@ -175,7 +175,7 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
     if (in_array($theme, ['uids_base'])) {
       $limit = theme_get_setting('header.top_links_limit', 'uids_base');
       if ($limit) {
-        $warning_text = t('Only the top @limit menu items will display.', [
+        $warning_text = t('Only the top @limit menu items will display. Child/submenu items are automatically hidden to maintain a usable header layout.', [
           '@limit' => $limit,
         ]);
         \Drupal::messenger()->addWarning($warning_text);
@@ -399,10 +399,9 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     $form['field_teaser']['#group'] = 'node_teaser';
 
     // If we're in v3 or a non-page content type in v2 (article, person),
-    // then disable the field_teaser and add help text.
+    // then remove access to the field_teaser.
     if (sitenow_get_version() === 'v3' || !str_starts_with($form['#id'], 'node-page')) {
-      $form['node_teaser']['#description'] = t('<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>');
-      $form['field_teaser']['#disabled'] = TRUE;
+      $form['field_teaser']['#access'] = FALSE;
     }
   }
 
@@ -502,6 +501,11 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
 
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
     if ($form_object->getEntity()->getEntityType()->id() === 'media') {
@@ -511,13 +515,11 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
       }
-
-      // Prevent deletion if there is entity usage.
-      // This is accompanied by a message from the entity_usage module.
-      if ($form_object->getOperation() == 'delete') {
-        $usage_data = \Drupal::service('entity_usage.usage')->listSources($form_object->getEntity());
-        if (!empty($usage_data)) {
-          $form['actions']['submit']['#disabled'] = TRUE;
+      // Hide alias path setting on media for non-admins to prevent
+      // unwanted changes to internal paths (not the public-facing path).
+      if (isset($form['path'])) {
+        if ($access->isForbidden()) {
+          $form['path']['#access'] = FALSE;
         }
       }
     }
@@ -526,17 +528,17 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     // Restrict theme settings form for non-admins.
     case 'system_theme_settings':
-      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-      $check = \Drupal::service('uiowa_core.access_checker');
-
-      /** @var Drupal\Core\Access\AccessResultInterface $access */
-      $access = $check->access(\Drupal::currentUser()->getAccount());
-
       if ($access->isForbidden()) {
         $form['theme_settings']['#access'] = FALSE;
         $form['logo']['#access'] = FALSE;
         $form['favicon']['#access'] = FALSE;
         $form['layout']['#access'] = FALSE;
+      }
+      break;
+
+    case 'system_site_maintenance_mode':
+      if ($access->isForbidden()) {
+        $form['maintenance_mode']['#access'] = FALSE;
       }
       break;
 
@@ -552,12 +554,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     // Restrict certain webform component options.
     case 'webform_ui_element_form':
-      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-      $check = \Drupal::service('uiowa_core.access_checker');
-
-      /** @var Drupal\Core\Access\AccessResultInterface $access */
-      $access = $check->access(\Drupal::currentUser()->getAccount());
-
       if ($access->isForbidden()) {
         // Remove access to wrapper, element, label attributes.
         $form['properties']['wrapper_attributes']['#access'] = FALSE;
@@ -569,6 +565,14 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['properties']['markup']['message_close_effect']['#access'] = FALSE;
         $form['properties']['markup']['message_storage']['#access'] = FALSE;
         $form['properties']['markup']['message_id']['#access'] = FALSE;
+      }
+
+      // Add additional help text to the captcha element.
+      if (isset($form['properties']['captcha'])) {
+        $form['properties']['captcha']['captcha_type']['#help'] = t('Currently the Default challenge is the Math challenge type.');
+        $form['properties']['captcha']['captcha_type']['#description'] = t('See our <a href="@link" target="_blank" rel="noopener">SiteNow CAPTCHA documentation</a> for more information.', [
+          '@link' => 'https://sitenow.uiowa.edu/node/646#captcha',
+        ]);
       }
 
       // Custom validation for webform components.
@@ -585,11 +589,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         // to minimal and remove headline field.
         if ($uuid === '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
           $form['field_uiowa_headline']['#access'] = FALSE;
-          /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-          $check = \Drupal::service('uiowa_core.access_checker');
-
-          $access = $check->access(\Drupal::currentUser()->getAccount());
-
           if ($access->isForbidden()) {
             $form['field_uiowa_text_area']['widget'][0]['#allowed_formats'] = [
               'minimal',
@@ -815,7 +814,7 @@ function _sitenow_prevent_front_delete_message($title) {
  *
  * @see options_allowed_values()
  */
-function publish_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function publish_options_allowed_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'title_hidden' => 'Visually hide title',
     'no_sidebars' => 'Remove sidebar regions',
@@ -1166,7 +1165,7 @@ function sitenow_entity_insert(EntityInterface $entity) {
  *
  * @see options_allowed_values()
  */
-function featured_image_size_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+function featured_image_size_values(FieldStorageDefinitionInterface $definition, ?FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'do_not_display' => 'Do not display',
     'small' => 'Small',

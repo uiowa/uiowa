@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchehs.uiowa.ddev.site
+    protocol: https
+  machine_name: researchehs
+  human_name: ehs.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchehs.prod
+drupal:
+  db:
+    database: ehs_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchehs.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Environmental Health and Safety'

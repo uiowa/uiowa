@@ -1,0 +1,35 @@
+adding:
+  dependencies:
+    config:
+      - field.field.media.file.field_file_archive_type
+      - field.field.media.file.field_file_date_range
+      - field.field.media.file.field_file_session
+    module:
+      - smart_date
+  content:
+    field_file_archive_type:
+      type: options_select
+      weight: 26
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_file_date_range:
+      type: smartdate_datelist
+      weight: 30
+      region: content
+      settings:
+        increment: 15
+        date_order: YMD
+        time_type: '24'
+        show_extra: false
+        hide_date: true
+        allday: true
+        remove_seconds: false
+      third_party_settings: {  }
+    field_file_session:
+      type: options_select
+      weight: 31
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+removing: {  }

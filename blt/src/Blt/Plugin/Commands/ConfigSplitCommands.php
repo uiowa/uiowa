@@ -20,10 +20,12 @@ class ConfigSplitCommands extends BltTasks {
    *
    * @requireContainer
    */
-  public function updateFeatureSplits($options = [
-    'split' => InputOption::VALUE_OPTIONAL,
-    'skip-export' => FALSE,
-  ]) {
+  public function updateFeatureSplits(
+    $options = [
+      'split' => InputOption::VALUE_OPTIONAL,
+      'skip-export' => FALSE,
+    ],
+  ) {
     // Reference: https://github.com/uiowa/uiowa/blob/15497457c6c34c3b49c5f4d5cda259a4e67982dc/blt/src/Blt/Plugin/Commands/GitCommands.php#L212-L222
     $root = $this->getConfigValue('repo.root');
     $finder = new Finder();
@@ -99,10 +101,12 @@ class ConfigSplitCommands extends BltTasks {
    *
    * @requireContainer
    */
-  public function updateSiteSplits($options = [
-    'host' => InputOption::VALUE_OPTIONAL,
-    'skip-export' => FALSE,
-  ]) {
+  public function updateSiteSplits(
+    $options = [
+      'host' => InputOption::VALUE_OPTIONAL,
+      'skip-export' => FALSE,
+    ],
+  ) {
     $root = $this->getConfigValue('repo.root');
     $split_name = 'config_split.config_split.site.yml';
     $finder = new Finder();

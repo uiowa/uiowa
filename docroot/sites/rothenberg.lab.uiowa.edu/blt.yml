@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrothenberg.uiowa.ddev.site
+    protocol: https
+  machine_name: labrothenberg
+  human_name: rothenberg.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrothenberg.prod
+drupal:
+  db:
+    database: rothenberg_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labrothenberg.prod.drupal.uiowa.edu'
+  requester: sgkehoe
+  site-name: 'Rothenberg Lab'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcyndari.uiowa.ddev.site
+    protocol: https
+  machine_name: labcyndari
+  human_name: cyndari.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcyndari.prod
+drupal:
+  db:
+    database: cyndari_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcyndari.prod.drupal.uiowa.edu'
+  requester: lee21
+  site-name: 'Cyndari Research Laboratory'

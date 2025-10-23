@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineuiphysicians.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineuiphysicians
+  human_name: uiphysicians.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineuiphysicians.prod
+drupal:
+  db:
+    database: uiphysicians_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineuiphysicians.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'UI Physicians'

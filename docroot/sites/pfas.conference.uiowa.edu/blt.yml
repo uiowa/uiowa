@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencepfas.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencepfas
+  human_name: pfas.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencepfas.prod
+drupal:
+  db:
+    database: pfas_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencepfas.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'PFAS Conference'

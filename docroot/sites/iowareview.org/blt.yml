@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-iowareview.uiowa.ddev.site
+    protocol: https
+  machine_name: org-iowareview
+  human_name: iowareview.org
+drush:
+  aliases:
+    local: self
+    remote: org-iowareview.prod
+drupal:
+  db:
+    database: iowareview_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-iowareview.prod.drupal.uiowa.edu'
+  requester: lnugent
+  site-name: 'The Iowa Review'

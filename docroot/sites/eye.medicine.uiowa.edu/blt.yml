@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineeye.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineeye
+  human_name: eye.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineeye.prod
+drupal:
+  db:
+    database: eye_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineeye.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Ophthalmology and Visual Sciences'

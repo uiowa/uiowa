@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgmensrugby.uiowa.ddev.site
+    protocol: https
+  machine_name: orgmensrugby
+  human_name: mensrugby.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgmensrugby.prod
+drupal:
+  db:
+    database: mensrugby_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgmensrugby.prod.drupal.uiowa.edu'
+  requester: zsyed2
+  site-name: "Iowa Men's Rugby"

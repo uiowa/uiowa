@@ -2,14 +2,14 @@
 
 namespace Drupal\uiowa_core\Element;
 
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 
 /**
  * Provides a render element to display a card.
  *
  * @RenderElement("card")
  */
-class Card extends RenderElement {
+class Card extends RenderElementBase {
 
   /**
    * {@inheritdoc}
@@ -25,6 +25,7 @@ class Card extends RenderElement {
       '#attributes' => [],
       '#media' => NULL,
       '#media_attributes' => [],
+      '#pre_title' => NULL,
       '#title' => NULL,
       '#title_heading_size' => 'h2',
       '#subtitle' => NULL,

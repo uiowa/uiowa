@@ -1,0 +1,57 @@
+uuid: 5defe24e-9a0f-4cf7-83f7-e448ecbe51a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.venue.body
+    - field.field.node.venue.field_geolocation
+    - field.field.node.venue.field_image
+    - field.field.node.venue.field_location
+    - field.field.node.venue.field_meta_tags
+    - field.field.node.venue.field_venue_additional_info
+    - node.type.venue
+  module:
+    - text
+    - user
+id: node.venue.teaser
+targetEntityType: node
+bundle: venue
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_geolocation: true
+  field_location: true
+  field_meta_tags: true
+  field_venue_additional_info: true
+  search_api_excerpt: true

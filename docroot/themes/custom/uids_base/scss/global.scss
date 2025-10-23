@@ -1,5 +1,21 @@
-@import "uids/scss/uids-core.scss";
-$imgpath: '../../uids/assets/images';
+@use '../uids/scss/uids-core.scss';
+@use '../uids/scss/abstracts/_variables.scss';
+@use '../uids/scss/abstracts/_utilities.scss';
+
+// Overrides for older browsers until https://github.com/w3c/csswg-drafts/issues/10544 is the standard.
+// @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
+// Unset container-type for regions that use absolute positioning.
+// Horizontal navigation, timeline block.
+.layout__region--unset-type .column-container {
+  container-type: unset;
+}
+
+// @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
+.node__content:has(.layout--onecol--background.banner),
+.list-container__inner .views-row {
+  container-type: inline-size;
+  container-name: column;
+}
 
 // Word break classes.
 .block--word-break,
@@ -35,18 +51,37 @@ details {
 
 // Set an element to display inline.
 .element--inline-breakpoint {
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     display: inline-flex;
   }
 }
 
 .element--inline {
   display: inline-flex;
+  align-items: baseline;
+}
+
+.element--vh {
+  height: 100svh;
 }
 
 // Align items in a grid to the top.
 .element--align-top {
   align-self: start;
+}
+
+// Position absolute.
+.element--absolute {
+  position: absolute;
+  z-index: 1;
+}
+
+.element--absolute--left {
+  left: variables.$desktop-width-gutter;
+}
+
+.element--absolute--bottom {
+  bottom: variables.$desktop-width-gutter;
 }
 
 // Set object to cover.
@@ -55,7 +90,8 @@ details {
     object-fit: cover;
     height: 100%;
   }
-  .contextual-links {
+  .contextual-links,
+  .leaflet-control {
     height: auto;
   }
 }
@@ -69,9 +105,9 @@ details {
     max-width: 1310px;
   }
   & > div {
-    margin: 0 $gutter;
+    margin: 0 variables.$gutter;
 
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       max-width: 81.875em;
       margin: 0 auto;
     }
@@ -103,7 +139,7 @@ details {
   .layout__region--second,
   .layout__region--third,
   .layout__region--fourth {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       display: grid;
     }
   }
@@ -125,21 +161,21 @@ details {
 // Layout container padding
 .layout__container {
   margin-top: 0;
-  padding-bottom: $mobile-width-gutter;
+  padding-bottom: variables.$mobile-width-gutter;
   // This will be overridden by a subsequent style for 1+n containers.
-  padding-top: $mobile-width-gutter;
+  padding-top: variables.$mobile-width-gutter;
 
-  @include breakpoint(sm) {
-    padding-top: $desktop-width-gutter;
-    padding-bottom: $desktop-width-gutter;
+  @include utilities.breakpoint(sm) {
+    padding-top: variables.$desktop-width-gutter;
+    padding-bottom: variables.$desktop-width-gutter;
   }
 
   &:first-child {
     padding-top: 0;
     .region-pre-footer & {
-      padding-top: $mobile-width-gutter;
-      @include breakpoint(sm) {
-        padding-top: $desktop-width-gutter;
+      padding-top: variables.$mobile-width-gutter;
+      @include utilities.breakpoint(sm) {
+        padding-top: variables.$desktop-width-gutter;
       }
     }
   }
@@ -180,7 +216,7 @@ details {
       // Necessary to restore padding
       &.section-padding {
         &__top-restored {
-          padding-top: $desktop-width-gutter;
+          padding-top: variables.$desktop-width-gutter;
         }
 
         &__top-extra {
@@ -192,7 +228,7 @@ details {
 
   // Add default padding if page title is hidden
   &.layout--title--hidden + &:not([class*="bg-"]) {
-    padding-top: $desktop-width-gutter;
+    padding-top: variables.$desktop-width-gutter;
 
     &.section-padding {
       &__removed-top {
@@ -215,7 +251,7 @@ details {
     }
 
     &__top-restored {
-      padding-top: $desktop-width-gutter;
+      padding-top: variables.$desktop-width-gutter;
     }
 
     &__top-extra {
@@ -238,7 +274,7 @@ details {
     &.border,
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
-      padding: $desktop-width-gutter;
+      padding: variables.$desktop-width-gutter;
     }
     &.border.block-padding__all--minimal,
     &[class*="bg--"].block-padding__all--minimal,
@@ -267,6 +303,9 @@ details {
   }
   &--left {
     border-left: 1px solid rgba(0, 0, 0, 0.25);
+    &.borderless.card {
+      border-left: 1px solid rgba(0, 0, 0, 0.25)!important;
+    }
   }
 }
 
@@ -291,14 +330,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .path-node.layout-builder-disabled:not(.page-node-type-page) {
   .node--view-mode-full {
-    margin-bottom: $lg;
+    margin-bottom: variables.$lg;
   }
 }
 
 .layout-builder-disabled main.page__container {
-  margin: 0 $mobile-width-gutter $mobile-width-gutter;
+  margin: 0 variables.$mobile-width-gutter variables.$mobile-width-gutter;
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     margin: 0 auto;
     width: 100%;
   }
@@ -307,7 +346,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout-builder-disabled .uiowa-bar .page__container {
   margin-top: 0;
 
-  @include breakpoint(page-container) {
+  @include utilities.breakpoint(page-container) {
     margin: 0 auto;
   }
 }
@@ -320,17 +359,17 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .content__container {
   .layout__spacing_container {
-    @include container-width;
+    @include utilities.container-width;
   }
 
   .page__container--extended,
   .page__container--extended.layout--has-sidebar,
   .page__container--extended.sidebar-invisible {
     .layout__spacing_container {
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         max-width: 100em;
-        padding-right: $lg;
-        padding-left: $lg;
+        padding-right: variables.$lg;
+        padding-left: variables.$lg;
       }
     }
   }
@@ -339,13 +378,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   .page__container--narrow.layout--has-sidebar,
   .page__container--narrow.sidebar-invisible {
     .layout__spacing_container {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         max-width: 63.75em;
         margin: 0 auto;
         padding-right: 1.25rem;
         padding-left: 1.25rem;
       }
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         padding-right: 0;
         padding-left: 0;
       }
@@ -360,13 +399,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .page__container--full.layout--has-sidebar,
 .page__container--full.sidebar-invisible {
   .layout__spacing_container {
-    margin-right: $mobile-width-gutter;
-    margin-left: $mobile-width-gutter;
+    margin-right: variables.$mobile-width-gutter;
+    margin-left: variables.$mobile-width-gutter;
     max-width: 100%;
 
-    @include breakpoint(md) {
-      margin-right: $desktop-width-gutter;
-      margin-left: $desktop-width-gutter;
+    @include utilities.breakpoint(md) {
+      margin-right: variables.$desktop-width-gutter;
+      margin-left: variables.$desktop-width-gutter;
     }
   }
 }
@@ -387,9 +426,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   // sidebar layout
   &.layout--has-sidebar {
     .layout__spacing_container {
-      flex-direction: column-reverse;
-      @include breakpoint(md) {
-        flex-direction: unset;
+      .layout__region--sidebar {
+        order: 2;
+        @include utilities.breakpoint(md) {
+          order: inherit;
+        }
       }
     }
   }
@@ -402,7 +443,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       .layout__region--sidebar,
       .layout__region--main {
         order: 2;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      // Layout with card sidebar.
+      .layout__region-container.card {
+        order: 1;
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
@@ -411,12 +460,12 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       .layout__region--content,
       .layout__region-container {
         order: 1;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
       .layout__region-container {
-        margin-bottom: $mobile-height-gutter;
+        margin-bottom: variables.$mobile-height-gutter;
       }
     }
   }
@@ -427,21 +476,21 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
       .layout__region--first {
         order: 3;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
 
       .layout__region--second {
         order: 2;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
 
       .layout__region--third {
         order: 1;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
@@ -454,28 +503,28 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
       .layout__region--first {
         order: 4;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
 
       .layout__region--second {
         order: 3;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
 
       .layout__region--third {
         order: 2;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
 
       .layout__region--fourth {
         order: 1;
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           order: inherit;
         }
       }
@@ -489,8 +538,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout--twocol,
 .layout--has-sidebar {
   .layout__region:not(:last-child) {
-    margin-bottom: $mobile-height-gutter;
-    @include breakpoint(md) {
+    margin-bottom: variables.$mobile-height-gutter;
+    @include utilities.breakpoint(md) {
       margin-bottom: 0;
     }
   }
@@ -499,8 +548,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   // If section order is reversed, add margin back into last-child.
   &.section-order__reversed {
     .layout__region:last-child {
-      margin-bottom: $mobile-height-gutter;
-      @include breakpoint(md) {
+      margin-bottom: variables.$mobile-height-gutter;
+      @include utilities.breakpoint(md) {
         margin-bottom: 0;
       }
     }
@@ -536,100 +585,22 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   min-width: 0;
 }
 
-// Block Margins / Padding
-
-.block-padding,
-.element--padding {
-  &__top {
-    padding-top: $desktop-width-gutter;
-  }
-  &__right {
-    padding-right: $desktop-width-gutter;
-  }
-  &__bottom {
-    padding-bottom: $desktop-width-gutter;
-  }
-  &__left {
-    padding-left: $desktop-width-gutter;
-  }
-  &__all {
-    padding: $desktop-width-gutter;
-  }
-  &__all--extra {
-    padding: 6rem;
-  }
-  &__all--minimal {
-    padding: 2rem;
-  }
-}
-
-// CSS logical property padding utility classes.
-.padding--block--sm {
-  padding-block: 0.5rem;
-}
-
-.padding--inline-start--sm {
-  padding-inline-start: 0.5rem;
-}
-
-.padding--inline-start--md {
-  padding-inline-start: 1rem;
-}
-
-.padding--inline-end--sm  {
-  padding-inline-end: 0.5rem;
-}
-
-.padding--inline-end--md  {
-  padding-inline-end: 1rem;
-}
-
-.padding--inline--md {
-  padding-inline: 1rem;
-}
-
-.block-margin {
-  &__top {
-    margin-top: $md;
-
-    &--extra {
-      margin-top: $md;
-      @include breakpoint(sm) {
-        margin-top: $mobile-height-gutter;
-      }
-    }
-  }
-
-  &__right {
-    @include breakpoint(sm) {
-      margin-right: $md;
-    }
-  }
-
-  &__bottom {
-    margin-bottom: $md;
-
-    &--extra {
-      margin-bottom: $md;
-      @include breakpoint(sm) {
-        margin-bottom: $mobile-height-gutter;
-      }
-    }
-  }
-
-  &__left {
-    @include breakpoint(sm) {
-      margin-left: $md;
-    }
-  }
-}
-
 // Set spacing as the default for mobile.
 .layout__container {
   &:not([class*="grid-"]):not([class*="layout--title"]) {
     .layout__region {
       .block + .block {
         margin-top: 1.6rem;
+        .field--label-above {
+          margin-bottom: 0;
+        }
+
+        .field.text-formatted div {
+          margin-bottom: 0;
+          p:first-child:last-child {
+            margin-bottom: 0;
+          }
+        }
 
         &:first-child {
           margin-top: 0;
@@ -637,12 +608,12 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
       // Allow margin top and top extra to override.
       .block + .block.block-margin__top {
-        margin-top: $md;
+        margin-top: variables.$md;
       }
       .block + .block.block-margin__top--extra {
-        margin-top: $md;
-        @include breakpoint(sm) {
-          margin-top: $mobile-height-gutter;
+        margin-top: variables.$md;
+        @include utilities.breakpoint(sm) {
+          margin-top: variables.$mobile-height-gutter;
         }
       }
       // Remove default margins style.
@@ -697,14 +668,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .view-book-search,
 .view-book-whats-new {
   .view-header {
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
   }
 
   .views-row {
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
     font-size: 1.3rem;
-    border-bottom: 1px solid $light;
-    padding: $sm 0;
+    border-bottom: 1px solid variables.$light;
+    padding: variables.$sm 0;
 
     &:last-child {
       border-bottom: none;
@@ -712,8 +683,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
     a {
       text-decoration: none;
-      font-weight: $font-weight-light;
-      color: $secondary;
+      font-weight: variables.$font-weight-light;
+      color: variables.$secondary;
 
       &:hover,
       &:focus {
@@ -725,14 +696,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .view-book-toc {
   span {
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
     font-size: 1.3rem;
-    padding: $sm 0;
+    padding: variables.$sm 0;
 
     a {
       text-decoration: none;
-      font-weight: $font-weight-light;
-      color: $secondary;
+      font-weight: variables.$font-weight-light;
+      color: variables.$secondary;
     }
   }
 
@@ -744,31 +715,31 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .view-book-toc .views-field-book-owner,
 .view-book-whats-new .views-field-book-amended-date {
   font-size: small;
-  font-weight: $font-weight-light;
-  color: $text-muted;
-  margin-left: $sm-md;
+  font-weight: variables.$font-weight-light;
+  color: variables.$text-muted;
+  margin-left: variables.$sm-md;
 }
 
 .view-display-id-attachment_a_z_list,
 .view-display-id-attachment_book_a_z_list,
 .view-display-id-attachment_services {
   >div {
-    @include flexbox;
-    @include margin($top: 0, $left: 0, $bottom: $xlg);
+    display: flex;
+    @include utilities.margin(variables.$top: 0, variables.$left: 0, variables.$bottom: variables.$xlg);
     flex-wrap: wrap;
 
     span {
-      border: 1px solid $grey-light;
+      border: 1px solid variables.$grey-light;
       display: flex;
       text-align: center;
-      margin: 0 $sm $sm 0;
-      color: $grey;
+      margin: 0 variables.$sm variables.$sm 0;
+      color: variables.$grey;
       height: 3rem;
       width: 3rem;
       align-items: center;
       justify-content: center;
 
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         border-right: none;
         margin: 0;
         flex: 1;
@@ -777,7 +748,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       a {
         display: flex;
         text-decoration: none;
-        color: $secondary;
+        color: variables.$secondary;
         align-items: center;
         justify-content: center;
         height: 100%;
@@ -786,13 +757,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         &:hover,
         &:focus,
         &.is-active {
-          background: $light;
+          background: variables.$light;
         }
       }
 
       &:last-child {
-          @include breakpoint(page-container) {
-            border-right: 1px solid $grey-light;
+          @include utilities.breakpoint(page-container) {
+            border-right: 1px solid variables.$grey-light;
         }
       }
     }
@@ -815,60 +786,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   margin-top: 0;
 }
 
-// ie11
-
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .layout__container .block-inline-blockuiowa-text-area {
-    flex-basis: auto;
-  }
-
-  .o-canvas__group {
-    -ms-flex-preferred-size: auto !important;
-    flex-basis: auto !important;
-  }
-
-  .card__body {
-    flex: auto !important;
-  }
-
-  .card.card--horizontal .card__body {
-    flex: 1 !important;
-    flex-direction: column;
-  }
-
-  .card.card--horizontal>* {
-    flex-direction: unset;
-    display: block !important;
-  }
-
-  .paragraph--type--articles.list .card__body,
-  .paragraph--type--people.list .card__body,
-  .paragraph--type--events.list .card__body,
-  .view-display-id-page_articles .card__body,
-  .paragraph--type--featured-content.list .card__body,
-  .view-id-people .card__body,
-  .view-display-id-page_articles .view-content {
-    flex: 1 !important;
-  }
-
-  .paragraph--type--articles.list .view-content,
-  .paragraph--type--people.list .view-content,
-  .view-display-id-page_articles .view-content,
-  .paragraph--type--featured-content.list .field--name-field-featured-content {
-    display: block !important;
-  }
-
-  .view-id-people .card--list,
-  .view-id-people .node--type-article {
-    display: flex !important;
-  }
-
-  #superfish-main-accordion {
-    position: relative !important;
-  }
-}
-
 // Extra padding to help browsers with a full menu drawer
 .o-canvas__menu .region-primary-menu {
   &::after {
@@ -879,7 +796,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     display: list-item;
     color: #fff;
   }
-  @include breakpoint(sm) {
+  @include utilities.breakpoint(sm) {
     &::after {
       padding-bottom: 50px;
     }
@@ -917,7 +834,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 .screen-reader-text {
-  @include element-invisible;
+  @include utilities.element-invisible;
 }
 
 @keyframes fadeIn {
@@ -932,4 +849,8 @@ img.lazyload {
 
 img.lazyload.loaded {
   opacity: 1;
+}
+
+* + small {
+  margin-top: variables.$md;
 }

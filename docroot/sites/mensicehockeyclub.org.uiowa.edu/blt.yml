@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgmensicehockeyclub.uiowa.ddev.site
+    protocol: https
+  machine_name: orgmensicehockeyclub
+  human_name: mensicehockeyclub.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgmensicehockeyclub.prod
+drupal:
+  db:
+    database: mensicehockeyclub_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgmensicehockeyclub.prod.drupal.uiowa.edu'
+  requester: ldeltoft
+  site-name: 'Iowa Mens Ice Hockey Club'

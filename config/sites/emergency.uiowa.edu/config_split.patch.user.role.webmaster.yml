@@ -2,15 +2,20 @@ adding:
   dependencies:
     config:
       - node.type.hawk_alert
+      - taxonomy.vocabulary.hawk_alert_status
   permissions:
     - 'create hawk_alert content'
+    - 'create terms in hawk_alert_status'
     - 'delete any hawk_alert content'
     - 'delete hawk_alert revisions'
     - 'delete own hawk_alert content'
+    - 'delete terms in hawk_alert_status'
     - 'edit any hawk_alert content'
     - 'edit own hawk_alert content'
+    - 'edit terms in hawk_alert_status'
     - 'enter hawk_alert revision log entry'
     - 'override hawk_alert authored by option'
+    - 'override hawk_alert authored on option'
     - 'override hawk_alert published option'
     - 'revert hawk_alert revisions'
     - 'view hawk_alert revisions'

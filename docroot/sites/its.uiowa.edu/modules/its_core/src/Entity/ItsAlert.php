@@ -23,6 +23,8 @@ class ItsAlert extends Alert {
       ],
     ]);
 
+    $build['#link_indicator'] = TRUE;
+
   }
 
   /**

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhrl.uiowa.ddev.site
+    protocol: https
+  machine_name: labhrl
+  human_name: hrl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhrl.prod
+drupal:
+  db:
+    database: hrl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhrl.prod.drupal.uiowa.edu'
+  requester: dquam
+  site-name: 'Histology Research Laboratory'

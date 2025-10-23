@@ -7,10 +7,13 @@ label: 'Advanced Webform'
 description: 'Advanced webform settings.'
 weight: 80
 stackable: true
+no_patching: false
 storage: folder
 folder: ../config/features/advanced_webform
-module: {  }
+module:
+  sitenow_advanced_webform: 0
 theme: {  }
 complete_list: {  }
 partial_list:
   - webform.settings
+  - 'user.role.*'

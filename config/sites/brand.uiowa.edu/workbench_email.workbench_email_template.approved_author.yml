@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - node.type.lockup
+    - workflows.workflow.editorial
+    - workflows.workflow.lockup
 id: approved_author
 label: 'Approved to Author'
 format: html
@@ -20,3 +22,7 @@ body:
   value: "<p>The [node:title] lockup submission has been <strong>approved</strong> and is available for download at <a href=\"https://brand.uiowa.edu/lockup-system\">https://brand.uiowa.edu/lockup-system</a>.</p>\r\n\r\n<p><strong><em>[brand:custom_log]</em></strong></p>\r\n\r\n<p>The lockup set provides vector SVG files in black and two-color options. The files with block IOWA set in gold use RGB color created with the approved gold hex value for web. For print applications use a CMYK color space and switch gold to CMYK: 0 14 100 0 or PMS 116C depending on your production specs.</p>\r\n\r\n<p>SVG files can be opened in adobe illustrator and converted to the file formats of your choice. Tools such as <a href=\"https://cloudconvert.com/\">cloud convert</a> are also available.</p>\r\n\r\n<p>Visit <a href=\"https://brand.uiowa.edu\">brand.uiowa.edu</a> for additional visual identity guidelines or contact <a href=\"mailto:osc-brand@uiowa.edu\">osc-brand@uiowa.edu</a> with any follow up questions.</p>\r\n\r\n<p>--<br />\r\nOffice of Strategic Communication,<br />\r\nUniversity of Iowa Brand Management Team<br />\r\n<a href=\"https://brand.uiowa.edu\">https://brand.uiowa.edu</a><br />\r\n<a href=\"mailto:osc-brand@uiowa.edu\">osc-brand@uiowa.edu</a></p>\r\n"
   format: filtered_html
 replyTo: '[site:mail]'
+transitions:
+  editorial: {  }
+  lockup:
+    publish: publish

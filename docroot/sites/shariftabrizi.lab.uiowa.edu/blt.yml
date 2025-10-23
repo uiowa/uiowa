@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labshariftabrizi.uiowa.ddev.site
+    protocol: https
+  machine_name: labshariftabrizi
+  human_name: shariftabrizi.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labshariftabrizi.prod
+drupal:
+  db:
+    database: shariftabrizi_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labshariftabrizi.prod.drupal.uiowa.edu'
+  requester: jenkinsn
+  site-name: 'Shariftabrizi lab'

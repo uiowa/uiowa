@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgpgn.uiowa.ddev.site
+    protocol: https
+  machine_name: orgpgn
+  human_name: pgn.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgpgn.prod
+drupal:
+  db:
+    database: pgn_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgpgn.prod.drupal.uiowa.edu'
+  requester: rspaeth1
+  site-name: 'Phi Gamma Nu'

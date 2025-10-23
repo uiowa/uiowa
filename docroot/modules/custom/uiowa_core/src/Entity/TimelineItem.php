@@ -4,6 +4,7 @@ namespace Drupal\uiowa_core\Entity;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\uiowa_core\LinkHelper;
 
 /**
  * Provides an interface for paragraph timeline items.
@@ -40,23 +41,29 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       unset($build['field_timeline_icon']);
     }
 
-    // Check if the timeline card should be linked.
-    $field_timeline_link = $this->get('field_timeline_link');
+    // Process timeline link field for both regular and media links.
+    if (!empty($build['field_timeline_link'][0])) {
+      // Capture the parts of the URL and title.
+      $url = $build['field_timeline_link'][0]['#url'] ?? NULL;
+      $title = $build['field_timeline_link'][0]['#title'] ?? NULL;
 
-    if ($field_timeline_link && !$field_timeline_link->isEmpty()) {
-      $url = $field_timeline_link->get(0)->getUrl();
-      $build['#url'] = $url ? $url->toString() : '';
-      $build['#link_indicator'] = TRUE;
-
-      if (!empty($field_timeline_link->title)) {
-        $build['#link_text'] = $field_timeline_link->title;
+      if ($url) {
+        $url = $url->toString();
+        if (LinkHelper::shouldClearTitle($title)) {
+          $title = NULL;
+        }
+        $build['#url'] = $url;
+        $build['#link_text'] = $title;
+        $build['#link_indicator'] = TRUE;
       }
-    }
+      else {
+        // Handle the case where no URL is provided.
+        $build['#url'] = '';
+        $build['#link_indicator'] = FALSE;
+      }
 
-    // If we don't have a link set,
-    // then we don't want the card linked at all.
-    else {
-      $build['#url'] = '';
+      // Remove the original field to prevent further processing.
+      unset($build['field_timeline_link']);
     }
 
     // Each card is part of a timeline list, so add

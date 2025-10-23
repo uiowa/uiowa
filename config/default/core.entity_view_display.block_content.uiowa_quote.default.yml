@@ -9,14 +9,15 @@ dependencies:
     - field.field.block_content.uiowa_quote.field_uiowa_quote_footer
     - field.field.block_content.uiowa_quote.field_uiowa_quote_image
   module:
-    - link
+    - linkit
+    - smart_trim
 id: block_content.uiowa_quote.default
 targetEntityType: block_content
 bundle: uiowa_quote
 mode: default
 content:
   field_uiowa_quote_citation:
-    type: link
+    type: linkit
     label: above
     settings:
       trim_length: 80
@@ -24,21 +25,49 @@ content:
       url_plain: false
       rel: ''
       target: ''
+      linkit_profile: default
     third_party_settings: {  }
     weight: 2
     region: content
   field_uiowa_quote_content:
-    type: basic_string
+    type: smart_trim
     label: above
-    settings: {  }
+    settings:
+      trim_length: 600
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+      summary_handler: full
+      trim_options: {  }
     third_party_settings: {  }
     weight: 0
     region: content
   field_uiowa_quote_footer:
-    type: string
+    type: smart_trim
     label: above
     settings:
-      link_to_entity: false
+      trim_length: 600
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more:
+        display_link: false
+        target_blank: false
+        link_trim_only: false
+        class: more-link
+        text: More
+        aria_label: 'Read more about [node:title]'
+      summary_handler: full
+      trim_options: {  }
     third_party_settings: {  }
     weight: 1
     region: content

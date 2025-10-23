@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: forecords.uiowa.ddev.site
+    protocol: https
+  machine_name: forecords
+  human_name: records.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: forecords.prod
+drupal:
+  db:
+    database: records_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://forecords.prod.drupal.uiowa.edu'
+  requester: bartos
+  site-name: 'Records Management'

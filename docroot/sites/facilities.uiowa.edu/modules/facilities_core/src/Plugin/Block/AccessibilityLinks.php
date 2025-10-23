@@ -31,6 +31,8 @@ class AccessibilityLinks extends BlockBase {
   public function build() {
     $node = $this->getContextValue('node');
     $building_number = $node->get('field_building_number')->getString();
+    $energy_dashboard = $node->get('field_building_energy_dashboard')
+      ->getString();
 
     $links = [
       'accessibility' => [
@@ -49,7 +51,7 @@ class AccessibilityLinks extends BlockBase {
         'id' => '7c639bd4000b4d34979a3a3a628d7180',
       ],
       'gender_inclusive_restroom' => [
-        'label' => 'Gender Inclusive Restrooms',
+        'label' => 'Single user restrooms',
         'icon' => 'person-half-dress',
         'id' => 'a787689a1da843018156b2f2e97da119',
       ],
@@ -60,6 +62,10 @@ class AccessibilityLinks extends BlockBase {
       $url = 'https://uiadmin.maps.arcgis.com/apps/webappviewer/index.html?id=' . $link['id'] . '&query=Buildings,BuildingNumber,' . $building_number;
       $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $url . '">' . $link['label'] . '<i class="fa-solid fa-' . $link['icon'] . ' "></i></a>';
     }
+    // @todo Remove this completely or add back in as needed.
+    // if (!empty($energy_dashboard)) {
+    // $list_markup .= '<a class="bttn bttn--transparent bttn--tertiary bttn--small" href="' . $energy_dashboard . '" aria-label="Energy Dashboard (Login Required)">' . 'Energy Dashboard' . '<i class="fa-solid fa-bolt-lightning"></i></a>';
+    // }
     $list_markup .= '</div>';
 
     $build = [];

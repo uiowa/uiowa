@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labortho-goetz.uiowa.ddev.site
+    protocol: https
+  machine_name: labortho-goetz
+  human_name: ortho-goetz.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labortho-goetz.prod
+drupal:
+  db:
+    database: ortho_goetz_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labortho-goetz.prod.drupal.uiowa.edu'
+  requester: goetzj
+  site-name: 'Orthopedic Biomechanics - Goetz Laboratory'

@@ -317,10 +317,15 @@ trait CreateMediaTrait {
   /**
    * From file id, check if an oembed media exists, and create if not.
    */
-  protected function createVideo($fid, $alignment = 'center') {
+  protected function createVideoMediaEntity($fid) {
     $file_query = $this->fidQuery($fid);
     // Get the video source.
-    $vid_uri = str_replace('oembed://', '', $file_query['uri']);
+    if (str_starts_with($file_query['uri'], 'youtube://v/')) {
+      $vid_uri = str_replace('youtube://v/', 'https://www.youtube.com/watch?v=', $file_query['uri']);
+    }
+    else {
+      $vid_uri = str_replace('oembed://', '', $file_query['uri']);
+    }
     $vid_uri = urldecode($vid_uri);
     $new_id = \Drupal::database()->select('media__field_media_oembed_video', 'o')
       ->fields('o', ['entity_id'])
@@ -352,18 +357,7 @@ trait CreateMediaTrait {
         ->uuid();
     }
 
-    $media = [
-      '#type' => 'html_tag',
-      '#tag' => 'drupal-media',
-      '#attributes' => [
-        'data-align' => $alignment,
-        'data-entity-type' => 'media',
-        'data-entity-uuid' => $uuid,
-        'data-view-mode' => 'medium',
-      ],
-    ];
-
-    return \Drupal::service('renderer')->renderPlain($media);
+    return $uuid;
   }
 
 }

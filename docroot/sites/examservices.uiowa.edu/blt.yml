@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: examservices.uiowa.ddev.site
+    protocol: https
+  machine_name: examservices
+  human_name: examservices.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: examservices.prod
+drupal:
+  db:
+    database: examservices_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://examservices.prod.drupal.uiowa.edu'
+  requester: albeck
+  site-name: 'Exam Services'

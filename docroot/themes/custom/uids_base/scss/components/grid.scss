@@ -1,19 +1,19 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/layout/grid.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/layout/grid.scss';
 
 // List container spacing.
 .list-container.list-container--list:not([class*="grid-"]) {
   .list-container__inner {
     > div + div {
-      margin-top: 1.6rem;
+      margin-top: 2rem;
     }
   }
 }
 
 .list-container__inner {
   [class*="grid--"].view & {
-    margin-bottom: $mobile-height-gutter;
+    margin-bottom: variables.$mobile-height-gutter;
   }
   .card,
   .views-field {
@@ -27,7 +27,7 @@
 // Set first item within list-container to full width
 .grid--first-item-full-width {
   .list-container__inner {
-    :first-child {
+    > :first-child {
       grid-column: 1 / -1;
     }
   }
@@ -49,17 +49,17 @@
 .list-container--grid.grid--threecol--33-34-33 .list-container__inner,
 .list-container--grid.grid--twocol--50-50 .list-container__inner {
   grid-template-columns: inherit;
-  gap: $mobile-height-gutter;
+  gap: variables.$mobile-height-gutter;
 }
 
 .list-container--grid .more-link {
-  margin-top: $mobile-height-gutter;
+  margin-top: variables.$mobile-height-gutter;
 }
 
 .grid--threecol--33-34-33 .list-container__inner,
 .grid--twocol--50-50 .list-container__inner {
-  @include breakpoint(sm) {
-    row-gap: $desktop-width-gutter;
+  @include utilities.breakpoint(sm) {
+    row-gap: variables.$desktop-width-gutter;
     align-self: self-start;
   }
 }
@@ -68,10 +68,41 @@
 .grid--fourcol--25 {
   .list-container__inner {
     display: grid;
-    gap: $mobile-height-gutter;
-    @include grid-base;
-    @include breakpoint(md) {
-      @include fourcol-grid;
+    gap: variables.$mobile-height-gutter;
+    @include utilities.grid-base;
+    @include utilities.breakpoint(md) {
+      @include utilities.fourcol-grid;
+    }
+  }
+}
+
+// Layout.
+.grid--twocol--25-75 {
+  .list-container__inner {
+    align-items: start;
+    @include utilities.grid-base;
+    .content {
+      > div + div {
+        margin-top: 2rem;
+      }
+    }
+    @include utilities.breakpoint(sm) {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+
+      .sidebar {
+        grid-area: 2/1/6/2;
+        min-width: 200px;
+      }
+
+      .content {
+        grid-area: 2/2/6/5;
+        min-width: 0;
+      }
+    }
+    @include utilities.breakpoint(page-container) {
+      gap: 3rem;
     }
   }
 }

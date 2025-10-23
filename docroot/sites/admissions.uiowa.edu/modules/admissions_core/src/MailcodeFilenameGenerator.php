@@ -41,7 +41,7 @@ class MailcodeFilenameGenerator extends FilenameGenerator {
   /**
    * {@inheritdoc}
    */
-  public function generateFilename(array $entities, callable $entity_label_callback = NULL) {
+  public function generateFilename(array $entities, ?callable $entity_label_callback = NULL) {
     $filenames = [];
 
     /** @var \Drupal\Core\Entity\EntityInterface $entity */

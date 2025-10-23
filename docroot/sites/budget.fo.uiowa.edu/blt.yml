@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: fobudget.uiowa.ddev.site
+    protocol: https
+  machine_name: fobudget
+  human_name: budget.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fobudget.prod
+drupal:
+  db:
+    database: budget_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://fobudget.prod.drupal.uiowa.edu'
+  requester: lchesire
+  site-name: 'Office of Budget and Planning'

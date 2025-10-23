@@ -9,13 +9,16 @@ dependencies:
     - field.field.node.support_article.field_support_article_faqs
     - field.field.node.support_article.field_support_article_service
     - field.field.node.support_article.field_support_article_short_desc
+    - field.field.node.support_article.rabbit_hole__settings
     - node.type.support_article
+    - workflows.workflow.draft
   module:
     - allowed_formats
     - content_moderation
     - metatag
     - paragraphs
     - path
+    - rabbit_hole
     - text
 id: node.support_article.default
 targetEntityType: node
@@ -51,13 +54,13 @@ content:
     third_party_settings: {  }
   field_support_article_category:
     type: options_buttons
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   field_support_article_faqs:
     type: paragraphs
-    weight: 14
+    weight: 15
     region: content
     settings:
       title: Paragraph
@@ -93,7 +96,7 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -110,6 +113,13 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
+    third_party_settings: {  }
   simple_sitemap:
     weight: 4
     region: content
@@ -117,7 +127,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 10
+    weight: 9
     region: content
     settings:
       display_label: true

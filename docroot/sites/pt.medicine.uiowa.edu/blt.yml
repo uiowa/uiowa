@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinept.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinept
+  human_name: pt.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinept.prod
+drupal:
+  db:
+    database: pt_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinept.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Department of Physical Therapy'

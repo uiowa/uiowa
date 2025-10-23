@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablweber.uiowa.ddev.site
+    protocol: https
+  machine_name: lablweber
+  human_name: lweber.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablweber.prod
+drupal:
+  db:
+    database: lweber_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablweber.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Weber Research Group'

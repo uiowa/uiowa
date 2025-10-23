@@ -6,9 +6,11 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountProxy;
 use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\pathauto\PathautoGenerator;
+use Drupal\uiowa_core\Access\UiowaCoreAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,6 +54,20 @@ class SettingsForm extends ConfigFormBase {
   protected $pathAutoGenerator;
 
   /**
+   * The UiowaCoreAccess service.
+   *
+   * @var \Drupal\uiowa_core\Access\UiowaCoreAccess
+   */
+  protected $uiowaCoreAccess;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
+
+  /**
    * The Constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -64,13 +80,19 @@ class SettingsForm extends ConfigFormBase {
    *   The EntityTypeManager service.
    * @param \Drupal\pathauto\PathautoGenerator $pathAutoGenerator
    *   The PathautoGenerator service.
+   * @param \Drupal\uiowa_core\Access\UiowaCoreAccess $uiowaCoreAccess
+   *   The UiowaCoreAccess service.
+   * @param \Drupal\Core\Session\AccountProxy $currentUser
+   *   The current user.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator, UiowaCoreAccess $uiowaCoreAccess, AccountProxy $currentUser) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $pathauto_alias_cleaner;
     $this->aliasRepository = $aliasRepository;
     $this->entityTypeManager = $entityTypeManager;
     $this->pathAutoGenerator = $pathAutoGenerator;
+    $this->uiowaCoreAccess = $uiowaCoreAccess;
+    $this->currentUser = $currentUser;
   }
 
   /**
@@ -82,7 +104,9 @@ class SettingsForm extends ConfigFormBase {
       $container->get('pathauto.alias_cleaner'),
       $container->get('path_alias.repository'),
       $container->get('entity_type.manager'),
-      $container->get('pathauto.generator')
+      $container->get('pathauto.generator'),
+      $container->get('uiowa_core.access_checker'),
+      $container->get('current_user')
     );
   }
 
@@ -194,6 +218,25 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $related_display ?: 'card_grid',
     ];
 
+    $form['article_node']['sitenow_articles_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Articles path'),
+      '#description' => $this->t('The base path for articles. Defaults to <em>news/{ year }/{ month }/{article title}</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
+      '#default_value' => $display['display_options']['path'],
+      '#required' => TRUE,
+    ];
+
+    // Restrict access to administrators.
+    $access = $this->uiowaCoreAccess->access($this->currentUser->getAccount());
+    $form['article_node']['remove_yearmonth_slug'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Remove year/month slug'),
+      '#description' => $this->t('If checked, the article path will no longer be <em>{articles path}/{ year }/{ month }/{article title}</em>, but instead <em>{articles path}/{article title}</em>. For consistency across sites, remove only if necessary.'),
+      '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
+      '#size' => 60,
+      '#access' => $access->isAllowed(),
+    ];
+
     $form['article_node']['related_display_headings_lists_help'] = [
       '#type' => 'item',
       '#title' => 'How related content is displayed:',
@@ -259,7 +302,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Enable articles listing'),
       '#default_value' => $status,
-      '#description' => $this->t('If checked, an articles listing will display at the configurable path below.'),
+      '#description' => $this->t('If checked, an articles listing will display at the configurable Articles path.<br /><em>Example:</em> If the Articles path is set as <em>news</em>, each article will have the pattern <em>news/{ year }/{ month }/{article title}</em>, and the articles listing will be available at <em>/news</em>.'),
       '#size' => 60,
     ];
 
@@ -268,14 +311,6 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Articles title'),
       '#description' => $this->t('The title for the articles listing. Defaults to <em>News</em>.'),
       '#default_value' => $default['display_options']['title'],
-      '#required' => TRUE,
-    ];
-
-    $form['view_page']['sitenow_articles_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Articles path'),
-      '#description' => $this->t('The base path for the articles listing. Defaults to <em>news</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
-      '#default_value' => $display['display_options']['path'],
       '#required' => TRUE,
     ];
 
@@ -340,6 +375,7 @@ class SettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = (int) $form_state->getValue('sitenow_articles_archive');
+    $remove_yearmonth_slug = $form_state->getValue('remove_yearmonth_slug');
 
     $config_settings = $this->configFactory->getEditable(static::SETTINGS);
 
@@ -353,6 +389,7 @@ class SettingsForm extends ConfigFormBase {
         'value',
       ],
       'display_articles_by_author' => 'display_articles_by_author',
+      'remove_yearmonth_slug' => 'remove_yearmonth_slug',
     ];
 
     foreach ($config_updates as $config_name => $form_state_value) {
@@ -409,8 +446,13 @@ class SettingsForm extends ConfigFormBase {
     $view->save();
 
     $old_pattern = $this->config('pathauto.pattern.article')->get('pattern');
-
-    $new_pattern = $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]';
+    $parts = [$path];
+    if (!$remove_yearmonth_slug) {
+      $parts[] = '[node:created:custom:Y]';
+      $parts[] = '[node:created:custom:m]';
+    }
+    $parts[] = '[node:title]';
+    $new_pattern = implode('/', $parts);
 
     // Only run this potentially expensive process if this setting is changing.
     if ($new_pattern != $old_pattern) {

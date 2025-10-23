@@ -90,3 +90,65 @@ function classrooms_core_update_9002(&$sandbox) {
   }
 
 }
+
+/**
+ * Remove excess old revisions for rooms.
+ */
+function classrooms_core_update_9003(&$sandbox) {
+
+  // Process all room nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'room')
+      ->accessCheck()
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the nodes in batches.
+  $nodes_per_batch = 100;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  $service = \Drupal::entityTypeManager()->getStorage('node');
+  foreach ($batch as $nid) {
+    // Grab all revisions for the room.
+    $results = \Drupal::database()->select('node_revision', 'n')
+      ->fields('n', ['vid'])
+      ->condition('n.nid', $nid)
+      ->execute();
+    // For each revision, delete it. If it is the default revision,
+    // it will be protected by the system and the delete process
+    // will error. Which is great! That is the revision that should be kept.
+    foreach ($results as $result) {
+      try {
+        $service->deleteRevision($result->vid);
+      }
+      catch (\Exception $e) {
+        continue;
+      }
+    }
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+
+}

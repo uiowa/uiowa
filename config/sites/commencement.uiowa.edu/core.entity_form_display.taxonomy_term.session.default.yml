@@ -1,0 +1,61 @@
+uuid: bcc29b1c-86b0-4a23-8c81-116a203d8a3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.session.field_session_program
+    - field.field.taxonomy_term.session.field_session_session
+    - field.field.taxonomy_term.session.field_session_year
+    - taxonomy.vocabulary.session
+  module:
+    - media_library
+    - path
+id: taxonomy_term.session.default
+targetEntityType: taxonomy_term
+bundle: session
+mode: default
+content:
+  field_session_program:
+    type: media_library_widget
+    weight: 2
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_session_session:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_session_year:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  description: true
+  name: true
+  publish_on: true
+  publish_state: true
+  unpublish_on: true
+  unpublish_state: true

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labebsl.uiowa.ddev.site
+    protocol: https
+  machine_name: labebsl
+  human_name: ebsl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labebsl.prod
+drupal:
+  db:
+    database: ebsl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labebsl.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Engineered BioSynthesis Lab'

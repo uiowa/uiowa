@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labliving.uiowa.ddev.site
+    protocol: https
+  machine_name: labliving
+  human_name: living.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labliving.prod
+drupal:
+  db:
+    database: living_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labliving.prod.drupal.uiowa.edu'
+  requester: brupe
+  site-name: 'https://livinglabs.uiowa.edu'

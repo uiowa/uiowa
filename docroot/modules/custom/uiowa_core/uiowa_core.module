@@ -5,30 +5,33 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\symfony_mailer\EmailInterface;
 use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Contact;
 use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
+use Drupal\webform\Element\WebformRoles;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
@@ -104,6 +107,25 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['paragraph']['uiowa_timeline_item'])) {
     $bundles['paragraph']['uiowa_timeline_item']['class'] = TimelineItem::class;
+  }
+  if (isset($bundles['node']['contact'])) {
+    $bundles['node']['contact']['class'] = Contact::class;
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function uiowa_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'menu_link_content') {
+    $fields['link']->setDisplayOptions('form', [
+      'type' => 'linkit',
+      'weight' => -2,
+      'settings' => [
+        'linkit_profile' => 'menu_link',
+        'linkit_auto_link_text' => TRUE,
+      ],
+    ]);
   }
 }
 
@@ -230,7 +252,7 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
           $request_time = \Drupal::time()->getRequestTime();
           if ($archive_time > $request_time) {
             $entity->moderation_state = $entity->original->moderation_state->value;
-            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+            $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "unpublished" moderation state. Switching back to "@fallback_state."', [
               '@label' => $entity->label(),
               '@set_state' => $set_state,
               '@fallback_state' => $entity->original->moderation_state->value,
@@ -370,6 +392,31 @@ function template_preprocess_card(&$variables) {
   if (isset($element['#attributes']['class'])) {
     foreach ($element['#attributes']['class'] as $key => $style) {
       if (str_starts_with($style, 'media')) {
+        $media_formats = [
+          'media--widescreen' => 'large__widescreen',
+          'media--square' => 'large__square',
+          'media--circle' => 'large__square',
+        ];
+        // Change view_mode based on lb_styles.
+        foreach ($media_formats as $class => $view_mode) {
+          if (str_contains($style, $class)) {
+            // Just in time image view mode switch, modifying cache keys.
+            if (isset($element['#media']['field_image'])) {
+              // Set the view mode for both the image and
+              // for the responsive image formatter.
+              $element['#media']['field_image'][0]['#view_mode'] = $view_mode;
+              $element['#media']['field_image'][0]['#responsive_image_style_id'] = $view_mode;
+              if (isset($element['#media']['field_image'][0]['#cache']['keys'])) {
+                // Remove the old cache keys related to image view mode.
+                $element['#media']['field_image'][0]['#cache']['keys'] = array_values(array_filter($element['#media']['field_image'][0]['#cache']['keys'], function ($item) {
+                  return !preg_match('/^(large__|medium__|small__)/', $item);
+                }));
+                // Add the new cache keys related to image view mode.
+                $element['#media']['field_image'][0]['#cache']['keys'][] = $view_mode;
+              }
+            }
+          }
+        }
         $element['#media_attributes']['class'][] = $style;
         unset($element['#attributes']['class'][$key]);
       }
@@ -416,7 +463,7 @@ function template_preprocess_card(&$variables) {
 
   // Set 'aria-hidden' on the button if it is not linked.
   if ($element['#linked_element'] !== 'button') {
-    $element['#button_attributes']['aria-hidden'] = TRUE;
+    $element['#button_attributes']['aria-hidden'] = 'true';
   }
 
   // If title and link text are set, set a button id attribute for
@@ -480,6 +527,7 @@ function template_preprocess_card(&$variables) {
     'media',
     'media_attributes',
     'headline',
+    'pre_title',
     'subtitle',
     'meta',
     'content',
@@ -510,7 +558,35 @@ function template_preprocess_card(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_field(&$variables) {
-  switch ($variables['field_name']) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_contact_address':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-map-marker');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_email':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-envelope');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_phone_number':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-phone');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
+    case 'field_contact_fax':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fa-fax');
+        uiowa_core_set_attributes($variables, 'fa-field-item');
+      }
+      break;
+
     case 'title':
       uiowa_core_set_attributes($variables, [
         'page-title',
@@ -707,13 +783,13 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         $state = 'published';
       }
       elseif ($node->get('unpublish_on')?->value) {
-        $state = 'archived';
+        $state = 'unpublished';
       }
 
       if (!empty($state)) {
         $message = 'This content is currently scheduled to be ' . $state . '.';
         if ($node->moderation_state?->value) {
-          $message .= ' Editors are restricted from editing until published.';
+          $message .= ' Editors are restricted from editing until after scheduled.';
         }
         \Drupal::messenger()
           ->addStatus($message);
@@ -722,30 +798,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   }
 
   if ($route_name === 'entity.node.edit_form' || $route_name === 'node.add') {
-    // Update help text for scheduler on content types and if moderation
-    // is enabled, hide the publish/unpublish state fields.
-    $hide_classes = ['js', 'js-hide'];
-    if (isset($form['publish_on'])) {
-      $additional_published_help_text = t('Note: this content will transition to a published state within a one-hour window of the selected date and time.');
-      $form['publish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_published_help_text . '</p>';
-      $form['publish_state']['#attributes']['class'] = (!empty($form['publish_state']['#attributes']['class']) ? array_merge($form['publish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
-    }
-    if (isset($form['unpublish_on'])) {
-      if (isset($form['unpublish_state'])) {
-        $form['unpublish_on']['widget'][0]['value']['#title'] = t('Archive on');
-        $state = 'archived';
-        $form['unpublish_state']['#attributes']['class'] = (!empty($form['unpublish_state']['#attributes']['class']) ? array_merge($form['unpublish_state']['#attributes']['class'], $hide_classes) : $hide_classes);
-      }
-      else {
-        $state = 'unpublished';
-      }
-
-      $additional_unpublished_help_text = t('Note: this content will transition to an @state state within a one-hour window of the selected date and time.', [
-        '@state' => $state,
-      ]);
-      $form['unpublish_on']['widget'][0]['value']['#description'] .= '<p>' . $additional_unpublished_help_text . '</p>';
-
-    }
+    uiowa_core_scheduler_help_text($form);
   }
 
   switch ($form_id) {
@@ -763,6 +816,17 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       if ($uiowa_core_gtag === 0) {
         \Drupal::messenger()
           ->addWarning(t('Local Google Tag Manager container snippets are currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
+      }
+      break;
+
+    case 'google_analytics_admin_settings':
+      $uiowa_core_ga = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.ga');
+      // Inform on configuration form that the functionality is
+      // currently being blocked from being inserted.
+      if ($uiowa_core_ga === 0) {
+        $form["general"]["accounts"]['#disabled'] = TRUE;
+        \Drupal::messenger()
+          ->addWarning(t('Google Analytics is currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
       }
       break;
 
@@ -847,7 +911,193 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     case 'node_person_form':
       $form['field_person_types']['#attributes']['class'][] = 'multi--column';
       break;
+
+    case 'node_contact_form':
+    case 'node_contact_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Add our custom submit handler to remove the country code
+      // if no other address info is available. Add it to the front
+      // of the queue so we don't bother processing it after.
+      array_unshift($form['actions']['submit']['#submit'], 'uiowa_core_contact_form_submit');
+      break;
+
+    case 'webform_settings_access_form':
+
+      // Check if the current user is an admin or user 1.
+      $current_user = \Drupal::currentUser();
+      $roles = $current_user->getRoles();
+      $is_admin = in_array('administrator', $roles) || $current_user->id() == 1;
+
+      // Only limit the webform access if the user isn't an admin or user 1.
+      if (!$is_admin) {
+
+        // Get the form access settings.
+        $access = &$form['access'];
+
+        // Configure an array for what you want to disable in webform access.
+        $form['webform_config'] = [
+          'create' => [],
+          'view_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'update_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'delete_any' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+            ],
+          ],
+          'purge_any' => [
+            '#access' => FALSE,
+          ],
+          'view_own' => [],
+          'update_own' => [],
+          'delete_own' => [],
+          'administer' => [
+            '#access' => FALSE,
+          ],
+          'test' => [
+            '#roles' => [
+              'anonymous',
+              'authenticated',
+              'viewer',
+            ],
+          ],
+          'configuration' => [
+            '#access' => FALSE,
+          ],
+        ];
+
+        // For each access group...
+        foreach ($access as $key => &$group) {
+
+          // If we have something configured to be disabled in that group...
+          if (is_array($group)) {
+
+            // If we are disabling access to it completely in the config...
+            if (isset($form['webform_config'][$key]['#access'])) {
+
+              // Set its access to false.
+              $group['#access'] = FALSE;
+
+              // And continue to the next iteration,
+              // as we don't need to worry about the individual
+              // roles if the whole section is disabled.
+              continue;
+            }
+
+            // If we have a roles checkbox list...
+            $roles ??= $group['roles'];
+            if ($roles) {
+
+              // Process it with a custom function.
+              $group['roles']['#process'][] = '_uiowa_core_process_element';
+            }
+
+            // For every group that has configurable permissions...
+            $perms ??= $group['permissions'];
+            if ($perms) {
+
+              // Disable them.
+              // We don't want users to have access to configure this.
+              $group['permissions']['#access'] = FALSE;
+            }
+          }
+        }
+      }
+
+      break;
   }
+}
+
+/**
+ * Implements hook_preprocess_details().
+ */
+function uiowa_core_preprocess_details(&$variables) {
+  // This function adds a new 'details-multi-select' class to style the details with checkbox
+  // dropdowns as seen on pages like classrooms.uiowa.edu/spaces/find-university-classroom.
+  // Check if the element contains form checkboxes and add multi-select class.
+  $has_checkboxes = FALSE;
+
+  if (isset($variables['element']) && is_array($variables['element'])) {
+    foreach ($variables['element'] as $key => $child) {
+      if (is_array($child) && isset($child['#type']) && $child['#type'] === 'checkboxes') {
+        $has_checkboxes = TRUE;
+        break;
+      }
+    }
+  }
+
+  if ($has_checkboxes) {
+    $variables['attributes']['class'][] = 'form__details--multi-select';
+  }
+}
+
+/**
+ * Custom process form elements.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed block element.
+ */
+function _uiowa_core_process_element(array $element, FormStateInterface $form_state, $form): array {
+
+  // Get the roles checkboxes.
+  $checkboxes = WebformRoles::processCheckboxes($element, $form_state, $form);
+
+  // Get the group name and see if we have config for it.
+  $printed_array_name ??= $element['#name'];
+  $group_name = str_replace('access[', '', $printed_array_name);
+  $group_name = str_replace('][roles]', '', $group_name);
+  $group_config ??= $form['webform_config'][$group_name];
+
+  // If each access group has config for roles...
+  if (isset($group_config['#roles']) && $checkboxes['#type'] == 'webform_roles') {
+    $roles = $group_config['#roles'];
+
+    // For each role that we want to remove access from...
+    foreach ($roles as $key => $role) {
+
+      // Set its access to false.
+      $checkboxes[$role]['#access'] = FALSE;
+    }
+  }
+
+  // We disable the ability to manage administrators for all groups.
+  $checkboxes['administrator']['#access'] = FALSE;
+
+  return $checkboxes;
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function uiowa_core_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  if ($entity_form['#entity_type'] === 'node' && $entity_form['#bundle'] === 'slide') {
+    uiowa_core_scheduler_help_text($entity_form);
+  }
+}
+
+/**
+ * Custom submit handler for node contact forms.
+ */
+function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_state) {
+  $field_config = [
+    'field_contact_address' => ['type' => 'regular'],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -925,6 +1175,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
+
   if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
     $node = \Drupal::routeMatch()->getParameter('node');
     // Get allowed replicate entity types.
@@ -1014,15 +1265,34 @@ function uiowa_core_preprocess_block(&$variables) {
 
     case 'system_main_block':
       $current_route = \Drupal::routeMatch();
-      if (\Drupal::currentUser()->isAnonymous() && in_array($current_route->getRouteName(), [
-        'system.401',
-        'system.403',
-      ])) {
+      $current_user = \Drupal::currentUser();
+
+      if ($current_user->isAnonymous() && in_array($current_route->getRouteName(), ['system.401', 'system.403'])) {
+        $request = \Drupal::request();
+        $path_alias_manager = \Drupal::service('path_alias.manager');
+
+        // Get the current path from the request.
+        $path = $request->getPathInfo();
+        $internal_path = $path_alias_manager->getPathByAlias($path);
+
+        // Check if the path matches a node pattern
+        // and determine if it's unpublished.
+        if (preg_match('/node\/(\d+)/', $internal_path, $matches)) {
+          $node = Node::load($matches[1]);
+          if ($node instanceof Node && !$node->isPublished()) {
+            // Exit without adding the login link.
+            break;
+          }
+          // Add cache tag for this node.
+          $variables['#cache']['tags'][] = 'node:' . $node->id();
+        }
+
+        // Add the login link if we didn't break out.
         $variables['content']['login_link'] = [
           '#type' => 'link',
           '#title' => t('HawkID Login'),
           '#url' => Url::fromRoute('samlauth.saml_controller_login', [
-            'destination' => \Drupal::request()->getRequestUri(),
+            'destination' => $request->getRequestUri(),
           ]),
           '#prefix' => '<p class="text-align-center">',
           '#suffix' => '</p>',
@@ -1032,14 +1302,15 @@ function uiowa_core_preprocess_block(&$variables) {
               'bttn--primary',
               'bttn--caps',
             ],
-          ],
-          '#cache' => [
-            'max-age' => 0,
+            'rel' => 'nofollow',
           ],
         ];
+
+        // Try cache contexts instead of max-age=0.
+        $variables['#cache']['contexts'][] = 'user.roles';
+        $variables['#cache']['contexts'][] = 'url.path';
       }
       break;
-
   }
 }
 
@@ -1052,9 +1323,9 @@ function uiowa_core_token_info(): array {
     'name' => t('UIowa Core'),
     'description' => t('Tokens for UIowa Core.'),
   ];
-  $info['tokens']['uiowa_core']['org_name'] = [
-    'name' => 'Organization Name',
-    'description' => 'A token to override the default University of Iowa organization name.',
+  $info['tokens']['uiowa_core']['combined_org'] = [
+    'name' => 'Combined Organization Name',
+    'description' => 'A combined parent organization and organization token.',
   ];
   $info['tokens']['uiowa_core']['favicon_assets_path'] = [
     'name' => 'Favicon assets path',
@@ -1069,24 +1340,35 @@ function uiowa_core_token_info(): array {
 function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
   if ($type === 'uiowa_core') {
-
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
     $theme_config = $config_factory->getEditable('uids_base.settings');
-    $ccom_site = ($theme_config->get('header.branding_options') == 'ccom');
+    $uihc_site = ($theme_config->get('header.branding_options') == 'uihc');
 
     foreach ($tokens as $name => $original) {
+
       // Find the desired token by name.
       switch ($name) {
-        case 'org_name':
-          $org_name = $ccom_site ? 'Carver College of Medicine' : 'The University of Iowa';
-          $replacements[$original] = $config->get('uiowa_core.org_name') ?? $org_name;
-          break;
-
         case 'favicon_assets_path':
-          $favicon_path = $ccom_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
+          $favicon_path = $uihc_site ? '/profiles/custom/sitenow/assets/uihc_favicons/' : '/profiles/custom/sitenow/assets/';
           $replacements[$original] = $config->get('uiowa_core.favicon_assets_path') ?? $favicon_path;
 
+          break;
+
+        case 'combined_org':
+          $site_settings = $config_factory->getEditable('system.site');
+          $combined_org = $config->get('uiowa_core.org_name') ?? 'The University of Iowa';
+          $has_parent = $site_settings->get('has_parent');
+
+          if ($uihc_site) {
+            $combined_org = 'University of Iowa Health Care';
+          }
+          if ($has_parent) {
+            $parent_org = $site_settings->get('parent.name');
+            $combined_org = $parent_org . ' | ' . $combined_org;
+          }
+
+          $replacements[$original] = $combined_org;
           break;
       }
     }
@@ -1154,7 +1436,7 @@ function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $fo
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_county_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   return [
     'Adair',
     'Adams',
@@ -1261,7 +1543,7 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntity
 /**
  * Allowed values function for partner counties field.
  */
-function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function uiowa_core_academic_years(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   $start_year = 2008;
   $end_year = date('Y') + 1;
   $years = [];
@@ -1293,7 +1575,7 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
 /**
  * Added allowed values function for student profiles territory field.
  */
-function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+function uiowa_core_state_options(FieldStorageConfig $definition, ?ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',
@@ -1362,34 +1644,6 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
 }
 
 /**
- * Helper function convert exposed filter to select dropdown.
- */
-function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
-  // Get available configuration entities.
-  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage($entity_id);
-  $entities = $storage->getQuery()
-    ->accessCheck()
-    ->condition('status', 1)
-    ->sort('title')
-    ->execute();
-
-  // Build a list of options.
-  $options = [];
-  $config_entities = $storage->loadMultiple($entities);
-  foreach ($config_entities as $item) {
-    $options[$item->id()] = $item->label();
-  }
-  asort($options);
-
-  // Rebuild the text filter as select list dropdown.
-  $form['#type'] = 'select';
-  $form['#multiple'] = FALSE;
-  $form['#empty_option'] = t('- Any -');
-  $form['#options'] = $options;
-  unset($form['#size']);
-}
-
-/**
  * Helper function to set the field label icon.
  *
  * @param array $variables
@@ -1422,8 +1676,10 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
  *   The Font Awesome class for the field icon.
  * @param string $icon_bg_classes
  *   The Font Awesome class for the background of the field icon.
+ * @param string $icon_title
+ *   The title attribute value for the field icon.
  */
-function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
+function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '', string $icon_title = '') : void {
   if (!isset($variables['field_icon'])) {
     $variables['field_icon'] = '';
   }
@@ -1434,6 +1690,9 @@ function uiowa_core_set_field_icon(array &$variables, string $icon_classes, stri
     ]);
   if (!empty($icon_bg_classes)) {
     $variables['field_icon_bg'] = $icon_bg_classes;
+  }
+  if (!empty($icon_title)) {
+    $variables['field_icon_title'] = $icon_title;
   }
 }
 
@@ -1528,44 +1787,151 @@ function uiowa_core_views_row_hide_fields(&$variables, ...$fields_to_hide) {
 }
 
 /**
- * Toggles Site-Specific Google Tag inserts.
+ * Helper function to validate and clean address fields, including paragraphs.
  *
- * @return string
- *   The process completion message.
+ * @param array &$form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ * @param array $field_config
+ *   An array of field configurations to process.
  */
-function uiowa_core_toggle_gtag() {
-  $config = \Drupal::configFactory()->getEditable('uiowa_core.settings');
-  $uiowa_core_gtag = $config->get('uiowa_core.gtag');
+function uiowa_core_clean_address_fields(array &$form, FormStateInterface $form_state, array $field_config) {
+  foreach ($field_config as $field_name => $config) {
+    $field_values = $form_state->getValue($field_name);
 
-  if ((int) $uiowa_core_gtag === 1) {
-    $message = 'Site-specific Google Tag Manager Disabled';
-    $config
-      ->set('uiowa_core.gtag', '0')
-      ->save();
+    if (is_null($field_values)) {
+      continue;
+    }
+
+    if ($config['type'] === 'paragraph') {
+      foreach ($field_values as $delta => $paragraph_subform) {
+        if (isset($paragraph_subform['subform'])) {
+          $address_field = $paragraph_subform['subform'][$config['address_field']][0];
+          if (isset($address_field['address'])) {
+            $has_info = FALSE;
+
+            foreach ($address_field['address'] as $key => $details) {
+              if ($key !== 'country_code' && !empty($details)) {
+                $has_info = TRUE;
+                break;
+              }
+            }
+
+            if (!$has_info) {
+              $form_state->setValue([
+                $field_name,
+                $delta,
+                'subform',
+                $config['address_field'],
+                0,
+                'address',
+                'country_code',
+              ], '');
+            }
+          }
+        }
+      }
+    }
+    else {
+      // Regular field processing.
+      $address_field = $field_values[0];
+      if (isset($address_field['address'])) {
+        $has_info = FALSE;
+
+        foreach ($address_field['address'] as $key => $details) {
+          if ($key !== 'country_code' && !empty($details)) {
+            $has_info = TRUE;
+            break;
+          }
+        }
+
+        if (!$has_info) {
+          $form_state->setValue([
+            $field_name,
+            0,
+            'address',
+            'country_code',
+          ], '');
+        }
+      }
+    }
   }
+}
+
+/**
+ * Helper function to add help text and adjust scheduler fields.
+ *
+ * @param array $form
+ *   The form array.
+ */
+function uiowa_core_scheduler_help_text(array &$form): void {
+  $hide_classes = ['js', 'js-hide'];
+  foreach (['publish', 'unpublish'] as $state) {
+    if (isset($form["{$state}_on"])) {
+      // Update help text for scheduler on content types.
+      $additional_help_text = t('Note: this content will be @stateed at the top of the hour after the time you select. (e.g., 2:43 p.m. will go live at 3:00 p.m.).', [
+        '@state' => $state,
+      ]);
+      $form["{$state}_on"]['widget'][0]['value']['#description'] .= '<p>' . $additional_help_text . '</p>';
+      // If moderation is enabled, hide the publish/unpublish state fields.
+      $form["{$state}_state"]['#attributes']['class'] = (!empty($form["{$state}_state"]['#attributes']['class']) ? array_merge($form["{$state}_state"]['#attributes']['class'], $hide_classes) : $hide_classes);
+    }
+  }
+}
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function uiowa_core_config_schema_info_alter(&$schemas) {
+  // Extend the schema for 'system.site'.
+  $schemas['system.site']['mapping']['has_parent'] = [
+    'type' => 'boolean',
+    'label' => t('Has parent organization'),
+  ];
+  $schemas['system.site']['mapping']['parent'] = [
+    'type' => 'mapping',
+    'label' => t('Parent organization'),
+    'mapping' => [
+      'name' => [
+        'type' => 'text',
+        'label' => t('Parent organization name'),
+      ],
+      'url' => [
+        'type' => 'uri',
+        'label' => t('Parent organization URL'),
+      ],
+    ],
+  ];
+}
+
+/**
+ * Fast object to array conversion function.
+ *
+ * Helper function to convert objects recursively to arrays.
+ * This is roughly 1.5-2x faster than json_decode() + json_encode().
+ *
+ * @param mixed $obj
+ *   Any object.
+ *
+ * @return array|mixed
+ *   Returns an object that is being converted into an array
+ *   until the complete object is only an array, then it
+ *   returns an array.
+ */
+function uiowa_core_object_to_array(mixed $obj): mixed {
+  // Only process if it's an object or array being passed to the function.
+  if (is_object($obj) || is_array($obj)) {
+    $ret = (array) $obj;
+    foreach ($ret as &$item) {
+      // Recursively process EACH element regardless of type.
+      $item = uiowa_core_object_to_array($item);
+    }
+    return $ret;
+  }
+
+  // Otherwise (i.e. for scalar values) return without modification.
   else {
-    $message = 'Site-specific Google Tag Manager Enabled';
-    $config
-      ->set('uiowa_core.gtag', '1')
-      ->save();
+    return $obj;
   }
-  \Drupal::logger('uiowa_core')->notice($message);
-
-  // Flush site cache.
-  drupal_flush_all_caches();
-
-  // If available (not Local), try to clear the varnish cache for the files.
-  if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
-    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
-    $purgeQueuers = \Drupal::service('purge.queuers');
-    $purgeQueue = \Drupal::service('purge.queue');
-    $queuer = $purgeQueuers->get('coretags');
-
-    $invalidations = [
-      $purgeInvalidationFactory->get('everything'),
-    ];
-
-    $purgeQueue->add($queuer, $invalidations);
-  }
-  return $message;
 }

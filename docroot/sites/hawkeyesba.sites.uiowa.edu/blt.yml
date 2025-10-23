@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteshawkeyesba.uiowa.ddev.site
+    protocol: https
+  machine_name: siteshawkeyesba
+  human_name: hawkeyesba.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshawkeyesba.prod
+drupal:
+  db:
+    database: hawkeyesba_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshawkeyesba.prod.drupal.uiowa.edu'
+  requester: oparker2
+  site-name: HawkeyeSBA

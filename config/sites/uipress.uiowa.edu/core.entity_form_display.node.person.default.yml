@@ -23,6 +23,7 @@ dependencies:
     - field.field.node.person.field_person_website_link_direct
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
+    - field.field.node.person.rabbit_hole__settings
     - node.type.person
     - workflows.workflow.editorial
   module:
@@ -33,6 +34,7 @@ dependencies:
     - metatag
     - paragraphs
     - path
+    - rabbit_hole
     - telephone
     - text
 third_party_settings:
@@ -202,6 +204,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

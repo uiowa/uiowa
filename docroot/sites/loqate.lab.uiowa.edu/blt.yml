@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labloqate.uiowa.ddev.site
+    protocol: https
+  machine_name: labloqate
+  human_name: loqate.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labloqate.prod
+drupal:
+  db:
+    database: loqate_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labloqate.prod.drupal.uiowa.edu'
+  requester: smeerdink
+  site-name: 'Lab for Observing and Quantifying Aquatic and Terrestrial Ecosystems'

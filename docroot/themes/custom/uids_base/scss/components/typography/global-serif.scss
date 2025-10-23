@@ -1,9 +1,9 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 
 body.text--serif {
-  $text--serif: $font-family-serif;
+  $text--serif: variables.$font-family-serif;
 
   .field--name-body,
   .block-inline-blockuiowa-text-area,
@@ -13,7 +13,7 @@ body.text--serif {
     li {
       &:not(.uids-component--bold-intro):not(.element--bold-intro):not(.uids-component--light-intro):not(.element--light-intro):not(.element--light-intro-serif) {
         font-family: $text--serif, serif;
-        font-size: calc(#{$content-font-size} + 1px);
+        font-size: calc(#{variables.$content-font-size} + 1px);
       }
     }
 

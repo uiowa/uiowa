@@ -10,7 +10,7 @@ dependencies:
     - field.field.block_content.uiowa_quote.field_uiowa_quote_image
   module:
     - allowed_formats
-    - link
+    - linkit
     - media_library
     - text
 id: block_content.uiowa_quote.default
@@ -19,12 +19,14 @@ bundle: uiowa_quote
 mode: default
 content:
   field_uiowa_quote_citation:
-    type: link_default
+    type: linkit
     weight: 28
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      linkit_profile: default
+      linkit_auto_link_text: false
     third_party_settings: {  }
   field_uiowa_quote_content:
     type: text_textarea

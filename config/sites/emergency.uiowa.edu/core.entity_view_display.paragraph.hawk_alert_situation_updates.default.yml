@@ -1,0 +1,37 @@
+uuid: cf281a47-6cf4-4853-ae52-3b524ef555f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_date
+    - field.field.paragraph.hawk_alert_situation_updates.field_hawk_alert_situation_descr
+    - paragraphs.paragraphs_type.hawk_alert_situation_updates
+  module:
+    - datetime
+id: paragraph.hawk_alert_situation_updates.default
+targetEntityType: paragraph
+bundle: hawk_alert_situation_updates
+mode: default
+content:
+  field_hawk_alert_situation_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: short
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_hawk_alert_situation_descr:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_hawk_alert_situation_descr: true
+  search_api_excerpt: true

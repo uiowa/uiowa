@@ -1,0 +1,158 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_schema().
+ */
+function registrar_core_schema() {
+  $schema['correspondence_archives'] = [
+    'description' => 'List of Dispatch correspondence archives.',
+    'fields' => [
+      'url' => [
+        'description' => 'Direct link to the correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'timestamp' => [
+        'description' => 'Date of correspondence.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'from_name' => [
+        'description' => 'From name of correspondence.',
+        'type' => 'text',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'subject' => [
+        'description' => 'Correspondence subject.',
+        'type' => 'text',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'audience' => [
+        'description' => 'Intended correspondence subject.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'tags' => [
+        'description' => 'Dispatch tags.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['url'],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Create the custom database if it does not exist.
+ */
+function registrar_core_update_10001() {
+  $schema['correspondence_archives'] = [
+    'description' => 'List of Dispatch correspondence archives.',
+    'fields' => [
+      'url' => [
+        'description' => 'Direct link to the correspondence.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'timestamp' => [
+        'description' => 'Date of correspondence.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'from_name' => [
+        'description' => 'From name of correspondence.',
+        'type' => 'text',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'subject' => [
+        'description' => 'Correspondence subject.',
+        'type' => 'text',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'audience' => [
+        'description' => 'Intended correspondence subject.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'tags' => [
+        'description' => 'Dispatch tags.',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['url'],
+  ];
+
+  $db_schema = \Drupal::database()->schema();
+
+  if (!$db_schema->tableExists('correspondence_archives')) {
+    $db_schema->createTable('correspondence_archives', $schema['correspondence_archives']);
+  }
+
+}
+
+/**
+ * Populate file_archive_type vocabulary.
+ */
+function registrar_core_update_10002() {
+  // Obtain configuration from yaml files.
+  $config_path = DRUPAL_ROOT . '/../config/sites/registrar.uiowa.edu/';
+  $source = new FileStorage($config_path);
+
+  // Obtain the storage manager for vocabularies.
+  // Create a new vocabulary from the yaml configuration and save,
+  // since this hook will run prior to config import.
+  \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')
+    ->create($source->read('taxonomy.vocabulary.file_archive_type'))
+    ->save();
+
+  // Define the terms to be added.
+  $terms = [
+    'Census Report',
+    'Commencement Programs',
+    'End of Session Class Counts',
+    'General Catalog',
+    'Iowa College and University Enrollment Report',
+    'Official Census Date Class Counts',
+    'Past Miscellaneous Fees',
+    'Profile of Students Enrolled',
+    'Tuition & Fees',
+  ];
+
+  // Create and save each term.
+  foreach ($terms as $term_name) {
+    $new_term = Term::create([
+      'vid' => 'file_archive_type',
+      'name' => $term_name,
+    ]);
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+}

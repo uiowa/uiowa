@@ -270,10 +270,10 @@ class NewsFeature extends BaseNodeSource {
         // left align the video, otherwise center align so that it
         // doesn't overlap later media.
         if (preg_match('/(drupal-media)|(callout)/is', substr($body[0]['value'], 0, 700)) === 0) {
-          $video = $this->createVideo($media[0]['fid'], 'right');
+          $video = $this->constructInlineEntity($this->createVideoMediaEntity($media[0]['fid']), 'right');
         }
         else {
-          $video = $this->createVideo($media[0]['fid']);
+          $video = $this->constructInlineEntity($this->createVideoMediaEntity($media[0]['fid']));
         }
 
         $body[0]['value'] = $video . $body[0]['value'];
@@ -373,7 +373,7 @@ class NewsFeature extends BaseNodeSource {
         // If we're adding the headline separately,
         // remove it from the rest of the text, so we don't duplicate.
         $match[2] = str_replace('<strong>' . $value . '</strong>', '', $match[2]);
-      };
+      }
 
       $headline = '<h4 class="' . $headline_classes . '">';
       $headline .= '<span class="headline__heading">';

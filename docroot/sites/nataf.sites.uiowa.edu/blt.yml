@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesnataf.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesnataf
+  human_name: nataf.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesnataf.prod
+drupal:
+  db:
+    database: nataf_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesnataf.prod.drupal.uiowa.edu'
+  requester: gmccrory
+  site-name: 'David M. Nataf'

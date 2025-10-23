@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmclendon.uiowa.ddev.site
+    protocol: https
+  machine_name: labmclendon
+  human_name: mclendon.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmclendon.prod
+drupal:
+  db:
+    database: mclendon_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmclendon.prod.drupal.uiowa.edu'
+  requester: vivlin
+  site-name: 'The McLendon Lab'

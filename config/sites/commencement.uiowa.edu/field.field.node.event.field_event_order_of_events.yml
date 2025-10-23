@@ -1,0 +1,29 @@
+uuid: c8db402c-71b8-4cfd-95b1-1b35b3611c0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_order_of_events
+    - media.type.file
+    - node.type.event
+id: node.event.field_event_order_of_events
+field_name: field_event_order_of_events
+entity_type: node
+bundle: event
+label: 'Order of events'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

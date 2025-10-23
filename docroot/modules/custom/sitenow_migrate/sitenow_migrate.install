@@ -7,6 +7,7 @@
 
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\File\Exception\FileException;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 
 /**
@@ -35,7 +36,7 @@ function sitenow_migrate_install() {
     // possible to copy the files is also confusing, we silently do nothing.
     if (!file_exists($destination . DIRECTORY_SEPARATOR . $file->filename)) {
       try {
-        $file_system->copy($file->uri, $destination, FileSystemInterface::EXISTS_ERROR);
+        $file_system->copy($file->uri, $destination, FileExists::Error);
       }
       catch (FileException $e) {
         // Ignore and continue.
@@ -55,7 +56,7 @@ function sitenow_migrate_migration_install($sitename) {
   if (!$sitename) {
     return;
   }
-  if ('' === $module_path = $path_resolver->getPath('module', "${sitename}_migrate")) {
+  if ('' === $module_path = $path_resolver->getPath('module', "{$sitename}_migrate")) {
     return;
   }
 
@@ -75,7 +76,7 @@ function sitenow_migrate_migration_install($sitename) {
   }
 
   $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable("config_split.config_split.${sitename}_migrate");
+  $config = $config_factory->getEditable("config_split.config_split.{$sitename}_migrate");
   $config->set('status', TRUE);
   $config->save(TRUE);
 }
@@ -89,7 +90,7 @@ function sitenow_migrate_migration_uninstall($sitename) {
   }
   // Disable the split.
   $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable("config_split.config_split.${sitename}_migrate");
+  $config = $config_factory->getEditable("config_split.config_split.{$sitename}_migrate");
   $config->set('status', FALSE);
   $config->save(TRUE);
 

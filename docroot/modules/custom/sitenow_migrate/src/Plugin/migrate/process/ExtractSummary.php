@@ -8,7 +8,7 @@ use Drupal\migrate\Row;
 use Drupal\smart_trim\TruncateHTML;
 
 /**
- * Extract a summary from a compound text field..
+ * Extract a summary from a compound text field.
  *
  * A truncation length (number of characters) can be specified:
  * @code
@@ -37,7 +37,7 @@ class ExtractSummary extends ProcessPluginBase {
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if ($this->configuration['length']) {
       $this->length = $this->configuration['length'];
-    };
+    }
     // If we have a basic string, proceed directly to the extraction.
     if (is_string($value)) {
       return $this->extractSummaryFromText($value, $this->length);

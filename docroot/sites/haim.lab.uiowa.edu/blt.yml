@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhaim.uiowa.ddev.site
+    protocol: https
+  machine_name: labhaim
+  human_name: haim.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhaim.prod
+drupal:
+  db:
+    database: haim_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhaim.prod.drupal.uiowa.edu'
+  requester: chernndez
+  site-name: haim.lab.uiowa.edu

@@ -5,6 +5,8 @@
  * Primary module hooks for uiowa_aggregator module.
  */
 
+use Drupal\aggregator\Entity\Feed;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -54,6 +56,8 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
  */
 function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
   $build['#type'] = 'card';
+  $build['#prefix'] = '<div class="column-container">';
+  $build['#suffix'] = '</div>';
   unset($build['#theme']);
 }
 
@@ -66,14 +70,21 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
   $build['#attached']['library'][] = 'uids_base/card';
 
   // Set the title.
-  $build['#title'] = $entity->label();
+  $build['#title'] = html_entity_decode($entity->label());
 
   // Move author field to #meta and add an icon.
   if (!$entity->get('author')->isEmpty() && isset($build['author'])) {
-    $build['#meta']['author'] = [
-      ...(is_array($build['author']) ? $build['author'] : []),
-      '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
-    ];
+    if (is_array($build['author'])) {
+      $build['#meta']['author'] = array_merge($build['author'], [
+        '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
+      ]);
+    }
+    else {
+      $build['#meta']['author'] = [
+        '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
+        'value' => $build['author'],
+      ];
+    }
   }
 
   unset($build['author']);
@@ -168,6 +179,28 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
 
   foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $list_string_item) {
     $feeds[] = $list_string_item->getString();
+  }
+
+  // Add cache tags for selected feeds.
+  if ($feeds) {
+    $feed_entities = Feed::loadMultiple($feeds);
+    $feed_tags = [];
+
+    foreach ($feed_entities as $feed) {
+      // Attempt to get these from aggregator since all of
+      // this functionality exists.
+      $tags = $feed->getCacheTags();
+      if (empty($tags)) {
+        // But... fallback to a manually constructed tag if not.
+        $tags = ['aggregator_feed:' . $feed->id()];
+      }
+      $feed_tags = Cache::mergeTags($feed_tags, $tags);
+    }
+
+    $variables['#cache']['tags'] = Cache::mergeTags(
+      $variables['#cache']['tags'] ?? [],
+      $feed_tags
+    );
   }
 
   $per_page = (int) $block->get('field_uiowa_aggregator_count')->getString();

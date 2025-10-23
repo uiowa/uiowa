@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgconstantinescu.uiowa.ddev.site
+    protocol: https
+  machine_name: labgconstantinescu
+  human_name: gconstantinescu.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgconstantinescu.prod
+drupal:
+  db:
+    database: gconstantinescu_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgconstantinescu.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Constantinescu Research Group'

@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_dcv\Form;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -126,6 +127,11 @@ class SitenowDcvFileForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(&$form, $form_state) {
+
+    // Create the .well-known/pki-validation directory if it doesn't exist.
+    $directory = 'public://.well-known/pki-validation';
+    $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
+
     /** @var \Drupal\file\FileInterface $file */
     $file = file_save_upload('file', [
       'file_validate_is_file' => [],
@@ -133,9 +139,10 @@ class SitenowDcvFileForm extends FormBase {
         'txt',
       ],
     ],
+    $directory,
     FALSE,
     0,
-    FileSystemInterface::EXISTS_REPLACE
+      FileExists::Replace
     );
 
     if ($file) {

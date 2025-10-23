@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labefre.uiowa.ddev.site
+    protocol: https
+  machine_name: labefre
+  human_name: efre.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labefre.prod
+drupal:
+  db:
+    database: efre_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labefre.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Environmental Fluid Mechanics and Renewable Energy Laboratory'

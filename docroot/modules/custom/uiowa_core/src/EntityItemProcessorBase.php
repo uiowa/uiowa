@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core;
 
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 
@@ -21,26 +22,62 @@ abstract class EntityItemProcessorBase {
   /**
    * Process an individual entity.
    */
-  public static function process($entity, $record): bool {
+  public static function process(FieldableEntityInterface $entity, $record): bool {
     $updated = FALSE;
+    $values = [];
     foreach (static::$fieldMap as $to => $from) {
+      $value_property = NULL;
+      if (str_contains($to, ':')) {
+        [$to, $value_property] = explode(':', $to);
+      }
       if (!$entity->hasField($to)) {
         // Add a log message that the field being mapped to doesn't exist.
-        static::getLogger('uiowa_core')->notice('While processing the @type, a field was mapped that does not exist: @field_name', [
-          '@type' => !is_null($entity->bundle()) ? "{$entity->bundle()} {$entity->getEntityType()}" : $entity->getEntityType(),
+        (new static)->getLogger('uiowa_core')->notice('While processing the @type, a field was mapped that does not exist: @field_name', [
+          '@type' => !is_null($entity->bundle()) ? "{$entity->bundle()} {$entity->getType()}" : $entity->getType(),
           '@field_name' => $to,
         ]);
         continue;
       }
 
       // If the value is different, update it.
-      if ($entity->get($to)->{static::resolveFieldValuePropName($entity->getFieldDefinition($to))} != $record->{$from}) {
-        $entity->set($to, $record->{$from});
-        $updated = TRUE;
+      if (property_exists($record, $from)) {
+        // If a value property wasn't derived from the field map, set a default
+        // one.
+        if (is_null($value_property)) {
+          $value_property = static::resolveFieldValuePropName($entity->getFieldDefinition($to));
+        }
+        $entity_value = $entity->get($to)->{$value_property};
+        // If the property has changed, update it. We are deliberately not doing
+        // a type check because we don't care if an integer is not a string.
+        if ((is_null($entity_value) && !is_null($record->{$from})) || $entity_value != $record->{$from}) {
+          $values[$to][$value_property] = $record->{$from};
+          $updated = TRUE;
+        }
       }
     }
 
+    // Allow subclasses to modify values before they are set on the entity.
+    static::prepareUpdatedValues($values, $entity, $record);
+
+    foreach ($values as $field => $value) {
+      $entity->set($field, $value);
+    }
+
     return $updated;
+  }
+
+  /**
+   * Prepare updated values before they are set on the entity.
+   *
+   * @param array $values
+   *   The values to be set on the entity, passed by reference.
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity being processed.
+   * @param mixed $record
+   *   The source record being processed.
+   */
+  protected static function prepareUpdatedValues(array &$values, FieldableEntityInterface $entity, $record): void {
+    // By default, do nothing. Subclasses may override.
   }
 
   /**
@@ -52,9 +89,10 @@ abstract class EntityItemProcessorBase {
    * @return string
    *   The property name.
    */
-  protected static function resolveFieldValuePropName(FieldDefinitionInterface $definition) {
+  protected static function resolveFieldValuePropName(FieldDefinitionInterface $definition): string {
     return match ($definition->getType()) {
-      'entity_reference', 'image' => 'target_id',
+      'entity_reference',
+      'image' => 'target_id',
       'link' => 'uri',
       default => 'value',
     };

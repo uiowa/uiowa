@@ -31,11 +31,13 @@ class Alert extends NodeBundleBase implements ClosableInterface, RendersAsCardIn
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'styles' => '',
-      'card_headline_style' => 'headline--serif',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'styles' => '',
+        'card_headline_style' => 'headline--serif',
+      ]
+    );
   }
 
   /**

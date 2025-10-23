@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labfethke.uiowa.ddev.site
+    protocol: https
+  machine_name: labfethke
+  human_name: fethke.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfethke.prod
+drupal:
+  db:
+    database: fethke_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labfethke.prod.drupal.uiowa.edu'
+  requester: priepe
+  site-name: 'Dr. Nathan Fethke Laboratory'

@@ -5,10 +5,13 @@
  * Contains hook implementations for UIowa Media WYSIWYG.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\Panopto;
 
 /**
  * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
@@ -31,6 +34,44 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
   if ($entity_form["#entity_type"] === 'media' && $entity_form["#bundle"] === 'file') {
     if ($entity_form["#op"] === 'add') {
       $entity_form["revision_log_message"]["#access"] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function sitenow_media_wysiwyg_media_presave($entity): void {
+  // Only process Panopto media.
+  if ($entity->bundle() === 'panopto') {
+    // Only proceed if we have a source field value.
+    $source_field = 'field_media_panopto_url';
+    if (!$entity->hasField($source_field) || $entity->get($source_field)->isEmpty()) {
+      return;
+    }
+    // Get the source field value.
+    $source_field_value = $entity->get($source_field)->getValue();
+    $parsed = UrlHelper::parse($source_field_value[0]['uri']);
+    $id = $parsed['query']['id'];
+
+    try {
+      $url_response = \Drupal::httpClient()->get(
+        Panopto::BASE_URL . '/Panopto/Pages/Embed.aspx',
+        ['query' => ['id' => $id]]
+      );
+      $html = $url_response->getBody();
+      $document = Html::load($html);
+      $title = $document->getElementsByTagName('title')->item(0)?->textContent;
+      // Trim up the title.
+      if ($title) {
+        // Trim any extra whitespace.
+        $title = trim($title);
+        $source_field_value[0]['title'] = $title;
+        $entity->set('field_media_panopto_url', $source_field_value);
+      }
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('sitenow_media_wysiwyg')->error('Failed to retrieve and save Panopto video information: @error', ['@error' => $e->getMessage()]);
     }
   }
 }
@@ -92,4 +133,59 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
       $purgeQueue->add($queuer, $invalidations);
     }
   }
+}
+
+/**
+ * Function to import brand icons from the JSON file and create media entities.
+ */
+function sitenow_media_wysiwyg_media_import_icons() {
+  $theme_path = \Drupal::theme()->getActiveTheme()->getPath();
+  $json_file_path = $theme_path . '/brand-icons/icons.json';
+
+  $json_data = file_get_contents($json_file_path);
+  $data = json_decode($json_data, TRUE);
+  $icons = $data['icons'] ?? [];
+
+  $created_count = 0;
+  $updated_count = 0;
+
+  foreach ($icons as $icon_data) {
+    $file_url = '/themes/custom/uids_base/brand-icons/icons/' . $icon_data['name'] . '-two-color.svg';
+    $alt_text = str_replace('-', ' ', $icon_data['name']);
+    $media_storage = \Drupal::entityTypeManager()->getStorage('media');
+
+    // Load or create media entity.
+    $existing_media = $media_storage->loadByProperties([
+      'bundle' => 'brand_icon',
+      'field_media_brand_icon.icon_id' => $icon_data['id'],
+    ]);
+
+    if (empty($existing_media)) {
+      $media = $media_storage->create([
+        'bundle' => 'brand_icon',
+        'name' => $icon_data['name'],
+        'status' => 1,
+        'uid' => 1,
+      ]);
+      $created_count++;
+    }
+    else {
+      $media = reset($existing_media);
+      $updated_count++;
+    }
+
+    $media->setName($icon_data['name']);
+    $media->set('field_media_brand_icon', [
+      'uri' => $file_url,
+      'alt' => $alt_text,
+      'icon_id' => $icon_data['id'],
+    ]);
+
+    $media->save();
+  }
+
+  \Drupal::messenger()->addStatus(t('Icons import completed. Created: @created, Updated: @updated', [
+    '@created' => $created_count,
+    '@updated' => $updated_count,
+  ]));
 }

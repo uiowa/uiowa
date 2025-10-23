@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: labhrl.uiowa.ddev.site
+  paths:
+    files: sites/hrl.lab.uiowa.edu/files
+dev:
+  uri: labhrl.dev.drupal.uiowa.edu
+  host: uiowa08dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/hrl.lab.uiowa.edu/files
+  root: /var/www/html/uiowa08.dev/docroot
+  user: uiowa08.dev
+prod:
+  uri: hrl.lab.uiowa.edu
+  host: uiowa08prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/hrl.lab.uiowa.edu/files
+  root: /var/www/html/uiowa08.prod/docroot
+  user: uiowa08.prod
+test:
+  uri: labhrl.stage.drupal.uiowa.edu
+  host: uiowa08stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/hrl.lab.uiowa.edu/files
+  root: /var/www/html/uiowa08.stage/docroot
+  user: uiowa08.stage

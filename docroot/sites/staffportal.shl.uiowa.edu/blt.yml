@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: shlstaffportal.uiowa.ddev.site
+    protocol: https
+  machine_name: shlstaffportal
+  human_name: staffportal.shl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: shlstaffportal.prod
+drupal:
+  db:
+    database: staffportal_shl_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://shlstaffportal.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Staff Portal'

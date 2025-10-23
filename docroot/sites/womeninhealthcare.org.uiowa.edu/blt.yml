@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgwomeninhealthcare.uiowa.ddev.site
+    protocol: https
+  machine_name: orgwomeninhealthcare
+  human_name: womeninhealthcare.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgwomeninhealthcare.prod
+drupal:
+  db:
+    database: womeninhealthcare_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgwomeninhealthcare.prod.drupal.uiowa.edu'
+  requester: cerios
+  site-name: 'Women in Healthcare'

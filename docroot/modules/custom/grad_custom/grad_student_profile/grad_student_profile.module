@@ -48,13 +48,13 @@ function grad_student_profile_preprocess_block__inline_block__content_list(&$var
 function grad_student_profile_preprocess_field__node__student_profile(&$variables) {
   switch ($variables['element']['#field_name']) {
     case 'field_grad_program_all_degree':
-      uiowa_core_set_field_label_icon($variables, 'fas fa-graduation-cap fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_label_icon($variables, 'fas fa-graduation-cap');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_person_hometown':
-      uiowa_core_set_field_label_icon($variables, 'fas fa-globe-americas fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
+      uiowa_core_set_field_label_icon($variables, 'fas fa-globe-americas');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
       break;
 
     case 'field_person_distinction':

@@ -1,0 +1,638 @@
+From d1cfa0351e7e02dd6d2fbb7d5fe0c5260105581d Mon Sep 17 00:00:00 2001
+From: Oleh Shevchuk <oleh.shevchuck@evolvingweb.ca>
+Date: Wed, 26 Jan 2022 15:06:02 +0200
+Subject: [PATCH 1/4] Made the custom blocks created in inline forms, to be not
+ reusable.
+
+---
+ inline_entity_form.module                     |  53 +++++++++
+ inline_entity_form.services.yml               |  10 ++
+ .../SetInlineBlockDependencyNested.php        |  44 ++++++++
+ src/Form/BlockContentInlineForm.php           |  27 +++++
+ src/NestedInlineBlockOperations.php           | 104 ++++++++++++++++++
+ .../InlineBlockSelection.php                  |  32 ++++++
+ 6 files changed, 270 insertions(+)
+ create mode 100644 inline_entity_form.services.yml
+ create mode 100644 src/EventSubscriber/SetInlineBlockDependencyNested.php
+ create mode 100644 src/Form/BlockContentInlineForm.php
+ create mode 100644 src/NestedInlineBlockOperations.php
+ create mode 100644 src/Plugin/EntityReferenceSelection/InlineBlockSelection.php
+
+diff --git a/inline_entity_form.module b/inline_entity_form.module
+index 8f6b69d9..e9c18017 100644
+--- a/inline_entity_form.module
++++ b/inline_entity_form.module
+@@ -11,12 +11,14 @@
+  */
+
+ use Drupal\Component\Utility\NestedArray;
++use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Render\Element;
+ use Drupal\inline_entity_form\ElementSubmit;
+ use Drupal\inline_entity_form\WidgetSubmit;
+ use Drupal\inline_entity_form\Form\EntityInlineForm;
+ use Drupal\inline_entity_form\Plugin\Field\FieldWidget\InlineEntityFormComplex;
++use Drupal\inline_entity_form\NestedInlineBlockOperations;
+ use Drupal\inline_entity_form\MigrationHelper;
+ use Drupal\migrate\Plugin\MigrateSourceInterface;
+ use Drupal\migrate\Plugin\MigrationInterface;
+@@ -27,6 +29,9 @@ use Drupal\migrate\Row;
+  */
+ function inline_entity_form_entity_type_build(array &$entity_types) {
+   /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
++  if (isset($entity_types['block_content']) && !$entity_types['block_content']->getHandlerClass('inline_form')) {
++    $entity_types['block_content']->setHandlerClass('inline_form', '\Drupal\inline_entity_form\Form\BlockContentInlineForm');
++  }
+   if (isset($entity_types['node']) && !$entity_types['node']->getHandlerClass('inline_form')) {
+     $entity_types['node']->setHandlerClass('inline_form', '\Drupal\inline_entity_form\Form\NodeInlineForm');
+   }
+@@ -61,6 +66,54 @@ function inline_entity_form_theme() {
+   ];
+ }
+
++/**
++ * Implements hook_module_implements_alter().
++ */
++function inline_entity_form_module_implements_alter(&$implementations, $hook) {
++  if ($hook == 'entity_presave' && \Drupal::moduleHandler()->moduleExists('layout_builder')) {
++    // Make sure that our implementation runs after the one from the
++    // layout_builder module. Instead of this, we could alter this module's
++    // weight, but that would affect all hooks implemented here.
++    $group = $implementations['inline_entity_form'];
++    unset($implementations['inline_entity_form']);
++    $implementations['inline_entity_form'] = $group;
++  }
++}
++
++/**
++ * Implements hook_entity_presave().
++ */
++function inline_entity_form_entity_presave(EntityInterface $entity) {
++  // Update LB usage information for nested inline blocks.
++  // We cannot use hook_ENTITY_TYPE_insert() for the block itself, since that is
++  // called before LB has added usage information for the block. Instead, use
++  // this hook for the parent entity.
++  // @see layout_builder_entity_presave()
++  if (\Drupal::moduleHandler()->moduleExists('layout_builder')) {
++    /** @var \Drupal\inline_entity_form\NestedInlineBlockOperations $entity_operations */
++    $entity_operations = \Drupal::classResolver(NestedInlineBlockOperations::class);
++    $entity_operations->updateNestedInlineBlocks($entity);
++  }
++}
++
++/**
++ * Implements hook_ENTITY_TYPE_update() for block content entities.
++ */
++function inline_entity_form_block_content_update(EntityInterface $block) {
++  // Update LB usage information for nested inline blocks.
++  // LB usage information for the parent block is set when the block is created,
++  // and it should not change when the block is updated. When it is updated, we
++  // may add additional nested blocks, so track their usage.
++  if (\Drupal::moduleHandler()->moduleExists('layout_builder')) {
++    /** @var \Drupal\inline_entity_form\NestedInlineBlockOperations $entity_operations */
++    $entity_operations = \Drupal::classResolver(NestedInlineBlockOperations::class);
++    if ($layout_entity_info = $entity_operations->checkBlock($block)) {
++      $entity_operations->trackReferencedBlocks($block, $layout_entity_info);
++    }
++  }
++}
++
++
+ /**
+  * Provides the form for adding existing entities through an autocomplete field.
+  *
+diff --git a/inline_entity_form.services.yml b/inline_entity_form.services.yml
+new file mode 100644
+index 00000000..a43f18af
+--- /dev/null
++++ b/inline_entity_form.services.yml
+@@ -0,0 +1,10 @@
++services:
++  inline_entity_form.inline_block_dependency_subscriber:
++    class: Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested
++    arguments:
++      - '@entity_type.manager'
++      - '@database'
++      - '@inline_block.usage'
++      - '@plugin.manager.layout_builder.section_storage'
++    tags :
++      - { name: event_subscriber }
+diff --git a/src/EventSubscriber/SetInlineBlockDependencyNested.php b/src/EventSubscriber/SetInlineBlockDependencyNested.php
+new file mode 100644
+index 00000000..b5f29220
+--- /dev/null
++++ b/src/EventSubscriber/SetInlineBlockDependencyNested.php
+@@ -0,0 +1,44 @@
++<?php
++
++namespace Drupal\inline_entity_form\EventSubscriber;
++
++use Drupal\block_content\BlockContentInterface;
++use Drupal\layout_builder\EventSubscriber\SetInlineBlockDependency;
++
++/**
++ * Override Layout Builder SetInlineBlockDependencyWithContextTranslation.
++ *
++ * Handles handle nested blocks.
++ *
++ * This is copied from the version in layout_builder_at, except for skipping
++ * the test isBlockRevisionUsedInEntity().
++ */
++class SetInlineBlockDependencyNested extends SetInlineBlockDependency {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function getInlineBlockDependency(BlockContentInterface $block_content) {
++    // Call getTranslationFromContext() on the entity.
++    $layout_entity_info = $this->usage->getUsage($block_content->id());
++    if (empty($layout_entity_info)) {
++      // If the block does not have usage information then we cannot set a
++      // dependency. It may be used by another module besides layout builder.
++      return NULL;
++    }
++    $layout_entity_storage = $this->entityTypeManager->getStorage($layout_entity_info->layout_entity_type);
++    $layout_entity = $layout_entity_storage->load($layout_entity_info->layout_entity_id);
++    $layout_entity = \Drupal::service('entity.repository')->getTranslationFromContext($layout_entity);
++    if ($this->isLayoutCompatibleEntity($layout_entity)) {
++      if ($this->isBlockRevisionUsedInEntity($layout_entity, $block_content)) {
++        // Skip this test, which is present in layout_builder and
++        // layout_builder_at. It will fail for nested blocks. Will we get in
++        // trouble if one revision of a nested block is used but another is not?
++      }
++      return $layout_entity;
++
++    }
++    return NULL;
++  }
++
++}
+diff --git a/src/Form/BlockContentInlineForm.php b/src/Form/BlockContentInlineForm.php
+new file mode 100644
+index 00000000..326488dc
+--- /dev/null
++++ b/src/Form/BlockContentInlineForm.php
+@@ -0,0 +1,27 @@
++<?php
++
++namespace Drupal\inline_entity_form\Form;
++
++use Drupal\Core\Form\FormStateInterface;
++
++/**
++ * Block content inline form handler.
++ */
++class BlockContentInlineForm extends EntityInlineForm {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function entityFormSubmit(array &$entity_form, FormStateInterface $form_state) {
++    // Non-reusable blocks were introduced in Drupal 8.6.0.
++    // @see https://www.drupal.org/node/2978419
++    if (version_compare(\Drupal::VERSION, '8.6.0', '>=')) {
++      $parent_form_id = $form_state->getCompleteForm()['#form_id'];
++      if (strpos($parent_form_id, 'layout_builder_') === 0) {
++        $entity_form['#entity']->setNonReusable();
++      }
++    }
++    parent::entityFormSubmit($entity_form, $form_state);
++  }
++
++}
+diff --git a/src/NestedInlineBlockOperations.php b/src/NestedInlineBlockOperations.php
+new file mode 100644
+index 00000000..83d46860
+--- /dev/null
++++ b/src/NestedInlineBlockOperations.php
+@@ -0,0 +1,104 @@
++<?php
++
++namespace Drupal\inline_entity_form;
++
++use Drupal\Core\Entity\EntityInterface;
++use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
++use Drupal\layout_builder\InlineBlockEntityOperations;
++
++/**
++ * Defines custom reactions to entity events related to Inline Blocks.
++ */
++class NestedInlineBlockOperations extends InlineBlockEntityOperations {
++
++  /**
++   * Update LB usage information for nested inline blocks.
++   *
++   * @see Drupal\layout_builder\InlineBlockEntityOperations::handlePreSave()
++   */
++  public function updateNestedInlineBlocks(EntityInterface $entity) {
++    if (!$this->isLayoutCompatibleEntity($entity)) {
++      return;
++    }
++    if (!$sections = $this->getEntitySections($entity)) {
++      return;
++    }
++    foreach ($this->getInlineBlockComponents($sections) as $component) {
++      $block = NULL;
++      /** @var \Drupal\layout_builder\Plugin\Block\InlineBlock $plugin */
++      $plugin = $component->getPlugin();
++      if (!is_null($block_id = $this->getPluginBlockId($plugin))) {
++        $block = $this->blockContentStorage
++          ->load($this->getPluginBlockId($plugin));
++      }
++      if ($block && $layout_entity_info = $this->checkBlock($block)) {
++        $this->trackReferencedBlocks($block, $layout_entity_info);
++      }
++    }
++  }
++
++  /**
++   * Check whether a block is managed by layout_builder.
++   *
++   * @param Drupal\Core\Entity\EntityInterface $block
++   *   A block entity.
++   *
++   * @return object|bool
++   *   If $block is a non-reusable block that is managed by layout_builder, then
++   *   return a stdClass object with properties layout_entity_id and
++   *   layout_entity_type. Otherwise, return FALSE.
++   */
++  public function checkBlock(EntityInterface $block) {
++    if ($block->isReusable()) {
++      return FALSE;
++    }
++    return $this->usage->getUsage($block->id());
++  }
++
++  /**
++   * Recursively mark referenced blocks as being managed by layout_builder.
++   *
++   * We will be in big trouble if there are any circular references among
++   * non-reusable blocks.
++   *
++   * @param Drupal\Core\Entity\EntityInterface $block
++   *   A non-reusable block that is managed by layout_builder.
++   * @param stdClass $layout_entity_info
++   *   Usage information as returned by $this->checkBlock().
++   * @param bool $force_not_reusable
++   *   (optional) If TRUE, then make all nested blocks non-reusable. Default is
++   *   FALSE.
++   *
++   * @see $this->checkBlock()
++   * @see inline_entity_form_entity_presave()
++   * @see inline_entity_form_block_content_update()
++   */
++  public function trackReferencedBlocks(EntityInterface $block, $layout_entity_info, $force_not_reusable = FALSE) {
++    $layout_entity = $this->entityTypeManager
++      ->getStorage($layout_entity_info->layout_entity_type)
++      ->load($layout_entity_info->layout_entity_id);
++
++    foreach ($block->getFields(FALSE) as $field) {
++      if (!$field instanceof EntityReferenceFieldItemListInterface) {
++        continue;
++      }
++      if ($field->getSetting('target_type') != 'block_content') {
++        continue;
++      }
++      foreach ($field->referencedEntities() as $nested_block) {
++        if ($nested_block->isReusable()) {
++          if (!$force_not_reusable) {
++            continue;
++          }
++          $nested_block->setNonReusable();
++          $nested_block->save();
++        }
++        if (!$this->usage->getUsage($nested_block->id())) {
++          $this->usage->addUsage($nested_block->id(), $layout_entity);
++        }
++        $this->trackReferencedBlocks($nested_block, $layout_entity_info, $force_not_reusable);
++      }
++    }
++  }
++
++}
+diff --git a/src/Plugin/EntityReferenceSelection/InlineBlockSelection.php b/src/Plugin/EntityReferenceSelection/InlineBlockSelection.php
+new file mode 100644
+index 00000000..5930c357
+--- /dev/null
++++ b/src/Plugin/EntityReferenceSelection/InlineBlockSelection.php
+@@ -0,0 +1,32 @@
++<?php
++
++namespace Drupal\inline_entity_form\Plugin\EntityReferenceSelection;
++
++use Drupal\Core\Entity\Plugin\EntityReferenceSelection\DefaultSelection;
++
++/**
++ * Entity Reference Selection plugin for inline (non-reusable) blocks.
++ *
++ * @EntityReferenceSelection(
++ *   id = "inline_entity_form",
++ *   label = @Translation("Inline Block"),
++ *   group = "inline_entity_form",
++ *   target_type = "block_content",
++ *   weight = 0
++ * )
++ */
++class InlineBlockSelection extends DefaultSelection {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function buildEntityQuery($match = NULL, $match_operator = 'CONTAINS') {
++    // The parent method adds the block_content_access tag to the query, so
++    // block_content_query_entity_reference_alter() will add a condition on the
++    // reusable field unless we add one first.
++    $query = parent::buildEntityQuery($match, $match_operator);
++    $query->exists('reusable');
++    return $query;
++  }
++
++}
+--
+GitLab
+
+
+From 30e668ac194c5c56552c281e79e9bb11284d51cc Mon Sep 17 00:00:00 2001
+From: Oleh Shevchuk <49051-alt@users.noreply.drupalcode.org>
+Date: Thu, 8 Feb 2024 14:50:19 +0000
+Subject: [PATCH 2/4] Issue #3002175 by benjifisher, valthebald: Custom blocks
+ created in inline forms should not be reusable
+
+---
+ inline_entity_form.services.yml               |  6 +-
+ .../SetInlineBlockDependencyNested.php        | 99 +++++++++++++++----
+ 2 files changed, 81 insertions(+), 24 deletions(-)
+
+diff --git a/inline_entity_form.services.yml b/inline_entity_form.services.yml
+index a43f18af..27b3afe4 100644
+--- a/inline_entity_form.services.yml
++++ b/inline_entity_form.services.yml
+@@ -2,9 +2,7 @@ services:
+   inline_entity_form.inline_block_dependency_subscriber:
+     class: Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested
+     arguments:
+-      - '@entity_type.manager'
+-      - '@database'
+-      - '@inline_block.usage'
+-      - '@plugin.manager.layout_builder.section_storage'
++      - '@current_route_match'
++      - '@node.node_route_context'
+     tags :
+       - { name: event_subscriber }
+diff --git a/src/EventSubscriber/SetInlineBlockDependencyNested.php b/src/EventSubscriber/SetInlineBlockDependencyNested.php
+index b5f29220..2aa28a2f 100644
+--- a/src/EventSubscriber/SetInlineBlockDependencyNested.php
++++ b/src/EventSubscriber/SetInlineBlockDependencyNested.php
+@@ -2,8 +2,12 @@
+
+ namespace Drupal\inline_entity_form\EventSubscriber;
+
++use Drupal\block_content\BlockContentEvents;
+ use Drupal\block_content\BlockContentInterface;
+-use Drupal\layout_builder\EventSubscriber\SetInlineBlockDependency;
++use Drupal\block_content\Event\BlockContentGetDependencyEvent;
++use Drupal\Core\Routing\RouteMatchInterface;
++use Drupal\node\ContextProvider\NodeRouteContext;
++use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+ /**
+  * Override Layout Builder SetInlineBlockDependencyWithContextTranslation.
+@@ -13,32 +17,87 @@ use Drupal\layout_builder\EventSubscriber\SetInlineBlockDependency;
+  * This is copied from the version in layout_builder_at, except for skipping
+  * the test isBlockRevisionUsedInEntity().
+  */
+-class SetInlineBlockDependencyNested extends SetInlineBlockDependency {
++class SetInlineBlockDependencyNested implements EventSubscriberInterface {
++
++  /**
++   * The currently active route match object.
++   *
++   * @var \Drupal\Core\Routing\RouteMatchInterface
++   */
++  protected RouteMatchInterface $routeMatch;
++
++  /**
++   * The node route context service.
++   *
++   * @var \Drupal\node\ContextProvider\NodeRouteContext
++   */
++  protected NodeRouteContext $nodeRouteContext;
++
++  /**
++   * Constructs event subscriber.
++   *
++   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
++   *   The currently active route match object.
++   * @param \Drupal\node\ContextProvider\NodeRouteContext $node_route_context
++   *   The node route context service.
++   */
++  public function __construct(RouteMatchInterface $route_match, NodeRouteContext $node_route_context) {
++    $this->routeMatch = $route_match;
++    $this->nodeRouteContext = $node_route_context;
++  }
++
++  /**
++   * Handles the BlockContentEvents::INLINE_BLOCK_GET_DEPENDENCY event.
++   *
++   * @param \Drupal\block_content\Event\BlockContentGetDependencyEvent $event
++   *   The event.
++   *
++   * @throws \Drupal\Component\Plugin\Exception\ContextException
++   */
++  public function onGetDependency(BlockContentGetDependencyEvent $event) {
++    if ($dependency = $this->getInlineBlockDependency($event->getBlockContentEntity())) {
++      $event->setAccessDependency($dependency);
++    }
++  }
+
+   /**
+    * {@inheritdoc}
+    */
++  public static function getSubscribedEvents() {
++    return [
++      BlockContentEvents::BLOCK_CONTENT_GET_DEPENDENCY => [
++        'onGetDependency',
++        -100,
++      ],
++    ];
++  }
++
++  /**
++   * Get the access dependency of an inline block.
++   *
++   * @param \Drupal\block_content\BlockContentInterface $block_content
++   *   The block content entity.
++   *
++   * @return \Drupal\Core\Entity\EntityInterface|null
++   *   Returns the entity dependency.
++   *
++   * @throws \Drupal\Component\Plugin\Exception\ContextException
++   */
+   protected function getInlineBlockDependency(BlockContentInterface $block_content) {
+-    // Call getTranslationFromContext() on the entity.
+-    $layout_entity_info = $this->usage->getUsage($block_content->id());
+-    if (empty($layout_entity_info)) {
+-      // If the block does not have usage information then we cannot set a
+-      // dependency. It may be used by another module besides layout builder.
+-      return NULL;
+-    }
+-    $layout_entity_storage = $this->entityTypeManager->getStorage($layout_entity_info->layout_entity_type);
+-    $layout_entity = $layout_entity_storage->load($layout_entity_info->layout_entity_id);
+-    $layout_entity = \Drupal::service('entity.repository')->getTranslationFromContext($layout_entity);
+-    if ($this->isLayoutCompatibleEntity($layout_entity)) {
+-      if ($this->isBlockRevisionUsedInEntity($layout_entity, $block_content)) {
+-        // Skip this test, which is present in layout_builder and
+-        // layout_builder_at. It will fail for nested blocks. Will we get in
+-        // trouble if one revision of a nested block is used but another is not?
+-      }
+-      return $layout_entity;
++    // @todo Find a better way to get child blocks dependencies.
++    // Try to extract the node route context.
++    $contexts = $this->nodeRouteContext->getRuntimeContexts([]);
++    /** @var \Drupal\Core\Plugin\Context\Context $nodeContext */
++    $nodeContext = $contexts['node'];
++    $entity = $nodeContext->getContextValue();
+
++    // If we couldn't retrieve the node from the route then we try to get the
++    // section storage.
++    if (!$entity) {
++      $entity = $this->routeMatch->getParameter('section_storage');
+     }
+-    return NULL;
++
++    return $entity;
+   }
+
+ }
+--
+GitLab
+
+
+From 0dd9ad2904b9c2742f019077cfadca50a4841662 Mon Sep 17 00:00:00 2001
+From: arakwar <sebas.lemieux@gmail.com>
+Date: Thu, 8 Aug 2024 09:20:21 -0400
+Subject: [PATCH 3/4] Issue #3002175 Apply patch #46
+
+---
+ inline_entity_form.module               |  2 +-
+ src/InlineEntityFormServiceProvider.php | 41 +++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+), 1 deletion(-)
+ create mode 100644 src/InlineEntityFormServiceProvider.php
+
+diff --git a/inline_entity_form.module b/inline_entity_form.module
+index e9c18017..90748bc7 100644
+--- a/inline_entity_form.module
++++ b/inline_entity_form.module
+@@ -89,7 +89,7 @@ function inline_entity_form_entity_presave(EntityInterface $entity) {
+   // called before LB has added usage information for the block. Instead, use
+   // this hook for the parent entity.
+   // @see layout_builder_entity_presave()
+-  if (\Drupal::moduleHandler()->moduleExists('layout_builder')) {
++  if (\Drupal::moduleHandler()->moduleExists('layout_builder') && \Drupal::moduleHandler()->moduleExists('block_content')) {
+     /** @var \Drupal\inline_entity_form\NestedInlineBlockOperations $entity_operations */
+     $entity_operations = \Drupal::classResolver(NestedInlineBlockOperations::class);
+     $entity_operations->updateNestedInlineBlocks($entity);
+diff --git a/src/InlineEntityFormServiceProvider.php b/src/InlineEntityFormServiceProvider.php
+new file mode 100644
+index 00000000..79dbcea5
+--- /dev/null
++++ b/src/InlineEntityFormServiceProvider.php
+@@ -0,0 +1,41 @@
++<?php
++
++namespace Drupal\inline_entity_form;
++
++use Drupal\Core\DependencyInjection\ContainerBuilder;
++use Drupal\Core\DependencyInjection\ServiceProviderInterface;
++use Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested;
++use Symfony\Component\DependencyInjection\Definition;
++use Symfony\Component\DependencyInjection\Reference;
++
++/**
++ * Sets inline_entity_form.get_block_dependency_subscriber service definition.
++ *
++ * This service is dependent on the block_content module, so it must be provided
++ * dynamically.
++ *
++ * @internal
++ *   Service providers are internal.
++ *
++ * @see \Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested
++ */
++class InlineEntityFormServiceProvider implements ServiceProviderInterface {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function register(ContainerBuilder $container) {
++    $modules = $container->getParameter('container.modules');
++    if (isset($modules['block_content'])) {
++      $definition = new Definition(SetInlineBlockDependencyNested::class);
++      $definition->setArguments([
++        new Reference('current_route_match'),
++        new Reference('node.node_route_context'),
++      ]);
++      $definition->addTag('event_subscriber');
++      $definition->setPublic(TRUE);
++      $container->setDefinition('inline_entity_form.get_block_dependency_subscriber', $definition);
++    }
++  }
++
++}
+--
+GitLab
+
+
+From ca228c784bfe8cfd1e6dde688ac94f412891b93b Mon Sep 17 00:00:00 2001
+From: arakwar <sebas.lemieux@gmail.com>
+Date: Thu, 8 Aug 2024 10:03:41 -0400
+Subject: [PATCH 4/4] Issue #3002175 Add getPluginBlockId function back in
+ module.
+
+---
+ src/NestedInlineBlockOperations.php | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/src/NestedInlineBlockOperations.php b/src/NestedInlineBlockOperations.php
+index 83d46860..04290faf 100644
+--- a/src/NestedInlineBlockOperations.php
++++ b/src/NestedInlineBlockOperations.php
+@@ -5,12 +5,35 @@ namespace Drupal\inline_entity_form;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+ use Drupal\layout_builder\InlineBlockEntityOperations;
++use Drupal\layout_builder\Plugin\Block\InlineBlock;
+
+ /**
+  * Defines custom reactions to entity events related to Inline Blocks.
+  */
+ class NestedInlineBlockOperations extends InlineBlockEntityOperations {
+
++  /**
++   * Gets a block ID for an inline block plugin.
++   *
++   * @param \Drupal\layout_builder\Plugin\Block\InlineBlock $block_plugin
++   *   The inline block plugin.
++   *
++   * @return int
++   *   The block content ID or null none available.
++   *
++   * It was removed in https://git.drupalcode.org/project/drupal/-/commit/71a1ab746b9731cb30213ed04ca86160e331ea2d
++   * But we need it for this module, it was brought back for now to restore functionality on Drupal 10.3
++   */
++  protected function getPluginBlockId(InlineBlock $block_plugin) {
++    $configuration = $block_plugin->getConfiguration();
++    if (!empty($configuration['block_revision_id'])) {
++      $revision_ids = $this->getBlockIdsForRevisionIds([$configuration['block_revision_id']]);
++      return array_pop($revision_ids);
++    }
++    return NULL;
++  }
++
++
+   /**
+    * Update LB usage information for nested inline blocks.
+    *
+--
+GitLab

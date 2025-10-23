@@ -43,14 +43,16 @@ class ThesisDefense extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--layout-left',
-      'border' => 'borderless',
-      'headline_class' => 'headline--serif',
-      'media_format' => 'media--circle media--border',
-      'media_size' => 'media--small',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'card_media_position' => 'card--layout-left',
+        'border' => 'borderless',
+        'headline_class' => 'headline--serif',
+        'media_format' => 'media--circle media--border',
+        'media_size' => 'media--small',
+      ]
+    );
   }
 
 }

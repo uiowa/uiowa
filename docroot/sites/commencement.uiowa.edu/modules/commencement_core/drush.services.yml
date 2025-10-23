@@ -1,0 +1,6 @@
+services:
+  commencement_core.commands:
+    class: \Drupal\commencement_core\Commands\CommencementCoreCommands
+    arguments: ['@account_switcher']
+    tags:
+      - { name: drush.command }

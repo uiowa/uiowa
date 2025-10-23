@@ -9,6 +9,7 @@ dependencies:
     - image.style.thumbnail
     - media.type.image
   module:
+    - decorative_image_widget
     - focal_point
     - path
     - text
@@ -42,7 +43,9 @@ content:
       preview_image_style: thumbnail
       preview_link: true
       offsets: '50,50'
-    third_party_settings: {  }
+    third_party_settings:
+      decorative_image_widget:
+        use_decorative_checkbox: true
   field_tags:
     type: entity_reference_autocomplete
     weight: 4

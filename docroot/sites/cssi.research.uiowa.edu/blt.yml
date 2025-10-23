@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchcssi.uiowa.ddev.site
+    protocol: https
+  machine_name: researchcssi
+  human_name: cssi.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchcssi.prod
+drupal:
+  db:
+    database: cssi_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchcssi.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Center for Social Science Innovation'

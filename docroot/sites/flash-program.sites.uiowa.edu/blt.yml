@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesflash-program.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesflash-program
+  human_name: flash-program.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesflash-program.prod
+drupal:
+  db:
+    database: flash_program_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesflash-program.prod.drupal.uiowa.edu'
+  requester: tgao12
+  site-name: 'FLASH Summer Program'

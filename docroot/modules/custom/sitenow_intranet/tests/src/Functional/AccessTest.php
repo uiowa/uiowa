@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\sitenow_intranet\Functional;
 
+use Drupal\Tests\BrowserTestBase;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\system\Entity\Menu;
-use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests for intranet module.
@@ -21,7 +21,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'block',
     'config_split',
     'filter',

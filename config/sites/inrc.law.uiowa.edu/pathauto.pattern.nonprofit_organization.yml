@@ -1,0 +1,22 @@
+uuid: 10a21a32-8576-4981-b2f1-f28656084d56
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: nonprofit_organization
+label: 'Nonprofit Organization'
+type: 'canonical_entities:node'
+pattern: 'non-profit-organizations/[node:title]'
+selection_criteria:
+  2417323a-ad61-467b-aa5a-69e06293be5e:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 2417323a-ad61-467b-aa5a-69e06293be5e
+    context_mapping:
+      node: node
+    bundles:
+      nonprofit_org: nonprofit_org
+selection_logic: and
+weight: -5
+relationships: {  }

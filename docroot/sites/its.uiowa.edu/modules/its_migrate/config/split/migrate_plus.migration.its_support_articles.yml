@@ -1,0 +1,53 @@
+uuid: null
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - its_migrate
+id: its_support_articles
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - its
+migration_group: sitenow_migrate
+label: Support Articles
+source:
+  plugin: its_support_articles
+  node_type: support_article
+  constants:
+    uid_admin: 1
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: body
+  field_support_article_service:
+    plugin: sub_process
+    source: field_info_center
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: its_service
+        source: target_id
+  field_support_article_category: category
+  field_support_article_short_desc: field_short_description
+  field_support_article_faqs: faqs
+destination:
+  plugin: 'entity:node'
+  default_bundle: support_article
+migration_dependencies:
+  required:
+    - its_service

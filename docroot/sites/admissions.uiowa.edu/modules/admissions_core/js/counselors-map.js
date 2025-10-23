@@ -12,7 +12,7 @@
         let geojson;
 
         // Establish map and prevent scrollwheel zooming.
-        let map = L.map("admissions-counselors-map").setView([37.8, -96], 4);
+        let map = L.map("leaflet-map-admissions-counselors-map").setView([37.8, -96], 4);
         map.scrollWheelZoom.disable();
 
         // Check for counselor data.

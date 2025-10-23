@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orghcha.uiowa.ddev.site
+    protocol: https
+  machine_name: orghcha
+  human_name: hcha.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orghcha.prod
+drupal:
+  db:
+    database: hcha_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orghcha.prod.drupal.uiowa.edu'
+  requester: sawinternitz
+  site-name: 'Hawkeye Chronic Health Alliance'

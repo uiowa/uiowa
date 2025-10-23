@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labjohnson.uiowa.ddev.site
+    protocol: https
+  machine_name: labjohnson
+  human_name: johnson.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjohnson.prod
+drupal:
+  db:
+    database: johnson_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labjohnson.prod.drupal.uiowa.edu'
+  requester: johnsonjg
+  site-name: 'Johnson Laboratory'

@@ -63,6 +63,11 @@ class P2LbController extends ControllerBase implements ContainerInjectionInterfa
           '#markup' => $this->t('<p>This page has been converted.</p>'),
         ];
       }
+      elseif ($latest->field_v3_conversion_revision_id?->value === 'v3_new') {
+        $build['nothing_to_do'] = [
+          '#markup' => $this->t('<p>This is a v3 page that was created after the SiteNow v2 to v3 converter was enabled.</p>'),
+        ];
+      }
       else {
         $build['not_done'] = [
           '#markup' => $this->t('<p>This page has not been converted yet. You can convert it using the @link.</p>', [

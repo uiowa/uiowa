@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sees.uiowa.ddev.site
+    protocol: https
+  machine_name: sees
+  human_name: sees.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sees.prod
+drupal:
+  db:
+    database: sees_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sees.prod.drupal.uiowa.edu'
+  requester: bschweig
+  site-name: 'School of Earth, Environment, and Sustainability'

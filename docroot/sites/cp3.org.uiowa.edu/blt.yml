@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgcp3.uiowa.ddev.site
+    protocol: https
+  machine_name: orgcp3
+  human_name: cp3.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcp3.prod
+drupal:
+  db:
+    database: cp3_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgcp3.prod.drupal.uiowa.edu'
+  requester: tewoldt
+  site-name: 'Center for Publics, Platforms, and Personalization (CP3)'

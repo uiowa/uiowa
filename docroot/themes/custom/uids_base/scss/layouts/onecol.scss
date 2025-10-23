@@ -1,9 +1,9 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .layout--onecol .layout__region {
   width: 100%;
-  @include inner-grid(100);
+  @include utilities.inner-grid(100);
 }
 
 .layout--onecol {

@@ -38,3 +38,10 @@ function uiowa_alerts_update_8002() {
 
   $config->save();
 }
+
+/**
+ * Clear caches after endpoint change.
+ */
+function uiowa_alerts_update_10001() {
+  drupal_flush_all_caches();
+}

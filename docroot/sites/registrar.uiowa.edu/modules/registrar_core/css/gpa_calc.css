@@ -1,0 +1,58 @@
+[id^="gpa-calculator-form"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.gpa-calculator-form #gpa-row-wrapper {
+  flex: 1 1 100%;
+}
+
+.gpa-calculator-form #gpa-row-wrapper label {
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+}
+
+.gpa-calculator-form .gpa-row .form-item:last-child {
+  flex: 1 0 5rem;
+  max-width: unset;
+}
+.gpa-calculator-form .gpa-row .form-item {
+  flex: 1 1 auto;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.gpa-calculator-form .gpa-row [class*="form-item-gpa-row-gpa"][class*="grade"] {
+  flex: 1 0 5rem;
+}
+
+
+.gpa-calculator-form .form-item.form-item-prev-gpa,
+.gpa-calculator-form .form-item.form-item-prev-hours {
+  flex: 1 1 auto;
+  margin-right: 0.5rem;
+}
+
+.gpa-calculator-form .form-item [id^="edit-prev-hours"],
+.gpa-calculator-form .form-item [id^="edit-prev-gpa"] {
+  margin-bottom: 0;
+}
+
+.gpa-calculator-form [id^="edit-actions"] {
+  flex: 0 1 100%;
+}
+
+.gpa-calculator-form .callout.bg--gray {
+  font-family: Antonio, Antonio-fallback, sans-serif;
+  border-color: var(--brand-primary);
+  margin-left: 0;
+  margin-right: 0;
+  order: 1;
+  flex: 1 1 100%;
+}
+
+.gpa-calculator-form .callout.bg--gray p {
+  margin: 0;
+  font-size: 1.5rem;
+}

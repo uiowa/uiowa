@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineponseti.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineponseti
+  human_name: ponseti.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineponseti.prod
+drupal:
+  db:
+    database: ponseti_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineponseti.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Ponseti International Association'

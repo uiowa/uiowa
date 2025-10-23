@@ -5,6 +5,10 @@ namespace Drupal\uiowa_core\Commands;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Extension\ModuleHandler;
+use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService;
+use Drupal\purge\Plugin\Purge\Queue\QueueService;
+use Drupal\purge\Plugin\Purge\Queuer\QueuersService;
 use Drush\Commands\DrushCommands;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -17,6 +21,8 @@ use Symfony\Component\Yaml\Yaml;
  * of the services file to use.
  */
 class UiowaCoreCommands extends DrushCommands {
+  use LoggerChannelTrait;
+
   /**
    * The uiowa_core logger channel.
    *
@@ -39,12 +45,36 @@ class UiowaCoreCommands extends DrushCommands {
   protected $moduleHandler;
 
   /**
+   * The purge invalidations service.
+   *
+   * @var \Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService
+   */
+  protected $purgeInvalidations;
+
+  /**
+   * The purge queuer service.
+   *
+   * @var \Drupal\purge\Plugin\Purge\Queuer\QueuersService
+   */
+  protected $purgeQueuer;
+
+  /**
+   * The purge queue service.
+   *
+   * @var \Drupal\purge\Plugin\Purge\Queue\QueueService
+   */
+  protected $purgeQueue;
+
+  /**
    * Command constructor.
    */
-  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler) {
+  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler, InvalidationsService $purgeInvalidations, QueuersService $purgeQueuer, QueueService $purgeQueue) {
     $this->logger = $logger;
     $this->configFactory = $configFactory;
     $this->moduleHandler = $moduleHandler;
+    $this->purgeInvalidations = $purgeInvalidations;
+    $this->purgeQueuer = $purgeQueuer;
+    $this->purgeQueue = $purgeQueue;
   }
 
   /**
@@ -54,8 +84,34 @@ class UiowaCoreCommands extends DrushCommands {
    * @aliases uicore-gtag
    */
   public function toggleGtag() {
-    $message = uiowa_core_toggle_gtag();
-    $this->logger()->notice($message);
+    $config = $this->configFactory->getEditable('uiowa_core.settings');
+    $uiowa_core_gtag = $config->get('uiowa_core.gtag');
+
+    if ((int) $uiowa_core_gtag === 1) {
+      $this->getLogger('uiowa_core')->notice('Site-specific Google Tag Manager Disabled');
+      $config
+        ->set('uiowa_core.gtag', '0')
+        ->save();
+    }
+    else {
+      $this->getLogger('uiowa_core')->notice('Site-specific Google Tag Manager Enabled');
+      $config
+        ->set('uiowa_core.gtag', '1')
+        ->save();
+    }
+    // Flush site cache.
+    drupal_flush_all_caches();
+
+    // If available (not Local), try to clear the varnish cache for the files.
+    if ($this->moduleHandler->moduleExists('purge')) {
+      $queuer = $this->purgeQueuer->get('coretags');
+
+      $invalidations = [
+        $this->purgeInvalidations->get('everything'),
+      ];
+
+      $this->purgeQueue->add($queuer, $invalidations);
+    }
   }
 
   /**
@@ -85,16 +141,16 @@ class UiowaCoreCommands extends DrushCommands {
         if ($diff) {
           // Prettify and dump result.
           $result = Yaml::dump($diff);
-          $this->logger->notice($result);
+          $this->getLogger('uiowa_core')->notice($result);
         }
       }
       else {
-        $this->logger->notice('Configuration to compare does not exist.');
+        $this->getLogger('uiowa_core')->notice('Configuration to compare does not exist.');
       }
 
     }
     else {
-      $this->logger->notice('uiowa_auth is not enabled.');
+      $this->getLogger('uiowa_core')->notice('uiowa_auth is not enabled.');
     }
   }
 

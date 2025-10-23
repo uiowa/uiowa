@@ -2,11 +2,11 @@ class SearchOverlay {
   constructor(context) {
     this.context = context || document;
     this.wrapper = this.context.querySelector('.search-overlay');
-
     this.body = document.body;
     this.button = this.context.querySelector('button.search-button');
     this.searchButton = this.context.querySelector('.search-button');
     this.searchButtonLabel = document.getElementById('search-button-label');
+    this.searchInput = document.getElementsByName('search-terms')[0];
 
     if (this.searchButton) {
       this.searchButton.addEventListener('click', this.searchToggle.bind(this));
@@ -34,9 +34,27 @@ class SearchOverlay {
   searchToggle() {
     if (this.searchButtonLabel && this.body) {
       const isSearchOpen = this.body.classList.contains('search-is-open');
-      this.searchButton.setAttribute('aria-expanded', isSearchOpen ? 'false' : 'true');
+      const isExpanded = isSearchOpen ? 'false' : 'true';
+
+      // Set aria-expanded first.
+      this.searchButton.setAttribute('aria-expanded', isExpanded);
+
+      // Update other attributes and classes.
       this.wrapper.setAttribute('aria-hidden', isSearchOpen ? 'true' : 'false');
       this.body.classList.toggle('search-is-open');
+      Drupal.announce(isSearchOpen ? 'Search form closed.' : 'Search form expanded and focus changed.');
+
+      // If opening the search, wait longer then move focus.
+      if (isExpanded === 'true') {
+        if (!this.searchInput) {
+          this.searchInput = document.getElementsByName('search-terms')[0];
+        }
+
+        setTimeout(() => {
+            this.searchInput.focus()
+          }
+          ,750);
+      }
     }
   }
 }

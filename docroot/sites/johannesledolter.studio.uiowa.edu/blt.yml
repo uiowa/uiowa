@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiojohannesledolter.uiowa.ddev.site
+    protocol: https
+  machine_name: studiojohannesledolter
+  human_name: johannesledolter.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiojohannesledolter.prod
+drupal:
+  db:
+    database: johannesledolter_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiojohannesledolter.prod.drupal.uiowa.edu'
+  requester: tpogmore
+  site-name: 'Johannes Ledolter'

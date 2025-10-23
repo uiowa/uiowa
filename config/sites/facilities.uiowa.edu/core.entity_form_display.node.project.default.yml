@@ -24,7 +24,9 @@ dependencies:
     - field.field.node.project.field_project_sub_complete_date
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
+    - field.field.node.project.rabbit_hole__settings
     - node.type.project
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - datetime
@@ -33,6 +35,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - text
 third_party_settings:
   field_group:
@@ -252,6 +255,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 6

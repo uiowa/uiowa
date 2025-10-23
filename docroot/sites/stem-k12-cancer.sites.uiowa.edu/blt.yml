@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesstem-k12-cancer.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesstem-k12-cancer
+  human_name: stem-k12-cancer.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesstem-k12-cancer.prod
+drupal:
+  db:
+    database: stem_k12_cancer_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesstem-k12-cancer.prod.drupal.uiowa.edu'
+  requester: mczmeyer
+  site-name: 'HCCC STEM K12 Educational Programming'

@@ -1,0 +1,29 @@
+uuid: f80afa68-eb52-4bde-b964-e2024fb34700
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_np_documents
+    - media.type.file
+    - node.type.nonprofit_org
+id: node.nonprofit_org.field_np_documents
+field_name: field_np_documents
+entity_type: node
+bundle: nonprofit_org
+label: Documents
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

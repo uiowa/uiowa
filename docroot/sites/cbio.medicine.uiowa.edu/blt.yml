@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinecbio.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinecbio
+  human_name: cbio.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinecbio.prod
+drupal:
+  db:
+    database: cbio_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinecbio.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Cancer Biology Program'

@@ -36,80 +36,80 @@
 {% set headline_class = headline_class ? headline_class|merge(['headline']) : [
   'headline',
   'headline--serif',
-  'headline--negative',
   'headline--large',
 ] %}
+
 <div{{ attributes.addClass(banner_classes) }}>
 
   {% block banner_image %}
     {% if banner_image %}
-      <div class="banner__image">
-        {{ banner_image }}
-      </div>
+      {{ banner_image }}
     {% endif %}
   {% endblock %}
 
-  <div class="banner__container">
-    <div class="banner__content">
-      {% block heading %}
-        {% if banner_title is not empty %}
-          {# Pre-title should only display if title is also being displayed. #}
-          {% if banner_pre_title is not empty %}
-            {% set banner_pre_title_heading = {
-              'headline_level': 'div',
-              'headline_class' : headline_class|merge(['banner__pre-title']),
-              'headline_text' : banner_pre_title,
-            } %}
-            {% include '@uids_base/uids/headline.html.twig' with banner_pre_title_heading only %}
-          {% endif %}
-          {# @todo Determine if it is better to programatically set level and class via preprocess. #}
-          {% set banner_heading = {
-            'headline_level': headline_level ?: 'h2',
-            'headline_class' : headline_class,
-            'headline_text' : banner_title,
-            'headline_url': link.link_url,
-            'headline_aria': banner_aria_describedby,
-            'headline_attributes': headline_attributes ?: null,
-            'headline_url_class': link_element == 'title' ? 'click-target' : null,
+
+  <div class="banner__content">
+    {% block heading %}
+      {% if banner_title is not empty %}
+        {# Pre-title should only display if title is also being displayed. #}
+        {% if banner_pre_title is not empty %}
+          {% set banner_pre_title_heading = {
+            'headline_level': 'div',
+            'headline_class' : headline_class|filter(class => class != 'headline--highlight')|merge(['banner__pre-title']),
+            'headline_text' : banner_pre_title,
           } %}
-          {% include '@uids_base/uids/headline.html.twig' with banner_heading only %}
+          {% include '@uids_base/uids/headline.html.twig' with banner_pre_title_heading only %}
         {% endif %}
-      {% endblock %}
-
-      {% if banner_summary is not empty %}
-        <div class="banner__text">{{ banner_summary }}</div>
+        {# @todo Determine if it is better to programatically set level and class via preprocess. #}
+        {% set banner_heading = {
+          'headline_level': headline_level ?: 'h2',
+          'headline_class' : headline_class,
+          'headline_text' : banner_title,
+          'headline_url': link.link_url,
+          'headline_aria': banner_aria_describedby,
+          'headline_attributes': headline_attributes ?: null,
+          'headline_url_class': link_element == 'title' ? 'click-target' : null,
+        } %}
+        {% include '@uids_base/uids/headline.html.twig' with banner_heading only %}
       {% endif %}
+    {% endblock %}
 
-      {% block banner_bttn %}
-        {% if links is not empty %}
-          <div class="banner__action">
-            {% if links|length > 1 %}
-              <div class="bttn--row">
-                {% for link in links %}
-                  <a {{ button_attributes.addclass(button_classes) }} href="{{ link.link_url }}">
-                    {{ link.link_text }}
-                    <span role="presentation" class="fas fa-arrow-right"></span>
-                  </a>
-                {% endfor %}
-              </div>
-            {% elseif links|length == 1 %}
-              {% if link_element == 'button' %}
-                {# Display as a link. #}
-                <a {{ button_attributes.addclass(button_classes, 'click-target') }} href="{{ link.link_url }}">
+    {% if banner_summary is not empty %}
+      <div class="banner__text">{{ banner_summary }}</div>
+    {% endif %}
+
+    {% block banner_bttn %}
+      {% if links is not empty %}
+        <div class="banner__action">
+          {% if links|length > 1 %}
+            <div class="bttn--row">
+              {% for link in links %}
+                <a {{ button_attributes.addclass(button_classes) }}
+                  href="{{ link.link_url }}">
                   {{ link.link_text }}
-                  <i role="presentation" class="fas fa-arrow-right"></i>
+                  <span role="presentation" class="fas fa-arrow-right"></span>
                 </a>
-              {% elseif show_button %}
-                {# Display as a pseudo-link. #}
-                <div aria-hidden="true" {{ button_attributes.addclass(button_classes) }} {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
-                  {{ link.link_text }}
-                  <i role="presentation" class="fas fa-arrow-right"></i>
-                </div>
-              {% endif %}
+              {% endfor %}
+            </div>
+          {% elseif links|length == 1 %}
+            {% if link_element == 'button' %}
+              {# Display as a link. #}
+              <a {{ button_attributes.addclass(button_classes, 'click-target') }}
+                href="{{ link.link_url }}">
+                {{ link.link_text }}
+                <i role="presentation" class="fas fa-arrow-right"></i>
+              </a>
+            {% elseif show_button %}
+              {# Display as a pseudo-link. #}
+              <div
+                aria-hidden="true" {{ button_attributes.addclass(button_classes) }} {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
+                {{ link.link_text }}
+                <i role="presentation" class="fas fa-arrow-right"></i>
+              </div>
             {% endif %}
-          </div>
-        {% endif %}
-      {% endblock %}
-    </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endblock %}
   </div>
 </div>

@@ -1,0 +1,828 @@
+diff --git a/core/misc/cspell/dictionary.txt b/core/misc/cspell/dictionary.txt
+index 8fcbd4fe32ae774028877d851f3e6c5714ec9289..618c28f6e3fe3cbf5456008be1767195c394b51d 100644
+--- a/core/misc/cspell/dictionary.txt
++++ b/core/misc/cspell/dictionary.txt
+@@ -139,6 +139,7 @@ checkboxifier
+ checkboxify
+ checkboxradio
+ chocolatiers
++chotchkies
+ chromedriver
+ chtext
+ chumillas
+@@ -396,6 +397,7 @@ imagecreatefrom
+ imagetextalternative
+ indexname
+ inited
++initech
+ inno
+ instaclick
+ instantiator
+@@ -464,6 +466,7 @@ lowline
+ lrdd
+ lstitle
+ ltitle
++lumbergh
+ lzma
+ lzop
+ macbinary
+@@ -1021,6 +1024,7 @@ vfsstream
+ viewmode
+ viewports
+ vocabs
++waddams
+ wcag
+ wcprops
+ webassert
+diff --git a/core/modules/layout_builder/config/schema/layout_builder.schema.yml b/core/modules/layout_builder/config/schema/layout_builder.schema.yml
+index 7bc4461891b5889f1ce25d63b1ebd91c035bd546..4594a59e56a51051fcfdd00ee63d1492449f3af2 100644
+--- a/core/modules/layout_builder/config/schema/layout_builder.schema.yml
++++ b/core/modules/layout_builder/config/schema/layout_builder.schema.yml
+@@ -52,6 +52,11 @@ layout_builder.component:
+     additional:
+       type: ignore
+       label: 'Additional data'
++    third_party_settings:
++      type: sequence
++      label: 'Third party settings'
++      sequence:
++        type: '[%parent.%parent.%type].third_party.[%key]'
+ 
+ inline_block:
+   type: block_settings
+diff --git a/core/modules/layout_builder/layout_builder.post_update.php b/core/modules/layout_builder/layout_builder.post_update.php
+index 5d500ddd0f4146a5943fbabbf192c67cce33af9a..67e965c384702c843b3b52439d0aa34ed014b61e 100644
+--- a/core/modules/layout_builder/layout_builder.post_update.php
++++ b/core/modules/layout_builder/layout_builder.post_update.php
+@@ -9,6 +9,7 @@
+ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+ use Drupal\Core\Field\Plugin\Field\FieldFormatter\TimestampFormatter;
+ use Drupal\layout_builder\Entity\LayoutEntityDisplayInterface;
++use Drupal\layout_builder\SectionComponent;
+ 
+ /**
+  * Implements hook_removed_post_updates().
+@@ -69,3 +70,45 @@ function layout_builder_post_update_timestamp_formatter(array &$sandbox = NULL):
+     return $update;
+   });
+ }
++
++/**
++ * Add third_party_settings key to all section components.
++ */
++function layout_builder_post_update_section_component_third_party(?array &$sandbox = NULL): void {
++  $config_entity_updater = \Drupal::classResolver(ConfigEntityUpdater::class);
++
++  $callback = function (EntityViewDisplayInterface $display) {
++    $needs_update = FALSE;
++
++    // Only update entity view displays where Layout Builder is enabled.
++    if ($display instanceof LayoutEntityDisplayInterface && $display->isLayoutBuilderEnabled()) {
++      foreach ($display->getSections() as $section) {
++        // Add a third_party_settings element to each section component.
++        $components = $section->getComponents();
++        foreach ($components as $delta => $component) {
++          $components[$delta] = new SectionComponent(
++            $component->getUuid(),
++            $component->getRegion(),
++            $component->getConfiguration(),
++            $component->toArray()['additional']
++          );
++          // Depending on the state of the configuration of a site and when this
++          // update is run, there might already be third party settings on a
++          // section component. Retain them, if they exist.
++          $tps_providers = $component->getThirdPartyProviders();
++          foreach ($tps_providers as $provider) {
++            foreach ($component->getThirdPartySettings($provider) as $key => $value) {
++              $component->setThirdPartySetting($provider, $key, $value);
++            }
++          }
++          // Flag this display as needing to be updated.
++          $needs_update = TRUE;
++        }
++      }
++    }
++
++    return $needs_update;
++  };
++
++  $config_entity_updater->update($sandbox, 'entity_view_display', $callback);
++}
+diff --git a/core/modules/layout_builder/src/Entity/LayoutBuilderEntityViewDisplay.php b/core/modules/layout_builder/src/Entity/LayoutBuilderEntityViewDisplay.php
+index dd1462eea13ace40e5e8989e3662e658ff8be5c0..d7155dc375c10b23315320bf6901605ea172f2fb 100644
+--- a/core/modules/layout_builder/src/Entity/LayoutBuilderEntityViewDisplay.php
++++ b/core/modules/layout_builder/src/Entity/LayoutBuilderEntityViewDisplay.php
+@@ -438,7 +438,7 @@ public function setComponent($name, array $options = []) {
+ 
+       $section = $this->getDefaultSection();
+       $region = $options['region'] ?? $section->getDefaultRegion();
+-      $new_component = (new SectionComponent(\Drupal::service('uuid')->generate(), $region, $configuration));
++      $new_component = new SectionComponent(\Drupal::service('uuid')->generate(), $region, $configuration);
+       $section->appendComponent($new_component);
+     }
+     return $this;
+diff --git a/core/modules/layout_builder/src/SectionComponent.php b/core/modules/layout_builder/src/SectionComponent.php
+index b0f8ff13e4f3a8a6257411af2cffd78cb394d7c9..158ef05f3d2e3cd59dac2bfaf9b75496bc583f96 100644
+--- a/core/modules/layout_builder/src/SectionComponent.php
++++ b/core/modules/layout_builder/src/SectionComponent.php
+@@ -3,6 +3,7 @@
+ namespace Drupal\layout_builder;
+ 
+ use Drupal\Component\Plugin\Exception\PluginException;
++use Drupal\Core\Config\Entity\ThirdPartySettingsInterface;
+ use Drupal\Core\Plugin\ContextAwarePluginInterface;
+ use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
+ 
+@@ -18,7 +19,7 @@
+  * @see \Drupal\layout_builder\Section
+  * @see \Drupal\layout_builder\SectionStorageInterface
+  */
+-class SectionComponent {
++class SectionComponent implements ThirdPartySettingsInterface {
+ 
+   /**
+    * The UUID of the component.
+@@ -52,9 +53,23 @@ class SectionComponent {
+    * Any additional properties and values.
+    *
+    * @var mixed[]
++   *
++   * @deprecated in drupal:10.2.0 and is removed from drupal:11.0.0.
++   * Additional component properties should be set via ::setThirdPartySetting().
++   *
++   * @see https://www.drupal.org/node/3100177
+    */
+   protected $additional = [];
+ 
++  /**
++   * Third party settings.
++   *
++   * An array of key/value pairs keyed by provider.
++   *
++   * @var mixed[]
++   */
++  protected $thirdPartySettings = [];
++
+   /**
+    * Constructs a new SectionComponent.
+    *
+@@ -65,13 +80,24 @@ class SectionComponent {
+    * @param mixed[] $configuration
+    *   The plugin configuration.
+    * @param mixed[] $additional
+-   *   An additional values.
++   *   (optional) Additional values.
++   * @param array[] $third_party_settings
++   *   (optional) Any third party settings.
++   *
++   * @todo Remove $additional argument in
++   *   https://www.drupal.org/project/drupal/issues/3160644 in drupal:11.0.x.
+    */
+-  public function __construct($uuid, $region, array $configuration = [], array $additional = []) {
++  public function __construct($uuid, $region, array $configuration = [], array $additional = [], array $third_party_settings = []) {
+     $this->uuid = $uuid;
+     $this->region = $region;
+     $this->configuration = $configuration;
++    // @todo Remove below $additional code when the drupal:11.0.x branch is opened.
++    // @see https://www.drupal.org/project/drupal/issues/3160644
+     $this->additional = $additional;
++    if ($additional !== []) {
++      @trigger_error('Setting additional properties is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Additional component properties should be set via ::setThirdPartySetting(). See https://www.drupal.org/node/3100177', E_USER_DEPRECATED);
++    }
++    $this->thirdPartySettings = $third_party_settings;
+   }
+ 
+   /**
+@@ -99,6 +125,11 @@ public function toRenderArray(array $contexts = [], $in_preview = FALSE) {
+    * @param string $property
+    *   The property to retrieve.
+    *
++   * @deprecated in drupal:10.2.0 and is removed from drupal:11.0.0.
++   * Additional properties should be gotten via ::getThirdPartySetting().
++   *
++   * @see https://www.drupal.org/node/3100177
++   *
+    * @return mixed
+    *   The value for that property, or NULL if the property does not exist.
+    */
+@@ -109,6 +140,7 @@ public function get($property) {
+     else {
+       $value = $this->additional[$property] ?? NULL;
+     }
++    @trigger_error('Getting additional properties is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Additional component properties should be gotten via ::getThirdPartySetting(). See https://www.drupal.org/node/3100177', E_USER_DEPRECATED);
+     return $value;
+   }
+ 
+@@ -120,6 +152,11 @@ public function get($property) {
+    * @param mixed $value
+    *   The value to set.
+    *
++   * @deprecated in drupal:10.2.0 and is removed from drupal:11.0.0.
++   * Additional properties should be set via ::setThirdPartySetting().
++   *
++   * @see https://www.drupal.org/node/3100177
++   *
+    * @return $this
+    */
+   public function set($property, $value) {
+@@ -129,6 +166,7 @@ public function set($property, $value) {
+     else {
+       $this->additional[$property] = $value;
+     }
++    @trigger_error('Setting random section component properties is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Component properties should be set via dedicated setters. See https://www.drupal.org/node/3100177', E_USER_DEPRECATED);
+     return $this;
+   }
+ 
+@@ -187,7 +225,7 @@ public function setWeight($weight) {
+    * @return mixed[]
+    *   The component plugin configuration.
+    */
+-  protected function getConfiguration() {
++  public function getConfiguration() {
+     return $this->configuration;
+   }
+ 
+@@ -293,7 +331,10 @@ public function toArray() {
+       'region' => $this->getRegion(),
+       'configuration' => $this->getConfiguration(),
+       'weight' => $this->getWeight(),
++      // @todo Remove below key/value when the drupal:11.0.x branch is opened.
++      // @see https://www.drupal.org/project/drupal/issues/3160644
+       'additional' => $this->additional,
++      'third_party_settings' => $this->thirdPartySettings,
+     ];
+   }
+ 
+@@ -309,12 +350,70 @@ public function toArray() {
+    *   The section component object.
+    */
+   public static function fromArray(array $component) {
++    // Ensure expected array keys are present.
++    $component += [
++      'uuid' => '',
++      'region' => '',
++      'configuration' => [],
++      // @todo Remove below key/value when the drupal:11.0.x branch is opened.
++      // @see https://www.drupal.org/project/drupal/issues/3160644
++      'additional' => [],
++      'third_party_settings' => [],
++    ];
+     return (new static(
+       $component['uuid'],
+       $component['region'],
+       $component['configuration'],
+-      $component['additional']
++      // @todo Remove below argument when the drupal:11.0.x branch is opened.
++      // @see https://www.drupal.org/project/drupal/issues/3160644
++      $component['additional'],
++      $component['third_party_settings']
+     ))->setWeight($component['weight']);
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getThirdPartySetting($provider, $key, $default = NULL) {
++    return $this->thirdPartySettings[$provider][$key] ?? $default;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getThirdPartySettings($provider) {
++    return $this->thirdPartySettings[$provider] ?? [];
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function setThirdPartySetting($provider, $key, $value) {
++    $this->thirdPartySettings[$provider][$key] = $value;
++    return $this;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function unsetThirdPartySetting($provider, $key) {
++    unset($this->thirdPartySettings[$provider][$key]);
++    // If the third party is no longer storing any information, completely
++    // remove the array holding the settings for this provider.
++    if (empty($this->thirdPartySettings[$provider])) {
++      unset($this->thirdPartySettings[$provider]);
++    }
++    return $this;
++  }
++
++  /**
++   * Gets the list of third parties that store information.
++   *
++   * @return array
++   *   The list of third parties.
++   */
++  public function getThirdPartyProviders() {
++    return array_keys($this->thirdPartySettings);
++  }
++
+ }
+diff --git a/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/install/core.entity_view_display.entity_test.bundle_with_extra_fields.default.yml b/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/install/core.entity_view_display.entity_test.bundle_with_extra_fields.default.yml
+index 069aa0341957a62481f7451a2204223fe9ccabef..2474784e12fa2c2432d1aee2629f46933d7c8302 100644
+--- a/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/install/core.entity_view_display.entity_test.bundle_with_extra_fields.default.yml
++++ b/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/install/core.entity_view_display.entity_test.bundle_with_extra_fields.default.yml
+@@ -23,6 +23,7 @@ third_party_settings:
+                 entity: layout_builder.entity
+             weight: 1
+             additional: {  }
++            third_party_settings: {  }
+ id: entity_test.bundle_with_extra_fields.default
+ targetEntityType: entity_test
+ bundle: bundle_with_extra_fields
+diff --git a/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/schema/layout_builder_defaults_test.schema.yml b/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/schema/layout_builder_defaults_test.schema.yml
+index cd7d1515260321665c6a5e5808555e7784d25934..f270995dd24913df7f52fcd62d24f40fb3b79796 100644
+--- a/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/schema/layout_builder_defaults_test.schema.yml
++++ b/core/modules/layout_builder/tests/modules/layout_builder_defaults_test/config/schema/layout_builder_defaults_test.schema.yml
+@@ -4,3 +4,9 @@ layout_builder.section.third_party.layout_builder_defaults_test:
+     which_party:
+       label: 'Which party?'
+       type: string
++layout_builder.component.third_party.layout_builder_defaults_test:
++  type: mapping
++  mapping:
++    harold:
++      type: string
++      label: Some arbitrary string.
+diff --git a/core/modules/layout_builder/tests/src/Kernel/DefaultsSectionStorageTest.php b/core/modules/layout_builder/tests/src/Kernel/DefaultsSectionStorageTest.php
+index 864d0df00d1ec4b680b8146fc79984c2a4d783ee..2e7ebfbed8d20f12a6e8cfefc158931f7a350ed7 100644
+--- a/core/modules/layout_builder/tests/src/Kernel/DefaultsSectionStorageTest.php
++++ b/core/modules/layout_builder/tests/src/Kernel/DefaultsSectionStorageTest.php
+@@ -115,7 +115,7 @@ public function providerTestAccess() {
+         'layout_onecol',
+         [],
+         [
+-          '10000000-0000-1000-a000-000000000000' => new SectionComponent('10000000-0000-1000-a000-000000000000', 'content', ['id' => 'foo'], ['harold' => 'maude']),
++          '10000000-0000-1000-a000-000000000000' => new SectionComponent('10000000-0000-1000-a000-000000000000', 'content', ['id' => 'foo'], [], ['layout_builder_defaults_test' => ['harold' => 'maude']]),
+         ],
+         ['layout_builder_defaults_test' => ['which_party' => 'third']]
+       ),
+diff --git a/core/modules/layout_builder/tests/src/Unit/SectionComponentTest.php b/core/modules/layout_builder/tests/src/Unit/SectionComponentTest.php
+index c3dc9732430cdc2f32a6d1f4ed75b9fe3249ad74..cb99525091657b97bb774f56829275a6e638ef8b 100644
+--- a/core/modules/layout_builder/tests/src/Unit/SectionComponentTest.php
++++ b/core/modules/layout_builder/tests/src/Unit/SectionComponentTest.php
+@@ -11,6 +11,7 @@
+ use Drupal\Core\Layout\LayoutPluginManagerInterface;
+ use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
+ use Drupal\layout_builder\LayoutBuilderEvents;
++use Drupal\layout_builder\Section;
+ use Drupal\layout_builder\SectionComponent;
+ use Drupal\Tests\UnitTestCase;
+ use Prophecy\Argument;
+@@ -22,10 +23,42 @@
+  */
+ class SectionComponentTest extends UnitTestCase {
+ 
++  /**
++   * The section object to test.
++   *
++   * @var \Drupal\layout_builder\Section
++   */
++  protected $section;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    $component = new SectionComponent(
++      'some-uuid',
++      'some-region',
++      ['id' => 'existing-block-id'],
++      [],
++      [
++        'Initech' => [
++          'Bill Lumbergh' => 'TPS reports',
++          'Milton Waddams' => 'Red Stapler',
++        ],
++        'Chotchkies' => [
++          'flair' => TRUE,
++        ],
++      ]
++    );
++
++    $this->section = new Section('layout_onecol', [], [$component]);
++  }
++
+   /**
+    * @covers ::toRenderArray
+    */
+-  public function testToRenderArray() {
++  public function testToRenderArray(): void {
+     $existing_block = $this->prophesize(BlockPluginInterface::class);
+     $existing_block->getPluginId()->willReturn('block_plugin_id');
+ 
+@@ -70,4 +103,227 @@ public function testToRenderArray() {
+     $this->assertEquals($expected, $result);
+   }
+ 
++  /**
++   * @covers ::getThirdPartySettings
++   * @dataProvider providerTestGetThirdPartySettings
++   */
++  public function testGetThirdPartySettings($provider, $expected): void {
++    $this->assertSame($expected, $this->section->getComponent('some-uuid')->getThirdPartySettings($provider));
++  }
++
++  /**
++   * Provides test data for ::testGetThirdPartySettings().
++   *
++   * @return array
++   *   Third party settings.
++   */
++  public function providerTestGetThirdPartySettings(): array {
++    $data = [];
++    $data['Initech third party settings'] = [
++      'Initech',
++      [
++        'Bill Lumbergh' => 'TPS reports',
++        'Milton Waddams' => 'Red Stapler',
++      ],
++    ];
++    $data['Chotchkies third party settings'] = [
++      'Chotchkies',
++      ['flair' => TRUE],
++    ];
++    $data['Nonexisting provider'] = [
++      'non_existing_provider',
++      [],
++    ];
++    return $data;
++  }
++
++  /**
++   * @covers ::getThirdPartySetting
++   * @dataProvider providerTestGetThirdPartySetting
++   */
++  public function testGetThirdPartySetting($provider, $key, $expected, $default = FALSE): void {
++    if ($default) {
++      $this->assertSame($expected, $this->section->getComponent('some-uuid')->getThirdPartySetting($provider, $key, $default));
++      return;
++    }
++    $this->assertSame($expected, $this->section->getComponent('some-uuid')->getThirdPartySetting($provider, $key));
++  }
++
++  /**
++   * Provides test data for ::testGetThirdPartySetting().
++   *
++   * @return array
++   *   Third party settings.
++   */
++  public function providerTestGetThirdPartySetting(): array {
++    $data = [];
++    $data['Initech third party setting for "Bill Lumbergh" key'] = [
++      'Initech',
++      'Bill Lumbergh',
++      'TPS reports',
++    ];
++    $data['Chotchkies third party setting for "flair" key'] = [
++      'Chotchkies',
++      'flair',
++      TRUE,
++    ];
++    $data['Chotchkies third party setting for nonexisting key'] = [
++      'Chotchkies',
++      'non_existing_key',
++      NULL,
++    ];
++    $data['Nonexisting provider third party setting for nonexisting key'] = [
++      'non_existing_provider',
++      'non_existing_key',
++      NULL,
++    ];
++    $data['Nonexisting provider third party setting for nonexisting key with a default value provided'] = [
++      'non_existing_provider',
++      'non_existing_key',
++      'default value',
++      'default value',
++    ];
++    return $data;
++  }
++
++  /**
++   * @covers ::setThirdPartySetting
++   * @dataProvider providerTestSetThirdPartySetting
++   */
++  public function testSetThirdPartySetting($provider, $key, $value, $expected): void {
++    $this->section->getComponent('some-uuid')->setThirdPartySetting($provider, $key, $value);
++    $this->assertSame($expected, $this->section->getComponent('some-uuid')->getThirdPartySettings($provider));
++  }
++
++  /**
++   * Provides test data for ::testSetThirdPartySettings().
++   *
++   * @return array
++   *   Third party settings.
++   */
++  public function providerTestSetThirdPartySetting(): array {
++    $data = [];
++    $data['Override "Milton Waddams" third party setting for Initech provider'] = [
++      'Initech',
++      'Milton Waddams',
++      'Storage B',
++      [
++        'Bill Lumbergh' => 'TPS reports',
++        'Milton Waddams' => 'Storage B',
++      ],
++    ];
++    $data['Add "Peter Gibbons" third party setting for Initech provider'] = [
++      'Initech',
++      'Peter Gibbons',
++      'Programmer',
++      [
++        'Bill Lumbergh' => 'TPS reports',
++        'Milton Waddams' => 'Red Stapler',
++        'Peter Gibbons' => 'Programmer',
++      ],
++    ];
++    $data['Add "Medical Providers" provider third party settings'] = [
++      'Medical Providers',
++      'Dr. Swanson',
++      'Hypnotist',
++      [
++        'Dr. Swanson' => 'Hypnotist',
++      ],
++    ];
++    return $data;
++  }
++
++  /**
++   * @covers ::unsetThirdPartySetting
++   * @dataProvider providerTestUnsetThirdPartySetting
++   */
++  public function testUnsetThirdPartySetting($provider, $key, $expected): void {
++    $this->section->getComponent('some-uuid')->unsetThirdPartySetting($provider, $key);
++    $this->assertSame($expected, $this->section->getComponent('some-uuid')->getThirdPartySettings($provider));
++  }
++
++  /**
++   * Provides test data for ::testUnsetThirdPartySetting().
++   *
++   * @return array
++   *   Third party settings.
++   */
++  public function providerTestUnsetThirdPartySetting(): array {
++    $data = [];
++    $data['Key with values'] = [
++      'Initech',
++      'Bill Lumbergh',
++      [
++        'Milton Waddams' => 'Red Stapler',
++      ],
++    ];
++    $data['Key without values'] = [
++      'Chotchkies',
++      'flair',
++      [],
++    ];
++    $data['Non-existing key'] = [
++      'Chotchkies',
++      'non_existing_key',
++      [
++        'flair' => TRUE,
++      ],
++    ];
++    $data['Non-existing provider'] = [
++      'non_existing_provider',
++      'non_existing_key',
++      [],
++    ];
++    return $data;
++  }
++
++  /**
++   * @covers ::getThirdPartyProviders
++   */
++  public function testGetThirdPartyProviders(): void {
++    $this->assertSame(['Initech', 'Chotchkies'], $this->section->getComponent('some-uuid')->getThirdPartyProviders());
++    $this->section->getComponent('some-uuid')->unsetThirdPartySetting('Chotchkies', 'flair');
++    $this->assertSame(['Initech'], $this->section->getComponent('some-uuid')->getThirdPartyProviders());
++  }
++
++  /**
++   * Tests that deprecation notices are triggered.
++   *
++   * @group legacy
++   *
++   * @todo Remove below test when the drupal:10.1.x branch is opened.
++   * @see https://www.drupal.org/project/drupal/issues/3160644
++   */
++  public function testDeprecationNotices(): void {
++    $this->expectDeprecation('Setting random section component properties is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Component properties should be set via dedicated setters. See https://www.drupal.org/node/3100177');
++    $this->expectDeprecation('Getting additional properties is deprecated in drupal:10.2.0 and is removed from drupal:11.0.0. Additional component properties should be gotten via ::getThirdPartySetting(). See https://www.drupal.org/node/3100177');
++
++    // Instantiate SectionComponent with additional settings is deprecated.
++    new SectionComponent(
++      'some-uuid',
++      'some-region',
++      [],
++      // Provide deprecated 'additional' argument.
++      [
++        'spoiler-alert' => [
++          'glitch-in-accounting' => 'fixed',
++          'building-arson' => 'probably',
++          'milton-on-beach' => TRUE,
++        ],
++      ],
++      [],
++    );
++
++    // Instantiate SectionComponent object with preferred create() method.
++    $component = new SectionComponent(
++      'some-uuid',
++      'some-region',
++      [],
++      [],
++    );
++    // Call deprecated set() and get() methods.
++    $component->set('music', 'very 90s');
++    $component->get('music');
++  }
++
+ }
+diff --git a/core/modules/system/tests/fixtures/HtaccessTest/access_test.module.orig b/core/modules/system/tests/fixtures/HtaccessTest/access_test.module.orig
+deleted file mode 100644
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..0000000000000000000000000000000000000000
+diff --git a/core/modules/system/tests/fixtures/HtaccessTest/access_test.php.orig b/core/modules/system/tests/fixtures/HtaccessTest/access_test.php.orig
+deleted file mode 100644
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..0000000000000000000000000000000000000000
+diff --git a/core/profiles/demo_umami/config/install/core.entity_view_display.node.article.full.yml b/core/profiles/demo_umami/config/install/core.entity_view_display.node.article.full.yml
+index ab8d49faceb15621720925c5f75eca41c6473fea..49fde4f2b33fbc74db802acdaf92605c6af77d08 100644
+--- a/core/profiles/demo_umami/config/install/core.entity_view_display.node.article.full.yml
++++ b/core/profiles/demo_umami/config/install/core.entity_view_display.node.article.full.yml
+@@ -39,6 +39,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+           02d32417-145b-41a4-8d7a-27e4477b9666:
+             uuid: 02d32417-145b-41a4-8d7a-27e4477b9666
+             region: content
+@@ -56,6 +57,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 1
+             additional: {  }
++            third_party_settings: {  }
+           f73af85e-15fc-4672-8b72-3ed91353e08c:
+             uuid: f73af85e-15fc-4672-8b72-3ed91353e08c
+             region: content
+@@ -71,6 +73,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 2
+             additional: {  }
++            third_party_settings: {  }
+           957850fc-d5ea-4a6f-b3c9-dd2e4811a5c4:
+             uuid: 957850fc-d5ea-4a6f-b3c9-dd2e4811a5c4
+             region: content
+@@ -81,6 +84,7 @@ third_party_settings:
+                 entity: layout_builder.entity
+             weight: 3
+             additional: {  }
++            third_party_settings: {  }
+           937c9738-b63e-409f-897a-c9fc98f6716e:
+             uuid: 937c9738-b63e-409f-897a-c9fc98f6716e
+             region: content
+@@ -91,6 +95,7 @@ third_party_settings:
+                 entity: layout_builder.entity
+             weight: 4
+             additional: {  }
++            third_party_settings: {  }
+         third_party_settings: {  }
+ id: node.article.full
+ targetEntityType: node
+diff --git a/core/profiles/demo_umami/config/install/core.entity_view_display.node.page.full.yml b/core/profiles/demo_umami/config/install/core.entity_view_display.node.page.full.yml
+index a1f918afdac083a1099120ca98e4991c727094ba..d4444009fb51d795b13241f28cc35da10794097b 100644
+--- a/core/profiles/demo_umami/config/install/core.entity_view_display.node.page.full.yml
++++ b/core/profiles/demo_umami/config/install/core.entity_view_display.node.page.full.yml
+@@ -36,6 +36,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+           57ad7b26-a88b-439e-a056-40f2de29a943:
+             uuid: 57ad7b26-a88b-439e-a056-40f2de29a943
+             region: content
+@@ -46,6 +47,7 @@ third_party_settings:
+                 entity: layout_builder.entity
+             weight: 1
+             additional: {  }
++            third_party_settings: {  }
+           01b94e28-e38c-4849-98d6-ed77bca30afc:
+             uuid: 01b94e28-e38c-4849-98d6-ed77bca30afc
+             region: content
+@@ -56,6 +58,7 @@ third_party_settings:
+                 entity: layout_builder.entity
+             weight: 2
+             additional: {  }
++            third_party_settings: {  }
+         third_party_settings: {  }
+ id: node.page.full
+ targetEntityType: node
+diff --git a/core/profiles/demo_umami/config/install/core.entity_view_display.node.recipe.full.yml b/core/profiles/demo_umami/config/install/core.entity_view_display.node.recipe.full.yml
+index 6eb48804da838599fe67d394ce0b901cc3a71291..99e26506106798c0dc1ed0043431db9731bcf0fa 100644
+--- a/core/profiles/demo_umami/config/install/core.entity_view_display.node.recipe.full.yml
++++ b/core/profiles/demo_umami/config/install/core.entity_view_display.node.recipe.full.yml
+@@ -51,6 +51,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 3
+             additional: {  }
++            third_party_settings: {  }
+           0eff9e1d-4e73-4748-b910-e5568df1d5aa:
+             uuid: 0eff9e1d-4e73-4748-b910-e5568df1d5aa
+             region: content
+@@ -67,6 +68,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 2
+             additional: {  }
++            third_party_settings: {  }
+           44801518-fe93-421a-bdcb-550493c7925d:
+             uuid: 44801518-fe93-421a-bdcb-550493c7925d
+             region: content
+@@ -82,6 +84,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 4
+             additional: {  }
++            third_party_settings: {  }
+         third_party_settings: {  }
+       -
+         layout_id: layout_oneplusfourgrid_section
+@@ -107,6 +110,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 4
+             additional: {  }
++            third_party_settings: {  }
+           df8bfafc-210c-4d86-9745-e47081ab0fd4:
+             uuid: df8bfafc-210c-4d86-9745-e47081ab0fd4
+             region: fifth
+@@ -122,6 +126,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+           a2d450d0-08ce-4123-bca0-411bfa1da132:
+             uuid: a2d450d0-08ce-4123-bca0-411bfa1da132
+             region: fourth
+@@ -139,6 +144,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+           f91febc6-d924-47a2-8ffd-b71d3b2597c7:
+             uuid: f91febc6-d924-47a2-8ffd-b71d3b2597c7
+             region: third
+@@ -156,6 +162,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+           00488840-db50-4afe-9c30-a123e6707fa9:
+             uuid: 00488840-db50-4afe-9c30-a123e6707fa9
+             region: second
+@@ -173,6 +180,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+           69d8bce1-28ae-4287-a05b-a2166679f867:
+             uuid: 69d8bce1-28ae-4287-a05b-a2166679f867
+             region: first
+@@ -192,6 +200,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+         third_party_settings: {  }
+       -
+         layout_id: layout_twocol_section
+@@ -215,6 +224,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+           f61cae40-5865-4c4c-98fa-14b8234e7b98:
+             uuid: f61cae40-5865-4c4c-98fa-14b8234e7b98
+             region: second
+@@ -230,6 +240,7 @@ third_party_settings:
+                 third_party_settings: {  }
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+         third_party_settings: {  }
+       -
+         layout_id: layout_onecol
+@@ -266,6 +277,7 @@ third_party_settings:
+               items_per_page: none
+             weight: 0
+             additional: {  }
++            third_party_settings: {  }
+         third_party_settings: {  }
+ id: node.recipe.full
+ targetEntityType: node

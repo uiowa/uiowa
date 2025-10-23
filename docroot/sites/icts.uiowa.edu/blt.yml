@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: icts.uiowa.ddev.site
+    protocol: https
+  machine_name: icts
+  human_name: icts.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: icts.prod
+drupal:
+  db:
+    database: icts_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://icts.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Institute for Clinical and Translational Science'

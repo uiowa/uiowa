@@ -12,7 +12,7 @@ dependencies:
     - paragraphs.paragraphs_type.uiowa_timeline_item
   module:
     - fontawesome
-    - link
+    - linkit
     - media_library
     - text
 id: paragraph.uiowa_timeline_item.default
@@ -51,12 +51,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_timeline_link:
-    type: link_default
+    type: linkit
     weight: 4
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+      linkit_profile: default
+      linkit_auto_link_text: false
     third_party_settings: {  }
   field_timeline_media:
     type: media_library_widget

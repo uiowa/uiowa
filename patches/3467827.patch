@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/diff/Field/GeofieldFieldBuilder.php b/src/Plugin/diff/Field/GeofieldFieldBuilder.php
+index da9db60..988f46e 100644
+--- a/src/Plugin/diff/Field/GeofieldFieldBuilder.php
++++ b/src/Plugin/diff/Field/GeofieldFieldBuilder.php
+@@ -21,7 +21,7 @@ class GeofieldFieldBuilder extends CoreFieldBuilder {
+   /**
+    * {@inheritdoc}
+    */
+-  public function build(FieldItemListInterface $field_items) {
++  public function build(FieldItemListInterface $field_items): array {
+     $result = [];
+
+     foreach ($field_items as $field_key => $field_item) {

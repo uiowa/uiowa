@@ -24,7 +24,7 @@ class RevertToParagraphs extends ActionBase {
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\node\NodeInterface $object */
     $result = $object->access('update', $account, TRUE)
       ->andIf($object->field_page_content_block->access('edit', $account, TRUE));
@@ -35,7 +35,7 @@ class RevertToParagraphs extends ActionBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(NodeInterface $entity = NULL) {
+  public function execute(?NodeInterface $entity = NULL) {
 
     // Get the node id.
     $nid = $entity->id();

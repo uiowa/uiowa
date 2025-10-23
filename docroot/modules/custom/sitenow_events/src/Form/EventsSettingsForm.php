@@ -2,10 +2,10 @@
 
 namespace Drupal\sitenow_events\Form;
 
-use Drupal\config_split\ConfigSplitManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\config_split\ConfigSplitManager;
 use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

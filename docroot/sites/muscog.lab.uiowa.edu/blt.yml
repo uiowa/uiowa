@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmuscog.uiowa.ddev.site
+    protocol: https
+  machine_name: labmuscog
+  human_name: muscog.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmuscog.prod
+drupal:
+  db:
+    database: muscog_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmuscog.prod.drupal.uiowa.edu'
+  requester: josalbrecht
+  site-name: 'Iowa Cognitive and Computational Musicology'

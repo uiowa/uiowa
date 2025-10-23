@@ -1,0 +1,43 @@
+uuid: 2792def6-8a10-4374-b90a-58f6eb149fcd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_coll_section_collections
+    - paragraphs.paragraphs_type.uiowa_collection_item
+    - paragraphs.paragraphs_type.uiowa_collection_section
+  module:
+    - entity_reference_revisions
+id: paragraph.uiowa_collection_section.field_coll_section_collections
+field_name: field_coll_section_collections
+entity_type: paragraph
+bundle: uiowa_collection_section
+label: Collections
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      uiowa_collection_item: uiowa_collection_item
+    negate: 0
+    target_bundles_drag_drop:
+      uiowa_collection_item:
+        weight: 7
+        enabled: true
+      uiowa_collection_section:
+        weight: 6
+        enabled: false
+      uiowa_contact:
+        weight: 8
+        enabled: false
+      uiowa_slide:
+        weight: 9
+        enabled: false
+      uiowa_timeline_item:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

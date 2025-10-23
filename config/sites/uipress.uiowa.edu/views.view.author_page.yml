@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - node.type.person
+    - sitenow_people.person_type.author
     - system.menu.main
   module:
     - node
@@ -76,6 +77,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 18
           total_pages: null
           id: 0
@@ -160,9 +162,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: author
+          plugin_id: entity_reference
+          operator: or
+          value:
+            author: author
           group: 1
           exposed: false
           expose:

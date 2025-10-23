@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_person_research_areas
     - node.type.person
-    - system.menu.main
     - taxonomy.vocabulary.research_areas
   module:
     - node
@@ -159,6 +158,7 @@ display:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 50
           total_pages: null
           id: 0
@@ -294,9 +294,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: Faculty
+          plugin_id: entity_reference
+          operator: or
+          value:
+            faculty: faculty
           group: 1
           exposed: false
           expose:
@@ -326,6 +327,12 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          sub_handler: 'default:person_type'
+          widget: select
+          sub_handler_settings:
+            target_bundles: null
+            auto_create: false
         field_person_research_areas_target_id:
           id: field_person_research_areas_target_id
           table: node__field_person_research_areas
@@ -439,7 +446,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -451,10 +457,12 @@ display:
     position: 1
     display_options:
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: people/research
       menu:
-        type: normal
+        type: none
         title: 'Research Areas'
         description: ''
         weight: 0
@@ -469,7 +477,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

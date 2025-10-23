@@ -43,12 +43,12 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         ],
       ];
 
-      // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
-      //   is resolved.
-      // Smart_date deals with ranges, but we only need a single date,
+      // Smart_date deals with ranges, but we only need a single date, no time,
       // so unset the extra "to" in the form and hide the end date.
       // JS will update the end date to match the start date
       // without showing clutter to the end user.
+      // Smart_date's date only formatter loads a different js library and
+      // so checkEndDate in smart_date.js is not checked against.
       unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
       $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
       break;
@@ -199,6 +199,11 @@ function now_core_node_presave($entity) {
       $alt_state = ($entity->original->moderation_state->value === 'published') ? 'archived' : $entity->original->moderation_state->value;
     }
     $entity->moderation_state = $alt_state;
+
+    // Change state for messaging purposes.
+    if ($alt_state == 'archived') {
+      $alt_state = 'unpublished';
+    }
     // Add a user message along with changing this state.
     \Drupal::messenger()->addWarning(
       t("Content is under embargo and cannot be published at this time. It has been set to the @alt_state moderation state.",

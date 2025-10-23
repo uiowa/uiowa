@@ -1,0 +1,14 @@
+diff --git a/js/fullcalendar_view.js b/js/fullcalendar_view.js
+index 01f60b5475157d774b83ff8b59de55768b07da0e..7b0fe02a48988f32028899447a0bf71d2acc5c95 100644
+--- a/js/fullcalendar_view.js
++++ b/js/fullcalendar_view.js
+@@ -441,7 +441,8 @@
+     if (
+         drupalSettings.calendar &&
+         settings.url !== '/fullcalendar-view-event-update' &&
+-        settings.url.indexOf('_wrapper_format=drupal_modal') < 0
++        settings.url.indexOf('_wrapper_format=drupal_modal') < 0 &&
++        settings.url.indexOf('/views/ajax?_wrapper_format=drupal_ajax') >= 0
+         ) {
+       // Rebuild the calendars.
+       drupalSettings.calendar.forEach(function(calendar) {

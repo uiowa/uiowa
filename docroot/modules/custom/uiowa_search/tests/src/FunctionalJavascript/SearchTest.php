@@ -18,7 +18,7 @@ class SearchTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'block',
     'uiowa_search',
   ];

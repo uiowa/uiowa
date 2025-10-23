@@ -1,21 +1,21 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .paragraph--type--text {
-  padding-top: $desktop-width-gutter/2;
-  padding-bottom: $desktop-width-gutter/2;
+  padding-top: calc(variables.$desktop-width-gutter / 2);
+  padding-bottom: calc(variables.$desktop-width-gutter / 2);
 }
 
 .paragraph--type--text.bg-yellow,
 .paragraph--type--text.bg-light {
-  color: $dark-gray;
+  color: variables.$dark-gray;
 
   blockquote p {
-    color: $dark-gray;
+    color: variables.$dark-gray;
   }
 
   a:not(.btn):not(.bttn):not(.button) {
-    color: $secondary;
+    color: variables.$secondary;
     text-decoration: underline;
 
     &:hover,
@@ -27,16 +27,16 @@
 
 .paragraph--type--text.bg-dark,
 .paragraph--type--text.bg-black {
-  color: $white;
+  color: variables.$white;
 
   blockquote p {
-    color: $white;
+    color: variables.$white;
   }
 
   a:not(.btn):not(.bttn):not(.button) {
-    color: $primary;
+    color: variables.$primary;
   }
   .alert a {
-    color: $secondary !important;
+    color: variables.$secondary !important;
   }
 }

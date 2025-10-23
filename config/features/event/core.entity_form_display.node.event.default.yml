@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
     - field.field.node.event.field_event_performer
+    - field.field.node.event.rabbit_hole__settings
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_status
@@ -24,7 +25,6 @@ dependencies:
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
     - node.type.event
-    - workflows.workflow.editorial
   module:
     - address
     - allowed_formats
@@ -36,6 +36,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - smart_date
     - text
 _core:
@@ -113,7 +114,8 @@ content:
     type: address_default
     weight: 7
     region: content
-    settings: {  }
+    settings:
+      wrapper_type: fieldset
     third_party_settings: {  }
   field_event_parent:
     type: entity_reference_autocomplete_tags
@@ -182,9 +184,6 @@ content:
     region: content
     settings:
       modal: false
-      default_tz: ''
-      custom_tz: America/Chicago
-      allowed_timezones: {  }
       default_duration: 60
       default_duration_increments: |-
         30
@@ -193,8 +192,14 @@ content:
         120|2 hours
         custom
       show_extra: false
-      hide_date: true
+      hide_date: false
+      allday: true
+      remove_seconds: true
+      duration_overlay: false
       separator: to
+      default_tz: ''
+      custom_tz: America/Chicago
+      allowed_timezones: {  }
       add_abbreviations: ''
     third_party_settings: {  }
   field_image:
@@ -248,6 +253,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

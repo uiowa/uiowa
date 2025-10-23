@@ -37,14 +37,16 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
         'bg' => $even ? 'bg--white' : 'bg--gray',
       ];
     }
-    return [
-      ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--layout-left',
-      ...$dependent_styles,
-      'border' => 'borderless',
-      'headline_class' => 'headline--serif headline--uppercase h1',
-      'media_size' => 'media--large',
-    ];
+    return array_merge(
+      parent::getDefaultCardStyles(),
+      [
+        'card_media_position' => 'card--layout-left',
+        ...$dependent_styles,
+        'border' => 'borderless',
+        'headline_class' => 'headline--serif headline--uppercase h1',
+        'media_size' => 'media--large',
+      ]
+    );
   }
 
   /**

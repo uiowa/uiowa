@@ -26,39 +26,46 @@ class StaticMapUrlFormatter extends LinkFormatter {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
     foreach ($elements as $delta => $entity) {
-      $location = str_replace('!m/', '', parse_url($values[0]['uri'], PHP_URL_FRAGMENT));
-      $alt = $values[0]['alt'];
-      $zoom = $values[0]['zoom'];
+      $regex = \Drupal::config('sitenow_media_wysiwyg.settings')
+        ->get('sitenow_media_wysiwyg.static_map_regex');
+      if ($regex) {
+        preg_match($regex, parse_url($values[0]['uri'], PHP_URL_FRAGMENT), $regex_matches);
+        $location = $regex_matches[1];
+        $alt = $values[0]['alt'];
+        $zoom = $values[0]['zoom'];
 
-      // Original/Default is medium square, else change view mode.
-      $view_mode = 'medium__square';
-      if ($this->viewMode && $this->viewMode !== 'default') {
-        $view_mode = $this->viewMode;
-      }
+        // Original/Default is medium square, else change view mode.
+        $view_mode = 'medium__square';
+        if ($this->viewMode && $this->viewMode !== 'default') {
+          $view_mode = $this->viewMode;
+        }
 
-      $elements[$delta] = [
-        'map' => [
-          '#type' => 'html_tag',
-          '#tag' => 'a',
-          '#attributes' => [
-            'href' => $values[0]['uri'],
-            'title' => $alt,
-            'aria-label' => 'View on maps.uiowa.edu',
-          ],
-          'static' => [
-            '#theme' => 'imagecache_external_responsive',
-            '#uri' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom),
-            '#responsive_image_style_id' => $view_mode,
+        $elements[$delta] = [
+          'map' => [
+            '#type' => 'html_tag',
+            '#tag' => 'a',
             '#attributes' => [
-              'loading' => 'lazy',
-              'alt' => $alt,
-              'class' => 'static-map',
+              'href' => $values[0]['uri'],
+              'title' => $alt,
+              'aria-label' => 'View on maps.uiowa.edu',
+            ],
+            'static' => [
+              '#theme' => 'imagecache_external_responsive',
+              '#uri' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom),
+              '#responsive_image_style_id' => $view_mode,
+              '#attributes' => [
+                'loading' => 'lazy',
+                'alt' => $alt,
+                'class' => 'static-map',
+              ],
             ],
           ],
-        ],
-      ];
+        ];
+      }
+      else {
+        \Drupal::messenger()->addError($this->t('Unable to process Static Map Image URL.'));
+      }
     }
-
     return $elements;
   }
 

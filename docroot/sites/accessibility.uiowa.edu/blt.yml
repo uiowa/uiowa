@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: accessibility.uiowa.ddev.site
+    protocol: https
+  machine_name: accessibility
+  human_name: accessibility.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: accessibility.prod
+drupal:
+  db:
+    database: accessibility_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://accessibility.prod.drupal.uiowa.edu'
+  requester: tmweiss
+  site-name: accessibility.uiowa.edu

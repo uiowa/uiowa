@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.building.field_building_address
     - field.field.node.building.field_building_area
     - field.field.node.building.field_building_ca_manager
+    - field.field.node.building.field_building_energy_dashboard
     - field.field.node.building.field_building_hours
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
@@ -48,13 +49,17 @@ dependencies:
     - field.field.node.building.field_main_coordinator_phone
     - field.field.node.building.field_main_coordinator_title
     - field.field.node.building.field_meta_tags
+    - field.field.node.building.rabbit_hole__settings
+    - image.style.thumbnail
     - node.type.building
   module:
     - content_moderation
-    - entity_browser
     - field_group
+    - image
+    - link
     - metatag
     - path
+    - rabbit_hole
     - telephone
     - text
 third_party_settings:
@@ -296,6 +301,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_building_energy_dashboard:
+    type: link_default
+    weight: 55
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   field_building_hours:
     type: text_textarea
     weight: 27
@@ -305,17 +318,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_building_image:
-    type: entity_browser_file
+    type: image_image
     weight: 26
     region: content
     settings:
-      entity_browser: null
-      field_widget_edit: true
-      field_widget_remove: true
-      field_widget_replace: false
-      open: false
-      selection_mode: selection_append
-      view_mode: default
+      progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
   field_building_lactation_rooms:
@@ -489,6 +496,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 11

@@ -10,7 +10,7 @@ services:
       - { name: config.factory.override }
   sitenow.google_analytics_override:
     class: Drupal\sitenow\ConfigOverride\GoogleAnalyticsOverride
-    arguments: [ '@request_stack' ]
+    arguments: [ '@config.factory' ]
     tags:
       - { name: config.factory.override }
   sitenow.robotstxt_override:

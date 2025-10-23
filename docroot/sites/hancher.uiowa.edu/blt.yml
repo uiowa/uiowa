@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: hancher.uiowa.ddev.site
+    protocol: https
+  machine_name: hancher
+  human_name: hancher.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: hancher.prod
+drupal:
+  db:
+    database: hancher_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://hancher.prod.drupal.uiowa.edu'
+  requester: crsmussn
+  site-name: 'Hancher Auditorium'

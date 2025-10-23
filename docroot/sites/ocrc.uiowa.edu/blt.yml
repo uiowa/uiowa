@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: ocrc.uiowa.ddev.site
+    protocol: https
+  machine_name: ocrc
+  human_name: ocrc.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: ocrc.prod
+drupal:
+  db:
+    database: ocrc_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://ocrc.prod.drupal.uiowa.edu'
+  requester: cptaylr
+  site-name: ocrc.uiowa.edu

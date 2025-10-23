@@ -1,0 +1,29 @@
+uuid: a8468cd3-f5d3-455f-be93-c93e5336bdbf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_other_celebrations
+    - node.type.event
+    - taxonomy.vocabulary.celebrations
+id: node.event.field_event_other_celebrations
+field_name: field_event_other_celebrations
+entity_type: node
+bundle: event
+label: 'Other Celebrations'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      celebrations: celebrations
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

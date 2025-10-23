@@ -1,0 +1,6 @@
+services:
+  emergency_core.commands:
+    class: \Drupal\emergency_core\Commands\EmergencyCoreCommands
+    arguments: ['@account_switcher']
+    tags:
+      - { name: drush.command }

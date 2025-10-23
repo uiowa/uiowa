@@ -1,17 +1,17 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .paragraph--type--webform {
-  padding-top: $desktop-width-gutter/2;
-  padding-bottom: $desktop-width-gutter/2;
+  padding-top: calc(variables.$desktop-width-gutter / 2);
+  padding-bottom: calc(variables.$desktop-width-gutter / 2);
 }
 
 .paragraph--type--webform.bg-yellow,
 .paragraph--type--webform.bg-light {
-  color: $dark-gray;
+  color: variables.$dark-gray;
 
   a:not(.btn):not(.alert-link) {
-    color: $secondary;
+    color: variables.$secondary;
     text-decoration: underline;
 
     &:hover,
@@ -22,9 +22,9 @@
 }
 
 .paragraph--type--webform.bg-dark {
-  color: $white;
+  color: variables.$white;
 
   a:not(.btn):not(.alert-link) {
-    color: $primary;
+    color: variables.$primary;
   }
 }

@@ -1,3 +1,6 @@
+@use '../uids/scss/abstracts/_variables.scss';
+@use '../uids/scss/abstracts/_utilities.scss';
+
 // Set above admin toolbar and superfish.
 .joyride-tip-guide {
   z-index: 550;
@@ -6,12 +9,12 @@
     background: transparent;
 
     .btn.btn-primary.btn-block {
-      color: $secondary;
-      margin-bottom: $md;
+      color: variables.$secondary;
+      margin-bottom: variables.$md;
 
       &:hover,
       &:focus {
-        color: $secondary;
+        color: variables.$secondary;
       }
     }
   }
@@ -20,6 +23,9 @@
 // Admin only styles
 .toolbar-menu {
   font-size: unset;
+  li {
+    margin-bottom: 0;
+  }
 }
 
 // Hide header if off canvas tray is open
@@ -30,38 +36,58 @@
 // admin toolbar style for sticky header.
 .header-sticky.toolbar-horizontal,
 .header-sticky.toolbar-vertical {
-  @include breakpoint(md) {
+  &.header--healthcare {
+    @include utilities.breakpoint(md) {
+      padding-top: 140px !important;
+    }
+  }
+  @include utilities.breakpoint(md) {
     padding-top: 120px !important;
   }
 
   &.below {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 160px !important;
+    }
+    &.header--healthcare {
+      @include utilities.breakpoint(md) {
+        padding-top: 190px !important;
+      }
     }
   }
 }
 
 .header-sticky.scroll-down.toolbar-horizontal,
 .header-sticky.scroll-down.toolbar-vertical {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     padding-top: 80px !important;
   }
 }
 
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
-  @include breakpoint(md) {
+  &.header--healthcare {
+    @include utilities.breakpoint(md) {
+      padding-top: 180px !important;
+    }
+  }
+  @include utilities.breakpoint(md) {
     padding-top: 160px !important;
   }
 
   &.below {
-    @include breakpoint(md) {
+    &.header--healthcare {
+      @include utilities.breakpoint(md) {
+        padding-top: 230px !important;
+      }
+    }
+    @include utilities.breakpoint(md) {
       padding-top: 210px !important;
     }
   }
 }
 
 .header-sticky.toolbar-vertical.toolbar-tray-open {
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     header.iowa-bar {
       padding-left: 15rem;
     }
@@ -71,7 +97,7 @@
 .header-sticky.toolbar-vertical,
 .header-sticky.toolbar-horizontal {
   header.iowa-bar {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       top: 39px;
     }
   }
@@ -79,7 +105,7 @@
 
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
   header.iowa-bar {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       top: 79px;
     }
   }

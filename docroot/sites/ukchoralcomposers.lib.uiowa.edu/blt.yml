@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: libukchoralcomposers.uiowa.ddev.site
+    protocol: https
+  machine_name: libukchoralcomposers
+  human_name: ukchoralcomposers.lib.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: libukchoralcomposers.prod
+drupal:
+  db:
+    database: ukchoralcomposers_lib_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://libukchoralcomposers.prod.drupal.uiowa.edu'
+  requester: tstalter
+  site-name: 'UK Choral Composers of the Twentieth and Twenty-First Centuries'

@@ -113,7 +113,13 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
         $this->sourceMediaFields[] = $process['source'];
       }
     }
+    $this->setup();
   }
+
+  /**
+   * Method to allow implementing classes to run setup tasks.
+   */
+  protected function setup(): void {}
 
   /**
    * {@inheritdoc}
@@ -149,7 +155,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, ?MigrationInterface $migration = NULL) {
     return new static(
       $configuration,
       $plugin_id,
