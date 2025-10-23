@@ -58,6 +58,7 @@ class FinalExamScheduleForm extends FormBase {
     $wrapper_id = $this->getFormId() . '-wrapper';
     $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
     $form['#suffix'] = '</div>';
+    $form['#cache']['tags'] = ['time:daily'];
 
     $form['#id'] = 'correspondence-form';
 
@@ -84,12 +85,21 @@ class FinalExamScheduleForm extends FormBase {
     ];
 
     $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
-    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
-      $form['final_exam']['empty'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>No final exams found.</p>',
-      ];
-      return $form;
+
+    switch ($data['_status']) {
+      case 'ok':
+        $data = $data['_data'];
+        break;
+
+      default:
+        // Set a shorter cache time for errors.
+        // Block/Node save will clear cache as a fallback.
+        $form['#cache']['tags'] = ['time:hourly'];
+        $form['final_exam']['empty'] = [
+          '#type' => 'markup',
+          '#markup' => '<p>' . $data['_message'] . '</p>',
+        ];
+        return $form;
     }
 
     $search = $form_state->getValue('search') ?? '';
@@ -167,7 +177,6 @@ class FinalExamScheduleForm extends FormBase {
       ],
     ];
 
-    $data = $data['NewDataSet']['Table'];
     $allowed_tags = [
       'a',
       'strong',

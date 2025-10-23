@@ -89,6 +89,25 @@ p, ul, ol, dl {
   font-size: 14pt !important;
 }
 
+/* Added print style to float cke image to wrap text */
+.align-left,
+figure.align-left,
+.align-left.embedded-entity,
+.align-left .embedded-entity {
+    margin-right: 1.5rem;
+    margin-bottom: .5rem;
+    float: left;
+}
+
+.align-right,
+figure.align-right,
+.align-right.embedded-entity,
+.align-right .embedded-entity {
+    margin-left: 1.5rem;
+    margin-bottom: .5rem;
+    float: right;
+}
+
 /* Links and Buttons
 ----------------------------------------- */
 a, a:visited {
