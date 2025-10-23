@@ -249,40 +249,65 @@ class BannerBlockFormHandler {
       $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#weight'] = 3;
     }
 
-    // Handle horizontal and vertical alignment defaults.
-    $alignments = [
-      'horizontal_alignment' => 95,
-      'vertical_alignment' => 96,
+    // Handle alignment and style field radio defaults.
+    $style_fields = [
+      'horizontal_alignment' => [
+        'weight' => 95,
+        'field_path' => 'layout_builder_style_horizontal_alignment',
+      ],
+      'vertical_alignment' => [
+        'weight' => 96,
+        'field_path' => 'layout_builder_style_vertical_alignment',
+      ],
+      'headline_type' => [
+        'weight' => NULL,
+        'field_path' => 'headline_group/layout_builder_style_headline_type_duplicate',
+      ],
+      'button_style' => [
+        'weight' => NULL,
+        'field_path' => 'button_group/layout_builder_style_button_style_duplicate',
+      ],
     ];
 
-    foreach ($alignments as $alignment_type => $weight) {
-      $form_field = "layout_builder_style_{$alignment_type}";
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof ConfigureBlockFormBase) {
+      $component = $form_object->getCurrentComponent();
+      $config = $component->toArray();
+      $styles = $config['additional']['layout_builder_styles_style'] ?? [];
+      $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
 
-      if (isset($form[$form_field])) {
-        $form[$form_field]['#weight'] = $weight;
+      foreach ($style_fields as $style_type => $field_config) {
+        // Get field reference.
+        $field_path = explode('/', $field_config['field_path']);
+        $field_reference = &$form;
+        foreach ($field_path as $path_part) {
+          if (isset($field_reference[$path_part])) {
+            $field_reference = &$field_reference[$path_part];
+          }
+          else {
+            $field_reference = NULL;
+            break;
+          }
+        }
 
-        $form_object = $form_state->getFormObject();
-        if ($form_object instanceof ConfigureBlockFormBase) {
-          $component = $form_object->getCurrentComponent();
+        if ($field_reference !== NULL) {
+          // Set weight if specified.
+          if ($field_config['weight'] !== NULL) {
+            $field_reference['#weight'] = $field_config['weight'];
+          }
 
-          // Get the component array.
-          $config = $component->toArray();
-          $styles = $config['additional']['layout_builder_styles_style'] ?? [];
-
-          // Check if alignment is already set.
-          $has_alignment = FALSE;
+          // Check if style is already set.
+          $has_style = FALSE;
           foreach ($styles as $style) {
-            if (str_starts_with($style, "{$alignment_type}_")) {
-              $has_alignment = TRUE;
+            if (str_starts_with($style, "{$style_type}_")) {
+              $has_style = TRUE;
               break;
             }
           }
 
-          if (!$has_alignment) {
-            $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-            if (isset($extra_settings[$alignment_type]['default'])) {
-              $form[$form_field]['#default_value'] = $extra_settings[$alignment_type]['default'];
-            }
+          // Set default if no style is set.
+          if (!$has_style && isset($extra_settings[$style_type]['default'])) {
+            $field_reference['#default_value'] = $extra_settings[$style_type]['default'];
           }
         }
       }
@@ -578,24 +603,6 @@ class BannerBlockFormHandler {
     if (isset($element['field_uiowa_banner_link'])) {
       $element['field_uiowa_banner_link']['#group'] = 'button_group';
       $element['field_uiowa_banner_link']['#weight'] = 70;
-    }
-
-    // =========================================================================
-    // CONFIGURE DEFAULT VALUES
-    // =========================================================================
-    if (isset($complete_form['layout_builder_style_headline_type'])) {
-      // Apply default value for radio buttons if none is set.
-      $current_value = $configuration['layout_builder_style_headline_type'] ?? NULL;
-      if (empty($current_value)) {
-        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-        if (isset($extra_settings['headline_type']['default'])) {
-          $complete_form['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'];
-        }
-      }
-      if (!isset($complete_form['layout_builder_style_headline_type']['#default_value'])) {
-        $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
-        $complete_form['layout_builder_style_headline_type']['#default_value'] = $extra_settings['headline_type']['default'] ?? NULL;
-      }
     }
 
     // =========================================================================
