@@ -24,14 +24,41 @@ class BannerBlockFormHandler {
   public static function formAlter(array &$form, FormStateInterface $form_state, $form_id) {
     // Add adjust gradient checkbox.
     self::addGradientMidpointCheckbox($form, $form_state);
+    // Hide admin label in favor of custom heading.
+    unset($form['settings']['admin_label']);
+    // Move unique_id to the bottom.
+    $form['unique_id']['#weight'] = 210;
 
+    // =========================================================================
+    // WEIGHTS
+    // -20: Banner heading (replaces admin_label)
+    // -10: Headline group
+    // 0: Background group
+    // 50: Gradient options
+    // 61: Excerpt group
+    // 70: Button group
+    // 94: Layout group heading
+    // 97: Layout settings
+    // 102: Style options
+    // 200: Actions (submit buttons)
+    // 210: Unique ID
+    // =========================================================================
     // =========================================================================
     // CREATE ALL FORM GROUPS/CONTAINERS
     // =========================================================================
+    // Block heading.
+    $form['banner_group_heading'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => t('Banner'),
+      '#weight' => -20,
+      '#attributes' => ['class' => ['heading-a']],
+    ];
+
     // Headline group.
     $form['headline_group'] = [
       '#type' => 'container',
-      '#weight' => 55,
+      '#weight' => -10,
       '#attributes' => ['class' => ['block-form-group__container']],
     ];
 
@@ -40,6 +67,28 @@ class BannerBlockFormHandler {
       '#tag' => 'h3',
       '#value' => t('Headline'),
       '#attributes' => ['class' => ['heading-a']],
+    ];
+
+    // Background group - add heading inside block_form container.
+    if (isset($form['settings']['block_form'])) {
+      $form['settings']['block_form']['background_group_heading'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#value' => t('Background'),
+        '#weight' => 0,
+        '#attributes' => ['class' => ['heading-a']],
+        '#prefix' => '<div class="block-form-group__container">',
+      ];
+    }
+
+    // Gradient options details element.
+    $form['gradient_options'] = [
+      '#type' => 'details',
+      '#title' => t('Overlay options'),
+      '#weight' => 50,
+      '#open' => FALSE,
+      '#attributes' => ['class' => ['block-form-group__collapsible', 'block-form-group__collapsible--overlay']],
+      '#suffix' => '</div>',
     ];
 
     // Excerpt group.
@@ -69,28 +118,6 @@ class BannerBlockFormHandler {
       '#weight' => -70,
       '#value' => t('Buttons'),
       '#attributes' => ['class' => ['heading-a']],
-    ];
-
-    // Background group - add heading inside block_form container.
-    if (isset($form['settings']['block_form'])) {
-      $form['settings']['block_form']['background_group_heading'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#value' => t('Background'),
-        '#weight' => 0,
-        '#attributes' => ['class' => ['heading-a']],
-        '#prefix' => '<div class="block-form-group__container">',
-      ];
-    }
-
-    // Gradient options details element.
-    $form['gradient_options'] = [
-      '#type' => 'details',
-      '#title' => t('Overlay options'),
-      '#weight' => 50,
-      '#open' => FALSE,
-      '#attributes' => ['class' => ['block-form-group__collapsible', 'block-form-group__collapsible--overlay']],
-      '#suffix' => '</div>',
     ];
 
     // Layout group heading.
