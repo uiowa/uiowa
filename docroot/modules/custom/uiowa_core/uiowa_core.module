@@ -1020,7 +1020,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   // Adjust the body summary help text for all nodes that use it.
   if (str_starts_with($form_id, 'node_') && str_ends_with($form_id, '_form')) {
     if (isset($form['body']['widget'][0]['summary'])) {
-      $form['body']['widget'][0]['summary']['#description'] = t('The summary is used for list displays on this site and in the content\'s <a href="https://sitenow.uiowa.edu/documentation/search-engine-optimization#summary">meta description</a>. If left blank, a trimmed value of the full text will be used for the meta description, but not for list displays.');
+      $form['body']['widget'][0]['summary']['#description'] = t('The summary is used for list displays on this site and in the content\'s <a href="https://sitenow.uiowa.edu/documentation/search-engine-optimization#summary" target="_blank">meta description</a>. If left blank, a trimmed value of the full text will be used for the meta description, but not for list displays.');
     }
   }
 }
