@@ -26,6 +26,7 @@ class GraphBlock extends BlockBase {
 
     $csv_text = $config['graph_CSV_data'] ?? '';
     $graph_summary = $config['graph_summary'] ?? '';
+    $chart_type = $config['chart_type'] ?? 'line';
 
     $rows = preg_split("/\r\n|\n|\r/", $csv_text);
 
@@ -35,16 +36,18 @@ class GraphBlock extends BlockBase {
       '#type' => 'container',
       '#attributes' => [
         'id' => $unique_id,
-        'class' => ['graph-container'], /* Class on the wrapping DIV element */
+        'class' => ['graph-container'],
+        'data-chart-type' => $chart_type,
       ],
-
     ];
+
     $build['graph_container']['canvas'] = [
       '#type' => 'markup',
-      '#markup' => '<div class="graph-canvas__container"><canvas class="graph-canvas" role="img" aria-labelledby="' . $unique_id . '-summary"></canvas></div>',
-      '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['canvas', 'div']),
+      '#markup' => '<div class="graph-canvas__container"><div class="graph-canvas" role="img" aria-labelledby="' . $unique_id . '-summary"></div></div>',
+      '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['div']),
     ];
-    $build['graph_container']['#attached']['library'][] = 'uiowa_graph/chartjs';
+
+    $build['graph_container']['#attached']['library'][] = 'uiowa_graph/highcharts';
     $build['graph_container']['#attached']['library'][] = 'uiowa_graph/graph';
 
     $build['graph_container']['graph_details'] = [
@@ -103,6 +106,18 @@ class GraphBlock extends BlockBase {
       '#default_value' => $config['graph_summary'] ?? '',
     ];
 
+    $form['chart_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Chart type'),
+      '#description' => $this->t('Select the type of chart to display.'),
+      '#options' => [
+        'line' => $this->t('Line Chart'),
+        'column' => $this->t('Bar Chart (Column)'),
+        'bar' => $this->t('Bar Chart (Horizontal)'),
+      ],
+      '#default_value' => $config['chart_type'] ?? 'line',
+    ];
+
     $form['graph_CSV_data'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSV data'),
@@ -120,6 +135,7 @@ class GraphBlock extends BlockBase {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
     $this->configuration['graph_summary'] = $values['graph_summary'];
+    $this->configuration['chart_type'] = $values['chart_type'];
     $this->configuration['graph_CSV_data'] = trim($values['graph_CSV_data']);
   }
 
