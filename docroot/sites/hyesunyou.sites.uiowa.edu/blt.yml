@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteshyesunyou.uiowa.ddev.site
+    protocol: https
+  machine_name: siteshyesunyou
+  human_name: hyesunyou.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshyesunyou.prod
+drupal:
+  db:
+    database: hyesunyou_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshyesunyou.prod.drupal.uiowa.edu'
+  requester: hyeyou
+  site-name: "Dr. Hyesun You's Lab"
