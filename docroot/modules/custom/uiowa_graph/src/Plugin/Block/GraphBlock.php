@@ -75,20 +75,96 @@ class GraphBlock extends BlockBase {
     $build['graph_container']['graph_details']['graph_table']['#rows'] = [];
 
     foreach ($rows as $row_key => $row) {
+      // Parse CSV row properly (handles quoted values with commas)
+      $columns = $this->parseCSVRow($row);
+
       if ($row_key === 0) {
-        foreach (explode(',', $row) as $column) {
+        foreach ($columns as $column) {
           array_push($build['graph_container']['graph_details']['graph_table']['#header'], ['data' => $column]);
         }
       }
       else {
         $build['graph_container']['graph_details']['graph_table']['#rows']['row-' . $row_key] = [];
-        foreach (explode(',', $row) as $column) {
-          array_push($build['graph_container']['graph_details']['graph_table']['#rows']['row-' . $row_key], ['data' => $column]);
+        foreach ($columns as $column) {
+          // Format the column data.
+          $formatted_column = $this->formatTableCell($column);
+          array_push($build['graph_container']['graph_details']['graph_table']['#rows']['row-' . $row_key], ['data' => $formatted_column]);
         }
       }
     }
 
     return $build;
+  }
+
+  /**
+   * Parse a CSV row handling quoted values.
+   *
+   * @param string $row
+   *   The CSV row string.
+   *
+   * @return array
+   *   Array of column values.
+   */
+  protected function parseCSVRow($row) {
+    // Use str_getcsv with explicit parameters:
+    // delimiter: comma
+    // enclosure: double quote
+    // escape: backslash.
+    $result = str_getcsv($row, ',', '"', '\\');
+
+    // Trim whitespace from each value.
+    return array_map('trim', $result);
+  }
+
+  /**
+   * Format table cell data.
+   *
+   * @param string $value
+   *   The cell value to format.
+   *
+   * @return string
+   *   The formatted cell value.
+   */
+  protected function formatTableCell($value) {
+    $value = trim($value);
+
+    // If empty, return as is.
+    if ($value === '') {
+      return $value;
+    }
+
+    // Remove existing dollar signs and commas for processing.
+    $clean_value = str_replace(['$', ','], '', $value);
+
+    // Check if it's a numeric value.
+    if (is_numeric($clean_value)) {
+      $num = floatval($clean_value);
+
+      // Format large numbers (>= 1000) as currency with commas.
+      if ($num >= 1000) {
+        return '$' . number_format($num, 0);
+      }
+      // Format small numbers (< 1000) with 2 decimal places if they have decimals.
+      elseif ($num != floor($num)) {
+        return number_format($num, 2);
+      }
+      // Return integers as is.
+      else {
+        return $value;
+      }
+    }
+
+    // Check if it's a percentage.
+    if (strpos($value, '%') !== FALSE) {
+      $clean_value = str_replace('%', '', $value);
+      if (is_numeric($clean_value)) {
+        $num = floatval($clean_value);
+        return number_format($num, 2) . '%';
+      }
+    }
+
+    // Return non-numeric values as is.
+    return $value;
   }
 
   /**
@@ -114,6 +190,8 @@ class GraphBlock extends BlockBase {
         'line' => $this->t('Line Chart'),
         'column' => $this->t('Bar Chart (Column)'),
         'bar' => $this->t('Bar Chart (Horizontal)'),
+        'pie' => $this->t('Pie Chart'),
+        'donut' => $this->t('Donut Chart'),
       ],
       '#default_value' => $config['chart_type'] ?? 'line',
     ];
@@ -121,7 +199,7 @@ class GraphBlock extends BlockBase {
     $form['graph_CSV_data'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSV data'),
-      '#description' => $this->t('Copy and paste your properly formatted CSV file here. An example of a properly formatted csv file can be found <a href="https://sitenow.uiowa.edu/sites/sitenow.uiowa.edu/files/2021-09/airtravel.csv">here</a>.'),
+      '#description' => $this->t('Copy and paste your properly formatted CSV file here. Values with commas should be wrapped in double quotes. An example of a properly formatted csv file can be found <a href="https://sitenow.uiowa.edu/sites/sitenow.uiowa.edu/files/2021-09/airtravel.csv">here</a>.'),
       '#default_value' => $config['graph_CSV_data'] ?? '',
     ];
 
