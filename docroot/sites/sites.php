@@ -7882,3 +7882,9 @@ $sites['labkrupina.uiowa.ddev.site'] = 'krupina.lab.uiowa.edu';
 $sites['labkrupina.dev.drupal.uiowa.edu'] = 'krupina.lab.uiowa.edu';
 $sites['labkrupina.stage.drupal.uiowa.edu'] = 'krupina.lab.uiowa.edu';
 $sites['labkrupina.prod.drupal.uiowa.edu'] = 'krupina.lab.uiowa.edu';
+
+// Directory aliases for librarylessons.sites.uiowa.edu.
+$sites['siteslibrarylessons.uiowa.ddev.site'] = 'librarylessons.sites.uiowa.edu';
+$sites['siteslibrarylessons.dev.drupal.uiowa.edu'] = 'librarylessons.sites.uiowa.edu';
+$sites['siteslibrarylessons.stage.drupal.uiowa.edu'] = 'librarylessons.sites.uiowa.edu';
+$sites['siteslibrarylessons.prod.drupal.uiowa.edu'] = 'librarylessons.sites.uiowa.edu';
