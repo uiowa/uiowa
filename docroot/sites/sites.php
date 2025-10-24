@@ -7876,3 +7876,9 @@ $sites['conferenceusthaiconsortium.uiowa.ddev.site'] = 'usthaiconsortium.confere
 $sites['conferenceusthaiconsortium.dev.drupal.uiowa.edu'] = 'usthaiconsortium.conference.uiowa.edu';
 $sites['conferenceusthaiconsortium.stage.drupal.uiowa.edu'] = 'usthaiconsortium.conference.uiowa.edu';
 $sites['conferenceusthaiconsortium.prod.drupal.uiowa.edu'] = 'usthaiconsortium.conference.uiowa.edu';
+
+// Directory aliases for krupina.lab.uiowa.edu.
+$sites['labkrupina.uiowa.ddev.site'] = 'krupina.lab.uiowa.edu';
+$sites['labkrupina.dev.drupal.uiowa.edu'] = 'krupina.lab.uiowa.edu';
+$sites['labkrupina.stage.drupal.uiowa.edu'] = 'krupina.lab.uiowa.edu';
+$sites['labkrupina.prod.drupal.uiowa.edu'] = 'krupina.lab.uiowa.edu';
