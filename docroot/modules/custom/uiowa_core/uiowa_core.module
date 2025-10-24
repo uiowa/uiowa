@@ -1949,5 +1949,7 @@ function uiowa_core_chart_definition_alter(array &$definition, array $element, $
     $tooltip_format = str_replace('{value}', '{point.y}', $format);
 
     $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+    // Add comma for thousands separator.
+    $definition['yAxis']['labels']['format'] = '${value:,.2f}';
   }
 }
