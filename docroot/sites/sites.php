@@ -7870,3 +7870,9 @@ $sites['tippievita.uiowa.ddev.site'] = 'vita.tippie.uiowa.edu';
 $sites['tippievita.dev.drupal.uiowa.edu'] = 'vita.tippie.uiowa.edu';
 $sites['tippievita.stage.drupal.uiowa.edu'] = 'vita.tippie.uiowa.edu';
 $sites['tippievita.prod.drupal.uiowa.edu'] = 'vita.tippie.uiowa.edu';
+
+// Directory aliases for usthaiconsortium.conference.uiowa.edu.
+$sites['conferenceusthaiconsortium.uiowa.ddev.site'] = 'usthaiconsortium.conference.uiowa.edu';
+$sites['conferenceusthaiconsortium.dev.drupal.uiowa.edu'] = 'usthaiconsortium.conference.uiowa.edu';
+$sites['conferenceusthaiconsortium.stage.drupal.uiowa.edu'] = 'usthaiconsortium.conference.uiowa.edu';
+$sites['conferenceusthaiconsortium.prod.drupal.uiowa.edu'] = 'usthaiconsortium.conference.uiowa.edu';
