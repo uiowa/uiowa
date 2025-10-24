@@ -32,32 +32,33 @@ function uiowa_edu_core_preprocess_html(&$variables) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
 
-  // Check if we're on the A-Z List view page
+  // Check if we're on the A-Z List view page.
   if ($route_name === 'view.a_z_list.page_a_z_list') {
     $parameters = $route_match->getParameters();
     $view = $parameters->get('view_id');
     $arg_0 = $parameters->get('arg_0');
 
-    // Or get from current path if parameters don't work
+    // Or get from current path if parameters don't work.
     $current_path = \Drupal::service('path.current')->getPath();
     $path_args = explode('/', trim($current_path, '/'));
 
-    // Determine the letter
+    // Determine the letter.
     $letter = NULL;
     if (isset($path_args[1]) && strlen($path_args[1]) === 1) {
       $letter = strtoupper($path_args[1]);
     }
 
-    // Set the HTML head title
+    // Set the HTML head title.
     if ($letter) {
       $variables['head_title'] = [
         'A-Z List: ' . $letter,
-        'The University of Iowa'
+        'The University of Iowa',
       ];
-    } else {
+    }
+    else {
       $variables['head_title'] = [
         'A-Z List',
-        'The University of Iowa'
+        'The University of Iowa',
       ];
     }
   }
@@ -68,39 +69,34 @@ function uiowa_edu_core_preprocess_html(&$variables) {
  * Implements hook_views_pre_render().
  */
 function uiowa_edu_core_views_pre_render(ViewExecutable $view) {
-  // Handle A-Z List view title
+  // Handle A-Z List view title.
   if ($view->current_display === 'page_a_z_list') {
     $route_match = \Drupal::routeMatch();
     $parameters = $route_match->getParameters()->all();
 
-    // Get the letter from the view arguments (more reliable than path parsing)
+    // Get the letter from the view arguments (more reliable than path parsing).
     $letter = isset($view->args[0]) ? strtoupper($view->args[0]) : NULL;
 
-    // Set the appropriate title based on whether a letter is selected
+    // Set the appropriate title based on whether a letter is selected.
     if ($letter && $letter !== 'ALL' && strlen($letter) === 1) {
-      // Specific letter selected
+      // Specific letter selected.
       $title = "A-Z List: " . $letter;
-    } else {
-      // No letter or "all" selected
+    }
+    else {
+      // No letter or "all" selected.
       $title = "A-Z List";
     }
 
-    // Set the view title
+    // Set the view title.
     $view->setTitle($title);
 
-    // Update the route title for the page
+    // Update the route title for the page.
     $route = $route_match->getRouteObject();
     if ($route) {
       $route->setDefault('_title', $title);
     }
   }
 }
-
-
-
-
-
-
 
 /**
  * Implements hook_token_info().
