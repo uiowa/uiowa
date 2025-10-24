@@ -14,7 +14,7 @@ use Drupal\uiowa_core\Access\UiowaCoreAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Configure UIowa Articles settings for this site.
+ * Configure SiteNow Articles settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
 
@@ -158,20 +158,18 @@ class SettingsForm extends ConfigFormBase {
       $status = 0;
     }
 
-    $form['markup'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('<p>These settings allows you to customize the display of articles on the site.</p>'),
-    ];
-
-    $form['article_node'] = [
+    $form['node'] = [
       '#type' => 'fieldset',
-      '#title' => 'Article Settings',
+      '#title' => 'Article node settings',
       '#collapsible' => FALSE,
     ];
 
-    $featured_image_display_default = $config->get('featured_image_display_default');
+    $form['node']['help'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Customize settings for individual page nodes.'),
+    ];
 
-    $form['article_node']['featured_image_display_default'] = [
+    $form['node']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
@@ -185,12 +183,51 @@ class SettingsForm extends ConfigFormBase {
         'large' => $this
           ->t('Large'),
       ],
-      '#default_value' => $featured_image_display_default ?: 'large',
+      '#default_value' => $config->get('featured_image_display_default') ?: 'large',
+    ];
+
+    $form['node']['sitenow_articles_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Articles path'),
+      '#description' => $this->t('The base path for articles. Defaults to <em>news/{ year }/{ month }/{article title}</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
+      '#default_value' => $display['display_options']['path'],
+      '#required' => TRUE,
+    ];
+
+    // Restrict access to administrators.
+    $access = $this->uiowaCoreAccess->access($this->currentUser->getAccount());
+    $form['node']['remove_yearmonth_slug'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Remove year/month slug'),
+      '#description' => $this->t('If checked, the article path will no longer be <em>{articles path}/{ year }/{ month }/{article title}</em>, but instead <em>{articles path}/{article title}</em>. For consistency across sites, remove only if necessary.'),
+      '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
+      '#size' => 60,
+      '#access' => $access->isAllowed(),
+    ];
+
+    $form['node']['preserved_links_message_display'] = [
+      '#type' => 'text_format',
+      '#format' => 'basic',
+      '#allowed_formats' => [
+        'basic',
+      ],
+      '#title' => $this->t('Preserved links message'),
+      '#description' => $this->t('Set the message to display when an article may have broken links. If no message is provided, a default message will be used.'),
+      '#default_value' => $config->get('preserved_links_message_display') ?? $config->get('preserved_links_message_display_default'),
+      '#attributes' => [
+        'placeholder' => $config->get('preserved_links_message_display_default'),
+      ],
+    ];
+
+    $form['node']['tags_and_related'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Tags and related content',
+      '#collapsible' => FALSE,
     ];
 
     $tag_display = $config->get('tag_display');
 
-    $form['article_node']['tag_display'] = [
+    $form['node']['tags_and_related']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags'),
       '#description' => $this->t("Set the default way to display an article's tags in the article itself."),
@@ -205,39 +242,20 @@ class SettingsForm extends ConfigFormBase {
 
     $related_display = $config->get('related_display');
 
-    $form['article_node']['related_display'] = [
+    $form['node']['tags_and_related']['related_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display related content'),
-      '#description' => $this->t("Set the default way to display an article's related content."),
+      '#description' => $this->t('Which related content should be displayed?.'),
       '#options' => [
         'card_grid' => $this
-          ->t('Display manually referenced related content'),
+          ->t('Content referenced from the node'),
         'headings_lists' => $this
-          ->t('Display related content titles grouped by tag'),
+          ->t('Content with the same tags, grouped by tag'),
       ],
       '#default_value' => $related_display ?: 'card_grid',
     ];
 
-    $form['article_node']['sitenow_articles_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Articles path'),
-      '#description' => $this->t('The base path for articles. Defaults to <em>news/{ year }/{ month }/{article title}</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
-      '#default_value' => $display['display_options']['path'],
-      '#required' => TRUE,
-    ];
-
-    // Restrict access to administrators.
-    $access = $this->uiowaCoreAccess->access($this->currentUser->getAccount());
-    $form['article_node']['remove_yearmonth_slug'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Remove year/month slug'),
-      '#description' => $this->t('If checked, the article path will no longer be <em>{articles path}/{ year }/{ month }/{article title}</em>, but instead <em>{articles path}/{article title}</em>. For consistency across sites, remove only if necessary.'),
-      '#default_value' => $config->get('remove_yearmonth_slug') ?: FALSE,
-      '#size' => 60,
-      '#access' => $access->isAllowed(),
-    ];
-
-    $form['article_node']['related_display_headings_lists_help'] = [
+    $form['node']['tags_and_related']['related_display_headings_lists_help'] = [
       '#type' => 'item',
       '#title' => 'How related content is displayed:',
       '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
@@ -248,23 +266,31 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
-    $form['article_node']['preserved_links_message_display'] = [
-      '#type' => 'text_format',
-      '#format' => 'basic',
-      '#allowed_formats' => [
-        'basic',
-      ],
-      '#title' => $this->t('Preserved links message'),
-      '#description' => $this->t('Set the message to display when an article may have broken links. If no message is provided, a default message will be used.'),
-      '#default_value' => $config->get('preserved_links_message_display') ?? $config->get('preserved_links_message_display_default'),
-      '#attributes' => [
-        'placeholder' => $config->get('preserved_links_message_display_default'),
+    // Display a checkbox that allows the user to choose whether to customize
+    // the title shown above related content. If checked, the related content
+    // title field will be shown.
+    $form['node']['tags_and_related']['custom_related_title'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Customize title above related content'),
+      '#description' => $this->t('Check this box to set a custom title that appears above related content. If unchecked, the default title <em>Related content</em> will be used.'),
+      '#default_value' => (bool) $config->get('related_title'),
+    ];
+
+    $form['node']['tags_and_related']['related_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Title to display above related content'),
+      '#description' => $this->t('Set the title that appears above related content. Defaults to <em>Related content</em>.'),
+      '#default_value' => $config->get('related_title') ?: 'Related content',
+      '#states' => [
+        'visible' => [
+          ':input[name="custom_related_title"]' => ['checked' => TRUE],
+        ],
       ],
     ];
 
     $form['article_author'] = [
       '#type' => 'fieldset',
-      '#title' => 'Author Settings',
+      '#title' => 'Author settings',
       '#collapsible' => FALSE,
     ];
 
@@ -272,7 +298,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['article_author']['display_articles_by_author'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Display listing of article authored by a person on their person page'),
+      '#title' => $this->t('Display a list of articles authored by a person on their person page'),
       '#description' => $this->t('If checked, articles authored by a person are listed on their page.'),
       '#default_value' => $display_articles_by_author ?: FALSE,
     ];
@@ -282,33 +308,33 @@ class SettingsForm extends ConfigFormBase {
     if (!$is_v2) {
       $form['global']['teaser'] = [
         '#type' => 'fieldset',
-        '#title' => 'Teaser display',
+        '#title' => 'Teaser settings',
         '#collapsible' => FALSE,
       ];
       $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
       $form['global']['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
+        '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
         '#default_value' => $show_teaser_link_indicator ?: FALSE,
       ];
     }
     $form['view_page'] = [
       '#type' => 'fieldset',
-      '#title' => 'View Page Settings',
+      '#title' => 'Article listing page settings',
       '#collapsible' => FALSE,
     ];
 
     $form['view_page']['sitenow_articles_status'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable articles listing'),
+      '#title' => $this->t('Enable article listing page'),
       '#default_value' => $status,
-      '#description' => $this->t('If checked, an articles listing will display at the configurable Articles path.<br /><em>Example:</em> If the Articles path is set as <em>news</em>, each article will have the pattern <em>news/{ year }/{ month }/{article title}</em>, and the articles listing will be available at <em>/news</em>.'),
+      '#description' => $this->t('If checked, an article listing page will display at the configurable Articles path.<br /><em>Example:</em> If the Articles path is set as <em>news</em>, each article will have the pattern <em>news/{ year }/{ month }/{article title}</em>, and the articles listing will be available at <em>/news</em>.'),
       '#size' => 60,
     ];
 
     $form['view_page']['sitenow_articles_title'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Articles title'),
+      '#title' => $this->t('Article listing page title'),
       '#description' => $this->t('The title for the articles listing. Defaults to <em>News</em>.'),
       '#default_value' => $default['display_options']['title'],
       '#required' => TRUE,
@@ -317,7 +343,7 @@ class SettingsForm extends ConfigFormBase {
     $form['view_page']['sitenow_articles_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
-      '#title' => $this->t('Header Content'),
+      '#title' => $this->t('Content above article list'),
       '#description' => $this->t('Enter any content that is displayed above the articles listing.'),
       '#default_value' => $default['display_options']['header']['area']['content']['value'],
     ];
@@ -332,7 +358,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['view_page']['sitenow_articles_feed'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show RSS Feed icon'),
+      '#title' => $this->t('Show RSS feed icon'),
       '#default_value' => $show_feed,
       '#description' => $this->t('If checked, a linked RSS icon will be displayed on the main news page.'),
       '#size' => 60,
@@ -368,15 +394,6 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Get values.
-    $status = (int) $form_state->getValue('sitenow_articles_status');
-    $show_feed = $form_state->getValue('sitenow_articles_feed');
-    $title = $form_state->getValue('sitenow_articles_title');
-    $path = $form_state->getValue('sitenow_articles_path');
-    $header_content = $form_state->getValue('sitenow_articles_header_content');
-    $show_archive = (int) $form_state->getValue('sitenow_articles_archive');
-    $remove_yearmonth_slug = $form_state->getValue('remove_yearmonth_slug');
-
     $config_settings = $this->configFactory->getEditable(static::SETTINGS);
 
     $config_updates = [
@@ -384,6 +401,7 @@ class SettingsForm extends ConfigFormBase {
       'featured_image_display_default' => 'featured_image_display_default',
       'tag_display' => 'tag_display',
       'related_display' => 'related_display',
+      'related_title' => 'related_title',
       'preserved_links_message_display' => [
         'preserved_links_message_display',
         'value',
@@ -393,9 +411,19 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     foreach ($config_updates as $config_name => $form_state_value) {
-      $config_settings->set($config_name, $form_state->getValue($form_state_value))
+      $config_settings->set($config_name,
+        $form_state->getValue($form_state_value))
         ->save();
     }
+
+    // Get values.
+    $status = (int) $form_state->getValue('sitenow_articles_status');
+    $show_feed = $form_state->getValue('sitenow_articles_feed');
+    $title = $form_state->getValue('sitenow_articles_title');
+    $path = $form_state->getValue('sitenow_articles_path');
+    $header_content = $form_state->getValue('sitenow_articles_header_content');
+    $show_archive = (int) $form_state->getValue('sitenow_articles_archive');
+    $remove_yearmonth_slug = $form_state->getValue('remove_yearmonth_slug');
 
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
