@@ -225,8 +225,6 @@ class SettingsForm extends ConfigFormBase {
       '#collapsible' => FALSE,
     ];
 
-    $tag_display = $config->get('tag_display');
-
     $form['node']['tags_and_related']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags'),
@@ -237,10 +235,8 @@ class SettingsForm extends ConfigFormBase {
         'tag_buttons' => $this
           ->t('Display tag buttons'),
       ],
-      '#default_value' => $tag_display ?: 'do_not_display',
+      '#default_value' => $config->get('tag_display') ?: 'do_not_display',
     ];
-
-    $related_display = $config->get('related_display');
 
     $form['node']['tags_and_related']['related_display'] = [
       '#type' => 'select',
@@ -252,7 +248,7 @@ class SettingsForm extends ConfigFormBase {
         'headings_lists' => $this
           ->t('Content with the same tags, grouped by tag'),
       ],
-      '#default_value' => $related_display ?: 'card_grid',
+      '#default_value' => $config->get('related_display') ?: 'card_grid',
     ];
 
     $form['node']['tags_and_related']['related_display_headings_lists_help'] = [
@@ -306,13 +302,13 @@ class SettingsForm extends ConfigFormBase {
     // Visual indicators aren't available on SiteNow v2.
     $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
     if (!$is_v2) {
-      $form['global']['teaser'] = [
+      $form['teaser'] = [
         '#type' => 'fieldset',
         '#title' => 'Teaser settings',
         '#collapsible' => FALSE,
       ];
       $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
-      $form['global']['teaser']['show_teaser_link_indicator'] = [
+      $form['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
         '#default_value' => $show_teaser_link_indicator ?: FALSE,
@@ -396,25 +392,32 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config_settings = $this->configFactory->getEditable(static::SETTINGS);
 
+    // List of config updates to make.
     $config_updates = [
-      'show_teaser_link_indicator' => 'show_teaser_link_indicator',
-      'featured_image_display_default' => 'featured_image_display_default',
-      'tag_display' => 'tag_display',
-      'related_display' => 'related_display',
-      'related_title' => 'related_title',
-      'preserved_links_message_display' => [
-        'preserved_links_message_display',
-        'value',
-      ],
-      'display_articles_by_author' => 'display_articles_by_author',
-      'remove_yearmonth_slug' => 'remove_yearmonth_slug',
+      'featured_image_display_default',
+      'remove_yearmonth_slug',
+      'tag_display',
+      'related_display',
+      'related_title',
+      'display_articles_by_author',
+      'show_teaser_link_indicator',
     ];
 
-    foreach ($config_updates as $config_name => $form_state_value) {
+    // Update each config item in the list from the form state.
+    foreach ($config_updates as $config_name) {
       $config_settings->set($config_name,
-        $form_state->getValue($form_state_value))
+        $form_state->getValue($config_name))
         ->save();
     }
+
+    // Set the preserved links setting individually as it requires an array for
+    // the value.
+    $config_settings->set('preserved_links_message_display',
+      $form_state->getValue([
+        'preserved_links_message_display',
+        'value',
+      ]))
+      ->save();
 
     // Get values.
     $status = (int) $form_state->getValue('sitenow_articles_status');

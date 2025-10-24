@@ -144,8 +144,6 @@ class SettingsForm extends ConfigFormBase {
       '#collapsible' => FALSE,
     ];
 
-    $tag_display = $config->get('tag_display');
-
     $form['node']['tags_and_related']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags'),
@@ -156,10 +154,8 @@ class SettingsForm extends ConfigFormBase {
         'tag_buttons' => $this
           ->t('Display tag buttons'),
       ],
-      '#default_value' => $tag_display ?: 'do_not_display',
+      '#default_value' => $config->get('tag_display') ?: 'do_not_display',
     ];
-
-    $related_display = $config->get('related_display');
 
     $form['node']['tags_and_related']['related_display'] = [
       '#type' => 'select',
@@ -171,7 +167,7 @@ class SettingsForm extends ConfigFormBase {
         'headings_lists' => $this
           ->t('Content with the same tags, grouped by tag'),
       ],
-      '#default_value' => $related_display ?: 'do_not_display',
+      '#default_value' => $config->get('related_display') ?: 'do_not_display',
     ];
 
     $form['node']['tags_and_related']['related_display_headings_lists_help'] = [
@@ -210,25 +206,25 @@ class SettingsForm extends ConfigFormBase {
     // Visual indicators aren't available on SiteNow v2.
     $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
     if (!$is_v2) {
-      $form['global']['teaser'] = [
+      $form['teaser'] = [
         '#type' => 'fieldset',
         '#title' => 'Teaser settings',
         '#collapsible' => FALSE,
       ];
       $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
-      $form['global']['teaser']['show_teaser_link_indicator'] = [
+      $form['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
         '#default_value' => $show_teaser_link_indicator ?: FALSE,
       ];
 
-      $form['global']['block_settings'] = [
+      $form['block_settings'] = [
         '#type' => 'fieldset',
         '#title' => 'Layout Builder settings',
         '#collapsible' => FALSE,
       ];
 
-      $form['global']['block_settings']['card_link_indicator_display'] = [
+      $form['block_settings']['card_link_indicator_display'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display card arrow button'),
         '#description' => $this->t('Set the default behavior the card arrow button.'),
@@ -243,38 +239,24 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $config_settings = $this->configFactory->getEditable(static::SETTINGS);
 
-    $featured_image_display_default = $form_state->getValue('featured_image_display_default');
-    $tag_display = $form_state->getValue('tag_display');
-    $related_display = $form_state->getValue('related_display');
-    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
-    $card_link_indicator_display = $form_state->getValue('card_link_indicator_display');
+    // List of config updates to make.
+    $config_updates = [
+      'featured_image_display_default',
+      'tag_display',
+      'related_display',
+      'related_title',
+      'show_teaser_link_indicator',
+      'card_link_indicator_display',
+    ];
 
-    // @todo optimize saving all settings at once and add new setting.
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the featured image display default.
-      ->set('featured_image_display_default', $featured_image_display_default)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('tag_display', $tag_display)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('related_display', $related_display)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the default card button selection.
-      ->set('card_link_indicator_display', $card_link_indicator_display)
-      ->save();
+    // Update each config item in the list from the form state.
+    foreach ($config_updates as $config_name) {
+      $config_settings->set($config_name,
+        $form_state->getValue($config_name))
+        ->save();
+    }
 
     parent::submitForm($form, $form_state);
 
