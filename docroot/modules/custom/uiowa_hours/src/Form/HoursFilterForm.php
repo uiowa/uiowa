@@ -196,16 +196,19 @@ class HoursFilterForm extends FormBase {
       $render['closed'] = [
         '#type' => 'card',
         '#attributes' => $attributes,
-        '#title' => $this->t('@start@end', [
-          '@start' => date('F j, Y', $start),
-          '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
-        ]),
+        '#headline' => [
+          'headline_text' => $this->t('@start@end', [
+            '@start' => date('F j, Y', $start),
+            '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
+          ]),
+          'headline_level' => $block_config['child_heading_size'],
+          'headline_class' => 'headline headline--serif',
+        ],
         '#content' => [
           'times' => [
             '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
           ],
         ],
-        '#headline_level' => $block_config['child_heading_size'],
       ];
     }
     else {
@@ -224,7 +227,14 @@ class HoursFilterForm extends FormBase {
         $render['hours'][$key] = [
           '#type' => 'card',
           '#attributes' => $attributes,
-          '#title' => date('F j, Y', strtotime($key)),
+          '#headline' => [
+            'headline_text' => $this->t('@start@end', [
+              '@start' => date('F j, Y', $start),
+              '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
+            ]),
+            'headline_level' => $block_config['child_heading_size'],
+            'headline_class' => 'headline headline--serif',
+          ],
           '#content' => [
             'times' => [
               '#theme' => 'item_list',
@@ -234,7 +244,6 @@ class HoursFilterForm extends FormBase {
               ],
             ],
           ],
-          '#headline_level' => $block_config['child_heading_size'],
         ];
 
         foreach ($date as $time) {
