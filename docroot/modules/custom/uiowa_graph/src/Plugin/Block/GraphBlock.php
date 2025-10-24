@@ -76,7 +76,7 @@ class GraphBlock extends BlockBase {
 
     foreach ($rows as $row_key => $row) {
       // Parse CSV row properly (handles quoted values with commas)
-      $columns = $this->parseCSVRow($row);
+      $columns = $this->parseCsvRow($row);
 
       if ($row_key === 0) {
         foreach ($columns as $column) {
@@ -105,7 +105,7 @@ class GraphBlock extends BlockBase {
    * @return array
    *   Array of column values.
    */
-  protected function parseCSVRow($row) {
+  protected function parseCsvRow($row) {
     // Use str_getcsv with explicit parameters:
     // delimiter: comma
     // enclosure: double quote
