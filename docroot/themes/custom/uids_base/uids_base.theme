@@ -253,10 +253,20 @@ function uids_base_preprocess_html(&$variables) {
     }
   }
 
-  if ($route_match->getRouteObject()?->getOption('_layout_builder')) {
-    // Add Layout Builder specific CSS settings.
-    $variables['#attached']['library'][] = 'uids_base/layout-builder';
+  $current_path = \Drupal::service('path.current')->getPath();
+
+  // Check if we're on an A-Z list page with a letter
+  if (preg_match('/\/a-z\/([a-z])/i', $current_path, $matches)) {
+    $letter = strtoupper($matches[1]);
+
+    // Set title with A-Z List first, then University
+    $variables['head_title'] = [
+      'A-Z List: ' . $letter,
+      'The University of Iowa'
+    ];
   }
+
+
 }
 
 /**
@@ -1445,3 +1455,11 @@ function uids_base_photoswipe_js_options_alter(array &$settings) {
   // Disable's photoswipe's share links (twitter, fb, pintrest).
   $settings['shareEl'] = FALSE;
 }
+
+
+/**
+ * Implements hook_preprocess_html().
+ */
+/**
+ * Implements hook_preprocess_html().
+ */
