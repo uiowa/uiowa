@@ -51,6 +51,7 @@ function copyUids() {
     `${uids.src}/**/*.scss`,
     `${uids.src}/**/*.js`,
     `${uids.src}/**/*.{jpg,png,svg}`,
+    `!${uids.src}/components/menu{,/**}`,
   ], { encoding: false })
     .pipe(dest(`${uids.dest}`));
 }
