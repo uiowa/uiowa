@@ -202,7 +202,7 @@ class HoursFilterForm extends FormBase {
             '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
           ]),
           'headline_level' => $block_config['child_heading_size'],
-          'headline_class' => 'headline--serif',
+          'headline_class' => 'headline headline--serif',
         ],
         '#content' => [
           'times' => [
@@ -233,7 +233,7 @@ class HoursFilterForm extends FormBase {
               '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
             ]),
             'headline_level' => $block_config['child_heading_size'],
-            'headline_class' => 'headline--serif',
+            'headline_class' => 'headline headline--serif',
           ],
           '#content' => [
             'times' => [

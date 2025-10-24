@@ -170,7 +170,7 @@ class AcademicDatesForm extends FormBase {
                 '@start' => date('F j, Y', $start),
                 '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
               ]),
-              'headline_class' => 'headline--serif',
+              'headline_class' => 'headline headline--serif',
             ],
           ];
         }
