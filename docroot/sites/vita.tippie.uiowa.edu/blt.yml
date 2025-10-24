@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippievita.uiowa.ddev.site
+    protocol: https
+  machine_name: tippievita
+  human_name: vita.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippievita.prod
+drupal:
+  db:
+    database: vita_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippievita.prod.drupal.uiowa.edu'
+  requester: dstubing
+  site-name: vita.tippie.uiowa.edu
