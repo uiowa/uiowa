@@ -163,11 +163,15 @@ class AcademicDatesForm extends FormBase {
           $form['dates-wrapper']['dates'][$key] = [
             '#type' => 'card',
             '#attributes' => $attributes,
-            '#title' => $this->t('@start@end', [
-              '@start' => date('F j, Y', $start),
-              '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
-            ]),
             '#content' => [$item],
+            '#headline' => [
+              'headline_level' => $child_heading_size,
+              'headline_text' => $this->t('@start@end', [
+                '@start' => date('F j, Y', $start),
+                '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
+              ]),
+              'headline_class' => 'headline--serif',
+            ],
           ];
         }
       }

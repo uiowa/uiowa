@@ -527,7 +527,10 @@ function sitenow_events_build_card(array $event): array {
   $card = [
     '#type' => 'card',
     '#attributes' => $event['attributes'] ?? [],
-    '#title' => $event['title'],
+    '#headline' => [
+      'headline_text' => $event['title'],
+      'headline_level' => $event['heading_size'],
+    ],
     '#url' => $event['url'],
     '#headline_level' => $event['heading_size'],
     '#prefix' => '<div class="column-container">',
