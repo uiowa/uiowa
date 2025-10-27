@@ -14,6 +14,19 @@ class BannerBlockFormHandler {
   /**
    * Alters the banner block form.
    *
+   * Weights:
+   * -20: Banner heading (replaces admin_label)
+   * -10: Headline group
+   * 0: Background group
+   * 50: Gradient options
+   * 61: Excerpt group
+   * 70: Button group
+   * 94: Layout group heading
+   * 97: Layout settings
+   * 102: Style options
+   * 200: Actions (submit buttons)
+   * 210: Unique ID.
+   *
    * @param array $form
    *   The form array.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
@@ -25,31 +38,21 @@ class BannerBlockFormHandler {
     // Add adjust gradient checkbox.
     self::addGradientMidpointCheckbox($form, $form_state);
 
-    // =========================================================================
-    // WEIGHTS
-    // -20: Banner heading (replaces admin_label)
-    // -10: Headline group
-    // 0: Background group
-    // 50: Gradient options
-    // 61: Excerpt group
-    // 70: Button group
-    // 94: Layout group heading
-    // 97: Layout settings
-    // 102: Style options
-    // 200: Actions (submit buttons)
-    // 210: Unique ID
-    // =========================================================================
-    // =========================================================================
-    // CREATE ALL FORM GROUPS/CONTAINERS
-    // =========================================================================
+    /*
+     * Create all form groups and containers.
+     */
+
     // Block heading.
-    $form['banner_group_heading'] = [
+    $form['admin_label'] = [
       '#type' => 'html_tag',
       '#tag' => 'h2',
-      '#value' => t('Banner'),
-      '#weight' => -20,
+      '#value' => $form['settings']['admin_label']['#plain_text'],
+      '#weight' => $form['settings']['admin_label']['#weight'],
       '#attributes' => ['class' => ['heading-a']],
     ];
+
+    // Hide admin label in favor of custom heading.
+    unset($form['settings']['admin_label']);
 
     // Headline group.
     $form['headline_group'] = [
@@ -313,9 +316,6 @@ class BannerBlockFormHandler {
     if (isset($form['layout_builder_style_background'])) {
       $form['layout_builder_style_background']['#weight'] = -50;
     }
-
-    // Hide admin label in favor of custom heading.
-    unset($form['settings']['admin_label']);
 
     // Move unique_id to the bottom.
     $form['unique_id']['#weight'] = 210;
