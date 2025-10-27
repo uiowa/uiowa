@@ -1,0 +1,6 @@
+services:
+  registrar_core.commands:
+    class: \Drupal\registrar_core\Commands\RegistrarCoreCommands
+    arguments: ['@uiowa_maui.api', '@cache.uiowa_maui', '@datetime.time', '@config.factory']
+    tags:
+      - { name: drush.command }
