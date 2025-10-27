@@ -464,7 +464,8 @@ class BannerBlockFormHandler {
     if (!$adjust_gradient) {
       // Clear the gradient midpoint value if checkbox is unchecked.
       $form_state->setValue('layout_builder_style_banner_gradient_midpoint', '');
-      // Also clear the field_styles_gradient_midpoint value if checkbox is unchecked.
+      // Also clear the field_styles_gradient_midpoint value if checkbox is
+      // unchecked.
       $form_state->setValue(['settings', 'block_form', 'field_styles_gradient_midpoint'], []);
     }
 
@@ -489,7 +490,8 @@ class BannerBlockFormHandler {
           $form_state->setValue('layout_builder_style_background', '');
         }
         else {
-          // If no media selected, switch to color-pattern with black background.
+          // If no media selected, switch to color-pattern with black
+          // background.
           $form_state->setValue('layout_builder_style_background', 'block_background_style_black');
           $background_type = 'color-pattern';
         }
@@ -498,7 +500,8 @@ class BannerBlockFormHandler {
         // https://github.com/uiowa/uiowa/issues/5012
       }
       elseif ($background_type === 'color-pattern') {
-        // For color-pattern, clear any media reference if it was previously set.
+        // For color-pattern, clear any media reference if it was previously
+        // set.
         $form_state->unsetValue($form_media_selection);
         // @todo Trigger file deletion if the media item is unused elsewhere. See
         // https://github.com/uiowa/uiowa/issues/5013
@@ -538,7 +541,8 @@ class BannerBlockFormHandler {
         $default_value = (bool) $stored_checkbox_value;
       }
       else {
-        // If no saved state exists, fallback to checking if gradient midpoint field has a value.
+        // If no saved state exists, fallback to checking if gradient midpoint
+        // field has a value.
         $has_midpoint_value = !empty($form['layout_builder_style_banner_gradient_midpoint']['#default_value']);
         $default_value = $has_midpoint_value;
       }
@@ -581,9 +585,9 @@ class BannerBlockFormHandler {
       $configuration = $plugin->getConfiguration();
     }
 
-    // =========================================================================
-    // ASSIGN FIELDS TO GROUPS
-    // =========================================================================
+    /*
+     * Assign fields to groups.
+     */
     // Assign block fields to groups.
     if (isset($element['field_uiowa_banner_pre_title'])) {
       $element['field_uiowa_banner_pre_title']['#group'] = 'headline_group';
@@ -610,9 +614,10 @@ class BannerBlockFormHandler {
       $element['field_uiowa_banner_link']['#weight'] = 70;
     }
 
-    // =========================================================================
-    // CONFIGURE BACKGROUND TYPE
-    // =========================================================================
+    /*
+     * Configure background type.
+     */
+
     // Determine default background type based on existing values.
     $default_bg_type = 'media';
 
@@ -641,7 +646,8 @@ class BannerBlockFormHandler {
       '#weight' => 10,
     ];
 
-    // Move layout_builder_style_background into block_form for proper positioning.
+    // Move layout_builder_style_background into block_form for proper
+    // positioning.
     if (isset($complete_form['layout_builder_style_background'])) {
       $element['layout_builder_style_background'] = $complete_form['layout_builder_style_background'];
       $element['layout_builder_style_background']['#weight'] = 20;
@@ -655,9 +661,9 @@ class BannerBlockFormHandler {
       $complete_form['layout_builder_style_background']['#access'] = FALSE;
     }
 
-    // =========================================================================
-    // CONFIGURE MEDIA FIELDS
-    // =========================================================================
+    /*
+     * Configure media fields.
+     */
     $element['field_uiowa_banner_image'] = [
       '#states' => [
         'visible' => [
@@ -679,9 +685,9 @@ class BannerBlockFormHandler {
     unset($element['field_uiowa_banner_image']['widget']['#title']);
     unset($element['field_uiowa_banner_autoplay']['widget']['#title']);
 
-    // =========================================================================
-    // CONFIGURE GRADIENT FIELDS
-    // =========================================================================
+    /*
+     * Configure gradient fields.
+     */
     $complete_form['layout_builder_style_media_overlay']['#states'] = [
       'visible' => [
         ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
@@ -726,9 +732,9 @@ class BannerBlockFormHandler {
       }
     }
 
-    // =========================================================================
-    // CONFIGURE LINK FIELDS
-    // =========================================================================
+    /*
+     * Configure link fields.
+     */
     if (isset($element['field_uiowa_banner_link'])) {
       $element['field_uiowa_banner_link']['#weight'] = -69;
     }
@@ -745,9 +751,9 @@ class BannerBlockFormHandler {
       }
     }
 
-    // =========================================================================
-    // MISC FIELD CONFIGURATION
-    // =========================================================================
+    /*
+     * Misc. field configuration.
+     */
     if (isset($element['langcode'])) {
       $element['langcode']['#weight'] = 100;
     }
