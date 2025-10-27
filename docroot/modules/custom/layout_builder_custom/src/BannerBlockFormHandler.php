@@ -24,8 +24,8 @@ class BannerBlockFormHandler {
    * 94: Layout group heading
    * 97: Layout settings
    * 102: Style options
-   * 200: Actions (submit buttons)
-   * 210: Unique ID.
+   * 200: Unique ID
+   * 210: Actions (submit buttons).
    *
    * @param array $form
    *   The form array.
@@ -37,6 +37,9 @@ class BannerBlockFormHandler {
   public static function formAlter(array &$form, FormStateInterface $form_state, $form_id) {
     // Add adjust gradient checkbox.
     self::addGradientMidpointCheckbox($form, $form_state);
+
+    // Attach library.
+    $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
 
     /*
      * Create all form groups and containers.
@@ -159,9 +162,10 @@ class BannerBlockFormHandler {
       '#suffix' => '</div>',
     ];
 
-    // =========================================================================
-    // CONFIGURE ALL FIELD DUPLICATIONS
-    // =========================================================================
+    /*
+     * Configure all field duplications.
+     */
+
     // Duplicate gradient fields into gradient options container.
     self::createDuplicateField($form, 'layout_builder_style_media_overlay', 'gradient_options');
     self::createDuplicateField($form, 'layout_builder_style_banner_gradient', 'gradient_options');
@@ -184,9 +188,10 @@ class BannerBlockFormHandler {
     self::createDuplicateField($form, 'layout_builder_style_button_style', 'button_group');
     self::createDuplicateField($form, 'layout_builder_style_button_font', 'button_group');
 
-    // =========================================================================
-    // SET ALL VISIBILITY STATES
-    // =========================================================================
+    /*
+     * Set all visibility states.
+     */
+
     // Gradient options visible when background type is media.
     $form['gradient_options']['#states'] = [
       'visible' => [
@@ -212,16 +217,22 @@ class BannerBlockFormHandler {
       ];
     }
 
-    // =========================================================================
-    // SET WEIGHTS AND FINAL ADJUSTMENTS
-    // =========================================================================
-    // Set weights for headline style fields.
+    /*
+     * Set weights and final adjustments.
+     */
+
+    // Set weights for headline fields.
     if (isset($form['layout_builder_style_headline_type'])) {
       $form['layout_builder_style_headline_type']['#weight'] = 60;
     }
 
     if (isset($form['layout_builder_style_headline_size'])) {
       $form['layout_builder_style_headline_size']['#weight'] = 60;
+    }
+
+    // Set weight for background style field.
+    if (isset($form['layout_builder_style_background'])) {
+      $form['layout_builder_style_background']['#weight'] = -50;
     }
 
     // Set weights for button fields.
@@ -236,7 +247,7 @@ class BannerBlockFormHandler {
     // Configure gradient option duplicate fields.
     if (isset($form['gradient_options']['layout_builder_style_media_overlay_duplicate'])) {
       $form['gradient_options']['layout_builder_style_media_overlay_duplicate']['#weight'] = 1;
-      $form['gradient_options']['layout_builder_style_media_overlay_duplicate']["#empty_option"] = t('No gradient (default)');
+      $form['gradient_options']['layout_builder_style_media_overlay_duplicate']['#empty_option'] = t('No gradient (default)');
     }
 
     if (isset($form['gradient_options']['layout_builder_style_banner_gradient_duplicate'])) {
@@ -312,21 +323,13 @@ class BannerBlockFormHandler {
       }
     }
 
-    // Set weight for background style field.
-    if (isset($form['layout_builder_style_background'])) {
-      $form['layout_builder_style_background']['#weight'] = -50;
-    }
-
     // Move unique_id to the bottom.
-    $form['unique_id']['#weight'] = 210;
+    $form['unique_id']['#weight'] = 200;
 
     // Make sure the actions (buttons) come after everything.
     if (isset($form['actions'])) {
-      $form['actions']['#weight'] = 200;
+      $form['actions']['#weight'] = 210;
     }
-
-    // Attach library.
-    $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
   }
 
   /**
