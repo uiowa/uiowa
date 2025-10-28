@@ -89,7 +89,12 @@ class BannerBlockFormHandler {
       '#title' => t('Overlay options'),
       '#weight' => 50,
       '#open' => FALSE,
-      '#attributes' => ['class' => ['off-canvas-form-group__collapsible', 'off-canvas-form-group__collapsible--overlay']],
+      '#attributes' => [
+        'class' => [
+          'off-canvas-form-group__collapsible',
+          'off-canvas-form-group__collapsible--overlay',
+        ],
+      ],
       '#suffix' => '</div>',
     ];
 
