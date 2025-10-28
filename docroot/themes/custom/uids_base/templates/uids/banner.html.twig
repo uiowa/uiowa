@@ -39,8 +39,15 @@
   'headline--large',
 ] %}
 
-<div{{ attributes.addClass(banner_classes) }}{% if field_styles_gradient_midpoint %} style="--banner-overlay-gradient-midpoint: {{ field_styles_gradient_midpoint }};"{% endif %}>
-
+{# DEBUG - Remove after testing #}
+<!--
+Twig Debug:
+overlay: "{{ layout_builder_style_media_overlay }}"
+overlay is empty: {{ layout_builder_style_media_overlay is empty ? 'YES' : 'NO' }}
+midpoint: "{{ field_styles_gradient_midpoint }}"
+midpoint is empty: {{ field_styles_gradient_midpoint is empty ? 'YES' : 'NO' }}
+-->
+<div{{ attributes.addClass(banner_classes) }}{% if layout_builder_style_media_overlay is not empty and field_styles_gradient_midpoint is not empty %} style="--banner-overlay-gradient-midpoint: {{ field_styles_gradient_midpoint }};"{% endif %}>
   {% block banner_image %}
     {% if banner_image %}
       {{ banner_image }}

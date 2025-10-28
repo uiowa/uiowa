@@ -964,6 +964,21 @@ function uids_base_preprocess_block(&$variables) {
   if ($variables['derivative_plugin_id'] === 'uiowa_banner') {
     $block = $variables['elements']['content']['#block_content'];
 
+    // Check for layout builder styles and
+    // extract media overlay and set variable for banner template.
+    if (!empty($variables['elements']['#layout_builder_style'])) {
+      $styles = $variables['elements']['#layout_builder_style'];
+
+      $media_overlay = array_values(array_filter(
+        $styles,
+        function ($value) {
+          return is_string($value) && str_starts_with($value, 'media_overlay_');
+        }
+      ))[0] ?? '';
+
+      $variables['layout_builder_style_media_overlay'] = $media_overlay;
+    }
+
     // Remove headline classes from attributes.
     $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
       return str_starts_with($v, 'headline');
