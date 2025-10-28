@@ -61,7 +61,7 @@ class BannerBlockFormHandler {
     $form['headline_group'] = [
       '#type' => 'container',
       '#weight' => -10,
-      '#attributes' => ['class' => ['block-form-group__container']],
+      '#attributes' => ['class' => ['off-canvas-form-group__container']],
     ];
 
     $form['headline_group']['headline_group_heading'] = [
@@ -79,7 +79,7 @@ class BannerBlockFormHandler {
         '#value' => t('Background'),
         '#weight' => 0,
         '#attributes' => ['class' => ['heading-a']],
-        '#prefix' => '<div class="block-form-group__container">',
+        '#prefix' => '<div class="off-canvas-form-group__container">',
       ];
     }
 
@@ -89,7 +89,7 @@ class BannerBlockFormHandler {
       '#title' => t('Overlay options'),
       '#weight' => 50,
       '#open' => FALSE,
-      '#attributes' => ['class' => ['block-form-group__collapsible', 'block-form-group__collapsible--overlay']],
+      '#attributes' => ['class' => ['off-canvas-form-group__collapsible', 'off-canvas-form-group__collapsible--overlay']],
       '#suffix' => '</div>',
     ];
 
@@ -97,7 +97,7 @@ class BannerBlockFormHandler {
     $form['excerpt_group'] = [
       '#type' => 'container',
       '#weight' => 61,
-      '#attributes' => ['class' => ['block-form-group__container']],
+      '#attributes' => ['class' => ['off-canvas-form-group__container']],
     ];
 
     $form['excerpt_group']['excerpt_group_heading'] = [
@@ -111,7 +111,7 @@ class BannerBlockFormHandler {
     $form['button_group'] = [
       '#type' => 'container',
       '#weight' => 70,
-      '#attributes' => ['class' => ['block-form-group__container']],
+      '#attributes' => ['class' => ['off-canvas-form-group__container']],
     ];
 
     $form['button_group']['button_group_heading'] = [
@@ -129,7 +129,7 @@ class BannerBlockFormHandler {
       '#value' => t('Layout'),
       '#weight' => 94,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="block-form-group__container">',
+      '#prefix' => '<div class="off-canvas-form-group__container">',
     ];
 
     // Layout settings details element.
@@ -137,7 +137,7 @@ class BannerBlockFormHandler {
       '#type' => 'details',
       '#title' => new TranslatableMarkup('<span class="element-invisible">Layout</span> Options'),
       '#weight' => 97,
-      '#attributes' => ['class' => ['block-form-group__collapsible']],
+      '#attributes' => ['class' => ['off-canvas-form-group__collapsible']],
       '#open' => FALSE,
       '#suffix' => '</div>',
     ];
@@ -149,14 +149,14 @@ class BannerBlockFormHandler {
       '#value' => t('Styles'),
       '#weight' => 102,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="block-form-group__container">',
+      '#prefix' => '<div class="off-canvas-form-group__container">',
     ];
 
     // Style options details element.
     $form['style_options'] = [
       '#type' => 'details',
       '#title' => new TranslatableMarkup('<span class="element-invisible">Style</span> Options'),
-      '#attributes' => ['class' => ['block-form-group__collapsible']],
+      '#attributes' => ['class' => ['off-canvas-form-group__collapsible']],
       '#weight' => 102,
       '#open' => FALSE,
       '#suffix' => '</div>',

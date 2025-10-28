@@ -139,14 +139,14 @@
 }
 
 /**
- * Banner block form styles.
+ * Banner off-canvas block form styles.
  *
  * BEM Hierarchy:
  *
- * block-form-group (Block)
- * ├── block-form-group__container (Element - main grouping wrapper)
- * └── block-form-group__collapsible (Element - details/accordion)
- *     └── block-form-group__collapsible--overlay (Modifier - gradient/overlay variant)
+ * off-canvas-form-group (Block)
+ * ├── off-canvas-form-group__container (Element - main grouping wrapper)
+ * └── off-canvas-form-group__collapsible (Element - details/accordion)
+ *     └── off-canvas-form-group__collapsible--overlay (Modifier - gradient/overlay variant)
  */
 
 /* Remove border and padding for main radio buttons within the form group containers. */
@@ -161,7 +161,7 @@
 }
 
 /* Block form group container - creates visual grouping */
-#drupal-off-canvas-wrapper .block-form-group__container {
+#drupal-off-canvas-wrapper .off-canvas-form-group__container {
   padding-inline: 1.5rem;
   padding-block-start: 1rem;
   padding-block-end: 1rem;
@@ -169,22 +169,26 @@
   background-color: var(--off-canvas-title-background-color);
 }
 
-#drupal-off-canvas-wrapper .block-form-group__container + input[type="submit"]  {
+#drupal-off-canvas-wrapper .off-canvas-form-group__container + input[type="submit"]  {
   margin-block: 2rem;
 }
 
+#drupal-off-canvas-wrapper .off-canvas-form-group__container + [id^="unique-id-wrapper"] {
+  margin-block-start: 2rem;
+}
+
 /* Remove bottom padding for containers that have collapsible details inside */
-#drupal-off-canvas-wrapper .block-form-group__container:has(.block-form-group__collapsible) {
+#drupal-off-canvas-wrapper .off-canvas-form-group__container:has(.off-canvas-form-group__collapsible) {
   padding-block-end: 0;
 }
 
 /* Add padding for the link field */
-#drupal-off-canvas-wrapper .block-form-group__container .field--name-field-uiowa-banner-link {
+#drupal-off-canvas-wrapper .off-canvas-form-group__container .field--name-field-uiowa-banner-link {
   padding-inline: 1rem;
 }
 
 /* Collapsible details element - standard styling */
-#drupal-off-canvas-wrapper details.block-form-group__collapsible {
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible {
   padding: 0;
   margin: 0;
   margin-block-start: 1rem;
@@ -192,7 +196,7 @@
 }
 
 /* Overlay collapsible - special styling for gradient/overlay options */
-#drupal-off-canvas-wrapper details.block-form-group__collapsible--overlay {
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible--overlay {
   margin: 0;
   padding-block-start: 0;
   border-block-start: 1px solid hsla(0, 0%, 100%, .325);
@@ -200,18 +204,18 @@
 }
 
 /* Summary for overlay collapsible */
-#drupal-off-canvas-wrapper details.block-form-group__collapsible--overlay summary {
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible--overlay summary {
   margin: 0;
   background: none;
 }
 
 /* Summary for standard collapsible */
-#drupal-off-canvas-wrapper details.block-form-group__collapsible summary {
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible summary {
   background: none;
   border-top: 1px solid hsla(0, 0%, 100%, .325);
 }
 
-#drupal-off-canvas-wrapper details.block-form-group__collapsible--overlay .details-wrapper {
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible--overlay .details-wrapper {
   padding: 1.5rem;
 }
 
