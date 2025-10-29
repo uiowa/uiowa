@@ -1253,22 +1253,27 @@ function uiowa_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'layout-container tags-list__container block-padding__bottom block-padding__top';
       break;
 
+    case 'views_block:related_content-block_related_headings_lists':
+      // Add some classes that are not added in the next case.
+      $variables['attributes']['class'][] = 'related col--threecol--33';
+
     case 'views_block:related_manually_referenced_content-block_grid':
+      // Inherits from the previous case.
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [];
       }
       $variables['attributes']['class'][] = 'block--bg-container bg--gray block-padding__bottom block-padding__top';
-      break;
 
-    case 'views_block:related_content-block_related_headings_lists':
-      $variables['#attached']['library'][] = 'uids_base/related';
-      $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
+      // Get the node from the current route.
+      $current_route = \Drupal::routeMatch();
+      $node = $current_route->getParameter('node');
+      // Get the related content title from the appropriate config.
+      $title = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('related_title');
+      if (!is_null($title) && !empty(trim($title))) {
+        $variables['content']['headline']['#headline'] = $title;
       }
-      $variables['attributes']['class'][] = 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'system_main_block':
