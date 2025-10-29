@@ -105,8 +105,17 @@ class BannerBlockFormHandler {
       '#suffix' => '</div>',
     ];
 
-    // Add adjust gradient checkbox.
-    self::addGradientMidpointCheckbox($form, $form_state);
+    $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Customize gradient midpoint'),
+      '#default_value' => self::getGradientMidpointCheckboxDefaultValue($form_state),
+      '#weight' => 94,
+      '#states' => [
+        'visible' => [
+          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
+        ],
+      ],
+    ];
 
     // Excerpt group.
     $form['excerpt_group'] = [
@@ -288,9 +297,8 @@ class BannerBlockFormHandler {
       ],
     ];
 
-    $form_object = $form_state->getFormObject();
-    if ($form_object instanceof ConfigureBlockFormBase) {
-      $component = $form_object->getCurrentComponent();
+    $component = self::getFormComponent($form_state);
+    if (!is_null($component)) {
       $config = $component->toArray();
       $styles = $config['additional']['layout_builder_styles_style'] ?? [];
       $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
@@ -338,45 +346,6 @@ class BannerBlockFormHandler {
     // Make sure the actions (buttons) come after everything.
     if (isset($form['actions'])) {
       $form['actions']['#weight'] = 210;
-    }
-  }
-
-  /**
-   * Creates a duplicate field in a container and hides the original.
-   *
-   * @param array $form
-   *   The form array.
-   * @param string $original_field_name
-   *   The name of the original field.
-   * @param string $container_name
-   *   The name of the container to place the duplicate in.
-   */
-  private static function createDuplicateField(array &$form, $original_field_name, $container_name) {
-    $duplicate_field_name = $original_field_name . '_duplicate';
-
-    if (isset($form[$original_field_name])) {
-      $form[$container_name][$duplicate_field_name] = $form[$original_field_name];
-      $form[$container_name][$duplicate_field_name]['#parents'] = [$duplicate_field_name];
-      // Hide the original field.
-      $form[$original_field_name]['#access'] = FALSE;
-    }
-  }
-
-  /**
-   * Syncs duplicate field values back to their original fields.
-   *
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state.
-   * @param array $field_names
-   *   Array of field names to sync (original field name as key).
-   */
-  private static function syncDuplicateFields(FormStateInterface $form_state, array $field_names) {
-    foreach ($field_names as $original_field) {
-      $duplicate_field = $original_field . '_duplicate';
-      $duplicate_value = $form_state->getValue($duplicate_field);
-      if ($duplicate_value !== NULL) {
-        $form_state->setValue($original_field, $duplicate_value);
-      }
     }
   }
 
@@ -453,6 +422,8 @@ class BannerBlockFormHandler {
    *   The form state.
    */
   public static function submitForm(array &$form, FormStateInterface $form_state) {
+    // Load the component so it is available.
+    $component = self::getFormComponent($form_state);
     // Heading style radio selection.
     $heading_style = $form_state->getValue('heading_style');
     if ($heading_style) {
@@ -463,9 +434,7 @@ class BannerBlockFormHandler {
     $adjust_gradient = $form_state->getValue('layout_builder_style_adjust_gradient_midpoint');
 
     // Save checkbox state as a third-party setting.
-    $form_object = $form_state->getFormObject();
-    if ($form_object instanceof ConfigureBlockFormBase) {
-      $component = $form_object->getCurrentComponent();
+    if (!is_null($component)) {
       $component->setThirdPartySetting('layout_builder_custom', 'adjust_gradient_midpoint', $adjust_gradient ? 1 : 0);
     }
 
@@ -517,57 +486,9 @@ class BannerBlockFormHandler {
     }
 
     // Save background_type as a third-party setting.
-    if ($background_type) {
-      $form_object = $form_state->getFormObject();
-      if ($form_object instanceof ConfigureBlockFormBase) {
-        $component = $form_object->getCurrentComponent();
-        $component->setThirdPartySetting('layout_builder_custom', 'background_type', $background_type);
-      }
+    if ($background_type && !is_null($component)) {
+      $component->setThirdPartySetting('layout_builder_custom', 'background_type', $background_type);
     }
-  }
-
-  /**
-   * Adds the gradient midpoint checkbox to the form.
-   *
-   * @param array $form
-   *   The form array.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state.
-   */
-  protected static function addGradientMidpointCheckbox(array &$form, FormStateInterface $form_state) {
-    // Get the saved checkbox state from third-party settings.
-    $default_value = FALSE;
-    $form_object = $form_state->getFormObject();
-
-    if ($form_object instanceof ConfigureBlockFormBase) {
-      /** @var \Drupal\layout_builder\SectionComponent $component */
-      $component = $form_object->getCurrentComponent();
-
-      // Check third-party settings for the checkbox state.
-      $stored_checkbox_value = $component->getThirdPartySetting('layout_builder_custom', 'adjust_gradient_midpoint');
-      if ($stored_checkbox_value !== NULL) {
-        $default_value = (bool) $stored_checkbox_value;
-      }
-      else {
-        // If no saved state exists, fallback to checking if gradient midpoint
-        // field has a value.
-        $has_midpoint_value = !empty($form['layout_builder_style_banner_gradient_midpoint']['#default_value']);
-        $default_value = $has_midpoint_value;
-      }
-    }
-
-    $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint'] = [
-      '#type' => 'checkbox',
-      '#title' => t('Customize gradient midpoint'),
-      '#default_value' => $default_value,
-      '#weight' => 94,
-      '#states' => [
-        'visible' => [
-          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
-        ],
-      ],
-    ];
-
   }
 
   /**
@@ -773,6 +694,92 @@ class BannerBlockFormHandler {
     }
 
     return $element;
+  }
+
+  /**
+   * Creates a duplicate field in a container and hides the original.
+   *
+   * @param array $form
+   *   The form array.
+   * @param string $original_field_name
+   *   The name of the original field.
+   * @param string $container_name
+   *   The name of the container to place the duplicate in.
+   */
+  protected static function createDuplicateField(array &$form, $original_field_name, $container_name) {
+    $duplicate_field_name = $original_field_name . '_duplicate';
+
+    if (isset($form[$original_field_name])) {
+      $form[$container_name][$duplicate_field_name] = $form[$original_field_name];
+      $form[$container_name][$duplicate_field_name]['#parents'] = [$duplicate_field_name];
+      // Hide the original field.
+      $form[$original_field_name]['#access'] = FALSE;
+    }
+  }
+
+  /**
+   * Syncs duplicate field values back to their original fields.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   * @param array $field_names
+   *   Array of field names to sync (original field name as key).
+   */
+  protected static function syncDuplicateFields(FormStateInterface $form_state, array $field_names) {
+    foreach ($field_names as $original_field) {
+      $duplicate_field = $original_field . '_duplicate';
+      $duplicate_value = $form_state->getValue($duplicate_field);
+      if ($duplicate_value !== NULL) {
+        $form_state->setValue($original_field, $duplicate_value);
+      }
+    }
+  }
+
+  /**
+   * Adds the gradient midpoint checkbox to the form.
+   *
+   * @param array $form
+   *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  protected static function getGradientMidpointCheckboxDefaultValue(FormStateInterface $form_state) {
+    // Get the saved checkbox state from third-party settings.
+    $default_value = FALSE;
+    $component = self::getFormComponent($form_state);
+
+    if (!is_null($component)) {
+      // Check third-party settings for the checkbox state.
+      $stored_checkbox_value = $component->getThirdPartySetting('layout_builder_custom', 'adjust_gradient_midpoint');
+      if ($stored_checkbox_value !== NULL) {
+        $default_value = (bool) $stored_checkbox_value;
+      }
+      else {
+        // If no saved state exists, fallback to checking if gradient midpoint
+        // field has a value.
+        $has_midpoint_value = !empty($form['layout_builder_style_banner_gradient_midpoint']['#default_value']);
+        $default_value = $has_midpoint_value;
+      }
+    }
+
+    return $default_value;
+  }
+
+  /**
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return \Drupal\layout_builder\SectionComponent|null
+   */
+  protected static function getFormComponent(FormStateInterface $form_state) {
+    // Initialize component to NULL.
+    $component = NULL;
+    $form_object = $form_state->getFormObject();
+
+    if ($form_object instanceof ConfigureBlockFormBase) {
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      $component = $form_object->getCurrentComponent();
+    }
+    return $component;
   }
 
 }
