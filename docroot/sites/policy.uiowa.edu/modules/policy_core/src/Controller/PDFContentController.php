@@ -29,7 +29,7 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
    */
   const EXPORT_DIR = 'public://exports';
   const EXPORT_FILE = 'policy-manual.pdf';
-  const TEMP_DIR = 'private://policy_pdf_batches';
+  const TEMP_DIR = 'private://policy_pdf_temp';
   const ROOT_MPID = 'menu_link_content:74d425e3-eac8-434d-ac03-cc0f63c32563';
 
   /**
@@ -150,11 +150,15 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     $base_url = 'https://policy.uiowa.edu/';
     $html = '<html><head><base href="' . $base_url . '">' . $fonts . $print_styles . '</head><body>';
 
+    $nids = [];
     // Fetch each node and render it as part of the chunk.
     foreach ($nodes_chunk as $node) {
       $render_array = \Drupal::entityTypeManager()
         ->getViewBuilder('node')
         ->view($node['node'], 'pdf');
+
+      // Capture nid for reporting.
+      $nids[] = $node['node']->id();
 
       // Add parent title for use in the template if available.
       $parent_title = $node['parent_title'];
@@ -166,23 +170,33 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
     }
     $html .= '</body></html>';
 
-    $tmp = $fs->getTempDirectory();
+    $tmp = self::TEMP_DIR;
+    if (!$fs->prepareDirectory($tmp, FileSystemInterface::CREATE_DIRECTORY)) {
+      \Drupal::logger('policy_core')->error('Unable to create temp directory for policy pdf download: @dir', ['@dir' => $tmp]);
+      return;
+    }
 
+    $tmp_path = $fs->realpath(self::TEMP_DIR);
     $dompdf = new Dompdf([
       'isRemoteEnabled' => TRUE,
-      'fontDir' => $tmp,
-      'fontCache' => $tmp,
-      'tempDir' => $tmp,
+      'fontDir' => $tmp_path,
+      'fontCache' => $tmp_path,
+      'tempDir' => $tmp_path,
       'chroot' => DRUPAL_ROOT,
     ]);
 
-    $pdf_stream_path = $tmp . '/batch_' . $order . '.pdf';
+    $pdf_stream_path = $tmp_path . '/batch_' . $order . '.pdf';
 
     // Generate the PDF for this chunk.
     try {
       $dompdf->loadHtml($html);
       $dompdf->render();
       file_put_contents($pdf_stream_path, $dompdf->output());
+      \Drupal::logger('policy_core')
+        ->notice('Batch file @path created containing nodes @nids', [
+          '@path' => $pdf_stream_path,
+          '@nids' => implode(', ', $nids),
+        ]);
     }
     catch (\Exception $e) {
       \Drupal::logger('policy_core')
@@ -258,19 +272,22 @@ class PDFContentController extends ControllerBase implements ContainerInjectionI
         $real = $fs->realpath($pdf_info['path']);
         if ($real && file_exists($real)) {
           $merger->addFile($real);
+          \Drupal::logger('policy_core')
+            ->notice('Merged @real into combined policy pdf.', [
+              '@real' => $real,
+            ]);
         }
       }
 
       $merged_pdf = $merger->merge();
 
-      // Cleanup temp files after merge.
-      foreach ($results['pdf_files'] as $pdf_info) {
-        if (empty($pdf_info['path'])) {
-          continue;
-        }
-        $real = $fs->realpath($pdf_info['path']);
-        if ($real && file_exists($real)) {
-          @unlink($real);
+      // Cleanup temp files after merge, including dompdf files.
+      $temp_path = $fs->realpath(self::TEMP_DIR);
+      if ($temp_path && is_dir($temp_path)) {
+        foreach (glob($temp_path . '/*') as $file) {
+          if (is_file($file)) {
+            @unlink($file);
+          }
         }
       }
 

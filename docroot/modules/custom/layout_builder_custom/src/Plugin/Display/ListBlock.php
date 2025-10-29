@@ -446,7 +446,7 @@ class ListBlock extends CoreBlock {
   public function blockValidate(ViewsBlock $block, array $form, FormStateInterface $form_state) {
     parent::blockValidate($block, $form, $form_state);
     // Check that offset is a positive integer.
-    if ($form['override']['pager_offset']) {
+    if (isset($form['override']['pager_offset'])) {
       $offset = $form_state?->getValue([
         'override',
         'pager_offset',
@@ -457,7 +457,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Check that items per page is a positive integer between 1 and 50.
-    if ($form['override']['items_per_page']) {
+    if (isset($form['override']['items_per_page'])) {
       $items_per_page = $form_state->getValue([
         'override',
         'items_per_page',

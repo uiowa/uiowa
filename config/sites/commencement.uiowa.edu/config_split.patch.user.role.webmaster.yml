@@ -1,11 +1,17 @@
 adding:
   dependencies:
     config:
+      - entity_browser.browser.featured_content_browser
+      - entity_browser.browser.media_wysiwyg_browser
       - node.type.event
       - node.type.venue
+      - taxonomy.vocabulary.celebrations
+      - taxonomy.vocabulary.college
       - taxonomy.vocabulary.session
   permissions:
     - 'create event content'
+    - 'create terms in celebrations'
+    - 'create terms in college'
     - 'create terms in session'
     - 'create venue content'
     - 'delete any event content'
@@ -13,12 +19,16 @@ adding:
     - 'delete event revisions'
     - 'delete own event content'
     - 'delete own venue content'
+    - 'delete terms in celebrations'
+    - 'delete terms in college'
     - 'delete terms in session'
     - 'delete venue revisions'
     - 'edit any event content'
     - 'edit any venue content'
     - 'edit own event content'
     - 'edit own venue content'
+    - 'edit terms in celebrations'
+    - 'edit terms in college'
     - 'edit terms in session'
     - 'revert event revisions'
     - 'revert venue revisions'
