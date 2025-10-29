@@ -105,11 +105,11 @@ class BannerBlockFormHandler {
       '#suffix' => '</div>',
     ];
 
-    $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint'] = [
+    $form['gradient_options']['adjust_gradient_midpoint'] = [
       '#type' => 'checkbox',
       '#title' => t('Customize gradient midpoint'),
       '#default_value' => self::getGradientMidpointCheckboxDefaultValue($form_state),
-      '#weight' => 94,
+      '#weight' => 3,
       '#states' => [
         'visible' => [
           ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
@@ -273,10 +273,6 @@ class BannerBlockFormHandler {
       $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#title_display'] = 'invisible';
     }
 
-    if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
-      $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#weight'] = 3;
-    }
-
     // Handle alignment and style field radio defaults.
     $style_fields = [
       'horizontal_alignment' => [
@@ -431,7 +427,7 @@ class BannerBlockFormHandler {
     }
 
     // Gradient midpoint checkbox.
-    $adjust_gradient = $form_state->getValue('layout_builder_style_adjust_gradient_midpoint');
+    $adjust_gradient = $form_state->getValue('adjust_gradient_midpoint');
 
     // Save checkbox state as a third-party setting.
     if (!is_null($component)) {
@@ -649,7 +645,7 @@ class BannerBlockFormHandler {
         $form['gradient_options']['field_styles_gradient_midpoint']['#weight'] = 4;
         $form['gradient_options']['field_styles_gradient_midpoint']['#states'] = [
           'visible' => [
-            ':input[name="layout_builder_style_adjust_gradient_midpoint_duplicate"]' => ['checked' => TRUE],
+            ':input[name="adjust_gradient_midpoint"]' => ['checked' => TRUE],
             ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
           ],
         ];
