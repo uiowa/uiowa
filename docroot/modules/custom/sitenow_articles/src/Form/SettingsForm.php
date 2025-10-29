@@ -166,7 +166,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['node']['help'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('Customize settings for individual page nodes.'),
+      '#markup' => $this->t('Customize settings for individual article nodes.'),
     ];
 
     $form['node']['featured_image_display_default'] = [
@@ -275,8 +275,11 @@ class SettingsForm extends ConfigFormBase {
     $form['node']['tags_and_related']['related_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title to display above related content'),
-      '#description' => $this->t('Set the title that appears above related content. Defaults to <em>Related content</em>.'),
-      '#default_value' => $config->get('related_title') ?: 'Related content',
+      '#description' => $this->t('Set the title that appears above related content. If no value is set, this will display as <em>Related content</em>.'),
+      '#default_value' => $config->get('related_title') ?: '',
+      '#attributes' => [
+        'placeholder' => 'Related content',
+      ],
       '#states' => [
         'visible' => [
           ':input[name="custom_related_title"]' => ['checked' => TRUE],
@@ -290,13 +293,11 @@ class SettingsForm extends ConfigFormBase {
       '#collapsible' => FALSE,
     ];
 
-    $display_articles_by_author = $config->get('display_articles_by_author');
-
     $form['article_author']['display_articles_by_author'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Display a list of articles authored by a person on their person page'),
       '#description' => $this->t('If checked, articles authored by a person are listed on their page.'),
-      '#default_value' => $display_articles_by_author ?: FALSE,
+      '#default_value' => $config->get('display_articles_by_author') ?: FALSE,
     ];
 
     // Visual indicators aren't available on SiteNow v2.
@@ -307,17 +308,23 @@ class SettingsForm extends ConfigFormBase {
         '#title' => 'Teaser settings',
         '#collapsible' => FALSE,
       ];
-      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+
       $form['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
-        '#default_value' => $show_teaser_link_indicator ?: FALSE,
+        '#default_value' => $config->get('show_teaser_link_indicator') ?: FALSE,
       ];
     }
+
     $form['view_page'] = [
       '#type' => 'fieldset',
       '#title' => 'Article listing page settings',
       '#collapsible' => FALSE,
+    ];
+
+    $form['view_page']['help'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('An optional listing page for articles is available. Customize settings for the article listing page below.'),
     ];
 
     $form['view_page']['sitenow_articles_status'] = [
@@ -381,6 +388,11 @@ class SettingsForm extends ConfigFormBase {
 
     if ($path_exists) {
       $form_state->setErrorByName('path', $this->t('This path is already in-use.'));
+    }
+
+    // Unset custom related content title if checkbox is unchecked.
+    if (!$form_state->getValue('custom_related_title')) {
+      $form_state->setValue('related_title', '');
     }
 
     parent::validateForm($form, $form_state);
