@@ -645,7 +645,7 @@ class BannerBlockFormHandler {
         $form['gradient_options']['field_styles_gradient_midpoint']['#weight'] = 4;
         $form['gradient_options']['field_styles_gradient_midpoint']['#states'] = [
           'visible' => [
-            ':input[name="adjust_gradient_midpoint"]' => ['checked' => TRUE],
+            ':input[name="gradient_options[adjust_gradient_midpoint]"]' => ['checked' => TRUE],
             ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
           ],
         ];

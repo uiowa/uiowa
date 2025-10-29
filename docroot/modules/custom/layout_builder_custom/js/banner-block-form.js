@@ -35,7 +35,7 @@
         const backgroundTypeInputs = context.querySelectorAll('input[name="settings[block_form][background_type]"]');
         const mediaOverlay = context.querySelector('select[name="layout_builder_style_media_overlay_duplicate"]');
         const overlayCheckboxes = context.querySelectorAll('input[name^="layout_builder_style_banner_gradient"]');
-        const adjustGradientCheckbox = context.querySelector('input[name="adjust_gradient_midpoint"]');
+        const adjustGradientCheckbox = context.querySelector('input[name="gradient_options[adjust_gradient_midpoint]"]');
         const gradientMidpointRadios = context.querySelectorAll('input[name="settings[block_form][field_styles_gradient_midpoint]"]');
         const backgroundStyleSelect = context.querySelector('select[name="layout_builder_style_background"]');
 
