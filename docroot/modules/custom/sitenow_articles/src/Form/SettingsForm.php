@@ -311,7 +311,7 @@ class SettingsForm extends ConfigFormBase {
 
       $form['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
+        '#title' => $this->t('Display arrows linking to articles from lists/teasers.'),
         '#default_value' => $config->get('show_teaser_link_indicator') ?: FALSE,
       ];
     }
