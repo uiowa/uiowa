@@ -34,9 +34,6 @@ class BannerBlockFormHandler {
    *   The form ID.
    */
   public static function formAlter(array &$form, FormStateInterface $form_state, $form_id) {
-    // Add adjust gradient checkbox.
-    self::addGradientMidpointCheckbox($form, $form_state);
-
     // Attach library.
     $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
 
@@ -107,6 +104,9 @@ class BannerBlockFormHandler {
       ],
       '#suffix' => '</div>',
     ];
+
+    // Add adjust gradient checkbox.
+    self::addGradientMidpointCheckbox($form, $form_state);
 
     // Excerpt group.
     $form['excerpt_group'] = [
@@ -188,7 +188,6 @@ class BannerBlockFormHandler {
     // Duplicate gradient fields into gradient options container.
     self::createDuplicateField($form, 'layout_builder_style_media_overlay', 'gradient_options');
     self::createDuplicateField($form, 'layout_builder_style_banner_gradient', 'gradient_options');
-    self::createDuplicateField($form, 'layout_builder_style_adjust_gradient_midpoint', 'gradient_options');
     self::createDuplicateField($form, 'layout_builder_style_banner_gradient_midpoint', 'gradient_options');
 
     // Duplicate layout fields into layout settings container.
@@ -217,15 +216,6 @@ class BannerBlockFormHandler {
         ':input[name="settings[block_form][background_type]"]' => ['value' => 'media'],
       ],
     ];
-
-    // Adjust gradient midpoint checkbox visible when gradient is selected.
-    if (isset($form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate'])) {
-      $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint_duplicate']['#states'] = [
-        'visible' => [
-          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
-        ],
-      ];
-    }
 
     // Background style field visible when background type is color-pattern.
     if (isset($form['layout_builder_style_background'])) {
@@ -407,7 +397,6 @@ class BannerBlockFormHandler {
       'layout_builder_style_default',
       'layout_builder_style_media_overlay',
       'layout_builder_style_banner_gradient',
-      'layout_builder_style_adjust_gradient_midpoint',
       'layout_builder_style_headline_type',
       'layout_builder_style_headline_size',
       'layout_builder_style_button_style',
@@ -572,6 +561,11 @@ class BannerBlockFormHandler {
       '#title' => t('Customize gradient midpoint'),
       '#default_value' => $default_value,
       '#weight' => 94,
+      '#states' => [
+        'visible' => [
+          ':input[name="layout_builder_style_media_overlay_duplicate"]' => ['!value' => ''],
+        ],
+      ],
     ];
 
   }
