@@ -7888,3 +7888,9 @@ $sites['siteslibrarylessons.uiowa.ddev.site'] = 'librarylessons.sites.uiowa.edu'
 $sites['siteslibrarylessons.dev.drupal.uiowa.edu'] = 'librarylessons.sites.uiowa.edu';
 $sites['siteslibrarylessons.stage.drupal.uiowa.edu'] = 'librarylessons.sites.uiowa.edu';
 $sites['siteslibrarylessons.prod.drupal.uiowa.edu'] = 'librarylessons.sites.uiowa.edu';
+
+// Directory aliases for uimobileclinic.org.uiowa.edu.
+$sites['orguimobileclinic.uiowa.ddev.site'] = 'uimobileclinic.org.uiowa.edu';
+$sites['orguimobileclinic.dev.drupal.uiowa.edu'] = 'uimobileclinic.org.uiowa.edu';
+$sites['orguimobileclinic.stage.drupal.uiowa.edu'] = 'uimobileclinic.org.uiowa.edu';
+$sites['orguimobileclinic.prod.drupal.uiowa.edu'] = 'uimobileclinic.org.uiowa.edu';
