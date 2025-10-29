@@ -3,7 +3,6 @@
 namespace Drupal\layout_builder_custom;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 
 /**
@@ -57,18 +56,21 @@ class BannerBlockFormHandler {
     // Hide admin label in favor of custom heading.
     unset($form['settings']['admin_label']);
 
+    // Classes we want to apply to all containers.
+    $container_classes = [
+      'off-canvas-background',
+      'padding--inline--md',
+      'padding--block-start--md',
+      'padding--block-end--md',
+      'margin--block-start--md',
+    ];
+
     // Headline group.
     $form['headline_group'] = [
       '#type' => 'container',
       '#weight' => -10,
       '#attributes' => [
-        'class' => [
-          'off-canvas-background',
-          'padding--inline--md',
-          'padding--block-start--md',
-          'padding--block-end--md',
-          'margin--block-start--md',
-        ],
+        'class' => $container_classes,
       ],
     ];
 
@@ -111,13 +113,7 @@ class BannerBlockFormHandler {
       '#type' => 'container',
       '#weight' => 61,
       '#attributes' => [
-        'class' => [
-          'off-canvas-background',
-          'padding--inline--md',
-          'padding--block-start--md',
-          'padding--block-end--md',
-          'margin--block-start--md',
-        ],
+        'class' => $container_classes,
       ],
     ];
 
@@ -133,13 +129,7 @@ class BannerBlockFormHandler {
       '#type' => 'container',
       '#weight' => 70,
       '#attributes' => [
-        'class' => [
-          'off-canvas-background',
-          'padding--inline--md',
-          'padding--block-start--md',
-          'padding--block-end--md',
-          'margin--block-start--md',
-        ],
+        'class' => $container_classes,
       ],
     ];
 
@@ -164,7 +154,7 @@ class BannerBlockFormHandler {
     // Layout settings details element.
     $form['layout_settings'] = [
       '#type' => 'details',
-      '#title' => new TranslatableMarkup('<span class="element-invisible">Layout</span> Options'),
+      '#title' => t('<span class="element-invisible">Layout</span> Options'),
       '#weight' => 97,
       '#attributes' => ['class' => ['off-canvas-form-group__collapsible']],
       '#open' => FALSE,
@@ -184,7 +174,7 @@ class BannerBlockFormHandler {
     // Style options details element.
     $form['style_options'] = [
       '#type' => 'details',
-      '#title' => new TranslatableMarkup('<span class="element-invisible">Style</span> Options'),
+      '#title' => t('<span class="element-invisible">Style</span> Options'),
       '#attributes' => ['class' => ['off-canvas-form-group__collapsible']],
       '#weight' => 102,
       '#open' => FALSE,
