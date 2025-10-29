@@ -152,3 +152,22 @@ function classrooms_core_update_9003(&$sandbox) {
   }
 
 }
+/**/
+function classrooms_core_update_9004() {
+  $database = \Drupal::database();
+  $old = 'https://teach.uiowa.edu/basic-university-classroom-guide';
+  $new = 'https://teach.its.uiowa.edu/learning-spaces-technology/classroom-guides';
+
+  $tables = [
+    'node__field_room_guide',
+    'node_revision__field_room_guide',
+  ];
+
+  foreach ($tables as $table) {
+    $database->update($table)
+      ->fields(['field_room_guide_uri' => $new])
+      ->condition('field_room_guide_uri', $old)
+      ->execute();
+  }
+  \Drupal::service('cache.render')->invalidateAll();
+}
