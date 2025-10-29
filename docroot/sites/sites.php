@@ -7894,3 +7894,9 @@ $sites['orguimobileclinic.uiowa.ddev.site'] = 'uimobileclinic.org.uiowa.edu';
 $sites['orguimobileclinic.dev.drupal.uiowa.edu'] = 'uimobileclinic.org.uiowa.edu';
 $sites['orguimobileclinic.stage.drupal.uiowa.edu'] = 'uimobileclinic.org.uiowa.edu';
 $sites['orguimobileclinic.prod.drupal.uiowa.edu'] = 'uimobileclinic.org.uiowa.edu';
+
+// Directory aliases for kidacki.lab.uiowa.edu.
+$sites['labkidacki.uiowa.ddev.site'] = 'kidacki.lab.uiowa.edu';
+$sites['labkidacki.dev.drupal.uiowa.edu'] = 'kidacki.lab.uiowa.edu';
+$sites['labkidacki.stage.drupal.uiowa.edu'] = 'kidacki.lab.uiowa.edu';
+$sites['labkidacki.prod.drupal.uiowa.edu'] = 'kidacki.lab.uiowa.edu';
