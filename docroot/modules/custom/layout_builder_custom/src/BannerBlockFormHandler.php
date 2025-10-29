@@ -556,7 +556,7 @@ class BannerBlockFormHandler {
       }
     }
 
-    $form['layout_builder_style_adjust_gradient_midpoint'] = [
+    $form['gradient_options']['layout_builder_style_adjust_gradient_midpoint'] = [
       '#type' => 'checkbox',
       '#title' => t('Customize gradient midpoint'),
       '#default_value' => $default_value,
