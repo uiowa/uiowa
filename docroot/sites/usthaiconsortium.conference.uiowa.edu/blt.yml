@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferenceusthaiconsortium.uiowa.ddev.site
+    protocol: https
+  machine_name: conferenceusthaiconsortium
+  human_name: usthaiconsortium.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferenceusthaiconsortium.prod
+drupal:
+  db:
+    database: usthaiconsortium_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferenceusthaiconsortium.prod.drupal.uiowa.edu'
+  requester: sandersk
+  site-name: '2026 US/Thai Consortium '
