@@ -427,7 +427,7 @@ class BannerBlockFormHandler {
     }
 
     // Gradient midpoint checkbox.
-    $adjust_gradient = $form_state->getValue('adjust_gradient_midpoint');
+    $adjust_gradient = $form_state->getValue(['gradient_options', 'adjust_gradient_midpoint']);
 
     // Save checkbox state as a third-party setting.
     if (!is_null($component)) {
