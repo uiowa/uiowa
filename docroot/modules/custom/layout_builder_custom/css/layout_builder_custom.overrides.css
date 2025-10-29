@@ -144,7 +144,6 @@
  * BEM Hierarchy:
  *
  * off-canvas-form-group (Block)
- * ├── off-canvas-form-group__container (Element - main grouping wrapper)
  * └── off-canvas-form-group__collapsible (Element - details/accordion)
  *     └── off-canvas-form-group__collapsible--overlay (Modifier - gradient/overlay variant)
  */
@@ -160,31 +159,29 @@
   margin-block-end: 0;
 }
 
-/* Block form group container - creates visual grouping */
-#drupal-off-canvas-wrapper .off-canvas-form-group__container {
-  padding-inline: 1.5rem;
-  padding-block-start: 1rem;
-  padding-block-end: 1rem;
-  margin-block-start: 2rem;
+/* Custom utility classes for use in the off-canvas form */
+#drupal-off-canvas-wrapper .off-canvas-background {
   background-color: var(--off-canvas-title-background-color);
 }
 
-#drupal-off-canvas-wrapper .off-canvas-form-group__container + input[type="submit"]  {
-  margin-block: 2rem;
+#drupal-off-canvas-wrapper .padding--inline--md {
+  padding-inline: var(--space-sm-width-gutter);
 }
 
-#drupal-off-canvas-wrapper .off-canvas-form-group__container + [id^="unique-id-wrapper"] {
-  margin-block-start: 2rem;
+#drupal-off-canvas-wrapper .padding--block-start--md {
+  padding-block-start: var(--space-sm-width-gutter);
 }
 
-/* Remove bottom padding for containers that have collapsible details inside */
-#drupal-off-canvas-wrapper .off-canvas-form-group__container:has(.off-canvas-form-group__collapsible) {
-  padding-block-end: 0;
+#drupal-off-canvas-wrapper .padding--block-end--md {
+  padding-block-end: var(--space-sm-width-gutter);
 }
 
-/* Add padding for the link field */
-#drupal-off-canvas-wrapper .off-canvas-form-group__container .field--name-field-uiowa-banner-link {
-  padding-inline: 1rem;
+#drupal-off-canvas-wrapper .margin--block-start--md {
+  margin-block-start: var(--space-md-width-gutter);
+}
+
+#drupal-off-canvas-wrapper .margin--block-end--md {
+  margin-block-end: var(--space-md-width-gutter);
 }
 
 /* Collapsible details element - standard styling */

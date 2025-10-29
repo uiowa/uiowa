@@ -61,7 +61,15 @@ class BannerBlockFormHandler {
     $form['headline_group'] = [
       '#type' => 'container',
       '#weight' => -10,
-      '#attributes' => ['class' => ['off-canvas-form-group__container']],
+      '#attributes' => [
+        'class' => [
+          'off-canvas-background',
+          'padding--inline--md',
+          'padding--block-start--md',
+          'padding--block-end--md',
+          'margin--block-start--md',
+        ],
+      ],
     ];
 
     $form['headline_group']['headline_group_heading'] = [
@@ -79,7 +87,7 @@ class BannerBlockFormHandler {
         '#value' => t('Background'),
         '#weight' => 0,
         '#attributes' => ['class' => ['heading-a']],
-        '#prefix' => '<div class="off-canvas-form-group__container">',
+        '#prefix' => '<div class="off-canvas-background padding--inline--md padding--block-start--md padding--block-end--md margin--block-start--md">',
       ];
     }
 
@@ -102,7 +110,15 @@ class BannerBlockFormHandler {
     $form['excerpt_group'] = [
       '#type' => 'container',
       '#weight' => 61,
-      '#attributes' => ['class' => ['off-canvas-form-group__container']],
+      '#attributes' => [
+        'class' => [
+          'off-canvas-background',
+          'padding--inline--md',
+          'padding--block-start--md',
+          'padding--block-end--md',
+          'margin--block-start--md',
+        ],
+      ],
     ];
 
     $form['excerpt_group']['excerpt_group_heading'] = [
@@ -116,7 +132,15 @@ class BannerBlockFormHandler {
     $form['button_group'] = [
       '#type' => 'container',
       '#weight' => 70,
-      '#attributes' => ['class' => ['off-canvas-form-group__container']],
+      '#attributes' => [
+        'class' => [
+          'off-canvas-background',
+          'padding--inline--md',
+          'padding--block-start--md',
+          'padding--block-end--md',
+          'margin--block-start--md',
+        ],
+      ],
     ];
 
     $form['button_group']['button_group_heading'] = [
@@ -134,7 +158,7 @@ class BannerBlockFormHandler {
       '#value' => t('Layout'),
       '#weight' => 94,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="off-canvas-form-group__container">',
+      '#prefix' => '<div class="off-canvas-background padding--inline--md padding--block-start--md margin--block-start--md">',
     ];
 
     // Layout settings details element.
@@ -154,7 +178,7 @@ class BannerBlockFormHandler {
       '#value' => t('Styles'),
       '#weight' => 102,
       '#attributes' => ['class' => ['heading-a']],
-      '#prefix' => '<div class="off-canvas-form-group__container">',
+      '#prefix' => '<div class="off-canvas-background padding--inline--md padding--block-start--md margin--block-start--md margin--block-end--md">',
     ];
 
     // Style options details element.
@@ -617,6 +641,7 @@ class BannerBlockFormHandler {
     if (isset($element['field_uiowa_banner_link'])) {
       $element['field_uiowa_banner_link']['#group'] = 'button_group';
       $element['field_uiowa_banner_link']['#weight'] = 70;
+      $element['field_uiowa_banner_link']['#attributes']['class'][] = 'padding--inline--md';
     }
 
     /*
