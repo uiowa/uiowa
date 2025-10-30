@@ -152,7 +152,10 @@ function classrooms_core_update_9003(&$sandbox) {
   }
 
 }
-/**/
+
+/**
+ * Update old room guide link to new destination.
+ */
 function classrooms_core_update_9004() {
   $database = \Drupal::database();
   $old = 'https://teach.uiowa.edu/basic-university-classroom-guide';
