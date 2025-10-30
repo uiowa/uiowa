@@ -164,6 +164,10 @@ class AcademicDatesForm extends FormBase {
             '#type' => 'card',
             '#attributes' => $attributes,
             '#content' => [$item],
+            '#title' => $this->t('@start@end', [
+              '@start' => date('F j, Y', $start),
+              '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
+            ]),
             '#headline' => [
               'headline_level' => $child_heading_size,
               'headline_text' => $this->t('@start@end', [
