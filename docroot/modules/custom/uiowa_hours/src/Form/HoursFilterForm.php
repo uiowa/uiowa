@@ -196,10 +196,6 @@ class HoursFilterForm extends FormBase {
       $render['closed'] = [
         '#type' => 'card',
         '#attributes' => $attributes,
-        '#title' => $this->t('@start@end', [
-          '@start' => date('F j, Y', $start),
-          '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
-        ]),
         '#headline' => [
           'headline_text' => $this->t('@start@end', [
             '@start' => date('F j, Y', $start),
@@ -231,10 +227,6 @@ class HoursFilterForm extends FormBase {
         $render['hours'][$key] = [
           '#type' => 'card',
           '#attributes' => $attributes,
-          '#title' => $this->t('@start@end', [
-            '@start' => date('F j, Y', $start),
-            '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
-          ]),
           '#headline' => [
             'headline_text' => $this->t('@start@end', [
               '@start' => date('F j, Y', $start),
