@@ -2591,12 +2591,6 @@ $sites['sitesnsfurmsts.dev.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 $sites['sitesnsfurmsts.stage.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 $sites['sitesnsfurmsts.prod.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 
-// Directory aliases for multicultural.uiowa.edu.
-$sites['multicultural.uiowa.ddev.site'] = 'multicultural.uiowa.edu';
-$sites['multicultural.dev.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
-$sites['multicultural.stage.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
-$sites['multicultural.prod.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
-
 // Directory aliases for gpsg.uiowa.edu.
 $sites['gpsg.uiowa.ddev.site'] = 'gpsg.uiowa.edu';
 $sites['gpsg.dev.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
