@@ -295,14 +295,11 @@ class BannerBlockFormHandler {
 
     $component = self::getFormComponent($form_state);
     if (!is_null($component)) {
-      $config = $component->toArray();
-      $styles = $config['additional']['layout_builder_styles_style'] ?? [];
-      $extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
 
-      foreach ($style_fields as $style_type => $field_config) {
+      foreach ($style_fields as $field_config) {
         // Get field reference.
         $field_path = explode('/', $field_config['field_path']);
-        $field_reference = NULL;
+        $field_reference = &$form;
         foreach ($field_path as $path_part) {
           if (isset($field_reference[$path_part])) {
             $field_reference = &$field_reference[$path_part];
@@ -317,20 +314,6 @@ class BannerBlockFormHandler {
           // Set weight if specified.
           if ($field_config['weight'] !== NULL) {
             $field_reference['#weight'] = $field_config['weight'];
-          }
-
-          // Check if style is already set.
-          $has_style = FALSE;
-          foreach ($styles as $style) {
-            if (str_starts_with($style, "{$style_type}_")) {
-              $has_style = TRUE;
-              break;
-            }
-          }
-
-          // Set default if no style is set.
-          if (!$has_style && isset($extra_settings[$style_type]['default'])) {
-            $field_reference['#default_value'] = $extra_settings[$style_type]['default'];
           }
         }
       }
