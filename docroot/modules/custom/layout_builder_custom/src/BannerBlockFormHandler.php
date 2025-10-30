@@ -302,7 +302,7 @@ class BannerBlockFormHandler {
       foreach ($style_fields as $style_type => $field_config) {
         // Get field reference.
         $field_path = explode('/', $field_config['field_path']);
-        $field_reference = &$form;
+        $field_reference = NULL;
         foreach ($field_path as $path_part) {
           if (isset($field_reference[$path_part])) {
             $field_reference = &$field_reference[$path_part];
