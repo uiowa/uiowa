@@ -262,6 +262,15 @@ class BannerBlockFormHandler {
       $form['layout_builder_style_button_font']['#weight'] = 72;
     }
 
+    // Set weights for layout fields.
+    if (isset($form['layout_builder_style_horizontal_alignment'])) {
+      $form['layout_builder_style_horizontal_alignment']['#weight'] = 95;
+    }
+
+    if (isset($form['layout_builder_style_vertical_alignment'])) {
+      $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
+    }
+
     // Configure gradient option duplicate fields.
     if (isset($form['gradient_options']['layout_builder_style_media_overlay_duplicate'])) {
       $form['gradient_options']['layout_builder_style_media_overlay_duplicate']['#weight'] = 1;
@@ -271,52 +280,6 @@ class BannerBlockFormHandler {
     if (isset($form['gradient_options']['layout_builder_style_banner_gradient_duplicate'])) {
       $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#weight'] = 2;
       $form['gradient_options']['layout_builder_style_banner_gradient_duplicate']['#title_display'] = 'invisible';
-    }
-
-    // Handle alignment and style field radio defaults.
-    $style_fields = [
-      'horizontal_alignment' => [
-        'weight' => 95,
-        'field_path' => 'layout_builder_style_horizontal_alignment',
-      ],
-      'vertical_alignment' => [
-        'weight' => 96,
-        'field_path' => 'layout_builder_style_vertical_alignment',
-      ],
-      'headline_type' => [
-        'weight' => NULL,
-        'field_path' => 'headline_group/layout_builder_style_headline_type_duplicate',
-      ],
-      'button_style' => [
-        'weight' => NULL,
-        'field_path' => 'button_group/layout_builder_style_button_style_duplicate',
-      ],
-    ];
-
-    $component = self::getFormComponent($form_state);
-    if (!is_null($component)) {
-
-      foreach ($style_fields as $field_config) {
-        // Get field reference.
-        $field_path = explode('/', $field_config['field_path']);
-        $field_reference = &$form;
-        foreach ($field_path as $path_part) {
-          if (isset($field_reference[$path_part])) {
-            $field_reference = &$field_reference[$path_part];
-          }
-          else {
-            $field_reference = NULL;
-            break;
-          }
-        }
-
-        if ($field_reference !== NULL) {
-          // Set weight if specified.
-          if ($field_config['weight'] !== NULL) {
-            $field_reference['#weight'] = $field_config['weight'];
-          }
-        }
-      }
     }
 
     // Move unique_id to the bottom.
@@ -339,16 +302,16 @@ class BannerBlockFormHandler {
   public static function validateForm(array &$form, FormStateInterface $form_state) {
     // Sync duplicated fields to original fields.
     $fields_to_sync = [
-      'layout_builder_style_container',
-      'layout_builder_style_banner_height',
-      'layout_builder_style_margin',
-      'layout_builder_style_default',
-      'layout_builder_style_media_overlay',
       'layout_builder_style_banner_gradient',
-      'layout_builder_style_headline_type',
-      'layout_builder_style_headline_size',
+      'layout_builder_style_banner_height',
       'layout_builder_style_button_style',
       'layout_builder_style_button_font',
+      'layout_builder_style_container',
+      'layout_builder_style_default',
+      'layout_builder_style_headline_type',
+      'layout_builder_style_headline_size',
+      'layout_builder_style_margin',
+      'layout_builder_style_media_overlay',
     ];
 
     self::syncDuplicateFields($form_state, $fields_to_sync);
