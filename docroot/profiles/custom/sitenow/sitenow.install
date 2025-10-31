@@ -4195,9 +4195,128 @@ function sitenow_update_10025() {
 }
 
 /**
- * Set background_type field for existing banner blocks with color/pattern backgrounds.
+ * Convert stat block excerpt from long text to string.
  */
 function sitenow_update_10026() {
+  $entity_type = 'block_content';
+  $bundle = 'uiowa_statistic';
+  $field_name = 'field_uiowa_statistic_excerpt';
+  $value_col = $field_name . '_value';
+
+  // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage($entity_type)
+    ->getTableMapping();
+  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+  if (!$field_storage) {
+    return;
+  }
+  $old_table = $table_mapping->getDedicatedDataTableName($field_storage);
+  $old_revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage);
+
+  $database = \Drupal::database();
+
+  // Fetch data currently stored in the field and save for later.
+  $rows = $database->schema()->tableExists($old_table)
+    ? $database->select($old_table, 't')->fields('t')->execute()->fetchAll()
+    : [];
+  $revision_rows = $database->schema()->tableExists($old_revision_table)
+    ? $database->select($old_revision_table, 'r')->fields('r')->execute()->fetchAll()
+    : [];
+
+  $field_config = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+  $old_field = $field_config->toArray();
+
+  $weights = [];
+
+  // Get the view display weights so we can re-set them later.
+  $view_id = "$entity_type.$bundle.default";
+  $view_display = \Drupal::entityTypeManager()->getStorage('entity_view_display')->load($view_id);
+  if ($view_display) {
+    $comp = $view_display->getComponent($field_name);
+    if ($comp) {
+      $weights['entity_view_display'][$view_id] = $comp['weight'];
+    }
+  }
+
+  // Get the form display weights so we can re-set them later.
+  $form_id = "$entity_type.$bundle.default";
+  $form_display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load($form_id);
+  if ($form_display) {
+    $comp = $form_display->getComponent($field_name);
+    if ($comp) {
+      $weights['entity_form_display'][$form_id] = $comp['weight'];
+    }
+  }
+
+  // Store the old field settings and update to text_long.
+  $new_field_storage = $field_storage->toArray();
+  $new_field_storage['type'] = 'string';
+  $new_field_storage['settings']['max_length'] = 255;
+  $new_field_storage['settings']['is_ascii'] = FALSE;
+
+  // Remove the old field.
+  $field_storage->delete();
+  // Purge in order for new field to be created after deleting the old.
+  field_purge_batch(100);
+
+  // Save our new, updated field storage.
+  $new_storage = FieldStorageConfig::create($new_field_storage);
+  $new_storage->save();
+
+  // Create our new field to match the field storage.
+  $old_field['field_type'] = 'string';
+  $old_field['settings'] = [];
+  $new_field = FieldConfig::create($old_field);
+  $new_field->save();
+
+  // After creating the new storage, get the new table names to insert into.
+  $new_table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage($entity_type)
+    ->getTableMapping();
+
+  $new_table = $new_table_mapping->getDedicatedDataTableName($new_storage);
+  $new_revision_table = $new_table_mapping->getDedicatedRevisionTableName($new_storage);
+
+  // Replace into the new field data we saved from the old field.
+  if (!empty($rows) && $database->schema()->tableExists($new_table)) {
+    foreach ($rows as $row) {
+      $row = (array) $row;
+      // Trim the value to 255 chars.
+      if (isset($row[$value_col])) {
+        $row[$value_col] = mb_substr($row[$value_col], 0, 255);
+      }
+      // Insert into the new data table.
+      $database->insert($new_table)->fields($row)->execute();
+    }
+  }
+  // Reinsert revision rows.
+  if (!empty($revision_rows) && $database->schema()->tableExists($new_revision_table)) {
+    foreach ($revision_rows as $row) {
+      $row = (array) $row;
+      if (isset($row[$value_col])) {
+        $row[$value_col] = mb_substr($row[$value_col], 0, 255);
+      }
+      $database->insert($new_revision_table)->fields($row)->execute();
+    }
+  }
+
+  // Restore weights for view and form displays.
+  foreach ($weights as $display_type => $items) {
+    foreach ($items as $id => $weight) {
+      $display = \Drupal::entityTypeManager()->getStorage($display_type)->load($id);
+      if ($display && is_numeric($weight)) {
+        $display->setComponent($field_name, ['weight' => $weight])->save();
+      }
+    }
+  }
+}
+
+/**
+ * Set background_type field for existing banner blocks with color/pattern backgrounds.
+ */
+function sitenow_update_10027() {
   _update_all_blocks_by_plugin_id('inline_block:uiowa_banner', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     $configuration = $component->get('configuration');
