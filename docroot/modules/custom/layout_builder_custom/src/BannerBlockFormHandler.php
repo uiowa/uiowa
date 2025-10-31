@@ -80,13 +80,17 @@ class BannerBlockFormHandler {
       '#attributes' => ['class' => ['heading-a']],
     ];
 
-    // Set weights for headline fields.
+    // Set weights and clean up defaults for headline fields.
     if (isset($form['layout_builder_style_headline_type'])) {
-      $form['layout_builder_style_headline_type']['#weight'] = 60;
+      $form['layout_builder_style_headline_type']['#weight'] = 62;
+      // Convert default value to string from array. This seems to be what
+      // radios expect.
+      // @todo Revisit this the next time we touch a block form.
+      $form['layout_builder_style_headline_type']['#default_value'] = array_shift($form['layout_builder_style_headline_type']['#default_value']);
     }
 
     if (isset($form['layout_builder_style_headline_size'])) {
-      $form['layout_builder_style_headline_size']['#weight'] = 60;
+      $form['layout_builder_style_headline_size']['#weight'] = 63;
     }
 
     // Duplicate headline fields into headline group.
@@ -474,12 +478,12 @@ class BannerBlockFormHandler {
     // Assign block fields to groups.
     if (isset($element['field_uiowa_banner_pre_title'])) {
       $element['field_uiowa_banner_pre_title']['#group'] = 'headline_group';
-      $element['field_uiowa_banner_pre_title']['#weight'] = 61;
+      $element['field_uiowa_banner_pre_title']['#weight'] = 60;
     }
 
     if (isset($element['field_uiowa_banner_title'])) {
       $element['field_uiowa_banner_title']['#group'] = 'headline_group';
-      $element['field_uiowa_banner_title']['#weight'] = 62;
+      $element['field_uiowa_banner_title']['#weight'] = 61;
       // Update the label for the Heading sizes to remove Size label.
       if (isset($element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'])) {
         $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] = t('Level');
