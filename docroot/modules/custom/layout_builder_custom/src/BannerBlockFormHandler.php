@@ -306,7 +306,7 @@ class BannerBlockFormHandler {
    *   The form state.
    */
   public static function validateForm(array &$form, FormStateInterface $form_state) {
-    // Sync duplicated fields to original fields.
+    // Sync duplicated fields back to original fields.
     $fields_to_sync = [
       'layout_builder_style_banner_gradient',
       'layout_builder_style_banner_height',
@@ -322,6 +322,7 @@ class BannerBlockFormHandler {
 
     self::syncDuplicateFields($form_state, $fields_to_sync);
 
+    // Validation for links.
     $link_set = FALSE;
     $link_text = FALSE;
 
@@ -518,6 +519,8 @@ class BannerBlockFormHandler {
     }
 
     // Add radio buttons for background type selection.
+    // This is added to block settings form for convenience of positioning it
+    // on the form.
     $element['background_type'] = [
       '#type' => 'radios',
       '#title' => t('Background type'),
@@ -686,8 +689,6 @@ class BannerBlockFormHandler {
   /**
    * Adds the gradient midpoint checkbox to the form.
    *
-   * @param array $form
-   *   The form array.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    */
@@ -714,9 +715,13 @@ class BannerBlockFormHandler {
   }
 
   /**
+   * Gets the block component from the the form state.
+   *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    *
    * @return \Drupal\layout_builder\SectionComponent|null
+   *   The block component or NULL.
    */
   protected static function getFormComponent(FormStateInterface $form_state) {
     // Initialize component to NULL.
