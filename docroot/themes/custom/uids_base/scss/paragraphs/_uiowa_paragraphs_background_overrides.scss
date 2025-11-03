@@ -766,18 +766,18 @@
       .pager__item {
         &.is-active {
           &>a {
-            background-color: color.scale(variables.$light, variables.$lightness: -20%);
+            background-color: color-mix(in srgb, variables.$light 80%, black);
             color: variables.$secondary;
 
             &:hover {
-              background-color: color.scale(variables.$light, variables.$lightness: -40%);
+              background-color: color-mix(in srgb, variables.$light 60%, black);
               cursor: pointer;
             }
           }
         }
 
         &>a:hover {
-          background-color: color.scale(variables.$light, variables.$lightness: -40%);
+          background-color: color-mix(in srgb, variables.$light 60%, black);
         }
       }
     }

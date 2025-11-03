@@ -1,5 +1,4 @@
 // Core imports and variables
-@use 'sass:color';
 @use '../../../uids/scss/abstracts/_variables.scss';
 @use '../../../uids/scss/abstracts/_utilities.scss';
 
@@ -831,7 +830,7 @@
       &:hover,
       &[aria-expanded="true"] {
         &:after {
-          background: color.scale(variables.$light, variables.$lightness: -25%);
+          background: color-mix(in srgb, variables.$light 75%, black);
           [class*="bg--black"] & {
             color: variables.$secondary;
           }
@@ -858,7 +857,7 @@
         width: 25px;
         height: 25px;
         border-radius: 50%;
-        background: color.scale(variables.$light, variables.$lightness: -8%);
+        background: color-mix(in srgb, variables.$light 92%, black);
       }
     }
 
