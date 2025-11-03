@@ -743,6 +743,33 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       }
       break;
 
+    case 'slide_video':
+      if (isset($variables['content']['field_slide_video'])) {
+
+        // Get the sign node from the current route.
+        $sign_node = \Drupal::routeMatch()->getParameter('node');
+
+        if ($sign_node && $sign_node->bundle() == 'sign') {
+          $variables['#cache']['tags'][] = 'node:' . $sign_node->id();
+
+          // Check if we have a sign node with vertical orientation.
+          if (sitenow_signage_get_orientation($sign_node) === 'vertical') {
+
+            $view_builder = \Drupal::entityTypeManager()->getViewBuilder('media');
+
+            foreach ($variables['content']['field_slide_video'] as $delta => &$item) {
+              if (is_numeric($delta)) {
+                $media_entity = $paragraph->get('field_slide_video')->get($delta)->entity;
+                if ($media_entity) {
+                  $item = $view_builder->view($media_entity, 'vertical');
+                }
+              }
+            }
+          }
+        }
+      }
+      break;
+
     case 'slide_events':
       $filters = [
         'audiences' => sitenow_signage_value_query_string($paragraph?->field_slide_events_audiences?->getValue()),
