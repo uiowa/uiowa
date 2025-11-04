@@ -43,13 +43,6 @@ default:
       alias: /about
       langcode: en
       pathauto: 1
-  rabbit_hole__settings:
-    -
-      action: bundle_default
-      settings:
-        redirect: null
-        redirect_code: 301
-        redirect_fallback_action: bundle_default
   layout_builder__layout:
     -
       section:
@@ -221,7 +214,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: '20'
-              block_revision_id: '36'
+              block_revision_id: '20'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_text_area
@@ -256,7 +249,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: '11'
-              block_revision_id: '37'
+              block_revision_id: '11'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -286,7 +279,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: '7'
-              block_revision_id: '38'
+              block_revision_id: '7'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -316,7 +309,7 @@ default:
               provider: layout_builder
               view_mode: full
               block_id: '8'
-              block_revision_id: '39'
+              block_revision_id: '8'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -339,3 +332,10 @@ default:
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+  rabbit_hole__settings:
+    -
+      action: bundle_default
+      settings:
+        redirect: null
+        redirect_code: 301
+        redirect_fallback_action: bundle_default
