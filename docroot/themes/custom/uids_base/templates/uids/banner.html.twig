@@ -39,8 +39,7 @@
   'headline--large',
 ] %}
 
-<div{{ attributes.addClass(banner_classes) }}>
-
+<div{{ attributes.addClass(banner_classes) }}{% if layout_builder_style_media_overlay is not empty and field_styles_gradient_midpoint is not empty %} style="--banner-overlay-gradient-midpoint: {{ field_styles_gradient_midpoint }};"{% endif %}>
   {% block banner_image %}
     {% if banner_image %}
       {{ banner_image }}
