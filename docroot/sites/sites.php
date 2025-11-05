@@ -2591,12 +2591,6 @@ $sites['sitesnsfurmsts.dev.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 $sites['sitesnsfurmsts.stage.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 $sites['sitesnsfurmsts.prod.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 
-// Directory aliases for multicultural.uiowa.edu.
-$sites['multicultural.uiowa.ddev.site'] = 'multicultural.uiowa.edu';
-$sites['multicultural.dev.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
-$sites['multicultural.stage.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
-$sites['multicultural.prod.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
-
 // Directory aliases for gpsg.uiowa.edu.
 $sites['gpsg.uiowa.ddev.site'] = 'gpsg.uiowa.edu';
 $sites['gpsg.dev.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
@@ -7133,12 +7127,6 @@ $sites['icts.dev.drupal.uiowa.edu'] = 'icts.uiowa.edu';
 $sites['icts.stage.drupal.uiowa.edu'] = 'icts.uiowa.edu';
 $sites['icts.prod.drupal.uiowa.edu'] = 'icts.uiowa.edu';
 
-// Directory aliases for hancher.uiowa.edu.
-$sites['hancher.uiowa.ddev.site'] = 'hancher.uiowa.edu';
-$sites['hancher.dev.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
-$sites['hancher.stage.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
-$sites['hancher.prod.drupal.uiowa.edu'] = 'hancher.uiowa.edu';
-
 // Directory aliases for mensicehockeyclub.org.uiowa.edu.
 $sites['orgmensicehockeyclub.uiowa.ddev.site'] = 'mensicehockeyclub.org.uiowa.edu';
 $sites['orgmensicehockeyclub.dev.drupal.uiowa.edu'] = 'mensicehockeyclub.org.uiowa.edu';
@@ -7900,3 +7888,9 @@ $sites['labkidacki.uiowa.ddev.site'] = 'kidacki.lab.uiowa.edu';
 $sites['labkidacki.dev.drupal.uiowa.edu'] = 'kidacki.lab.uiowa.edu';
 $sites['labkidacki.stage.drupal.uiowa.edu'] = 'kidacki.lab.uiowa.edu';
 $sites['labkidacki.prod.drupal.uiowa.edu'] = 'kidacki.lab.uiowa.edu';
+
+// Directory aliases for sinapse.lab.uiowa.edu.
+$sites['labsinapse.uiowa.ddev.site'] = 'sinapse.lab.uiowa.edu';
+$sites['labsinapse.dev.drupal.uiowa.edu'] = 'sinapse.lab.uiowa.edu';
+$sites['labsinapse.stage.drupal.uiowa.edu'] = 'sinapse.lab.uiowa.edu';
+$sites['labsinapse.prod.drupal.uiowa.edu'] = 'sinapse.lab.uiowa.edu';
