@@ -1,0 +1,26 @@
+uuid: cd95b045-b0af-4546-a075-4903ad40ac4c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_text.field_slide_body
+    - paragraphs.paragraphs_type.slide_text
+  module:
+    - text
+id: paragraph.slide_text.default
+targetEntityType: paragraph
+bundle: slide_text
+mode: default
+content:
+  field_slide_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

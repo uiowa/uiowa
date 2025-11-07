@@ -1,0 +1,25 @@
+uuid: ecca2d1b-9d5e-42f5-a596-5d92a3d150d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_text.field_slide_body
+    - paragraphs.paragraphs_type.slide_text
+  module:
+    - text
+id: paragraph.slide_text.default
+targetEntityType: paragraph
+bundle: slide_text
+mode: default
+content:
+  field_slide_body:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

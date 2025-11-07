@@ -1,0 +1,24 @@
+uuid: 8133e7b7-2140-4d22-8a50-34e06b9538b8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slide_body
+    - filter.format.basic
+    - paragraphs.paragraphs_type.slide_text
+  module:
+    - text
+id: paragraph.slide_text.field_slide_body
+field_name: field_slide_body
+entity_type: paragraph
+bundle: slide_text
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic
+field_type: text_long
