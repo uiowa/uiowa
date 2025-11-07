@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_banner
+    - field.field.block_content.uiowa_banner.field_styles_gradient_midpoint
     - field.field.block_content.uiowa_banner.field_uiowa_banner_autoplay
     - field.field.block_content.uiowa_banner.field_uiowa_banner_excerpt
     - field.field.block_content.uiowa_banner.field_uiowa_banner_image
@@ -14,6 +15,7 @@ dependencies:
     - field_delimiter
     - heading
     - linkit
+    - options
     - text
 _core:
   default_config_hash: 5cU2pM6Q8108-XrxiZHFX7siyd1EU6j8EISTK3o6FOY
@@ -22,6 +24,13 @@ targetEntityType: block_content
 bundle: uiowa_banner
 mode: default
 content:
+  field_styles_gradient_midpoint:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
   field_uiowa_banner_autoplay:
     type: boolean
     label: above
