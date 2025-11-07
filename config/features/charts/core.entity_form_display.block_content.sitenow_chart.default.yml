@@ -1,0 +1,30 @@
+uuid: 1e321b2a-2ea8-4b77-9c42-f2eef1adcae4
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.sitenow_chart
+    - field.field.block_content.sitenow_chart.field_sitenow_chart
+  module:
+    - charts
+id: block_content.sitenow_chart.default
+targetEntityType: block_content
+bundle: sitenow_chart
+mode: default
+content:
+  field_sitenow_chart:
+    type: chart_config_default
+    weight: 27
+    region: content
+    settings:
+      change_default_library: true
+    third_party_settings: {  }
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
