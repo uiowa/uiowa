@@ -1948,32 +1948,3 @@ function uiowa_core_object_to_array(mixed $obj): mixed {
     return $obj;
   }
 }
-
-/**
- * Implements hook_chart_definition_alter().
- */
-function uiowa_core_chart_definition_alter(array &$definition, array $element, $chart_id) {
-  // Get the yAxis format if it exists.
-  if (!empty($definition['yAxis'][0]['labels']['format'])) {
-    $format = $definition['yAxis'][0]['labels']['format'];
-
-    // Apply the same format to tooltips.
-    // Replace {value} with {point.y} for tooltip context.
-    $tooltip_format = str_replace('{value}', '{point.y}', $format);
-
-    $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
-
-    // Add comma to the format if not already present
-    // This handles formats like {value:.2f}, {value}, {value:.0f}%, etc.
-    if (!str_contains($format, ',')) {
-      // Insert comma after the colon if it exists, otherwise after 'value'.
-      if (str_contains($format, '{value:')) {
-        $format = str_replace('{value:', '{value:,', $format);
-      }
-      else {
-        $format = str_replace('{value}', '{value:,.0f}', $format);
-      }
-    }
-    $definition['yAxis'][0]['labels']['format'] = $format;
-  }
-}

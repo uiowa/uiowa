@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Alerts module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_chart_definition_alter().
+ */
+function sitenow_charts_chart_definition_alter(array &$definition, array $element, $chart_id) {
+  // Get the yAxis format if it exists.
+  if (!empty($definition['yAxis'][0]['labels']['format'])) {
+    $format = $definition['yAxis'][0]['labels']['format'];
+
+    // Apply the same format to tooltips.
+    // Replace {value} with {point.y} for tooltip context.
+    $tooltip_format = str_replace('{value}', '{point.y}', $format);
+
+    $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+
+    // Add comma to the format if not already present
+    // This handles formats like {value:.2f}, {value}, {value:.0f}%, etc.
+    if (!str_contains($format, ',')) {
+      // Insert comma after the colon if it exists, otherwise after 'value'.
+      if (str_contains($format, '{value:')) {
+        $format = str_replace('{value:', '{value:,', $format);
+      }
+      else {
+        $format = str_replace('{value}', '{value:,.0f}', $format);
+      }
+    }
+    $definition['yAxis'][0]['labels']['format'] = $format;
+  }
+}
+
+/**
+ * Implements hook_charts_plugin_supported_chart_types_alter().
+ */
+function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
+  // Limit to specific chart types.
+  $allowed_types = ['line', 'column', 'bar', 'pie', 'donut'];
+  $types = array_intersect($types, $allowed_types);
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) {
+  $field_definition = $context['items']->getFieldDefinition();
+
+  if ($field_definition->getName() === 'field_sitenow_chart') {
+    $field_widget_complete_form['widget']['#after_build'][] = function ($element) {
+      foreach ($element as $delta => $item) {
+        if (is_numeric($delta)) {
+          // Remove preview of graph in block form.
+          if (isset($element[$delta]['config']['preview'])) {
+            $element[$delta]['config']['preview']['#access'] = FALSE;
+          }
+          // Remove ability to add color changer.
+          if (isset($element[$delta]['config']['display']['color_changer'])) {
+            $element[$delta]['config']['display']['color_changer']['#access'] = FALSE;
+          }
+          // Remove ability to set custom bg color.
+          if (isset($element[$delta]['config']['display']['background'])) {
+            $element[$delta]['config']['display']['background']['#access'] = FALSE;
+          }
+          // Remove ability to add data labels because they are very hard to read.
+          if (isset($element[$delta]['config']['display']['data_labels'])) {
+            $element[$delta]['config']['display']['data_labels']['#access'] = FALSE;
+          }
+        }
+      }
+      return $element;
+    };
+  }
+}
