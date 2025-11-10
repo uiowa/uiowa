@@ -7,11 +7,14 @@ dependencies:
     - field.field.node.slide.field_slide_description
     - field.field.node.slide.field_slide_duration
     - field.field.node.slide.field_slide_duration_other
+    - field.field.node.slide.field_slide_publish
+    - field.field.node.slide.field_slide_unpublish
     - field.field.node.slide.field_slide_widget
     - field.field.node.slide.og_audience
     - node.type.slide
   module:
     - content_moderation
+    - datetime
     - field_group
     - og
     - paragraphs
@@ -25,7 +28,7 @@ third_party_settings:
       label: 'Scheduling options'
       region: content
       parent_name: ''
-      weight: 6
+      weight: 8
       format_type: details
       format_settings:
         classes: ''
@@ -50,20 +53,32 @@ content:
     third_party_settings: {  }
   field_slide_duration:
     type: options_select
-    weight: 3
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   field_slide_duration_other:
     type: number
-    weight: 4
+    weight: 6
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_slide_publish:
+    type: datetime_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_slide_unpublish:
+    type: datetime_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_slide_widget:
     type: paragraphs
-    weight: 2
+    weight: 4
     region: content
     settings:
       title: Widget
@@ -82,13 +97,13 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 5
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   og_audience:
     type: og_complex
-    weight: 8
+    weight: 10
     region: content
     settings:
       match_operator: CONTAINS
@@ -98,13 +113,13 @@ content:
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 5
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 7
+    weight: 9
     region: content
     settings:
       display_label: true
@@ -119,7 +134,7 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 6
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }

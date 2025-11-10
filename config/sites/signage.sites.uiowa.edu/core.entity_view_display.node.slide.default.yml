@@ -6,10 +6,13 @@ dependencies:
     - field.field.node.slide.field_slide_description
     - field.field.node.slide.field_slide_duration
     - field.field.node.slide.field_slide_duration_other
+    - field.field.node.slide.field_slide_publish
+    - field.field.node.slide.field_slide_unpublish
     - field.field.node.slide.field_slide_widget
     - field.field.node.slide.og_audience
     - node.type.slide
   module:
+    - datetime
     - entity_reference_revisions
     - user
 id: node.slide.default
@@ -17,6 +20,24 @@ targetEntityType: node
 bundle: slide
 mode: default
 content:
+  field_slide_publish:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_slide_unpublish:
+    type: datetime_default
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_slide_widget:
     type: entity_reference_revisions_entity_view
     label: hidden
