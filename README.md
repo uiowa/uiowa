@@ -86,7 +86,7 @@ Before starting updates, make sure your local environment is on a feature branch
 ## Updating core patched files
 
 - Remove the `core_htaccess.patch` line from `post-drupal-scaffold-cmd` in the composer.json file and run `ddev composer install`.
-- Commit this with git but do not push.
+- Commit the .htaccess change only with git but do not push.
 - Re-add the line back to composer and re-run `ddev composer install`.
 - Make edits to the .htaccess file.
 - `git diff docroot/.htaccess > patches/core_htaccess.patch`
@@ -99,8 +99,8 @@ Configuration tracked in the repository will need to be exported before deployme
 
 ## Testing Dependencies
 Testing a uids change in uiowa:
-1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids": "uiowa/uids#[Enter hash here]"
-2. Then run `yarn upgrade @uiowa/uids`
+1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids4": "uiowa/uids4#[Enter hash here]"
+2. Then run `yarn upgrade @uiowa/uids4`
 3. `rm -rf ./node_modules`
 4. `yarn cache clean`
 5. `yarn install`

@@ -1,0 +1,15 @@
+diff --git a/core/modules/toolbar/js/views/ToolbarVisualView.js b/core/modules/toolbar/js/views/ToolbarVisualView.js
+index 89f472f0eafaa75f141041415e996511f80f6f45..b7845668cdd085b24719ed1115bd3a489e8dcc45 100644
+--- a/core/modules/toolbar/js/views/ToolbarVisualView.js
++++ b/core/modules/toolbar/js/views/ToolbarVisualView.js
+@@ -298,6 +298,10 @@
+           .find('.toolbar-toggle-orientation')
+           .toggle(this.model.get('isTrayToggleVisible'));
+         const $orientationToggleButton = $orientationToggle.find('button');
++        if ($orientationToggleButton.length === 0) {
++          // Ignore this if there is no orientation toggle button.
++          return;
++        }
+         $orientationToggleButton[0].value = antiOrientation;
+         $orientationToggleButton
+           .attr('title', this.strings[antiOrientation])

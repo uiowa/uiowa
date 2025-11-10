@@ -61,7 +61,9 @@
   {% endif %}
 {% endif %}
 
+{% if page.header %}
 {% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
+{% endif %}
 
 {% if page.alert %}
   {{ page.alert }}
@@ -79,7 +81,7 @@
 
   {{ page.content }}
 
-  {% if header_toppage %}
+  {% if header_toppage and show_back_top_nav %}
     {% include '@uids_base/navigation/top-scroll.html.twig' %}
   {% endif %}
 
@@ -95,5 +97,7 @@
 {% endif %}
 
 {% block footer %}
-  {% include '@uids_base/layout/footer.html.twig' %}
+  {% if page.pre_footer or page.footer_first or page.footer_second %}
+    {% include '@uids_base/layout/footer.html.twig' %}
+  {% endif %}
 {% endblock %}

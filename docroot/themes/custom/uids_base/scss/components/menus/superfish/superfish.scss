@@ -1,5 +1,5 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
+@use '../../../../uids/scss/abstracts/_variables.scss';
+@use '../../../../uids/scss/abstracts/_utilities.scss';
 
 .region-primary-menu .menu,
 .sf-menu {
@@ -355,6 +355,11 @@ ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
 .menu.sf-accordion ul li .nolink,
 .menu.sf-accordion ul li a {
   color: #666;
+}
+
+// Set float to none to avoid toggle menu collapsing width.
+ul.sf-has-clone-parent {
+  float: none !important;
 }
 
 .sf-accordion .sf-clone-parent .nolink,

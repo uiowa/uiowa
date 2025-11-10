@@ -13,10 +13,10 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\ctools_views\Plugin\Display\Block;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\layout_builder_custom\BannerBlockFormHandler;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_custom\LayoutBuilderStylesHelper;
 use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
-use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\uiowa_core\Element\Card;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\ViewExecutable;
@@ -124,9 +124,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
       }
 
-      // Add our LBS heading before style options.
-      _layout_builder_custom_add_lbs_heading($form);
-
       // @todo Write a patch for layout_builder_styles that adds these options. See
       //   https://github.com/uiowa/uiowa/issues/5010
       // An array of options for altering Layout Builder Styles behavior.
@@ -139,6 +136,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
+
+      // Move the admin label up for all blocks.
+      if (isset($form['settings']['admin_label'])) {
+        $form['settings']['admin_label']['#weight'] = -100;
+      }
+
       // Hide ones implemented by Views because ListBlock has headline.
       // @todo Investigate whether this can be added to ListBlock. See
       //   https://github.com/uiowa/uiowa/issues/5035
@@ -165,6 +168,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         /** @var \Drupal\layout_builder\SectionComponent $component */
         $component = $form_object->getCurrentComponent();
         $block = $component->getPlugin();
+
+        // Add heading before style options, but not for banner.
+        if ($block->getPluginId() !== 'inline_block:uiowa_banner') {
+          _layout_builder_custom_add_lbs_heading($form);
+        }
+
         // Section component unique ID is stored in third-party settings.
         $wrapper_id = Html::getUniqueId('unique-id-wrapper');
         $form['unique_id'] = [
@@ -174,6 +183,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           '#title' => t('Unique ID'),
           '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
           '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
+          '#weight' => -52,
           '#ajax' => [
             'callback' => '_layout_builder_custom_unique_id',
             'wrapper' => $wrapper_id,
@@ -181,20 +191,76 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           ],
         ];
 
+        // Modifications to $lb_styles_extra_settings based on block plugin.
+        switch ($block->getPluginId()) {
+          case 'inline_block:uiowa_card':
+            // Stacked by default.
+            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
+            break;
+
+          // Set square to default for image gallery.
+          case 'inline_block:uiowa_image_gallery':
+            $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
+            break;
+
+          // Media left, media circle, and no border are the defaults.
+          case 'inline_block:uiowa_events':
+          case 'views_block:events-card_list':
+          case 'views_block:events_list_block-card_list':
+          case 'views_block:people_list_block-list_card':
+            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_left';
+            $lb_styles_extra_settings['media_format']['default'] = 'media_format_circle';
+            $lb_styles_extra_settings['border']['default'] = 'no_border';
+            break;
+
+          // No border is the default.
+          case 'inline_block:uiowa_aggregator':
+          case 'views_block:article_list_block-list_article':
+            $lb_styles_extra_settings['border']['default'] = 'no_border';
+            break;
+        }
+
+        // Loop through map of default styles and append text indicating
+        // that they are the defaults if appropriate.
+        // This ensures duplicates inherit the correct defaults when they're created.
+        foreach ($lb_styles_extra_settings as $key => $settings) {
+          // The key that is used in the form array.
+          $key = 'layout_builder_style_' . $key;
+          // If the style group is set...
+          if (isset($form[$key])) {
+            if (isset($settings['default'])) {
+              // If an alternative label has been added for the empty option,
+              // use it instead.
+              if (isset($settings['empty_label']) && isset($form[$key]['#empty_option'])) {
+                $form[$key]['#empty_option'] = t('@label', [
+                  '@label' => $settings['empty_label'],
+                ]);
+              }
+
+              // If the default option is exists, add the text there.
+              if (isset($form[$key]['#options'][$settings['default']])) {
+                $form[$key]['#options'][$settings['default']] .= ' (default)';
+              }
+              // Otherwise, if the empty option should be the default, add
+              // the text there.
+              elseif ($settings['default'] === '[empty]' && isset($settings['empty_label']) && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
+                $form[$key]['#empty_option'] = t('@empty_option (default)', [
+                  '@empty_option' => $form[$key]['#empty_option']->render(),
+                ], $form[$key]['#empty_option']->getOptions());
+              }
+            }
+
+            // Set layout builder style default settings.
+            if ($form_id === 'layout_builder_add_block' && $settings['default'] !== '[empty]') {
+              $form[$key]['#default_value'] = [$settings['default']];
+            }
+          }
+        }
+
         // Form modifications per block plugin and bundle.
         switch ($block->getPluginId()) {
           case 'inline_block:uiowa_banner':
-            // We provide a field that provides background options, so
-            // this is hidden.
-            if (isset($form['layout_builder_style_background'])) {
-              $form['layout_builder_style_background']['#access'] = FALSE;
-            }
-            // Move headline size option to top of display options.
-            if (isset($form['layout_builder_style_headline_size'])) {
-              $form['layout_builder_style_headline_size']['#weight'] = 89;
-            }
-
-            $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
+            BannerBlockFormHandler::formAlter($form, $form_state, $form_id);
             break;
 
           case 'inline_block:uiowa_button':
@@ -231,9 +297,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
             // Set help text for media position.
             $form['layout_builder_style_card_media_position']['#description'] = t('<a target="_blank" href="https://sitenow.uiowa.edu/documentation/layout-builder/card-block">The media position will change based on the width of the layout column.</a>');
-
-            // Stacked by default.
-            $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
 
             // Set '#states' for card image size.
             $form['layout_builder_style_media_size']['#states'] = [
@@ -288,34 +351,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               }
             }
 
-            // Set defaults for blocks with card-related styles.
-            switch ($block->getPluginId()) {
-              // Set square to default for image gallery.
-              case 'inline_block:uiowa_image_gallery':
-                $lb_styles_extra_settings['media_format']['default'] = 'media_format_square';
-                break;
-
-              // Media left, media circle, and no border are the defaults.
-              case 'inline_block:uiowa_events':
-              case 'views_block:events-card_list':
-              case 'views_block:events_list_block-card_list':
-              case 'views_block:people_list_block-list_card':
-                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_left';
-                $lb_styles_extra_settings['media_format']['default'] = 'media_format_circle';
-                $lb_styles_extra_settings['border']['default'] = 'no_border';
-                break;
-
-              // No border is the default.
-              case 'inline_block:uiowa_aggregator':
-              case 'views_block:article_list_block-list_article':
-                $lb_styles_extra_settings['border']['default'] = 'no_border';
-                break;
-            }
-
             if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
               switch ($block->getPluginId()) {
                 case 'views_block:events_list_block-card_list':
                   $form['settings']['exposed']['filter-field_event_when_value']['field_event_when_value']['#type'] = 'hidden';
+                  break;
+
+                case 'views_block:people_list_block-list_card':
+                  // Don't allow the person type status filter to be exposed.
+                  $form['settings']['exposed']['filter-field_person_type_status_value']['exposed']['#type'] = 'hidden';
                   break;
               }
             }
@@ -417,9 +461,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               unset($form['lbs_heading']);
             }
 
-            // Move the admin label up.
-            $form['settings']['admin_label']['#weight'] = -20;
-
             // Adjustments to advanced settings.
             // Adjust name advanced options section.
             $form['settings']['advanced']['#title'] = t('Visibility options');
@@ -494,42 +535,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         }
       }
 
-      // Loop through map of default styles and append text indicating
-      // that they are the defaults if appropriate.
-      foreach ($lb_styles_extra_settings as $key => $settings) {
-        // The key that is used in the form array.
-        $key = 'layout_builder_style_' . $key;
-        // If the style group is set...
-        if (isset($form[$key])) {
-          if (isset($settings['default'])) {
-            // If an alternative label has been added for the empty option,
-            // use it instead.
-            if (isset($settings['empty_label']) && isset($form[$key]['#empty_option'])) {
-              $form[$key]['#empty_option'] = t('@label', [
-                '@label' => $settings['empty_label'],
-              ]);
-            }
-
-            // If the default option is exists, add the text there.
-            if (isset($form[$key]['#options'][$settings['default']])) {
-              $form[$key]['#options'][$settings['default']] .= ' (default)';
-            }
-            // Otherwise, if the empty option should be the default, add
-            // the text there.
-            elseif ($settings['default'] === '[empty]' && isset($settings['empty_label']) && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
-              $form[$key]['#empty_option'] = t('@empty_option (default)', [
-                '@empty_option' => $form[$key]['#empty_option']->render(),
-              ], $form[$key]['#empty_option']->getOptions());
-            }
-          }
-
-          // Set layout builder style default settings.
-          if ($form_id === 'layout_builder_add_block') {
-            $form[$key]['#default_value'] = [$settings['default']];
-          }
-        }
-      }
-
       $form['settings'] += [
         '#weight' => 0,
       ];
@@ -539,32 +544,32 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     case 'layout_builder_configure_section':
       // Remove container settings - None - empty option.
       unset($form['layout_builder_style_container']['#empty_option']);
-      // Add (Default) after Normal option.
-      $form['layout_builder_style_container']['#options']['section_margin_fixed_width_container'] = 'Normal (Default)';
+      if (isset($form['layout_builder_style_container'])) {
+        // Add (Default) after Normal option.
+        $form['layout_builder_style_container']['#options']['section_margin_fixed_width_container'] = 'Normal (Default)';
 
-      if (isset($form['#attributes']['data-layout-builder-target-highlight-id'])) {
+        if (isset($form['#attributes']['data-layout-builder-target-highlight-id'])) {
 
-        $match = 'section-update';
-        $is_update = substr($form['#attributes']['data-layout-builder-target-highlight-id'], 0, strlen($match)) === $match;
+          $match = 'section-update';
+          $is_update = substr($form['#attributes']['data-layout-builder-target-highlight-id'], 0, strlen($match)) === $match;
 
-        // Set normal as the default only if a new section is added.
-        if (!$is_update) {
-          $form['layout_builder_style_container']['#default_value'] = ['section_margin_fixed_width_container'];
+          // Set normal as the default only if a new section is added.
+          if (!$is_update) {
+            $form['layout_builder_style_container']['#default_value'] = ['section_margin_fixed_width_container'];
+          }
+
         }
-
       }
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
       break;
-
-    case 'fragment_region_item_layout_builder_form':
-    case 'fragment_region_item_after_content_layout_builder_form':
-    case 'node_page_layout_builder_form':
-      $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
-      $cookie_domain = getenv('AH_SITE_ENVIRONMENT') ? '.uiowa.edu' : '.uiowa.ddev.site';
-      $form['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = $cookie_domain;
-      break;
+  }
+  // If this is a layout builder form, add our custom library and cookie domain.
+  if (str_ends_with($form_id, '_layout_builder_form')) {
+    $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+    $cookie_domain = getenv('AH_SITE_ENVIRONMENT') ? '.uiowa.edu' : '.uiowa.ddev.site';
+    $form['#attached']['drupalSettings']['layoutBuilderCustom']['cookieDomain'] = $cookie_domain;
   }
 }
 
@@ -589,43 +594,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 
     switch ($component->getPluginId()) {
       case 'inline_block:uiowa_banner':
-        $link_set = FALSE;
-        $link_text = FALSE;
-
-        // First check if there is a link set.
-        foreach ($form_state->getValue([
-          'settings',
-          'block_form',
-          'field_uiowa_banner_link',
-        ]) as $key => $link) {
-          if ($key === 'add_more' || empty($link['uri'])) {
-            // If there is no uri, then we don't care about anything else.
-            continue;
-          }
-          else {
-            $link_set = TRUE;
-          }
-
-          if (!empty($link['title'])) {
-            $link_text = TRUE;
-          }
-        }
-        // If there is a link and no text, check if there is a title.
-        if ($link_set && !empty($form_state->getValue([
-          'settings',
-          'block_form',
-          'field_uiowa_banner_title',
-          0,
-          'container',
-          'text',
-        ]))) {
-          $link_text = TRUE;
-        }
-
-        // If there is a link and no text we can use, we have a problem.
-        if ($link_set && !$link_text) {
-          $form_state->setErrorByName('settings][block_form][field_uiowa_banner_link][0][title', t('Link text must be set if no title is present.'));
-        }
+        BannerBlockFormHandler::validateForm($form, $form_state);
         break;
 
       case 'inline_block:uiowa_events':
@@ -734,38 +703,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
 
     switch ($block->getPluginId()) {
       case 'inline_block:uiowa_banner':
-        $background_option = $form_state->getValue([
-          'settings',
-          'block_form',
-          'background_options',
-        ]);
-        if ($background_option) {
-          $form_media_selection = [
-            'settings',
-            'block_form',
-            'field_uiowa_banner_image',
-            'selection',
-          ];
-          if ($background_option === 'image') {
-            if (!$form_state->getValue($form_media_selection)) {
-              // If an image wasn't uploaded, revert to default of 'black'.
-              // @todo Add feedback for user that they didn't upload an image.
-              // @todo Add validation to check whether image uploaded or not. See
-              //   https://github.com/uiowa/uiowa/issues/5012
-              $background_option = 'block_background_style_black';
-            }
-
-          }
-          else {
-            // If a non-image background was selected, remove the reference.
-            // @todo Trigger file deletion if the media item is unused elsewhere. See
-            //   https://github.com/uiowa/uiowa/issues/5013
-            $form_state->unsetValue($form_media_selection);
-          }
-          // Set layout_builder_style_background to
-          // value of our duplicate select.
-          $form_state->setValue('layout_builder_style_background', $background_option);
-        }
+        BannerBlockFormHandler::submitForm($form, $form_state);
         break;
 
       case 'inline_block:uiowa_aggregator':
@@ -854,7 +792,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
               'value' => 1,
             ],
             );
-          };
+          }
         }
         break;
 
@@ -913,92 +851,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         break;
 
       case 'inline_block:uiowa_banner':
-        if (isset($element['field_uiowa_banner_title'])) {
-          // Update the label for the Heading sizes to remove Size label.
-          $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] =
-            t('Heading');
-        }
-        // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled? See
-        //   https://github.com/uiowa/uiowa/issues/5038
-        $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
-
-        // @phpstan-ignore-next-line
-        $selectedStyles = $component->get('layout_builder_styles_style');
-
-        $style_options = ['image' => 'Image or Video'];
-        foreach ($all_styles as $style) {
-          if ($style->getGroup() === 'background') {
-            $restrictions = $style->getBlockRestrictions();
-            /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
-            if (empty($restrictions) || in_array('inline_block:uiowa_banner', $restrictions)) {
-              $style_options[$style->id()] = $style->label();
-            }
-          }
-        }
-
-        $default_bg = 'image';
-
-        if (is_array($selectedStyles)) {
-          foreach ($selectedStyles as $selectedStyle) {
-            if (array_key_exists($selectedStyle, $style_options)) {
-              $default_bg = $selectedStyle;
-            }
-          }
-        }
-
-        $element['background_options'] = [
-          '#type' => 'select',
-          '#title' => t('Background'),
-          '#options' => $style_options,
-          '#default_value' => $default_bg,
-          '#weight' => 4,
-        ];
-
-        $element['field_uiowa_banner_image'] = [
-          '#states' => [
-            'visible' => [
-              ':input[name="settings[block_form][background_options]"]' => [
-                'value' => 'image',
-              ],
-            ],
-              // @todo Conditionally require media field when 'background_options'
-              //   is set to 'image'. See
-              //   https://github.com/uiowa/uiowa/issues/5039
-          ],
-          '#weight' => 5,
-        ] + $element['field_uiowa_banner_image'];
-
-        $element['field_uiowa_banner_autoplay'] = [
-          '#attributes' => [
-            'class' => [
-              'js-hide',
-            ],
-            'tabindex' => [
-              '-1',
-            ],
-            'aria-hidden' => [
-              'true',
-            ],
-          ],
-          '#weight' => 6,
-        ] + $element['field_uiowa_banner_autoplay'];
-
-        unset($element['field_uiowa_banner_image']['widget']['#title']);
-        unset($element['field_uiowa_banner_autoplay']['widget']['#title']);
-
-        // Check the max_delta to see how many banner links have been added
-        // and unset the add more button if we've reached the third link.
-        if (isset($element['field_uiowa_banner_link']) &&
-          $element['field_uiowa_banner_link']['widget']['#max_delta'] >= 2) {
-          unset($element['field_uiowa_banner_link']['widget']['add_more']);
-          // If we're editing a banner with 3 existing links
-          // we also need to unset the fourth pre-added link field.
-          if (isset($element['field_uiowa_banner_link']['widget'][3])) {
-            unset($element['field_uiowa_banner_link']['widget'][3]);
-          }
-        }
-
-        break;
+        return BannerBlockFormHandler::processElement($element, $form_state);
 
       case 'inline_block:uiowa_button':
         if (isset($element['field_uiowa_button_link'])) {
@@ -1372,41 +1225,6 @@ function layout_builder_custom_preprocess_layout(&$variables) {
 function layout_builder_custom_preprocess_media(&$variables) {
   $media = $variables['elements']['#media'];
   switch ($media->bundle()) {
-    case 'image':
-      $referring_item = $media->_referringItem;
-      // So far, only way to get media viewmode switching lb
-      // block > view > node > media deep.
-      if ($referring_item) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-        $referring_field = $referring_item->getParent();
-        if ($referring_field) {
-          $parent_entity = $referring_field->getParent();
-          $parent_entity = $parent_entity->getEntity();
-          // If view is attached to parent entity.
-          if (isset($parent_entity->view)) {
-            $view = $parent_entity->view;
-            // If block_config is attached to the view display
-            // and layout_builder_styles exist in that.
-            if (!is_null($layout_builder_styles = $view?->display_handler?->getOption('layout_builder_styles'))) {
-              $media_formats = [
-                'media_format_widescreen' => 'large__widescreen',
-                'media_format_square' => 'large__square',
-                'media_format_circle' => 'large__square',
-              ];
-              // Change view_mode based on lb_styles.
-              foreach ($media_formats as $style => $view_mode) {
-                if (in_array($style, $layout_builder_styles)) {
-                  $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
-                  // Prevents sticky cached images.
-                  $variables['content']['field_media_image'][0]['#cache']['max-age'] = 0;
-                }
-              }
-            }
-          }
-        }
-      }
-      break;
-
     case 'remote_video':
     case 'video':
       $variables['attributes']['class'][] = 'media--video';
@@ -1587,4 +1405,21 @@ function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form
   $triggering_element = $form_state->getTriggeringElement();
   $triggering_element['#value'] = Html::cleanCssIdentifier($triggering_element['#value']);
   return $triggering_element;
+}
+
+/**
+ * Allowed values callback for banner midpoint percentage options.
+ *
+ * @return array
+ *   An array of allowed values with percentage options.
+ */
+function _layout_builder_custom_banner_midpoint_options() {
+  return [
+    '20%' => '20%',
+    '30%' => '30%',
+    '40%' => '40% (default for vertical directions)',
+    '50%' => '50%',
+    '60%' => '60%',
+    '70%' => '70% (default for horizontal direction)',
+  ];
 }

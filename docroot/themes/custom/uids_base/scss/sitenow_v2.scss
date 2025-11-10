@@ -1,7 +1,7 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
-@use 'uids/scss/base/_headings.scss';
-@use 'uids/scss/components/_headline.scss';
+@use '../uids/scss/abstracts/_variables.scss';
+@use '../uids/scss/abstracts/_utilities.scss';
+@use '../uids/scss/base/_headings.scss';
+@use '../uids/scss/components/_headline.scss';
 
 // @todo https://github.com/uiowa/uiowa/issues/6584
 
@@ -163,7 +163,7 @@ html {
 
 
 .col {
-  @include utilities.flex(1, 0, 0);
+  flex: 1 0 0;
   max-width: 100%;
 }
 
@@ -195,7 +195,7 @@ html {
 
 .col-md {
   @include utilities.breakpoint(md) {
-    @include utilities.flex(1, 0, 0);
+    flex: 1 0 0;
     max-width: 100%;
   }
 }
@@ -399,16 +399,7 @@ html {
   @include utilities.clearfix;
 }
 
-
-// mark
-
-mark {
-  background-color: variables.$primary;
-  padding: 0.1em;
-}
-
 // lead
-
 
 .lead {
   margin-top: 0;

@@ -16,7 +16,8 @@
   overflow: visible;
   padding: 0px;
   margin-right: -1px;
-  width: var(--off-canvas-width) !important;
+  width: var(--off-canvas-width, 300) !important;
+  top: var(--drupal-displace-offset-top, 0px) !important;
 }
 
 .dialog-off-canvas-main-canvas {
@@ -50,7 +51,7 @@
   width: calc(100% - 1px) !important;
   height: calc(100% - (var(--off-canvas-title-padding) * 2 + 1.4rem)) !important;
   overflow: auto;
-  padding: calc(var(--off-canvas-padding) * 0.5) var(--off-canvas-padding) var(--off-canvas-padding) ;
+  padding: calc(var(--off-canvas-padding) * 0.5) var(--off-canvas-padding) var(--off-canvas-padding);
 }
 
 #drupal-off-canvas-wrapper .ui-dialog-titlebar {
@@ -126,6 +127,100 @@
   width: auto;
 }
 
+#drupal-off-canvas-wrapper .form [type=checkbox],
+#drupal-off-canvas-wrapper .form [type=radio] {
+  height: 1.2rem;
+  min-width: 1.2rem;
+  margin: .25rem .35rem 0 .25rem;
+  -webkit-transform: scale(1.3, 1.3);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+/**
+ * Banner off-canvas block form styles.
+ *
+ * BEM Hierarchy:
+ *
+ * off-canvas-form-group (Block)
+ * └── off-canvas-form-group__collapsible (Element - details/accordion)
+ *     └── off-canvas-form-group__collapsible--overlay (Modifier - gradient/overlay variant)
+ */
+
+/* Remove border and padding for main radio buttons within the form group containers. */
+#drupal-off-canvas-wrapper fieldset {
+  border: none !important;
+  padding-inline-start: 0;
+  margin-block-start: 0;
+}
+
+#drupal-off-canvas-wrapper fieldset:not([data-drupal-ck-style-fence]) {
+  margin-block-end: 0;
+}
+
+/* Custom utility classes for use in the off-canvas form */
+#drupal-off-canvas-wrapper .off-canvas-background {
+  background-color: var(--off-canvas-title-background-color);
+}
+
+#drupal-off-canvas-wrapper .padding--inline--md {
+  padding-inline: var(--space-sm-width-gutter);
+}
+
+#drupal-off-canvas-wrapper .padding--block-start--md {
+  padding-block-start: var(--space-sm-width-gutter);
+}
+
+#drupal-off-canvas-wrapper .padding--block-end--md {
+  padding-block-end: var(--space-sm-width-gutter);
+}
+
+#drupal-off-canvas-wrapper .margin--block-start--md {
+  margin-block-start: var(--space-md-width-gutter);
+}
+
+#drupal-off-canvas-wrapper .margin--block-end--md {
+  margin-block-end: var(--space-md-width-gutter);
+}
+
+/* Collapsible details element - standard styling */
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible {
+  padding: 0;
+  margin: 0;
+  margin-block-start: 1rem;
+  background: none;
+}
+
+/* Overlay collapsible - special styling for gradient/overlay options */
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible--overlay {
+  margin: 0;
+  padding-block-start: 0;
+  border-block-start: 1px solid hsla(0, 0%, 100%, .325);
+  background-color: var(--off-canvas-title-background-color);
+}
+
+/* Summary for overlay collapsible */
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible--overlay summary {
+  margin: 0;
+  background: none;
+}
+
+/* Summary for standard collapsible */
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible summary {
+  background: none;
+  border-top: 1px solid hsla(0, 0%, 100%, .325);
+}
+
+#drupal-off-canvas-wrapper details.off-canvas-form-group__collapsible--overlay .details-wrapper {
+  padding: 1.5rem;
+}
+
+/* Bottom padding for all details wrappers */
+#drupal-off-canvas-wrapper details .details-wrapper {
+  padding-block-end: 1.5rem;
+}
+
 /**
  * Drag handle styling.
  */
@@ -167,6 +262,6 @@
 }
 
 .ui-dialog.ui-dialog-off-canvas:not(.ui-dialog-resizing) {
-  left: auto!important;
+  left: auto !important;
   right: 0;
 }

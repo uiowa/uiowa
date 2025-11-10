@@ -1,0 +1,22 @@
+uuid: 2aa4b6c6-f98d-419d-8180-fde77a61b67d
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: record
+label: Record
+type: 'canonical_entities:node'
+pattern: 'records/[node:title]'
+selection_criteria:
+  86fa01bb-9272-4040-a784-df0159db0d58:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 86fa01bb-9272-4040-a784-df0159db0d58
+    context_mapping:
+      node: node
+    bundles:
+      record: record
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -8,11 +8,13 @@ dependencies:
     - field.field.node.lockup.field_lockup_primary_unit
     - field.field.node.lockup.field_lockup_s_unit_stacked
     - field.field.node.lockup.field_lockup_sub_unit
+    - field.field.node.lockup.rabbit_hole__settings
     - node.type.lockup
     - workflows.workflow.lockup
   module:
     - content_moderation
     - path
+    - rabbit_hole
 id: node.lockup.default
 targetEntityType: node
 bundle: lockup
@@ -80,6 +82,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

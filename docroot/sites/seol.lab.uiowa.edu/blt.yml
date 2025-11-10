@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labseol.uiowa.ddev.site
+    protocol: https
+  machine_name: labseol
+  human_name: seol.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labseol.prod
+drupal:
+  db:
+    database: seol_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labseol.prod.drupal.uiowa.edu'
+  requester: seol
+  site-name: 'Regenerative Therapies for Orthopedic and Dental Diseases'

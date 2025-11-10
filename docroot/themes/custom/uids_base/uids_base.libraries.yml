@@ -72,6 +72,11 @@ virtual_tour:
 status-messages:
   js:
     assets/js/uids.status-messages.js: { preprocess: false }
+message:
+  js:
+    assets/js/message.theme.js: { preprocess: false }
+  dependencies:
+    - uids_base/status-messages
 logo:
   css:
     component:
@@ -110,7 +115,7 @@ header-sticky:
     assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
-    assets/js/video-cookie.js: { preprocess: false }
+    assets/js/video-cookie.js: { preprocess: true }
   dependencies:
     - core/jquery
     - core/once
@@ -120,10 +125,9 @@ slider:
   css:
     component:
       assets/css/components/slider.css: { preprocess: false }
+      assets/css/components/banner.css: { preprocess: false }
   js:
-    uids/assets/js/slider.js: { preprocess: false }
-  dependencies:
-    - uids_base/banner
+    uids/assets/js/slider.js: { preprocess: true }
 remote-video:
   css:
     component:
@@ -251,7 +255,7 @@ paragraphs-carousel:
     component:
       assets/css/paragraphs/uiowa_paragraphs_carousel.css: { preprocess: false }
   js:
-      assets/js/carousel.js: { preprocess: false  }
+    assets/js/carousel.js: { preprocess: false  }
   dependencies:
     - uids_base/slick
     - core/jquery
@@ -370,6 +374,8 @@ callout:
       assets/css/components/callout.css: { preprocess: false }
       assets/css/components/inline.css: { preprocess: false }
 admin:
+  js:
+    assets/js/ckeditor-off-canvas-reset-overrides.js:  { }
   css:
     component:
       assets/css/admin.css: { weight: 200 }

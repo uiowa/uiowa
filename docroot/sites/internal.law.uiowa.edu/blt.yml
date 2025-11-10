@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawinternal.uiowa.ddev.site
+    protocol: https
+  machine_name: lawinternal
+  human_name: internal.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawinternal.prod
+drupal:
+  db:
+    database: internal_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawinternal.prod.drupal.uiowa.edu'
+  requester: kstinson
+  site-name: 'Law Internal Site'

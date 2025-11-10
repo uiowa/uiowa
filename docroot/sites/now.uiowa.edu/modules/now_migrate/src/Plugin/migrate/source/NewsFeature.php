@@ -373,7 +373,7 @@ class NewsFeature extends BaseNodeSource {
         // If we're adding the headline separately,
         // remove it from the rest of the text, so we don't duplicate.
         $match[2] = str_replace('<strong>' . $value . '</strong>', '', $match[2]);
-      };
+      }
 
       $headline = '<h4 class="' . $headline_classes . '">';
       $headline .= '<span class="headline__heading">';

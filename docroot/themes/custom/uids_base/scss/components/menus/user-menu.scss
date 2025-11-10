@@ -1,14 +1,14 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 // Currently not in use.
 
 .menu--account {
   .menu {
-    @include utilities.flexbox;
+    display: flex;
     @include utilities.margin(variables.$top: variables.$md, variables.$left: 0, variables.$bottom: variables.$sm);
     li {
-      @include utilities.flexbox;
+      display: flex;
       a {
         display: block;
         text-decoration: none;

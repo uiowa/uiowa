@@ -1,5 +1,5 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
+@use '../../../uids/scss/abstracts/_variables.scss';
+@use '../../../uids/scss/abstracts/_utilities.scss';
 
 .block-local-tasks-block {
   .tabs {
@@ -13,8 +13,8 @@
   .tabs::before {
     display: table;
     content: ' ';
-    @include utilities.flex(variables.$fb: 0);
-    @include utilities.order(variables.$int: 1);
+    flex:1 0 0;
+    order: 1;
   }
 
   .tabs::after {

@@ -61,10 +61,10 @@ class MapTaxonomy extends ProcessPluginBase {
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if ($this->configuration['create_new']) {
       $this->createNew = $this->configuration['create_new'];
-    };
+    }
     if ($this->configuration['vocabulary']) {
       $this->vocabulary = $this->configuration['vocabulary'];
-    };
+    }
     $term_name = $this->fetchTermName($value);
     if ($term_name) {
       $tid = $this->fetchTag($term_name);

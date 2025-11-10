@@ -10,23 +10,25 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\StatusMessages;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\uids_base\UidsPreRender;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\views\field\EntityField;
 
 /**
- * Implements template_preprocess_block().
+ * Implements hook_element_info_alter().
  */
-function uids_base_preprocess_block__system_messages_block(&$variables) {
-  $variables['content'] = StatusMessages::renderMessages();
-  $variables['#cache']['max-age'] = 0;
+function uids_base_element_info_alter(&$info) {
+  // Add pre-render callback to status_messages to ensure consistent rendering.
+  if (isset($info['status_messages'])) {
+    $info['status_messages']['#pre_render'][] = [UidsPreRender::class, 'messagePlaceholder'];
+  }
 }
 
 /**
@@ -38,13 +40,13 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
     'views_exposed_form',
   ];
   if (!in_array($form_id, $skip_forms)) {
-    // Add 'uids-content' class to all forms except media library.
-    $form['#attributes']['class'][] = 'uids-content';
+    // Add 'form' class to all forms except media library.
+    $form['#attributes']['class'][] = 'form';
   }
 
   if (strpos($form_id, 'node_page_layout_builder_form') !== FALSE) {
-    $form['actions']['#attributes']['class'][] = 'uids-content';
-    $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
+    $form['actions']['#attributes']['class'][] = 'form';
+    $form['layout_builder_message']['#attributes']['class'][] = 'form';
   }
 
   if (strpos($form_id, 'uiowa_search_form') !== FALSE) {
@@ -53,6 +55,10 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
 
   if (strpos($form_id, 'webform_submission') !== FALSE) {
     $form['#attached']['library'][] = 'uids_base/webforms';
+  }
+  if ($form_id === 'views_exposed_form' && strpos($form['#id'], 'views-exposed-form-media-library-widget') === 0) {
+    $form['#attached']['library'][] = 'claro/media_library.theme';
+    $form['#attached']['library'][] = 'claro/views';
   }
 }
 
@@ -73,7 +79,7 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
       return;
     }
 
-    $form['#attributes']['class'][] = 'uids-content bg--gray';
+    $form['#attributes']['class'][] = 'form bg--gray';
     $form['#attached']['library'][] = 'uiowa_core/exposedFormEnhancements';
     // Fixes a bug with BEF, details here:
     // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
@@ -308,6 +314,16 @@ function uids_base_preprocess_page(&$variables) {
 
   if ($variables['header_branding'] === 'regents' && $variables['footer_logo']) {
     $variables['uiowa_logo'] = TRUE;
+  }
+
+  // Back to top nav.
+  $excluded_back_top_nav_types = ['sign'];
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $variables['show_back_top_nav'] = TRUE;
+
+  if ($node && in_array($node->getType(), $excluded_back_top_nav_types)) {
+    $variables['show_back_top_nav'] = FALSE;
   }
 
   // If the site has a parent organization or the site name is more than 43
@@ -615,7 +631,7 @@ function uids_base_preprocess_layout(&$variables) {
 
     switch ($layout->id()) {
       case 'layout_onecol':
-        // @todo remove once https://caniuse.com/css-has greater support.
+        // @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
         $contains_menu = FALSE;
 
         foreach (Element::children($variables['content']) as $region) {
@@ -766,11 +782,10 @@ function uids_base_preprocess_layout(&$variables) {
 
         // Set default for banner gradient.
         if ($variables['banner_settings']['transparent'] || $title_hidden) {
-          $variables['attributes']['class'][] = 'banner--transparent';
+          $variables['attributes']['class'][] = 'banner--overlay-none';
         }
         else {
-          $variables['attributes']['class'][] = 'banner--gradient-bottom';
-          $variables['attributes']['class'][] = 'banner--gradient-dark';
+          $variables['attributes']['class'][] = 'banner--overlay-btt';
         }
 
         // Set other banner default classes.
@@ -949,6 +964,21 @@ function uids_base_preprocess_block(&$variables) {
   if ($variables['derivative_plugin_id'] === 'uiowa_banner') {
     $block = $variables['elements']['content']['#block_content'];
 
+    // Check for layout builder styles and
+    // extract media overlay and set variable for banner template.
+    if (!empty($variables['elements']['#layout_builder_style'])) {
+      $styles = $variables['elements']['#layout_builder_style'];
+
+      $media_overlay = array_values(array_filter(
+        $styles,
+        function ($value) {
+          return is_string($value) && str_starts_with($value, 'media_overlay_');
+        }
+      ))[0] ?? '';
+
+      $variables['layout_builder_style_media_overlay'] = $media_overlay;
+    }
+
     // Remove headline classes from attributes.
     $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
       return str_starts_with($v, 'headline');
@@ -1047,6 +1077,11 @@ function uids_base_preprocess_block(&$variables) {
     $variables['has_image_above'] = !in_array('blockquote--img-below', $variables['elements']['#attributes']['class']);
   }
 
+  // Add banner__text class for caption to receive banner text colors.
+  if ($variables['derivative_plugin_id'] === 'node:article:field_image_caption') {
+    $variables['attributes']['class'][] = 'banner__text';
+  }
+
 }
 
 /**
@@ -1115,8 +1150,14 @@ function uids_base_preprocess_menu(&$variables) {
   switch ($variables['menu_name']) {
     case 'top-links':
       $variables['limit'] = theme_get_setting('header.top_links_limit');
-      break;
 
+      // Remove nested children from menu items.
+      if (!empty($variables['items'])) {
+        foreach ($variables['items'] as &$item) {
+          unset($item['below']);
+        }
+      }
+      break;
   }
 }
 
@@ -1313,9 +1354,9 @@ function uids_base_preprocess_file_link(&$variables) {
  * Implements theme_preprocess_form().
  */
 function uids_base_preprocess_form(&$variables) {
-  // Add 'uids-content' and 'uids-search' classes to search-block-form.
+  // Add 'form' and 'uids-search' classes to search-block-form.
   if (isset($variables['attributes']['id']) && $variables['attributes']['id'] === 'search-block-form') {
-    $variables['attributes']['class'][] = 'uids-content uids-search';
+    $variables['attributes']['class'][] = 'form uids-search';
   }
 }
 
@@ -1350,23 +1391,6 @@ function uids_base_preprocess_input(&$variables) {
   // browsers that do not support the HTML date element.
   if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'date') {
     $variables['attributes']['placeholder'] = 'YYYY-MM-DD';
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uids_base_preprocess_superfish(array &$variables) {
-  // An access-aware boolean of whether the menu is empty or not.
-  $variables['menu_is_empty'] = FALSE;
-
-  $items = array_filter($variables['menu_items']['#tree'], function ($item) {
-    /** @var \Drupal\Core\Menu\MenuLinkTreeElement $item */
-    return $item->access->isAllowed();
-  });
-
-  if (empty($items)) {
-    $variables['menu_is_empty'] = TRUE;
   }
 }
 

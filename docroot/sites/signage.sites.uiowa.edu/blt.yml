@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitessignage.uiowa.ddev.site
+    protocol: https
+  machine_name: sitessignage
+  human_name: signage.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitessignage.prod
+drupal:
+  db:
+    database: signage_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitessignage.prod.drupal.uiowa.edu'
+  requester: jwhitsit
+  site-name: 'Digital Signage'
