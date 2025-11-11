@@ -6,6 +6,8 @@
 (function (Drupal) {
   Drupal.behaviors.signageSlideshow = {
     attach: function (context, settings) {
+      const debug = true;
+
       context.querySelectorAll('.signage__slideshow').forEach(function (element) {
         // Maintain a list of dormant slides.
         drupalSettings.dormant = [];
@@ -113,26 +115,20 @@
       function perSlide(slides, slide, index) {
         const publish = slide.slide.querySelector('.field--name-field-slide-publish');
         const unpublish = slide.slide.querySelector('.field--name-field-slide-unpublish');
-        const now = Date.now();
-
-
-        console.log('__________________');
-        console.log('Slide ' + slide.index + ' reporting!');
-        console.log(slide);
 
         setSplideState(slides, slide, publish, unpublish);
-        // console.log(slide);
-        // console.log('Publish');
-        //
-        // console.log(publish);
-        // console.log('Unpublish');
-        // console.log(unpublish);
-        //
       }
 
       function setSplideState(slides, slide, publish, unpublish) {
+
         const publishData = isPublished(publish, unpublish);
-        console.log(publishData);
+        if (debug) {
+          console.log('__________________');
+          let status = 'Setting slide ' + slide.index + ' to ';
+          publishData.published ? status += 'published.' : status += 'unpublished.';
+          console.log(status);
+          console.log('__________________');
+        }
 
         let dynamicSlidePlacement = slide;
 
@@ -145,8 +141,30 @@
           slides.remove(slide.index);
         }
 
+        else if (publishData.published) {
+          // Add slide to slideshow
+          slides.add(slide.slide, slide.index);
+
+          // Remove it from being dormant.
+          const index =  drupalSettings.dormant.indexOf(slide);
+          if (index > -1) { // Only splice array when item is found.
+            if (debug) {
+              console.log('__________________');
+              console.log('Adding slide to slideshow.');
+              console.log(slide.slide, slide.index);
+              console.log('__________________');
+            }
+            drupalSettings.dormant.splice(index, 1); // 2nd parameter means remove one item only.
+          }
+
+        }
+
         if (publishData.futureAction !== null) {
-          console.log('Future action detected!');
+          if (debug) {
+            console.log('__________________');
+            console.log('Future action detected!');
+            console.log('__________________');
+          }
           awaitPublishChange(
             publishData.futureAction,
             () => {
@@ -168,8 +186,6 @@
 
           // Are we before the publish time?
           if ( now < pubTime ) { // Yes? Unpublished with future action.
-            console.log(pubTime);
-            console.log(now);
             return new PublishData(false, pubTime - now);
           }
         }
@@ -186,8 +202,6 @@
             return new PublishData(false);
           }
           else { // No? Published, with future action
-            console.log(unPubTime);
-            console.log(now);
             return new PublishData(true, unPubTime - now);
           }
         }
@@ -206,7 +220,11 @@
       }
 
       async function awaitPublishChange(time, callback) {
-        console.log("Waiting for "  + ((time+1000)/1000) + ' seconds.');
+        if (debug) {
+          console.log('__________________');
+          console.log("Waiting for "  + ((time+1000)/1000) + ' seconds.');
+          console.log('__________________');
+        }
         const ms = time+1000; // Pause this async function 'time' + 1 seconds.
         await sleep(ms);
         callback();
