@@ -134,12 +134,25 @@
         const publishData = isPublished(publish, unpublish);
         console.log(publishData);
 
+        let dynamicSlidePlacement = slide;
+
         // If the slide is unpublished...
         if (!publishData.published) {
 
           // Make it dormant and remove it from the slideshow.
-          drupalSettings.dormant.push(slide);
+          drupalSettings.dormant.unshift(slide);
+          dynamicSlidePlacement = drupalSettings.dormant[0];
           slides.remove(slide.index);
+        }
+
+        if (publishData.futureAction !== null) {
+          console.log('Future action detected!');
+          awaitPublishChange(
+            publishData.futureAction,
+            () => {
+              setSplideState(slides, dynamicSlidePlacement, publish, unpublish);
+            }
+          );
         }
       }
 
@@ -192,10 +205,11 @@
         return new Promise(resolve => setTimeout(resolve, ms));
       }
 
-      async function awaitPublishChange(time) {
-        console.log("Starting async operation.");
-        await sleep(time); // Pause this async function for 2 seconds
-        console.log("Async operation continued after 2 seconds.");
+      async function awaitPublishChange(time, callback) {
+        console.log("Waiting for "  + ((time+1000)/1000) + ' seconds.');
+        const ms = time+1000; // Pause this async function 'time' + 1 seconds.
+        await sleep(ms);
+        callback();
       }
 
 
