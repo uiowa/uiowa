@@ -112,16 +112,38 @@
         }
       }
 
-      function perSlide(slides, slide, index) {
+      /**
+       * Code to be run per slide.
+       *
+       * @param {slides} slides A Splide slides object, the slideshow.
+       * @param {slide} slide A Splide slide object.
+       **/
+      function perSlide(slides, slide) {
         const publish = slide.slide.querySelector('.field--name-field-slide-publish');
         const unpublish = slide.slide.querySelector('.field--name-field-slide-unpublish');
 
         setSplideState(slides, slide, publish, unpublish);
       }
 
+      /**
+       * Sets a slide to be in the slideshow,or removes it.
+       *
+       * @param {slides} slides A Splide slides object, the slideshow.
+       * @param {slide} slide A Splide slide object.
+       * @param {HTMLElement} publish The rendered element output by drupal
+       *     containing the time at which a slide should be published.
+       * @param {HTMLElement} unpublish The rendered element output by drupal
+       *     containing the time at which a slide should be unpublished.
+       **/
       function setSplideState(slides, slide, publish, unpublish) {
 
+        /*
+          Gets a PublishData object, which holds information on:
+            - If the slide should be published.
+            - When the slide state should be checked again, if applicable.
+         */
         const publishData = isPublished(publish, unpublish);
+
         if (debug) {
           console.log('__________________');
           let status = 'Setting slide ' + slide.index + ' to ';
@@ -130,35 +152,41 @@
           console.log('__________________');
         }
 
+        /*
+          We hold the slide reference here because it could
+            either be in the dormant array OR the slideshow.
+         */
         let dynamicSlidePlacement = slide;
 
-        // If the slide is unpublished...
         if (!publishData.published) {
 
-          // Make it dormant and remove it from the slideshow.
+          // Make it dormant and remove it from the splide slideshow.
           drupalSettings.dormant.unshift(slide);
           dynamicSlidePlacement = drupalSettings.dormant[0];
           slides.remove(slide.index);
         }
 
         else if (publishData.published) {
-          // Add slide to slideshow
-          slides.add(slide.slide, slide.index);
 
-          // Remove it from being dormant.
+          // If the slide is in the dormant array...
           const index =  drupalSettings.dormant.indexOf(slide);
-          if (index > -1) { // Only splice array when item is found.
+          if (index > -1) {
             if (debug) {
               console.log('__________________');
               console.log('Adding slide to slideshow.');
               console.log(slide.slide, slide.index);
               console.log('__________________');
             }
-            drupalSettings.dormant.splice(index, 1); // 2nd parameter means remove one item only.
+            // Add slide to the splide slideshow
+            slides.add(slide.slide, slide.index);
+
+            // Remove it from being dormant.
+            drupalSettings.dormant.splice(index, 1);
           }
 
         }
 
+        // If we have future action, recur after delay.
         if (publishData.futureAction !== null) {
           if (debug) {
             console.log('__________________');
@@ -174,6 +202,18 @@
         }
       }
 
+      /**
+       * Operates on HTMLElements to determine whether a slide should be
+       *  published or unpublished.
+       *
+       * @param {HTMLElement} publish The rendered element output by drupal
+       *     containing the time at which a slide should be published.
+       * @param {HTMLElement} unpublish The rendered element output by drupal
+       *     containing the time at which a slide should be unpublished.
+       * @return {PublishData} An object which holds information on:
+       *     - If the slide should be published.
+       *     - When the slide state should be checked again, if applicable.
+      **/
       function isPublished(publish, unpublish) {
         const now = Date.now();
 
@@ -210,15 +250,40 @@
         return new PublishData(true);
       }
 
+      /**
+       * Represents data for the state of a slide.
+       *
+       *  We could probably store the dormant slides in here
+       *    and remove the need for the dormant array.
+       *
+       * @typedef {object} PublishData
+       * @property {boolean} state - Whether the entity should
+       *  be published or not.
+       * @property {number | null} futureAction - The number of milliseconds
+       *  until the entity should be checked again.
+       */
       function PublishData(state, futureAction = null) {
         this.published = state;
         this.futureAction = futureAction;
       }
 
+      /**
+       * Waits for `ms` milliseconds.
+       *
+       * @param {number} ms The number of milliseconds to wait.
+       * @return {Promise}
+       **/
       function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
       }
 
+      /**
+       * Awaits `time` + 1000 milliseconds, and then executes `callback`.
+       *
+       * @param {number} time milliseconds to wait until
+       *  executing the callback.
+       * @param {callback} callback The callback to execute.
+       **/
       async function awaitPublishChange(time, callback) {
         if (debug) {
           console.log('__________________');
@@ -229,34 +294,6 @@
         await sleep(ms);
         callback();
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     },
   };
 })(Drupal);
