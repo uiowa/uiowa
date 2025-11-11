@@ -40,7 +40,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<br> <p> <strong> <em>'
+      allowed_html: '<br> <p class="text-align-left text-align-center text-align-right"> <strong> <em> <ul> <ol> <li>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
@@ -67,13 +67,6 @@ filters:
     status: true
     weight: -30
     settings: {  }
-  filter_iframe:
-    id: filter_iframe
-    provider: uiowa_core
-    status: false
-    weight: -40
-    settings:
-      allowed_sources: ''
   filter_image_lazy_load:
     id: filter_image_lazy_load
     provider: filter

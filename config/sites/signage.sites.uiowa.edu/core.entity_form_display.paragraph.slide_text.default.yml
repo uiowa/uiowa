@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slide_text.field_headline
     - field.field.paragraph.slide_text.field_slide_body
     - paragraphs.paragraphs_type.slide_text
   module:
@@ -12,6 +13,14 @@ targetEntityType: paragraph
 bundle: slide_text
 mode: default
 content:
+  field_headline:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_slide_body:
     type: text_textarea
     weight: 0
