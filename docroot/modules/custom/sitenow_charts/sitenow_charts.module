@@ -41,7 +41,7 @@ function sitenow_charts_chart_definition_alter(array &$definition, array $elemen
  */
 function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
   // Limit to specific chart types.
-  $allowed_types = ['line', 'column', 'bar', 'pie', 'donut'];
+  $allowed_types = ['line', 'column', 'bar'];
   $types = array_intersect($types, $allowed_types);
 }
 
@@ -67,13 +67,45 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
           if (isset($element[$delta]['config']['display']['background'])) {
             $element[$delta]['config']['display']['background']['#access'] = FALSE;
           }
-          // Remove ability to add data labels because they are very hard to read.
+          // Remove ability to add data labels
+          // because they are very hard to read.
           if (isset($element[$delta]['config']['display']['data_labels'])) {
             $element[$delta]['config']['display']['data_labels']['#access'] = FALSE;
+          }
+          // Remove ability to set dimensions
+          // because we want these to be responsive.
+          if (isset($element[$delta]['config']['display']['dimensions'])) {
+            $element[$delta]['config']['display']['dimensions']['#access'] = FALSE;
+          }
+          // Remove ability to change to polar coordinate system.
+          if (isset($element[$delta]['config']['display']['polar'])) {
+            $element[$delta]['config']['display']['polar']['#access'] = FALSE;
           }
         }
       }
       return $element;
     };
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_charts_preprocess_field(&$variables) {
+  // For chart fields in block content, a workaround
+  // trick the entity type to bypass the stripped template logic in layouts.html.twig.
+  if ($variables['entity_type'] == 'block_content' && $variables['field_name'] == 'field_sitenow_chart') {
+    // Change entity type so it goes through proper
+    // field rendering instead of stripped block content rendering.
+    $variables['entity_type'] = 'node';
+
+    // Ensure label is visually hidden if it was originally hidden.
+    if ($variables['label_hidden']) {
+      $variables['label_display'] = 'visually_hidden';
+      $variables['label_hidden'] = FALSE;
+      if (empty($variables['label'])) {
+        $variables['label'] = 'Chart';
+      }
+    }
   }
 }
