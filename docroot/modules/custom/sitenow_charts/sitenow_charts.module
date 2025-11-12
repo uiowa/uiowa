@@ -40,6 +40,7 @@ function sitenow_charts_chart_definition_alter(array &$definition, array $elemen
  * Implements hook_chart_alter().
  */
 function sitenow_charts_chart_alter(array &$element, $chart_id) {
+  // Adjusts screenReaderSection to render h2 instead of h5.
   $element['#raw_options'] = [
     'accessibility' => [
       'screenReaderSection' => [
@@ -54,6 +55,7 @@ function sitenow_charts_chart_alter(array &$element, $chart_id) {
 <div>{annotationsTitle}{annotationsList}</div>',
       ],
     ],
+    // Adjusts legend font size pass AA compliance.
     'legend' => [
       'itemStyle' => [
         'fontSize' => '18px',
