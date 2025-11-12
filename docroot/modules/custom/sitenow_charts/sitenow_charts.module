@@ -37,6 +37,32 @@ function sitenow_charts_chart_definition_alter(array &$definition, array $elemen
 }
 
 /**
+ * Implements hook_chart_alter().
+ */
+function sitenow_charts_chart_alter(array &$element, $chart_id) {
+  $element['#raw_options'] = [
+    'accessibility' => [
+      'screenReaderSection' => [
+        'beforeChartFormat' => '<h2>{chartTitle}</h2>
+<div>{typeDescription}</div>
+<div>{chartSubtitle}</div>
+<div>{chartLongdesc}</div>
+<div>{playAsSoundButton}</div>
+<div>{viewTableButton}</div>
+<div>{xAxisDescription}</div>
+<div>{yAxisDescription}</div>
+<div>{annotationsTitle}{annotationsList}</div>',
+      ],
+    ],
+    'legend' => [
+      'itemStyle' => [
+        'fontSize' => '18px',
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_charts_plugin_supported_chart_types_alter().
  */
 function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
