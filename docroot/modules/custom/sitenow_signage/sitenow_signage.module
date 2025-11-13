@@ -189,7 +189,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       $variables['#cache']['tags'][] = 'time:daily';
       // Get additional info necessary to overwrite the output of this field.
       $paragraph = $variables['element']['#object'];
-      $headline = $paragraph->get('field_headline')->value;
       $today = date('Y-m-d');
       $had_failure = FALSE;
       $rows = [];
@@ -231,14 +230,9 @@ function sitenow_signage_preprocess_field(&$variables) {
         'event' => t('Event'),
       ];
 
-      // Headline overrides table caption if set.
-      if (!empty($headline)) {
-        $table_caption = $headline;
-      }
-
       $markup['container']['table'] = [
         '#theme' => 'table',
-        '#caption' => $table_caption ?? 'Room Schedule',
+        '#caption' => 'Room Schedule',
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => $empty_message,
@@ -259,7 +253,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       $variables['#cache']['tags'][] = 'time:hourly';
       // Get additional info necessary to overwrite the output of this field.
       $paragraph = $variables['element']['#object'];
-      $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
 
@@ -380,7 +373,7 @@ function sitenow_signage_preprocess_field(&$variables) {
 
       $markup['container']['table'] = [
         '#theme' => 'table',
-        '#caption' => $headline,
+        '#caption' => 'Outlook resource schedule',
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => $empty_message,
@@ -995,7 +988,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
-            'mazevo__events',
             'signage__table',
           ],
         ],

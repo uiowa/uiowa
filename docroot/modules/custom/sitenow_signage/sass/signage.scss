@@ -111,13 +111,14 @@ div.bg--black .signage__table {
   }
 
   caption {
-    background-color: variables.$secondary;
-    font-size: variables.$h5-font-size;
-    font-weight: variables.$font-weight-heavy;
-    letter-spacing: 0.08rem;
-    text-align: left;
-    color: variables.$light;
-    padding: 2rem;
+    //background-color: variables.$secondary;
+    //font-size: variables.$h5-font-size;
+    //font-weight: variables.$font-weight-heavy;
+    //letter-spacing: 0.08rem;
+    //text-align: left;
+    //color: variables.$light;
+    //padding: 2rem;
+    @include utilities.element-invisible;
   }
 
   thead {
@@ -153,10 +154,6 @@ div.bg--black .signage__table {
         }
       }
     }
-  }
-
-  &.mazevo__events caption {
-    @include utilities.element-invisible;
   }
 }
 
