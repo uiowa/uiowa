@@ -37,8 +37,6 @@ $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
     overflow: hidden;
   }
 
-  //background-color: var(--brand-secondary);
-
   // Adjust padding to be smaller for signage.
   .layout.layout__container {
     padding-bottom: 0;
@@ -60,9 +58,9 @@ $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
   main.content__container {
     background: variables.$secondary;
   }
-
 }
 
+// Add a visual indicator that a slide is unpublished.
 .node--type-slide.node--unpublished:after {
   display: block;
   position: absolute;
@@ -111,13 +109,6 @@ div.bg--black .signage__table {
   }
 
   caption {
-    //background-color: variables.$secondary;
-    //font-size: variables.$h5-font-size;
-    //font-weight: variables.$font-weight-heavy;
-    //letter-spacing: 0.08rem;
-    //text-align: left;
-    //color: variables.$light;
-    //padding: 2rem;
     @include utilities.element-invisible;
   }
 
@@ -156,7 +147,6 @@ div.bg--black .signage__table {
     }
   }
 }
-
 
 // Increase font sizes for vertical displays.
 .signage--vertical {
