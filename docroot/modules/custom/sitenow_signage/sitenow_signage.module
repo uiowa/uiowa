@@ -1227,7 +1227,13 @@ function sitenow_signage_outlook_resource_allowed_values() {
   $config = \Drupal::configFactory()->getEditable('uiowa_hours.settings');
   $group = $config->get('group') ?: 'Signage';
   $api_client = \Drupal::service('uiowa_hours.api');
-  return $api_client->getResources($group) ?: ['none' => 'No resources available'];
+  $resources = $api_client->getResources($group);
+
+  if (empty($resources)) {
+    return ['none' => 'No resources available'];
+  }
+
+  return array_combine($resources, $resources);
 }
 
 /**
