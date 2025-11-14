@@ -1,0 +1,30 @@
+uuid: 8ffa05ad-3f08-4b96-8664-a8ac5fd20c63
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.signage_text
+  module:
+    - ckeditor5
+format: signage_text
+editor: ckeditor5
+settings:
+  toolbar:
+    items:
+      - bold
+      - italic
+      - '|'
+      - bulletedList
+      - '|'
+      - undo
+      - redo
+      - removeFormat
+  plugins:
+    ckeditor5_list:
+      properties:
+        reversed: false
+        startIndex: false
+        styles: false
+      multiBlock: false
+image_upload:
+  status: false
