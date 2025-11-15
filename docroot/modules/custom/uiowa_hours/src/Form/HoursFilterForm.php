@@ -99,6 +99,7 @@ class HoursFilterForm extends FormBase {
       '#type' => 'container',
       '#attributes' => [
         'role' => 'region',
+        'aria-label' => 'Hours',
         'aria-live' => 'assertive',
         'id' => $result_id,
         'class' => [
