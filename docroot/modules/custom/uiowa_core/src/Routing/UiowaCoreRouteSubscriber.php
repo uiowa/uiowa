@@ -29,6 +29,7 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
       'ui_suite.index',
       // Block add.
       'block_content.add_page',
+      'block_content.add_form',
     ];
 
     // Restrict access to these routes for non-admins.
