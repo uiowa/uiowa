@@ -1015,6 +1015,30 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
 
       break;
+
+    case 'workbench_email_template_add_form':
+      // Remove filtered_html and minimal_plus formats
+      // by only allowing these others.
+      $form['contents']['body']['#allowed_formats'] = [
+        'plain_text',
+        'basic',
+        'minimal',
+      ];
+
+      // Hide the "Draft" workflow transitions initially. ITS is the only one using this?
+      $form['transitions']['draft']['#access'] = FALSE;
+
+      // These options are not relevant for the initial use cases.
+      // Author, revision author, comma-separated list available.
+      unset($form['enabled_recipient_types']['#options']['email']);
+      $form['recipient_types']['settings']['email']['#access'] = FALSE;
+      unset($form['enabled_recipient_types']['#options']['entity_reference_user']);
+      $form['recipient_types']['settings']['entity_reference_user']['#access'] = FALSE;
+      unset($form['enabled_recipient_types']['#options']['role']);
+      $form['recipient_types']['settings']['role']['#access'] = FALSE;
+      unset($form['enabled_recipient_types']['#options']['roles_with_access']);
+      $form['recipient_types']['settings']['roles_with_access']['#access'] = FALSE;
+      break;
   }
 
   // Adjust the body summary help text for all nodes that use it.
