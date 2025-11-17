@@ -1919,6 +1919,14 @@ function uiowa_core_config_schema_info_alter(&$schemas) {
 }
 
 /**
+ * Implements hook_menu_local_actions_alter().
+ */
+function uiowa_core_menu_local_actions_alter(array &$local_actions) {
+  // Remove "Add content block" from the block library for now.
+  unset($local_actions['block_content_add_action']);
+}
+
+/**
  * Fast object to array conversion function.
  *
  * Helper function to convert objects recursively to arrays.
