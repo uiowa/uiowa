@@ -187,6 +187,19 @@ function uiowa_core_mail_alter(&$message) {
       ]));
     }
   }
+  // Add a notice to workbench_email messages.
+  if ($message['module'] === 'workbench_email') {
+    $site_url = \Drupal::request()->getSchemeAndHttpHost();
+    $notice = "\n\n---\n\nThis is an automated message from $site_url.";
+
+    // Ensure body is plain text or array—Workbench Email creates $message['body'] as an array.
+    if (is_array($message['body'])) {
+      $message['body'][] = $notice;
+    }
+    else {
+      $message['body'] .= $notice;
+    }
+  }
 }
 
 /**
