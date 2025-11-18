@@ -131,3 +131,15 @@ function brand_core_update_9001() {
 function brand_core_update_9002() {
   \Drupal::service('module_installer')->install(['symfony_mailer']);
 }
+
+/**
+ * Import default config_ignore.settings to avoid
+ * deleting workbench_email template.
+ */
+function brand_core_update_10000() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings',
+    $source->read('config_ignore.settings'));
+}
