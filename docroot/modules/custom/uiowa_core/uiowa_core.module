@@ -192,7 +192,7 @@ function uiowa_core_mail_alter(&$message) {
     $site_url = \Drupal::request()->getSchemeAndHttpHost();
     $notice = "\n\n---\n\nThis is an automated message from $site_url.";
 
-    // Ensure body is plain text or array—Workbench Email creates $message['body'] as an array.
+    // Different handling based on plain text or html (array).
     if (is_array($message['body'])) {
       $message['body'][] = $notice;
     }
