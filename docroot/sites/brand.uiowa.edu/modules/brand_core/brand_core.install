@@ -141,4 +141,12 @@ function brand_core_update_10000() {
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('config_ignore.settings',
     $source->read('config_ignore.settings'));
+
+  // Update existing workbench_email template to use minimal format.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('workbench_email.workbench_email_template.approved_author');
+  $body = $config->get('body');
+  $body['format'] = 'minimal';
+  $config->set('body', $body);
+  $config->save();
 }
