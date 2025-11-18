@@ -1,0 +1,139 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Charts module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_chart_definition_alter().
+ */
+function sitenow_charts_chart_definition_alter(array &$definition, array $element, $chart_id) {
+  // Get the yAxis format if it exists.
+  if (!empty($definition['yAxis'][0]['labels']['format'])) {
+    $format = $definition['yAxis'][0]['labels']['format'];
+
+    // Apply the same format to tooltips.
+    // Replace {value} with {point.y} for tooltip context.
+    $tooltip_format = str_replace('{value}', '{point.y}', $format);
+
+    $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+
+    // Add comma to the format if not already present
+    // This handles formats like {value:.2f}, {value}, {value:.0f}%, etc.
+    if (!str_contains($format, ',')) {
+      // Insert comma after the colon if it exists, otherwise after 'value'.
+      if (str_contains($format, '{value:')) {
+        $format = str_replace('{value:', '{value:,', $format);
+      }
+      else {
+        $format = str_replace('{value}', '{value:,.0f}', $format);
+      }
+    }
+    $definition['yAxis'][0]['labels']['format'] = $format;
+  }
+}
+
+/**
+ * Implements hook_chart_alter().
+ */
+function sitenow_charts_chart_alter(array &$element, $chart_id) {
+  // Adjusts screenReaderSection to render h2 instead of h5.
+  $element['#raw_options'] = [
+    'accessibility' => [
+      'screenReaderSection' => [
+        'beforeChartFormat' => '<h2>{chartTitle}</h2>
+<div>{typeDescription}</div>
+<div>{chartSubtitle}</div>
+<div>{chartLongdesc}</div>
+<div>{playAsSoundButton}</div>
+<div>{viewTableButton}</div>
+<div>{xAxisDescription}</div>
+<div>{yAxisDescription}</div>
+<div>{annotationsTitle}{annotationsList}</div>',
+      ],
+    ],
+    // Adjusts legend font size pass AA compliance.
+    'legend' => [
+      'itemStyle' => [
+        'fontSize' => '18px',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_charts_plugin_supported_chart_types_alter().
+ */
+function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
+  // Limit to specific chart types.
+  $allowed_types = ['line', 'column', 'bar'];
+  $types = array_intersect($types, $allowed_types);
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) {
+  $field_definition = $context['items']->getFieldDefinition();
+
+  if ($field_definition->getName() === 'field_sitenow_chart') {
+    $field_widget_complete_form['widget']['#after_build'][] = function ($element) {
+      foreach ($element as $delta => $item) {
+        if (is_numeric($delta)) {
+          // Remove preview of graph in block form.
+          if (isset($element[$delta]['config']['preview'])) {
+            $element[$delta]['config']['preview']['#access'] = FALSE;
+          }
+          // Remove ability to add color changer.
+          if (isset($element[$delta]['config']['display']['color_changer'])) {
+            $element[$delta]['config']['display']['color_changer']['#access'] = FALSE;
+          }
+          // Remove ability to set custom bg color.
+          if (isset($element[$delta]['config']['display']['background'])) {
+            $element[$delta]['config']['display']['background']['#access'] = FALSE;
+          }
+          // Remove ability to add data labels
+          // because they are very hard to read.
+          if (isset($element[$delta]['config']['display']['data_labels'])) {
+            $element[$delta]['config']['display']['data_labels']['#access'] = FALSE;
+          }
+          // Remove ability to set dimensions
+          // because we want these to be responsive.
+          if (isset($element[$delta]['config']['display']['dimensions'])) {
+            $element[$delta]['config']['display']['dimensions']['#access'] = FALSE;
+          }
+          // Remove ability to change to polar coordinate system.
+          if (isset($element[$delta]['config']['display']['polar'])) {
+            $element[$delta]['config']['display']['polar']['#access'] = FALSE;
+          }
+        }
+      }
+      return $element;
+    };
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_charts_preprocess_field(&$variables) {
+  // For chart fields in block content, a workaround
+  // trick the entity type to bypass the stripped template logic in layouts.html.twig.
+  if ($variables['entity_type'] == 'block_content' && $variables['field_name'] == 'field_sitenow_chart') {
+    // Change entity type so it goes through proper
+    // field rendering instead of stripped block content rendering.
+    $variables['entity_type'] = 'node';
+
+    // Ensure label is visually hidden if it was originally hidden.
+    if ($variables['label_hidden']) {
+      $variables['label_display'] = 'visually_hidden';
+      $variables['label_hidden'] = FALSE;
+      if (empty($variables['label'])) {
+        $variables['label'] = 'Chart';
+      }
+    }
+  }
+}
