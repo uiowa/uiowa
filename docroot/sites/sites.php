@@ -2867,12 +2867,6 @@ $sites['conferencembhd2022.dev.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.e
 $sites['conferencembhd2022.stage.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
 $sites['conferencembhd2022.prod.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
 
-// Directory aliases for basicneeds.uiowa.edu.
-$sites['basicneeds.uiowa.ddev.site'] = 'basicneeds.uiowa.edu';
-$sites['basicneeds.dev.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
-$sites['basicneeds.stage.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
-$sites['basicneeds.prod.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
-
 // Directory aliases for iisicca.uiowa.edu.
 $sites['iisicca.uiowa.ddev.site'] = 'iisicca.uiowa.edu';
 $sites['iisicca.dev.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
