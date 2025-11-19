@@ -701,7 +701,7 @@ function sitenow_signage_preprocess_page(&$variables) {
  * Implements hook_preprocess_paragraph().
  */
 function sitenow_signage_preprocess_paragraph(&$variables) {
-  /** @var ParagraphInterface $paragraph */
+  /** @var Drupal\paragraphs\ParagraphInterface $paragraph */
   $paragraph = $variables['paragraph'];
   if (!$paragraph) {
     $paragraph = $variables['elements']['#paragraph'];
