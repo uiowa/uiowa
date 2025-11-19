@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbowren.uiowa.ddev.site
+    protocol: https
+  machine_name: labbowren
+  human_name: bowren.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbowren.prod
+drupal:
+  db:
+    database: bowren_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbowren.prod.drupal.uiowa.edu'
+  requester: manders2
+  site-name: bowren
