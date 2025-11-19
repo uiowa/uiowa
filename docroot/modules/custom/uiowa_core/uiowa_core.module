@@ -1069,7 +1069,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         'roles_with_access',
       ];
       foreach ($recipients as $recipient) {
-        unset($form['recipient_types']['settings'][$recipient]);
+        unset($form['enabled_recipient_types']['#options'][$recipient]);
         $form['recipient_types']['settings'][$recipient]['#access'] = FALSE;
       }
 
