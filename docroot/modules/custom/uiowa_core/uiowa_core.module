@@ -1037,8 +1037,9 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['contents']['subject']['#default_value'] = '"[node:title]" on the [site:name] website has been updated';
       $site_url = rtrim(\Drupal::request()->getSchemeAndHttpHost() . \Drupal::request()->getBasePath(), '/');
       $form['contents']['body']['#default_value'] = "<p><em>[node:title]</em> has been updated.</p>
+<p>[node:revision_log]</p>
 <p>Login to view: {$site_url}/saml/login?destination=/node/[node:nid]</p>";
-      $form['contents']['body']['#format']= 'minimal';
+      $form['contents']['body']['#format'] = 'minimal';
 
     case 'workbench_email_template_edit_form':
 
@@ -1072,7 +1073,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         $form['recipient_types']['settings'][$recipient]['#access'] = FALSE;
       }
 
-      // Provide more help text to the transitions section about related bundles.
+      // More help text to the transitions section about related bundles.
       $form['transitions']['#description'] = t('Select which transitions an email should be sent for.');
       $map = [];
 
@@ -1147,7 +1148,7 @@ function uiowa_core_preprocess_details(&$variables) {
   $has_checkboxes = FALSE;
 
   if (isset($variables['element']) && is_array($variables['element'])) {
-    foreach ($variables['element'] as $key => $child) {
+    foreach ($variables['element'] as $child) {
       if (is_array($child) && isset($child['#type']) && $child['#type'] === 'checkboxes') {
         $has_checkboxes = TRUE;
         break;
@@ -1187,7 +1188,7 @@ function _uiowa_core_process_element(array $element, FormStateInterface $form_st
     $roles = $group_config['#roles'];
 
     // For each role that we want to remove access from...
-    foreach ($roles as $key => $role) {
+    foreach ($roles as $role) {
 
       // Set its access to false.
       $checkboxes[$role]['#access'] = FALSE;
@@ -1451,6 +1452,10 @@ function uiowa_core_token_info(): array {
     'name' => 'Combined Organization Name',
     'description' => 'A combined parent organization and organization token.',
   ];
+  $info['tokens']['node']['revision_log'] = [
+    'name' => t('Revision log message'),
+    'description' => t('Outputs the revision log message with a prepended label.'),
+  ];
   $info['tokens']['uiowa_core']['favicon_assets_path'] = [
     'name' => 'Favicon assets path',
     'description' => 'A token to override the default favicons path.',
@@ -1463,6 +1468,15 @@ function uiowa_core_token_info(): array {
  */
 function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
+  if ($type === 'node' && !empty($data['node'])) {
+    $node = $data['node'];
+    foreach ($tokens as $name => $original) {
+      if ($name === 'revision_log') {
+        $log = $node->get('revision_log')->value;
+        $replacements[$original] = $log ? Html::escape('Revision log message: ' . $log) : '';
+      }
+    }
+  }
   if ($type === 'uiowa_core') {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
