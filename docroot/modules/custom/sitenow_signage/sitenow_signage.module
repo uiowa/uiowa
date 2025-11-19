@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Implements hook_form_alter().
@@ -232,7 +233,7 @@ function sitenow_signage_preprocess_field(&$variables) {
 
       $markup['container']['table'] = [
         '#theme' => 'table',
-        '#caption' => 'Room Schedule',
+        '#caption' => $table_caption ?? 'Room schedule',
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => $empty_message,
@@ -700,6 +701,7 @@ function sitenow_signage_preprocess_page(&$variables) {
  * Implements hook_preprocess_paragraph().
  */
 function sitenow_signage_preprocess_paragraph(&$variables) {
+  /** @var ParagraphInterface $paragraph */
   $paragraph = $variables['paragraph'];
   if (!$paragraph) {
     $paragraph = $variables['elements']['#paragraph'];
@@ -998,6 +1000,14 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       // Replace the field output with table markup.
       $variables['content'][] = ['#markup' => $markup];
 
+      break;
+
+    case 'astra_room_schedule':
+      if ($paragraph->field_headline->isEmpty()) {
+        // If the headline field is not set, set a default.
+        $paragraph->set('field_headline', 'Room schedule');
+        $variables['content']['field_headline'] = $paragraph->field_headline->view('full');
+      }
       break;
   }
 }
