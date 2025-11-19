@@ -1032,9 +1032,17 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       break;
 
     case 'workbench_email_template_add_form':
+      // Provide some defaults for hand-holding purposes.
+      $form['contents']['format']['#default_value'] = 'html';
+      $form['contents']['subject']['#default_value'] = '"[node:title]" on the [site:name] website has been updated';
+      $site_url = rtrim(\Drupal::request()->getSchemeAndHttpHost() . \Drupal::request()->getBasePath(), '/');
+      $form['contents']['body']['#default_value'] = "<p><em>[node:title]</em> has been updated.</p>
+<p>Login to view: {$site_url}/saml/login?destination=/node/[node:nid]</p>";
+      $form['contents']['body']['#format']= 'minimal';
+
     case 'workbench_email_template_edit_form':
 
-      // Overwrite description for type.
+      // Overwrite description for email type to hide linked module jargon.
       $form['contents']['format']['#description'] = t('Email message format.');
 
       // Remove filtered_html and minimal_plus formats
@@ -1045,8 +1053,27 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         'minimal',
       ];
 
+      // Folks don't know what a bundle is.
+      $form['bundles']['#title'] = t('Types');
+      $form['bundles']['#description'] = t('Limit to the following types. Select none to include all.');
+
+      // These options are not relevant or don't work properly
+      // for the initial use cases.
+      // Author, comma-separated list available.
+      $recipients = [
+        'email',
+        'entity_reference_user',
+        'last_revision_author',
+        'role',
+        'roles_with_access',
+      ];
+      foreach ($recipients as $recipient) {
+        unset($form['recipient_types']['settings'][$recipient]);
+        $form['recipient_types']['settings'][$recipient]['#access'] = FALSE;
+      }
+
       // Provide more help text to the transitions section about related bundles.
-      $form['transitions']['#description'] = t('These are all of the available content moderation workflows on the website. Only certain workflows are used.');
+      $form['transitions']['#description'] = t('Select which transitions an email should be sent for.');
       $map = [];
 
       /** @var \Drupal\workflows\Entity\Workflow[] $workflows */
@@ -1081,22 +1108,12 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
               $transition_element['#description'] = t('Applies to: @bundles', ['@bundles' => $bundles]);
             }
             else {
-              $transition_element['#description'] = t('This workflow is not in-use.');
+              // Hide workflow if no bundles are mapped to it.
+              $transition_element['#access'] = FALSE;
             }
           }
         }
       }
-
-      // These options are not relevant for the initial use cases.
-      // Author, revision author, comma-separated list available.
-      unset($form['enabled_recipient_types']['#options']['email']);
-      $form['recipient_types']['settings']['email']['#access'] = FALSE;
-      unset($form['enabled_recipient_types']['#options']['entity_reference_user']);
-      $form['recipient_types']['settings']['entity_reference_user']['#access'] = FALSE;
-      unset($form['enabled_recipient_types']['#options']['role']);
-      $form['recipient_types']['settings']['role']['#access'] = FALSE;
-      unset($form['enabled_recipient_types']['#options']['roles_with_access']);
-      $form['recipient_types']['settings']['roles_with_access']['#access'] = FALSE;
       break;
   }
 
