@@ -7888,3 +7888,9 @@ $sites['labsinapse.uiowa.ddev.site'] = 'sinapse.lab.uiowa.edu';
 $sites['labsinapse.dev.drupal.uiowa.edu'] = 'sinapse.lab.uiowa.edu';
 $sites['labsinapse.stage.drupal.uiowa.edu'] = 'sinapse.lab.uiowa.edu';
 $sites['labsinapse.prod.drupal.uiowa.edu'] = 'sinapse.lab.uiowa.edu';
+
+// Directory aliases for bowren.lab.uiowa.edu.
+$sites['labbowren.uiowa.ddev.site'] = 'bowren.lab.uiowa.edu';
+$sites['labbowren.dev.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
+$sites['labbowren.stage.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
+$sites['labbowren.prod.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
