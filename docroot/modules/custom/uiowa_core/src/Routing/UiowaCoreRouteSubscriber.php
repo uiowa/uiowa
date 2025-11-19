@@ -22,7 +22,7 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
       $route->setDefault('_form', 'Drupal\uiowa_core\Form\UiowaCoreSiteInformationForm');
     }
     if ($route = $collection->get('entity.workbench_email_template.collection')) {
-      $route->setDefault('_title', 'Content Notifications');
+      $route->setDefault('_title', 'Content notifications');
     }
     $restricted_routes = [
       // Google Tag Manager settings.
