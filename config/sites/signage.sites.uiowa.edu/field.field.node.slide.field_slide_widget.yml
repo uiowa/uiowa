@@ -10,6 +10,7 @@ dependencies:
     - paragraphs.paragraphs_type.slide_events
     - paragraphs.paragraphs_type.slide_image
     - paragraphs.paragraphs_type.slide_mazevo_events
+    - paragraphs.paragraphs_type.slide_text
     - paragraphs.paragraphs_type.slide_video
   module:
     - entity_reference_revisions
@@ -33,6 +34,7 @@ settings:
       outlook_events: outlook_events
       astra_room_schedule: astra_room_schedule
       slide_mazevo_events: slide_mazevo_events
+      slide_text: slide_text
     negate: 0
     target_bundles_drag_drop:
       astra_room_schedule:
@@ -49,6 +51,9 @@ settings:
         enabled: true
       slide_mazevo_events:
         weight: -16
+        enabled: true
+      slide_text:
+        weight: 12
         enabled: true
       slide_video:
         weight: -20
