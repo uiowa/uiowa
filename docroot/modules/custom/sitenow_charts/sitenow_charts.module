@@ -111,12 +111,11 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
           }
           // Hide color inputs in the data collector table.
           if (isset($element[$delta]['config']['series']['data_collector_table'])) {
-            foreach ($element[$delta]['config']['series']['data_collector_table'] as $row_key => &$row) {
+            foreach ($element[$delta]['config']['series']['data_collector_table'] as $row_key => $row) {
               if (is_numeric($row_key)) {
-                // Loop through all columns in the row.
-                foreach ($row as $col_key => &$col) {
+                foreach ($row as $col_key => $col) {
                   if (is_numeric($col_key) && isset($col['color'])) {
-                    $col['color']['#access'] = FALSE;
+                    $element[$delta]['config']['series']['data_collector_table'][$row_key][$col_key]['color']['#access'] = FALSE;
                   }
                 }
               }
