@@ -11,11 +11,11 @@ $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
   }
 
   .slide__headline {
-    font-size: 1.4rem;
+    font-size: 2.5rem;
     font-weight: 900;
     letter-spacing: .08rem;
     text-transform: uppercase;
-    padding: 2rem 2rem 1rem;
+    padding: 1.4rem 2rem .85rem;
   }
 }
 
@@ -36,8 +36,6 @@ $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
   &.not-logged-in {
     overflow: hidden;
   }
-
-  //background-color: var(--brand-secondary);
 
   // Adjust padding to be smaller for signage.
   .layout.layout__container {
@@ -60,9 +58,9 @@ $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
   main.content__container {
     background: variables.$secondary;
   }
-
 }
 
+// Add a visual indicator that a slide is unpublished.
 .node--type-slide.node--unpublished:after {
   display: block;
   position: absolute;
@@ -111,13 +109,7 @@ div.bg--black .signage__table {
   }
 
   caption {
-    background-color: variables.$secondary;
-    font-size: variables.$h5-font-size;
-    font-weight: variables.$font-weight-heavy;
-    letter-spacing: 0.08rem;
-    text-align: left;
-    color: variables.$light;
-    padding: 2rem;
+    @include utilities.element-invisible;
   }
 
   thead {
@@ -154,12 +146,7 @@ div.bg--black .signage__table {
       }
     }
   }
-
-  &.mazevo__events caption {
-    @include utilities.element-invisible;
-  }
 }
-
 
 // Increase font sizes for vertical displays.
 .signage--vertical {
@@ -208,5 +195,15 @@ div.bg--black .signage__table {
 
   & > *:not(:first-child) {
     margin-top: 7px;
+  }
+}
+
+
+.signage__slideshow .field--name-field-slide-body {
+  font-size: 2rem;
+  padding: 0 var(--space-md-width-gutter) var(--space-md-width-gutter);
+
+  p, li {
+    font-size: 2rem;
   }
 }
