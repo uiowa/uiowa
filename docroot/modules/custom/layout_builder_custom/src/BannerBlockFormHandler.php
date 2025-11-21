@@ -83,16 +83,10 @@ class BannerBlockFormHandler {
     // Set weights and clean up defaults for headline fields.
     if (isset($form['layout_builder_style_headline_type'])) {
       $form['layout_builder_style_headline_type']['#weight'] = 62;
-      if ($form_id === 'layout_builder_add_block') {
-        $form['layout_builder_style_headline_type']['#default_value'] = 'headline_bold_serif';
-      }
     }
 
     if (isset($form['layout_builder_style_headline_size'])) {
       $form['layout_builder_style_headline_size']['#weight'] = 63;
-      if ($form_id === 'layout_builder_add_block') {
-        $form['layout_builder_style_headline_size']['#default_value'] = 'headline_large';
-      }
     }
 
     // Duplicate headline fields into headline group.
@@ -217,9 +211,6 @@ class BannerBlockFormHandler {
     // Set weights for button fields.
     if (isset($form['layout_builder_style_button_style'])) {
       $form['layout_builder_style_button_style']['#weight'] = 71;
-      if ($form_id === 'layout_builder_add_block') {
-        $form['layout_builder_style_button_style']['#default_value'] = 'button_primary';
-      }
     }
 
     if (isset($form['layout_builder_style_button_font'])) {
@@ -256,16 +247,10 @@ class BannerBlockFormHandler {
     // Set weights for layout fields.
     if (isset($form['layout_builder_style_horizontal_alignment'])) {
       $form['layout_builder_style_horizontal_alignment']['#weight'] = 95;
-      if ($form_id === 'layout_builder_add_block') {
-        $form['layout_builder_style_horizontal_alignment']['#default_value'] = 'horizontal_alignment_left';
-      }
     }
 
     if (isset($form['layout_builder_style_vertical_alignment'])) {
       $form['layout_builder_style_vertical_alignment']['#weight'] = 96;
-      if ($form_id === 'layout_builder_add_block') {
-        $form['layout_builder_style_vertical_alignment']['#default_value'] = 'vertical_alignment_center';
-      }
     }
 
     // Duplicate layout fields into layout settings container.

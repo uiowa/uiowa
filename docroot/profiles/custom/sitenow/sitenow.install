@@ -4349,3 +4349,40 @@ function sitenow_update_10027() {
     }
   });
 }
+
+/**
+ * Set default button style for existing uiowa_button blocks that don't have one.
+ */
+function sitenow_update_10028() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_button', function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    // Ensure styles is an array.
+    if (!is_array($styles)) {
+      $styles = [];
+    }
+
+    // We shouldn't, but check if we have a button style already set.
+    // If we do, we shouldn't make any changes.
+    $style_exists = FALSE;
+    $button_style_ids = [
+      'button_primary',
+      'button_secondary',
+      'button_tertiary',
+      'button_tertiary_outline',
+    ];
+    foreach ($styles as $style) {
+      if (in_array($style, $button_style_ids)) {
+        $style_exists = TRUE;
+        break;
+      }
+    }
+
+    // If no button style was set, then add our new
+    // default style and re-set the new complete styles.
+    if (!$style_exists) {
+      $styles[] = 'button_primary';
+      $component->set('layout_builder_styles_style', $styles);
+    }
+  });
+}
