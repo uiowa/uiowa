@@ -8,6 +8,10 @@
     attach: function (context, settings) {
       context.querySelectorAll('.signage__slideshow').forEach(function (element) {
 
+
+
+
+
         // Override prefers-reduced-motion for Splide.
         const originalMatchMedia = window.matchMedia;
         window.matchMedia = function (query) {
@@ -38,6 +42,7 @@
           arrows: false,
           pagination: false,
           rewind: true,
+          keyboard: 'focused'
         });
 
         // Set up initial video states before mounting.
@@ -62,6 +67,30 @@
         });
 
         splide.mount();
+
+        // The controller has functions to go forward and back in the carousel.
+        const controller = splide.Components.Controller;
+
+        ['keydown'].forEach(function(event) {
+          window.addEventListener(event, function(event) {
+            const key = event.key;
+
+            const callback = {
+              "ArrowLeft"  : this.leftHandler,
+              "ArrowRight" : this.rightHandler,
+            }[key]
+            callback?.(event);
+
+            this.leftHandler = function(event) {
+              const prev = controller.getPrev();
+              controller.go(prev);
+            }
+            this.rightHandler = function(event) {
+              const next = controller.getNext();
+              controller.go(next);
+            }
+          });
+        });
       });
 
       /**
