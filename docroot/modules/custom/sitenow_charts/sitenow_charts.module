@@ -109,6 +109,18 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
           if (isset($element[$delta]['config']['display']['polar'])) {
             $element[$delta]['config']['display']['polar']['#access'] = FALSE;
           }
+          // Hide color inputs in the data collector table.
+          if (isset($element[$delta]['config']['series']['data_collector_table'])) {
+            foreach ($element[$delta]['config']['series']['data_collector_table'] as $row_key => $row) {
+              if (is_numeric($row_key)) {
+                foreach ($row as $col_key => $col) {
+                  if (is_numeric($col_key) && isset($col['color'])) {
+                    $element[$delta]['config']['series']['data_collector_table'][$row_key][$col_key]['color']['#access'] = FALSE;
+                  }
+                }
+              }
+            }
+          }
         }
       }
       return $element;
