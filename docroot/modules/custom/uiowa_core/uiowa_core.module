@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\content_moderation\Plugin\WorkflowType\ContentModeration;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -32,6 +33,7 @@ use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Drupal\webform\Element\WebformRoles;
+use Drupal\workflows\Entity\Workflow;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
@@ -183,6 +185,19 @@ function uiowa_core_mail_alter(&$message) {
       \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
         '@from' => $message['from'],
       ]));
+    }
+  }
+  // Add a notice to workbench_email messages.
+  if ($message['module'] === 'workbench_email') {
+    $site_url = \Drupal::request()->getSchemeAndHttpHost();
+    $notice = "\n\n---\n\nThis is an automated message from $site_url.";
+
+    // Different handling based on plain text or html (array).
+    if (is_array($message['body'])) {
+      $message['body'][] = $notice;
+    }
+    else {
+      $message['body'] .= $notice;
     }
   }
 }
@@ -1015,6 +1030,105 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
 
       break;
+
+    case 'workbench_email_template_add_form':
+      // Provide some defaults for hand-holding purposes.
+      $form['contents']['format']['#default_value'] = 'html';
+      $form['contents']['subject']['#default_value'] = '"[node:title]" on the [site:name] website has been updated';
+      $site_url = rtrim(\Drupal::request()->getSchemeAndHttpHost() . \Drupal::request()->getBasePath(), '/');
+      $form['contents']['body']['#default_value'] = "<p><em>[node:title]</em> has been updated.</p>
+<p>[node:revision_log]</p>
+<p>Login to view: {$site_url}/saml/login?destination=/node/[node:nid]</p>";
+      $form['contents']['body']['#format'] = 'minimal';
+      $form['enabled_recipient_types']['#default_value'] = [
+        'fixed_email' => 'fixed_email',
+      ];
+
+    case 'workbench_email_template_edit_form':
+
+      // Overwrite description for email type to hide linked module jargon.
+      $form['contents']['format']['#description'] = t('Email message format.');
+
+      // Remove filtered_html and minimal_plus formats
+      // by only allowing these others.
+      $form['contents']['body']['#allowed_formats'] = [
+        'plain_text',
+        'basic',
+        'minimal',
+      ];
+
+      // Hide tokens as they aren't quite working correctly.
+      // Either they don't have brackets in plain text,
+      // or they don't insert automagically when using html,
+      // or they include javascript void click markup.
+      // Several token examples are shown with default values and help text.
+      $form['contents']['tokens']['#access'] = FALSE;
+      $form['contents']['tokens-warning']['#access'] = FALSE;
+
+      // Folks don't know what a bundle is.
+      $form['bundles']['#title'] = t('Types');
+      $form['bundles']['#description'] = t('Limit to the following types. Select none to include all.');
+
+      // These options are not relevant or don't work properly
+      // for the initial use cases.
+      // Author, comma-separated list available.
+      $recipients = [
+        'email',
+        'entity_reference_user',
+        'last_revision_author',
+        'role',
+        'roles_with_access',
+      ];
+      foreach ($recipients as $recipient) {
+        unset($form['enabled_recipient_types']['#options'][$recipient]);
+        $form['recipient_types']['settings'][$recipient]['#access'] = FALSE;
+      }
+
+      // More help text to the transitions section about related bundles.
+      // @todo Remove if module issue is resolved:
+      // https://www.drupal.org/project/workbench_email/issues/3559113.
+      $form['transitions']['#description'] = t('Select which transitions an email should be sent for.');
+      $map = [];
+
+      /** @var \Drupal\workflows\Entity\Workflow[] $workflows */
+      $workflows = Workflow::loadMultiple();
+      $bundle_storage = \Drupal::entityTypeManager()->getStorage('node_type');
+
+      foreach ($workflows as $workflow) {
+        $type = $workflow->getTypePlugin();
+
+        if ($type instanceof ContentModeration) {
+          $entity_types = $type->getEntityTypes();
+          if (in_array('node', $entity_types)) {
+            $bundle_ids = $type->getBundlesForEntityType('node');
+            $labels = [];
+
+            foreach ($bundle_ids as $bundle_id) {
+              $labels[] = $bundle_storage->load($bundle_id)
+                ->label();
+            }
+
+            $map[$workflow->id()] = $labels;
+          }
+        }
+      }
+
+      if (isset($form['transitions']) && is_array($form['transitions'])) {
+        foreach ($form['transitions'] as $machine_name => &$transition_element) {
+          if (is_array($transition_element) && isset($transition_element['#type']) && $transition_element['#type'] === 'checkboxes') {
+            // Append help text.
+            if (isset($map[$machine_name])) {
+              $bundles = implode(', ', $map[$machine_name]);
+              $transition_element['#description'] = t('Applies to: @bundles', ['@bundles' => $bundles]);
+            }
+            else {
+              // Hide workflow if no bundles are mapped to it.
+              $transition_element['#access'] = FALSE;
+            }
+          }
+        }
+      }
+      break;
   }
 
   // Adjust the body summary help text for all nodes that use it.
@@ -1022,6 +1136,17 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     if (isset($form['body']['widget'][0]['summary'])) {
       $form['body']['widget'][0]['summary']['#description'] = t('The summary is used for list displays on this site and in the content\'s <a href="https://sitenow.uiowa.edu/documentation/search-engine-optimization#summary" target="_blank">meta description</a>. If left blank, a trimmed value of the full text will be used for the meta description, but not for list displays.');
     }
+  }
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function uiowa_core_menu_links_discovered_alter(array &$links) {
+  // Change the title and description of the workbench_email menu link.
+  if (isset($links['entity.content_moderation_email_template.collection'])) {
+    $links['entity.content_moderation_email_template.collection']['title'] = t('Content notifications');
+    $links['entity.content_moderation_email_template.collection']['description'] = t('Email templates for content notifications.');
   }
 }
 
@@ -1036,7 +1161,7 @@ function uiowa_core_preprocess_details(&$variables) {
   $has_checkboxes = FALSE;
 
   if (isset($variables['element']) && is_array($variables['element'])) {
-    foreach ($variables['element'] as $key => $child) {
+    foreach ($variables['element'] as $child) {
       if (is_array($child) && isset($child['#type']) && $child['#type'] === 'checkboxes') {
         $has_checkboxes = TRUE;
         break;
@@ -1076,7 +1201,7 @@ function _uiowa_core_process_element(array $element, FormStateInterface $form_st
     $roles = $group_config['#roles'];
 
     // For each role that we want to remove access from...
-    foreach ($roles as $key => $role) {
+    foreach ($roles as $role) {
 
       // Set its access to false.
       $checkboxes[$role]['#access'] = FALSE;
@@ -1340,6 +1465,10 @@ function uiowa_core_token_info(): array {
     'name' => 'Combined Organization Name',
     'description' => 'A combined parent organization and organization token.',
   ];
+  $info['tokens']['node']['revision_log'] = [
+    'name' => t('Revision log message'),
+    'description' => t('Outputs the revision log message with a prepended label.'),
+  ];
   $info['tokens']['uiowa_core']['favicon_assets_path'] = [
     'name' => 'Favicon assets path',
     'description' => 'A token to override the default favicons path.',
@@ -1352,6 +1481,15 @@ function uiowa_core_token_info(): array {
  */
 function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
+  if ($type === 'node' && !empty($data['node'])) {
+    $node = $data['node'];
+    foreach ($tokens as $name => $original) {
+      if ($name === 'revision_log') {
+        $log = $node->get('revision_log')->value;
+        $replacements[$original] = $log ? Html::escape('Revision log message: ' . $log) : '';
+      }
+    }
+  }
   if ($type === 'uiowa_core') {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
