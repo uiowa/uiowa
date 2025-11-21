@@ -4349,3 +4349,49 @@ function sitenow_update_10027() {
     }
   });
 }
+
+/**
+ * Clean up migration now that we're in a post-D7 world.
+ */
+function sitenow_update_10028() {
+  $module_handler = \Drupal::moduleHandler();
+  $logger = \Drupal::logger('sitenow');
+  $module_list = $module_handler->getModuleList();
+  $to_uninstall = [];
+
+  foreach (array_keys($module_list) as $module_name) {
+    if (str_ends_with($module_name, 'migrate')) {
+      $to_uninstall[] = $module_name;
+    }
+  }
+
+  if (!empty($to_uninstall)) {
+    \Drupal::service('module_installer')->uninstall($to_uninstall, TRUE);
+    $logger->notice('Disabled the following modules: @modules', [
+      '@modules' => implode(', ', $to_uninstall)
+    ]);
+  }
+
+  // Grab the database, look for migrate-related tables, and drop them.
+  // Adapted from
+  // https://www.drupal.org/docs/upgrading-drupal/after-the-upgrade#s-cleaning-up-delete-migration-tables
+  // but slightly more specific.
+  $database = \Drupal::database();
+  if ($migrate_tables = $database->schema()->findTables('migrate_map_%')) {
+    foreach ($migrate_tables as $table) {
+      $database->schema()->dropTable($table);
+      $logger->notice('Dropped migration table: @table', [
+        '@table' => $table,
+      ]);
+    }
+    // If we had map tables, we also have message tables.
+    $migrate_message_tables = $database->schema()->findTables('migrate_message_%');
+    foreach ($migrate_message_tables as $table) {
+      $database->schema()->dropTable($table);
+      $logger->notice('Dropped migration table: @table', [
+        '@table' => $table,
+      ]);
+    }
+  }
+
+}
