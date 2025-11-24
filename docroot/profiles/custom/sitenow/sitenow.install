@@ -4392,6 +4392,11 @@ function sitenow_update_10028() {
         '@table' => $table,
       ]);
     }
+    // Check for and drop the cache_migrate table.
+    if ($database->schema()->tableExists('cache_migrate')) {
+      $database->schema()->dropTable('cache_migrate');
+      $logger->notice('Dropped migration table: cache_migrate');
+    }
   }
 
 }
