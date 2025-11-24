@@ -17,6 +17,20 @@ $pitch-gray: color.scale(variables.$blk, $lightness: 13%);
     text-transform: uppercase;
     padding: 1.4rem 2rem .85rem;
   }
+
+  .splide__arrow {
+    transition: opacity 0.1s ease-in-out;
+    opacity: 0;
+    background-color: white;
+    transform-origin: center;
+    border: 1px solid transparent;
+  }
+
+  &:hover {
+    .splide__arrow {
+      opacity: 1;
+    }
+  }
 }
 
 // Empty sign block iowa logo.
