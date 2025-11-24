@@ -4397,6 +4397,14 @@ function sitenow_update_10028() {
       $database->schema()->dropTable('cache_migrate');
       $logger->notice('Dropped migration table: cache_migrate');
     }
+    // Check for and drop any config_split_preview_*_migrate tables.
+    $migrate_split_preview_tables = $database->schema()->findTables('config_split_preview_%_migrate');
+    foreach ($migrate_split_preview_tables as $table) {
+      $database->schema()->dropTable($table);
+      $logger->notice('Dropped migration table: @table', [
+        '@table' => $table,
+      ]);
+    }
   }
 
 }
