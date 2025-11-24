@@ -66,6 +66,13 @@
         });
 
         splide.mount();
+
+        // Destroy the arrows if user is not logged in.
+        const isUserLogged = document.querySelector('body.user-logged-in');
+        console.log(isUserLogged);
+        if(!isUserLogged) {
+          splide.Components.Arrows.destroy();
+        }
       });
 
       /**
