@@ -25,12 +25,6 @@ class Alert extends NodeBundleBase implements ClosableInterface, RendersAsCardIn
         'field_alert_category',
       ],
     ]);
-
-    // If we have a headline level override use it,
-    // else stick to the default behavior.
-    if (isset($this->title_headline_level)) {
-      $build['#title_heading_size'] = $this->title_headline_level;
-    }
   }
 
   /**

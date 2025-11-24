@@ -16,7 +16,6 @@ use Drupal\facilities_core\Entity\Artwork;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\Plugin\views\filter\EntityReferenceOverride;
-use Drupal\views\ViewExecutable;
 
 /**
  * Set dynamic allowed values bus routes status.
@@ -720,20 +719,5 @@ function facilities_core_preprocess_views_view(&$variables) {
   if ($display_id === 'block_buildings') {
     // Attach the library using the #attached property.
     $variables['#attached']['library'][] = 'uids_base/view-bef';
-  }
-}
-
-/**
- * Implements hook_views_pre_render().
- */
-function facilities_core_views_pre_render(ViewExecutable $view) {
-  if ($view->id() === 'alerts_building_block' && $view->current_display === 'alert') {
-    foreach ($view->result as $row) {
-      if ($row->_entity && $row->_entity->bundle() === 'alert') {
-        // These alerts are displayed without a specific headline,
-        // so they should be set at h2 rather than the default h3.
-        $row->_entity->title_headline_level = 'h2';
-      }
-    }
   }
 }
