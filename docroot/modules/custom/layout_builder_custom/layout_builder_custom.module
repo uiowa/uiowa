@@ -258,7 +258,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 $form[$key]['#default_value'] = $settings['default'];
               }
               else {
-                // Multi-select elements (checkboxes, select with #multiple) expect an array.
+                // Checkboxes and other multi-select elements expect an array.
                 $form[$key]['#default_value'] = [$settings['default']];
               }
             }
