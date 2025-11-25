@@ -8,10 +8,6 @@
     attach: function (context, settings) {
       context.querySelectorAll('.signage__slideshow').forEach(function (element) {
 
-
-
-
-
         // Override prefers-reduced-motion for Splide.
         const originalMatchMedia = window.matchMedia;
         window.matchMedia = function (query) {
