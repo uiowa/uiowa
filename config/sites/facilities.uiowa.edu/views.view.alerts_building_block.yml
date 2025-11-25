@@ -320,20 +320,7 @@ display:
           plugin_id: standard
           required: true
       css_class: ''
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text
-          empty: false
-          content:
-            value: '<h2 class="visually-hidden">Building announcements</h2>'
-            format: filtered_html
-          tokenize: false
+      header: {  }
       footer:
         area:
           id: area
@@ -368,6 +355,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:
