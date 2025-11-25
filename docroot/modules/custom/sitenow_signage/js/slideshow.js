@@ -42,7 +42,8 @@
           pagination: false,
           rewind: true,
           arrows: false,
-          keyboard: 'global'
+          keyboard: 'global',
+          role: 'marquee'
         });
 
         // Set up initial video states before mounting.
