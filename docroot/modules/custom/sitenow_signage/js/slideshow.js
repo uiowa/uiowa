@@ -39,9 +39,10 @@
           drag: false,
           speed: 1500,
           slideFocus: false,
-          arrows: true,
           pagination: false,
           rewind: true,
+          arrows: false,
+          keyboard: 'global'
         });
 
         // Set up initial video states before mounting.
@@ -66,13 +67,6 @@
         });
 
         splide.mount();
-
-        // Destroy the arrows if user is not logged in.
-        const isUserLogged = document.querySelector('body.user-logged-in');
-        console.log(isUserLogged);
-        if(!isUserLogged) {
-          splide.Components.Arrows.destroy();
-        }
       });
 
       /**
