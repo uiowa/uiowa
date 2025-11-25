@@ -43,7 +43,7 @@
           rewind: true,
           arrows: false,
           keyboard: 'global',
-          role: 'marquee'
+          role: 'group'
         });
 
         // Set up initial video states before mounting.
