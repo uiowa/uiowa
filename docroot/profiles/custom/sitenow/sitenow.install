@@ -4445,3 +4445,38 @@ function sitenow_update_10029() {
     }
   });
 }
+
+/**
+ * Set default headline size for existing banner blocks that don't have one.
+ */
+function sitenow_update_10030() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_banner', function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    // Ensure styles is an array.
+    if (!is_array($styles)) {
+      $styles = [];
+    }
+
+    // Check if we have a headline size already set.
+    // If we do, we shouldn't make any changes.
+    $style_exists = FALSE;
+    $headline_style_ids = [
+      'headline_large',
+      'headline_medium',
+      'headline_small',
+    ];
+    foreach ($styles as $style) {
+      if (in_array($style, $headline_style_ids)) {
+        $style_exists = TRUE;
+        break;
+      }
+    }
+
+    // If no headline size was set, then add the default small style.
+    if (!$style_exists) {
+      $styles[] = 'headline_small';
+      $component->set('layout_builder_styles_style', $styles);
+    }
+  });
+}
