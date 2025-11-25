@@ -4473,9 +4473,9 @@ function sitenow_update_10030() {
       }
     }
 
-    // If no headline size was set, then add the default small style.
+    // If no headline size was set, then add the default large style.
     if (!$style_exists) {
-      $styles[] = 'headline_small';
+      $styles[] = 'headline_large';
       $component->set('layout_builder_styles_style', $styles);
     }
   });
