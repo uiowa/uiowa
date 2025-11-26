@@ -252,7 +252,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
             // Set layout builder style default settings.
             if ($form_id === 'layout_builder_add_block' && $settings['default'] !== '[empty]') {
-              $form[$key]['#default_value'] = [$settings['default']];
+              // Check if this is a radio button group.
+              if (isset($form[$key]['#type']) && $form[$key]['#type'] === 'radios') {
+                // Radio buttons need a scalar value.
+                $form[$key]['#default_value'] = $settings['default'];
+              }
+              else {
+                // Checkboxes and other multi-select elements expect an array.
+                $form[$key]['#default_value'] = [$settings['default']];
+              }
             }
           }
         }
