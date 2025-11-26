@@ -35,9 +35,11 @@
           drag: false,
           speed: 1500,
           slideFocus: false,
-          arrows: false,
           pagination: false,
           rewind: true,
+          arrows: false,
+          keyboard: 'global',
+          role: 'group'
         });
 
         // Set up initial video states before mounting.
