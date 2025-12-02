@@ -928,6 +928,22 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
         /** @var \Drupal\Core\Field\FieldItemList $first_item */
         $first_item = $link->first();
         $menu_link_options = $first_item->get('options')->getValue() ?: [];
+
+        if (\Drupal::currentUser()->hasPermission('administer menu')) {
+          $form['link_override'] = [
+            '#type' => 'textfield',
+            '#title' => t('Absolute link override'),
+            '#default_value' => !empty($menu_link_options['link_override']) ? $menu_link_options['link_override'] : '',
+            '#description' => t('Admins may enter an absolute URL here to bypass normalization.'),
+          ];
+        }
+
+        $form['link']['widget'][0]['uri']['#states'] = [
+          'invisible' => [
+            ':input[name="link_override"]' => ['filled' => TRUE],
+          ],
+        ];
+
         $menu = $menu_link->getMenuName();
         if ($menu === 'social') {
           $option = [
@@ -976,9 +992,9 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
               ],
             ],
           ];
-
-          $form['actions']['submit']['#submit'][] = 'sitenow_form_menu_link_content_form_submit';
         }
+
+        $form['actions']['submit']['#submit'][] = 'sitenow_form_menu_link_content_form_submit';
       }
     }
   }
@@ -991,9 +1007,11 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
  */
 function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInterface $form_state) {
   $icon_field = $form_state->getValue('fa_icon');
+  $override_field = $form_state->getValue('link_override');
 
   $options = [
     'fa_icon' => !empty($icon_field) ? Html::escape($icon_field) : '',
+    'link_override' => !empty($override_field) ? Html::escape($override_field) : '',
   ];
   $form_object = $form_state->getFormObject();
   if ($form_object instanceof MenuLinkContentForm) {
@@ -1010,6 +1028,23 @@ function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInter
         $first_item->set('options', $merged);
         $menu_link->save();
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_entity_presave(\Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->getEntityTypeId() === 'menu_link_content') {
+    $options = $entity->get('link')->first()->get('options')->getValue();
+
+    if (!empty($options['link_override'])) {
+      // Force the URI to the override value.
+      $entity->set('link', [
+        'uri' => $options['link_override'],
+        'options' => $options,
+      ]);
     }
   }
 }
