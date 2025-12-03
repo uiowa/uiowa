@@ -1033,11 +1033,11 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
   if (isset($element['#paragraph_type'])) {
     switch ($element['#paragraph_type']) {
       case 'uiowa_timeline_item':
-        // Hide the "Additional Font Awesome Settings" details section.
+        // Visually hide the "Additional Font Awesome Settings" details section.
         if (isset($element['subform']['field_timeline_icon']['widget'])) {
           foreach ($element['subform']['field_timeline_icon']['widget'] as $key => &$item) {
             if (is_numeric($key) && isset($item['settings'])) {
-              $item['settings']['#disabled'] = TRUE;
+              $item['settings']['#attributes']['class'][] = 'visually-hidden';
             }
           }
         }
