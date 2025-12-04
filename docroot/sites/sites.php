@@ -7247,12 +7247,6 @@ $sites['tippiehartfund.dev.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
 $sites['tippiehartfund.stage.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
 $sites['tippiehartfund.prod.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
 
-// Directory aliases for stem-k12-cancer.sites.uiowa.edu.
-$sites['sitesstem-k12-cancer.uiowa.ddev.site'] = 'stem-k12-cancer.sites.uiowa.edu';
-$sites['sitesstem-k12-cancer.dev.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
-$sites['sitesstem-k12-cancer.stage.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
-$sites['sitesstem-k12-cancer.prod.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
-
 // Directory aliases for iowareview.org.
 $sites['org-iowareview.uiowa.ddev.site'] = 'iowareview.org';
 $sites['org-iowareview.dev.drupal.uiowa.edu'] = 'iowareview.org';
