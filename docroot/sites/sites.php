@@ -7870,3 +7870,9 @@ $sites['labbowren.uiowa.ddev.site'] = 'bowren.lab.uiowa.edu';
 $sites['labbowren.dev.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
 $sites['labbowren.stage.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
 $sites['labbowren.prod.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
+
+// Directory aliases for schickling.lab.uiowa.edu.
+$sites['labschickling.uiowa.ddev.site'] = 'schickling.lab.uiowa.edu';
+$sites['labschickling.dev.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
+$sites['labschickling.stage.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
+$sites['labschickling.prod.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
