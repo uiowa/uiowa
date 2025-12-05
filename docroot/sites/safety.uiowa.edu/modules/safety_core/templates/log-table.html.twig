@@ -102,7 +102,7 @@
             {% if log_type == 'crime' %}
               {{ item.generalLocation ?? '' }}
             {% else %}
-              {{ item.cleryCampus.name ?? item.generalLocation ?? '' }}
+              {{ item.location ?? '' }}
             {% endif %}
           </td>
           {% if log_type == 'crime' %}
