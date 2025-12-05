@@ -1,7 +1,465 @@
 @use 'sass:color';
 @use '../../../uids/scss/abstracts/_variables.scss';
 @use '../../../uids/scss/abstracts/_utilities.scss';
-@use '../../../uids/scss/components/form.scss';
+
+// @todo Re-integrate with UIDS.
+// === START static copy of UIDS form styles === //
+// Generalized styles.
+.form {
+  [type='text'],
+  [type='password'],
+  [type='date'],
+  [type='datetime'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='week'],
+  [type='email'],
+  [type='number'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='url'],
+  [type='color'],
+  textarea,
+  select,
+    // Make details summary appear as select list.
+  details.form__details--multi-select summary {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 3.5rem;
+    margin: 0 0 1rem;
+    padding: 0.5rem;
+    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+    color: var(--brand-secondary);
+    border: 1px solid variables.$grey-light;
+    background-color: #fefefe;
+    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    appearance: none;
+
+    &:focus {
+      transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+      border: 2px solid #8a8a8a;
+      outline: none;
+      background-color: #fefefe;
+      box-shadow: 0 0 5px 2px variables.$grey-light;
+    }
+
+    // Error styles.
+    &.error {
+      border: 1px solid variables.$danger;
+      background-color: variables.$danger-light;
+
+      &:focus {
+        border: 2px solid variables.$danger;
+        box-shadow: 0 0 5px 2px variables.$danger-light;
+      }
+    }
+  }
+
+  details.form__details--multi-select summary {
+    display: flex;
+    margin-bottom: 0;
+  }
+
+  // === Spacing === //
+  .form-item,
+  .form-actions {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  // === Labels/Description === //
+  label {
+    display: block;
+    margin: 0 0 .3rem;
+    font-size: variables.$label-font-size;
+    font-weight: variables.$font-weight-bold;
+    line-height: 1.8;
+  }
+
+  label.form-required {
+    &:after {
+      margin-left: variables.$xsm;
+      content: '*';
+      color: variables.$danger;
+      vertical-align: middle;
+    }
+  }
+
+  abbr.req {
+    font-size: 150%;
+    color: variables.$danger;
+  }
+
+
+  [type='checkbox'] + label,
+  [type='radio'] + label {
+    font-weight: 400;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    clear: both;
+    margin: variables.$xsm 0 variables.$md;
+    flex-basis: 100%;
+  }
+
+  // === End: Labels/Description === //
+
+  // === Input types === //
+  input {
+    &.form-autocomplete {
+      background-position: 98% center;
+    }
+
+    &[type='search'] {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    &[id^='edit-submit'][type='submit'],
+    &[id^='edit-actions-submit'] {
+      @include utilities.bttn--primary;
+    }
+
+    + .description,
+    + .field-prefix,
+    + .field-suffix {
+      position: relative;
+      top: -0.75rem;
+      inset-block-start: -0.75rem;
+    }
+  }
+
+  textarea {
+    height: auto;
+    min-height: 100px;
+    overflow: auto;
+    max-width: 100%;
+
+    &[rows] {
+      height: auto;
+    }
+  }
+
+  optgroup,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+
+  input,
+  textarea {
+    &:disabled,
+    &[readonly] {
+      cursor: not-allowed;
+      color: #63666A;
+      border-color: #bababf;
+      background-color: #f3f3f3 !important;
+      box-shadow: none;
+      -webkit-text-fill-color: #63666A;
+    }
+  }
+
+  [type='number'] {
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      height: auto;
+    }
+  }
+
+  [type='search'] {
+    outline-offset: -2px;
+    -webkit-appearance: textfield;
+
+    &::-webkit-search-decoration {
+      -webkit-appearance: none;
+    }
+  }
+
+  [type='submit'],
+  [type='button'] {
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    @include utilities.bttn;
+    font-family: variables.$font-family-caps-bold;
+
+    &.button--small {
+      padding: 0.6rem 1rem 0.8rem;
+      font-size: 1.05rem;
+    }
+
+    &.button--full-width {
+      width: 100%;
+    }
+  }
+
+  [type='file'] {
+    width: 100%;
+    margin-bottom: .625rem;
+  }
+  // === End: Input types === //
+
+
+  // === Checkbox/Radios === //
+  .form-type-checkbox,
+  .form-type-radio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+    &[class*='side'] {
+      display: inline-flex;
+
+      &.form-item {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+      }
+    }
+  }
+
+  [type='checkbox'],
+  [type='radio'] {
+    height: 1.2rem;
+    min-width: 1.2rem;
+    margin: .25rem .35rem 0 .25rem;
+    -webkit-transform: scale(1.3, 1.3);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+
+    & + label,
+    & + label {
+      font-weight: variables.$font-weight-normal;
+      display: inline-block;
+      vertical-align: baseline;
+      margin-bottom: 0;
+      margin-left: .625rem;
+      margin-right: 1rem;
+
+      &[for] {
+        cursor: pointer;
+        flex: 1;
+      }
+    }
+
+    label > &,
+    label > & {
+
+    }
+  }
+
+  // === End: Checkbox/Radios === //
+
+  // === Select and details === //
+  select,
+  details.details-multi-select summary {
+    padding: variables.$xsm;
+    background-color: variables.$white;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: rgb%28138, 138, 138%29"></polygon></svg>');
+    background-repeat: no-repeat;
+    background-position: right -1rem center;
+    background-origin: content-box;
+    background-size: 9px 6px;
+    @include utilities.margin(variables.$top: 0, variables.$right: 0, variables.$bottom: 1rem);
+    @include utilities.padding(variables.$right: variables.$lg, variables.$left: variables.$md);
+
+    @media screen and (min-width: 0\0) {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIpJREFUeNrEkckNgDAMBBfRkEt0ObRBBdsGXUDgmQfK4XhH2m8czQAAy27R3tsw4Qfe2x8uOO6oYLb6GlOor3GF+swURAOmUJ+RwtEJs9WvTGEYxBXqI1MQAZhCfUQKRzDMVj+TwrAIV6jvSUEkYAr1LSkcyTBb/V+KYfX7xAeusq3sLDtGH3kEGACPWIflNZfhRQAAAABJRU5ErkJggg==');
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #e6e6e6;
+    }
+
+    &::-ms-expand {
+      display: none;
+    }
+
+    &[multiple] {
+      height: auto;
+      background-image: none;
+    }
+  }
+
+  select[multiple] {
+    border: 1px solid variables.$grey;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1.1;
+    background-color: #fff;
+    padding-right: 0;
+    height: 10rem;
+
+    option {
+      white-space: normal;
+      font-size: 1.1rem;
+      padding: .5rem .5rem .5rem .75rem;
+    }
+
+    &:not(:disabled) option {
+      transition: 120ms all ease-in;
+
+      &:checked {
+        padding-left: 0.5em;
+        color: black;
+      }
+    }
+  }
+  // === End: Select and details === //
+
+  // === Fieldset === //
+  fieldset {
+    margin: 1.5rem 0;
+    border: none;
+    padding: 0;
+
+    legend {
+      display: block;
+      font-size: variables.$label-font-size;
+      font-weight: variables.$font-weight-bold;
+      line-height: 1.6;
+    }
+  }
+  // === End: Fieldset === //
+}
+
+// === Switch checkbox === //
+.form__checkbox--switch {
+  [type='checkbox'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 62px;
+    height: 32px;
+    display: inline-block;
+    position: relative;
+    border-radius: 50px;
+    overflow: hidden;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: variables.$grey-light;
+    transition: background-color ease 0.3s;
+    margin-top: 0;
+
+    &:focus-visible {
+      background: variables.$light;
+      outline: 1px solid variables.$secondary;
+    }
+  }
+
+  [type='checkbox']:before {
+    content: 'on off';
+    display: block;
+    position: absolute;
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    font: 10px/28px Arial, sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-indent: -22px;
+    word-spacing: 37px;
+    color: variables.$secondary;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+  }
+
+  [type='checkbox']:checked {
+    background-color: variables.$primary;
+  }
+
+  [type='checkbox']:checked:before {
+    left: 32px;
+  }
+}
+
+// === End: Switch checkbox === //
+
+// === Details === //
+details.form__details--multi-select {
+  position: relative;
+
+  summary {
+    cursor: pointer;
+    color: variables.$grey;
+    align-items: center;
+    background-image: none;
+    transition: border-color 0.25s ease-in-out;
+
+    &:before {
+      position: absolute;
+      right: 0;
+      content: '';
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: rgb%28138, 138, 138%29"></polygon></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-origin: content-box;
+      background-size: 9px 6px;
+      padding: 0 0.55rem;
+      height: 100%;
+      width: 2.425rem;
+      transform: rotate(0deg);
+    }
+
+    &:focus {
+      & + .details-wrapper {
+        border-top: 1px solid #8a8a8a;
+      }
+    }
+  }
+
+  &[open] {
+    summary {
+      &:before {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  fieldset {
+    margin-top: 0;
+  }
+
+  .details-wrapper {
+    border: 1px solid variables.$grey-light;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: absolute;
+    top: calc(3.5rem - 1px);
+    width: calc(100% - 2px);
+    z-index: 500;
+    background: variables.$white;
+    box-shadow: 0 0 7px rgba(0, 0, 0, .15);
+    max-height: 346px;
+    overflow: auto;
+
+    .form-item {
+      padding: 0 .5rem;
+    }
+  }
+
+}
+
+// === End: Details === //
+// === END static copy of UIDS form styles === //
 
 .form {
 
