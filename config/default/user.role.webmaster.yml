@@ -25,6 +25,8 @@ dependencies:
     - core.entity_view_display.fragment.region_item.default
     - core.entity_view_display.fragment.region_item_after_content.default
     - core.entity_view_display.node.page.default
+    - entity_browser.browser.featured_content_browser
+    - entity_browser.browser.media_wysiwyg_browser
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
@@ -90,6 +92,7 @@ dependencies:
     - uiowa_alerts
     - uiowa_search
     - webform
+    - workbench_email
 _core:
   default_config_hash: WhzjEAuCYwDo5ylDwRiZOaGR2VMEvc8J26TNS7wmZ8E
 id: webmaster
@@ -185,6 +188,7 @@ permissions:
   - 'administer uiowa_alerts configuration'
   - 'administer uiowa_search configuration'
   - 'administer webform submission'
+  - 'administer workbench_email templates'
   - 'allow empty user mail'
   - 'configure all page node layout overrides'
   - 'configure all region_item fragment layout overrides'

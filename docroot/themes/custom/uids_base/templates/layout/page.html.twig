@@ -91,9 +91,9 @@
 {% set after_content_rendered = page.after_content | render %}
 {% if after_content_rendered|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim %}
   {{ attach_library('uids_base/region_item')  }}
-  <div role="region" class="bg--white after_content content__container">
+  <aside class="bg--white after_content content__container">
     {{ page.after_content }}
-  </div>
+  </aside>
 {% endif %}
 
 {% block footer %}
