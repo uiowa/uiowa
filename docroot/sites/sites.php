@@ -7888,3 +7888,9 @@ $sites['sitesrtflynn.uiowa.ddev.site'] = 'rtflynn.sites.uiowa.edu';
 $sites['sitesrtflynn.dev.drupal.uiowa.edu'] = 'rtflynn.sites.uiowa.edu';
 $sites['sitesrtflynn.stage.drupal.uiowa.edu'] = 'rtflynn.sites.uiowa.edu';
 $sites['sitesrtflynn.prod.drupal.uiowa.edu'] = 'rtflynn.sites.uiowa.edu';
+
+// Directory aliases for jiefengjiang.lab.uiowa.edu.
+$sites['labjiefengjiang.uiowa.ddev.site'] = 'jiefengjiang.lab.uiowa.edu';
+$sites['labjiefengjiang.dev.drupal.uiowa.edu'] = 'jiefengjiang.lab.uiowa.edu';
+$sites['labjiefengjiang.stage.drupal.uiowa.edu'] = 'jiefengjiang.lab.uiowa.edu';
+$sites['labjiefengjiang.prod.drupal.uiowa.edu'] = 'jiefengjiang.lab.uiowa.edu';
