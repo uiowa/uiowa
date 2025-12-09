@@ -100,7 +100,7 @@ class HoursFilterForm extends FormBase {
       '#attributes' => [
         'role' => 'region',
         'aria-label' => 'Hours',
-        'aria-live' => 'assertive',
+        'aria-live' => 'polite',
         'id' => $result_id,
         'class' => [
           'uiowa-hours-container',
