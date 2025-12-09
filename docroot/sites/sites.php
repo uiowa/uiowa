@@ -7882,3 +7882,9 @@ $sites['tippieinforms.uiowa.ddev.site'] = 'informs.tippie.uiowa.edu';
 $sites['tippieinforms.dev.drupal.uiowa.edu'] = 'informs.tippie.uiowa.edu';
 $sites['tippieinforms.stage.drupal.uiowa.edu'] = 'informs.tippie.uiowa.edu';
 $sites['tippieinforms.prod.drupal.uiowa.edu'] = 'informs.tippie.uiowa.edu';
+
+// Directory aliases for rtflynn.sites.uiowa.edu.
+$sites['sitesrtflynn.uiowa.ddev.site'] = 'rtflynn.sites.uiowa.edu';
+$sites['sitesrtflynn.dev.drupal.uiowa.edu'] = 'rtflynn.sites.uiowa.edu';
+$sites['sitesrtflynn.stage.drupal.uiowa.edu'] = 'rtflynn.sites.uiowa.edu';
+$sites['sitesrtflynn.prod.drupal.uiowa.edu'] = 'rtflynn.sites.uiowa.edu';
