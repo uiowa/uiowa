@@ -7894,3 +7894,9 @@ $sites['labjiefengjiang.uiowa.ddev.site'] = 'jiefengjiang.lab.uiowa.edu';
 $sites['labjiefengjiang.dev.drupal.uiowa.edu'] = 'jiefengjiang.lab.uiowa.edu';
 $sites['labjiefengjiang.stage.drupal.uiowa.edu'] = 'jiefengjiang.lab.uiowa.edu';
 $sites['labjiefengjiang.prod.drupal.uiowa.edu'] = 'jiefengjiang.lab.uiowa.edu';
+
+// Directory aliases for honoringthepast.conference.uiowa.edu.
+$sites['conferencehonoringthepast.uiowa.ddev.site'] = 'honoringthepast.conference.uiowa.edu';
+$sites['conferencehonoringthepast.dev.drupal.uiowa.edu'] = 'honoringthepast.conference.uiowa.edu';
+$sites['conferencehonoringthepast.stage.drupal.uiowa.edu'] = 'honoringthepast.conference.uiowa.edu';
+$sites['conferencehonoringthepast.prod.drupal.uiowa.edu'] = 'honoringthepast.conference.uiowa.edu';
