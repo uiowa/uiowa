@@ -4480,3 +4480,21 @@ function sitenow_update_10030() {
     }
   });
 }
+
+/**
+ * Delete all Instagram media entities and uninstall module.
+ */
+function sitenow_update_10031() {
+  // Load all media entities of type 'instagram'.
+  $storage = \Drupal::entityTypeManager()->getStorage('media');
+  $mids = $storage->getQuery()
+    ->condition('bundle', 'instagram')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($mids)) {
+    $entities = $storage->loadMultiple($mids);
+    $storage->delete($entities);
+    \Drupal::logger('sitenow')->notice('Deleted @count Instagram media entities.', ['@count' => count($mids)]);
+  }
+}
