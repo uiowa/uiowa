@@ -7906,3 +7906,9 @@ $sites['studiojonwinet.uiowa.ddev.site'] = 'jonwinet.studio.uiowa.edu';
 $sites['studiojonwinet.dev.drupal.uiowa.edu'] = 'jonwinet.studio.uiowa.edu';
 $sites['studiojonwinet.stage.drupal.uiowa.edu'] = 'jonwinet.studio.uiowa.edu';
 $sites['studiojonwinet.prod.drupal.uiowa.edu'] = 'jonwinet.studio.uiowa.edu';
+
+// Directory aliases for lizhollingworth.sites.uiowa.edu.
+$sites['siteslizhollingworth.uiowa.ddev.site'] = 'lizhollingworth.sites.uiowa.edu';
+$sites['siteslizhollingworth.dev.drupal.uiowa.edu'] = 'lizhollingworth.sites.uiowa.edu';
+$sites['siteslizhollingworth.stage.drupal.uiowa.edu'] = 'lizhollingworth.sites.uiowa.edu';
+$sites['siteslizhollingworth.prod.drupal.uiowa.edu'] = 'lizhollingworth.sites.uiowa.edu';
