@@ -7900,3 +7900,9 @@ $sites['conferencehonoringthepast.uiowa.ddev.site'] = 'honoringthepast.conferenc
 $sites['conferencehonoringthepast.dev.drupal.uiowa.edu'] = 'honoringthepast.conference.uiowa.edu';
 $sites['conferencehonoringthepast.stage.drupal.uiowa.edu'] = 'honoringthepast.conference.uiowa.edu';
 $sites['conferencehonoringthepast.prod.drupal.uiowa.edu'] = 'honoringthepast.conference.uiowa.edu';
+
+// Directory aliases for jonwinet.studio.uiowa.edu.
+$sites['studiojonwinet.uiowa.ddev.site'] = 'jonwinet.studio.uiowa.edu';
+$sites['studiojonwinet.dev.drupal.uiowa.edu'] = 'jonwinet.studio.uiowa.edu';
+$sites['studiojonwinet.stage.drupal.uiowa.edu'] = 'jonwinet.studio.uiowa.edu';
+$sites['studiojonwinet.prod.drupal.uiowa.edu'] = 'jonwinet.studio.uiowa.edu';
