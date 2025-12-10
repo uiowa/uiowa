@@ -7912,3 +7912,9 @@ $sites['siteslizhollingworth.uiowa.ddev.site'] = 'lizhollingworth.sites.uiowa.ed
 $sites['siteslizhollingworth.dev.drupal.uiowa.edu'] = 'lizhollingworth.sites.uiowa.edu';
 $sites['siteslizhollingworth.stage.drupal.uiowa.edu'] = 'lizhollingworth.sites.uiowa.edu';
 $sites['siteslizhollingworth.prod.drupal.uiowa.edu'] = 'lizhollingworth.sites.uiowa.edu';
+
+// Directory aliases for alirahmani.sites.uiowa.edu.
+$sites['sitesalirahmani.uiowa.ddev.site'] = 'alirahmani.sites.uiowa.edu';
+$sites['sitesalirahmani.dev.drupal.uiowa.edu'] = 'alirahmani.sites.uiowa.edu';
+$sites['sitesalirahmani.stage.drupal.uiowa.edu'] = 'alirahmani.sites.uiowa.edu';
+$sites['sitesalirahmani.prod.drupal.uiowa.edu'] = 'alirahmani.sites.uiowa.edu';

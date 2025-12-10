@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesalirahmani.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesalirahmani
+  human_name: alirahmani.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesalirahmani.prod
+drupal:
+  db:
+    database: alirahmani_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesalirahmani.prod.drupal.uiowa.edu'
+  requester: alirahmani
+  site-name: 'Ali Rahmani'
