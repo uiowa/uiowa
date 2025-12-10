@@ -7918,3 +7918,9 @@ $sites['sitesalirahmani.uiowa.ddev.site'] = 'alirahmani.sites.uiowa.edu';
 $sites['sitesalirahmani.dev.drupal.uiowa.edu'] = 'alirahmani.sites.uiowa.edu';
 $sites['sitesalirahmani.stage.drupal.uiowa.edu'] = 'alirahmani.sites.uiowa.edu';
 $sites['sitesalirahmani.prod.drupal.uiowa.edu'] = 'alirahmani.sites.uiowa.edu';
+
+// Directory aliases for rhorwitz.sites.uiowa.edu.
+$sites['sitesrhorwitz.uiowa.ddev.site'] = 'rhorwitz.sites.uiowa.edu';
+$sites['sitesrhorwitz.dev.drupal.uiowa.edu'] = 'rhorwitz.sites.uiowa.edu';
+$sites['sitesrhorwitz.stage.drupal.uiowa.edu'] = 'rhorwitz.sites.uiowa.edu';
+$sites['sitesrhorwitz.prod.drupal.uiowa.edu'] = 'rhorwitz.sites.uiowa.edu';
