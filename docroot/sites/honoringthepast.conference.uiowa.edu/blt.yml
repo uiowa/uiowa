@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencehonoringthepast.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencehonoringthepast
+  human_name: honoringthepast.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencehonoringthepast.prod
+drupal:
+  db:
+    database: honoringthepast_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencehonoringthepast.prod.drupal.uiowa.edu'
+  requester: aisidore
+  site-name: 'THE E.P. ADLER GRADUATE STUDENT CONFERENCE HONORING THE PAST: RELIGION, POWER, AND TIME'
