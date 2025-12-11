@@ -1022,12 +1022,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $access = $check->access(\Drupal::currentUser()->getAccount());
 
         if ($access->isForbidden()) {
-          // Limit style options to only 'regular' and 'classic'.
-          // See https://fontawesome.com/icons/circle?f=classic&s=solid.
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['style']['#options'] = [
-            'regular' => 'Regular',
-            'classic' => 'Classic',
-          ];
           $element['field_uiowa_event_icon']['widget'][0]['settings']['iconset']['#disabled'] = TRUE;
           $element['field_uiowa_event_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
           $element['field_uiowa_event_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
@@ -1061,14 +1055,6 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
         $access = $check->access(\Drupal::currentUser()->getAccount());
 
         if ($access->isForbidden()) {
-          // Limit style options to only 'regular' and 'classic'.
-          // See https://fontawesome.com/icons/circle?f=classic&s=solid.
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['style']['#options'] = [
-            // Classic regular.
-            'regular' => 'Regular',
-            // Classic solid.
-            'classic' => 'Classic',
-          ];
           $element['subform']['field_timeline_icon']['widget'][0]['settings']['iconset']['#disabled'] = TRUE;
           $element['subform']['field_timeline_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
           $element['subform']['field_timeline_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
