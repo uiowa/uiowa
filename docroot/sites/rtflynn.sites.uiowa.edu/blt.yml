@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesrtflynn.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesrtflynn
+  human_name: rtflynn.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesrtflynn.prod
+drupal:
+  db:
+    database: rtflynn_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesrtflynn.prod.drupal.uiowa.edu'
+  requester: rtflynn
+  site-name: rtflynn.sites.uiowa.edu
