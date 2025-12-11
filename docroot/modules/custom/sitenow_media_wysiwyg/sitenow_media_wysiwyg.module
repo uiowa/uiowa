@@ -189,3 +189,14 @@ function sitenow_media_wysiwyg_media_import_icons() {
     '@updated' => $updated_count,
   ]));
 }
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function sitenow_media_wysiwyg_config_schema_info_alter(&$definitions) {
+  // Opt-out of the SourceEditingRedundantTags constraint in CKEditor5 from
+  // https://www.drupal.org/project/drupal/issues/3410100#comment-15457015.
+  if (isset($definitions['ckeditor5.plugin.ckeditor5_sourceEditing'])) {
+    unset($definitions['ckeditor5.plugin.ckeditor5_sourceEditing']['mapping']['allowed_tags']['sequence']['constraints']['SourceEditingRedundantTags']);
+  }
+}
