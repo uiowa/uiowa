@@ -1,6 +1,0 @@
-services:
-  uipress_migrate.event_subscriber:
-    class: Drupal\uipress_migrate\EventSubscriber\MigrateEventSubscriber
-    arguments: ['@entity_type.manager']
-    tags:
-      - { name: event_subscriber }
