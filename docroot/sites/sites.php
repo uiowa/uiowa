@@ -7876,3 +7876,9 @@ $sites['labschickling.uiowa.ddev.site'] = 'schickling.lab.uiowa.edu';
 $sites['labschickling.dev.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
 $sites['labschickling.stage.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
 $sites['labschickling.prod.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
+
+// Directory aliases for legalclinic.law.uiowa.edu.
+$sites['lawlegalclinic.uiowa.ddev.site'] = 'legalclinic.law.uiowa.edu';
+$sites['lawlegalclinic.dev.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
+$sites['lawlegalclinic.stage.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
+$sites['lawlegalclinic.prod.drupal.uiowa.edu'] = 'legalclinic.law.uiowa.edu';
