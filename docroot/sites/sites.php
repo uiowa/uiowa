@@ -4355,12 +4355,6 @@ $sites['labdaly.dev.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
 $sites['labdaly.stage.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
 $sites['labdaly.prod.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
 
-// Directory aliases for icarepostbac.sites.uiowa.edu.
-$sites['sitesicarepostbac.uiowa.ddev.site'] = 'icarepostbac.sites.uiowa.edu';
-$sites['sitesicarepostbac.dev.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
-$sites['sitesicarepostbac.stage.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
-$sites['sitesicarepostbac.prod.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
-
 // Directory aliases for idream.sites.uiowa.edu.
 $sites['sitesidream.uiowa.ddev.site'] = 'idream.sites.uiowa.edu';
 $sites['sitesidream.dev.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
@@ -4408,12 +4402,6 @@ $sites['labmalkova.uiowa.ddev.site'] = 'malkova.lab.uiowa.edu';
 $sites['labmalkova.dev.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
 $sites['labmalkova.stage.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
 $sites['labmalkova.prod.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
-
-// Directory aliases for hccc-summer-undergrad.sites.uiowa.edu.
-$sites['siteshccc-summer-undergrad.uiowa.ddev.site'] = 'hccc-summer-undergrad.sites.uiowa.edu';
-$sites['siteshccc-summer-undergrad.dev.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
-$sites['siteshccc-summer-undergrad.stage.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
-$sites['siteshccc-summer-undergrad.prod.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
 
 // Directory aliases for interoception.lab.uiowa.edu.
 $sites['labinteroception.uiowa.ddev.site'] = 'interoception.lab.uiowa.edu';
@@ -5560,12 +5548,6 @@ $sites['fo.uiowa.ddev.site'] = 'fo.uiowa.edu';
 $sites['fo.dev.drupal.uiowa.edu'] = 'fo.uiowa.edu';
 $sites['fo.stage.drupal.uiowa.edu'] = 'fo.uiowa.edu';
 $sites['fo.prod.drupal.uiowa.edu'] = 'fo.uiowa.edu';
-
-// Directory aliases for hccc-oinc.sites.uiowa.edu.
-$sites['siteshccc-oinc.uiowa.ddev.site'] = 'hccc-oinc.sites.uiowa.edu';
-$sites['siteshccc-oinc.dev.drupal.uiowa.edu'] = 'hccc-oinc.sites.uiowa.edu';
-$sites['siteshccc-oinc.stage.drupal.uiowa.edu'] = 'hccc-oinc.sites.uiowa.edu';
-$sites['siteshccc-oinc.prod.drupal.uiowa.edu'] = 'hccc-oinc.sites.uiowa.edu';
 
 // Directory aliases for languageacrossthelifespan.lab.uiowa.edu.
 $sites['lablanguageacrossthelifespan.uiowa.ddev.site'] = 'languageacrossthelifespan.lab.uiowa.edu';
@@ -7253,12 +7235,6 @@ $sites['tippiehartfund.dev.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
 $sites['tippiehartfund.stage.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
 $sites['tippiehartfund.prod.drupal.uiowa.edu'] = 'hartfund.tippie.uiowa.edu';
 
-// Directory aliases for stem-k12-cancer.sites.uiowa.edu.
-$sites['sitesstem-k12-cancer.uiowa.ddev.site'] = 'stem-k12-cancer.sites.uiowa.edu';
-$sites['sitesstem-k12-cancer.dev.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
-$sites['sitesstem-k12-cancer.stage.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
-$sites['sitesstem-k12-cancer.prod.drupal.uiowa.edu'] = 'stem-k12-cancer.sites.uiowa.edu';
-
 // Directory aliases for iowareview.org.
 $sites['org-iowareview.uiowa.ddev.site'] = 'iowareview.org';
 $sites['org-iowareview.dev.drupal.uiowa.edu'] = 'iowareview.org';
@@ -7894,3 +7870,9 @@ $sites['labbowren.uiowa.ddev.site'] = 'bowren.lab.uiowa.edu';
 $sites['labbowren.dev.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
 $sites['labbowren.stage.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
 $sites['labbowren.prod.drupal.uiowa.edu'] = 'bowren.lab.uiowa.edu';
+
+// Directory aliases for schickling.lab.uiowa.edu.
+$sites['labschickling.uiowa.ddev.site'] = 'schickling.lab.uiowa.edu';
+$sites['labschickling.dev.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
+$sites['labschickling.stage.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
+$sites['labschickling.prod.drupal.uiowa.edu'] = 'schickling.lab.uiowa.edu';
