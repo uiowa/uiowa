@@ -1,638 +1,601 @@
-From d1cfa0351e7e02dd6d2fbb7d5fe0c5260105581d Mon Sep 17 00:00:00 2001
-From: Oleh Shevchuk <oleh.shevchuck@evolvingweb.ca>
-Date: Wed, 26 Jan 2022 15:06:02 +0200
-Subject: [PATCH 1/4] Made the custom blocks created in inline forms, to be not
- reusable.
-
----
- inline_entity_form.module                     |  53 +++++++++
- inline_entity_form.services.yml               |  10 ++
- .../SetInlineBlockDependencyNested.php        |  44 ++++++++
- src/Form/BlockContentInlineForm.php           |  27 +++++
- src/NestedInlineBlockOperations.php           | 104 ++++++++++++++++++
- .../InlineBlockSelection.php                  |  32 ++++++
- 6 files changed, 270 insertions(+)
- create mode 100644 inline_entity_form.services.yml
- create mode 100644 src/EventSubscriber/SetInlineBlockDependencyNested.php
- create mode 100644 src/Form/BlockContentInlineForm.php
- create mode 100644 src/NestedInlineBlockOperations.php
- create mode 100644 src/Plugin/EntityReferenceSelection/InlineBlockSelection.php
-
-diff --git a/inline_entity_form.module b/inline_entity_form.module
-index 8f6b69d9..e9c18017 100644
---- a/inline_entity_form.module
-+++ b/inline_entity_form.module
-@@ -11,12 +11,14 @@
-  */
-
- use Drupal\Component\Utility\NestedArray;
-+use Drupal\Core\Entity\EntityInterface;
- use Drupal\Core\Form\FormStateInterface;
- use Drupal\Core\Render\Element;
- use Drupal\inline_entity_form\ElementSubmit;
- use Drupal\inline_entity_form\WidgetSubmit;
- use Drupal\inline_entity_form\Form\EntityInlineForm;
- use Drupal\inline_entity_form\Plugin\Field\FieldWidget\InlineEntityFormComplex;
-+use Drupal\inline_entity_form\NestedInlineBlockOperations;
- use Drupal\inline_entity_form\MigrationHelper;
- use Drupal\migrate\Plugin\MigrateSourceInterface;
- use Drupal\migrate\Plugin\MigrationInterface;
-@@ -27,6 +29,9 @@ use Drupal\migrate\Row;
-  */
- function inline_entity_form_entity_type_build(array &$entity_types) {
-   /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
-+  if (isset($entity_types['block_content']) && !$entity_types['block_content']->getHandlerClass('inline_form')) {
-+    $entity_types['block_content']->setHandlerClass('inline_form', '\Drupal\inline_entity_form\Form\BlockContentInlineForm');
-+  }
-   if (isset($entity_types['node']) && !$entity_types['node']->getHandlerClass('inline_form')) {
-     $entity_types['node']->setHandlerClass('inline_form', '\Drupal\inline_entity_form\Form\NodeInlineForm');
-   }
-@@ -61,6 +66,54 @@ function inline_entity_form_theme() {
-   ];
- }
-
-+/**
-+ * Implements hook_module_implements_alter().
-+ */
-+function inline_entity_form_module_implements_alter(&$implementations, $hook) {
-+  if ($hook == 'entity_presave' && \Drupal::moduleHandler()->moduleExists('layout_builder')) {
-+    // Make sure that our implementation runs after the one from the
-+    // layout_builder module. Instead of this, we could alter this module's
-+    // weight, but that would affect all hooks implemented here.
-+    $group = $implementations['inline_entity_form'];
-+    unset($implementations['inline_entity_form']);
-+    $implementations['inline_entity_form'] = $group;
-+  }
-+}
-+
-+/**
-+ * Implements hook_entity_presave().
-+ */
-+function inline_entity_form_entity_presave(EntityInterface $entity) {
-+  // Update LB usage information for nested inline blocks.
-+  // We cannot use hook_ENTITY_TYPE_insert() for the block itself, since that is
-+  // called before LB has added usage information for the block. Instead, use
-+  // this hook for the parent entity.
-+  // @see layout_builder_entity_presave()
-+  if (\Drupal::moduleHandler()->moduleExists('layout_builder')) {
-+    /** @var \Drupal\inline_entity_form\NestedInlineBlockOperations $entity_operations */
-+    $entity_operations = \Drupal::classResolver(NestedInlineBlockOperations::class);
-+    $entity_operations->updateNestedInlineBlocks($entity);
-+  }
-+}
-+
-+/**
-+ * Implements hook_ENTITY_TYPE_update() for block content entities.
-+ */
-+function inline_entity_form_block_content_update(EntityInterface $block) {
-+  // Update LB usage information for nested inline blocks.
-+  // LB usage information for the parent block is set when the block is created,
-+  // and it should not change when the block is updated. When it is updated, we
-+  // may add additional nested blocks, so track their usage.
-+  if (\Drupal::moduleHandler()->moduleExists('layout_builder')) {
-+    /** @var \Drupal\inline_entity_form\NestedInlineBlockOperations $entity_operations */
-+    $entity_operations = \Drupal::classResolver(NestedInlineBlockOperations::class);
-+    if ($layout_entity_info = $entity_operations->checkBlock($block)) {
-+      $entity_operations->trackReferencedBlocks($block, $layout_entity_info);
-+    }
-+  }
-+}
-+
-+
- /**
-  * Provides the form for adding existing entities through an autocomplete field.
-  *
-diff --git a/inline_entity_form.services.yml b/inline_entity_form.services.yml
+diff --git a/fontawesome.ckeditor5.yml b/fontawesome.ckeditor5.yml
 new file mode 100644
-index 00000000..a43f18af
+index 0000000000000000000000000000000000000000..0ed7ae47c2690ebadc2d9268e60cfe5919e2eab7
 --- /dev/null
-+++ b/inline_entity_form.services.yml
-@@ -0,0 +1,10 @@
-+services:
-+  inline_entity_form.inline_block_dependency_subscriber:
-+    class: Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested
-+    arguments:
-+      - '@entity_type.manager'
-+      - '@database'
-+      - '@inline_block.usage'
-+      - '@plugin.manager.layout_builder.section_storage'
-+    tags :
-+      - { name: event_subscriber }
-diff --git a/src/EventSubscriber/SetInlineBlockDependencyNested.php b/src/EventSubscriber/SetInlineBlockDependencyNested.php
++++ b/fontawesome.ckeditor5.yml
+@@ -0,0 +1,18 @@
++fontawesome_drupalfontawesome:
++  ckeditor5:
++    plugins:
++      - drupalfontawesome.FontAwesome
++  drupal:
++    label: Fontawesome
++    library: fontawesome/fontawesome.ckeditor5.plugin
++    admin_library: fontawesome/fontawesome.ckeditor5.plugin.admin
++    toolbar_items:
++      fontawesome:
++        label: Fontawesome
++    elements:
++      - <i>
++      - <i class>
++      - <i data-fa-transform>
++      - <span>
++      - <span class>
++      - <span data-fa-transform>
+diff --git a/fontawesome.libraries.yml b/fontawesome.libraries.yml
+index 578a34c831eedadda72b7dfa1ecdf420850d88b3..7e0cb55a1ccd34f4a8cf257d65ac8aeebad214ba 100644
+--- a/fontawesome.libraries.yml
++++ b/fontawesome.libraries.yml
+@@ -1,10 +1,22 @@
++fontawesome.ckeditor5.plugin:
++  js:
++    js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js: { preprocess: false, minified: true }
++  dependencies:
++    - core/ckeditor5
++    - core/drupal.ajax
++
++fontawesome.ckeditor5.plugin.admin:
++  css:
++    theme:
++      js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css: { minified: false }
++
+ fontawesome.svg:
+-  remote: &fontawesome_remote https://use.fontawesome.com/releases/v6.4.2/fontawesome-free-6.4.2-web.zip
++  remote: &fontawesome_remote https://use.fontawesome.com/releases/v6.7.2/fontawesome-free-6.7.2-web.zip
+   license: &fontawesome_svg_license
+     name: CC BY 4.0
+     url: https://fontawesome.com/license
+     gpl-compatible: true
+-  version: &fontawesome_version "6.4.2"
++  version: &fontawesome_version "6.7.2"
+   header: true
+   js:
+     /libraries/fontawesome/js/all.min.js: { minified: true, attributes: { defer: true } }
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js b/js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js
 new file mode 100644
-index 00000000..b5f29220
+index 0000000000000000000000000000000000000000..91fcfeb76eeb92eb2ad9f51951c8282784e77f5e
 --- /dev/null
-+++ b/src/EventSubscriber/SetInlineBlockDependencyNested.php
-@@ -0,0 +1,44 @@
-+<?php
-+
-+namespace Drupal\inline_entity_form\EventSubscriber;
-+
-+use Drupal\block_content\BlockContentInterface;
-+use Drupal\layout_builder\EventSubscriber\SetInlineBlockDependency;
-+
-+/**
-+ * Override Layout Builder SetInlineBlockDependencyWithContextTranslation.
-+ *
-+ * Handles handle nested blocks.
-+ *
-+ * This is copied from the version in layout_builder_at, except for skipping
-+ * the test isBlockRevisionUsedInEntity().
-+ */
-+class SetInlineBlockDependencyNested extends SetInlineBlockDependency {
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  protected function getInlineBlockDependency(BlockContentInterface $block_content) {
-+    // Call getTranslationFromContext() on the entity.
-+    $layout_entity_info = $this->usage->getUsage($block_content->id());
-+    if (empty($layout_entity_info)) {
-+      // If the block does not have usage information then we cannot set a
-+      // dependency. It may be used by another module besides layout builder.
-+      return NULL;
-+    }
-+    $layout_entity_storage = $this->entityTypeManager->getStorage($layout_entity_info->layout_entity_type);
-+    $layout_entity = $layout_entity_storage->load($layout_entity_info->layout_entity_id);
-+    $layout_entity = \Drupal::service('entity.repository')->getTranslationFromContext($layout_entity);
-+    if ($this->isLayoutCompatibleEntity($layout_entity)) {
-+      if ($this->isBlockRevisionUsedInEntity($layout_entity, $block_content)) {
-+        // Skip this test, which is present in layout_builder and
-+        // layout_builder_at. It will fail for nested blocks. Will we get in
-+        // trouble if one revision of a nested block is used but another is not?
-+      }
-+      return $layout_entity;
-+
-+    }
-+    return NULL;
-+  }
-+
++++ b/js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js
+@@ -0,0 +1 @@
++!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t(require("Drupal")):"function"==typeof define&&define.amd?define(["Drupal"],t):"object"==typeof exports?exports.CKEditor5=t(require("Drupal")):(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.drupalfontawesome=t(e.Drupal))}(self,(e=>(()=>{var t={Drupal:t=>{"use strict";t.exports=e},"ckeditor5/src/core.js":(e,t,o)=>{e.exports=o("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,o)=>{e.exports=o("dll-reference CKEditor5.dll")("./src/ui.js")},"ckeditor5/src/widget.js":(e,t,o)=>{e.exports=o("dll-reference CKEditor5.dll")("./src/widget.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},o={};function n(e){var r=o[e];if(void 0!==r)return r.exports;var s=o[e]={exports:{}};return t[e](s,s.exports,n),s.exports}n.d=(e,t)=>{for(var o in t)n.o(t,o)&&!n.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:t[o]})},n.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var r={};return(()=>{"use strict";n.d(r,{default:()=>l});var e=n("ckeditor5/src/core.js"),t=n("ckeditor5/src/widget.js");class o extends e.Command{constructor(e){super(e)}execute(e,t){const{model:o}=this.editor;o.change((n=>{o.insertContent(function(e,t,o){const n=e.createElement("fontAwesomeIconInline",t);return e.setAttribute("data-tag",o,n),n}(n,e,t))}))}refresh(){const{model:e}=this.editor,{selection:t}=e.document,o=e.schema.findAllowedParent(t.getFirstPosition(),"fontAwesomeIcon");this.isEnabled=null!==o}}class s extends e.Plugin{init(){this._defineSchema(),this._defineConverters(),this.editor.commands.add("insertFontAwesomeIcon",new o(this.editor))}_defineSchema(){const e=this.editor.model.schema;e.register("fontAwesomeIconInline",{inheritAllFrom:"$inlineObject",allowAttributes:["class","data-fa-transform","data-tag"]}),e.register("fontAwesomeIcon",{inheritAllFrom:"$inlineObject",allowAttributes:["class","data-fa-transform","data-tag"]})}_defineConverters(){const{conversion:e}=this.editor;function o(e,t){const o=e.getAttribute("data-tag")?e.getAttribute("data-tag"):"span",n=e.getAttribute("class"),r=e.getAttribute("data-fa-transform");return t.createRawElement("span",{class:"fontawesome-icon-inline"},(function(e){const t=r?`data-fa-transform="${r}"`:"";e.innerHTML=`<${o} class="${n}" ${t}>&nbsp;</${o}>`}))}e.for("upcast").elementToElement({view:{name:"span",classes:"fontawesome-icon-inline"},model:(e,{writer:t})=>{const o=e.getChild(0);if(!o||!o.name)return null;const n=t.createElement("fontAwesomeIconInline",o.getAttributes());return t.setAttribute("data-tag",o.name,n),n}}),e.for("upcast").elementToElement({view:{name:/^(span|i)$/,classes:/^(fa|fa-classic|fa-sharp|fas|fa-solid|far|fa-regular|fab|fa-brands)$/},model:(e,{writer:t})=>{const o=t.createElement("fontAwesomeIcon",e.getAttributes());return t.setAttribute("data-tag",e.name,o),o}}),e.for("dataDowncast").elementToElement({model:{name:"fontAwesomeIconInline",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:t})=>o(e,t)}),e.for("dataDowncast").elementToElement({model:{name:"fontAwesomeIcon",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:t})=>o(e,t)}),e.for("editingDowncast").elementToElement({model:{name:"fontAwesomeIconInline",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:n})=>{const r=o(e,n),s=n.createContainerElement("span",{},[r]);return(0,t.toWidget)(s,n)}}),e.for("editingDowncast").elementToElement({model:{name:"fontAwesomeIcon",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:n})=>{const r=o(e,n),s=n.createContainerElement("span",{},[r]);return(0,t.toWidget)(s,n)}})}}var a=n("ckeditor5/src/ui.js");class i extends e.Plugin{init(){this.drupal=n("Drupal");const e=this.editor,t=e.sourceElement.getAttribute("data-editor-active-text-format");e.ui.componentFactory.add("fontAwesome",(o=>{const n=new a.ButtonView(o),r=e.commands.get("insertFontAwesomeIcon");return n.set({label:e.t("Insert Fontawesome Icon"),icon:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">\x3c!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.--\x3e<path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32v448c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4 44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"/></svg>',tooltip:!0}),n.bind("isEnabled").to(r,"isEnabled"),this.listenTo(n,"execute",(()=>{this.drupal.ckeditor5.openDialog(this.drupal.url(`fontawesome/dialog/icon/${t}`),(({attributes:t,tag:o})=>{e.execute("insertFontAwesomeIcon",t,o)}),{title:"FontAwesome",dialogClass:"fontawesome-icon-dialog"})})),n}))}}class c extends e.Plugin{static get requires(){return[s,i]}}const l={FontAwesome:c}})(),r=r.default})()));
+\ No newline at end of file
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css b/js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css
+new file mode 100644
+index 0000000000000000000000000000000000000000..7f7588cd86c95952c67449dfaa7bf1727ce0da9d
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css
+@@ -0,0 +1,3 @@
++.ckeditor5-toolbar-button-fontawesome {
++  background-image: url(../icons/drupalfontawesome.svg);
 +}
-diff --git a/src/Form/BlockContentInlineForm.php b/src/Form/BlockContentInlineForm.php
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/icons/drupalfontawesome.svg b/js/ckeditor5_plugins/drupalfontawesome/icons/drupalfontawesome.svg
 new file mode 100644
-index 00000000..326488dc
+index 0000000000000000000000000000000000000000..9cd103f083ea6d2fe3c364bcd0bdd13a62465551
 --- /dev/null
-+++ b/src/Form/BlockContentInlineForm.php
-@@ -0,0 +1,27 @@
-+<?php
++++ b/js/ckeditor5_plugins/drupalfontawesome/icons/drupalfontawesome.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.--><path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32v448c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4 44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"/></svg>
+\ No newline at end of file
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesome.js b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesome.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..7daa60a94613cf2304c8fee4e2a1f89178e71de0
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesome.js
+@@ -0,0 +1,9 @@
++import FontAwesomeEditing from './FontAwesomeEditing';
++import FontAwesomeUI from './FontAwesomeUI';
++import { Plugin } from 'ckeditor5/src/core';
 +
-+namespace Drupal\inline_entity_form\Form;
-+
-+use Drupal\Core\Form\FormStateInterface;
-+
-+/**
-+ * Block content inline form handler.
-+ */
-+class BlockContentInlineForm extends EntityInlineForm {
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function entityFormSubmit(array &$entity_form, FormStateInterface $form_state) {
-+    // Non-reusable blocks were introduced in Drupal 8.6.0.
-+    // @see https://www.drupal.org/node/2978419
-+    if (version_compare(\Drupal::VERSION, '8.6.0', '>=')) {
-+      $parent_form_id = $form_state->getCompleteForm()['#form_id'];
-+      if (strpos($parent_form_id, 'layout_builder_') === 0) {
-+        $entity_form['#entity']->setNonReusable();
-+      }
-+    }
-+    parent::entityFormSubmit($entity_form, $form_state);
++export default class FontAwesome extends Plugin {
++  static get requires() {
++    return [FontAwesomeEditing, FontAwesomeUI];
 +  }
-+
 +}
-diff --git a/src/NestedInlineBlockOperations.php b/src/NestedInlineBlockOperations.php
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeEditing.js b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeEditing.js
 new file mode 100644
-index 00000000..83d46860
+index 0000000000000000000000000000000000000000..5f1857c82675f5a56beac6d19344ad1b3496e2c2
 --- /dev/null
-+++ b/src/NestedInlineBlockOperations.php
-@@ -0,0 +1,104 @@
-+<?php
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeEditing.js
+@@ -0,0 +1,141 @@
++import { Plugin } from 'ckeditor5/src/core';
++import { toWidget, toWidgetEditable } from 'ckeditor5/src/widget';
++import InsertFontAwesomeIcon from './InsertFontAwesomeIcon';
 +
-+namespace Drupal\inline_entity_form;
 +
-+use Drupal\Core\Entity\EntityInterface;
-+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-+use Drupal\layout_builder\InlineBlockEntityOperations;
++export default class FontAwesomeEditing extends Plugin {
 +
-+/**
-+ * Defines custom reactions to entity events related to Inline Blocks.
-+ */
-+class NestedInlineBlockOperations extends InlineBlockEntityOperations {
-+
-+  /**
-+   * Update LB usage information for nested inline blocks.
-+   *
-+   * @see Drupal\layout_builder\InlineBlockEntityOperations::handlePreSave()
-+   */
-+  public function updateNestedInlineBlocks(EntityInterface $entity) {
-+    if (!$this->isLayoutCompatibleEntity($entity)) {
-+      return;
-+    }
-+    if (!$sections = $this->getEntitySections($entity)) {
-+      return;
-+    }
-+    foreach ($this->getInlineBlockComponents($sections) as $component) {
-+      $block = NULL;
-+      /** @var \Drupal\layout_builder\Plugin\Block\InlineBlock $plugin */
-+      $plugin = $component->getPlugin();
-+      if (!is_null($block_id = $this->getPluginBlockId($plugin))) {
-+        $block = $this->blockContentStorage
-+          ->load($this->getPluginBlockId($plugin));
-+      }
-+      if ($block && $layout_entity_info = $this->checkBlock($block)) {
-+        $this->trackReferencedBlocks($block, $layout_entity_info);
-+      }
-+    }
++  init() {
++    this._defineSchema();
++    this._defineConverters();
++    this.editor.commands.add(
++      'insertFontAwesomeIcon',
++      new InsertFontAwesomeIcon(this.editor),
++    );
 +  }
 +
-+  /**
-+   * Check whether a block is managed by layout_builder.
-+   *
-+   * @param Drupal\Core\Entity\EntityInterface $block
-+   *   A block entity.
-+   *
-+   * @return object|bool
-+   *   If $block is a non-reusable block that is managed by layout_builder, then
-+   *   return a stdClass object with properties layout_entity_id and
-+   *   layout_entity_type. Otherwise, return FALSE.
-+   */
-+  public function checkBlock(EntityInterface $block) {
-+    if ($block->isReusable()) {
-+      return FALSE;
-+    }
-+    return $this->usage->getUsage($block->id());
++  _defineSchema() {
++    const schema = this.editor.model.schema;
++
++    schema.register('fontAwesomeIconInline', {
++      inheritAllFrom: '$inlineObject',
++      allowAttributes: ['class', 'data-fa-transform', 'data-tag'],
++    });
++
++    schema.register('fontAwesomeIcon', {
++      inheritAllFrom: '$inlineObject',
++      allowAttributes: ['class', 'data-fa-transform', 'data-tag'],
++    });
 +  }
 +
-+  /**
-+   * Recursively mark referenced blocks as being managed by layout_builder.
-+   *
-+   * We will be in big trouble if there are any circular references among
-+   * non-reusable blocks.
-+   *
-+   * @param Drupal\Core\Entity\EntityInterface $block
-+   *   A non-reusable block that is managed by layout_builder.
-+   * @param stdClass $layout_entity_info
-+   *   Usage information as returned by $this->checkBlock().
-+   * @param bool $force_not_reusable
-+   *   (optional) If TRUE, then make all nested blocks non-reusable. Default is
-+   *   FALSE.
-+   *
-+   * @see $this->checkBlock()
-+   * @see inline_entity_form_entity_presave()
-+   * @see inline_entity_form_block_content_update()
-+   */
-+  public function trackReferencedBlocks(EntityInterface $block, $layout_entity_info, $force_not_reusable = FALSE) {
-+    $layout_entity = $this->entityTypeManager
-+      ->getStorage($layout_entity_info->layout_entity_type)
-+      ->load($layout_entity_info->layout_entity_id);
++  _defineConverters() {
++    const { conversion } = this.editor;
 +
-+    foreach ($block->getFields(FALSE) as $field) {
-+      if (!$field instanceof EntityReferenceFieldItemListInterface) {
-+        continue;
-+      }
-+      if ($field->getSetting('target_type') != 'block_content') {
-+        continue;
-+      }
-+      foreach ($field->referencedEntities() as $nested_block) {
-+        if ($nested_block->isReusable()) {
-+          if (!$force_not_reusable) {
-+            continue;
-+          }
-+          $nested_block->setNonReusable();
-+          $nested_block->save();
++    conversion.for('upcast').elementToElement({
++      view: {
++        name: 'span',
++        classes: 'fontawesome-icon-inline',
++      },
++      model: (viewElement, { writer }) => {
++        // Get the first child element inside the wrapper span
++        const childElement = viewElement.getChild(0);
++
++        if (!childElement || !childElement.name) {
++            return null;
 +        }
-+        if (!$this->usage->getUsage($nested_block->id())) {
-+          $this->usage->addUsage($nested_block->id(), $layout_entity);
-+        }
-+        $this->trackReferencedBlocks($nested_block, $layout_entity_info, $force_not_reusable);
++
++        // Create the model element and preserve child attributes
++        const fontAwesomeIconInline = writer.createElement(
++            'fontAwesomeIconInline',
++            childElement.getAttributes()
++        );
++
++        writer.setAttribute('data-tag', childElement.name, fontAwesomeIconInline);
++        return fontAwesomeIconInline;
 +      }
++    });
++
++    conversion.for('upcast').elementToElement({
++      view: {
++        name: /^(span|i)$/,
++        classes: /^(fa|fa-classic|fa-sharp|fas|fa-solid|far|fa-regular|fab|fa-brands)$/,
++      },
++      model: ( viewElement, { writer } ) => {
++        const fontAwesomeIcon = writer.createElement('fontAwesomeIcon', viewElement.getAttributes());
++        writer.setAttribute('data-tag', viewElement.name, fontAwesomeIcon);
++        return fontAwesomeIcon;
++      }
++    });
++
++    conversion.for('dataDowncast').elementToElement({
++      model: {
++        name: 'fontAwesomeIconInline',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: (modelElement, { writer }) => {
++        return createFontAwesomeIconInlineView(modelElement, writer);
++      }
++    });
++
++    conversion.for('dataDowncast').elementToElement( {
++      model: {
++        name: 'fontAwesomeIcon',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: (modelElement, { writer }) => {
++        return createFontAwesomeIconInlineView(modelElement, writer);
++      }
++    } );
++
++    conversion.for('editingDowncast').elementToElement( {
++      model: {
++        name: 'fontAwesomeIconInline',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: (modelElement, { writer}) => {
++        const icon = createFontAwesomeIconInlineView(modelElement, writer);
++        const widgetElement = writer.createContainerElement('span', {}, [icon]);
++        return toWidget(widgetElement, writer);
++      }
++    } );
++
++    conversion.for('editingDowncast').elementToElement( {
++      model: {
++        name: 'fontAwesomeIcon',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: ( modelElement, { writer} ) => {
++        const icon = createFontAwesomeIconInlineView(modelElement, writer);
++        const widgetElement = writer.createContainerElement('span', {}, [icon]);
++        return toWidget(widgetElement, writer);
++      }
++    } );
++
++    function createFontAwesomeIconInlineView(modelElement, writer) {
++      const tag = modelElement.getAttribute('data-tag')? modelElement.getAttribute('data-tag') : 'span';
++      const classes = modelElement.getAttribute('class');
++      const transforms = modelElement.getAttribute('data-fa-transform');
++      return writer.createRawElement('span', { class: 'fontawesome-icon-inline' }, function(domElement) {
++        const transformAttribute = transforms ? `data-fa-transform="${transforms}"` : '';
++        domElement.innerHTML = `<${tag} class="${classes}" ${transformAttribute}>&nbsp;</${tag}>`;
++      });
++    }
++
++    function createFontAwesomeIconView(modelElement, writer) {
++      const attributes = { class: modelElement.getAttribute('class') };
++      const tag = modelElement.getAttribute('data-tag');
++      const classes = modelElement.getAttribute('class');
++      const transforms = modelElement.getAttribute('data-fa-transform');
++      if (transforms) {
++        attributes['data-fa-transform'] = transforms;
++      }
++      return writer.createRawElement('span', [], function (domElement) {
++        // domElement.innerHTML = '&nbsp;';
++        const transformAttribute = transforms ? `data-fa-transform="${transforms}"` : '';
++        domElement.innerHTML = `<${tag} class="${classes}" ${transformAttribute}>&nbsp;</${tag}>`;
++      });
 +    }
 +  }
-+
 +}
-diff --git a/src/Plugin/EntityReferenceSelection/InlineBlockSelection.php b/src/Plugin/EntityReferenceSelection/InlineBlockSelection.php
++
++
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeUI.js b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeUI.js
 new file mode 100644
-index 00000000..5930c357
+index 0000000000000000000000000000000000000000..531ed95d185240bb9ada3267f712396de4a779ab
 --- /dev/null
-+++ b/src/Plugin/EntityReferenceSelection/InlineBlockSelection.php
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeUI.js
+@@ -0,0 +1,37 @@
++import { Plugin } from 'ckeditor5/src/core';
++import {  ButtonView, ContextualBalloon, clickOutsideHandler  } from 'ckeditor5/src/ui';
++import icon from '../icons/drupalfontawesome.svg';
++
++export default class FontAwesomeUI extends Plugin {
++  init() {
++    this.drupal = require('Drupal');
++    const editor = this.editor;
++    const activeFormat = editor.sourceElement.getAttribute('data-editor-active-text-format');
++
++    editor.ui.componentFactory.add('fontAwesome', (locale) => {
++      const buttonView = new ButtonView(locale);
++      const command = editor.commands.get( 'insertFontAwesomeIcon' );
++
++      buttonView.set({
++        label: editor.t('Insert Fontawesome Icon'),
++        icon,
++        tooltip: true,
++      });
++
++      buttonView.bind('isEnabled').to( command, 'isEnabled' );
++
++      this.listenTo(buttonView, 'execute', () => {
++        const dialogSettings = {
++          title: 'FontAwesome',
++          dialogClass: 'fontawesome-icon-dialog',
++        };
++
++        this.drupal.ckeditor5.openDialog(this.drupal.url(`fontawesome/dialog/icon/${activeFormat}`), ({attributes, tag})=>{
++          editor.execute('insertFontAwesomeIcon', attributes, tag);
++        }, dialogSettings);
++      } );
++
++      return buttonView;
++    });
++  }
++}
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/InsertFontAwesomeIcon.js b/js/ckeditor5_plugins/drupalfontawesome/src/InsertFontAwesomeIcon.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..f663f0f62415bc865c19adeac930208ec2025dd8
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/InsertFontAwesomeIcon.js
 @@ -0,0 +1,32 @@
++import { Command } from 'ckeditor5/src/core';
++
++export default class InsertFontAwesomeIcon extends Command {
++  constructor( locale ) {
++    super( locale );
++  }
++
++  execute(attributes, tag) {
++    const { model } = this.editor;
++
++    model.change((writer) => {
++      model.insertContent(createFontAwesomeIcon(writer, attributes, tag));
++    });
++  }
++
++  refresh() {
++    const { model } = this.editor;
++    const { selection } = model.document;
++    const allowedIn = model.schema.findAllowedParent(
++      selection.getFirstPosition(),
++      'fontAwesomeIcon',
++    );
++
++    this.isEnabled = allowedIn !== null;
++  }
++}
++
++function createFontAwesomeIcon(writer, attributes, tag) {
++  const fontAwesomeIconElement = writer.createElement('fontAwesomeIconInline', attributes);
++  writer.setAttribute('data-tag', tag, fontAwesomeIconElement);
++  return fontAwesomeIconElement;
++}
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/index.js b/js/ckeditor5_plugins/drupalfontawesome/src/index.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..63ac8d9d20bfa192b49e115bd7461f466acf6257
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/index.js
+@@ -0,0 +1,5 @@
++import FontAwesome from './FontAwesome';
++
++export default {
++  FontAwesome,
++};
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a6726e942ffbe9da665f73593274e82c02b74b12
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,20 @@
++{
++  "name": "fontawesome-ckeditor5",
++  "version": "1.0.0",
++  "description": "Fontawesome Ckdeditor 5 plugin.",
++  "author": "",
++  "license": "GPL-2.0-or-later",
++  "scripts": {
++    "watch": "webpack --mode development --watch",
++    "build": "webpack"
++  },
++  "devDependencies": {
++    "@ckeditor/ckeditor5-dev-utils": "^30.0.0",
++    "@ckeditor/ckeditor5-widget": "^37.0.1",
++    "ckeditor5": "~34.1.0",
++    "raw-loader": "^4.0.2",
++    "terser-webpack-plugin": "^5.2.0",
++    "webpack": "^5.51.1",
++    "webpack-cli": "^4.4.0"
++  }
++}
+diff --git a/src/Plugin/CKEditor4To5Upgrade/FontAwesomeCKEditor5.php b/src/Plugin/CKEditor4To5Upgrade/FontAwesomeCKEditor5.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..e108999dd7da045f2f469234557b6ba51de3fff5
+--- /dev/null
++++ b/src/Plugin/CKEditor4To5Upgrade/FontAwesomeCKEditor5.php
+@@ -0,0 +1,52 @@
 +<?php
 +
-+namespace Drupal\inline_entity_form\Plugin\EntityReferenceSelection;
++namespace Drupal\fontawesome\Plugin\CKEditor4To5Upgrade;
 +
-+use Drupal\Core\Entity\Plugin\EntityReferenceSelection\DefaultSelection;
++use Drupal\ckeditor5\HTMLRestrictions;
++use Drupal\ckeditor5\Plugin\CKEditor4To5UpgradePluginInterface;
++use Drupal\Core\Plugin\PluginBase;
++use Drupal\filter\FilterFormatInterface;
 +
-+/**
-+ * Entity Reference Selection plugin for inline (non-reusable) blocks.
-+ *
-+ * @EntityReferenceSelection(
-+ *   id = "inline_entity_form",
-+ *   label = @Translation("Inline Block"),
-+ *   group = "inline_entity_form",
-+ *   target_type = "block_content",
-+ *   weight = 0
-+ * )
-+ */
-+class InlineBlockSelection extends DefaultSelection {
++  /**
++   * @CKEditor4To5Upgrade(
++   *   id = "ckeditor5_fontawesome",
++   *   cke4_buttons = {
++   *     "DrupalFontAwesome",
++   *   },
++   *   cke4_plugin_settings = {},
++   *   cke5_plugin_elements_subset_configuration = {}
++   * )
++   *
++   * @internal
++   *   Plugin classes are internal.
++   */
++class FontAwesomeCKEditor5 extends PluginBase implements CKEditor4To5UpgradePluginInterface {
 +
 +  /**
 +   * {@inheritdoc}
 +   */
-+  protected function buildEntityQuery($match = NULL, $match_operator = 'CONTAINS') {
-+    // The parent method adds the block_content_access tag to the query, so
-+    // block_content_query_entity_reference_alter() will add a condition on the
-+    // reusable field unless we add one first.
-+    $query = parent::buildEntityQuery($match, $match_operator);
-+    $query->exists('reusable');
-+    return $query;
++  public function mapCKEditor4ToolbarButtonToCKEditor5ToolbarItem(string $cke4_button, HTMLRestrictions $text_format_html_restrictions): ?array {
++    switch ($cke4_button) {
++      case 'DrupalFontAwesome':
++        return ['fontawesome'];
++
++      default:
++        throw new \OutOfBoundsException();
++    }
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function mapCKEditor4SettingsToCKEditor5Configuration(string $cke4_plugin_id, array $cke4_plugin_settings): ?array {
++    throw new \OutOfBoundsException();
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function computeCKEditor5PluginSubsetConfiguration(string $cke5_plugin_id, FilterFormatInterface $text_format): ?array {
++    throw new \OutOfBoundsException();
 +  }
 +
 +}
---
-GitLab
-
-
-From 30e668ac194c5c56552c281e79e9bb11284d51cc Mon Sep 17 00:00:00 2001
-From: Oleh Shevchuk <49051-alt@users.noreply.drupalcode.org>
-Date: Thu, 8 Feb 2024 14:50:19 +0000
-Subject: [PATCH 2/4] Issue #3002175 by benjifisher, valthebald: Custom blocks
- created in inline forms should not be reusable
-
----
- inline_entity_form.services.yml               |  6 +-
- .../SetInlineBlockDependencyNested.php        | 99 +++++++++++++++----
- 2 files changed, 81 insertions(+), 24 deletions(-)
-
-diff --git a/inline_entity_form.services.yml b/inline_entity_form.services.yml
-index a43f18af..27b3afe4 100644
---- a/inline_entity_form.services.yml
-+++ b/inline_entity_form.services.yml
-@@ -2,9 +2,7 @@ services:
-   inline_entity_form.inline_block_dependency_subscriber:
-     class: Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested
-     arguments:
--      - '@entity_type.manager'
--      - '@database'
--      - '@inline_block.usage'
--      - '@plugin.manager.layout_builder.section_storage'
-+      - '@current_route_match'
-+      - '@node.node_route_context'
-     tags :
-       - { name: event_subscriber }
-diff --git a/src/EventSubscriber/SetInlineBlockDependencyNested.php b/src/EventSubscriber/SetInlineBlockDependencyNested.php
-index b5f29220..2aa28a2f 100644
---- a/src/EventSubscriber/SetInlineBlockDependencyNested.php
-+++ b/src/EventSubscriber/SetInlineBlockDependencyNested.php
-@@ -2,8 +2,12 @@
-
- namespace Drupal\inline_entity_form\EventSubscriber;
-
-+use Drupal\block_content\BlockContentEvents;
- use Drupal\block_content\BlockContentInterface;
--use Drupal\layout_builder\EventSubscriber\SetInlineBlockDependency;
-+use Drupal\block_content\Event\BlockContentGetDependencyEvent;
-+use Drupal\Core\Routing\RouteMatchInterface;
-+use Drupal\node\ContextProvider\NodeRouteContext;
-+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
- /**
-  * Override Layout Builder SetInlineBlockDependencyWithContextTranslation.
-@@ -13,32 +17,87 @@ use Drupal\layout_builder\EventSubscriber\SetInlineBlockDependency;
-  * This is copied from the version in layout_builder_at, except for skipping
-  * the test isBlockRevisionUsedInEntity().
-  */
--class SetInlineBlockDependencyNested extends SetInlineBlockDependency {
-+class SetInlineBlockDependencyNested implements EventSubscriberInterface {
+diff --git a/tests/src/Kernel/UpgradePathTest.php b/tests/src/Kernel/UpgradePathTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..ad8336089e4a86172a9b44f560ce29bb470434c1
+--- /dev/null
++++ b/tests/src/Kernel/UpgradePathTest.php
+@@ -0,0 +1,110 @@
++<?php
++
++declare(strict_types = 1);
++
++namespace Drupal\Tests\fontawesome\Kernel;
++
++use Drupal\editor\Entity\Editor;
++use Drupal\filter\Entity\FilterFormat;
++use Drupal\Tests\ckeditor5\Kernel\SmartDefaultSettingsTest;
++
++/**
++ * @covers \Drupal\fontawesome\Plugin\CKEditor4To5Upgrade\FontAwesomeCKEditor5
++ * @group fontawesome
++ * @group ckeditor5
++ * @requires module ckeditor5
++ * @internal
++ */
++class UpgradePathTest extends SmartDefaultSettingsTest {
 +
 +  /**
-+   * The currently active route match object.
-+   *
-+   * @var \Drupal\Core\Routing\RouteMatchInterface
++   * {@inheritdoc}
 +   */
-+  protected RouteMatchInterface $routeMatch;
++  protected static $modules = [
++    'fontawesome',
++  ];
 +
 +  /**
-+   * The node route context service.
-+   *
-+   * @var \Drupal\node\ContextProvider\NodeRouteContext
++   * {@inheritdoc}
 +   */
-+  protected NodeRouteContext $nodeRouteContext;
++  protected function setUp(): void {
++    parent::setUp();
 +
-+  /**
-+   * Constructs event subscriber.
-+   *
-+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-+   *   The currently active route match object.
-+   * @param \Drupal\node\ContextProvider\NodeRouteContext $node_route_context
-+   *   The node route context service.
-+   */
-+  public function __construct(RouteMatchInterface $route_match, NodeRouteContext $node_route_context) {
-+    $this->routeMatch = $route_match;
-+    $this->nodeRouteContext = $node_route_context;
++
++    $filter_config = [
++      'filter_html' => [
++        'status' => 1,
++        'settings' => [
++          'allowed_html' => '<p> <br> <strong>',
++        ],
++      ],
++    ];
++
++    FilterFormat::create([
++      'format' => 'font_awesome_enabled',
++      'name' => 'Font Awesome Enabled',
++      'filters' => $filter_config,
++    ])->setSyncing(TRUE)->save();
++
++
++    $editor_settings =  [
++        'toolbar' => [
++          'rows' => [
++            0 => [
++              [
++                'name' => 'Basic Formatting',
++                'items' => [
++                  'Bold',
++                  'Format',
++                ],
++              ],
++              [
++                'name' => 'Embedding',
++                'items' => ['DrupalFontAwesome'],
++              ],
++            ],
++          ],
++        ],
++        'plugins' => [],
++      ];
++
++
++    Editor::create([
++      'format' => 'font_awesome_enabled',
++      'editor' => 'ckeditor',
++      'settings' => $editor_settings,
++    ])->setSyncing(TRUE)->save();
 +  }
 +
 +  /**
-+   * Handles the BlockContentEvents::INLINE_BLOCK_GET_DEPENDENCY event.
-+   *
-+   * @param \Drupal\block_content\Event\BlockContentGetDependencyEvent $event
-+   *   The event.
-+   *
-+   * @throws \Drupal\Component\Plugin\Exception\ContextException
++   * {@inheritdoc}
 +   */
-+  public function onGetDependency(BlockContentGetDependencyEvent $event) {
-+    if ($dependency = $this->getInlineBlockDependency($event->getBlockContentEntity())) {
-+      $event->setAccessDependency($dependency);
-+    }
-+  }
-
-   /**
-    * {@inheritdoc}
-    */
-+  public static function getSubscribedEvents() {
-+    return [
-+      BlockContentEvents::BLOCK_CONTENT_GET_DEPENDENCY => [
-+        'onGetDependency',
-+        -100,
++  public function provider() {
++    $expected_ckeditor5_toolbar = [
++      'items' => [
++        'bold',
++        '|',
++        'fontawesome',
++      ],
++    ];
++
++
++    yield "Fontawesome enabled" => [
++      'format_id' => 'font_awesome_enabled',
++      'filters_to_drop' => [],
++      'expected_ckeditor5_settings' => [
++        'toolbar' => $expected_ckeditor5_toolbar,
++        'plugins' => [],
++      ],
++      'expected_superset' => '<i class data-fa-transform> <span class data-fa-transform>',
++      'expected_fundamental_compatibility_violations' => [],
++      'expected_db_logs' => [],
++      'expected_messages' => [
++        'warning' => [
++          'Updating to CKEditor 5 added support for some previously unsupported tags/attributes. A plugin introduced support for the following:  The tags <em class="placeholder">&lt;i&gt;, &lt;span&gt;</em>; These attributes: <em class="placeholder"> class (for &lt;i&gt;, &lt;span&gt;), data-fa-transform (for &lt;i&gt;, &lt;span&gt;)</em>; Additional details are available in your logs.'
++        ],
 +      ],
 +    ];
 +  }
 +
-+  /**
-+   * Get the access dependency of an inline block.
-+   *
-+   * @param \Drupal\block_content\BlockContentInterface $block_content
-+   *   The block content entity.
-+   *
-+   * @return \Drupal\Core\Entity\EntityInterface|null
-+   *   Returns the entity dependency.
-+   *
-+   * @throws \Drupal\Component\Plugin\Exception\ContextException
-+   */
-   protected function getInlineBlockDependency(BlockContentInterface $block_content) {
--    // Call getTranslationFromContext() on the entity.
--    $layout_entity_info = $this->usage->getUsage($block_content->id());
--    if (empty($layout_entity_info)) {
--      // If the block does not have usage information then we cannot set a
--      // dependency. It may be used by another module besides layout builder.
--      return NULL;
--    }
--    $layout_entity_storage = $this->entityTypeManager->getStorage($layout_entity_info->layout_entity_type);
--    $layout_entity = $layout_entity_storage->load($layout_entity_info->layout_entity_id);
--    $layout_entity = \Drupal::service('entity.repository')->getTranslationFromContext($layout_entity);
--    if ($this->isLayoutCompatibleEntity($layout_entity)) {
--      if ($this->isBlockRevisionUsedInEntity($layout_entity, $block_content)) {
--        // Skip this test, which is present in layout_builder and
--        // layout_builder_at. It will fail for nested blocks. Will we get in
--        // trouble if one revision of a nested block is used but another is not?
--      }
--      return $layout_entity;
-+    // @todo Find a better way to get child blocks dependencies.
-+    // Try to extract the node route context.
-+    $contexts = $this->nodeRouteContext->getRuntimeContexts([]);
-+    /** @var \Drupal\Core\Plugin\Context\Context $nodeContext */
-+    $nodeContext = $contexts['node'];
-+    $entity = $nodeContext->getContextValue();
-
-+    // If we couldn't retrieve the node from the route then we try to get the
-+    // section storage.
-+    if (!$entity) {
-+      $entity = $this->routeMatch->getParameter('section_storage');
-     }
--    return NULL;
-+
-+    return $entity;
-   }
-
- }
---
-GitLab
-
-
-From 0dd9ad2904b9c2742f019077cfadca50a4841662 Mon Sep 17 00:00:00 2001
-From: arakwar <sebas.lemieux@gmail.com>
-Date: Thu, 8 Aug 2024 09:20:21 -0400
-Subject: [PATCH 3/4] Issue #3002175 Apply patch #46
-
----
- inline_entity_form.module               |  2 +-
- src/InlineEntityFormServiceProvider.php | 41 +++++++++++++++++++++++++
- 2 files changed, 42 insertions(+), 1 deletion(-)
- create mode 100644 src/InlineEntityFormServiceProvider.php
-
-diff --git a/inline_entity_form.module b/inline_entity_form.module
-index e9c18017..90748bc7 100644
---- a/inline_entity_form.module
-+++ b/inline_entity_form.module
-@@ -89,7 +89,7 @@ function inline_entity_form_entity_presave(EntityInterface $entity) {
-   // called before LB has added usage information for the block. Instead, use
-   // this hook for the parent entity.
-   // @see layout_builder_entity_presave()
--  if (\Drupal::moduleHandler()->moduleExists('layout_builder')) {
-+  if (\Drupal::moduleHandler()->moduleExists('layout_builder') && \Drupal::moduleHandler()->moduleExists('block_content')) {
-     /** @var \Drupal\inline_entity_form\NestedInlineBlockOperations $entity_operations */
-     $entity_operations = \Drupal::classResolver(NestedInlineBlockOperations::class);
-     $entity_operations->updateNestedInlineBlocks($entity);
-diff --git a/src/InlineEntityFormServiceProvider.php b/src/InlineEntityFormServiceProvider.php
-new file mode 100644
-index 00000000..79dbcea5
---- /dev/null
-+++ b/src/InlineEntityFormServiceProvider.php
-@@ -0,0 +1,41 @@
-+<?php
-+
-+namespace Drupal\inline_entity_form;
-+
-+use Drupal\Core\DependencyInjection\ContainerBuilder;
-+use Drupal\Core\DependencyInjection\ServiceProviderInterface;
-+use Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested;
-+use Symfony\Component\DependencyInjection\Definition;
-+use Symfony\Component\DependencyInjection\Reference;
-+
-+/**
-+ * Sets inline_entity_form.get_block_dependency_subscriber service definition.
-+ *
-+ * This service is dependent on the block_content module, so it must be provided
-+ * dynamically.
-+ *
-+ * @internal
-+ *   Service providers are internal.
-+ *
-+ * @see \Drupal\inline_entity_form\EventSubscriber\SetInlineBlockDependencyNested
-+ */
-+class InlineEntityFormServiceProvider implements ServiceProviderInterface {
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function register(ContainerBuilder $container) {
-+    $modules = $container->getParameter('container.modules');
-+    if (isset($modules['block_content'])) {
-+      $definition = new Definition(SetInlineBlockDependencyNested::class);
-+      $definition->setArguments([
-+        new Reference('current_route_match'),
-+        new Reference('node.node_route_context'),
-+      ]);
-+      $definition->addTag('event_subscriber');
-+      $definition->setPublic(TRUE);
-+      $container->setDefinition('inline_entity_form.get_block_dependency_subscriber', $definition);
-+    }
-+  }
-+
 +}
---
-GitLab
-
-
-From ca228c784bfe8cfd1e6dde688ac94f412891b93b Mon Sep 17 00:00:00 2001
-From: arakwar <sebas.lemieux@gmail.com>
-Date: Thu, 8 Aug 2024 10:03:41 -0400
-Subject: [PATCH 4/4] Issue #3002175 Add getPluginBlockId function back in
- module.
-
----
- src/NestedInlineBlockOperations.php | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/src/NestedInlineBlockOperations.php b/src/NestedInlineBlockOperations.php
-index 83d46860..04290faf 100644
---- a/src/NestedInlineBlockOperations.php
-+++ b/src/NestedInlineBlockOperations.php
-@@ -5,12 +5,35 @@ namespace Drupal\inline_entity_form;
- use Drupal\Core\Entity\EntityInterface;
- use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
- use Drupal\layout_builder\InlineBlockEntityOperations;
-+use Drupal\layout_builder\Plugin\Block\InlineBlock;
-
- /**
-  * Defines custom reactions to entity events related to Inline Blocks.
-  */
- class NestedInlineBlockOperations extends InlineBlockEntityOperations {
-
-+  /**
-+   * Gets a block ID for an inline block plugin.
-+   *
-+   * @param \Drupal\layout_builder\Plugin\Block\InlineBlock $block_plugin
-+   *   The inline block plugin.
-+   *
-+   * @return int
-+   *   The block content ID or null none available.
-+   *
-+   * It was removed in https://git.drupalcode.org/project/drupal/-/commit/71a1ab746b9731cb30213ed04ca86160e331ea2d
-+   * But we need it for this module, it was brought back for now to restore functionality on Drupal 10.3
-+   */
-+  protected function getPluginBlockId(InlineBlock $block_plugin) {
-+    $configuration = $block_plugin->getConfiguration();
-+    if (!empty($configuration['block_revision_id'])) {
-+      $revision_ids = $this->getBlockIdsForRevisionIds([$configuration['block_revision_id']]);
-+      return array_pop($revision_ids);
-+    }
-+    return NULL;
-+  }
+diff --git a/webpack.config.js b/webpack.config.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..0876f7d156a5f3df3cea30fa62ceb718949853e4
+--- /dev/null
++++ b/webpack.config.js
+@@ -0,0 +1,63 @@
++const path = require('path');
++const fs = require('fs');
++const webpack = require('webpack');
++const TerserPlugin = require('terser-webpack-plugin');
 +
++function getDirectories(srcpath) {
++  return fs
++    .readdirSync(srcpath)
++    .filter((item) => fs.statSync(path.join(srcpath, item)).isDirectory());
++}
 +
-   /**
-    * Update LB usage information for nested inline blocks.
-    *
---
-GitLab
++module.exports = [];
++getDirectories('./js/ckeditor5_plugins').forEach((dir) => {
++  const bc = {
++    mode: 'production',
++    optimization: {
++      minimize: true,
++      minimizer: [
++        new TerserPlugin({
++          terserOptions: {
++            format: {
++              comments: false,
++            },
++          },
++          test: /\.js(\?.*)?$/i,
++          extractComments: false,
++        }),
++      ],
++      moduleIds: 'named',
++    },
++    entry: {
++      path: path.resolve(
++        __dirname,
++        'js/ckeditor5_plugins',
++        dir,
++        'src/index.js',
++      ),
++    },
++    externals: {
++      Drupal: 'Drupal',
++      drupalSettings: 'drupalSettings',
++    },
++    output: {
++      path: path.resolve(__dirname, './js/ckeditor5_plugins', dir, 'build'),
++      filename: `${dir}.min.js`,
++      library: ['CKEditor5', dir],
++      libraryTarget: 'umd',
++      libraryExport: 'default',
++    },
++    plugins: [
++      new webpack.DllReferencePlugin({
++        manifest: require('./node_modules/ckeditor5/build/ckeditor5-dll.manifest.json'), // eslint-disable-line global-require, import/no-unresolved
++        scope: 'ckeditor5/src',
++        name: 'CKEditor5.dll',
++      }),
++    ],
++    module: {
++      rules: [{ test: /\.svg$/, use: 'raw-loader' }],
++    },
++  };
++
++  module.exports.push(bc);
++});
