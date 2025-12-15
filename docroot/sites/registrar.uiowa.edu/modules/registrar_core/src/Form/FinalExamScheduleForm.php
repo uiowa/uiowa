@@ -100,9 +100,12 @@ class FinalExamScheduleForm extends FormBase {
     // Check for cached session data.
     $session_id = $session_info['session_id'];
     $cid = "uiowa_maui:request:final_exam_schedule:{$session_id}";
-    $data = $this->mauiCache->get($cid);
-    // If there wasn't cached data, try to fetch it now.
-    if (empty($data)) {
+    $cache = $this->mauiCache->get($cid);
+
+    if ($cache && isset($cache->data)) {
+      $data = $cache->data;
+    }
+    else {
       $data = $this->mauiApi->getFinalExamSchedule($session_id);
     }
 
