@@ -2,24 +2,22 @@ _core:
   default_config_hash: oDGEkhP0h5rXXqlDplxeBDre0goLigOJupHKMDMwcqM
 login_menu_item_title: ''
 logout_menu_item_title: ''
+login_link_title: ''
+login_auto_redirect: false
 login_redirect_url: ''
 logout_redirect_url: ''
 error_redirect_url: ''
 error_throw: false
+login_error_keep_session: false
 local_login_saml_error: false
 logout_different_user: false
-drupal_login_roles:
-  authenticated: '0'
-  viewer: '0'
-  editor: '0'
-  publisher: '0'
-  webmaster: '0'
-  administrator: '0'
+drupal_login_roles: {  }
 sp_entity_id: OVERRIDDEN
 sp_name_id_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
 sp_x509_certificate: OVERRIDDEN
 sp_new_certificate: ''
 sp_private_key: OVERRIDDEN
+metadata_valid_secs: null
 metadata_cache_http: false
 idp_entity_id: OVERRIDDEN
 idp_single_sign_on_service: 'https://overridden.drupal.prod.uiowa.edu'
