@@ -39,6 +39,35 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_media_wysiwyg_form_fontawesome_icon_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
+  if ($access->isForbidden()) {
+    $form['settings']['style']['#options'] = [
+      'regular' => 'Regular',
+      'classic' => 'Classic',
+    ];
+    $form['settings']['iconset']['#disabled'] = TRUE;
+    $form['settings']['size']['#disabled'] = TRUE;
+    $form['settings']['fixed-width']['#disabled'] = TRUE;
+    $form['settings']['border']['#disabled'] = TRUE;
+    $form['settings']['invert']['#disabled'] = TRUE;
+    $form['settings']['animation']['#disabled'] = TRUE;
+    $form['settings']['additional_classes']['#disabled'] = TRUE;
+    $form['settings']['duotone']['#disabled'] = TRUE;
+    $form['settings']['masking']['#disabled'] = TRUE;
+    $form['settings']['power_transforms']['#disabled'] = TRUE;
+    $form['settings']['pull']['#disabled'] = TRUE;
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  */
 function sitenow_media_wysiwyg_media_presave($entity): void {
