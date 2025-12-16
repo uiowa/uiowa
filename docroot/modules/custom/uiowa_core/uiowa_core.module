@@ -2096,6 +2096,9 @@ function uiowa_core_object_to_array(mixed $obj): mixed {
  *   Whether to check access and disable settings. Default TRUE.
  */
 function uiowa_core_configure_fontawesome_icon_field(array &$icon_element, $check_access = TRUE) {
+  if (!is_array($icon_element)) {
+    return;
+  }
   // Update the icon_name description text.
   if (isset($icon_element['icon_name']['#description'])) {
     $icon_element['icon_name']['#description'] = t(
