@@ -2112,6 +2112,10 @@ below to display that icon style.',
   }
 
   if ($check_access) {
+    $icon_element['settings']['style']['#options'] = [
+      'solid' => 'Solid',
+      'regular' => 'Regular',
+    ];
     /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
     $check = \Drupal::service('uiowa_core.access_checker');
 
