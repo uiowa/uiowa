@@ -69,7 +69,7 @@ function sitenow_charts_chart_alter(array &$element, $chart_id) {
  */
 function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
   // Limit to specific chart types.
-  $allowed_types = ['line', 'column', 'bar'];
+  $allowed_types = ['line', 'column', 'bar', 'dumbbell'];
   $types = array_intersect($types, $allowed_types);
 }
 
@@ -108,6 +108,12 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
           // Remove ability to change to polar coordinate system.
           if (isset($element[$delta]['config']['display']['polar'])) {
             $element[$delta]['config']['display']['polar']['#access'] = FALSE;
+          }
+          // Set low_color field to black for dumbbell.
+          if (isset($element[$delta]['config']['library_type_options']['low_color'])) {
+            $element[$delta]['config']['library_type_options']['low_color']['#value'] = '#000000';
+            $element[$delta]['config']['library_type_options']['low_color']['#attributes']['placeholder'] = '#000000';
+            $element[$delta]['config']['library_type_options']['low_color']['#description'] = 'The color to use for the low value. Default is set to black.';
           }
           // Hide color inputs in the data collector table.
           if (isset($element[$delta]['config']['series']['data_collector_table'])) {
