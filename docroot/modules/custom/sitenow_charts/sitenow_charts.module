@@ -109,11 +109,13 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
           if (isset($element[$delta]['config']['display']['polar'])) {
             $element[$delta]['config']['display']['polar']['#access'] = FALSE;
           }
-          // Set low_color field to black for dumbbell.
+          // Set low_color field to black for dumbbell and disable the picker.
           if (isset($element[$delta]['config']['library_type_options']['low_color'])) {
-            $element[$delta]['config']['library_type_options']['low_color']['#value'] = '#000000';
-            $element[$delta]['config']['library_type_options']['low_color']['#attributes']['placeholder'] = '#000000';
-            $element[$delta]['config']['library_type_options']['low_color']['#description'] = 'The color to use for the low value. Default is set to black.';
+            $element[$delta]['config']['library_type_options']['low_color']['#attributes']['disabled'] = 'disabled';
+            $element[$delta]['config']['library_type_options']['low_color']['#description'] = t('The color to use for the low value. Default is set to black.');
+            $element[$delta]['config']['library_type_options']['low_color']['#element_validate'][] = function (&$element, FormStateInterface $form_state) {
+              $form_state->setValueForElement($element, '#000000');
+            };
           }
           // Hide color inputs in the data collector table.
           if (isset($element[$delta]['config']['series']['data_collector_table'])) {
@@ -139,7 +141,8 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
  */
 function sitenow_charts_preprocess_field(&$variables) {
   // For chart fields in block content, a workaround
-  // trick the entity type to bypass the stripped template logic in layouts.html.twig.
+  // trick the entity type to bypass the
+  // stripped template logic in layouts.html.twig.
   if ($variables['entity_type'] == 'block_content' && $variables['field_name'] == 'field_sitenow_chart') {
     // Change entity type so it goes through proper
     // field rendering instead of stripped block content rendering.
