@@ -11,15 +11,35 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_chart_definition_alter().
  */
 function sitenow_charts_chart_definition_alter(array &$definition, array $element, $chart_id) {
+  $chart_type = $definition['chart']['type'] ?? 'unknown';
+
   // Get the yAxis format if it exists.
   if (!empty($definition['yAxis'][0]['labels']['format'])) {
     $format = $definition['yAxis'][0]['labels']['format'];
 
-    // Apply the same format to tooltips.
-    // Replace {value} with {point.y} for tooltip context.
-    $tooltip_format = str_replace('{value}', '{point.y}', $format);
+    // Apply the yAxis format (including any prefix/suffix) to tooltips.
+    if ($chart_type === 'dumbbell') {
+      // Dumbbell charts show a range, so create
+      // formats for both the start and end values.
+      // This replaces the default {point.low} and
+      // {point.high} rendering with the yAxis format
+      // like ${value:.2f} or {value}% to ensure
+      // prefix/suffix renders in the tooltip.
+      $tooltip_format = str_replace('{value}', '{point.low}', $format);
+      $tooltip_high_format = str_replace('{value}', '{point.high}', $format);
 
-    $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+      $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' .
+        $tooltip_format . ' - ' . $tooltip_high_format . '</b><br/>';
+    }
+    else {
+      // Standard charts show a single value.
+      // This replaces the default {point.y}
+      // rendering with the yAxis format
+      // like ${value:.2f} or {value}% to
+      // ensure prefix/suffix renders in the tooltip.
+      $tooltip_format = str_replace('{value}', '{point.y}', $format);
+      $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+    }
 
     // Add comma to the format if not already present
     // This handles formats like {value:.2f}, {value}, {value:.0f}%, etc.
