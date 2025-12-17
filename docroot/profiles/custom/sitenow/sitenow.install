@@ -4482,19 +4482,80 @@ function sitenow_update_10030() {
 }
 
 /**
- * Delete all Instagram media entities and uninstall module.
+ * Replace placed Instagram, delete media entities and uninstall module.
  */
 function sitenow_update_10031() {
-  // Load all media entities of type 'instagram'.
-  $storage = \Drupal::entityTypeManager()->getStorage('media');
-  $mids = $storage->getQuery()
-    ->condition('bundle', 'instagram')
-    ->accessCheck(FALSE)
-    ->execute();
+  $db = \Drupal::database();
+  $entity_type_manager = \Drupal::entityTypeManager();
 
-  if (!empty($mids)) {
-    $entities = $storage->loadMultiple($mids);
-    $storage->delete($entities);
-    \Drupal::logger('sitenow')->notice('Deleted @count Instagram media entities.', ['@count' => count($mids)]);
+  // Get instragram media entities with UUID and URL values.
+  $query = $db->select('media', 'm');
+  $query->fields('m', ['mid', 'uuid', 'bundle']);
+  $query->condition('m.bundle', 'instagram');
+
+  $query->join('media__field_media_instagram', 'i', 'm.mid = i.entity_id');
+  $query->addField('i', 'field_media_instagram_value');
+
+  $instagram_media = $query
+    ->execute()
+    ->fetchAllAssoc('uuid');
+
+  $media_ids = array_column($instagram_media, 'mid');
+
+  // Early exit if no instagram.
+  if (empty($instagram_media)) {
+    return;
   }
+
+  // Check against entity_usage table.
+  $usages = $db
+    ->select('entity_usage', 'u')
+    ->fields('u', [
+      'source_type',
+      'source_id',
+      'field_name',
+    ])
+    ->condition('target_type', 'media')
+    ->condition('target_id', $media_ids, 'IN')
+    ->execute()
+    ->fetchAll();
+
+  // Early exit if no placement.
+  if (empty($usages)) {
+    return;
+  }
+
+  /*
+   * Group usage for better looping.
+   */
+  $usage_map = [];
+  foreach ($usages as $usage) {
+    $usage_map[$usage->source_type][$usage->field_name][] = $usage->source_id;
+  }
+
+  // Avoid duplicates.
+  foreach ($usage_map as $type => $fields) {
+    foreach ($fields as $field_name => $entity_ids) {
+      $usage_map[$type][$field_name] = array_unique($entity_ids);
+    }
+  }
+
+  foreach ($usage_map as $type => $fields) {
+    $storage = $entity_type_manager->getStorage($type);
+  }
+
+  // Replace placed references with html comment.
+
+  // Load all media entities of type 'instagram'.
+//  $storage = $entity_type_manager->getStorage('media');
+//  $mids = $storage->getQuery()
+//    ->condition('bundle', 'instagram')
+//    ->accessCheck(FALSE)
+//    ->execute();
+//
+//  if (!empty($mids)) {
+//    $entities = $storage->loadMultiple($mids);
+//    $storage->delete($entities);
+//    \Drupal::logger('sitenow')->notice('Deleted @count Instagram media entities.', ['@count' => count($mids)]);
+//  }
 }
