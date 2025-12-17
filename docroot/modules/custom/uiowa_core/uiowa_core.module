@@ -2099,44 +2099,35 @@ function uiowa_core_configure_fontawesome_icon_field(array &$icon_element, $chec
   if (!is_array($icon_element)) {
     return;
   }
+
   // Update the icon_name description text.
   if (isset($icon_element['icon_name']['#description'])) {
     $icon_element['icon_name']['#description'] = t(
-      'Name of the Font Awesome Icon. See
-<a href="@url" target="_blank">the Font Awesome icon list</a>
-for valid icon names, or begin typing for an autocomplete list.
-Note: If an icon displays with an additional icon style next to it,
-select the "Regular" style in the "Additional Font Awesome Settings"
-below to display that icon style.',
-      [
-        '@url' => 'https://fontawesome.com/icons',
-      ]
+      'Name of the Font Awesome Icon. See <a href="@url" target="_blank">the Font Awesome icon list</a> for valid icon names, or begin typing for an autocomplete list. Note: If an icon displays with an additional icon style next to it, select the "Regular" style in the "Additional Font Awesome Settings" below to display that icon style.',
+      ['@url' => 'https://fontawesome.com/icons']
     );
   }
 
   if ($check_access) {
+    $icon_element['settings']['style']['#type'] = 'radios';
     $icon_element['settings']['style']['#options'] = [
       'solid' => 'Solid',
       'regular' => 'Regular',
     ];
-    /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-    $check = \Drupal::service('uiowa_core.access_checker');
+    $icon_element['settings']['style']['#default_value'] = 'solid';
 
-    /** @var Drupal\Core\Access\AccessResultInterface $access */
-    $access = $check->access(\Drupal::currentUser()->getAccount());
+    $access = \Drupal::service('uiowa_core.access_checker')
+      ->access(\Drupal::currentUser()->getAccount());
 
     if ($access->isForbidden()) {
-      $icon_element['settings']['iconset']['#disabled'] = TRUE;
-      $icon_element['settings']['size']['#disabled'] = TRUE;
-      $icon_element['settings']['fixed-width']['#disabled'] = TRUE;
-      $icon_element['settings']['border']['#disabled'] = TRUE;
-      $icon_element['settings']['invert']['#disabled'] = TRUE;
-      $icon_element['settings']['animation']['#disabled'] = TRUE;
-      $icon_element['settings']['additional_classes']['#disabled'] = TRUE;
-      $icon_element['settings']['duotone']['#disabled'] = TRUE;
-      $icon_element['settings']['masking']['#disabled'] = TRUE;
-      $icon_element['settings']['power_transforms']['#disabled'] = TRUE;
-      $icon_element['settings']['pull']['#disabled'] = TRUE;
+      // Disable the fields.
+      if (isset($icon_element['settings'])) {
+        foreach ($icon_element['settings'] as $key => &$child) {
+          if (is_array($child) && $key !== 'style') {
+            $child['#access'] = FALSE;
+          }
+        }
+      }
     }
   }
 }
