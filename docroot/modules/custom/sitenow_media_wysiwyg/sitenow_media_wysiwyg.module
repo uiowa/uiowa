@@ -43,6 +43,7 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
  */
 function sitenow_media_wysiwyg_form_fontawesome_icon_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
   uiowa_core_configure_fontawesome_icon_field($form);
+  $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
 }
 
 /**
