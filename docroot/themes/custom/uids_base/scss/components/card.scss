@@ -283,3 +283,19 @@
 .view-counselors .card__pre-title {
   @include utilities.element-invisible;
 }
+
+// @todo change this in uids.
+.card .media--widescreen:has([src$=".svg"]) .media__inner {
+  background: none;
+}
+.icon-highlight--white .card .media__inner {
+  background: #fff!important;
+}
+
+.icon-highlight--gray .card .media__inner {
+  // @todo change to use uids variable.
+  background: #F3F3F3!important;
+}
+.card .media--circle .media__inner {
+  border-radius: 50%;
+}

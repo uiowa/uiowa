@@ -4480,3 +4480,18 @@ function sitenow_update_10030() {
     }
   });
 }
+
+/**
+ * Update Card block with new default icon styles.
+ */
+function sitenow_update_10031() {
+  $block_plugin_id = 'inline_block:uiowa_card';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    $styles[] = 'icon_highlight_white';
+
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}
