@@ -1,9 +1,9 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/abstracts/layout-main.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/abstracts/layout-main.scss';
 
 .block-inline-blockuiowa-spacer-separator {
-  @include margin($top: $sm, $bottom: $sm);
+  @include utilities.margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
   flex-basis: 100%;
   background: #fff;
   clear: both;
@@ -14,7 +14,7 @@
 }
 
 .block-spacer-separator {
-   @include margin($top: $sm, $bottom: $sm);
+   @include utilities.margin(variables.$top: variables.$sm, variables.$bottom: variables.$sm);
    flex-basis: 100%;
    background: #fff;
    height: 23px;
@@ -39,111 +39,21 @@ main {
 
 .header-sticky {
   &.header--healthcare {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 100px;
     }
     &.below {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         padding-top: 140px;
       }
     }
   }
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     padding-top: 80px;
   }
   &.below {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       padding-top: 130px;
     }
-  }
-}
-
-.grid--3-2 .layout__region>:nth-child(1) {
-  order: 1;
-}
-
-.grid--3-2 .layout__region>:nth-child(2) {
-  order: 2;
-}
-
-.grid--3-2 .layout__region>:nth-child(3) {
-  order: 4;
-
-  @include breakpoint(sm) {
-    order: 3;
-  }
-}
-
-.grid--3-2 .layout__region>:nth-child(4) {
-  order: 3;
-
-  @include breakpoint(sm) {
-    order: 4;
-  }
-}
-
-.grid--3-2 .layout__region>:nth-child(5) {
-  order: 5;
-}
-
-.grid--3-2 .layout__region>:nth-child(6) {
-  order: 6;
-}
-
-.grid--3-2 .layout__region {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
-
-
-  @include breakpoint(sm) {
-    grid-template-columns: repeat(auto-fill, minmax(33.3%, 1fr));
-  }
-}
-
-.grid--3-2.grid--3-2-stacked .layout__region {
-  display: block;
-
-  >:nth-child(3) {
-    order: 4;
-
-    @include breakpoint(page-container) {
-      order: 3;
-    }
-  }
-
-  >:nth-child(4) {
-    order: 3;
-
-    @include breakpoint(page-container) {
-      order: 4;
-    }
-  }
-
-  @include breakpoint(xsm) {
-    display: grid;
-  }
-
-  @include breakpoint(sm) {
-    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
-  }
-
-  @include breakpoint(page-container) {
-    grid-template-columns: repeat(auto-fill, minmax(33.3%, 1fr));
-  }
-}
-
-// ie11
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-
-  .grid--3-2 .layout__region,
-  .grid--3-2.grid--3-2-stacked .layout__region {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .grid--3-2 .layout__region>div {
-    flex: 1 0 auto;
-    width: 33.3%;
   }
 }

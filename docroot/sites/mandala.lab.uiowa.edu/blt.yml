@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmandala.uiowa.ddev.site
+    protocol: https
+  machine_name: labmandala
+  human_name: mandala.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmandala.prod
+drupal:
+  db:
+    database: mandala_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmandala.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Mandala Laboratory'

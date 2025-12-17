@@ -6,7 +6,39 @@
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+
+/**
+ * Implements hook_form_alter().
+ */
+function grad_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'layout_builder_add_block':
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof ConfigureBlockFormBase) {
+        /** @var \Drupal\layout_builder\SectionComponent $component */
+        $component = $form_object->getCurrentComponent();
+        $block = $component->getPlugin();
+
+        // Form modifications per block plugin and bundle.
+        switch ($block->getPluginId()) {
+          case 'views_block:srop_scholars-block_1':
+
+            // Listblock specific default.
+            if ($form_id === 'layout_builder_add_block') {
+              if ($form['settings']['override']['items_per_page']) {
+                $form['settings']['override']['items_per_page']['#default_value'] = 20;
+              }
+            }
+            break;
+        }
+      }
+
+      break;
+  }
+}
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -161,7 +193,7 @@ function grad_custom_disciplines_allowed_values(FieldStorageConfig $definition, 
 function grad_custom_srop_year_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   // Available srop year values.
   $thisyear = date('Y');
-  $i = 2000;
+  $i = $thisyear - 3;
   $options = [];
   while ($i <= $thisyear) :
     $options[$i] = $i;

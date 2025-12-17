@@ -210,7 +210,7 @@ function housing_core_preprocess_field(&$variables, $hook) {
         if (!isset($floorplan_term)) {
           continue;
         }
-        $variables['items'][$delta]['tab_label'] = $floorplan_term->getName();
+        $variables['items'][$delta]['label'] = $floorplan_term->getName();
 
       }
 

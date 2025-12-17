@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_display.fragment.region_item.default
     - core.entity_view_display.fragment.region_item_after_content.default
+    - entity_browser.browser.featured_content_browser
+    - entity_browser.browser.media_wysiwyg_browser
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
@@ -27,6 +29,7 @@ dependencies:
   module:
     - administerusersbyrole
     - antibot
+    - block_content
     - content_moderation
     - contextual
     - entity_browser
@@ -57,6 +60,7 @@ weight: -5
 is_admin: null
 permissions:
   - 'access administration pages'
+  - 'access block library'
   - 'access content'
   - 'access content overview'
   - 'access contextual links'
@@ -181,10 +185,10 @@ permissions:
   - 'enter article revision log entry'
   - 'enter page revision log entry'
   - 'enter person revision log entry'
-  - 'moderated content bulk archive'
-  - 'moderated content bulk pin content'
+  - 'moderated content bulk draft'
+  - 'moderated content bulk pin'
   - 'moderated content bulk publish'
-  - 'moderated content bulk unpin content'
+  - 'moderated content bulk unpin'
   - 'moderated content bulk unpublish'
   - 'opt-in or out of google analytics tracking'
   - 'override article authored by option'

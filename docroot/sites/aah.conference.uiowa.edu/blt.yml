@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferenceaah.uiowa.ddev.site
+    protocol: https
+  machine_name: conferenceaah
+  human_name: aah.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferenceaah.prod
+drupal:
+  db:
+    database: aah_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferenceaah.prod.drupal.uiowa.edu'
+  requester: sebond
+  site-name: AAH2026

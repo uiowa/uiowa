@@ -1,17 +1,16 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
-@import "uids/scss/components/brand-footer.scss";
-$imgpath: '../../../uids/assets/images';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/components/brand-footer.scss';
 
 // uids_base styles.
 
 .footer {
   h2, h3, h4, h5, h6 {
-    color: $white;
-    font-weight: $font-weight-normal;
+    color: variables.$white;
+    font-weight: variables.$font-weight-normal;
   }
   a.site-name-link {
-    color: $white;
+    color: variables.$white;
     text-decoration: none;
     &:hover, &:focus {
       text-decoration: underline;
@@ -24,12 +23,12 @@ $imgpath: '../../../uids/assets/images';
     font-weight: 300;
     margin-bottom: .625rem;
     display: block;
-    background: $secondary;
+    background: variables.$secondary;
     padding: 0;
   }
 
   .after_content--spacing & {
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       padding: 2.5rem 0 100px;
     }
   }
@@ -38,10 +37,10 @@ $imgpath: '../../../uids/assets/images';
 .uiowa-footer--login-link {
   a {
     &:before {
-      @include fas();
+      @include utilities.fas();
       content: "\f2f6";
       font-size: 0.8rem;
-      padding-right: $sm;
+      padding-right: variables.$sm;
       color: #999;
     }
   }
@@ -53,7 +52,7 @@ $imgpath: '../../../uids/assets/images';
   }
 
   .menu a {
-    color: $white;
+    color: variables.$white;
     display: block;
     //padding: 1rem 0.5rem 1rem 0;
     font-size: 1rem;
@@ -67,7 +66,7 @@ $imgpath: '../../../uids/assets/images';
 
   .menu a:hover,
   .menu a:focus {
-    color: $primary;
+    color: variables.$primary;
   }
 
   .menu a.fa-icon .menu-link-title {
@@ -87,8 +86,8 @@ $imgpath: '../../../uids/assets/images';
   flex-wrap: wrap;
   align-content: start;
   h2 {
-    font-weight: $font-weight-bold;
-    font-size: $h5-font-size;
+    font-weight: variables.$font-weight-bold;
+    font-size: variables.$h5-font-size;
   }
   > * {
     flex-basis: 100%;

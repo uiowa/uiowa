@@ -2,7 +2,9 @@
 {{ attach_library('uids_base/accordion') }}
 
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ id }}">
+  <div class="accordion" role="tablist" {% if aria_owns is not empty %}
+    aria-owns="{{ aria_owns }}"
+  {% endif %} aria-multiselectable="true" id="{{ id }}">
     {% for item in items %}
       {{ item.content }}
     {% endfor %}

@@ -101,7 +101,7 @@ class DirectoryController extends ControllerBase {
           'id' => 'uiprof',
           'role' => 'region',
           'aria-live' => 'polite',
-          'aria-labelled-by' => 'profiles-table-label',
+          'aria-labelledby' => 'profiles-table-label',
           'class' => [
             'uids-content',
           ],

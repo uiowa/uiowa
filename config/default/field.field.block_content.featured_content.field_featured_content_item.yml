@@ -5,9 +5,6 @@ dependencies:
   config:
     - block_content.type.featured_content
     - field.storage.block_content.field_featured_content_item
-    - node.type.article
-    - node.type.page
-    - node.type.person
 id: block_content.featured_content.field_featured_content_item
 field_name: field_featured_content_item
 entity_type: block_content
@@ -19,15 +16,11 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: views
   handler_settings:
-    target_bundles:
-      article: article
-      page: page
-      person: person
-    sort:
-      field: title
-      direction: ASC
-    auto_create: false
-    auto_create_bundle: article
+    view:
+      view_name: content_reference
+      display_name: entity_reference_content_title
+      arguments: {  }
+    target_bundles: {  }
 field_type: entity_reference

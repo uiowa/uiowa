@@ -130,7 +130,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
             $event['sitenow_events_config'] = $config;
 
             $event['attributes']['class'] = $styles;
-            $event['heading_size'] = 'h2';
+            $event['heading_size'] = 'h3';
 
             // Pass off to helper function to build card render.
             $variables['list'][$key] = sitenow_events_build_card($event);

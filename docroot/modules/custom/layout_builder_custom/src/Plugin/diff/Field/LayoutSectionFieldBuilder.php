@@ -35,7 +35,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
         // so that the styles will be diffed and displayed
         // on their own results line.
         $result[$counter++] = $lb_styles;
-      };
+      }
       // Now let's process the actual content within the section.
       foreach ($section->getComponents() as $component) {
         $config = $component->get('configuration');

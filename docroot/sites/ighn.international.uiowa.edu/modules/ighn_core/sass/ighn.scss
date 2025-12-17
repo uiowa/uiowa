@@ -1,8 +1,8 @@
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
 .path-frontpage .page-title {
-  margin-top: $gutter;
+  margin-top: variables.$gutter;
 }
 .field__label {
   font-weight: bold;
@@ -27,8 +27,8 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
     &.col-md-6 {
       padding: 0;
 
-      @include breakpoint(md) {
-        padding-right: $desktop-width-gutter;
+      @include utilities.breakpoint(md) {
+        padding-right: variables.$desktop-width-gutter;
         flex: 0 0 33%;
       }
     }
@@ -49,9 +49,9 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
   .person-content {
     &.col-md-6 {
       padding: 0;
-      margin-top: $gutter;
+      margin-top: variables.$gutter;
 
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         flex: 0 0 67%;
         max-width: 67%;
         margin-top: 0;
@@ -65,17 +65,17 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
 
   .view-display-id-ighn_person {
     .view-header h2 {
-      @include element-invisible;
+      @include utilities.element-invisible;
     }
 
     .view-content {
-      margin-top: $gutter;
+      margin-top: variables.$gutter;
 
-      @include breakpoint(sm) {
-        margin-top: $lg;
+      @include utilities.breakpoint(sm) {
+        margin-top: variables.$lg;
       }
 
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         display: flex;
         flex-wrap: wrap;
       }
@@ -89,27 +89,27 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
       }
 
       .views-row {
-        @include breakpoint(sm) {
-          margin-bottom: $mobile-width-gutter;
+        @include utilities.breakpoint(sm) {
+          margin-bottom: variables.$mobile-width-gutter;
           margin-top: 0 !important;
         }
 
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           flex: 0 0 calc(50% - 1.5rem);
-          margin-bottom: $desktop-width-gutter;
+          margin-bottom: variables.$desktop-width-gutter;
 
           .layout--has-sidebar & {
             flex: 0 0 calc(50% - 1.5rem);
           }
 
           &:nth-child(2n+1) {
-            margin-right: $desktop-width-gutter;
+            margin-right: variables.$desktop-width-gutter;
           }
         }
 
-        @include breakpoint(page-container) {
+        @include utilities.breakpoint(page-container) {
           flex: 0 0 calc(34.5% - 3rem);
-          margin-bottom: $desktop-width-gutter;
+          margin-bottom: variables.$desktop-width-gutter;
           display: flex;
 
           .sidebar-invisible.layout--has-sidebar & {
@@ -121,13 +121,13 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
           }
 
           &:nth-child(2n+1) {
-            margin-right: $gutter;
+            margin-right: variables.$gutter;
             margin-right: 0;
           }
 
           &:nth-child(3n+2) {
             margin-left: 0;
-            margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
+            margin: 0 variables.$desktop-width-gutter variables.$desktop-width-gutter variables.$desktop-width-gutter;
           }
         }
       }
@@ -194,8 +194,8 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
   &.col-md-6 {
     padding: 0;
 
-    @include breakpoint(md) {
-      padding-right: $desktop-width-gutter;
+    @include utilities.breakpoint(md) {
+      padding-right: variables.$desktop-width-gutter;
       flex: 0 0 33%;
     }
   }
@@ -222,9 +222,9 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
 .person-content {
   &.col-md-6 {
     padding: 0;
-    margin-top: $gutter;
+    margin-top: variables.$gutter;
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       flex: 0 0 67%;
       max-width: 67%;
       margin-top: 0;

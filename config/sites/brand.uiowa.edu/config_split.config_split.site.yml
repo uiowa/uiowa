@@ -7,11 +7,11 @@ label: Site
 description: 'The brand.uiowa.edu site split.'
 weight: 110
 stackable: true
+no_patching: false
 storage: folder
 folder: ../config/sites/brand.uiowa.edu
 module:
   brand_core: 0
-  workbench_email: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
@@ -26,5 +26,4 @@ complete_list:
 partial_list:
   - administerusersbyrole.settings
   - system.mail
-  - 'workbench_email.*'
   - 'user.role.*'

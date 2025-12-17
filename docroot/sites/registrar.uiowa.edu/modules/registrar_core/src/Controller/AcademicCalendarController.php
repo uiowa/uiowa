@@ -207,11 +207,20 @@ class AcademicCalendarController extends ControllerBase {
       $includePastSessions = TRUE;
     }
 
-    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
-
-    if ($includePastSessions) {
-      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), 0, $steps);
-      $sessions = array_merge($pastSessions, $sessions);
+    $sessions = [];
+    // Assign sessions by id to avoid duplicates.
+    $sessions[$current->id] = $current;
+    // Include future sessions if more than current session is selected.
+    if ($steps > 0) {
+      foreach ($this->maui->getSessionsRange($current->id, $steps) as $future) {
+        $sessions[$future->id] = $future;
+      }
+    }
+    // Include past if checked and more than current session is selected.
+    if ($includePastSessions && $steps > 0) {
+      foreach ($this->maui->getSessionsRange($current->id, -$steps) as $past) {
+        $sessions[$past->id] = $past;
+      }
     }
 
     $events = [];
@@ -234,7 +243,8 @@ class AcademicCalendarController extends ControllerBase {
 
         if (!empty($date->dateCategoryLookups)) {
 
-          // Split any events that are multiple days into multiple event entries.
+          // Split any events that are multiple days
+          // into multiple event entries.
           if ($date->endDate === $date->beginDate) {
             $events[] = $this->processDate($date, $session, $session_index, $session->legacyCode);
           }
@@ -426,17 +436,14 @@ class AcademicCalendarController extends ControllerBase {
           '#markup' => $start,
         ],
       ],
-      '#meta' => [
-        'description' => [
-          '#type' => 'markup',
-          '#markup' => $event->description,
-        ],
-
-      ],
       '#content' => [
         'body' => [
           '#type' => 'markup',
-          '#markup' => '<span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span>',
+          '#markup' => $event->description,
+        ],
+        'badges' => [
+          '#type' => 'markup',
+          '#markup' => '<p><span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span></p>',
         ],
       ],
     ];

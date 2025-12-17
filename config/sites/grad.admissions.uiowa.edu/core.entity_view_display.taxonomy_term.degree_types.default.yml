@@ -1,0 +1,27 @@
+uuid: 90b456d6-c40e-4001-8073-ed357044a37e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.degree_types.rabbit_hole__settings
+    - taxonomy.vocabulary.degree_types
+  module:
+    - text
+id: taxonomy_term.degree_types.default
+targetEntityType: taxonomy_term
+bundle: degree_types
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true

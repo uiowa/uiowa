@@ -1,0 +1,24 @@
+uuid: 4bc6dba4-4e9a-4b5f-8cae-72f275ba71cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_image
+    - field.storage.block_content.field_uiowa_image_caption
+    - filter.format.basic
+  module:
+    - text
+id: block_content.uiowa_image.field_uiowa_image_caption
+field_name: field_uiowa_image_caption
+entity_type: block_content
+bundle: uiowa_image
+label: Caption
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic
+field_type: text_long

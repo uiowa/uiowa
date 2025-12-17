@@ -72,7 +72,7 @@ class ReplaceCommands extends BltTasks {
       ->run();
 
     $datetime = date('Ymd_His');
-    $log_file = $log_dir . 'parallel_deploy_log_' . $app . '_' . $datetime . '.log';
+    $log_file = $log_dir . 'parallel_deploy_log_' . $datetime . '.log';
 
     // Check if the parallel command exists.
     if (trim($parallel_installed->getMessage())) {

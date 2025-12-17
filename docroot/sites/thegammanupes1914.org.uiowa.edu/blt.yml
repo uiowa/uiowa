@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgthegammanupes1914.uiowa.ddev.site
+    protocol: https
+  machine_name: orgthegammanupes1914
+  human_name: thegammanupes1914.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgthegammanupes1914.prod
+drupal:
+  db:
+    database: thegammanupes1914_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgthegammanupes1914.prod.drupal.uiowa.edu'
+  requester: dbbrown
+  site-name: 'UIowa Kappa Alpha Psi Fraternity'

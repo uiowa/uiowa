@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: org-uihealthcareemslrc.uiowa.ddev.site
+    protocol: https
+  machine_name: org-uihealthcareemslrc
+  human_name: emslrc.uihealthcare.org
+drush:
+  aliases:
+    local: self
+    remote: org-uihealthcareemslrc.prod
+drupal:
+  db:
+    database: emslrc_uihealthcare_org
+uiowa:
+  stage_file_proxy:
+    origin: 'https://org-uihealthcareemslrc.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Emergency Medical Services Learning Resources Center'

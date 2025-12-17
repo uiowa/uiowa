@@ -77,7 +77,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
 
     return [
       '#type' => 'markup',
-      '#markup' => $this->t('<div id="admissions-counselors-map">&nbsp;</div>'),
+      '#markup' => $this->t('<div id="leaflet-map-admissions-counselors-map">&nbsp;</div>'),
       '#cache' => [
         'tags' => ['node_type:person'],
       ],
@@ -85,6 +85,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
         'library' => [
           'leaflet/leaflet',
           'admissions_core/counselors-map',
+          'uids_base/leaflet_attach',
         ],
         'drupalSettings' => [
           'admissions_core' => [

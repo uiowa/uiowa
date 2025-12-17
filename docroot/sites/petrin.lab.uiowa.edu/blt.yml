@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpetrin.uiowa.ddev.site
+    protocol: https
+  machine_name: labpetrin
+  human_name: petrin.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpetrin.prod
+drupal:
+  db:
+    database: petrin_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpetrin.prod.drupal.uiowa.edu'
+  requester: lourencopetrina
+  site-name: Petrin

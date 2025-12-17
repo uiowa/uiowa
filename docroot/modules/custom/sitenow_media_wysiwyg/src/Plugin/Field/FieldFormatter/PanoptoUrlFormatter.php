@@ -48,6 +48,11 @@ class PanoptoUrlFormatter extends LinkFormatter {
           ],
         ],
       ];
+
+      if (!empty($values[$delta]['title'])) {
+        $elements[$delta]['frame']['#attributes']['title'] = $values[$delta]['title'];
+      }
+
     }
 
     return $elements;

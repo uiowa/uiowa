@@ -1,11 +1,11 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 /* Google Custom Search Engine Results */
 #search-results .gsc-control-cse {
   padding: 1em 0;
   border: 0;
-  font-family: $font-family-sans-serif;
+  font-family: variables.$font-family-sans-serif;
 }
 #search-results .gsc-search-box {
   padding: 0 0 0 15px;
@@ -15,7 +15,7 @@
   color: #ccc;
 }
 #search-results .gsst_a:hover .gscb_a, #search-results .gsst_a:focus .gscb_a {
-  color: $blk;
+  color: variables.$blk;
 }
 #search-results .gsc-input {
   padding-left: 0;
@@ -41,10 +41,10 @@
   padding: 0;
 }
 #search-results .gs-title, #search-results .gs-snippet {
-  font-family: $font-family-sans-serif !important;
+  font-family: variables.$font-family-sans-serif !important;
 }
 #search-results .gs-result .gs-title, #search-results .gs-result .gs-title a, #search-results .gs-title b {
-  color: $link-color;
+  color: variables.$link-color;
   font-size: 28px;
   line-height: 1.2;
   text-decoration: none;
@@ -57,18 +57,18 @@
   line-height: 1.7;
 }
 #search-results .gs-no-results-result .gs-snippet, #search-results .gs-error-result .gs-snippet {
-  border: 2px solid $primary;
+  border: 2px solid variables.$primary;
   background-color: #fffae6;
 }
 #search-results button.gsc-search-button {
-  @include bttn;
+  @include utilities.bttn;
   background-color: #ccc;
   border-radius: 0;
   border: 1px solid #ccc;
-  @include padding($top: $md, $right: 1.75rem, $bottom: 0.75rem, $left: $md);
+  @include utilities.padding(variables.$top: variables.$md, variables.$right: 1.75rem, variables.$bottom: 0.75rem, variables.$left: variables.$md);
 }
 #search-results .gsc-search-button-v2 svg {
-  fill: $blk;
+  fill: variables.$blk;
   width: 18px;
   height: 18px;
 }
@@ -85,22 +85,22 @@
   padding-right: 0;
 }
 #search-results .gsc-url-top .gs-visibleUrl, #search-results .gsc-url-bottom .gs-visibleUrl {
-  color: $brand-cool-gray;
+  color: variables.$brand-cool-gray;
   font-size: 25px;
   line-height: 1.5;
 }
 #search-results .gcsc-find-more-on-google {
-  color: $link-color;
+  color: variables.$link-color;
 }
 #search-results .gcsc-find-more-on-google-magnifier {
-  fill: $link-color;
+  fill: variables.$link-color;
 }
 
 // Style pagination with inspiration from A-Z.
 #search-results .gsc-results .gsc-cursor-box .gsc-cursor {
   display: inline-block;
   padding-left: 0;
-  @include margin($top: 0, $left: 0, $bottom: $xlg);
+  @include utilities.margin(variables.$top: 0, variables.$left: 0, variables.$bottom: variables.$xlg);
   border-radius: 0;
 
   > div {
@@ -109,20 +109,20 @@
     position: relative;
     float: left;
     font-size: 16px;
-    @include padding($top: $md, $right: 1.35rem, $bottom: $md, $left: 1.35rem);
+    @include utilities.padding(variables.$top: variables.$md, variables.$right: 1.35rem, variables.$bottom: variables.$md, variables.$left: 1.35rem);
     line-height: 1;
     text-decoration: none;
     color: #4F4F4F;
     background-color: transparent;
-    border: 1px solid $grey-light;
+    border: 1px solid variables.$grey-light;
     margin-left: -1px;
 
     &:hover,
     &:focus {
       z-index: 2;
       color: #4F4F4F;
-      background-color: $light;
-      border-color: $grey-light;
+      background-color: variables.$light;
+      border-color: variables.$grey-light;
     }
 
     &.gsc-cursor-current-page {
@@ -132,8 +132,8 @@
         z-index: 3;
         font-weight: normal;
         color: #4F4F4F;
-        background-color: $light;
-        border-color: $grey-light;
+        background-color: variables.$light;
+        border-color: variables.$grey-light;
         cursor: default;
       }
     }
@@ -152,7 +152,7 @@
 
       .gs-visibleUrl-long {
         display: inline-block;
-        color: $brand-cool-gray;
+        color: variables.$brand-cool-gray;
         font-size: 25px;
         line-height: 1.5;
       }

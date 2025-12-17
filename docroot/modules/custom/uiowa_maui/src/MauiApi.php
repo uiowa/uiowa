@@ -6,7 +6,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\uiowa_core\ApiClientBase;
 
 /**
- * Maui API service.
+ * MAUI API service.
  *
  * @see: https://api.maui.uiowa.edu/maui/pub/webservices/documentation.page
  */
@@ -194,6 +194,27 @@ class MauiApi extends ApiClientBase {
   }
 
   /**
+   * Get a list of all rooms by building.
+   *
+   * @return array
+   *   An array of rooms prefixed with the building they are in.
+   */
+  public function getBuildingRoomCompleteList() {
+    $api_options = ['cache_length' => 86400];
+    $data = $this->get('/pub/registrar/courses/AstraBldgRmCompleteList/list', $api_options);
+    $options = [];
+    if ($data) {
+      foreach ($data as $room) {
+        $building_name = $room->buildingName;
+        $building_code = $room->buildingCode;
+        $room_number = $room->roomNumber;
+        $options[$building_code . '-' . $room_number] = $building_name . ' - ' . $room_number;
+      }
+    }
+    return $options;
+  }
+
+  /**
    * Get room data based on building ID and room ID.
    *
    * @param string $building_id
@@ -338,7 +359,36 @@ class MauiApi extends ApiClientBase {
       ],
     ];
     $data = $this->get($endpoint, $options, 'xml');
-    return $data;
+    // The request() within get() already logs, but we need to handle
+    // the output differently for each scenario.
+    if ($data === FALSE) {
+      return [
+        '_status' => 'error',
+        '_message' => 'The exam schedule request timed out or failed. Please try again later.',
+      ];
+    }
+
+    // A response but no data.
+    if (isset($data['a']) && empty($data['a'])) {
+      return [
+        '_status' => 'empty',
+        '_message' => 'No final exams found.',
+      ];
+    }
+
+    // We have data!
+    if (isset($data['NewDataSet']['Table'])) {
+      return [
+        '_status' => 'ok',
+        '_data' => $data['NewDataSet']['Table'],
+      ];
+    }
+
+    // Anything else.
+    return [
+      '_status' => 'error',
+      '_message' => 'Unexpected response from the upstream source.',
+    ];
   }
 
   /**

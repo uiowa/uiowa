@@ -1,21 +1,21 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 // Media alignment
 
-@media (min-width: 576px) {
-
   .align-right.embedded-entity,
   .align-right .embedded-entity {
-    margin-left: $gutter;
+    @include utilities.breakpoint(sm) {
+      margin-left: variables.$gutter;
+    }
   }
 
   .align-left.embedded-entity,
   .align-left .embedded-entity {
-    margin-right: $gutter;
+    @include utilities.breakpoint(sm) {
+      margin-right: variables.$gutter;
+    }
   }
-
-}
 
 
 .align-center {
@@ -32,6 +32,18 @@
 
 .field--name-field-media-image {
   min-width: 1px;
+}
+
+// Add paragraph spacing if placed inline with media.
+.media--type-image,
+.media--video,
+.media--type-panopto {
+  + p {
+    margin-top: 1rem;
+    @include utilities.breakpoint(sm) {
+      margin-top: 0;
+    }
+  }
 }
 
 // Full width images
@@ -61,5 +73,30 @@
 .block-inline-blockuiowa-text-area {
   [class*="media--type-"] {
     position: relative;
+  }
+}
+
+// Absolutely position caption if cover option is selected on image block.
+figure.element--cover {
+  position: relative;
+  &.caption {
+    margin-bottom: 0;
+    display: block;
+  }
+  figcaption {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background: rgba(0,0,0,.7);
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin: 0;
+    p {
+      margin: 0;
+      + p {
+        margin-top: 1rem;
+      }
+    }
   }
 }

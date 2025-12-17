@@ -89,3 +89,106 @@ function sitenow_paragraphs_update_9001() {
       ->execute();
   }
 }
+
+/**
+ * Update v2 events paragraphs with new ids from API.
+ */
+function sitenow_paragraphs_update_9002() {
+  $database = \Drupal::database();
+  $mappings = [];
+  $api_client = \Drupal::service('uiowa_events.content_hub_api_client');
+
+  $filters_data = $api_client->getFilters('filters');
+  $keywords_data = $api_client->getFilters('keywords');
+
+  // Map filters.
+  foreach (['event_audience', 'event_types', 'event_general_interest', 'departments'] as $category) {
+    if (!empty($filters_data[$category])) {
+      foreach ($filters_data[$category] as $item) {
+        if (!empty($item['previous_id'])) {
+          $mappings[$category][$item['previous_id']] = $item['id'];
+        }
+      }
+    }
+  }
+
+  // Map keywords.
+  if (!empty($keywords_data['keywords'])) {
+    foreach ($keywords_data['keywords'] as $item) {
+      if (!empty($item['previous_id'])) {
+        $mappings['keywords'][$item['previous_id']] = $item['id'];
+      }
+    }
+  }
+
+  // Define field-to-category mappings.
+  $field_category_map = [
+    'field_events_audiences' => 'event_audience',
+    'field_events_event_types' => 'event_types',
+    'field_events_gen_interests' => 'event_general_interest',
+    'field_events_department' => 'departments',
+    'field_events_keywords' => 'keywords',
+  ];
+
+  // Get all event paragraphs.
+  $query = $database->select('paragraphs_item', 'p')
+    ->fields('p', ['id', 'revision_id'])
+    ->condition('p.type', 'events');
+
+  $count = $query->countQuery()->execute()->fetchField();
+  $paragraphs = $query->execute()->fetchAll();
+
+  \Drupal::messenger()
+    ->addMessage(t('Events paragraphs count: @count', [
+      '@count' => $count,
+    ]));
+
+  foreach ($paragraphs as $paragraph) {
+    $entity_id = $paragraph->id;
+    $revision_id = $paragraph->revision_id;
+
+    foreach ($field_category_map as $field => $category) {
+      if (empty($mappings[$category])) {
+        continue;
+      }
+
+      // Update current entity values.
+      $update_query = $database->select("paragraph__$field", 'p')
+        ->fields('p', ['delta', "{$field}_value"])
+        ->condition('p.entity_id', $entity_id)
+        ->execute();
+
+      foreach ($update_query as $record) {
+        $old_id = $record->{"{$field}_value"};
+        if (!empty($mappings[$category][$old_id])) {
+          $new_id = $mappings[$category][$old_id];
+
+          $database->update("paragraph__$field")
+            ->fields(["{$field}_value" => $new_id])
+            ->condition('entity_id', $entity_id)
+            ->condition('delta', $record->delta)
+            ->execute();
+        }
+      }
+
+      // Update revision values.
+      $rev_update_query = $database->select("paragraph_revision__$field", 'p')
+        ->fields('p', ['delta', "{$field}_value"])
+        ->condition('p.revision_id', $revision_id)
+        ->execute();
+
+      foreach ($rev_update_query as $record) {
+        $old_id = $record->{"{$field}_value"};
+        if (!empty($mappings[$category][$old_id])) {
+          $new_id = $mappings[$category][$old_id];
+
+          $database->update("paragraph_revision__$field")
+            ->fields(["{$field}_value" => $new_id])
+            ->condition('revision_id', $revision_id)
+            ->condition('delta', $record->delta)
+            ->execute();
+        }
+      }
+    }
+  }
+}

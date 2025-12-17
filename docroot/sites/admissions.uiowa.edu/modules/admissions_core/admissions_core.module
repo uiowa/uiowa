@@ -503,7 +503,7 @@ function admissions_core_preprocess_field__node__title(&$variables) {
     // Add new page title classes.
     uiowa_core_set_attributes($variables, [
       'headline--uppercase',
-      'headline--negative',
+      'headline',
     ]);
   }
   if ($variables['element']['#bundle'] === 'area_of_study') {
@@ -512,7 +512,7 @@ function admissions_core_preprocess_field__node__title(&$variables) {
     // Add new page title classes.
     uiowa_core_set_attributes($variables, [
       'headline--uppercase',
-      'headline--negative',
+      'headline',
       'headline--highlight',
     ]);
   }
@@ -525,6 +525,20 @@ function admissions_core_preprocess_field__node__title(&$variables) {
       'headline headline--serif',
       'headline--highlight',
     ]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_form_element().
+ */
+function admissions_core_preprocess_form_element(&$variables) {
+  // This function adds the switch checkbox class for the kiosk page.
+  $element = $variables['element'];
+  if (isset($element['#parents']) && in_array('academic_group', $element['#parents'])) {
+    $current_path = \Drupal::service('path.current')->getPath();
+    if (strpos($current_path, 'kiosk') !== FALSE) {
+      $variables['attributes']['class'][] = 'form__checkbox--switch';
+    }
   }
 }
 
@@ -1090,6 +1104,18 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
           '#markup' => '<hr class="element--spacer-gold">',
         ];
       }
+    }
+  }
+  if (in_array($view->id(), ['scholarships', 'transfer_tips_list'])) {
+    if (in_array($view->current_display, ['block_transfer_tips', 'block_scholarships'])) {
+      $variables['aria_owns'] = [];
+      foreach ($view->result as $result) {
+        $nid = $result->nid;
+        $variables['aria_owns'][] = "accordion-heading-transfer-tips-{$nid}";
+      }
+      // Convert this to a space-separated string
+      // as that is how it will be printed in the template.
+      $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
     }
   }
 }

@@ -1,5 +1,5 @@
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
 // Residence Hall content type.
 
@@ -13,19 +13,19 @@
     [class*="block-field-blocknoderesidence-hallfield-"] {
       display: inline-block;
       margin-bottom: 1rem;
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         margin-bottom: 0;
       }
     }
 
     .block-field-blocknoderesidence-hallfield-residence-hall-population {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         display: inline;
       }
     }
 
     .block-field-blocknoderesidence-hallfield-residence-hall-population:before {
-      @include breakpoint(sm) {
+      @include utilities.breakpoint(sm) {
         content: "";
         display: inline-block;
         width: 100%;
@@ -45,7 +45,7 @@
     display: flex;
     flex-flow: wrap;
     margin-top: 2rem;
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       flex-flow: row nowrap;
     }
   }
@@ -62,5 +62,12 @@
 
   [class*="block-field-blocknoderesidence-hallfield-residence-hall-emerg-"] {
     text-align: center;
+  }
+
+  // Because of the white on community pattern background nesting.
+  .block-field-blocknoderesidence-hallfield-residence-hall-floor-plans {
+    .accordion__content {
+      border: 1px solid rgba(0, 0, 0, .125);
+    }
   }
 }

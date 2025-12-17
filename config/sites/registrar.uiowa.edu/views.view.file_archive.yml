@@ -319,7 +319,7 @@ display:
             alter_text: true
             text: '{{ field_file_session }} - {{ field_file_archive_type }}'
             make_link: true
-            path: '{{ field_media_file }} '
+            path: '{{ field_media_file }}'
             absolute: false
             external: false
             replace_spaces: false
@@ -609,7 +609,16 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-      relationships: {  }
+      relationships:
+        field_file_archive_type:
+          id: field_file_archive_type
+          table: media__field_file_archive_type
+          field: field_file_archive_type
+          relationship: none
+          group_type: group
+          admin_label: 'field_file_archive_type: Taxonomy term'
+          plugin_id: standard
+          required: true
       header: {  }
       footer: {  }
       display_extenders: {  }

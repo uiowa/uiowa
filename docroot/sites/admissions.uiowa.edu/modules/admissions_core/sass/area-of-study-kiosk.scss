@@ -1,6 +1,6 @@
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/layout/_grid.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/layout/_grid.scss";
 
 .view-id-areas_of_study_kiosk {
   display: flex;
@@ -18,10 +18,10 @@
   .view-filters {
     flex: 0 0 100%;
     max-width: 100%;
-    @include breakpoint(sm) {
+    @include utilities.breakpoint(sm) {
       flex: 0 0 25%;
       max-width: 25%;
-      margin-right: $desktop-width-gutter;
+      margin-right: variables.$desktop-width-gutter;
     }
 
     .form-item {
@@ -32,16 +32,18 @@
     .views-exposed-form {
 
       .form--inline {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           flex-wrap: wrap;
         }
       }
 
-      &.uids-content:not(.uids-search) {
+      &.form:not(.uids-search) {
         padding: 19px;
 
         .form-actions {
           width: 100%;
+          display: grid;
+          gap: 1rem;
           .button {
             flex: 46% 1 1;
             margin-bottom: 0;
@@ -79,28 +81,24 @@
     }
   }
 
-  .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
+  .view-filters .views-exposed-form.form:not(.uids-search) fieldset .form-type-checkbox {
     align-items: flex-start;
-    margin-bottom: $md;
+    margin-bottom: variables.$md;
   }
 
   table.views-table td,
   table.views-table th {
-    font-size: $content-font-size;
+    font-size: variables.$content-font-size;
   }
 
-  form.uids-content {
+  form.form {
     .fieldset-legend,
     label,
     a,
     p,
     table td,
     table th {
-      font-size: $content-font-size;
-    }
-    .fieldset-legend {
-      line-height: 1.8;
-      font-weight: 700;
+      font-size: variables.$content-font-size;
     }
   }
 
@@ -108,63 +106,6 @@
     height: 1cm;
     width: 1cm;
     flex-shrink: 0;
-  }
-
-  .form-checkboxes {
-    label {
-      line-height: 1.5;
-      padding-left: $sm;
-    }
-
-    .form-checkbox {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      width: 62px;
-      height: 32px;
-      display: inline-block;
-      position: relative;
-      border-radius: 50px;
-      overflow: hidden;
-      outline: none;
-      border: none;
-      cursor: pointer;
-      background-color: $grey-light;
-      transition: background-color ease 0.3s;
-      &:focus  {
-        background: $grey;
-      }
-    }
-
-    .form-checkbox:before {
-      content: "on off";
-      display: block;
-      position: absolute;
-      z-index: 2;
-      width: 28px;
-      height: 28px;
-      background: #fff;
-      left: 2px;
-      top: 2px;
-      border-radius: 50%;
-      font: 10px/28px Helvetica;
-      text-transform: uppercase;
-      font-weight: bold;
-      text-indent: -22px;
-      word-spacing: 37px;
-      color: $secondary;
-      white-space: nowrap;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
-    }
-
-    .form-checkbox:checked {
-      background-color: $primary;
-    }
-
-    .form-checkbox:checked:before {
-      left: 32px;
-    }
   }
 
   .pager {
@@ -176,7 +117,7 @@
 
 
 .aos-cta {
-  background: $secondary;
+  background: variables.$secondary;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -196,5 +137,5 @@
 }
 
 .path-kiosk {
-  padding: $desktop-width-gutter 0;
+  padding: variables.$desktop-width-gutter 0;
 }

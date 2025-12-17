@@ -1,0 +1,46 @@
+uuid: b7d958fa-cc01-44d2-8484-e84ba5afb71b
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.user_signage_groups
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - user
+    - views
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  masquerade:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 50
+    region: content
+  member_for:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

@@ -1,7 +1,7 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
-@include breakpoint(sm) {
+@include utilities.breakpoint(sm) {
   .content__container.after_content {
     position: fixed;
     width: 100%;
@@ -20,7 +20,7 @@
       margin-bottom: 0;
 
       + .bttn {
-        @include breakpoint(sm) {
+        @include utilities.breakpoint(sm) {
           margin-bottom: 0;
         }
       }

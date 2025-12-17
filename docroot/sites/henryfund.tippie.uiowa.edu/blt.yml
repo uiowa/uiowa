@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiehenryfund.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiehenryfund
+  human_name: henryfund.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiehenryfund.prod
+drupal:
+  db:
+    database: henryfund_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiehenryfund.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'Henry Fund'

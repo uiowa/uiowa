@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: labchandra.uiowa.ddev.site
+  paths:
+    files: sites/chandra.lab.uiowa.edu/files
+dev:
+  uri: labchandra.dev.drupal.uiowa.edu
+  host: uiowa08dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/chandra.lab.uiowa.edu/files
+  root: /var/www/html/uiowa08.dev/docroot
+  user: uiowa08.dev
+prod:
+  uri: chandra.lab.uiowa.edu
+  host: uiowa08prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/chandra.lab.uiowa.edu/files
+  root: /var/www/html/uiowa08.prod/docroot
+  user: uiowa08.prod
+test:
+  uri: labchandra.stage.drupal.uiowa.edu
+  host: uiowa08stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/chandra.lab.uiowa.edu/files
+  root: /var/www/html/uiowa08.stage/docroot
+  user: uiowa08.stage

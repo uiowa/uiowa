@@ -157,17 +157,21 @@ class AcademicDatesForm extends FormBase {
 
         // Group items by date.
         if (isset($form['dates-wrapper']['dates'][$key])) {
-          $form['dates-wrapper']['dates'][$key]['#subtitle'][] = $item;
+          $form['dates-wrapper']['dates'][$key]['#content'][] = $item;
         }
         else {
           $form['dates-wrapper']['dates'][$key] = [
             '#type' => 'card',
             '#attributes' => $attributes,
-            '#title' => $this->t('@start@end', [
-              '@start' => date('F j, Y', $start),
-              '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
-            ]),
-            '#subtitle' => [$item],
+            '#content' => [$item],
+            '#headline' => [
+              'headline_level' => $child_heading_size,
+              'headline_text' => $this->t('@start@end', [
+                '@start' => date('F j, Y', $start),
+                '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
+              ]),
+              'headline_class' => 'headline headline--serif',
+            ],
           ];
         }
       }

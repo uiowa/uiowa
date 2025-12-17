@@ -77,7 +77,7 @@ class PalliativeGradMapBlock extends BlockBase implements ContainerFactoryPlugin
 
     return [
       '#type' => 'markup',
-      '#markup' => $this->t('<div id="pharmacy-palliative-grad-map">&nbsp;</div>'),
+      '#markup' => $this->t('<div id="leaflet-map-pharmacy-palliative-grad-map">&nbsp;</div>'),
       '#cache' => [
         'tags' => ['node_type:person'],
       ],

@@ -4,16 +4,26 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_image
+    - field.field.block_content.uiowa_image.field_uiowa_image_caption
     - field.field.block_content.uiowa_image.field_uiowa_image_image
     - field.field.block_content.uiowa_image.field_uiowa_image_link
   module:
     - linkit
     - media_library
+    - text
 id: block_content.uiowa_image.default
 targetEntityType: block_content
 bundle: uiowa_image
 mode: default
 content:
+  field_uiowa_image_caption:
+    type: text_textarea
+    weight: 26
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_uiowa_image_image:
     type: media_library_widget
     weight: 1

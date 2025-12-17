@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdamiano.uiowa.ddev.site
+    protocol: https
+  machine_name: labdamiano
+  human_name: damiano.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdamiano.prod
+drupal:
+  db:
+    database: damiano_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdamiano.prod.drupal.uiowa.edu'
+  requester: jrossi
+  site-name: 'Damiano Lab'

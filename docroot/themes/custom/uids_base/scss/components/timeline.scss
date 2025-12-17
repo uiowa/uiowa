@@ -1,5 +1,5 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 // Timeline block
 .block-inline-blockuiowa-timeline {
@@ -32,7 +32,7 @@
   }
 
   .card__details {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       margin: 0;
     }
   }
@@ -40,7 +40,7 @@
   .timeline__icon {
     position: absolute;
     font-size: 25px;
-    background: $light;
+    background: variables.$light;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -52,10 +52,10 @@
     line-height: 0;
 
     [class*=bg--gray] & {
-      background: $grey-light;
+      background: variables.$grey-light;
     }
 
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       top: -30px;
       right: inherit;
     }
@@ -76,7 +76,7 @@
     position: absolute;
     top: 0;
     left: 50%;
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       top: 50%;
     }
   }
@@ -85,21 +85,21 @@
 .timeline--wrapper {
   padding-top: 3rem;
   padding-bottom: 3rem;
-  @include breakpoint(md) {
+  @include utilities.breakpoint(md) {
     width: 50%;
   }
   &:first-child {
-    @include breakpoint(md) {
-      margin-top: $desktop-width-gutter;
+    @include utilities.breakpoint(md) {
+      margin-top: variables.$desktop-width-gutter;
     }
   }
   &:last-child {
-    margin-bottom: $desktop-width-gutter;
+    margin-bottom: variables.$desktop-width-gutter;
   }
   .timeline--card {
     height: 100%;
-    margin-top: $desktop-width-gutter;
-    @include breakpoint(md) {
+    margin-top: variables.$desktop-width-gutter;
+    @include utilities.breakpoint(md) {
       margin-top: inherit;
       height: auto;
     }
@@ -116,7 +116,7 @@
       border-color: transparent;
       border-width: 15px;
 
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         top: 50%;
         border-bottom-color: transparent;
         margin-top: -15px;
@@ -129,109 +129,109 @@
     opacity: 1;
   }
   .field--name-field-timeline-date {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       position: absolute;
       bottom: 48%;
       width: 90%;
     }
-    @include breakpoint(page-container) {
+    @include utilities.breakpoint(page-container) {
       width: 100%;
     }
     [class*=bg--black] & {
-      color: $primary;
+      color: variables.$primary;
     }
     [class*=bg--gold] & {
-      color: $secondary;
+      color: variables.$secondary;
     }
   }
   &:nth-child(odd) {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       margin-left: auto;
     }
     .timeline__icon {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         right: 27px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         margin-left: -130%;
         text-align: right;
       }
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         margin-left: -125%;
       }
       .page__container--narrow & {
-        @include breakpoint(page-container) {
+        @include utilities.breakpoint(page-container) {
           margin-left: -130%;
         }
       }
       .page__container--extended & {
-        @include breakpoint(page-container) {
+        @include utilities.breakpoint(page-container) {
           margin-left: -122%;
         }
       }
       .page__container--full &,
       .page__container--edge &{
-        @include breakpoint(page-container) {
+        @include utilities.breakpoint(page-container) {
           margin-left: -120%;
         }
       }
 
     }
     .timeline__icon-wrapper {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         left: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         margin-left: 3.5rem;
       }
       &:after {
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           right: 100%;
-          border-right-color: $brand-cool-gray;
+          border-right-color: variables.$brand-cool-gray;
         }
       }
     }
   }
   &:nth-child(even) {
-    @include breakpoint(md) {
+    @include utilities.breakpoint(md) {
       margin-right: auto;
       padding-right: 5px;
     }
     .timeline__icon {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         right: -91px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         margin-left: 125%;
       }
-      @include breakpoint(page-container) {
+      @include utilities.breakpoint(page-container) {
         margin-left: 113%;
       }
       .page__container--narrow & {
-        @include breakpoint(page-container) {
+        @include utilities.breakpoint(page-container) {
           margin-left: 118%;
         }
       }
     }
     .timeline__icon-wrapper {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         right: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(md) {
+      @include utilities.breakpoint(md) {
         margin-right: 3.5rem;
       }
       &:after {
-        @include breakpoint(md) {
+        @include utilities.breakpoint(md) {
           left: 100%;
-          border-left-color: $brand-cool-gray;
+          border-left-color: variables.$brand-cool-gray;
         }
       }
     }
@@ -270,12 +270,12 @@ li:first-child .timeline--card.js-scroll {
 }
 
 .timeline-line__fill {
-  background-color: $primary;
+  background-color: variables.$primary;
   height: 53%;
   width: 100%;
   position: fixed;
   top: 0;
   [class*=bg--gold] & {
-    background-color: $secondary;
+    background-color: variables.$secondary;
   }
 }

@@ -1,6 +1,6 @@
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
-@import "../../../../../themes/custom/uids_base/uids/scss/layout/_grid.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/layout/_grid.scss";
 
 .block-views-blockstudent-card-block-student-grid {
   &[class*="grid"] {
@@ -11,8 +11,8 @@
     &.grid__mobile {
       &.grid--threecol--33-34-33 {
         .list-container__inner {
-          @include display-grid;
-          @include threecol-grid;
+          @include utilities.display-grid;
+          @include utilities.threecol-grid;
         }
       }
     }

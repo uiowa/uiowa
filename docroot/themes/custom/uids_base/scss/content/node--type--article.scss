@@ -1,18 +1,18 @@
-@import "uids/scss/abstracts/_variables.scss";
-@import "uids/scss/abstracts/_utilities.scss";
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 // Style the article page.
 .node--type-article {
   .field--name-body {
-    margin: $gutter 0;
+    margin: variables.$gutter 0;
   }
 
   .article-created-date {
     display: block;
     opacity: .7;
-    font-family: $font-family-serif;
+    font-family: variables.$font-family-serif;
     font-size: 1.3rem;
-    font-weight: $font-weight-medium;
+    font-weight: variables.$font-weight-medium;
     line-height: 1.3;
   }
 
@@ -34,8 +34,8 @@
   .block-field-blocknodearticlefield-article-author+.block-field-blocknodearticlefield-article-source-org {
     &:before {
       content: '- ';
-      color: $grey;
-      margin: 0 $xsm;
+      color: variables.$grey;
+      margin: 0 variables.$xsm;
     }
   }
 
@@ -47,26 +47,23 @@
     }
   }
 
+  // Set display:grid on banner__content to set order on caption.
+  .banner__content {
+    display: grid;
+  }
+
   .block-field-blocknodearticlefield-image-caption {
     font-style: italic;
     z-index: 3;
     position: relative;
-    margin-bottom: $mobile-height-gutter;
+    margin-bottom: variables.$mobile-height-gutter;
     line-height: 1.3;
-    @include breakpoint(sm) {
-      color: #fff;
+    @include utilities.breakpoint(sm) {
       order: 2;
       margin-bottom: unset;
-      margin-top: $gutter;
+      margin-top: variables.$gutter;
     }
   }
-
-  // @todo Move this to UIDS in https://github.com/uiowa/uids/issues/721
-  .banner__content {
-    display: flex;
-    flex-direction: column;
-  }
-
   .field--name-field-image-caption {
     margin: 1rem 0 3rem;
     color: #666;
@@ -76,7 +73,7 @@
 
 .article--meta {
   display: inline-block;
-  font-family: $font-family-serif;
+  font-family: variables.$font-family-serif;
   font-size: 1.2rem;
   line-height: 1.7;
 
@@ -147,7 +144,7 @@
   }
 
   .field--name-field-article-subhead {
-    margin: $gutter 0;
+    margin: variables.$gutter 0;
   }
 
   .block-field-blocknodearticlefield-article-author+.block-field-blocknodearticlefield-article-source-org:before {
@@ -159,9 +156,9 @@
   }
 
   .layout__region--second {
-    @include breakpoint(md) {
-      margin-top: $mobile-height-gutter;
-      padding-left: $desktop-width-gutter;
+    @include utilities.breakpoint(md) {
+      margin-top: variables.$mobile-height-gutter;
+      padding-left: variables.$desktop-width-gutter;
       border-left: 1px solid #ccc;
     }
   }
@@ -171,7 +168,7 @@
 .field--name-field-article-author {
   .field__label {
     display: inline;
-    margin-right: $xsm;
+    margin-right: variables.$xsm;
   }
 
   &.field--label-above {
@@ -210,8 +207,8 @@
 .block-field-blocknodearticlefield-article-author + .block-field-blocknodearticlefield-article-source-link {
   &:before {
     content: '- ';
-    color: $grey;
-    margin: 0 $xsm;
+    color: variables.$grey;
+    margin: 0 variables.$xsm;
   }
 }
 

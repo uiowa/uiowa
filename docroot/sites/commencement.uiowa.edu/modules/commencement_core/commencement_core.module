@@ -5,11 +5,13 @@
  * Custom functionality for the Commencement website.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\commencement_core\Entity\Event;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -268,14 +270,24 @@ function commencement_core_preprocess_field(&$variables) {
 
   switch ($variables['element']['#field_name']) {
     case 'field_event_ceremony_info_detail':
+      $variables['aria_owns'] = [];
       foreach ($variables['items'] as $delta => $item) {
         /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
         $paragraph = $item['content']['#paragraph'];
         $headline = $paragraph->get('field_collection_headline')->getValue()[0]['value'];
         $variables['items'][$delta]['label'] = $headline;
+        $id = strtolower(Html::cleanCssIdentifier($headline));
+        $variables['items'][$delta]['id'] = $id;
+        $variables['aria_owns'][] = $id;
         $body = $paragraph->get('field_collection_body')->view();
         $variables['items'][$delta]['body'] = $body;
+
+        if ($paragraph->hasField('field_automatically_open') && !$paragraph->get('field_automatically_open')->isEmpty()) {
+          $variables['items'][$delta]['field_automatically_open'] = $paragraph->get('field_automatically_open')
+            ->getValue()[0]['value'];
+        }
       }
+      $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
       break;
 
     case 'field_coll_section_collections':
@@ -283,9 +295,20 @@ function commencement_core_preprocess_field(&$variables) {
         /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
         $paragraph = $variables['element'][0]['#paragraph'];
         // Somewhat counterintuitively, the paragraph referenced is
-        // uiowa_collection_item and we actually want the parent entity.
+        // uiowa_collection_item, and we actually want the parent entity.
         $parent = $paragraph->getParentEntity();
-        $variables['id'] = $parent->id();
+        $variables['id'] = 'accordion-' . $parent->id();
+        // Assemble the aria-owns attribute for the accordion.
+        $items = Element::children($variables['element']);
+        $variables['aria_owns'] = [];
+        foreach ($items as $delta) {
+          // Get the paragraph entity.
+          $paragraph = $variables['element'][$delta]['#paragraph'];
+          $unique_id = strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value));
+          $variables['aria_owns'][] = $unique_id;
+          $variables['items'][$delta]['attributes']['id'] = $unique_id;
+        }
+        $variables['aria_owns'] = implode(' ', $variables['aria_owns']);
       }
       break;
 
@@ -383,7 +406,7 @@ function commencement_core_preprocess_field__node__title(&$variables) {
     // Add new page title classes.
     uiowa_core_set_attributes($variables, [
       'headline--uppercase',
-      'headline--negative',
+      'headline',
       'headline--highlight',
     ]);
   }
@@ -418,6 +441,16 @@ function commencement_core_preprocess_layout(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function commencement_core_preprocess_page(array &$variables) {
+  // @todo remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
+  if (isset($variables['node']) && $variables['node']->getType() == 'venue') {
+    $variables['#attached']['library'][] = 'uids_base/leaflet_attach';
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function commencement_core_preprocess_paragraph(&$variables) {
@@ -446,6 +479,9 @@ function commencement_core_preprocess_paragraph__uiowa_collection_item(&$variabl
         $variables['delta'] = 0;
         $variables['parent_id'] = $parent->id();
         $id = $paragraph->id();
+        // Set the unique-id for the paragraph and let
+        // uids_base.theme handle setting its id later.
+        $paragraph->set('field_unique_id', strtolower(Html::cleanCssIdentifier($paragraph->get('field_collection_headline')->value)));
 
         /**
          * @var integer $delta

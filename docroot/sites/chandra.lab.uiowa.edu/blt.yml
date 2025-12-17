@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labchandra.uiowa.ddev.site
+    protocol: https
+  machine_name: labchandra
+  human_name: chandra.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labchandra.prod
+drupal:
+  db:
+    database: chandra_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labchandra.prod.drupal.uiowa.edu'
+  requester: mklemmensen
+  site-name: 'Chandra lab'

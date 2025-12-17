@@ -200,14 +200,14 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Search'),
       '#description' => $this->t('Allow filtering by name'),
-      '#default_value' => isset($default["display_options"]["filters"]["combine"]),
+      '#default_value' => $config->get('filter_display.combine'),
       '#size' => 60,
     ];
     $form['global']['sitenow_people_filter']['filter_type'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Person Type'),
       '#description' => $this->t('Allow filtering by person type'),
-      '#default_value' => isset($default["display_options"]["filters"]["field_person_types_target_id"]),
+      '#default_value' => $config->get('filter_display.type'),
       '#size' => 60,
     ];
 
@@ -215,7 +215,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Research Areas'),
       '#description' => $this->t('Allow filtering by Research Areas'),
-      '#default_value' => isset($default["display_options"]["filters"]["field_person_research_areas_target_id"]),
+      '#default_value' => $config->get('filter_display.research'),
       '#size' => 60,
     ];
 
@@ -315,15 +315,11 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Get values.
-    $filters = [];
     $status = (int) $form_state->getValue('sitenow_people_status');
     $title = $form_state->getValue('sitenow_people_title');
     $path = $form_state->getValue('sitenow_people_path');
     $research_title = $form_state->getValue('sitenow_people_research_areas');
     $header_content = $form_state->getValue('sitenow_people_header_content');
-    $filters['combine'] = $form_state->getValue('filter_search');
-    $filters['field_person_types_target_id'] = $form_state->getValue('filter_type');
-    $filters['field_person_research_areas_target_id'] = $form_state->getValue('filter_research');
     $sort = $form_state->getValue('sitenow_people_sort');
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
@@ -356,185 +352,6 @@ class SettingsForm extends ConfigFormBase {
       $view->set('status', TRUE);
       $enabled_display =& $view->getDisplay($sort);
       $enabled_display["display_options"]["enabled"] = TRUE;
-
-      // Loop through and toggle filters based on form selections.
-      // @todo Store as configuration and just toggle the exposed status.
-      // Currently causes no results because the filters fire blank values.
-      foreach ($filters as $key => $filter) {
-        // Unset all so that they stay in order.
-        unset($default["display_options"]["filters"][$key]);
-        if ((int) $filter === 1) {
-          if ($key === 'combine') {
-            $default["display_options"]["filters"][$key] = [
-              'id' => 'combine',
-              'table' => 'views',
-              'field' => 'combine',
-              'relationship' => 'none',
-              'group_type' => 'group',
-              'admin_label' => '',
-              'operator' => 'contains',
-              'value' => '',
-              'group' => 1,
-              'exposed' => 1,
-              'expose' => [
-                'operator_id' => 'combine_op',
-                'label' => 'Search',
-                'description' => '',
-                'use_operator' => FALSE,
-                'operator' => 'combine_op',
-                'operator_limit_selection' => FALSE,
-                'operator_list' => [],
-                'identifier' => 'search',
-                'required' => FALSE,
-                'remember' => FALSE,
-                'multiple' => FALSE,
-                'remember_roles' => [
-                  'authenticated' => 'authenticated',
-                  'anonymous' => '0',
-                  'viewer' => '0',
-                  'editor' => '0',
-                  'publisher' => '0',
-                  'webmaster' => '0',
-                  'administrator' => '0',
-                ],
-                'placeholder' => 'Search by name',
-              ],
-              'is_grouped' => FALSE,
-              'group_info' => [
-                'label' => "",
-                'description' => '',
-                'identifier' => '',
-                'optional' => TRUE,
-                'widget' => 'select',
-                'multiple' => FALSE,
-                'remember' => FALSE,
-                'default_group' => 'All',
-                'default_group_multiple' => [],
-                'group_items' => [],
-              ],
-              'fields' => [
-                'title' => 'title',
-              ],
-              'plugin_id' => 'combine',
-            ];
-          }
-          if ($key === 'field_person_types_target_id') {
-            $default["display_options"]["filters"][$key] = [
-              'id' => 'field_person_types_target_id',
-              'table' => 'node__field_person_types',
-              'field' => 'field_person_types_target_id',
-              'relationship' => 'none',
-              'group_type' => 'group',
-              'admin_label' => '',
-              'operator' => '=',
-              'value' => '',
-              'group' => 1,
-              'exposed' => 1,
-              'expose' => [
-                'operator_id' => 'field_person_types_target_id_op',
-                'label' => 'Person Type',
-                'description' => '',
-                'use_operator' => FALSE,
-                'operator' => 'field_person_types_target_id_op',
-                'operator_limit_selection' => FALSE,
-                'operator_list' => [],
-                'identifier' => 'type',
-                'required' => FALSE,
-                'remember' => FALSE,
-                'multiple' => FALSE,
-                'remember_roles' => [
-                  'authenticated' => 'authenticated',
-                  'anonymous' => '0',
-                  'viewer' => '0',
-                  'editor' => '0',
-                  'publisher' => '0',
-                  'webmaster' => '0',
-                  'administrator' => '0',
-                ],
-                'placeholder' => '',
-              ],
-              'is_grouped' => FALSE,
-              'group_info' => [
-                'label' => "",
-                'description' => '',
-                'identifier' => '',
-                'optional' => TRUE,
-                'widget' => 'select',
-                'multiple' => FALSE,
-                'remember' => FALSE,
-                'default_group' => 'All',
-                'default_group_multiple' => [],
-                'group_items' => [],
-              ],
-              'plugin_id' => 'string',
-            ];
-          }
-          if ($key === 'field_person_research_areas_target_id') {
-            $default["display_options"]["filters"][$key] = [
-              'id' => 'field_person_research_areas_target_id',
-              'table' => 'node__field_person_research_areas',
-              'field' => 'field_person_research_areas_target_id',
-              'relationship' => 'none',
-              'group_type' => 'group',
-              'admin_label' => '',
-              'operator' => 'or',
-              'value' => [],
-              'group' => 1,
-              'exposed' => 1,
-              'expose' => [
-                'operator_id' => 'field_person_research_areas_target_id_op',
-                'label' => 'Research Area',
-                'description' => '',
-                'use_operator' => FALSE,
-                'operator' => 'field_person_research_areas_target_id_op',
-                'operator_limit_selection' => FALSE,
-                'operator_list' => [],
-                'identifier' => 'research',
-                'required' => FALSE,
-                'remember' => FALSE,
-                'multiple' => FALSE,
-                'remember_roles' => [
-                  'authenticated' => 'authenticated',
-                  'anonymous' => '0',
-                  'viewer' => '0',
-                  'editor' => '0',
-                  'publisher' => '0',
-                  'webmaster' => '0',
-                  'administrator' => '0',
-                ],
-                'reduce' => FALSE,
-              ],
-              'is_grouped' => FALSE,
-              'group_info' => [
-                'label' => "",
-                'description' => '',
-                'identifier' => '',
-                'optional' => TRUE,
-                'widget' => 'select',
-                'multiple' => FALSE,
-                'remember' => FALSE,
-                'default_group' => 'All',
-                'default_group_multiple' => [],
-                'group_items' => [],
-              ],
-              "reduce_duplicates" => FALSE,
-              "type" => 'select',
-              "limit" => TRUE,
-              "vid" => 'research_areas',
-              "hierarchy" => FALSE,
-              'error_message' => TRUE,
-              'parent' => 0,
-              'level_labels' => FALSE,
-              'force_deepest' => FALSE,
-              'save_lineage' => FALSE,
-              'hierarchy_depth' => 0,
-              'required_depth' => 0,
-              'none_label' => '- Please select -',
-              'plugin_id' => 'taxonomy_index_tid',
-            ];
-          }
-        }
-      }
     }
     else {
       $view->set('status', FALSE);
@@ -561,6 +378,14 @@ class SettingsForm extends ConfigFormBase {
         $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
       }
     }
+    // Save filter display settings.
+    $filters = [];
+    $filters['combine'] = $form_state->getValue('filter_search');
+    $filters['type'] = $form_state->getValue('filter_type');
+    $filters['research'] = $form_state->getValue('filter_research');
+    $this->configFactory->getEditable(static::SETTINGS)
+      ->set('filter_display', $filters)
+      ->save();
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.

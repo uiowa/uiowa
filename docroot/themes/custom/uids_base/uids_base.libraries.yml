@@ -56,6 +56,10 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
+# Leaflet - remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
+leaflet_attach:
+  js:
+    assets/js/leaflet-attach.js: {}
 # Pannellum
 virtual_tour:
   css:
@@ -68,6 +72,11 @@ virtual_tour:
 status-messages:
   js:
     assets/js/uids.status-messages.js: { preprocess: false }
+message:
+  js:
+    assets/js/message.theme.js: { preprocess: false }
+  dependencies:
+    - uids_base/status-messages
 logo:
   css:
     component:
@@ -94,7 +103,7 @@ accordion:
       assets/css/components/accordion.css: { preprocess: false }
       assets/css/paragraphs/uiowa_paragraphs_accordion.css: { preprocess: false }
   js:
-    uids/assets/js/accordion.js: { preprocess: false  }
+    assets/js/accordion-init.js: { preprocess: false, attributes: { type: module } }
 tabs:
   css:
     component:
@@ -106,7 +115,7 @@ header-sticky:
     assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
 video-cookie:
   js:
-    assets/js/video-cookie.js: { preprocess: false }
+    assets/js/video-cookie.js: { preprocess: true }
   dependencies:
     - core/jquery
     - core/once
@@ -116,10 +125,9 @@ slider:
   css:
     component:
       assets/css/components/slider.css: { preprocess: false }
+      assets/css/components/banner.css: { preprocess: false }
   js:
-    uids/assets/js/slider.js: { preprocess: false }
-  dependencies:
-    - uids_base/banner
+    uids/assets/js/slider.js: { preprocess: true }
 remote-video:
   css:
     component:
@@ -129,7 +137,7 @@ lazy-load-animation:
     assets/js/lazy_load_animation.js: {}
 video:
   js:
-    assets/js/video.js: { preprocess: false }
+    uids/assets/js/video.js: { preprocess: false }
 hero:
   css:
     component:
@@ -247,7 +255,7 @@ paragraphs-carousel:
     component:
       assets/css/paragraphs/uiowa_paragraphs_carousel.css: { preprocess: false }
   js:
-      assets/js/carousel.js: { preprocess: false  }
+    assets/js/carousel.js: { preprocess: false  }
   dependencies:
     - uids_base/slick
     - core/jquery
@@ -366,6 +374,8 @@ callout:
       assets/css/components/callout.css: { preprocess: false }
       assets/css/components/inline.css: { preprocess: false }
 admin:
+  js:
+    assets/js/ckeditor-off-canvas-reset-overrides.js:  { }
   css:
     component:
       assets/css/admin.css: { weight: 200 }

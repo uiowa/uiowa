@@ -61,7 +61,9 @@
   {% endif %}
 {% endif %}
 
+{% if page.header %}
 {% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
+{% endif %}
 
 {% if page.alert %}
   {{ page.alert }}
@@ -79,7 +81,7 @@
 
   {{ page.content }}
 
-  {% if header_toppage %}
+  {% if header_toppage and show_back_top_nav %}
     {% include '@uids_base/navigation/top-scroll.html.twig' %}
   {% endif %}
 
@@ -89,11 +91,13 @@
 {% set after_content_rendered = page.after_content | render %}
 {% if after_content_rendered|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim %}
   {{ attach_library('uids_base/region_item')  }}
-  <div role="region" class="bg--white after_content content__container">
+  <aside class="bg--white after_content content__container">
     {{ page.after_content }}
-  </div>
+  </aside>
 {% endif %}
 
 {% block footer %}
-  {% include '@uids_base/layout/footer.html.twig' %}
+  {% if page.pre_footer or page.footer_first or page.footer_second %}
+    {% include '@uids_base/layout/footer.html.twig' %}
+  {% endif %}
 {% endblock %}

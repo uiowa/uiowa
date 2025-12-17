@@ -9,6 +9,7 @@ use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsOrphanPurger;
+use Drupal\sitenow_p2lb\P2LbHelper;
 use Drush\Commands\DrushCommands;
 use Drush\Drush;
 
@@ -16,6 +17,7 @@ use Drush\Drush;
  * A Drush command file for sitenow_p2lb.
  */
 class P2LbCommands extends DrushCommands {
+
   use StringTranslationTrait;
 
   /**
@@ -137,6 +139,8 @@ class P2LbCommands extends DrushCommands {
       $this->orphanPurger->setBatch(['paragraph']);
       drush_backend_batch_process();
     }
+    // Update old V2ism classes with their V3 counterparts.
+    P2LbHelper::updateOldClasses();
 
     // Turn off V2.
     $sitenow_v2 = $this->configFactory->getEditable('config_split.config_split.sitenow_v2');
@@ -150,10 +154,25 @@ class P2LbCommands extends DrushCommands {
 
     // Programmatically run `cim`.
     $alias = Drush::aliasManager()->getSelf();
-    $config_import = Drush::processManager()->drush($alias, 'cim');
+    $config_import = Drush::processManager()
+      ->drush($alias, 'cim');
     $config_import->run($config_import->showRealtime());
     $config_import->getOutput();
     drupal_flush_all_caches();
+    // Ensure 'page' is in the replicate allowed content types.
+    $uiowa_core_settings = $this->configFactory
+      ->getEditable('uiowa_core.settings');
+    $allowed = $uiowa_core_settings->get('uiowa_core.replicate_allowed');
+    // Ensure we have an array to work with.
+    if (!is_array($allowed)) {
+      $allowed = [];
+    }
+    // Add 'page' if it is not already present.
+    if (!in_array('page', $allowed)) {
+      $allowed[] = 'page';
+      $uiowa_core_settings->set('uiowa_core.replicate_allowed', $allowed)
+        ->save();
+    }
 
     // Switch user back.
     $this->accountSwitcher->switchBack();

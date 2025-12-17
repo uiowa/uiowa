@@ -175,7 +175,7 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
     if (in_array($theme, ['uids_base'])) {
       $limit = theme_get_setting('header.top_links_limit', 'uids_base');
       if ($limit) {
-        $warning_text = t('Only the top @limit menu items will display.', [
+        $warning_text = t('Only the top @limit menu items will display. Child/submenu items are automatically hidden to maintain a usable header layout.', [
           '@limit' => $limit,
         ]);
         \Drupal::messenger()->addWarning($warning_text);
@@ -399,10 +399,9 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     $form['field_teaser']['#group'] = 'node_teaser';
 
     // If we're in v3 or a non-page content type in v2 (article, person),
-    // then disable the field_teaser and add help text.
+    // then remove access to the field_teaser.
     if (sitenow_get_version() === 'v3' || !str_starts_with($form['#id'], 'node-page')) {
-      $form['node_teaser']['#description'] = t('<strong>This teaser field has been deprecated, and replaced by the Summary field.</strong>');
-      $form['field_teaser']['#disabled'] = TRUE;
+      $form['field_teaser']['#access'] = FALSE;
     }
   }
 
@@ -537,6 +536,12 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       }
       break;
 
+    case 'system_site_maintenance_mode':
+      if ($access->isForbidden()) {
+        $form['maintenance_mode']['#access'] = FALSE;
+      }
+      break;
+
     // Node form modifications.
     case 'node_page_edit_form':
     case 'node_page_form':
@@ -560,6 +565,14 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['properties']['markup']['message_close_effect']['#access'] = FALSE;
         $form['properties']['markup']['message_storage']['#access'] = FALSE;
         $form['properties']['markup']['message_id']['#access'] = FALSE;
+      }
+
+      // Add additional help text to the captcha element.
+      if (isset($form['properties']['captcha'])) {
+        $form['properties']['captcha']['captcha_type']['#help'] = t('Currently the Default challenge is the Math challenge type.');
+        $form['properties']['captcha']['captcha_type']['#description'] = t('See our <a href="@link" target="_blank" rel="noopener">SiteNow CAPTCHA documentation</a> for more information.', [
+          '@link' => 'https://sitenow.uiowa.edu/node/646#captcha',
+        ]);
       }
 
       // Custom validation for webform components.

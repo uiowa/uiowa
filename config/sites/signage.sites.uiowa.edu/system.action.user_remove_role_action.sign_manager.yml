@@ -1,0 +1,14 @@
+uuid: d3e1b246-44e2-46a2-a5f3-c1d47b47ad7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.sign_manager
+  module:
+    - user
+id: user_remove_role_action.sign_manager
+label: 'Remove the Sign manager role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: sign_manager

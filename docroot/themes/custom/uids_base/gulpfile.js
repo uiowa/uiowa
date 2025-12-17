@@ -6,7 +6,6 @@ const { src, dest, parallel, series, watch } = require('gulp');
 
 // Include plugins.
 const gulpSass = require('gulp-sass')(require('sass'));
-const del = require('del');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
@@ -39,10 +38,12 @@ const iconSets = [
 
 // Clean.
 function clean() {
-  return del([
-    `${paths.dest}/css/**`,
-    `${uids.dest}/**/*`,
-  ]);
+  return import('del').then(module => {
+    return module.deleteAsync([
+      `${paths.dest}/css/**`,
+      `${uids.dest}/**/*`,
+    ]);
+  });
 }
 
 function copyUids() {
@@ -50,6 +51,7 @@ function copyUids() {
     `${uids.src}/**/*.scss`,
     `${uids.src}/**/*.js`,
     `${uids.src}/**/*.{jpg,png,svg}`,
+    `!${uids.src}/components/menu{,/**}`,
   ], { encoding: false })
     .pipe(dest(`${uids.dest}`));
 }
@@ -117,7 +119,7 @@ function css() {
       includePaths: [
         "./node_modules",
       ],
-      silenceDeprecations: ['import', 'legacy-js-api']
+      silenceDeprecations: ['legacy-js-api']
     }).on('error', gulpSass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
     .pipe((mode.development(sourcemaps.write('./'))))

@@ -30,4 +30,28 @@ class ContentHubApiClient extends ApiClientBase implements ContentHubApiClientIn
     return $this->get('views/events_api.json', $options);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getFilters($display_id) {
+    $options = [
+      'query' => [
+        'display_id' => $display_id,
+      ],
+    ];
+    return json_decode(json_encode($this->get('views/filters_api.json', $options)), TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPlaces() {
+    $options = [
+      'query' => [
+        'display_id' => 'places',
+      ],
+    ];
+    return json_decode(json_encode($this->get('views/places_api.json', $options)), TRUE);
+  }
+
 }
