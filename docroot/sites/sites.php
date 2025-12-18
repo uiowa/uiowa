@@ -7936,3 +7936,9 @@ $sites['sitesmtian.uiowa.ddev.site'] = 'mtian.sites.uiowa.edu';
 $sites['sitesmtian.dev.drupal.uiowa.edu'] = 'mtian.sites.uiowa.edu';
 $sites['sitesmtian.stage.drupal.uiowa.edu'] = 'mtian.sites.uiowa.edu';
 $sites['sitesmtian.prod.drupal.uiowa.edu'] = 'mtian.sites.uiowa.edu';
+
+// Directory aliases for ctfoster.lab.uiowa.edu.
+$sites['labctfoster.uiowa.ddev.site'] = 'ctfoster.lab.uiowa.edu';
+$sites['labctfoster.dev.drupal.uiowa.edu'] = 'ctfoster.lab.uiowa.edu';
+$sites['labctfoster.stage.drupal.uiowa.edu'] = 'ctfoster.lab.uiowa.edu';
+$sites['labctfoster.prod.drupal.uiowa.edu'] = 'ctfoster.lab.uiowa.edu';
