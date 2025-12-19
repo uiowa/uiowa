@@ -11,15 +11,35 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_chart_definition_alter().
  */
 function sitenow_charts_chart_definition_alter(array &$definition, array $element, $chart_id) {
+  $chart_type = $definition['chart']['type'] ?? 'unknown';
+
   // Get the yAxis format if it exists.
   if (!empty($definition['yAxis'][0]['labels']['format'])) {
     $format = $definition['yAxis'][0]['labels']['format'];
 
-    // Apply the same format to tooltips.
-    // Replace {value} with {point.y} for tooltip context.
-    $tooltip_format = str_replace('{value}', '{point.y}', $format);
+    // Apply the yAxis format (including any prefix/suffix) to tooltips.
+    if ($chart_type === 'dumbbell') {
+      // Dumbbell charts show a range, so create
+      // formats for both the start and end values.
+      // This replaces the default {point.low} and
+      // {point.high} rendering with the yAxis format
+      // like ${value:.2f} or {value}% to ensure
+      // prefix/suffix renders in the tooltip.
+      $tooltip_format = str_replace('{value}', '{point.low}', $format);
+      $tooltip_high_format = str_replace('{value}', '{point.high}', $format);
 
-    $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+      $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' .
+        $tooltip_format . ' - ' . $tooltip_high_format . '</b><br/>';
+    }
+    else {
+      // Standard charts show a single value.
+      // This replaces the default {point.y}
+      // rendering with the yAxis format
+      // like ${value:.2f} or {value}% to
+      // ensure prefix/suffix renders in the tooltip.
+      $tooltip_format = str_replace('{value}', '{point.y}', $format);
+      $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+    }
 
     // Add comma to the format if not already present
     // This handles formats like {value:.2f}, {value}, {value:.0f}%, etc.
@@ -69,7 +89,7 @@ function sitenow_charts_chart_alter(array &$element, $chart_id) {
  */
 function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
   // Limit to specific chart types.
-  $allowed_types = ['line', 'column', 'bar'];
+  $allowed_types = ['line', 'column', 'bar', 'dumbbell'];
   $types = array_intersect($types, $allowed_types);
 }
 
@@ -109,6 +129,14 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
           if (isset($element[$delta]['config']['display']['polar'])) {
             $element[$delta]['config']['display']['polar']['#access'] = FALSE;
           }
+          // Set low_color field to black for dumbbell and disable the picker.
+          if (isset($element[$delta]['config']['library_type_options']['low_color'])) {
+            $element[$delta]['config']['library_type_options']['low_color']['#attributes']['disabled'] = 'disabled';
+            $element[$delta]['config']['library_type_options']['low_color']['#description'] = t('The color to use for the low value. Default is set to black.');
+            $element[$delta]['config']['library_type_options']['low_color']['#element_validate'][] = function (&$element, FormStateInterface $form_state) {
+              $form_state->setValueForElement($element, '#000000');
+            };
+          }
           // Hide color inputs in the data collector table.
           if (isset($element[$delta]['config']['series']['data_collector_table'])) {
             foreach ($element[$delta]['config']['series']['data_collector_table'] as $row_key => $row) {
@@ -133,7 +161,8 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
  */
 function sitenow_charts_preprocess_field(&$variables) {
   // For chart fields in block content, a workaround
-  // trick the entity type to bypass the stripped template logic in layouts.html.twig.
+  // trick the entity type to bypass the
+  // stripped template logic in layouts.html.twig.
   if ($variables['entity_type'] == 'block_content' && $variables['field_name'] == 'field_sitenow_chart') {
     // Change entity type so it goes through proper
     // field rendering instead of stripped block content rendering.
