@@ -11,6 +11,7 @@ dependencies:
     - responsive_image.styles.medium__no_crop
   module:
     - photoswipe
+    - photoswipe_dynamic_caption
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
 id: media.image.image_gallery
@@ -22,14 +23,17 @@ content:
     type: photoswipe_responsive_field_formatter
     label: hidden
     settings:
-      photoswipe_node_style_first: ''
-      photoswipe_node_style: medium__no_crop
+      photoswipe_thumbnail_style_first: ''
+      photoswipe_thumbnail_style: medium__no_crop
       photoswipe_image_style: ''
       photoswipe_reference_image_field: ''
-      photoswipe_caption: custom
-      photoswipe_caption_custom: '[media:field_media_caption]'
       photoswipe_view_mode: image_gallery
-    third_party_settings: {  }
+      image_loading:
+        attribute: lazy
+    third_party_settings:
+      photoswipe_dynamic_caption:
+        photoswipe_caption: title
+        photoswipe_caption_custom: ''
     weight: 0
     region: content
 hidden:
