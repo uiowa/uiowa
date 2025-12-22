@@ -4521,6 +4521,19 @@ function sitenow_update_10031() {
     ->execute()
     ->fetchAll();
 
+  // Clean up media entities now that they are no longer referenced.
+  $storage = $entity_type_manager->getStorage('media');
+  $mids = $storage->getQuery()
+    ->condition('bundle', 'instagram')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($mids)) {
+    $entities = $storage->loadMultiple($mids);
+    $storage->delete($entities);
+    \Drupal::logger('sitenow')->notice('Deleted @count Instagram media entities.', ['@count' => count($mids)]);
+  }
+
   // Early exit if no placement.
   if (empty($usages)) {
     return;
@@ -4608,18 +4621,5 @@ function sitenow_update_10031() {
         }
       }
     }
-  }
-
-  // Clean up media entities now that they are no longer referenced.
-  $storage = $entity_type_manager->getStorage('media');
-  $mids = $storage->getQuery()
-    ->condition('bundle', 'instagram')
-    ->accessCheck(FALSE)
-    ->execute();
-
-  if (!empty($mids)) {
-    $entities = $storage->loadMultiple($mids);
-    $storage->delete($entities);
-    \Drupal::logger('sitenow')->notice('Deleted @count Instagram media entities.', ['@count' => count($mids)]);
   }
 }
