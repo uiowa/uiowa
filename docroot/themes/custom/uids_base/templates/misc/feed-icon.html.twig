@@ -12,6 +12,6 @@
  */
 #}
 {% set classes = [ 'bttn', 'bttn--transparent', 'borderless' ] %}
-<a href="{{ url }}"{{ attributes.addClass(classes) }}><span class="fas fa-rss"></span>
+<a href="{{ url }}"{{ attributes.addClass(classes) }}><span role="presentation" class="fas fa-rss"></span>
   {{ 'RSS feed'|t({'@title': title}) }}
 </a>
