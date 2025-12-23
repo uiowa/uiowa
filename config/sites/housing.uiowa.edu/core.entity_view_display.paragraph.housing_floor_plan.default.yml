@@ -11,6 +11,7 @@ dependencies:
     - responsive_image.styles.medium__square
   module:
     - photoswipe
+    - photoswipe_dynamic_caption
     - text
 id: paragraph.housing_floor_plan.default
 targetEntityType: paragraph
@@ -28,14 +29,17 @@ content:
     type: photoswipe_responsive_field_formatter
     label: visually_hidden
     settings:
-      photoswipe_node_style_first: ''
-      photoswipe_node_style: medium__square
+      photoswipe_thumbnail_style_first: ''
+      photoswipe_thumbnail_style: medium__square
       photoswipe_image_style: ''
       photoswipe_reference_image_field: field_media_image
-      photoswipe_caption: custom
-      photoswipe_caption_custom: '[media:field_media_caption]'
       photoswipe_view_mode: default
-    third_party_settings: {  }
+      image_loading:
+        attribute: lazy
+    third_party_settings:
+      photoswipe_dynamic_caption:
+        photoswipe_caption: custom
+        photoswipe_caption_custom: '[media:field_media_caption]'
     weight: 0
     region: content
   field_housing_floor_plan_pano:
