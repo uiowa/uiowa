@@ -4480,3 +4480,146 @@ function sitenow_update_10030() {
     }
   });
 }
+
+/**
+ * Remove placed Instagram, delete media entities and uninstall module.
+ */
+function sitenow_update_10031() {
+  $db = \Drupal::database();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  // Get instragram media entities with UUID and URL values.
+  $query = $db->select('media', 'm');
+  $query->fields('m', ['mid', 'uuid', 'bundle']);
+  $query->condition('m.bundle', 'instagram');
+
+  $query->join('media__field_media_instagram', 'i', 'm.mid = i.entity_id');
+  $query->addField('i', 'field_media_instagram_value');
+
+  $instagram_media = $query
+    ->execute()
+    ->fetchAllAssoc('uuid');
+
+  $media_ids = array_column($instagram_media, 'mid');
+
+  // Early exit if no instagram.
+  if (empty($instagram_media)) {
+    return;
+  }
+
+  // Check against entity_usage table.
+  $usages = $db
+    ->select('entity_usage', 'u')
+    ->fields('u', [
+      'source_type',
+      'source_id',
+      'field_name',
+    ])
+    ->condition('target_type', 'media')
+    ->condition('target_id', $media_ids, 'IN')
+    ->execute()
+    ->fetchAll();
+
+  // Early exit if no placement.
+  if (empty($usages)) {
+    return;
+  }
+
+  /*
+   * Group usage for better looping.
+   */
+  $usage_map = [];
+  foreach ($usages as $usage) {
+    $usage_map[$usage->source_type][$usage->field_name][] = $usage->source_id;
+  }
+
+  // Avoid duplicates.
+  foreach ($usage_map as $type => $fields) {
+    foreach ($fields as $field_name => $entity_ids) {
+      $usage_map[$type][$field_name] = array_unique($entity_ids);
+    }
+  }
+
+  // Loop through related tables similar to sitenow_update_10004.
+  foreach ($usage_map as $entity_type_id => $fields) {
+    $storage = $entity_type_manager->getStorage($entity_type_id);
+    if (!($storage instanceof SqlContentEntityStorage)) {
+      continue;
+    }
+
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    $table_mapping = $storage->getTableMapping($field_storage_definitions);
+
+    foreach ($fields as $field_name => $entity_ids) {
+      if (!isset($field_storage_definitions[$field_name])) {
+        continue;
+      }
+
+      $field_def = $field_storage_definitions[$field_name];
+
+      // Get related tables to check against.
+      $tables = [];
+      $tables[] = $table_mapping->getFieldTableName($field_name);
+      $value_column = $table_mapping->getFieldColumnName($field_def, 'value');
+
+      if ($entity_type->isRevisionable() && $field_def->isRevisionable()) {
+        if ($table_mapping->requiresDedicatedTableStorage($field_def)) {
+          $tables[] = $table_mapping->getDedicatedRevisionTableName($field_def);
+        }
+        elseif ($table_mapping->allowsSharedTableStorage($field_def)) {
+          $tables[] = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+        }
+      }
+
+      foreach ($tables as $table) {
+        $query = $db->select($table, 't')
+          ->fields('t')
+          ->condition('entity_id', array_unique($entity_ids), 'IN')
+          ->condition($value_column, '%<drupal-media%', 'LIKE');
+
+        $results = $query->execute();
+
+        // Update markup similar to admissions_core_update_10002.
+        foreach ($results as $record) {
+          $document = Html::load($record->{$value_column});
+          $xpath = new \DOMXPath($document);
+          $changed = FALSE;
+
+          foreach ($xpath->query('//drupal-media[@data-entity-uuid]') as $node) {
+            $uuid = $node->getAttribute('data-entity-uuid');
+
+            if (isset($instagram_media[$uuid])) {
+              $node->parentNode->removeChild($node);
+              $changed = TRUE;
+            }
+          }
+
+          if ($changed) {
+            $db->update($table)
+              ->fields([
+                $value_column => Html::serialize($document),
+              ])
+              ->condition('entity_id', $record->entity_id)
+              ->condition('revision_id', $record->revision_id)
+              ->execute();
+          }
+        }
+      }
+    }
+  }
+
+  // Clean up media entities now that they are no longer referenced.
+  $storage = $entity_type_manager->getStorage('media');
+  $mids = $storage->getQuery()
+    ->condition('bundle', 'instagram')
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($mids)) {
+    $entities = $storage->loadMultiple($mids);
+    $storage->delete($entities);
+    \Drupal::logger('sitenow')->notice('Deleted @count Instagram media entities.', ['@count' => count($mids)]);
+  }
+}
