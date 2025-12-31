@@ -7,20 +7,16 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  .media {
+  a.photoswipe {
     flex: 220px 1 1;
 
     @include utilities.breakpoint(page-container) {
       //flex: 320px 1 1;
     }
-
-    a.photoswipe {
-
-      &:hover,
-      &:focus {
-        img {
-          opacity: 0.6;
-        }
+    &:hover,
+    &:focus {
+      img {
+        opacity: 0.6;
       }
     }
 
@@ -44,7 +40,7 @@
     column-count: 4;
   }
 
-  .media {
+  a.photoswipe {
     flex: none;
     display: inline-block;
     margin: 0 0 1.5rem;

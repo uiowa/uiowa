@@ -282,15 +282,25 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
+                type: photoswipe_responsive_field_formatter
                 label: visually_hidden
                 settings:
-                  view_mode: image_gallery
+                  photoswipe_thumbnail_style_first: ''
+                  photoswipe_thumbnail_style: medium__no_crop
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_view_mode: _custom
+                  image_loading:
+                    attribute: lazy
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
+                  photoswipe_dynamic_caption:
+                    photoswipe_caption: photoswipe_dynamic_caption_referenced_entity_field_media_caption
+                    photoswipe_caption_custom: ''
             weight: 1
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -615,13 +625,22 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
+                type: photoswipe_responsive_field_formatter
                 label: above
                 settings:
-                  view_mode: image_gallery
+                  photoswipe_thumbnail_style_first: ''
+                  photoswipe_thumbnail_style: medium__no_crop
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_view_mode: _custom
+                  image_loading:
+                    attribute: lazy
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
+                  photoswipe_dynamic_caption:
+                    photoswipe_caption: photoswipe_dynamic_caption_referenced_entity_field_media_caption
+                    photoswipe_caption_custom: ''
             weight: 3
             additional:
               layout_builder_styles_style:
@@ -632,18 +651,32 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_rr_comm'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
+                type: photoswipe_responsive_field_formatter
                 label: above
                 settings:
-                  view_mode: image_gallery
-                  link: false
-                third_party_settings: {  }
+                  photoswipe_thumbnail_style_first: ''
+                  photoswipe_thumbnail_style: medium__no_crop
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_view_mode: _custom
+                  image_loading:
+                    attribute: lazy
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+                  photoswipe_dynamic_caption:
+                    photoswipe_caption: photoswipe_dynamic_caption_referenced_entity_field_media_caption
+                    photoswipe_caption_custom: ''
             weight: 0
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
             uuid: 1af9a80f-998d-4419-9106-0f9a35bce41f
@@ -657,13 +690,22 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
+                type: photoswipe_responsive_field_formatter
                 label: above
                 settings:
-                  view_mode: image_gallery
+                  photoswipe_thumbnail_style_first: ''
+                  photoswipe_thumbnail_style: medium__no_crop
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_view_mode: _custom
+                  image_loading:
+                    attribute: lazy
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
+                  photoswipe_dynamic_caption:
+                    photoswipe_caption: photoswipe_dynamic_caption_referenced_entity_field_media_caption
+                    photoswipe_caption_custom: ''
             weight: 4
             additional:
               layout_builder_styles_style:
@@ -681,13 +723,22 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
+                type: photoswipe_responsive_field_formatter
                 label: above
                 settings:
-                  view_mode: image_gallery
+                  photoswipe_thumbnail_style_first: ''
+                  photoswipe_thumbnail_style: medium__no_crop
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_view_mode: _custom
+                  image_loading:
+                    attribute: lazy
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
+                  photoswipe_dynamic_caption:
+                    photoswipe_caption: photoswipe_dynamic_caption_referenced_entity_field_media_caption
+                    photoswipe_caption_custom: ''
             weight: 2
             additional:
               layout_builder_styles_style:
