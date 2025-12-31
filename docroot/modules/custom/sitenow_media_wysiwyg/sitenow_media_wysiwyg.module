@@ -39,6 +39,14 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_media_wysiwyg_form_fontawesome_icon_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+  uiowa_core_configure_fontawesome_icon_field($form);
+  $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
+}
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  */
 function sitenow_media_wysiwyg_media_presave($entity): void {
@@ -188,4 +196,15 @@ function sitenow_media_wysiwyg_media_import_icons() {
     '@created' => $created_count,
     '@updated' => $updated_count,
   ]));
+}
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function sitenow_media_wysiwyg_config_schema_info_alter(&$definitions) {
+  // Opt-out of the SourceEditingRedundantTags constraint in CKEditor5 from
+  // https://www.drupal.org/project/drupal/issues/3410100#comment-15457015.
+  if (isset($definitions['ckeditor5.plugin.ckeditor5_sourceEditing'])) {
+    unset($definitions['ckeditor5.plugin.ckeditor5_sourceEditing']['mapping']['allowed_tags']['sequence']['constraints']['SourceEditingRedundantTags']);
+  }
 }

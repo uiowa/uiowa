@@ -48,7 +48,10 @@
     },
     "config": {
         "audit": {
-            "abandoned": "ignore"
+            "abandoned": "ignore",
+            "ignore": {
+                "CVE-2025-67746": "Temporarily ignore."
+            }
         },
         "sort-packages": true,
         "platform": {
@@ -129,7 +132,6 @@
         "drupal/google_analytics": "^4.0",
         "drupal/google_tag": "^1.8",
         "drupal/gpa_calculator": "^2.0",
-        "drupal/hcaptcha": "^1.2",
         "drupal/heading": "^1.4",
         "drupal/honeypot": "2.2.2",
         "drupal/iframe_title_filter": "^3.0",
@@ -166,7 +168,7 @@
         "drupal/metatag": "^2.0",
         "drupal/moderated_content_bulk_publish": "^3.0@beta",
         "drupal/node_revision_delete": "^2.0",
-        "drupal/node_view_permissions": "^1.5",
+        "drupal/node_view_permissions": "^2.0",
         "drupal/og": "2.x-dev#578b4678",
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.10",
@@ -278,7 +280,8 @@
                 "Doesn't work in layout builder": "https://www.drupal.org/files/issues/2020-04-08/field_delimiter-3099580-7.patch"
             },
             "drupal/fontawesome": {
-                "[3380581] Iconpicker does not render classes appropriately": "https://www.drupal.org/files/issues/2025-03-06/iconpicker-does-not-render_3380581_11.patch"
+                "[3380581] Iconpicker does not render classes appropriately": "https://www.drupal.org/files/issues/2025-03-06/iconpicker-does-not-render_3380581_11.patch",
+                "[3274028] CKEditor 5 compatibility": "patches/3274028-fontawesome.patch"
             },
             "drupal/fragments": {
                 "remove_views_data_type": "https://www.drupal.org/files/issues/2022-08-24/3305851-remove_views_data_type-6.patch"
@@ -303,9 +306,6 @@
             "drupal/linkit": {
                 "Add Webform Matcher": "https://www.drupal.org/files/issues/2023-06-13/linkit-webform-matcher-2946234-36.patch",
                 "[3223781]Add Support for <nolink>": "patches/3223781.patch"
-            },
-            "drupal/media_entity_twitter": {
-                "Add `x.com` link support for oembed": "patches/3392584_add-x-com-link-support-8.patch"
             },
             "drupal/menu_block": {
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch"
