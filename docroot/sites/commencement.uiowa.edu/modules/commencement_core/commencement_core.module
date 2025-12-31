@@ -363,7 +363,7 @@ function commencement_core_preprocess_field(&$variables) {
         $link = [
           '#type' => 'link',
           '#title' => [
-            '#markup' => 'View on the events site <span class="fas fa-arrow-right"></span>',
+            '#markup' => 'View on the events site <span role="presentation" class="fas fa-arrow-right"></span>',
           ],
           '#url' => Url::fromUri($variables['items'][0]['content']['#title']),
           '#attributes' => [
