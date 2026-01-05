@@ -2603,12 +2603,6 @@ $sites['engineeringomicron.dev.drupal.uiowa.edu'] = 'omicron.engineering.uiowa.e
 $sites['engineeringomicron.stage.drupal.uiowa.edu'] = 'omicron.engineering.uiowa.edu';
 $sites['engineeringomicron.prod.drupal.uiowa.edu'] = 'omicron.engineering.uiowa.edu';
 
-// Directory aliases for 175.uiowa.edu.
-$sites['175.uiowa.ddev.site'] = '175.uiowa.edu';
-$sites['175.dev.drupal.uiowa.edu'] = '175.uiowa.edu';
-$sites['175.stage.drupal.uiowa.edu'] = '175.uiowa.edu';
-$sites['175.prod.drupal.uiowa.edu'] = '175.uiowa.edu';
-
 // Directory aliases for itu.physics.uiowa.edu.
 $sites['physicsitu.uiowa.ddev.site'] = 'itu.physics.uiowa.edu';
 $sites['physicsitu.dev.drupal.uiowa.edu'] = 'itu.physics.uiowa.edu';
