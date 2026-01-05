@@ -49,10 +49,21 @@
 
 #drupal-off-canvas {
   width: calc(100% - 1px) !important;
-  height: calc(100% - (1.25rem * 2 + 1.4rem)) !important;
+  height: calc(100% - (var(--off-canvas-title-padding) * 2 + 1.4rem)) !important;
   overflow: auto;
- /* padding: 1.35rem 1.25rem 1.25rem;*/
+  padding: 13px;
 }
+
+/* ck-special-characters fix for only when off-canvas is open */
+/* @todo revisit if needed after Drupal 10.5/6 update. */
+/*body.js-off-canvas-dialog-open .ck-special-characters[style*="-9999"] {*/
+/*  position: fixed !important;*/
+/*  top: 150px !important;*/
+/*  right: 100px !important;*/
+/*  left: auto !important;*/
+/*  transform: none !important;*/
+/*  margin: 0 !important;*/
+/*}*/
 
 #drupal-off-canvas-wrapper .ui-dialog-titlebar {
   margin: 0px;
