@@ -2615,12 +2615,6 @@ $sites['studenthealth.dev.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
 $sites['studenthealth.stage.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
 $sites['studenthealth.prod.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
 
-// Directory aliases for korn.uiowa.edu.
-$sites['korn.uiowa.ddev.site'] = 'korn.uiowa.edu';
-$sites['korn.dev.drupal.uiowa.edu'] = 'korn.uiowa.edu';
-$sites['korn.stage.drupal.uiowa.edu'] = 'korn.uiowa.edu';
-$sites['korn.prod.drupal.uiowa.edu'] = 'korn.uiowa.edu';
-
 // Directory aliases for startalkchinese.sites.uiowa.edu.
 $sites['sitesstartalkchinese.uiowa.ddev.site'] = 'startalkchinese.sites.uiowa.edu';
 $sites['sitesstartalkchinese.dev.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
