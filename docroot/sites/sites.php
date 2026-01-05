@@ -2945,12 +2945,6 @@ $sites['labtanas.dev.drupal.uiowa.edu'] = 'tanas.lab.uiowa.edu';
 $sites['labtanas.stage.drupal.uiowa.edu'] = 'tanas.lab.uiowa.edu';
 $sites['labtanas.prod.drupal.uiowa.edu'] = 'tanas.lab.uiowa.edu';
 
-// Directory aliases for jian-zhang.lab.uiowa.edu.
-$sites['labjian-zhang.uiowa.ddev.site'] = 'jian-zhang.lab.uiowa.edu';
-$sites['labjian-zhang.dev.drupal.uiowa.edu'] = 'jian-zhang.lab.uiowa.edu';
-$sites['labjian-zhang.stage.drupal.uiowa.edu'] = 'jian-zhang.lab.uiowa.edu';
-$sites['labjian-zhang.prod.drupal.uiowa.edu'] = 'jian-zhang.lab.uiowa.edu';
-
 // Directory aliases for shared-governance.sites.uiowa.edu.
 $sites['sitesshared-governance.uiowa.ddev.site'] = 'shared-governance.sites.uiowa.edu';
 $sites['sitesshared-governance.dev.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
