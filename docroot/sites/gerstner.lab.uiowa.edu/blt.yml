@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgerstner.uiowa.ddev.site
+    protocol: https
+  machine_name: labgerstner
+  human_name: gerstner.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgerstner.prod
+drupal:
+  db:
+    database: gerstner_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgerstner.prod.drupal.uiowa.edu'
+  requester: grstnr
+  site-name: 'Gerstner Lab'
