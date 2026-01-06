@@ -7894,3 +7894,9 @@ $sites['labheart.uiowa.ddev.site'] = 'heart.lab.uiowa.edu';
 $sites['labheart.dev.drupal.uiowa.edu'] = 'heart.lab.uiowa.edu';
 $sites['labheart.stage.drupal.uiowa.edu'] = 'heart.lab.uiowa.edu';
 $sites['labheart.prod.drupal.uiowa.edu'] = 'heart.lab.uiowa.edu';
+
+// Directory aliases for respectacle.org.uiowa.edu.
+$sites['orgrespectacle.uiowa.ddev.site'] = 'respectacle.org.uiowa.edu';
+$sites['orgrespectacle.dev.drupal.uiowa.edu'] = 'respectacle.org.uiowa.edu';
+$sites['orgrespectacle.stage.drupal.uiowa.edu'] = 'respectacle.org.uiowa.edu';
+$sites['orgrespectacle.prod.drupal.uiowa.edu'] = 'respectacle.org.uiowa.edu';
