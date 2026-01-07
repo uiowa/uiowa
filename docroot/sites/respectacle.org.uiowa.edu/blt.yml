@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgrespectacle.uiowa.ddev.site
+    protocol: https
+  machine_name: orgrespectacle
+  human_name: respectacle.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgrespectacle.prod
+drupal:
+  db:
+    database: respectacle_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgrespectacle.prod.drupal.uiowa.edu'
+  requester: sophchen
+  site-name: 'Iowa Respectacle'

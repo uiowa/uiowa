@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labheart.uiowa.ddev.site
+    protocol: https
+  machine_name: labheart
+  human_name: heart.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labheart.prod
+drupal:
+  db:
+    database: heart_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labheart.prod.drupal.uiowa.edu'
+  requester: chihcchen
+  site-name: 'Health and Adaptive Recreation Therapy Lab'
