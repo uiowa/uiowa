@@ -2537,12 +2537,6 @@ $sites['studentlegal.dev.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.stage.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.prod.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 
-// Directory aliases for mlk.uiowa.edu.
-$sites['mlk.uiowa.ddev.site'] = 'mlk.uiowa.edu';
-$sites['mlk.dev.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
-$sites['mlk.stage.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
-$sites['mlk.prod.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
-
 // Directory aliases for homecoming.uiowa.edu.
 $sites['homecoming.uiowa.ddev.site'] = 'homecoming.uiowa.edu';
 $sites['homecoming.dev.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
