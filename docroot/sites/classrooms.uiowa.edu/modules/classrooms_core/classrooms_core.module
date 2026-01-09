@@ -170,14 +170,6 @@ function classrooms_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:room:field_room_guide':
-      uiowa_core_set_title_attributes($variables, [
-        'h4',
-        'headline',
-        'headline--serif',
-        'headline--underline',
-      ]);
-      break;
-
     case 'field_block:node:room:field_room_technology_features':
       uiowa_core_set_title_attributes($variables, [
         'h4',
@@ -187,12 +179,8 @@ function classrooms_core_preprocess_block(&$variables) {
       ]);
       break;
 
-    // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      uiowa_core_set_attributes($variables, [
-        'media--widescreen',
-        'photoswipe-gallery',
-      ]);
+      uiowa_core_set_attributes($variables, 'media--widescreen');
       break;
 
     // Add inline class for blocks to appear inline.
