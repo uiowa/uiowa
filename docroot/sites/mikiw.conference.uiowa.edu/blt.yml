@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencemikiw.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencemikiw
+  human_name: mikiw.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencemikiw.prod
+drupal:
+  db:
+    database: mikiw_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencemikiw.prod.drupal.uiowa.edu'
+  requester: sepreston
+  site-name: 'MIKIW at UIowa'
