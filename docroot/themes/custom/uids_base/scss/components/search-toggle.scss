@@ -98,12 +98,10 @@ $search-img-path: '../../images/search-01.svg';
   }
 
   span {
-    //@include utilities.element-invisible;
-    display: none;
+    @include utilities.element-invisible;
 
     @include utilities.breakpoint(md) {
-      //@include utilities.element-invisible-off;
-      display: inline;
+      @include utilities.element-invisible-off;
       overflow: unset;
       position: unset !important;
       display: inline-block;
