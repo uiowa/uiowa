@@ -1057,14 +1057,6 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         'minimal',
       ];
 
-      // Hide tokens as they aren't quite working correctly.
-      // Either they don't have brackets in plain text,
-      // or they don't insert automagically when using html,
-      // or they include javascript void click markup.
-      // Several token examples are shown with default values and help text.
-      $form['contents']['tokens']['#access'] = FALSE;
-      $form['contents']['tokens-warning']['#access'] = FALSE;
-
       // Folks don't know what a bundle is.
       $form['bundles']['#title'] = t('Types');
       $form['bundles']['#description'] = t('Limit to the following types. Select none to include all.');
