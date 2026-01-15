@@ -7888,3 +7888,9 @@ $sites['conferencemikiw.uiowa.ddev.site'] = 'mikiw.conference.uiowa.edu';
 $sites['conferencemikiw.dev.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
 $sites['conferencemikiw.stage.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
 $sites['conferencemikiw.prod.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
+
+// Directory aliases for stemready.program.uiowa.edu.
+$sites['programstemready.uiowa.ddev.site'] = 'stemready.program.uiowa.edu';
+$sites['programstemready.dev.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
+$sites['programstemready.stage.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
+$sites['programstemready.prod.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
