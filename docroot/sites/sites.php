@@ -2537,12 +2537,6 @@ $sites['studentlegal.dev.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.stage.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.prod.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 
-// Directory aliases for mlk.uiowa.edu.
-$sites['mlk.uiowa.ddev.site'] = 'mlk.uiowa.edu';
-$sites['mlk.dev.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
-$sites['mlk.stage.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
-$sites['mlk.prod.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
-
 // Directory aliases for homecoming.uiowa.edu.
 $sites['homecoming.uiowa.ddev.site'] = 'homecoming.uiowa.edu';
 $sites['homecoming.dev.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
@@ -7888,3 +7882,9 @@ $sites['orgrespectacle.uiowa.ddev.site'] = 'respectacle.org.uiowa.edu';
 $sites['orgrespectacle.dev.drupal.uiowa.edu'] = 'respectacle.org.uiowa.edu';
 $sites['orgrespectacle.stage.drupal.uiowa.edu'] = 'respectacle.org.uiowa.edu';
 $sites['orgrespectacle.prod.drupal.uiowa.edu'] = 'respectacle.org.uiowa.edu';
+
+// Directory aliases for mikiw.conference.uiowa.edu.
+$sites['conferencemikiw.uiowa.ddev.site'] = 'mikiw.conference.uiowa.edu';
+$sites['conferencemikiw.dev.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
+$sites['conferencemikiw.stage.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
+$sites['conferencemikiw.prod.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
