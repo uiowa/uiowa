@@ -7894,3 +7894,9 @@ $sites['programstemready.uiowa.ddev.site'] = 'stemready.program.uiowa.edu';
 $sites['programstemready.dev.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
 $sites['programstemready.stage.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
 $sites['programstemready.prod.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
+
+// Directory aliases for pulmfibrosis-sarcoidosis.sites.uiowa.edu.
+$sites['sitespulmfibrosis-sarcoidosis.uiowa.ddev.site'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+$sites['sitespulmfibrosis-sarcoidosis.dev.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+$sites['sitespulmfibrosis-sarcoidosis.stage.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+$sites['sitespulmfibrosis-sarcoidosis.prod.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
