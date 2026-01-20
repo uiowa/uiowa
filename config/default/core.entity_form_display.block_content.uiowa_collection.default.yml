@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_collection
+    - field.field.block_content.uiowa_collection.field_accordion_background
     - field.field.block_content.uiowa_collection.field_accordion_type
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
     - field.field.block_content.uiowa_collection.field_uiowa_headline
@@ -15,6 +16,12 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: default
 content:
+  field_accordion_background:
+    type: options_buttons
+    weight: 26
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_accordion_type:
     type: options_select
     weight: 2

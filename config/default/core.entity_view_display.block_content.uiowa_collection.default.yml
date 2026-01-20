@@ -4,17 +4,26 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_collection
+    - field.field.block_content.uiowa_collection.field_accordion_background
     - field.field.block_content.uiowa_collection.field_accordion_type
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
     - field.field.block_content.uiowa_collection.field_uiowa_headline
   module:
     - entity_reference_revisions
     - layout_builder_custom
+    - options
 id: block_content.uiowa_collection.default
 targetEntityType: block_content
 bundle: uiowa_collection
 mode: default
 content:
+  field_accordion_background:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
     label: hidden
