@@ -998,10 +998,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         ];
 
         // Default to gray.
-        $element['field_accordion_background']['widget']['#default_value'] = $element['field_accordion_background']['widget']['#default_value'] ?? 'gray_default';
+        $element['field_accordion_label_color']['widget']['#default_value'] = $element['field_accordion_label_color']['widget']['#default_value'] ?? 'gray_default';
         // Only show the "accordion type" field if accordion view mode
         // has been selected.
-        $element['field_accordion_background']['widget']['#states'] = [
+        $element['field_accordion_label_color']['widget']['#states'] = [
           'visible' => [
             ':input[name="settings[block_form][view_mode]"]' => [
               'value' => 'accordion',
