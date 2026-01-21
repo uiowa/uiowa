@@ -7900,3 +7900,9 @@ $sites['sitespulmfibrosis-sarcoidosis.uiowa.ddev.site'] = 'pulmfibrosis-sarcoido
 $sites['sitespulmfibrosis-sarcoidosis.dev.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
 $sites['sitespulmfibrosis-sarcoidosis.stage.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
 $sites['sitespulmfibrosis-sarcoidosis.prod.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+
+// Directory aliases for derin.lab.uiowa.edu.
+$sites['labderin.uiowa.ddev.site'] = 'derin.lab.uiowa.edu';
+$sites['labderin.dev.drupal.uiowa.edu'] = 'derin.lab.uiowa.edu';
+$sites['labderin.stage.drupal.uiowa.edu'] = 'derin.lab.uiowa.edu';
+$sites['labderin.prod.drupal.uiowa.edu'] = 'derin.lab.uiowa.edu';
