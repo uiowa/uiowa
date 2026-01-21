@@ -7888,3 +7888,21 @@ $sites['conferencemikiw.uiowa.ddev.site'] = 'mikiw.conference.uiowa.edu';
 $sites['conferencemikiw.dev.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
 $sites['conferencemikiw.stage.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
 $sites['conferencemikiw.prod.drupal.uiowa.edu'] = 'mikiw.conference.uiowa.edu';
+
+// Directory aliases for stemready.program.uiowa.edu.
+$sites['programstemready.uiowa.ddev.site'] = 'stemready.program.uiowa.edu';
+$sites['programstemready.dev.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
+$sites['programstemready.stage.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
+$sites['programstemready.prod.drupal.uiowa.edu'] = 'stemready.program.uiowa.edu';
+
+// Directory aliases for pulmfibrosis-sarcoidosis.sites.uiowa.edu.
+$sites['sitespulmfibrosis-sarcoidosis.uiowa.ddev.site'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+$sites['sitespulmfibrosis-sarcoidosis.dev.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+$sites['sitespulmfibrosis-sarcoidosis.stage.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+$sites['sitespulmfibrosis-sarcoidosis.prod.drupal.uiowa.edu'] = 'pulmfibrosis-sarcoidosis.sites.uiowa.edu';
+
+// Directory aliases for derin.lab.uiowa.edu.
+$sites['labderin.uiowa.ddev.site'] = 'derin.lab.uiowa.edu';
+$sites['labderin.dev.drupal.uiowa.edu'] = 'derin.lab.uiowa.edu';
+$sites['labderin.stage.drupal.uiowa.edu'] = 'derin.lab.uiowa.edu';
+$sites['labderin.prod.drupal.uiowa.edu'] = 'derin.lab.uiowa.edu';
