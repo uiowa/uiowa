@@ -7912,3 +7912,9 @@ $sites['siteswang.uiowa.ddev.site'] = 'wang.sites.uiowa.edu';
 $sites['siteswang.dev.drupal.uiowa.edu'] = 'wang.sites.uiowa.edu';
 $sites['siteswang.stage.drupal.uiowa.edu'] = 'wang.sites.uiowa.edu';
 $sites['siteswang.prod.drupal.uiowa.edu'] = 'wang.sites.uiowa.edu';
+
+// Directory aliases for hshen.sites.uiowa.edu.
+$sites['siteshshen.uiowa.ddev.site'] = 'hshen.sites.uiowa.edu';
+$sites['siteshshen.dev.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
+$sites['siteshshen.stage.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
+$sites['siteshshen.prod.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
