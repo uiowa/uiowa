@@ -508,6 +508,11 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['path']['#access'] = FALSE;
         }
       }
+
+      // Uncheck replace file overwrite option by default.
+      if (isset($form['replace_file']['keep_original_filename'])) {
+        $form['replace_file']['keep_original_filename']['#default_value'] = FALSE;
+      }
     }
   }
 
