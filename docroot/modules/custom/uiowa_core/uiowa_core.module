@@ -121,14 +121,34 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
 function uiowa_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   if ($entity_type->id() === 'menu_link_content') {
     $fields['link']->setDisplayOptions('form', [
-      'type' => 'linkit',
+      'type' => 'linkit_attributes',
       'weight' => -2,
       'settings' => [
+        'enabled_attributes' => [
+          'id' => FALSE,
+          'name' => FALSE,
+          'target' => FALSE,
+          'rel' => FALSE,
+          'class' => FALSE,
+          'accesskey' => FALSE,
+          'data-sn-event' => TRUE,
+          'data-sn-event-type' => TRUE,
+          'data-sn-event-component' => TRUE,
+          'data-sn-event-label' => TRUE,
+        ],
         'linkit_profile' => 'menu_link',
         'linkit_auto_link_text' => TRUE,
       ],
     ]);
   }
+}
+
+/**
+ * Implements hook_link_attributes_plugin_alter().
+ */
+function uiowa_core_link_attributes_plugin_alter(&$plugins) {
+  // This is `click` in all situations.
+  $plugins['data-sn-event-type']['default_value'] = 'click';
 }
 
 /**
@@ -901,6 +921,20 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           ->hasPermission('administer menu link visibility')) {
           $form["menu_per_role__hide_role"]['#access'] = FALSE;
         }
+      }
+
+      // Change the details title to be more specific.
+      if (isset($form['link']['widget'][0]['options']['attributes']['#title'])) {
+        $form['link']['widget'][0]['options']['attributes']['#title'] = t('Link attributes');
+      }
+
+      // Setting defaults for menu link attributes.
+      if ($form['link']['widget'][0]['options']['attributes']['data-sn-event-type']) {
+        $form['link']['widget'][0]['options']['attributes']['data-sn-event-type']['#access'] = FALSE;
+      }
+      if ($form['link']['widget'][0]['options']['attributes']['data-sn-event-component']) {
+        $form['link']['widget'][0]['options']['attributes']['data-sn-event-component']['#default_value'] = 'link';
+        $form['link']['widget'][0]['options']['attributes']['data-sn-event-component']['#access'] = FALSE;
       }
       break;
 
