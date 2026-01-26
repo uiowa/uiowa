@@ -4623,3 +4623,43 @@ function sitenow_update_10031() {
     }
   }
 }
+
+/**
+ * Set default accordion label color.
+ */
+function sitenow_update_10032() {
+  // Create the field prior to setting a default value.
+  /** @var Drupal\Core\Config\CachedStorage $config_storage */
+  $config_storage = \Drupal::service('config.storage');
+
+  // Check that it doesn't already exist just in case
+  // this runs after it's been created for a site.
+  if (!$config_storage->read('field.storage.block_content.field_accordion_label_color')) {
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+
+    $field_storage_link = $source->read('field.storage.block_content.field_accordion_label_color');
+
+    // There's an extra layer of nesting in how the config is read,
+    // so do some quick tidying.
+    $allowed_values_link = [];
+    foreach ($field_storage_link['settings']['allowed_values'] as $value) {
+      $allowed_values_link[$value['value']] = $value['label'];
+    }
+    $field_storage_link['settings']['allowed_values'] = $allowed_values_link;
+
+    \Drupal::entityTypeManager()->getStorage('field_storage_config')
+      ->create($field_storage_link)
+      ->save();
+
+    $field_type_link = $source->read('field.field.block_content.uiowa_collection.field_accordion_label_color');
+    \Drupal::entityTypeManager()->getStorage('field_config')->create($field_type_link)->save();
+  }
+
+  // Load and update all collections blocks on the site
+  // and set the default label color to gray.
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_collection', function (&$component, $block) {
+    $block->set('field_accordion_label_color', 'gray');
+    $block->save();
+  });
+}
