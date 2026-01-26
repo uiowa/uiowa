@@ -49,8 +49,14 @@ AddEncoding gzip svgz
   # Enable expirations.
   ExpiresActive On
 
-  # Cache all files for 60 minutes after access.
-  ExpiresDefault "access plus 60 minutes"
+  # Cache all files for 1 year after access.
+  ExpiresDefault "access plus 1 year"
+
+  # Media entity document file types get 1-hour cache for file overwrites.
+  <FilesMatch "\.(txt|rtf|doc|docx|ppt|pptx|csv|xls|xlsx|pdf|odf|odg|odp|ods|odt|fodt|fods|fodp|fodg|key|numbers|pages|vtt|zip|json|ics|ical)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 hour"
+  </FilesMatch>
 
   <FilesMatch \.php$>
     # Do not allow PHP scripts to be cached unless they explicitly send cache
