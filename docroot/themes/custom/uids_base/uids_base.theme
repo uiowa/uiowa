@@ -1124,6 +1124,16 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
   $variables['multiselect'] = (!isset($block->field_accordion_type->value) ||
     $block->field_accordion_type->value === 'multi_select') ? 'true' : 'false';
 
+  // Prepare the accordion container classes, including
+  // our label color if needed.
+  $accordion_container_classes = ['accordion'];
+  // If more label colors become available in SiteNow,
+  // update this to a match expression.
+  if ($block->field_accordion_label_color->value === 'white') {
+    $accordion_container_classes[] = 'accordion--white';
+  }
+  $variables['accordion_container_classes'] = implode(' ', $accordion_container_classes);
+
   // Assemble the aria-owns attribute for the accordion.
   $accordion_item_id = 'accordion-item-' . $block->id();
   $items = Element::children($variables['elements']['content']['field_uiowa_collection_items']);
