@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..e7fa0e752 100644
+index 4031da475..88931e13e 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
@@ -23,18 +23,20 @@ index 4031da475..e7fa0e752 100644
  # Protect files and directories from prying eyes.
  <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config|yarn\.lock|package\.json)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
    <IfModule mod_authz_core.c>
-@@ -35,8 +49,8 @@ AddEncoding gzip svgz
-   # Enable expirations.
-   ExpiresActive On
+@@ -38,6 +52,12 @@ AddEncoding gzip svgz
+   # Cache all files for 1 year after access.
+   ExpiresDefault "access plus 1 year"
  
--  # Cache all files for 1 year after access.
--  ExpiresDefault "access plus 1 year"
-+  # Cache all files for 60 minutes after access.
-+  ExpiresDefault "access plus 60 minutes"
- 
++  # Media entity document file types get 1-hour cache for file overwrites
++  <FilesMatch "\.(txt|rtf|doc|docx|ppt|pptx|csv|xls|xlsx|pdf|odf|odg|odp|ods|odt|fodt|fods|fodp|fodg|key|numbers|pages|vtt|zip|json|ics|ical)$">
++    ExpiresActive On
++    ExpiresDefault "access plus 1 hour"
++  </FilesMatch>
++
    <FilesMatch \.php$>
      # Do not allow PHP scripts to be cached unless they explicitly send cache
-@@ -60,6 +74,114 @@ AddEncoding gzip svgz
+     # headers themselves. Otherwise all scripts would have to overwrite the
+@@ -60,6 +80,114 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
  
@@ -149,7 +151,7 @@ index 4031da475..e7fa0e752 100644
    # Set "protossl" to "s" if we were accessed via https://.  This is used later
    # if you enable "www." stripping or enforcement, in order to ensure that
    # you don't bounce between http and https.
-@@ -168,6 +290,10 @@ AddEncoding gzip svgz
+@@ -168,6 +296,10 @@ AddEncoding gzip svgz
        # Force proxies to cache gzipped & non-gzipped css/js files separately.
        Header append Vary Accept-Encoding
      </FilesMatch>
@@ -160,7 +162,7 @@ index 4031da475..e7fa0e752 100644
    </IfModule>
  </IfModule>
  
-@@ -183,4 +309,7 @@ AddEncoding gzip svgz
+@@ -183,4 +315,7 @@ AddEncoding gzip svgz
    Header always set X-Content-Type-Options nosniff
    # Disable Proxy header, since it's an attack vector.
    RequestHeader unset Proxy
