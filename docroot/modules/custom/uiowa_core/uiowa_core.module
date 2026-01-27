@@ -942,6 +942,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         $form['link']['widget'][0]['options']['attributes']['data-sn-event-component']['#default_value'] = 'link';
         $form['link']['widget'][0]['options']['attributes']['data-sn-event-component']['#access'] = FALSE;
       }
+      $form['#validate'][] = 'uiowa_core_menu_link_analytics_validate';
       break;
 
     case 'uiowa_core_region_settings':
@@ -1169,6 +1170,35 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['body']['widget'][0]['summary']['#description'] = t('The summary is used for list displays on this site and in the content\'s <a href="https://sitenow.uiowa.edu/documentation/search-engine-optimization#summary" target="_blank">meta description</a>. If left blank, a trimmed value of the full text will be used for the meta description, but not for list displays.');
     }
   }
+}
+
+/**
+ * Validation handler to clean up analytics attributes.
+ */
+function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form_state) {
+  $attributes = $form_state->getValue(['link', 0, 'options', 'attributes']) ?? [];
+  $event_name = trim($attributes['data-sn-event'] ?? '');
+
+  // If event name is empty, clear all analytics attributes.
+  if (empty($event_name)) {
+    unset($attributes['data-sn-event']);
+    unset($attributes['data-sn-event-type']);
+    unset($attributes['data-sn-event-component']);
+    unset($attributes['data-sn-event-label']);
+  }
+  else {
+    // Sanitize event name: lowercase and no spaces.
+    $attributes['data-sn-event'] = strtolower(Html::cleanCssIdentifier($event_name));
+    // Use menu link title as label if label is empty.
+    if (empty(trim($attributes['data-sn-event-label'] ?? ''))) {
+      $menu_link_title = trim($form_state->getValue(['title', 0, 'value']) ?? '');
+      if (!empty($menu_link_title)) {
+        $attributes['data-sn-event-label'] = $menu_link_title;
+      }
+    }
+  }
+
+  $form_state->setValue(['link', 0, 'options', 'attributes'], $attributes);
 }
 
 /**
