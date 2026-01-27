@@ -139,6 +139,7 @@ function sitenow_events_views_pre_view(ViewExecutable $view, $display_id, array 
     return;
   }
 
+  // Don't want to affect other view displays.
   if ($view_id === 'events' && $display_id !== 'page_upcoming') {
     return;
   }
