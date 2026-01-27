@@ -783,6 +783,13 @@ function admissions_core_views_pre_view(ViewExecutable $view, $display_id, array
       }
     }
   }
+
+  // Admissions requested a sidebar for their events view
+  // while staying default for everything else.
+  if ($view->id() === 'events' && $display_id === 'page_upcoming') {
+    // Set css class programmatically instead of splitting config.
+    $view->display_handler->setOption('css_class', 'bef-form bef-form--label-hidden bef-form--sidebar views--twocol--25-75');
+  }
 }
 
 /**
