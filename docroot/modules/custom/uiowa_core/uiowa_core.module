@@ -1187,8 +1187,9 @@ function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form
     unset($attributes['data-sn-event-label']);
   }
   else {
-    // Sanitize event name: lowercase and no spaces.
-    $attributes['data-sn-event'] = strtolower(Html::cleanCssIdentifier($event_name));
+    // Sanitize event name: lowercase and underscores.
+    $event_name = strtolower(Html::cleanCssIdentifier($event_name));
+    $attributes['data-sn-event'] = str_replace('-', '_', $event_name);
     // Use menu link title as label if label is empty.
     if (empty(trim($attributes['data-sn-event-label'] ?? ''))) {
       $menu_link_title = trim($form_state->getValue(['title', 0, 'value']) ?? '');
