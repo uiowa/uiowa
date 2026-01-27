@@ -1,5 +1,5 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..88931e13e 100644
+index 4031da475..d1b0cb226 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
 @@ -2,6 +2,20 @@
@@ -27,7 +27,7 @@ index 4031da475..88931e13e 100644
    # Cache all files for 1 year after access.
    ExpiresDefault "access plus 1 year"
  
-+  # Media entity document file types get 1-hour cache for file overwrites
++  # Media entity document file types get 1-hour cache for file overwrites.
 +  <FilesMatch "\.(txt|rtf|doc|docx|ppt|pptx|csv|xls|xlsx|pdf|odf|odg|odp|ods|odt|fodt|fods|fodp|fodg|key|numbers|pages|vtt|zip|json|ics|ical)$">
 +    ExpiresActive On
 +    ExpiresDefault "access plus 1 hour"
