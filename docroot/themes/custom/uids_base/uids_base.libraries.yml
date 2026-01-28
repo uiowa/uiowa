@@ -5,9 +5,7 @@ global-styling:
     base:
       assets/css/global.css: {}
       /libraries/fontawesome/css/all.min.css: {}
-      https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&display=swap: { type: external, minified: false }
-      https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600;700&display=swap: { type: external, minified: false }
-      https://fonts.googleapis.com/css2?family=Antonio:wght@100;300;700&display=swap: { type: external, minified: false }
+      https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400;1,700&family=Zilla+Slab:wght@400;600;700&family=Antonio:wght@100;300;700&display=swap: { type: external, minified: false }
     layout:
       assets/css/components/page-layouts.css: {}
     component:
@@ -66,56 +64,56 @@ virtual_tour:
     theme:
       /libraries/pannellum/build/pannellum.css: {}
   js:
-    /libraries/pannellum/build/pannellum.js: { preprocess: true }
+    /libraries/pannellum/build/pannellum.js: {}
 
 # UIDS.
 status-messages:
   js:
-    assets/js/uids.status-messages.js: { preprocess: false }
+    assets/js/uids.status-messages.js: {}
 message:
   js:
-    assets/js/message.theme.js: { preprocess: false }
+    assets/js/message.theme.js: {}
   dependencies:
     - uids_base/status-messages
 logo:
   css:
     component:
-      assets/css/components/logo.css: { preprocess: false }
+      assets/css/components/logo.css: {}
 search-toggle:
   css:
     component:
-      assets/css/components/search-toggle.css: { weight: 200, preprocess: false }
+      assets/css/components/search-toggle.css: { weight: 200}
   js:
-    assets/js/search-toggle.js: { preprocess: false  }
+    assets/js/search-toggle.js: {}
 search-results:
   css:
     component:
-      assets/css/components/search-results.css: { preprocess: false }
+      assets/css/components/search-results.css: {}
 toggle-nav:
   css:
     component:
-      assets/css/components/menus/toggle-nav.css: { preprocess: false }
+      assets/css/components/menus/toggle-nav.css: {}
   js:
-    assets/js/toggle-nav.js: { preprocess: false, attributes: { type: module } }
+    assets/js/toggle-nav.js: { attributes: { type: module } }
 accordion:
   css:
     component:
-      assets/css/components/accordion.css: { preprocess: false }
-      assets/css/paragraphs/uiowa_paragraphs_accordion.css: { preprocess: false }
+      assets/css/components/accordion.css: {}
+      assets/css/paragraphs/uiowa_paragraphs_accordion.css: {}
   js:
-    assets/js/accordion-init.js: { preprocess: false, attributes: { type: module } }
+    assets/js/accordion-init.js: { attributes: { type: module } }
 tabs:
   css:
     component:
-      assets/css/components/tabs.css: { preprocess: false }
+      assets/css/components/tabs.css: {}
   js:
-    uids/assets/js/tabs.js: { preprocess: false }
+    uids/assets/js/tabs.js: {}
 header-sticky:
   js:
-    assets/js/brand-bar.js: { preprocess: false, attributes: { type: module } }
+    assets/js/brand-bar.js: { attributes: { type: module } }
 video-cookie:
   js:
-    assets/js/video-cookie.js: { preprocess: true }
+    assets/js/video-cookie.js: {}
   dependencies:
     - core/jquery
     - core/once
@@ -124,36 +122,36 @@ video-cookie:
 slider:
   css:
     component:
-      assets/css/components/slider.css: { preprocess: false }
-      assets/css/components/banner.css: { preprocess: false }
+      assets/css/components/slider.css: {}
+      assets/css/components/banner.css: {}
   js:
-    uids/assets/js/slider.js: { preprocess: true }
+    uids/assets/js/slider.js: {}
 remote-video:
   css:
     component:
-      assets/css/components/video/video-utilities.css: { preprocess: false }
+      assets/css/components/video/video-utilities.css: {}
 lazy-load-animation:
   js:
     assets/js/lazy_load_animation.js: {}
 video:
   js:
-    uids/assets/js/video.js: { preprocess: false }
+    uids/assets/js/video.js: {}
 hero:
   css:
     component:
-      assets/css/components/hero.css: { preprocess: false }
+      assets/css/components/hero.css: {}
 event:
   css:
     component:
-      assets/css/components/event.css: { preprocess: false }
+      assets/css/components/event.css: {}
 aggregator-feed:
   css:
     component:
-      assets/css/content/aggregator-feed.css: { preprocess: false }
+      assets/css/content/aggregator-feed.css: {}
 hero-block-video:
   js:
-    assets/js/video.js: { preprocess: false }
-    assets/js/video-cookie.js: { preprocess: false }
+    assets/js/video.js: {}
+    assets/js/video-cookie.js: {}
   dependencies:
     - core/jquery
     - core/once
@@ -161,101 +159,101 @@ hero-block-video:
 vertical-video:
   css:
     component:
-      assets/css/components/video/vertical.css: { preprocess: false }
+      assets/css/components/video/vertical.css: {}
   js:
-    assets/js/vertical.js: { preprocess: false }
+    assets/js/vertical.js: {}
 highlight:
   css:
     component:
-      assets/css/components/highlight.css: { preprocess: false }
+      assets/css/components/highlight.css: {}
 click-a11y:
   js:
-    assets/js/click-a11y-init.js: { preprocess: true, attributes: { type: module } }
+    assets/js/click-a11y-init.js: { attributes: { type: module } }
 banner:
   css:
     component:
-      assets/css/components/banner.css: { preprocess: false }
+      assets/css/components/banner.css: {}
   dependencies:
     - uids_base/click-a11y
 card:
   css:
     component:
-      assets/css/components/card.css: { preprocess: false }
-      assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
+      assets/css/components/card.css: {}
+      assets/css/paragraphs/uiowa-paragraphs-card.css: {}
   dependencies:
     - uids_base/click-a11y
 media:
   css:
     component:
-      assets/css/components/media.css: { preprocess: false, weight: 1 }
+      assets/css/components/media.css: { weight: 1 }
 image:
   css:
     component:
-      assets/css/components/image.css: { preprocess: false }
+      assets/css/components/image.css: {}
 tags:
   css:
     component:
-      assets/css/components/tags.css: { preprocess: false }
+      assets/css/components/tags.css: {}
 related:
   css:
     component:
-      assets/css/components/related.css: { preprocess: false }
+      assets/css/components/related.css: {}
 badge:
   css:
     component:
-      assets/css/components/badge.css: { preprocess: false }
+      assets/css/components/badge.css: {}
 cta:
   css:
     component:
-      assets/css/components/cta.css: { preprocess: false }
+      assets/css/components/cta.css: {}
 stat:
   css:
     component:
-      assets/css/components/stat.css: { preprocess: false }
+      assets/css/components/stat.css: {}
 timeline:
   css:
     component:
-      assets/css/components/timeline.css: { preprocess: false }
+      assets/css/components/timeline.css: {}
   js:
-    assets/js/scroll.js: { preprocess: false }
+    assets/js/scroll.js: {}
 top-scroll:
   css:
     component:
-      assets/css/components/top-scroll.css: { preprocess: false }
+      assets/css/components/top-scroll.css: {}
 main-menu:
   css:
     component:
-      assets/css/components/menus/main-menu.css: { preprocess: false }
+      assets/css/components/menus/main-menu.css: {}
 mega-menu:
   css:
     component:
-      assets/css/components/menus/superfish/mega-menu.css: { preprocess: false }
+      assets/css/components/menus/superfish/mega-menu.css: {}
 horizontal-menu:
   css:
     component:
-      assets/css/components/menus/superfish/horizontal-menu.css: { preprocess: false }
+      assets/css/components/menus/superfish/horizontal-menu.css: {}
 local-tasks:
   css:
     component:
-      assets/css/components/menus/local-tasks.css: { preprocess: false }
+      assets/css/components/menus/local-tasks.css: {}
 sitenow:
   css:
     component:
-      assets/css/sitenow_v2.css: { weight: -800, preprocess: false }
+      assets/css/sitenow_v2.css: { weight: -800}
 sitenow-events-single:
   css:
     component:
-      assets/css/content/sitenow-event-single.css: { preprocess: false }
+      assets/css/content/sitenow-event-single.css: {}
 paragraphs-lists:
   css:
     component:
-      assets/css/paragraphs/uiowa-paragraphs-lists.css: { preprocess: false }
+      assets/css/paragraphs/uiowa-paragraphs-lists.css: {}
 paragraphs-carousel:
   css:
     component:
-      assets/css/paragraphs/uiowa_paragraphs_carousel.css: { preprocess: false }
+      assets/css/paragraphs/uiowa_paragraphs_carousel.css: {}
   js:
-    assets/js/carousel.js: { preprocess: false  }
+    assets/js/carousel.js: {}
   dependencies:
     - uids_base/slick
     - core/jquery
@@ -263,116 +261,116 @@ paragraphs-carousel:
 paragraphs-featured-content:
   css:
     component:
-      assets/css/paragraphs/featured-content.css: { preprocess: false }
+      assets/css/paragraphs/featured-content.css: {}
 paragraphs-image-gallery:
   css:
     component:
-      assets/css/paragraphs/uiowa_paragraphs_image_gallery.css: { preprocess: false }
+      assets/css/paragraphs/uiowa_paragraphs_image_gallery.css: {}
 paragraphs:
   css:
     component:
-      assets/css/paragraphs/uiowa_paragraphs.css: { preprocess: false }
+      assets/css/paragraphs/uiowa_paragraphs.css: {}
 paragraphs-text:
   css:
     component:
-      assets/css/paragraphs/uiowa-paragraphs_text.css: { preprocess: false }
+      assets/css/paragraphs/uiowa-paragraphs_text.css: {}
 paragraphs-webform:
   css:
     component:
-      assets/css/paragraphs/uiowa-paragraphs-webform.css: { preprocess: false }
+      assets/css/paragraphs/uiowa-paragraphs-webform.css: {}
 chosen:
   css:
     component:
-      assets/css/components/form/chosen.css: { preprocess: false }
+      assets/css/components/form/chosen.css: {}
 view-articles-list:
   css:
     component:
-      assets/css/views/view-articles--list.css: { preprocess: false }
+      assets/css/views/view-articles--list.css: {}
 view-events-list:
   css:
     component:
-      assets/css/views/view-events--list.css: { preprocess: false }
+      assets/css/views/view-events--list.css: {}
 view-articles-archive:
   css:
     component:
-      assets/css/views/view-display-id-block_articles_archive.css: { preprocess: false }
+      assets/css/views/view-display-id-block_articles_archive.css: {}
 view-page-articles:
   css:
     component:
-      assets/css/views/view-display-id-page_articles.css: { preprocess: false }
+      assets/css/views/view-display-id-page_articles.css: {}
 view-display-people:
   css:
     component:
-      assets/css/views/view-display-id-people.css: { preprocess: false }
+      assets/css/views/view-display-id-people.css: {}
 view-taxonomy-term:
   css:
     component:
-      assets/css/views/view-taxonomy-term.css: { preprocess: false }
+      assets/css/views/view-taxonomy-term.css: {}
 view-taxonomy-term-colleges:
   css:
     component:
-      assets/css/views/view-taxonomy-term-colleges.css: { preprocess: false }
+      assets/css/views/view-taxonomy-term-colleges.css: {}
 view-bef:
   css:
     component:
-      assets/css/views/bef/view-bef.css: { preprocess: false }
+      assets/css/views/bef/view-bef.css: {}
 view-calendar:
   css:
     component:
-      assets/css/views/view-calendar.css: { preprocess: false }
+      assets/css/views/view-calendar.css: {}
 views:
   css:
     component:
-      assets/css/views/views.css: { preprocess: false }
+      assets/css/views/views.css: {}
 webforms:
   css:
     component:
-      assets/css/webforms/webforms.css: { preprocess: false }
+      assets/css/webforms/webforms.css: {}
 embed:
   css:
     component:
-      assets/css/components/embed.css: { preprocess: false }
+      assets/css/components/embed.css: {}
 embedded-entity:
   css:
     component:
-      assets/css/media/embedded-entity.css: { preprocess: false }
+      assets/css/media/embedded-entity.css: {}
 media-type-image:
   css:
     component:
-      assets/css/media/media--type-image.css: { preprocess: false }
+      assets/css/media/media--type-image.css: {}
 field-uip-title:
   css:
     component:
-      assets/css/fields/field--name-field-uip-title.css: { preprocess: false }
+      assets/css/fields/field--name-field-uip-title.css: {}
 fields:
   css:
     component:
-      assets/css/fields/fields.css: { preprocess: false }
+      assets/css/fields/fields.css: {}
 node-type-article:
   css:
     component:
-      assets/css/content/node--type--article.css: { preprocess: false }
+      assets/css/content/node--type--article.css: {}
 node-type-page:
   css:
     component:
-      assets/css/content/node--type--page.css: { preprocess: false }
+      assets/css/content/node--type--page.css: {}
 node-type-person:
   css:
     component:
-      assets/css/content/node--type--person.css: { preprocess: false }
+      assets/css/content/node--type--person.css: {}
 node-view-teaser:
   css:
     component:
-      assets/css/content/node--view-mode-teaser.css: { preprocess: false }
+      assets/css/content/node--view-mode-teaser.css: {}
 caption:
   css:
     component:
-      assets/css/components/caption.css: { preprocess: false }
+      assets/css/components/caption.css: {}
 callout:
   css:
     component:
-      assets/css/components/callout.css: { preprocess: false }
-      assets/css/components/inline.css: { preprocess: false }
+      assets/css/components/callout.css: {}
+      assets/css/components/inline.css: {}
 admin:
   js:
     assets/js/ckeditor-off-canvas-reset-overrides.js:  { }
@@ -388,20 +386,20 @@ region_item:
 layout-builder:
   css:
     component:
-      assets/css/layout-builder.css: { weight: -500, preprocess: false }
+      assets/css/layout-builder.css: { weight: -500}
 sftouchscreen:
   js:
-    assets/js/sftouchscreen.js: { }
+    assets/js/sftouchscreen.js: {}
   dependencies:
     - superfish/init
 person:
   css:
     theme:
-      assets/css/content/person.css: { }
+      assets/css/content/person.css: {}
 global-serif:
   css:
     component:
-      assets/css/components/typography/global-serif.css: { preprocess: false }
+      assets/css/components/typography/global-serif.css: {}
 
 # CSS libraries for Layout plugins.
 # One column
@@ -438,9 +436,9 @@ fourcol:
 page--left-sidebar:
   css:
     theme:
-      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
+      assets/css/layouts/page--left-sidebar.css: {}
 # Off-brand theme
 theme-overrides:
   css:
     component:
-      assets/css/theme-overrides.css: { preprocess: false }
+      assets/css/theme-overrides.css: {}
