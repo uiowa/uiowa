@@ -129,25 +129,40 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
  * @todo Move to sitenow_local_events module.
  */
 function sitenow_events_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
-  if ($view->id() === 'events_list_block') {
-    $exposed_input = $view->getExposedInput();
+  $views = [
+    'events_list_block' => 'field_event_when_value',
+    'events' => 'field_event_when_end_value',
+  ];
 
-    // Check if there's a date in the URL parameters.
-    $request = \Drupal::request();
-    $date_from_url = $request->query->get('field_event_when_value');
-
-    if ($date_from_url) {
-      // Use the date from the URL if it exists.
-      $exposed_input['field_event_when_value'] = $date_from_url;
-    }
-    else {
-      // If no date in URL, set to today's date.
-      $today = new DrupalDateTime('now');
-      $exposed_input['field_event_when_value'] = $today->format('Y-m-d');
-    }
-
-    $view->setExposedInput($exposed_input);
+  $view_id = $view->id();
+  if (!isset($views[$view_id])) {
+    return;
   }
+
+  // Don't want to affect other view displays.
+  if ($view_id === 'events' && $display_id !== 'page_upcoming') {
+    return;
+  }
+
+  $filter = $views[$view_id];
+
+  $exposed_input = $view->getExposedInput();
+
+  // Check if there's a date in the URL parameters.
+  $request = \Drupal::request();
+  $date_from_url = $request->query->get($filter);
+
+  if ($date_from_url) {
+    // Use the date from the URL if it exists.
+    $exposed_input[$filter] = $date_from_url;
+  }
+  else {
+    // If no date in URL, set to today's date.
+    $today = new DrupalDateTime('now');
+    $exposed_input[$filter] = $today->format('Y-m-d');
+  }
+
+  $view->setExposedInput($exposed_input);
 }
 
 /**
