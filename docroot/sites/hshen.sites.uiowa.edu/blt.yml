@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteshshen.uiowa.ddev.site
+    protocol: https
+  machine_name: siteshshen
+  human_name: hshen.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshshen.prod
+drupal:
+  db:
+    database: hshen_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshshen.prod.drupal.uiowa.edu'
+  requester: heshen
+  site-name: 'Website of Helen H. Shen'
