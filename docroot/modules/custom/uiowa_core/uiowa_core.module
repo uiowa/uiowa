@@ -657,6 +657,23 @@ function uiowa_core_preprocess_field(&$variables) {
  */
 function uiowa_core_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
+
+  // Unset local tasks on admin routes with no tasks to prevent empty
+  // wrappers that fail accessibility scans (Siteimprove).
+  // See https://www.drupal.org/project/drupal/issues/953034.
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $route_name = $current_route->getRouteName();
+    // Check local tasks for current route.
+    $local_task_manager = \Drupal::service('plugin.manager.menu.local_task');
+    $tasks = $local_task_manager->getLocalTasksForRoute($route_name);
+    // Unset since there are no tasks to render. Brilliant.
+    if (empty($tasks)) {
+      unset($variables['page']['header']['claro_primary_local_tasks']);
+      unset($variables['page']['pre_content']['claro_secondary_local_tasks']);
+    }
+  }
+
   $node = $current_route->getParameter('node');
 
   $view_id = Drupal::request()->attributes->get('view_id');
