@@ -54,6 +54,22 @@ function sitenow_charts_chart_definition_alter(array &$definition, array $elemen
     }
     $definition['yAxis'][0]['labels']['format'] = $format;
   }
+
+  // Handle pie charts separately because they use yaxis element but not yAxis definition.
+  if ($chart_type === 'pie' && isset($element['yaxis'])) {
+    $prefix = $element['yaxis']['#prefix'] ?? '';
+    $suffix = $element['yaxis']['#suffix'] ?? '';
+    $decimal_count = $element['yaxis']['#decimal_count'] ?? 0;
+
+    if ($prefix || $suffix || $decimal_count) {
+      // Build the format string based on decimal count.
+      $format_spec = $decimal_count > 0 ? "{point.y:,.{$decimal_count}f}" : '{point.y:,.0f}';
+      $value_format = $prefix . $format_spec . $suffix;
+
+      // Apply to tooltips.
+      $definition['tooltip']['pointFormat'] = '<b>' . $value_format . ' ({point.percentage:.1f}%)</b><br/>';
+    }
+  }
 }
 
 /**
@@ -89,7 +105,7 @@ function sitenow_charts_chart_alter(array &$element, $chart_id) {
  */
 function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
   // Limit to specific chart types.
-  $allowed_types = ['line', 'column', 'bar', 'dumbbell'];
+  $allowed_types = ['line', 'column', 'bar', 'pie', 'dumbbell'];
   $types = array_intersect($types, $allowed_types);
 }
 
@@ -136,6 +152,14 @@ function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete
             $element[$delta]['config']['library_type_options']['low_color']['#element_validate'][] = function (&$element, FormStateInterface $form_state) {
               $form_state->setValueForElement($element, '#000000');
             };
+          }
+          // Hide min_color field.
+          if (isset($element[$delta]['config']['library_type_options']['min_color'])) {
+            $element[$delta]['config']['library_type_options']['min_color']['#access'] = FALSE;
+          }
+          // Hide max_color field.
+          if (isset($element[$delta]['config']['library_type_options']['max_color'])) {
+            $element[$delta]['config']['library_type_options']['max_color']['#access'] = FALSE;
           }
           // Hide color inputs in the data collector table.
           if (isset($element[$delta]['config']['series']['data_collector_table'])) {
