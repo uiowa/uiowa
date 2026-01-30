@@ -4659,6 +4659,9 @@ function sitenow_update_10032() {
   // Load and update all collections blocks on the site
   // and set the default label color to gray.
   _update_all_blocks_by_plugin_id('inline_block:uiowa_collection', function (&$component, $block) {
+    if ($block === NULL) {
+      return;
+    }
     $block->set('field_accordion_label_color', 'gray');
     $block->save();
   });
