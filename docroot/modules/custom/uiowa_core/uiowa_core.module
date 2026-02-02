@@ -2104,7 +2104,7 @@ function uiowa_core_scheduler_help_text(array &$form): void {
       $additional_help_text = t('Note: this content will be @stateed at the top of the hour after the time you select. (e.g., 2:43 p.m. will go live at 3:00 p.m.).', [
         '@state' => $state,
       ]);
-      $form["{$state}_on"]['widget'][0]['value']['#description'] .= '<p>' . $additional_help_text . '</p>';
+      $form["{$state}_on"]['widget'][0]['value']['#description'] .= '<div>' . $additional_help_text . '</div>';
       // If moderation is enabled, hide the publish/unpublish state fields.
       $form["{$state}_state"]['#attributes']['class'] = (!empty($form["{$state}_state"]['#attributes']['class']) ? array_merge($form["{$state}_state"]['#attributes']['class'], $hide_classes) : $hide_classes);
     }
