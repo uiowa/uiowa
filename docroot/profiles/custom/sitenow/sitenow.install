@@ -184,8 +184,9 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
               'allowed_classes' => TRUE,
             ]);
           }
-          else {
-            $block = NULL;
+
+          if (!$block instanceof BlockContentInterface) {
+            continue;
           }
 
           call_user_func_array($process, [&$component, $block]);
@@ -4368,7 +4369,7 @@ function sitenow_update_10028() {
   if (!empty($to_uninstall)) {
     \Drupal::service('module_installer')->uninstall($to_uninstall, TRUE);
     $logger->notice('Disabled the following modules: @modules', [
-      '@modules' => implode(', ', $to_uninstall)
+      '@modules' => implode(', ', $to_uninstall),
     ]);
   }
 
