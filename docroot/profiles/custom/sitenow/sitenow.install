@@ -184,8 +184,9 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
               'allowed_classes' => TRUE,
             ]);
           }
-          else {
-            $block = NULL;
+
+          if (!$block instanceof BlockContentInterface) {
+            continue;
           }
 
           call_user_func_array($process, [&$component, $block]);
@@ -4368,7 +4369,7 @@ function sitenow_update_10028() {
   if (!empty($to_uninstall)) {
     \Drupal::service('module_installer')->uninstall($to_uninstall, TRUE);
     $logger->notice('Disabled the following modules: @modules', [
-      '@modules' => implode(', ', $to_uninstall)
+      '@modules' => implode(', ', $to_uninstall),
     ]);
   }
 
@@ -4659,9 +4660,6 @@ function sitenow_update_10032() {
   // Load and update all collections blocks on the site
   // and set the default label color to gray.
   _update_all_blocks_by_plugin_id('inline_block:uiowa_collection', function (&$component, $block) {
-    if ($block === NULL) {
-      return;
-    }
     $block->set('field_accordion_label_color', 'gray');
     $block->save();
   });
