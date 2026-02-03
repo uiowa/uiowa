@@ -7924,3 +7924,9 @@ $sites['tippiewib.uiowa.ddev.site'] = 'wib.tippie.uiowa.edu';
 $sites['tippiewib.dev.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
 $sites['tippiewib.stage.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
 $sites['tippiewib.prod.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
+
+// Directory aliases for investher.tippie.uiowa.edu.
+$sites['tippieinvesther.uiowa.ddev.site'] = 'investher.tippie.uiowa.edu';
+$sites['tippieinvesther.dev.drupal.uiowa.edu'] = 'investher.tippie.uiowa.edu';
+$sites['tippieinvesther.stage.drupal.uiowa.edu'] = 'investher.tippie.uiowa.edu';
+$sites['tippieinvesther.prod.drupal.uiowa.edu'] = 'investher.tippie.uiowa.edu';
