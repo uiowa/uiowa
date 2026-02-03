@@ -7918,3 +7918,9 @@ $sites['siteshshen.uiowa.ddev.site'] = 'hshen.sites.uiowa.edu';
 $sites['siteshshen.dev.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
 $sites['siteshshen.stage.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
 $sites['siteshshen.prod.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
+
+// Directory aliases for wib.tippie.uiowa.edu.
+$sites['tippiewib.uiowa.ddev.site'] = 'wib.tippie.uiowa.edu';
+$sites['tippiewib.dev.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
+$sites['tippiewib.stage.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
+$sites['tippiewib.prod.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
