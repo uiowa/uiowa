@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippieinvesther.uiowa.ddev.site
+    protocol: https
+  machine_name: tippieinvesther
+  human_name: investher.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippieinvesther.prod
+drupal:
+  db:
+    database: investher_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippieinvesther.prod.drupal.uiowa.edu'
+  requester: hpls
+  site-name: InvestHER
