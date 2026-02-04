@@ -26,7 +26,13 @@ before_install:
 - chmod 600 $HOME/.ssh/id_rsa
 - phpenv config-rm xdebug.ini
 - yes | pecl install memcache-8.0
-- composer self-update 2.9.5
+- mkdir -p $HOME/bin
+- curl -sS https://getcomposer.org/installer | php -- --version=2.9.5
+- mv composer.phar $HOME/bin/composer
+- chmod +x $HOME/bin/composer
+- export PATH="$HOME/bin:$PATH"
+- which composer
+- composer --version
 install:
 - nvm install
 - nvm use
