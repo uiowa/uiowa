@@ -7918,3 +7918,21 @@ $sites['siteshshen.uiowa.ddev.site'] = 'hshen.sites.uiowa.edu';
 $sites['siteshshen.dev.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
 $sites['siteshshen.stage.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
 $sites['siteshshen.prod.drupal.uiowa.edu'] = 'hshen.sites.uiowa.edu';
+
+// Directory aliases for wib.tippie.uiowa.edu.
+$sites['tippiewib.uiowa.ddev.site'] = 'wib.tippie.uiowa.edu';
+$sites['tippiewib.dev.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
+$sites['tippiewib.stage.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
+$sites['tippiewib.prod.drupal.uiowa.edu'] = 'wib.tippie.uiowa.edu';
+
+// Directory aliases for investher.tippie.uiowa.edu.
+$sites['tippieinvesther.uiowa.ddev.site'] = 'investher.tippie.uiowa.edu';
+$sites['tippieinvesther.dev.drupal.uiowa.edu'] = 'investher.tippie.uiowa.edu';
+$sites['tippieinvesther.stage.drupal.uiowa.edu'] = 'investher.tippie.uiowa.edu';
+$sites['tippieinvesther.prod.drupal.uiowa.edu'] = 'investher.tippie.uiowa.edu';
+
+// Directory aliases for tsfs.tippie.uiowa.edu.
+$sites['tippietsfs.uiowa.ddev.site'] = 'tsfs.tippie.uiowa.edu';
+$sites['tippietsfs.dev.drupal.uiowa.edu'] = 'tsfs.tippie.uiowa.edu';
+$sites['tippietsfs.stage.drupal.uiowa.edu'] = 'tsfs.tippie.uiowa.edu';
+$sites['tippietsfs.prod.drupal.uiowa.edu'] = 'tsfs.tippie.uiowa.edu';
