@@ -98,6 +98,7 @@ class LogSearchForm extends FormBase {
    * @param \Drupal\safety_core\Plugin\Block\LogBlock $log_block
    *   The log block instance.
    */
+
   /**
    * Sets the log type and block instance.
    *
