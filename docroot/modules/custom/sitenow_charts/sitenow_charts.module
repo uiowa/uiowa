@@ -201,4 +201,9 @@ function sitenow_charts_preprocess_field(&$variables) {
       }
     }
   }
+
+  // Attach the chart overrides library to the field.
+  if ($variables['field_name'] === 'field_sitenow_chart') {
+    $variables['#attached']['library'][] = 'sitenow_charts/chart_overrides';
+  }
 }
