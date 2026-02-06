@@ -215,7 +215,7 @@ class CevalidationsrConnection {
    */
   protected function requestUri($endpoint) {
     $clientid = $this->getConfig('clientid');
-    $cedid = \Drupal::state()->get('cevalidationsr.' . 'credentialId');
+    $cedid = \Drupal::state()->get('cevalidationsr.credentialId');
     return '/' . $clientid . '/' . $cedid;
   }
 
