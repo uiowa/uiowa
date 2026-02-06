@@ -13,6 +13,26 @@ use Drupal\Core\Form\FormStateInterface;
 function sitenow_charts_chart_definition_alter(array &$definition, array $element, $chart_id) {
   $chart_type = $definition['chart']['type'] ?? 'unknown';
 
+  // Add responsive settings for pie charts to stack legend on mobile.
+  if ($chart_type === 'pie') {
+    $definition['responsive'] = [
+      'rules' => [
+        [
+          'condition' => [
+            'maxWidth' => 800,
+          ],
+          'chartOptions' => [
+            'legend' => [
+              'align' => 'center',
+              'verticalAlign' => 'bottom',
+              'layout' => 'vertical',
+            ],
+          ],
+        ],
+      ],
+    ];
+  }
+
   // Get the yAxis format if it exists.
   if (!empty($definition['yAxis'][0]['labels']['format'])) {
     $format = $definition['yAxis'][0]['labels']['format'];
@@ -55,7 +75,8 @@ function sitenow_charts_chart_definition_alter(array &$definition, array $elemen
     $definition['yAxis'][0]['labels']['format'] = $format;
   }
 
-  // Handle pie charts separately because they use yaxis element but not yAxis definition.
+  // Handle pie charts separately because they
+  // use yaxis element but not yAxis definition.
   if ($chart_type === 'pie' && isset($element['yaxis'])) {
     $prefix = $element['yaxis']['#prefix'] ?? '';
     $suffix = $element['yaxis']['#suffix'] ?? '';
