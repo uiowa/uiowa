@@ -31,4 +31,7 @@
   {% for file in files %}
     <source {{ file.source_attributes }} />
   {% endfor %}
+  {% if attributes.storage['data-decorative'] %}
+    <track kind="captions" src="{{ base_path ~ directory }}/assets/video/decorative-video-captions.vtt" srclang="en" label="No audio">
+  {% endif %}
 </video>
