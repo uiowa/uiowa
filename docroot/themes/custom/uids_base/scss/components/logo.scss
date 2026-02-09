@@ -2,8 +2,13 @@
 @use '../../uids/scss/abstracts/_utilities.scss';
 @use '../../uids/scss/components/logo.scss';
 
+// Using display: contents to make h1 act as a semantic wrapper for accessibility
+// without generating a layout box or affecting visual rendering.
 .logo--tab h1 {
-  line-height: 0;
+  // Reset all h1 styles.
+  all: inherit;
+  // Ensure it's just a wrapper.
+  display: contents;
 }
 
 .search-is-open {
