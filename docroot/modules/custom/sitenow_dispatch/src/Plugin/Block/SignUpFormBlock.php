@@ -125,6 +125,8 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $build = [];
 
     if (!empty($this->configFactory->get('sitenow_dispatch.settings')->get('api_key'))) {
+
+      // Check if the headline exists, and isn't and empty string.
       $is_headline_renderable = !empty($this?->configuration['headline']);
 
       if ($is_headline_renderable) {
