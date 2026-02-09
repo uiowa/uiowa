@@ -11,7 +11,6 @@ use Drupal\Core\Url;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use function PHPUnit\Framework\isEmpty;
 
 /**
  * Provides an example block.
