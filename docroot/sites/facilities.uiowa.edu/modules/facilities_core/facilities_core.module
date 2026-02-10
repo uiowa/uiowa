@@ -100,13 +100,6 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
           ':input[name="field_alert_override_building[value]"]' => ['checked' => TRUE],
         ],
       ];
-
-      $email = 'FM-Strat-Communication-Group@iowa.uiowa.edu';
-      $link = Link::fromTextAndUrl($email, Url::fromUri('mailto:' . $email))->toString();
-      $form['moderation_state']['widget'][0]['state']['#description'] = t('<p>After saving your alert in the review state, notify the Strategic Communications team at @link.</p>', [
-        '@link' => $link,
-      ]);
-
       break;
 
     case 'node_named_building_form':
