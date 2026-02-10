@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\ccom_core\ConfigOverride;
+namespace Drupal\sitenow_piwikpro\ConfigOverride;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
