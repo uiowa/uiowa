@@ -19,6 +19,7 @@
         logo_path_png: uiowa_logo_path_png,
         logo_classes: 'logo--footer',
         logo_id: 'footer',
+        is_homepage: is_homepage|default(false),
       } %}
       {% elseif header_branding == 'uihc' %}
         {% include '@uids_base/uids/logo-uihc.twig' with {
