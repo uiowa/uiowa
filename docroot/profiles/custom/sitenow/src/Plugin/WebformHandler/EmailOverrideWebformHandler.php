@@ -10,11 +10,13 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @WebformHandler(
  *   id = "email",
- *   label = @Translation("Email Override"),
+ *   label = @Translation("Email"),
  *   category = @Translation("Notification"),
- *   description = @Translation("Overrides the default email handler to restrict access to attachments."),
+ *   description = @Translation("Sends a webform submission via an email."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
+ *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
+ *   tokens = TRUE,
  * )
  */
 class EmailOverrideWebformHandler extends EmailWebformHandler {
