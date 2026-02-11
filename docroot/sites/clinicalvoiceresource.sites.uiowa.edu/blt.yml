@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesclinicalvoiceresource.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesclinicalvoiceresource
+  human_name: clinicalvoiceresource.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesclinicalvoiceresource.prod
+drupal:
+  db:
+    database: clinicalvoiceresource_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesclinicalvoiceresource.prod.drupal.uiowa.edu'
+  requester: pinkerton
+  site-name: 'Clinical Voice Resource'
