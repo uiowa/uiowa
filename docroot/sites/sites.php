@@ -7942,3 +7942,9 @@ $sites['sitesclinicalvoiceresource.uiowa.ddev.site'] = 'clinicalvoiceresource.si
 $sites['sitesclinicalvoiceresource.dev.drupal.uiowa.edu'] = 'clinicalvoiceresource.sites.uiowa.edu';
 $sites['sitesclinicalvoiceresource.stage.drupal.uiowa.edu'] = 'clinicalvoiceresource.sites.uiowa.edu';
 $sites['sitesclinicalvoiceresource.prod.drupal.uiowa.edu'] = 'clinicalvoiceresource.sites.uiowa.edu';
+
+// Directory aliases for jay.lab.uiowa.edu.
+$sites['labjay.uiowa.ddev.site'] = 'jay.lab.uiowa.edu';
+$sites['labjay.dev.drupal.uiowa.edu'] = 'jay.lab.uiowa.edu';
+$sites['labjay.stage.drupal.uiowa.edu'] = 'jay.lab.uiowa.edu';
+$sites['labjay.prod.drupal.uiowa.edu'] = 'jay.lab.uiowa.edu';
