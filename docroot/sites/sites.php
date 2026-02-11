@@ -7925,12 +7925,6 @@ $sites['tippietsfs.dev.drupal.uiowa.edu'] = 'tsfs.tippie.uiowa.edu';
 $sites['tippietsfs.stage.drupal.uiowa.edu'] = 'tsfs.tippie.uiowa.edu';
 $sites['tippietsfs.prod.drupal.uiowa.edu'] = 'tsfs.tippie.uiowa.edu';
 
-// Directory aliases for doosoo.sites.uiowa.edu.
-$sites['sitesdoosoo.uiowa.ddev.site'] = 'doosoo.sites.uiowa.edu';
-$sites['sitesdoosoo.dev.drupal.uiowa.edu'] = 'doosoo.sites.uiowa.edu';
-$sites['sitesdoosoo.stage.drupal.uiowa.edu'] = 'doosoo.sites.uiowa.edu';
-$sites['sitesdoosoo.prod.drupal.uiowa.edu'] = 'doosoo.sites.uiowa.edu';
-
 // Directory aliases for achahande.sites.uiowa.edu.
 $sites['sitesachahande.uiowa.ddev.site'] = 'achahande.sites.uiowa.edu';
 $sites['sitesachahande.dev.drupal.uiowa.edu'] = 'achahande.sites.uiowa.edu';
