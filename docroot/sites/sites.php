@@ -7954,3 +7954,9 @@ $sites['sitestippieconsultingclub.uiowa.ddev.site'] = 'tippieconsultingclub.site
 $sites['sitestippieconsultingclub.dev.drupal.uiowa.edu'] = 'tippieconsultingclub.sites.uiowa.edu';
 $sites['sitestippieconsultingclub.stage.drupal.uiowa.edu'] = 'tippieconsultingclub.sites.uiowa.edu';
 $sites['sitestippieconsultingclub.prod.drupal.uiowa.edu'] = 'tippieconsultingclub.sites.uiowa.edu';
+
+// Directory aliases for classics-religion.uiowa.edu.
+$sites['classics-religion.uiowa.ddev.site'] = 'classics-religion.uiowa.edu';
+$sites['classics-religion.dev.drupal.uiowa.edu'] = 'classics-religion.uiowa.edu';
+$sites['classics-religion.stage.drupal.uiowa.edu'] = 'classics-religion.uiowa.edu';
+$sites['classics-religion.prod.drupal.uiowa.edu'] = 'classics-religion.uiowa.edu';
