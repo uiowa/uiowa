@@ -7936,3 +7936,9 @@ $sites['sitesachahande.uiowa.ddev.site'] = 'achahande.sites.uiowa.edu';
 $sites['sitesachahande.dev.drupal.uiowa.edu'] = 'achahande.sites.uiowa.edu';
 $sites['sitesachahande.stage.drupal.uiowa.edu'] = 'achahande.sites.uiowa.edu';
 $sites['sitesachahande.prod.drupal.uiowa.edu'] = 'achahande.sites.uiowa.edu';
+
+// Directory aliases for clinicalvoiceresource.sites.uiowa.edu.
+$sites['sitesclinicalvoiceresource.uiowa.ddev.site'] = 'clinicalvoiceresource.sites.uiowa.edu';
+$sites['sitesclinicalvoiceresource.dev.drupal.uiowa.edu'] = 'clinicalvoiceresource.sites.uiowa.edu';
+$sites['sitesclinicalvoiceresource.stage.drupal.uiowa.edu'] = 'clinicalvoiceresource.sites.uiowa.edu';
+$sites['sitesclinicalvoiceresource.prod.drupal.uiowa.edu'] = 'clinicalvoiceresource.sites.uiowa.edu';
