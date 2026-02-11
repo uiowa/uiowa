@@ -7948,3 +7948,9 @@ $sites['labjay.uiowa.ddev.site'] = 'jay.lab.uiowa.edu';
 $sites['labjay.dev.drupal.uiowa.edu'] = 'jay.lab.uiowa.edu';
 $sites['labjay.stage.drupal.uiowa.edu'] = 'jay.lab.uiowa.edu';
 $sites['labjay.prod.drupal.uiowa.edu'] = 'jay.lab.uiowa.edu';
+
+// Directory aliases for tippieconsultingclub.sites.uiowa.edu.
+$sites['sitestippieconsultingclub.uiowa.ddev.site'] = 'tippieconsultingclub.sites.uiowa.edu';
+$sites['sitestippieconsultingclub.dev.drupal.uiowa.edu'] = 'tippieconsultingclub.sites.uiowa.edu';
+$sites['sitestippieconsultingclub.stage.drupal.uiowa.edu'] = 'tippieconsultingclub.sites.uiowa.edu';
+$sites['sitestippieconsultingclub.prod.drupal.uiowa.edu'] = 'tippieconsultingclub.sites.uiowa.edu';
