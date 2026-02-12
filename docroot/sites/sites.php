@@ -1523,12 +1523,6 @@ $sites['conferencesla2021.dev.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu
 $sites['conferencesla2021.stage.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
 $sites['conferencesla2021.prod.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
 
-// Directory aliases for collections.pharmacy.uiowa.edu.
-$sites['pharmacycollections.uiowa.ddev.site'] = 'collections.pharmacy.uiowa.edu';
-$sites['pharmacycollections.dev.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
-$sites['pharmacycollections.stage.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
-$sites['pharmacycollections.prod.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
-
 // Directory aliases for lhpdc.law.uiowa.edu.
 $sites['lawlhpdc.uiowa.ddev.site'] = 'lhpdc.law.uiowa.edu';
 $sites['lawlhpdc.dev.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
