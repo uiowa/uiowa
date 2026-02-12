@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: classics-religion.uiowa.ddev.site
+    protocol: https
+  machine_name: classics-religion
+  human_name: classics-religion.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: classics-religion.prod
+drupal:
+  db:
+    database: classics_religion_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://classics-religion.prod.drupal.uiowa.edu'
+  requester: bschweig
+  site-name: 'Department of Classics and Religious Studies'
