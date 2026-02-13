@@ -2,6 +2,11 @@
 @use '../uids/scss/abstracts/_variables.scss';
 @use '../uids/scss/abstracts/_utilities.scss';
 
+// Add scroll padding so that hidden items remain in focus when tabbing through content.
+html {
+  scroll-padding-bottom: 120px;
+}
+
 // Overrides for older browsers until https://github.com/w3c/csswg-drafts/issues/10544 is the standard.
 // @todo remove when https://github.com/uiowa/uiowa/issues/8617 is ready.
 // Unset container-type for regions that use absolute positioning.
@@ -729,11 +734,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     flex-wrap: wrap;
 
     span {
-      border: 1px solid variables.$grey-light;
+      border: 1px solid variables.$gray-light;
       display: flex;
       text-align: center;
       margin: 0 variables.$sm variables.$sm 0;
-      color: variables.$grey;
+      color: variables.$gray;
       height: 3rem;
       width: 3rem;
       align-items: center;
@@ -763,7 +768,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
       &:last-child {
           @include utilities.breakpoint(page-container) {
-            border-right: 1px solid variables.$grey-light;
+            border-right: 1px solid variables.$gray-light;
         }
       }
     }

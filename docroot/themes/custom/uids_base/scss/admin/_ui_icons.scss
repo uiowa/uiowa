@@ -1,48 +1,37 @@
 @use '../uids/scss/abstracts/_variables.scss';
 @use '../uids/scss/abstracts/_utilities.scss';
 
-// Adjust ui_icons picker to be larger for brand icons.
-.ui-icons-picker-search {
-
-  // Search input.
-  .form-item-filter {
-    display: flex;
-    flex-grow: 1;
+.icon-picker-modal__content {
+  // Set icon to fill the space.
+  .icon-preview {
+    width: 100%;
   }
-  .form-item {
-    margin-top: 0;
-  }
-  .container-inline {
-    display: flex;
-    align-items: self-start;
-  }
-  [type=submit] {
-    font-size: .95rem;
-  }
-
-  // Icons grid.
-  .icon-picker-modal__content {
-    .form-radios {
-      grid-template-columns: repeat(5, 1fr) !important;
-      @include utilities.breakpoint(sm) {
-        grid-template-columns: repeat(12, 1fr) !important;
-      }
-    }
-
-    .icon-preview-wrapper:not(.icon-preview-none) {
-      width: auto !important;
-      height: auto !important;
-    }
-
-    .icon-preview {
-      max-height: none !important;
-      width: 100%;
-    }
-
-    .form-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  // Make the grid larger to see the icons.
+  > div {
+    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr)) !important;
+    @include utilities.breakpoint(sm) {
+      grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)) !important;
     }
   }
+  // Set the wrapping icon divs to match the template column grid size.
+  .form-item, .form-item-icon-full-id {
+    width: 5rem!important;
+    height: 5rem!important;
+    @include utilities.breakpoint(sm) {
+      width: 7rem!important;
+      height: 7rem!important;
+    }
+  }
+}
+
+// Center none option.
+.form .icon-picker-modal__content [type=radio]+label[for] {
+  text-align: center;
+}
+
+// Override default form styles.
+.form .icon-picker-modal__content [type=checkbox]+label,
+.form .icon-picker-modal__content [type=radio]+label {
+  margin-left: .5rem;
+  margin-right: .5rem;
 }

@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_display.fragment.region_item.default
     - core.entity_view_display.fragment.region_item_after_content.default
+    - entity_browser.browser.featured_content_browser
+    - entity_browser.browser.media_wysiwyg_browser
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
@@ -13,7 +15,6 @@ dependencies:
     - media.type.facebook
     - media.type.file
     - media.type.image
-    - media.type.instagram
     - media.type.panopto
     - media.type.remote_video
     - media.type.static_map
@@ -27,6 +28,7 @@ dependencies:
   module:
     - administerusersbyrole
     - antibot
+    - block_content
     - content_moderation
     - contextual
     - entity_browser
@@ -57,6 +59,7 @@ weight: -5
 is_admin: null
 permissions:
   - 'access administration pages'
+  - 'access block library'
   - 'access content'
   - 'access content overview'
   - 'access contextual links'
@@ -125,7 +128,6 @@ permissions:
   - 'delete any facebook media'
   - 'delete any file media'
   - 'delete any image media'
-  - 'delete any instagram media'
   - 'delete any page content'
   - 'delete any panopto media'
   - 'delete any person content'
@@ -139,7 +141,6 @@ permissions:
   - 'delete own file media'
   - 'delete own files'
   - 'delete own image media'
-  - 'delete own instagram media'
   - 'delete own page content'
   - 'delete own panopto media'
   - 'delete own person content'
@@ -157,7 +158,6 @@ permissions:
   - 'edit any facebook media'
   - 'edit any file media'
   - 'edit any image media'
-  - 'edit any instagram media'
   - 'edit any page content'
   - 'edit any panopto media'
   - 'edit any person content'
@@ -169,7 +169,6 @@ permissions:
   - 'edit own facebook media'
   - 'edit own file media'
   - 'edit own image media'
-  - 'edit own instagram media'
   - 'edit own page content'
   - 'edit own panopto media'
   - 'edit own person content'

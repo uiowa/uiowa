@@ -115,7 +115,7 @@ function uids_base_page_attachments_alter(array &$page) {
     '#tag' => 'link',
     '#attributes' => [
       'rel' => 'preconnect',
-      'href' => 'https://fonts.googleapis.com',
+      'href' => 'https://fonts.gstatic.com',
       'crossorigin' => 'anonymous',
     ],
     '#weight' => -888,
@@ -513,6 +513,8 @@ function uids_base_preprocess_media(array &$variables) {
         if ($parent instanceof EntityAdapter) {
           $parent_entity = $parent->getEntity();
           if ($parent_entity instanceof BlockContent) {
+            // Flag for the template to add a decorative caption track.
+            $variables['content']['field_media_video_file'][0]['#attributes']['data-decorative'] = 'true';
             // Play video inline instead of going to native player.
             $variables['content']['field_media_video_file'][0]['#attributes']['playsinline'] = 'playsinline';
             // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'
@@ -1123,6 +1125,16 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
   // "False" designates a single-select accordion.
   $variables['multiselect'] = (!isset($block->field_accordion_type->value) ||
     $block->field_accordion_type->value === 'multi_select') ? 'true' : 'false';
+
+  // Prepare the accordion container classes, including
+  // our label color if needed.
+  $accordion_container_classes = ['accordion'];
+  // If more label colors become available in SiteNow,
+  // update this to a match expression.
+  if ($block->field_accordion_label_color->value === 'white') {
+    $accordion_container_classes[] = 'accordion--white';
+  }
+  $variables['accordion_container_classes'] = implode(' ', $accordion_container_classes);
 
   // Assemble the aria-owns attribute for the accordion.
   $accordion_item_id = 'accordion-item-' . $block->id();

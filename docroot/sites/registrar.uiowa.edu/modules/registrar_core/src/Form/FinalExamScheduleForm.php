@@ -100,26 +100,34 @@ class FinalExamScheduleForm extends FormBase {
     // Check for cached session data.
     $session_id = $session_info['session_id'];
     $cid = "uiowa_maui:request:final_exam_schedule:{$session_id}";
-    $data = $this->mauiCache->get($cid);
-    // If there wasn't cached data, try to fetch it now.
-    if (empty($data)) {
+    $cache = $this->mauiCache->get($cid);
+
+    if ($cache && isset($cache->data)) {
+      $data = $cache->data;
+    }
+    else {
       $data = $this->mauiApi->getFinalExamSchedule($session_id);
     }
 
-    switch ($data['_status']) {
-      case 'ok':
-        $data = $data['_data'];
-        break;
+    // Check if $data is an array and if so, if it has the '_status' key. This
+    // is necessary because the value of data can return different values
+    // depending on whether we are accessing the cached version or not.
+    if (is_array($data) && isset($data['_status'])) {
+      switch ($data['_status']) {
+        case 'ok':
+          $data = $data['_data'];
+          break;
 
-      default:
-        // Set a shorter cache time for errors.
-        // Block/Node save will clear cache as a fallback.
-        $form['#cache']['tags'] = ['time:hourly'];
-        $form['final_exam']['empty'] = [
-          '#type' => 'markup',
-          '#markup' => '<p>' . $data['_message'] . '</p>',
-        ];
-        return $form;
+        default:
+          // Set a shorter cache time for errors.
+          // Block/Node save will clear cache as a fallback.
+          $form['#cache']['tags'] = ['time:hourly'];
+          $form['final_exam']['empty'] = [
+            '#type' => 'markup',
+            '#markup' => '<p>' . $data['_message'] . '</p>',
+          ];
+          return $form;
+      }
     }
 
     $search = $form_state->getValue('search') ?? '';
@@ -255,6 +263,7 @@ class FinalExamScheduleForm extends FormBase {
         'class' => 'element--margin__top--extra',
         'role' => 'region',
         'aria-live' => 'polite',
+        'aria-label' => 'Final exam schedule',
       ],
     ];
 

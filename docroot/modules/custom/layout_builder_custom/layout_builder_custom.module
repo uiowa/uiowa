@@ -252,7 +252,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
             // Set layout builder style default settings.
             if ($form_id === 'layout_builder_add_block' && $settings['default'] !== '[empty]') {
-              $form[$key]['#default_value'] = [$settings['default']];
+              // Check if this is a radio button group.
+              if (isset($form[$key]['#type']) && $form[$key]['#type'] === 'radios') {
+                // Radio buttons need a scalar value.
+                $form[$key]['#default_value'] = $settings['default'];
+              }
+              else {
+                // Checkboxes and other multi-select elements expect an array.
+                $form[$key]['#default_value'] = [$settings['default']];
+              }
             }
           }
         }
@@ -989,11 +997,24 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
           ],
         ];
 
+        // Default to gray.
+        $element['field_accordion_label_color']['widget']['#default_value'] = $element['field_accordion_label_color']['widget']['#default_value'] ?? 'gray_default';
+        // Only show the "accordion label color" field
+        // if accordion view mode has been selected.
+        $element['field_accordion_label_color']['widget']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][view_mode]"]' => [
+              'value' => 'accordion',
+            ],
+          ],
+        ];
+
         // Now that we have view mode on the block form, place the fields
         // in the right order.
         $element['view_mode']['#weight'] = 2;
         $element['field_accordion_type']['#weight'] = 3;
         $element['field_uiowa_collection_items']['#weight'] = 4;
+        $element['field_accordion_label_color']['#weight'] = 5;
 
         break;
 
@@ -1007,25 +1028,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         break;
 
       case 'inline_block:uiowa_event':
-        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-        $check = \Drupal::service('uiowa_core.access_checker');
-
-        /** @var Drupal\Core\Access\AccessResultInterface $access */
-        $access = $check->access(\Drupal::currentUser()->getAccount());
-
-        if ($access->isForbidden()) {
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['style']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['border']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['invert']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['animation']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['additional_classes']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['duotone']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['masking']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['power_transforms']['#disabled'] = TRUE;
-          $element['field_uiowa_event_icon']['widget'][0]['settings']['pull']['#disabled'] = TRUE;
-        }
+        uiowa_core_configure_fontawesome_icon_field($element['field_uiowa_event_icon']['widget'][0]);
         break;
 
     }
@@ -1040,26 +1043,10 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
   if (isset($element['#paragraph_type'])) {
     switch ($element['#paragraph_type']) {
       case 'uiowa_timeline_item':
-        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-        $check = \Drupal::service('uiowa_core.access_checker');
-
-        /** @var Drupal\Core\Access\AccessResultInterface $access */
-        $access = $check->access(\Drupal::currentUser()->getAccount());
-
-        if ($access->isForbidden()) {
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['style']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['border']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['invert']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['animation']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['additional_classes']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['duotone']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['masking']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['power_transforms']['#disabled'] = TRUE;
-          $element['subform']['field_timeline_icon']['widget'][0]['settings']['pull']['#disabled'] = TRUE;
+        if (isset($element['subform']['field_timeline_icon']['widget'][0])
+          && is_array($element['subform']['field_timeline_icon']['widget'][0])) {
+          uiowa_core_configure_fontawesome_icon_field($element['subform']['field_timeline_icon']['widget'][0]);
         }
-
         break;
     }
   }

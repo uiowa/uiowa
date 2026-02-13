@@ -189,7 +189,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       $variables['#cache']['tags'][] = 'time:daily';
       // Get additional info necessary to overwrite the output of this field.
       $paragraph = $variables['element']['#object'];
-      $headline = $paragraph->get('field_headline')->value;
       $today = date('Y-m-d');
       $had_failure = FALSE;
       $rows = [];
@@ -231,14 +230,9 @@ function sitenow_signage_preprocess_field(&$variables) {
         'event' => t('Event'),
       ];
 
-      // Headline overrides table caption if set.
-      if (!empty($headline)) {
-        $table_caption = $headline;
-      }
-
       $markup['container']['table'] = [
         '#theme' => 'table',
-        '#caption' => $table_caption ?? 'Room Schedule',
+        '#caption' => $table_caption ?? 'Room schedule',
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => $empty_message,
@@ -259,7 +253,6 @@ function sitenow_signage_preprocess_field(&$variables) {
       $variables['#cache']['tags'][] = 'time:hourly';
       // Get additional info necessary to overwrite the output of this field.
       $paragraph = $variables['element']['#object'];
-      $headline = $paragraph->get('field_headline')->value;
       $use_org = $paragraph->get('field_outlook_events_use_org')->value;
       $end_time = $paragraph->get('field_outlook_events_end_time')->value;
 
@@ -380,7 +373,7 @@ function sitenow_signage_preprocess_field(&$variables) {
 
       $markup['container']['table'] = [
         '#theme' => 'table',
-        '#caption' => $headline,
+        '#caption' => 'Outlook resource schedule',
         '#header' => $header,
         '#rows' => $rows,
         '#empty' => $empty_message,
@@ -707,6 +700,7 @@ function sitenow_signage_preprocess_page(&$variables) {
  * Implements hook_preprocess_paragraph().
  */
 function sitenow_signage_preprocess_paragraph(&$variables) {
+  /** @var Drupal\paragraphs\ParagraphInterface $paragraph */
   $paragraph = $variables['paragraph'];
   if (!$paragraph) {
     $paragraph = $variables['elements']['#paragraph'];
@@ -995,7 +989,6 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
         '#empty' => $empty_message,
         '#attributes' => [
           'class' => [
-            'mazevo__events',
             'signage__table',
           ],
         ],
@@ -1006,6 +999,14 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
       // Replace the field output with table markup.
       $variables['content'][] = ['#markup' => $markup];
 
+      break;
+
+    case 'astra_room_schedule':
+      if ($paragraph->field_headline->isEmpty()) {
+        // If the headline field is not set, set a default.
+        $paragraph->set('field_headline', 'Room schedule');
+        $variables['content']['field_headline'] = $paragraph->field_headline->view('full');
+      }
       break;
   }
 }
@@ -1019,12 +1020,8 @@ function sitenow_signage_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-sign-slides--sign--default',
       'base hook' => 'field',
     ],
-    'field__paragraph__field_headline__slide_events' => [
-      'template' => 'field--paragraph--field-headline--slide-events',
-      'base hook' => 'field',
-    ],
-    'field__paragraph__field_headline__slide_mazevo_events' => [
-      'template' => 'field--paragraph--field-headline--slide-mazevo-events',
+    'field__paragraph__field_headline' => [
+      'template' => 'field--paragraph--field-headline',
       'base hook' => 'field',
     ],
   ];
@@ -1227,7 +1224,13 @@ function sitenow_signage_outlook_resource_allowed_values() {
   $config = \Drupal::configFactory()->getEditable('uiowa_hours.settings');
   $group = $config->get('group') ?: 'Signage';
   $api_client = \Drupal::service('uiowa_hours.api');
-  return $api_client->getResources($group) ?: ['none' => 'No resources available'];
+  $resources = $api_client->getResources($group);
+
+  if (empty($resources)) {
+    return ['none' => 'No resources available'];
+  }
+
+  return array_combine($resources, $resources);
 }
 
 /**

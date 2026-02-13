@@ -1,0 +1,233 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Charts module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_chart_definition_alter().
+ */
+function sitenow_charts_chart_definition_alter(array &$definition, array $element, $chart_id) {
+  $chart_type = $definition['chart']['type'] ?? 'unknown';
+
+  // Add responsive settings to stack legend on mobile.
+  // Only apply if legend is aligned right or left.
+  $legend_align = $definition['legend']['align'] ?? '';
+
+  if (in_array($legend_align, ['right', 'left'])) {
+    $definition['responsive'] = [
+      'rules' => [
+        [
+          'condition' => [
+            'maxWidth' => 800,
+          ],
+          'chartOptions' => [
+            'legend' => [
+              'align' => 'center',
+              'verticalAlign' => 'bottom',
+              'layout' => 'vertical',
+            ],
+          ],
+        ],
+      ],
+    ];
+  }
+
+  // Get the yAxis format if it exists.
+  if (!empty($definition['yAxis'][0]['labels']['format'])) {
+    $format = $definition['yAxis'][0]['labels']['format'];
+
+    // Apply the yAxis format (including any prefix/suffix) to tooltips.
+    if ($chart_type === 'dumbbell') {
+      // Dumbbell charts show a range, so create
+      // formats for both the start and end values.
+      // This replaces the default {point.low} and
+      // {point.high} rendering with the yAxis format
+      // like ${value:.2f} or {value}% to ensure
+      // prefix/suffix renders in the tooltip.
+      $tooltip_format = str_replace('{value}', '{point.low}', $format);
+      $tooltip_high_format = str_replace('{value}', '{point.high}', $format);
+
+      $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' .
+        $tooltip_format . ' - ' . $tooltip_high_format . '</b><br/>';
+    }
+    else {
+      // Standard charts show a single value.
+      // This replaces the default {point.y}
+      // rendering with the yAxis format
+      // like ${value:.2f} or {value}% to
+      // ensure prefix/suffix renders in the tooltip.
+      $tooltip_format = str_replace('{value}', '{point.y}', $format);
+      $definition['tooltip']['pointFormat'] = '<span style="color:{point.color}">●</span> {series.name}: <b>' . $tooltip_format . '</b><br/>';
+    }
+
+    // Add comma to the format if not already present
+    // This handles formats like {value:.2f}, {value}, {value:.0f}%, etc.
+    if (!str_contains($format, ',')) {
+      // Insert comma after the colon if it exists, otherwise after 'value'.
+      if (str_contains($format, '{value:')) {
+        $format = str_replace('{value:', '{value:,', $format);
+      }
+      else {
+        $format = str_replace('{value}', '{value:,.0f}', $format);
+      }
+    }
+    $definition['yAxis'][0]['labels']['format'] = $format;
+  }
+
+  // Handle pie charts separately because they
+  // use yaxis element but not yAxis definition.
+  if ($chart_type === 'pie' && isset($element['yaxis'])) {
+    $prefix = $element['yaxis']['#prefix'] ?? '';
+    $suffix = $element['yaxis']['#suffix'] ?? '';
+    $decimal_count = $element['yaxis']['#decimal_count'] ?? 0;
+
+    if ($prefix || $suffix || $decimal_count) {
+      // Build the format string based on decimal count.
+      $format_spec = $decimal_count > 0 ? "{point.y:,.{$decimal_count}f}" : '{point.y:,.0f}';
+      $value_format = $prefix . $format_spec . $suffix;
+
+      // Apply to tooltips.
+      $definition['tooltip']['pointFormat'] = '<b>' . $value_format . ' ({point.percentage:.1f}%)</b><br/>';
+    }
+  }
+}
+
+/**
+ * Implements hook_chart_alter().
+ */
+function sitenow_charts_chart_alter(array &$element, $chart_id) {
+  // Adjusts screenReaderSection to render h2 instead of h5.
+  $element['#raw_options'] = [
+    'accessibility' => [
+      'screenReaderSection' => [
+        'beforeChartFormat' => '<h2>{chartTitle}</h2>
+<div>{typeDescription}</div>
+<div>{chartSubtitle}</div>
+<div>{chartLongdesc}</div>
+<div>{playAsSoundButton}</div>
+<div>{viewTableButton}</div>
+<div>{xAxisDescription}</div>
+<div>{yAxisDescription}</div>
+<div>{annotationsTitle}{annotationsList}</div>',
+      ],
+    ],
+    // Adjusts legend font size pass AA compliance.
+    'legend' => [
+      'itemStyle' => [
+        'fontSize' => '18px',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_charts_plugin_supported_chart_types_alter().
+ */
+function sitenow_charts_charts_plugin_supported_chart_types_alter(array &$types, string $chart_plugin_id) {
+  // Limit to specific chart types.
+  $allowed_types = ['line', 'column', 'bar', 'pie', 'dumbbell'];
+  $types = array_intersect($types, $allowed_types);
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function sitenow_charts_field_widget_complete_form_alter(&$field_widget_complete_form, FormStateInterface $form_state, $context) {
+  $field_definition = $context['items']->getFieldDefinition();
+
+  if ($field_definition->getName() === 'field_sitenow_chart') {
+    $field_widget_complete_form['widget']['#after_build'][] = function ($element) {
+      foreach ($element as $delta => $item) {
+        if (is_numeric($delta)) {
+          // Remove preview of graph in block form.
+          if (isset($element[$delta]['config']['preview'])) {
+            $element[$delta]['config']['preview']['#access'] = FALSE;
+          }
+          // Remove ability to add color changer.
+          if (isset($element[$delta]['config']['display']['color_changer'])) {
+            $element[$delta]['config']['display']['color_changer']['#access'] = FALSE;
+          }
+          // Remove ability to set custom bg color.
+          if (isset($element[$delta]['config']['display']['background'])) {
+            $element[$delta]['config']['display']['background']['#access'] = FALSE;
+          }
+          // Remove ability to add data labels
+          // because they are very hard to read.
+          if (isset($element[$delta]['config']['display']['data_labels'])) {
+            $element[$delta]['config']['display']['data_labels']['#access'] = FALSE;
+          }
+          // Remove ability to set dimensions
+          // because we want these to be responsive.
+          if (isset($element[$delta]['config']['display']['dimensions'])) {
+            $element[$delta]['config']['display']['dimensions']['#access'] = FALSE;
+          }
+          // Remove ability to change to polar coordinate system.
+          if (isset($element[$delta]['config']['display']['polar'])) {
+            $element[$delta]['config']['display']['polar']['#access'] = FALSE;
+          }
+          // Set low_color field to black for dumbbell and disable the picker.
+          if (isset($element[$delta]['config']['library_type_options']['low_color'])) {
+            $element[$delta]['config']['library_type_options']['low_color']['#attributes']['disabled'] = 'disabled';
+            $element[$delta]['config']['library_type_options']['low_color']['#description'] = t('The color to use for the low value. Default is set to black.');
+            $element[$delta]['config']['library_type_options']['low_color']['#element_validate'][] = function (&$element, FormStateInterface $form_state) {
+              $form_state->setValueForElement($element, '#000000');
+            };
+          }
+          // Hide min_color field.
+          if (isset($element[$delta]['config']['library_type_options']['min_color'])) {
+            $element[$delta]['config']['library_type_options']['min_color']['#access'] = FALSE;
+          }
+          // Hide max_color field.
+          if (isset($element[$delta]['config']['library_type_options']['max_color'])) {
+            $element[$delta]['config']['library_type_options']['max_color']['#access'] = FALSE;
+          }
+          // Hide color inputs in the data collector table.
+          if (isset($element[$delta]['config']['series']['data_collector_table'])) {
+            foreach ($element[$delta]['config']['series']['data_collector_table'] as $row_key => $row) {
+              if (is_numeric($row_key)) {
+                foreach ($row as $col_key => $col) {
+                  if (is_numeric($col_key) && isset($col['color'])) {
+                    $element[$delta]['config']['series']['data_collector_table'][$row_key][$col_key]['color']['#access'] = FALSE;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      return $element;
+    };
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_charts_preprocess_field(&$variables) {
+  // For chart fields in block content, a workaround
+  // trick the entity type to bypass the
+  // stripped template logic in layouts.html.twig.
+  if ($variables['entity_type'] == 'block_content' && $variables['field_name'] == 'field_sitenow_chart') {
+    // Change entity type so it goes through proper
+    // field rendering instead of stripped block content rendering.
+    $variables['entity_type'] = 'node';
+
+    // Ensure label is visually hidden if it was originally hidden.
+    if ($variables['label_hidden']) {
+      $variables['label_display'] = 'visually_hidden';
+      $variables['label_hidden'] = FALSE;
+      if (empty($variables['label'])) {
+        $variables['label'] = 'Chart';
+      }
+    }
+  }
+
+  // Attach the chart overrides library to the field.
+  if ($variables['field_name'] === 'field_sitenow_chart') {
+    $variables['#attached']['library'][] = 'sitenow_charts/chart_overrides';
+  }
+}

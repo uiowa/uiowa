@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\content_moderation\Plugin\WorkflowType\ContentModeration;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -32,6 +33,7 @@ use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Drupal\webform\Element\WebformRoles;
+use Drupal\workflows\Entity\Workflow;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
@@ -119,14 +121,34 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
 function uiowa_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   if ($entity_type->id() === 'menu_link_content') {
     $fields['link']->setDisplayOptions('form', [
-      'type' => 'linkit',
+      'type' => 'linkit_attributes',
       'weight' => -2,
       'settings' => [
+        'enabled_attributes' => [
+          'id' => FALSE,
+          'name' => FALSE,
+          'target' => FALSE,
+          'rel' => FALSE,
+          'class' => FALSE,
+          'accesskey' => FALSE,
+          'data-sn-event' => TRUE,
+          'data-sn-event-type' => TRUE,
+          'data-sn-event-component' => TRUE,
+          'data-sn-event-label' => TRUE,
+        ],
         'linkit_profile' => 'menu_link',
         'linkit_auto_link_text' => TRUE,
       ],
     ]);
   }
+}
+
+/**
+ * Implements hook_link_attributes_plugin_alter().
+ */
+function uiowa_core_link_attributes_plugin_alter(&$plugins) {
+  // This is `click` in all situations.
+  $plugins['data-sn-event-type']['default_value'] = 'click';
 }
 
 /**
@@ -183,6 +205,19 @@ function uiowa_core_mail_alter(&$message) {
       \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
         '@from' => $message['from'],
       ]));
+    }
+  }
+  // Add a notice to workbench_email messages.
+  if ($message['module'] === 'workbench_email') {
+    $site_url = \Drupal::request()->getSchemeAndHttpHost();
+    $notice = "\n\n---\n\nThis is an automated message from $site_url.";
+
+    // Different handling based on plain text or html (array).
+    if (is_array($message['body'])) {
+      $message['body'][] = $notice;
+    }
+    else {
+      $message['body'] .= $notice;
     }
   }
 }
@@ -622,6 +657,23 @@ function uiowa_core_preprocess_field(&$variables) {
  */
 function uiowa_core_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
+
+  // Unset local tasks on admin routes with no tasks to prevent empty
+  // wrappers that fail accessibility scans (Siteimprove).
+  // See https://www.drupal.org/project/drupal/issues/953034.
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $route_name = $current_route->getRouteName();
+    // Check local tasks for current route.
+    $local_task_manager = \Drupal::service('plugin.manager.menu.local_task');
+    $tasks = $local_task_manager->getLocalTasksForRoute($route_name);
+    // Unset since there are no tasks to render. Brilliant.
+    if (empty($tasks)) {
+      unset($variables['page']['header']['claro_primary_local_tasks']);
+      unset($variables['page']['pre_content']['claro_secondary_local_tasks']);
+    }
+  }
+
   $node = $current_route->getParameter('node');
 
   $view_id = Drupal::request()->attributes->get('view_id');
@@ -887,6 +939,27 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           $form["menu_per_role__hide_role"]['#access'] = FALSE;
         }
       }
+
+      // Restrict access to link_attributes fieldset on menu_link_content.
+      if (!\Drupal::currentUser()
+        ->hasPermission('administer menu link attributes')) {
+        $form['link']['widget'][0]['options']['attributes']['#access'] = FALSE;
+      }
+
+      // Change the details title to be more specific.
+      if (isset($form['link']['widget'][0]['options']['attributes']['#title'])) {
+        $form['link']['widget'][0]['options']['attributes']['#title'] = t('Link attributes');
+      }
+
+      // Setting defaults for menu link attributes.
+      if ($form['link']['widget'][0]['options']['attributes']['data-sn-event-type']) {
+        $form['link']['widget'][0]['options']['attributes']['data-sn-event-type']['#access'] = FALSE;
+      }
+      if ($form['link']['widget'][0]['options']['attributes']['data-sn-event-component']) {
+        $form['link']['widget'][0]['options']['attributes']['data-sn-event-component']['#default_value'] = 'link';
+        $form['link']['widget'][0]['options']['attributes']['data-sn-event-component']['#access'] = FALSE;
+      }
+      $form['#validate'][] = 'uiowa_core_menu_link_analytics_validate';
       break;
 
     case 'uiowa_core_region_settings':
@@ -1015,6 +1088,97 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
 
       break;
+
+    case 'workbench_email_template_add_form':
+      // Provide some defaults for hand-holding purposes.
+      $form['contents']['format']['#default_value'] = 'html';
+      $form['contents']['subject']['#default_value'] = '"[node:title]" on the [site:name] website has been updated';
+      $site_url = rtrim(\Drupal::request()->getSchemeAndHttpHost() . \Drupal::request()->getBasePath(), '/');
+      $form['contents']['body']['#default_value'] = "<p><em>[node:title]</em> has been updated.</p>
+<p>[node:revision_log]</p>
+<p>Login to view: {$site_url}/saml/login?destination=/node/[node:nid]</p>";
+      $form['contents']['body']['#format'] = 'minimal';
+      $form['enabled_recipient_types']['#default_value'] = [
+        'fixed_email' => 'fixed_email',
+      ];
+
+    case 'workbench_email_template_edit_form':
+
+      // Overwrite description for email type to hide linked module jargon.
+      $form['contents']['format']['#description'] = t('Email message format.');
+
+      // Remove filtered_html and minimal_plus formats
+      // by only allowing these others.
+      $form['contents']['body']['#allowed_formats'] = [
+        'plain_text',
+        'basic',
+        'minimal',
+      ];
+
+      // Folks don't know what a bundle is.
+      $form['bundles']['#title'] = t('Types');
+      $form['bundles']['#description'] = t('Limit to the following types. Select none to include all.');
+
+      // These options are not relevant or don't work properly
+      // for the initial use cases.
+      // Author, comma-separated list available.
+      $recipients = [
+        'email',
+        'entity_reference_user',
+        'last_revision_author',
+        'role',
+        'roles_with_access',
+      ];
+      foreach ($recipients as $recipient) {
+        unset($form['enabled_recipient_types']['#options'][$recipient]);
+        $form['recipient_types']['settings'][$recipient]['#access'] = FALSE;
+      }
+
+      // More help text to the transitions section about related bundles.
+      // @todo Remove if module issue is resolved:
+      // https://www.drupal.org/project/workbench_email/issues/3559113.
+      $form['transitions']['#description'] = t('Select which transitions an email should be sent for.');
+      $map = [];
+
+      /** @var \Drupal\workflows\Entity\Workflow[] $workflows */
+      $workflows = Workflow::loadMultiple();
+      $bundle_storage = \Drupal::entityTypeManager()->getStorage('node_type');
+
+      foreach ($workflows as $workflow) {
+        $type = $workflow->getTypePlugin();
+
+        if ($type instanceof ContentModeration) {
+          $entity_types = $type->getEntityTypes();
+          if (in_array('node', $entity_types)) {
+            $bundle_ids = $type->getBundlesForEntityType('node');
+            $labels = [];
+
+            foreach ($bundle_ids as $bundle_id) {
+              $labels[] = $bundle_storage->load($bundle_id)
+                ->label();
+            }
+
+            $map[$workflow->id()] = $labels;
+          }
+        }
+      }
+
+      if (isset($form['transitions']) && is_array($form['transitions'])) {
+        foreach ($form['transitions'] as $machine_name => &$transition_element) {
+          if (is_array($transition_element) && isset($transition_element['#type']) && $transition_element['#type'] === 'checkboxes') {
+            // Append help text.
+            if (isset($map[$machine_name])) {
+              $bundles = implode(', ', $map[$machine_name]);
+              $transition_element['#description'] = t('Applies to: @bundles', ['@bundles' => $bundles]);
+            }
+            else {
+              // Hide workflow if no bundles are mapped to it.
+              $transition_element['#access'] = FALSE;
+            }
+          }
+        }
+      }
+      break;
   }
 
   // Adjust the body summary help text for all nodes that use it.
@@ -1022,6 +1186,47 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     if (isset($form['body']['widget'][0]['summary'])) {
       $form['body']['widget'][0]['summary']['#description'] = t('The summary is used for list displays on this site and in the content\'s <a href="https://sitenow.uiowa.edu/documentation/search-engine-optimization#summary" target="_blank">meta description</a>. If left blank, a trimmed value of the full text will be used for the meta description, but not for list displays.');
     }
+  }
+}
+
+/**
+ * Validation handler to clean up analytics attributes.
+ */
+function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form_state) {
+  $attributes = $form_state->getValue(['link', 0, 'options', 'attributes']) ?? [];
+  $event_name = trim($attributes['data-sn-event'] ?? '');
+
+  // If event name is empty, clear all analytics attributes.
+  if (empty($event_name)) {
+    unset($attributes['data-sn-event']);
+    unset($attributes['data-sn-event-type']);
+    unset($attributes['data-sn-event-component']);
+    unset($attributes['data-sn-event-label']);
+  }
+  else {
+    // Sanitize event name: lowercase and underscores.
+    $event_name = strtolower(Html::cleanCssIdentifier($event_name));
+    $attributes['data-sn-event'] = str_replace('-', '_', $event_name);
+    // Use menu link title as label if label is empty.
+    if (empty(trim($attributes['data-sn-event-label'] ?? ''))) {
+      $menu_link_title = trim($form_state->getValue(['title', 0, 'value']) ?? '');
+      if (!empty($menu_link_title)) {
+        $attributes['data-sn-event-label'] = $menu_link_title;
+      }
+    }
+  }
+
+  $form_state->setValue(['link', 0, 'options', 'attributes'], $attributes);
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function uiowa_core_menu_links_discovered_alter(array &$links) {
+  // Change the title and description of the workbench_email menu link.
+  if (isset($links['entity.content_moderation_email_template.collection'])) {
+    $links['entity.content_moderation_email_template.collection']['title'] = t('Content notifications');
+    $links['entity.content_moderation_email_template.collection']['description'] = t('Email templates for content notifications.');
   }
 }
 
@@ -1036,7 +1241,7 @@ function uiowa_core_preprocess_details(&$variables) {
   $has_checkboxes = FALSE;
 
   if (isset($variables['element']) && is_array($variables['element'])) {
-    foreach ($variables['element'] as $key => $child) {
+    foreach ($variables['element'] as $child) {
       if (is_array($child) && isset($child['#type']) && $child['#type'] === 'checkboxes') {
         $has_checkboxes = TRUE;
         break;
@@ -1076,7 +1281,7 @@ function _uiowa_core_process_element(array $element, FormStateInterface $form_st
     $roles = $group_config['#roles'];
 
     // For each role that we want to remove access from...
-    foreach ($roles as $key => $role) {
+    foreach ($roles as $role) {
 
       // Set its access to false.
       $checkboxes[$role]['#access'] = FALSE;
@@ -1340,6 +1545,10 @@ function uiowa_core_token_info(): array {
     'name' => 'Combined Organization Name',
     'description' => 'A combined parent organization and organization token.',
   ];
+  $info['tokens']['node']['revision_log'] = [
+    'name' => t('Revision log message'),
+    'description' => t('Outputs the revision log message with a prepended label.'),
+  ];
   $info['tokens']['uiowa_core']['favicon_assets_path'] = [
     'name' => 'Favicon assets path',
     'description' => 'A token to override the default favicons path.',
@@ -1352,6 +1561,15 @@ function uiowa_core_token_info(): array {
  */
 function uiowa_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
+  if ($type === 'node' && !empty($data['node'])) {
+    $node = $data['node'];
+    foreach ($tokens as $name => $original) {
+      if ($name === 'revision_log') {
+        $log = $node->get('revision_log')->value;
+        $replacements[$original] = $log ? Html::escape('Revision log message: ' . $log) : '';
+      }
+    }
+  }
   if ($type === 'uiowa_core') {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uiowa_core.settings');
@@ -1893,7 +2111,7 @@ function uiowa_core_scheduler_help_text(array &$form): void {
       $additional_help_text = t('Note: this content will be @stateed at the top of the hour after the time you select. (e.g., 2:43 p.m. will go live at 3:00 p.m.).', [
         '@state' => $state,
       ]);
-      $form["{$state}_on"]['widget'][0]['value']['#description'] .= '<p>' . $additional_help_text . '</p>';
+      $form["{$state}_on"]['widget'][0]['value']['#description'] .= '<div>' . $additional_help_text . '</div>';
       // If moderation is enabled, hide the publish/unpublish state fields.
       $form["{$state}_state"]['#attributes']['class'] = (!empty($form["{$state}_state"]['#attributes']['class']) ? array_merge($form["{$state}_state"]['#attributes']['class'], $hide_classes) : $hide_classes);
     }
@@ -1953,5 +2171,50 @@ function uiowa_core_object_to_array(mixed $obj): mixed {
   // Otherwise (i.e. for scalar values) return without modification.
   else {
     return $obj;
+  }
+}
+
+/**
+ * Helper function to update FA icon field description and disable settings.
+ *
+ * @param array $icon_element
+ *   The icon field element array (passed by reference).
+ * @param bool $check_access
+ *   Whether to check access and disable settings. Default TRUE.
+ */
+function uiowa_core_configure_fontawesome_icon_field(array &$icon_element, $check_access = TRUE) {
+  if (!is_array($icon_element)) {
+    return;
+  }
+
+  // Update the icon_name description text.
+  if (isset($icon_element['icon_name']['#description'])) {
+    $icon_element['icon_name']['#description'] = t(
+      'Name of the Font Awesome Icon. See <a href="@url" target="_blank">the Font Awesome icon list</a> for valid icon names, or begin typing for an autocomplete list. Note: If an icon displays with an additional icon style next to it, select the "Regular" style in the "Additional Font Awesome Settings" below to display that icon style.',
+      ['@url' => 'https://fontawesome.com/icons']
+    );
+  }
+
+  if ($check_access) {
+    $icon_element['settings']['style']['#type'] = 'radios';
+    $icon_element['settings']['style']['#options'] = [
+      'solid' => 'Solid',
+      'regular' => 'Regular',
+    ];
+    $icon_element['settings']['style']['#default_value'] = 'solid';
+
+    $access = \Drupal::service('uiowa_core.access_checker')
+      ->access(\Drupal::currentUser()->getAccount());
+
+    if ($access->isForbidden()) {
+      // Disable the fields.
+      if (isset($icon_element['settings'])) {
+        foreach ($icon_element['settings'] as $key => &$child) {
+          if (is_array($child) && $key !== 'style') {
+            $child['#access'] = FALSE;
+          }
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,78 @@
+{#
+/**
+ * @file
+ * Default theme implementation of Superfish menu items.
+ *
+ * Available variables:
+ * - html_id: Unique menu item identifier.
+ * - item_class: Menu item classes.
+ * - link: Link element.
+ * - link_menuparent: Link element, when a menu parent.
+ * - children: Menu item children.
+ * - multicolumn_wrapper: Whether the menu item contains a column.
+ * - multicolumn_column: Whether the menu item contains a column.
+ * - multicolumn_content: Whether the menu item contains a column.
+ *
+ * @see template_preprocess_superfish_menu_items()
+ *
+ * @ingroup themeable
+ */
+#}
+{% set classes = [] %}
+{% for item in menu_items %}
+
+<li{{ item.attributes }}>
+
+  {% if item.multicolumn_column %}
+  <div class="sf-multicolumn-column">
+    {% endif %}
+
+    {# Parent items get a toggleable element #}
+    {% if item.children is not empty %}
+      {{ item.link_menuparent|merge({
+        '#attributes': {
+          'role': 'button',
+          'aria-haspopup': 'true',
+          'aria-expanded': 'false'
+        }
+      }) }}
+    {% else %}
+      {{ item.link }}
+    {% endif %}
+
+    {# Multicolumn wrapper #}
+    {% if item.multicolumn_wrapper %}
+    <ul class="sf-multicolumn">
+      <li class="sf-multicolumn-wrapper {{ item.item_class }}">
+        {% endif %}
+
+        {# Children #}
+        {% if item.children is not empty %}
+        {% if item.multicolumn_content %}
+        <ol>
+          {% else %}
+          <ul>
+            {% endif %}
+
+            {{ item.children }}
+
+            {% if item.multicolumn_content %}
+        </ol>
+        {% else %}
+    </ul>
+    {% endif %}
+    {% endif %}
+
+    {% if item.multicolumn_wrapper %}
+  </li>
+  </ul>
+  {% endif %}
+
+  {% if item.multicolumn_column %}
+    </div>
+  {% endif %}
+
+  </li>
+
+{% endfor %}
+

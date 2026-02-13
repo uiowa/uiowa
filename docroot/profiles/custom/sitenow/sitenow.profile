@@ -5,8 +5,8 @@
  * Profile code.
  */
 
+use Drupal\sitenow\Plugin\WebformHandler\EmailOverrideWebformHandler;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
@@ -16,7 +16,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -108,18 +107,6 @@ function sitenow_preprocess_select(&$variables) {
           unset($variables['options'][0]);
         }
       }
-    }
-  }
-}
-
-/**
- * Implements hook_js_alter().
- */
-function sitenow_js_alter(&$javascript, AttachedAssetsInterface $assets, LanguageInterface $language) {
-  // Remove fontawesome js if ckeditor5 is present.
-  if (array_key_exists('core/modules/ckeditor5/js/ckeditor5.js', $javascript) || array_key_exists('core/modules/ckeditor5/js/ckeditor5.dialog.fix.js', $javascript)) {
-    if (array_key_exists('libraries/fontawesome/js/all.min.js', $javascript)) {
-      unset($javascript['libraries/fontawesome/js/all.min.js']);
     }
   }
 }
@@ -521,6 +508,11 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         if ($access->isForbidden()) {
           $form['path']['#access'] = FALSE;
         }
+      }
+
+      // Uncheck replace file overwrite option by default.
+      if (isset($form['replace_file']['keep_original_filename'])) {
+        $form['replace_file']['keep_original_filename']['#default_value'] = FALSE;
       }
     }
   }
@@ -1174,4 +1166,14 @@ function featured_image_size_values(FieldStorageDefinitionInterface $definition,
   ];
 
   return $options;
+}
+
+/**
+ * Implements hook_webform_handler_info_alter().
+ */
+function sitenow_webform_handler_info_alter(array &$handlers) {
+  // Replace the default email handler to override what settings are allowed.
+  if (isset($handlers['email'])) {
+    $handlers['email']['class'] = EmailOverrideWebformHandler::class;
+  }
 }
