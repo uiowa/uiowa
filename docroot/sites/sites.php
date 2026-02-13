@@ -5303,12 +5303,6 @@ $sites['medicinevaccine.dev.drupal.uiowa.edu'] = 'vaccine.medicine.uiowa.edu';
 $sites['medicinevaccine.stage.drupal.uiowa.edu'] = 'vaccine.medicine.uiowa.edu';
 $sites['medicinevaccine.prod.drupal.uiowa.edu'] = 'vaccine.medicine.uiowa.edu';
 
-// Directory aliases for nfrc.medicine.uiowa.edu.
-$sites['medicinenfrc.uiowa.ddev.site'] = 'nfrc.medicine.uiowa.edu';
-$sites['medicinenfrc.dev.drupal.uiowa.edu'] = 'nfrc.medicine.uiowa.edu';
-$sites['medicinenfrc.stage.drupal.uiowa.edu'] = 'nfrc.medicine.uiowa.edu';
-$sites['medicinenfrc.prod.drupal.uiowa.edu'] = 'nfrc.medicine.uiowa.edu';
-
 // Directory aliases for nickljockschat.lab.uiowa.edu.
 $sites['labnickljockschat.uiowa.ddev.site'] = 'nickljockschat.lab.uiowa.edu';
 $sites['labnickljockschat.dev.drupal.uiowa.edu'] = 'nickljockschat.lab.uiowa.edu';
