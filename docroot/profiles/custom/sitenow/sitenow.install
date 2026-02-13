@@ -4664,3 +4664,52 @@ function sitenow_update_10032() {
     $block->save();
   });
 }
+
+/**
+ * Disable file attachments on all Webform email handlers.
+ */
+function sitenow_update_10034() {
+  $config_factory = \Drupal::configFactory();
+
+  $updated = [];
+
+  foreach ($config_factory->listAll('webform.webform.') as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    $data = $config->getRawData();
+
+    if (empty($data['handlers']) || !is_array($data['handlers'])) {
+      continue;
+    }
+
+    $changed = FALSE;
+
+    foreach ($data['handlers'] as $handler_id => &$handler) {
+
+      // Disable attachments.
+      if ($handler['settings']['attachments'] === TRUE) {
+        $handler['settings']['attachments'] = FALSE;
+        $changed = TRUE;
+        // Extract webform ID from config name.
+        $webform_id = str_replace('webform.webform.', '', $config_name);
+        $updated[] = $webform_id . '-' . $handler_id;
+      }
+    }
+
+    if ($changed) {
+      $config->setData($data);
+      $config->save();
+    }
+  }
+
+  if (!empty($updated)) {
+    return t(
+      'Disabled email file attachments on @count handler(s): @ids',
+      [
+        '@count' => count($updated),
+        '@ids' => implode(', ', $updated),
+      ]
+    );
+  }
+
+  return t('No webform handlers required attachment changes.');
+}

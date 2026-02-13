@@ -5,6 +5,7 @@
  * Profile code.
  */
 
+use Drupal\sitenow\Plugin\WebformHandler\EmailOverrideWebformHandler;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
@@ -1165,4 +1166,14 @@ function featured_image_size_values(FieldStorageDefinitionInterface $definition,
   ];
 
   return $options;
+}
+
+/**
+ * Implements hook_webform_handler_info_alter().
+ */
+function sitenow_webform_handler_info_alter(array &$handlers) {
+  // Replace the default email handler to override what settings are allowed.
+  if (isset($handlers['email'])) {
+    $handlers['email']['class'] = EmailOverrideWebformHandler::class;
+  }
 }
