@@ -7187,12 +7187,6 @@ $sites['labdalton.dev.drupal.uiowa.edu'] = 'dalton.lab.uiowa.edu';
 $sites['labdalton.stage.drupal.uiowa.edu'] = 'dalton.lab.uiowa.edu';
 $sites['labdalton.prod.drupal.uiowa.edu'] = 'dalton.lab.uiowa.edu';
 
-// Directory aliases for graduate-dean.jobs.uiowa.edu.
-$sites['jobsgraduate-dean.uiowa.ddev.site'] = 'graduate-dean.jobs.uiowa.edu';
-$sites['jobsgraduate-dean.dev.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
-$sites['jobsgraduate-dean.stage.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
-$sites['jobsgraduate-dean.prod.drupal.uiowa.edu'] = 'graduate-dean.jobs.uiowa.edu';
-
 // Directory aliases for mw-amta.conference.uiowa.edu.
 $sites['conferencemw-amta.uiowa.ddev.site'] = 'mw-amta.conference.uiowa.edu';
 $sites['conferencemw-amta.dev.drupal.uiowa.edu'] = 'mw-amta.conference.uiowa.edu';
