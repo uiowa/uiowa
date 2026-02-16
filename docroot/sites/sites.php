@@ -1721,12 +1721,6 @@ $sites['csd.dev.drupal.uiowa.edu'] = 'csd.uiowa.edu';
 $sites['csd.stage.drupal.uiowa.edu'] = 'csd.uiowa.edu';
 $sites['csd.prod.drupal.uiowa.edu'] = 'csd.uiowa.edu';
 
-// Directory aliases for ethicspublicpolicy.uiowa.edu.
-$sites['ethicspublicpolicy.uiowa.ddev.site'] = 'ethicspublicpolicy.uiowa.edu';
-$sites['ethicspublicpolicy.dev.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
-$sites['ethicspublicpolicy.stage.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
-$sites['ethicspublicpolicy.prod.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
-
 // Directory aliases for history.uiowa.edu.
 $sites['history.uiowa.ddev.site'] = 'history.uiowa.edu';
 $sites['history.dev.drupal.uiowa.edu'] = 'history.uiowa.edu';
