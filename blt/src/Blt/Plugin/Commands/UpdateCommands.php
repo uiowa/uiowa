@@ -641,4 +641,46 @@ EOD;
     $this->setSchemaVersion(1017);
   }
 
+  /**
+   * Update 1018.
+   *
+   * @Update(
+   *   version = "1018",
+   *   description = "Replace BLT settings require with global.settings.php in all site settings.php files."
+   * )
+   */
+  protected function update1018() {
+    $root = $this->getConfigValue('repo.root');
+    $search = 'require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";';
+    $replace = 'require DRUPAL_ROOT . "/sites/settings/global.settings.php";';
+
+    // Process all multisites.
+    $sites = Multisite::getAllSites($root);
+    foreach ($sites as $site) {
+      $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$site}/settings.php")
+        ->from($search)
+        ->to($replace)
+        ->run();
+
+      if (!$result->wasSuccessful()) {
+        $this->logger->error("Unable to update settings.php file for {$site}.");
+      }
+    }
+
+    // Also process the default site.
+    $default_settings = "{$root}/docroot/sites/default/settings.php";
+    if (file_exists($default_settings)) {
+      $result = $this->taskReplaceInFile($default_settings)
+        ->from($search)
+        ->to($replace)
+        ->run();
+
+      if (!$result->wasSuccessful()) {
+        $this->logger->error("Unable to update settings.php file for default.");
+      }
+    }
+
+    $this->setSchemaVersion(1018);
+  }
+
 }
