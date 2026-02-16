@@ -7930,9 +7930,3 @@ $sites['classics-religion.uiowa.ddev.site'] = 'classics-religion.uiowa.edu';
 $sites['classics-religion.dev.drupal.uiowa.edu'] = 'classics-religion.uiowa.edu';
 $sites['classics-religion.stage.drupal.uiowa.edu'] = 'classics-religion.uiowa.edu';
 $sites['classics-religion.prod.drupal.uiowa.edu'] = 'classics-religion.uiowa.edu';
-
-// Directory aliases for proteins.medicine.uiowa.edu.
-$sites['medicineproteins.uiowa.ddev.site'] = 'proteins.medicine.uiowa.edu';
-$sites['medicineproteins.dev.drupal.uiowa.edu'] = 'proteins.medicine.uiowa.edu';
-$sites['medicineproteins.stage.drupal.uiowa.edu'] = 'proteins.medicine.uiowa.edu';
-$sites['medicineproteins.prod.drupal.uiowa.edu'] = 'proteins.medicine.uiowa.edu';
