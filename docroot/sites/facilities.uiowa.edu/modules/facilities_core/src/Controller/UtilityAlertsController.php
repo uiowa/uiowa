@@ -3,6 +3,7 @@
 namespace Drupal\facilities_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\uiowa_facilities\UtilityAlertsApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -20,10 +21,13 @@ class UtilityAlertsController extends ControllerBase {
    *   The utility alerts API client.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
+   *   The date formatter service.
    */
   public function __construct(
     protected UtilityAlertsApiClientInterface $utilityAlertsApiClient,
     protected RendererInterface $renderer,
+    protected DateFormatterInterface $dateFormatter,
   ) {}
 
   /**
@@ -33,6 +37,7 @@ class UtilityAlertsController extends ControllerBase {
     return new static(
       $container->get('uiowa_facilities.utility_alerts_api_client'),
       $container->get('renderer'),
+      $container->get('date.formatter'),
     );
   }
 
@@ -58,7 +63,7 @@ class UtilityAlertsController extends ControllerBase {
         if (!empty($alert->created_date)) {
           $timestamp = strtotime($alert->created_date);
           if ($timestamp !== FALSE) {
-            $date = date('l, F j, Y, g:ia', $timestamp);
+            $date = $this->dateFormatter->format($timestamp, 'long');
           }
         }
 
