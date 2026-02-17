@@ -2807,12 +2807,6 @@ $sites['labci.dev.drupal.uiowa.edu'] = 'ci.lab.uiowa.edu';
 $sites['labci.stage.drupal.uiowa.edu'] = 'ci.lab.uiowa.edu';
 $sites['labci.prod.drupal.uiowa.edu'] = 'ci.lab.uiowa.edu';
 
-// Directory aliases for mbhd2022.conference.uiowa.edu.
-$sites['conferencembhd2022.uiowa.ddev.site'] = 'mbhd2022.conference.uiowa.edu';
-$sites['conferencembhd2022.dev.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
-$sites['conferencembhd2022.stage.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
-$sites['conferencembhd2022.prod.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
-
 // Directory aliases for iisicca.uiowa.edu.
 $sites['iisicca.uiowa.ddev.site'] = 'iisicca.uiowa.edu';
 $sites['iisicca.dev.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
