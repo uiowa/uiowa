@@ -6515,12 +6515,6 @@ $sites['orgiowaformularacing.dev.drupal.uiowa.edu'] = 'iowaformularacing.org.uio
 $sites['orgiowaformularacing.stage.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
 $sites['orgiowaformularacing.prod.drupal.uiowa.edu'] = 'iowaformularacing.org.uiowa.edu';
 
-// Directory aliases for onlinepublishing.course.uiowa.edu.
-$sites['courseonlinepublishing.uiowa.ddev.site'] = 'onlinepublishing.course.uiowa.edu';
-$sites['courseonlinepublishing.dev.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
-$sites['courseonlinepublishing.stage.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
-$sites['courseonlinepublishing.prod.drupal.uiowa.edu'] = 'onlinepublishing.course.uiowa.edu';
-
 // Directory aliases for hawkeyesba.sites.uiowa.edu.
 $sites['siteshawkeyesba.uiowa.ddev.site'] = 'hawkeyesba.sites.uiowa.edu';
 $sites['siteshawkeyesba.dev.drupal.uiowa.edu'] = 'hawkeyesba.sites.uiowa.edu';
