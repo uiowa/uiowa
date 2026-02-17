@@ -18,6 +18,6 @@ interface UtilityAlertsApiClientInterface extends ApiClientInterface {
    * @return array|false
    *   The alerts data or FALSE on failure.
    */
-  public function getAlerts(int $days = 14): array|false;
+  public function getAlerts(int $days): array|false;
 
 }
