@@ -59,24 +59,25 @@ class UtilityAlertsController extends ControllerBase {
           default => 'badge--cool-gray',
         };
 
+        $meta = [];
+
         $date = '';
         if (!empty($alert->created_date)) {
           $timestamp = strtotime($alert->created_date);
           if ($timestamp !== FALSE) {
             $date = $this->dateFormatter->format($timestamp, 'long');
+            $meta['date'] = [
+              '#prefix' => '<div class="utility-alert__date fa-field-item">',
+              '#markup' => '<span role="presentation" class="far fa-calendar"></span> ' . $date . '',
+              '#suffix' => '</div>',
+            ];
           }
         }
 
-        $meta = [];
-
-        if ($date) {
-          $meta['date'] = [
-            '#markup' => '<div class="utility-alert__date"><span role="presentation" class="far fa-calendar"></span> ' . $date . '</div>',
-          ];
-        }
-
         $meta['badge'] = [
-          '#markup' => '<div class="utility-alert__badge"><span class="badge ' . $badge_class . '">' . htmlspecialchars($alert->alert_type) . '</span></div>',
+          '#prefix' => '<div class="utility-alert__badge">',
+          '#markup' => '<span class="badge ' . $badge_class . '">' . htmlspecialchars($alert->alert_type) . '</span>',
+          '#suffix' => '</div>',
         ];
 
         $build[] = [
