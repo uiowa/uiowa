@@ -92,7 +92,7 @@ class UtilityAlertsController extends ControllerBase {
             'class' => [
               'headline--serif',
               'borderless',
-              'element--margin__bottom',
+              'element--margin__bottom--extra',
             ],
           ],
         ];
