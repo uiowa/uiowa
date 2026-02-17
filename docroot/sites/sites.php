@@ -437,12 +437,6 @@ $sites['pinyin.dev.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.stage.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.prod.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 
-// Directory aliases for climatecollective.uiowa.edu.
-$sites['climatecollective.uiowa.ddev.site'] = 'climatecollective.uiowa.edu';
-$sites['climatecollective.dev.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
-$sites['climatecollective.stage.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
-$sites['climatecollective.prod.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
-
 // Directory aliases for kuehn.lab.uiowa.edu.
 $sites['labkuehn.uiowa.ddev.site'] = 'kuehn.lab.uiowa.edu';
 $sites['labkuehn.dev.drupal.uiowa.edu'] = 'kuehn.lab.uiowa.edu';
