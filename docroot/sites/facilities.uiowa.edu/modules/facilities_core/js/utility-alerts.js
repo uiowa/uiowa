@@ -14,9 +14,10 @@
           })
           .then(function (html) {
             container.innerHTML = html;
+            Drupal.announce(Drupal.t('Utility alerts have been loaded.'));
           })
-          .catch(function (error) {
-            console.error('Error fetching utility alerts:', error);
+          .catch(function () {
+            Drupal.announce(Drupal.t('Unable to load utility alerts.'));
             container.innerHTML = '<p>Unable to load utility alerts.</p>';
           });
       });
