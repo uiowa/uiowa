@@ -7,6 +7,7 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\uiowa_facilities\UtilityAlertsApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -47,7 +48,13 @@ class UtilityAlertsController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   The response containing rendered alert cards.
    */
-  public function getAlerts(): Response {
+  public function getAlerts(Request $request): Response {
+    $allowed = ['h2', 'h3', 'h4', 'h5', 'h6'];
+    $heading_size = $request->query->get('heading_size', 'h2');
+    if (!in_array($heading_size, $allowed)) {
+      $heading_size = 'h2';
+    }
+
     $data = $this->utilityAlertsApiClient->getAlerts(30);
 
     $build = [];
@@ -83,7 +90,7 @@ class UtilityAlertsController extends ControllerBase {
         $build[] = [
           '#type' => 'card',
           '#title' => $alert->outage_types ?? '',
-          '#title_heading_size' => 'h2',
+          '#title_heading_size' => $heading_size,
           '#meta' => $meta,
           '#content' => [
             '#markup' => $alert->alert_text ?? '',
