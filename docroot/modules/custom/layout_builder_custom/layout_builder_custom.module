@@ -488,6 +488,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['advanced']['hide_on_nonactive']['#access'] = FALSE;
             // Hide the options to set the block link.
             $form['settings']['advanced']['label_link']['#access'] = FALSE;
+            // Hide the option to display empty block.
+            $form['settings']['advanced']['display_empty']['#access'] = FALSE;
             // Append to the fixed parent description to indicate that initial
             // visibility level should be set to 1 if used.
             /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $parent_description */
