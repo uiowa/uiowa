@@ -1013,7 +1013,7 @@ function sitenow_link_alter(&$variables) {
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
-    $variables['text'] = t('<span role="presentation" class="fa @icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
+    $variables['text'] = t('<span role="presentation" class="@icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
       '@icon' => $variables['options']['fa_icon'],
       '@title' => $variables['text'],
     ]);
