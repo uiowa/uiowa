@@ -22,14 +22,12 @@
           {% include '@uids_base/uids/logo.twig' with {
             path: uiowa_url,
             logo_classes: 'logo--tab',
-            logo_path_png: uiowa_logo_path_png,
             logo_id: 'header',
             is_homepage: is_homepage|default(false),
           } %}
         {% elseif header_branding == 'uihc' %}
           {% include '@uids_base/uids/logo-uihc.twig' with {
             logo_classes: 'logo--tab logo--healthcare',
-            logo_path_png: uihc_logo_path_png,
             logo_id: 'header',
           } %}
         {% elseif header_branding == 'regents' %}
