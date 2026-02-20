@@ -2,6 +2,7 @@
 
 namespace Drupal\layout_builder_custom;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 
@@ -339,6 +340,33 @@ class BannerBlockFormHandler {
       else {
         $link_set = TRUE;
       }
+
+      $link_attributes = $link['options']['attributes'] ?? [];
+
+      // Analytics metadata should only exist when an event name exists.
+      $event_name = trim($link_attributes['data-sn-event'] ?? '');
+      if ($event_name === '') {
+        unset($link_attributes['data-sn-event']);
+        unset($link_attributes['data-sn-event-type']);
+        unset($link_attributes['data-sn-event-component']);
+        unset($link_attributes['data-sn-event-label']);
+      }
+      else {
+        $event_name = strtolower(Html::cleanCssIdentifier($event_name));
+        $link_attributes['data-sn-event'] = str_replace('-', '_', $event_name);
+        if (empty(trim($link_attributes['data-sn-event-label'] ?? '')) && !empty($link['title'])) {
+          $link_attributes['data-sn-event-label'] = trim($link['title']);
+        }
+      }
+
+      $form_state->setValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_link',
+        $key,
+        'options',
+        'attributes',
+      ], $link_attributes);
 
       if (!empty($link['title'])) {
         $link_text = TRUE;
