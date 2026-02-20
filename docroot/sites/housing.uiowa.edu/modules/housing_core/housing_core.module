@@ -60,12 +60,6 @@ function housing_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'media--widescreen';
       break;
 
-    // Unset default block margin.
-    case 'field_block:node:residence_hall:field_residence_hall_amenities':
-    case 'field_block:node:residence_hall:field_residence_hall_rates':
-      uiowa_core_set_attributes($variables, ['block-margin__default--removed']);
-      break;
-
     // Display residence hall cta links in a three column grid.
     case 'field_block:node:residence_hall:field_residence_hall_who_lives':
     case 'field_block:node:residence_hall:field_residence_hall_floor_plans':
@@ -80,10 +74,13 @@ function housing_core_preprocess_block(&$variables) {
 function housing_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_residence_hall_who_lives':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
+      $variables['label_tag'] = 'h2';
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
 
       break;
 
@@ -150,8 +147,8 @@ function housing_core_preprocess_field(&$variables, $hook) {
 
     case 'field_residence_hall_getting':
     case 'field_residence_hall_rr_desc':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
-        'h2',
         'headline',
         'headline--serif',
         'headline--underline',
@@ -159,8 +156,8 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_llc':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
-        'h2',
         'headline',
         'headline--serif',
         'headline--underline',
@@ -169,9 +166,9 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_meet_us':
+      $variables['label_tag'] = 'h2';
       $variables['field_container_classes'] = 'list-container__inner';
       uiowa_core_set_title_attributes($variables, [
-        'h2',
         'headline',
         'headline--serif',
         'headline--underline',
