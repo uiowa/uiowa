@@ -74,10 +74,13 @@ function housing_core_preprocess_block(&$variables) {
 function housing_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_residence_hall_who_lives':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
+      $variables['label_tag'] = 'h2';
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
 
       break;
 
@@ -154,6 +157,7 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_llc':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'h2',
         'headline',
@@ -164,6 +168,7 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_meet_us':
+      $variables['label_tag'] = 'h2';
       $variables['field_container_classes'] = 'list-container__inner';
       uiowa_core_set_title_attributes($variables, [
         'h2',
