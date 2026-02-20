@@ -97,15 +97,20 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
     $config = $this->getConfiguration();
+    $is_headline_renderable = trim((string) ($config['headline'] ?? '')) !== '';
 
-    $build['heading'] = [
-      '#theme' => 'uiowa_core_headline',
-      '#headline' => $config['headline'],
-      '#hide_headline' => $config['hide_headline'],
-      '#heading_size' => $config['heading_size'],
-      '#headline_style' => $config['headline_style'],
-      '#headline_alignment' => $config['headline_alignment'] ?? 'default',
-    ];
+    $build = [];
+
+    if ($is_headline_renderable) {
+      $build['heading'] = [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $config['headline'],
+        '#hide_headline' => $config['hide_headline'],
+        '#heading_size' => $config['heading_size'],
+        '#headline_style' => $config['headline_style'],
+        '#headline_alignment' => $config['headline_alignment'] ?? 'default',
+      ];
+    }
 
     $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config);
 
