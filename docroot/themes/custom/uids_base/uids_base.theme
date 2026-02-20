@@ -300,9 +300,6 @@ function uids_base_preprocess_page(&$variables) {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $variables['uiowa_logo_path'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
-  $variables['uiowa_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
-  $variables['uihc_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/assets/images/uihc.png';
-
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
@@ -513,9 +510,8 @@ function uids_base_preprocess_media(array &$variables) {
         if ($parent instanceof EntityAdapter) {
           $parent_entity = $parent->getEntity();
           if ($parent_entity instanceof BlockContent) {
-            // Mark banner videos as decorative since they are background
-            // media with no informational content.
-            $variables['attributes']['aria-hidden'] = 'true';
+            // Flag for the template to add a decorative caption track.
+            $variables['content']['field_media_video_file'][0]['#attributes']['data-decorative'] = 'true';
             // Play video inline instead of going to native player.
             $variables['content']['field_media_video_file'][0]['#attributes']['playsinline'] = 'playsinline';
             // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'

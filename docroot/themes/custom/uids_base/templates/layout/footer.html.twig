@@ -16,13 +16,12 @@
       {% if (header_branding == 'iowa' or footer_logo) %}
       {% include '@uids_base/uids/logo.twig' with {
         path: uiowa_url,
-        logo_path_png: uiowa_logo_path_png,
         logo_classes: 'logo--footer',
         logo_id: 'footer',
+        is_homepage: is_homepage|default(false),
       } %}
       {% elseif header_branding == 'uihc' %}
         {% include '@uids_base/uids/logo-uihc.twig' with {
-          logo_path_png: uihc_logo_path_png,
           logo_classes: 'logo--footer logo--healthcare',
           logo_id: 'footer',
         } %}

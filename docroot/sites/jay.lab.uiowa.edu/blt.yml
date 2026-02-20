@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labjay.uiowa.ddev.site
+    protocol: https
+  machine_name: labjay
+  human_name: jay.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjay.prod
+drupal:
+  db:
+    database: jay_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labjay.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: jay.lab

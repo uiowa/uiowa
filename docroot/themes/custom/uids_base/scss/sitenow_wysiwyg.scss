@@ -218,6 +218,19 @@
   flex-wrap: wrap!important;
 }
 
+// @todo remove when https://github.com/ckeditor/ckeditor5/issues/18215 is resolved.
+.ck.ck-splitbutton>.ck-splitbutton__arrow {
+  min-width: 24px!important;
+}
+
+// Add extra padding to the "About text formats" link text for formatted text fields.
+// Minimum size for interactive elements is 44px by 44px.
+// This is an override of the Claro admin theme, and can be removed if
+// it gets adjusted upstream.
+.filter-help>a {
+  padding: 1rem 0;
+}
+
 .ck.ck-link-form.ck-link-form_layout-vertical button.ck-media-library {
   color: #00558c;
   span {
