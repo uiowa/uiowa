@@ -1055,6 +1055,24 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
 }
 
 /**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function layout_builder_custom_field_widget_single_element_linkit_attributes_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+  if (isset($element['options']['attributes']['data-sn-event-component'])) {
+    // @todo Update to account for 'link' options if this is used
+    //   outside of the banner block component.
+    $element['options']['attributes']['data-sn-event-component']['#default_value'] = 'button';
+    $element['options']['attributes']['data-sn-event-component']['#access'] = FALSE;
+  }
+  if (isset($element['options']['attributes']['data-sn-event-type'])) {
+    // The default for this is set platform-wide as 'click'
+    // in uiowa_core_link_attributes_plugin_alter, so
+    // remove access to change.
+    $element['options']['attributes']['data-sn-event-type']['#access'] = FALSE;
+  }
+}
+
+/**
  * Add an element to delineate the layout builder styles form section.
  *
  * The weights are important here. The layout_builder_custom module weighs all
