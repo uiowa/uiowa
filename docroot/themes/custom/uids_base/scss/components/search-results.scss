@@ -1,6 +1,22 @@
 @use '../../uids/scss/abstracts/_variables.scss';
 @use '../../uids/scss/abstracts/_utilities.scss';
 
+#search-results  form.gsc-search-box {
+  max-width: 100%;
+}
+
+#search-results .gsc-tabHeader.gsc-tabhActive, .gsc-refinementHeader.gsc-refinementhActive {
+  color: #000;
+}
+
+#search-results .gsc-above-wrapper-area {
+  max-width: 100%;
+}
+
+#search-results .gsc-wrapper {
+  max-width: 100%;
+}
+
 /* Google Custom Search Engine Results */
 #search-results .gsc-control-cse {
   padding: 1em 0;
@@ -8,7 +24,8 @@
   font-family: variables.$font-family-sans-serif;
 }
 #search-results .gsc-search-box {
-  padding: 0 0 0 15px;
+  padding: 0 15px;
+  margin: 0;
   background-color: #f1f1f1;
 }
 #search-results .gsst_a .gscb_a {
