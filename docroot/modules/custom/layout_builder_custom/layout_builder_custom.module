@@ -1206,7 +1206,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
 /**
  * Implements hook_preprocess_HOOK() for block__inline_block__uiowa_banner.
  */
-function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$variables) {
+function layout_builder_custom_preprocess_block__inline_block__uiowa_banner(&$variables) {
   $block = $variables['elements']['content']['#block_content'];
   // Media entity template needs to change based on this block,
   // so invalidate cache.
@@ -1214,6 +1214,7 @@ function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$var
     $id = $block->get('field_uiowa_banner_image')->target_id;
     Cache::invalidateTags(['media:' . $id]);
   }
+  // @todo Add attribute logic here?
 }
 
 /**
