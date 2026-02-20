@@ -33,7 +33,13 @@
 ] %}
 
 {% if item_tag is empty %}
+  {# Optional per-field override for item wrappers; defaults to div. #}
   {% set item_tag = 'div' %}
+{% endif %}
+
+{# Optional per-field override for the label wrapper; defaults to div. #}
+{% if label_tag is empty %}
+  {% set label_tag = 'div' %}
 {% endif %}
 
 {% if entity_type == 'block_content' %}
@@ -66,7 +72,7 @@
   {% else %}
 
   <div{{ attributes.addClass(classes) }}>
-    <div{{ title_attributes.addclass(title_classes).removeclass(remove_classes) }}>
+    <{{ label_tag }}{{ title_attributes.addclass(title_classes).removeclass(remove_classes) }}>
       {% block field_label_icon %}
         {% if field_label_icon %}
           {% if field_label_icon_bg %}
@@ -79,7 +85,7 @@
           {% endif %}
         {% endif %}
       {% endblock %}
-      {{ label }}</div>
+      {{ label }}</{{ label_tag }}>
 
     {% if multiple %}
     <div class="field__items {{ field_container_classes }}">
