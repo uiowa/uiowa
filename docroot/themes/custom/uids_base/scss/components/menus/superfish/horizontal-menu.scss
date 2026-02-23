@@ -8,9 +8,9 @@
 // Hide horizontal nav overflow before md breakpoint
 // so superfish can calculate small-screen menu behavior.
 .nav--horizontal .block-superfish > nav {
-  overflow-y: hidden;
+  overflow: hidden;
   @include utilities.breakpoint(md) {
-    overflow-y: visible;
+    overflow: visible;
   }
 }
 
