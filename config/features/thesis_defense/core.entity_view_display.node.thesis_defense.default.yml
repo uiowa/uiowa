@@ -8,8 +8,8 @@ dependencies:
     - field.field.node.thesis_defense.field_person_last_name
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
-    - field.field.node.thesis_defense.field_thesis_defense_file
     - field.field.node.thesis_defense.field_thesis_defense_location
+    - field.field.node.thesis_defense.field_thesis_defense_sync_id
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
@@ -50,15 +50,6 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_thesis_defense_file:
-    type: entity_reference_entity_view
-    label: visually_hidden
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    weight: 5
-    region: content
   field_thesis_defense_location:
     type: string
     label: visually_hidden
@@ -66,6 +57,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_thesis_defense_sync_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
     region: content
   field_thesis_defense_title:
     type: string

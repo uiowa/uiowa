@@ -1,0 +1,6 @@
+services:
+  its_core.commands:
+    class: Drupal\its_core\Commands\ITSCoreCommands
+    arguments: ['@account_switcher', '@email_factory']
+    tags:
+      - { name: drush.command }
