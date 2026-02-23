@@ -57,11 +57,11 @@ class ThesisDefenseCommands extends DrushCommands {
         '@deleted' => $sync_service->getDeleted(),
         '@skipped' => $sync_service->getSkipped(),
       ];
-      $this->logger->notice($this->t('Thesis defense content sync completed. @created events were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.',
+      $this->logger->notice($this->t('Thesis defense content sync completed. @created items were created, @updated updated, @deleted deleted, @skipped skipped. That is neat.',
         $arguments));
     }
     else {
-      $this->logger->warning($this->t('There was an error while processing the import for thesis defense events. Please check logs or command line output for additional details.'));
+      $this->logger->warning($this->t('There was an error while processing the import for thesis defense items. Please check logs or command line output for additional details.'));
     }
 
     // Switch user back.

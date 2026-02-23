@@ -1,6 +1,6 @@
 services:
-  its_core.commands:
-    class: Drupal\its_core\Commands\ITSCoreCommands
-    arguments: ['@account_switcher', '@email_factory']
+  grad_thesis_defense.commands:
+    class: Drupal\grad_thesis_defense\Commands\ThesisDefenseCommands
+    arguments: ['@account_switcher']
     tags:
       - { name: drush.command }
