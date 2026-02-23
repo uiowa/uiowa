@@ -357,6 +357,7 @@ class BannerBlockFormHandler {
         if (empty(trim($link_attributes['data-sn-event-label'] ?? '')) && !empty($link['title'])) {
           $link_attributes['data-sn-event-label'] = trim($link['title']);
         }
+        $link_attributes['data-sn-event-component'] = 'button';
       }
 
       $form_state->setValue([

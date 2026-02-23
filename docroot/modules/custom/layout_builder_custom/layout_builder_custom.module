@@ -1063,9 +1063,9 @@ function layout_builder_custom_field_widget_single_element_linkit_attributes_for
     $element['options']['attributes']['#access'] = FALSE;
   }
   if (isset($element['options']['attributes']['data-sn-event-component'])) {
-    // @todo Update to account for 'link' options if this is used
-    //   outside of the banner block component.
-    $element['options']['attributes']['data-sn-event-component']['#default_value'] = 'button';
+    // The default for this is set on a per-component basis,
+    // e.g. in the BannerBlockFormHandler,
+    // and should not be set by the user.
     $element['options']['attributes']['data-sn-event-component']['#access'] = FALSE;
   }
   if (isset($element['options']['attributes']['data-sn-event-type'])) {
