@@ -5,10 +5,13 @@
   border-bottom: 1px solid #e6e5e5;
 }
 
-// Hide horizontal nav overflow so superfish
-// can transition to its small-screen accordion behavior.
+// Hide horizontal nav overflow before md breakpoint
+// so superfish can calculate small-screen menu behavior.
 .nav--horizontal .block-superfish > nav {
   overflow-y: hidden;
+  @include utilities.breakpoint(md) {
+    overflow-y: visible;
+  }
 }
 
 .block-superfish .sf-menu.sf-horiz-menu ul {
