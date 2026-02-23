@@ -222,7 +222,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
         // Loop through map of default styles and append text indicating
         // that they are the defaults if appropriate.
-        // This ensures duplicates inherit the correct defaults when they're created.
+        // This ensures duplicates inherit
+        // the correct defaults when they're created.
         foreach ($lb_styles_extra_settings as $key => $settings) {
           // The key that is used in the form array.
           $key = 'layout_builder_style_' . $key;
