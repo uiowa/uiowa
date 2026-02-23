@@ -5,7 +5,7 @@
 {% set headline_location = headline_location ?: 'headline--default' %}
 <{{ headline_level }}{{ headline_attributes.addClass(headline_class, headline_location) }}>
 {% if headline_url %}
-<a href="{{ headline_url }}"{{ headline_url_attributes.addClass(headline_url_class ? [headline_url_class] : []) }}{% if headline_aria %}aria-describedby="{{ headline_aria }}"{% endif %}>
+<a href="{{ headline_url }}" {% if headline_url_class %} class="{{ headline_url_class }}"{% endif %} {{ headline_url_attributes }}{% if headline_aria %}aria-describedby="{{ headline_aria }}"{% endif %}>
   {% endif %}
   {% if headline_prefix %}
     <span class="headline__prefix">{{ headline_prefix }}</span>
