@@ -407,4 +407,40 @@ class MauiApi extends ApiClientBase {
     return $data->payload[0]->identities;
   }
 
+  /**
+   * Get an array of university ids to call against for thesis defense info.
+   *
+   * @return array
+   *   Array data.
+   */
+  public function getThesisDefenseIds(): array {
+    // Temporarily use a static array of IDs until we can fetch them from MAUI.
+    // @todo Call from MAUI to return IDs and the names of the individuals.
+    $config = \Drupal::config('grad_core.settings');
+    return $config->get('university_ids') ?? [];
+  }
+
+  /**
+   * Get thesis defense information for a given university id.
+   *
+   * @param string $university_id
+   *   The university id to get thesis defense information for.
+   *
+   * @return mixed
+   *   The API response data.
+   */
+  public function getThesisDefenseInfo($university_id): mixed {
+    // Add basic auth credentials for this specific call.
+    $config = \Drupal::config('grad_core.settings');
+    $username = $config->get('thesis_defense_username');
+    $password = $config->get('thesis_defense_password');
+
+    if ($username && $password) {
+      $options['auth'] = [$username, $password];
+      return $this->get("/auth/personsTEMP/{$university_id}/student/comprehensive-exams", $options);
+    }
+
+    return FALSE;
+  }
+
 }
