@@ -18,6 +18,13 @@ class ThesisDefense extends NodeBundleBase implements RendersAsCardInterface {
 
     // Add the person library.
     $build['#attached']['library'][] = 'uids_base/person';
+
+    // Process additional card mappings.
+    $this->mapFieldsToCardBuild($build, [
+      '#meta' => [
+        'field_thesis_defense_date',
+      ],
+    ]);
   }
 
   /**

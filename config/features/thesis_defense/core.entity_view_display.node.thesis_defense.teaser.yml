@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
+    - smart_date_recur
     - user
 id: node.thesis_defense.teaser
 targetEntityType: node
@@ -26,6 +27,28 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_thesis_defense_date:
+    type: smartdate_dailyrange
+    label: visually_hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+      format: default
+      force_chronological: false
+      add_classes: false
+      time_wrapper: true
+      parts:
+        - start
+        - end
+      duration:
+        separator: ' | '
+        unit: ''
+        decimals: 2
+        suffix: h
+      localize: 0
+    third_party_settings: {  }
+    weight: 2
     region: content
   field_thesis_defense_title:
     type: string
@@ -48,7 +71,6 @@ hidden:
   field_person_first_name: true
   field_person_last_name: true
   field_thesis_defense_chairs: true
-  field_thesis_defense_date: true
   field_thesis_defense_disclaimer: true
   field_thesis_defense_location: true
   field_thesis_defense_sync_id: true
