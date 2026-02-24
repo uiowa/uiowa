@@ -14,8 +14,34 @@ dependencies:
     - node.type.thesis_defense
   module:
     - content_moderation
+    - field_group
     - path
     - smart_date
+third_party_settings:
+  field_group:
+    group_imported:
+      children:
+        - field_thesis_defense_title
+        - field_person_first_name
+        - field_person_last_name
+        - field_thesis_defense_location
+        - field_thesis_defense_date
+        - field_grad_program_phd
+        - field_thesis_defense_chairs
+        - field_thesis_defense_sync_id
+      label: Imported
+      region: content
+      parent_name: ''
+      weight: 16
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: 'These fields are imported from MAUI.'
+        required_fields: true
 id: node.thesis_defense.default
 targetEntityType: node
 bundle: thesis_defense
@@ -29,13 +55,13 @@ content:
     third_party_settings: {  }
   field_grad_program_phd:
     type: options_select
-    weight: 13
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   field_person_first_name:
     type: string_textfield
-    weight: 8
+    weight: 11
     region: content
     settings:
       size: 60
@@ -43,7 +69,7 @@ content:
     third_party_settings: {  }
   field_person_last_name:
     type: string_textfield
-    weight: 9
+    weight: 12
     region: content
     settings:
       size: 60
@@ -51,7 +77,7 @@ content:
     third_party_settings: {  }
   field_thesis_defense_chairs:
     type: string_textfield
-    weight: 14
+    weight: 16
     region: content
     settings:
       size: 60
@@ -59,7 +85,7 @@ content:
     third_party_settings: {  }
   field_thesis_defense_date:
     type: smartdate_inline
-    weight: 11
+    weight: 14
     region: content
     settings:
       modal: false
@@ -79,7 +105,7 @@ content:
     third_party_settings: {  }
   field_thesis_defense_location:
     type: string_textfield
-    weight: 12
+    weight: 13
     region: content
     settings:
       size: 60
@@ -87,7 +113,7 @@ content:
     third_party_settings: {  }
   field_thesis_defense_sync_id:
     type: string_textfield
-    weight: 27
+    weight: 17
     region: content
     settings:
       size: 60
@@ -121,7 +147,7 @@ content:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }

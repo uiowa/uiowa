@@ -167,3 +167,24 @@ function grad_thesis_defense_views_pre_render(ViewExecutable $view): void {
     $view->element['#cache']['tags'][] = 'time:daily';
   }
 }
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_thesis_defense_form':
+    case 'node_thesis_defense_edit_form':
+      // These are imported fields that editors should not interact with.
+      $form['field_person_first_name']['#disabled'] = TRUE;
+      $form['field_person_last_name']['#disabled'] = TRUE;
+      $form['field_thesis_defense_title']['#disabled'] = TRUE;
+      $form['field_thesis_defense_sync_id']['#disabled'] = TRUE;
+      $form['field_thesis_defense_location']['#disabled'] = TRUE;
+      $form['field_grad_program_phd']['#disabled'] = TRUE;
+      $form['field_thesis_defense_date']['#disabled'] = TRUE;
+      $form['field_thesis_defense_chairs']['#disabled'] = TRUE;
+      break;
+  }
+}
