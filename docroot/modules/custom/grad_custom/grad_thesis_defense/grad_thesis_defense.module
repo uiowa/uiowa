@@ -82,7 +82,12 @@ function grad_thesis_defense_node_view(array &$build, EntityInterface $node, Ent
       $build['field_thesis_defense_disclaimer'] = [
         '#type' => 'container',
         '#attributes' => [
-          'class' => ['field', 'field--name-field-thesis-defense-disclaimer', 'field--type-list-string', 'field--label-inline'],
+          'class' => [
+            'field',
+            'field--name-field-thesis-defense-disclaimer',
+            'field--type-list-string',
+            'field--label-inline',
+          ],
         ],
       ];
       $build['field_thesis_defense_disclaimer']['label'] = [
