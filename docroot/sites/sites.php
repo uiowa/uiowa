@@ -7912,3 +7912,9 @@ $sites['siteskaiwang.uiowa.ddev.site'] = 'kaiwang.sites.uiowa.edu';
 $sites['siteskaiwang.dev.drupal.uiowa.edu'] = 'kaiwang.sites.uiowa.edu';
 $sites['siteskaiwang.stage.drupal.uiowa.edu'] = 'kaiwang.sites.uiowa.edu';
 $sites['siteskaiwang.prod.drupal.uiowa.edu'] = 'kaiwang.sites.uiowa.edu';
+
+// Directory aliases for hema.lab.uiowa.edu.
+$sites['labhema.uiowa.ddev.site'] = 'hema.lab.uiowa.edu';
+$sites['labhema.dev.drupal.uiowa.edu'] = 'hema.lab.uiowa.edu';
+$sites['labhema.stage.drupal.uiowa.edu'] = 'hema.lab.uiowa.edu';
+$sites['labhema.prod.drupal.uiowa.edu'] = 'hema.lab.uiowa.edu';
