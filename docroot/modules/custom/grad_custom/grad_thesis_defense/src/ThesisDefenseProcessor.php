@@ -69,7 +69,7 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
 
         $processed_item = new \stdClass();
         $processed_item->id = $item->id;
-        $processed_item->title = strip_tags($item->spos->thesis);
+        $processed_item->title = substr(strip_tags($item->spos->thesis), 0, 255);
         $processed_item->examTimestamp = $item->examTimestamp;
         $processed_item->examType = $item->examType;
 
