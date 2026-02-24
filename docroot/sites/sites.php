@@ -7906,3 +7906,9 @@ $sites['tippiepgn.uiowa.ddev.site'] = 'pgn.tippie.uiowa.edu';
 $sites['tippiepgn.dev.drupal.uiowa.edu'] = 'pgn.tippie.uiowa.edu';
 $sites['tippiepgn.stage.drupal.uiowa.edu'] = 'pgn.tippie.uiowa.edu';
 $sites['tippiepgn.prod.drupal.uiowa.edu'] = 'pgn.tippie.uiowa.edu';
+
+// Directory aliases for kaiwang.sites.uiowa.edu.
+$sites['siteskaiwang.uiowa.ddev.site'] = 'kaiwang.sites.uiowa.edu';
+$sites['siteskaiwang.dev.drupal.uiowa.edu'] = 'kaiwang.sites.uiowa.edu';
+$sites['siteskaiwang.stage.drupal.uiowa.edu'] = 'kaiwang.sites.uiowa.edu';
+$sites['siteskaiwang.prod.drupal.uiowa.edu'] = 'kaiwang.sites.uiowa.edu';
