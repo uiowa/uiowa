@@ -5,6 +5,7 @@
  * Contains grad_thesis_defense.module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\grad_thesis_defense\Entity\ThesisDefense;
 
@@ -53,5 +54,53 @@ function grad_thesis_defense_preprocess_field(&$variables, $hook) {
       }
 
       break;
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function grad_thesis_defense_entity_extra_field_info(): array {
+  $extra = [];
+  // Disclaimer text.
+  $extra['node']['thesis_defense']['display']['field_thesis_defense_disclaimer'] = [
+    'label' => t('Disclaimer'),
+    'description' => t('Disclaimer text to be printed with each node.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function grad_thesis_defense_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode): void {
+  if ($node->bundle() === 'thesis_defense') {
+    if ($display->getComponent('field_thesis_defense_disclaimer')) {
+      $build['field_thesis_defense_disclaimer'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['field', 'field--name-field-thesis-defense-disclaimer', 'field--type-list-string', 'field--label-inline'],
+        ],
+      ];
+      $build['field_thesis_defense_disclaimer']['label'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => t('Disclaimer'),
+        '#attributes' => [
+          'class' => ['field__label visually-hidden'],
+        ],
+      ];
+      $build['field_thesis_defense_disclaimer']['value'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => '<em>' . t('This is a working thesis title.') . '</em>',
+        '#attributes' => [
+          'class' => ['field__item'],
+        ],
+      ];
+    }
   }
 }
