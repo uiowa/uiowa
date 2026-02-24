@@ -7900,3 +7900,9 @@ $sites['labsugiyama.uiowa.ddev.site'] = 'sugiyama.lab.uiowa.edu';
 $sites['labsugiyama.dev.drupal.uiowa.edu'] = 'sugiyama.lab.uiowa.edu';
 $sites['labsugiyama.stage.drupal.uiowa.edu'] = 'sugiyama.lab.uiowa.edu';
 $sites['labsugiyama.prod.drupal.uiowa.edu'] = 'sugiyama.lab.uiowa.edu';
+
+// Directory aliases for pgn.tippie.uiowa.edu.
+$sites['tippiepgn.uiowa.ddev.site'] = 'pgn.tippie.uiowa.edu';
+$sites['tippiepgn.dev.drupal.uiowa.edu'] = 'pgn.tippie.uiowa.edu';
+$sites['tippiepgn.stage.drupal.uiowa.edu'] = 'pgn.tippie.uiowa.edu';
+$sites['tippiepgn.prod.drupal.uiowa.edu'] = 'pgn.tippie.uiowa.edu';
