@@ -57,23 +57,28 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
       // Get thesis defense info for each university ID.
       $defense_info = $this->mauiApi->getThesisDefenseInfo($university_id);
 
-      // Process the response to extract items with examType "FINAL".
-      if (is_array($defense_info) && !empty($defense_info)) {
-        foreach ($defense_info as $item) {
-          // Check if item has examType and it's "FINAL".
-          if (isset($item->examType->value) && $item->examType->value === 'FINAL') {
-            if (isset($item->spos->thesis)) {
-              $processed_item = new \stdClass();
-              $processed_item->id = $item->id;
-              $processed_item->thesis = strip_tags($item->spos->thesis);
-              $processed_item->title = $processed_item->thesis;
-              $processed_item->examTimestamp = $item->examTimestamp;
-              $processed_item->examType = $item->examType;
+      if (empty($defense_info) || !is_array($defense_info)) {
+        continue;
+      }
 
-              $data[] = $processed_item;
-            }
-          }
+      foreach ($defense_info as $item) {
+        // Only process final exams that have thesis data.
+        if (($item->examType->value ?? NULL) !== 'FINAL' || !isset($item->spos->thesis)) {
+          continue;
         }
+
+        $processed_item = new \stdClass();
+        $processed_item->id = $item->id;
+        $processed_item->title = strip_tags($item->spos->thesis);
+        $processed_item->examTimestamp = $item->examTimestamp;
+        $processed_item->examType = $item->examType;
+
+        // Use subprogramKey if present, otherwise fall back to programKey.
+        $processed_item->programKey = !empty($item->spos->programOfStudyDTO->subprogramKey)
+          ? $item->spos->programOfStudyDTO->subprogramKey
+          : ($item->spos->programOfStudyDTO->programKey ?? NULL);
+
+        $data[] = $processed_item;
       }
     }
 
@@ -92,7 +97,7 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
     }
 
     if ($entity->get('field_thesis_defense_title')->isEmpty() ||
-        $entity->get('field_thesis_defense_title')->value != $record->title) {
+      $entity->get('field_thesis_defense_title')->value !== $record->title) {
       $entity->set('field_thesis_defense_title', $record->title);
       $changed = TRUE;
     }
@@ -112,30 +117,28 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
       $changed = TRUE;
     }
 
+    if (isset($record->programKey)) {
+      if ($entity->get('field_grad_program_phd')->isEmpty() ||
+        $entity->get('field_grad_program_phd')->value !== $record->programKey) {
+        $entity->set('field_grad_program_phd', $record->programKey);
+        $changed = TRUE;
+      }
+    }
+
     if (isset($record->examTimestamp)) {
       $date = new \DateTime($record->examTimestamp);
       $date->setTimezone(new \DateTimeZone('America/Chicago'));
       $timestamp = $date->getTimestamp();
 
-      if ($entity->get('field_thesis_defense_date')->isEmpty()) {
+      $existing_start = $entity->get('field_thesis_defense_date')->value;
+      $existing_end = $entity->get('field_thesis_defense_date')->end_value;
+
+      if ($existing_start != $timestamp || $existing_end != $timestamp) {
         $entity->set('field_thesis_defense_date', [
           'value' => $timestamp,
           'end_value' => $timestamp,
         ]);
         $changed = TRUE;
-      }
-      else {
-        $existing_start = $entity->get('field_thesis_defense_date')->value;
-        $existing_end = $entity->get('field_thesis_defense_date')->end_value;
-
-        if ($existing_start != $timestamp ||
-            $existing_end != $timestamp) {
-          $entity->set('field_thesis_defense_date', [
-            'value' => $timestamp,
-            'end_value' => $timestamp,
-          ]);
-          $changed = TRUE;
-        }
       }
     }
 
