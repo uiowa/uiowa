@@ -78,6 +78,20 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
           ? $item->spos->programOfStudyDTO->subprogramKey
           : ($item->spos->programOfStudyDTO->programKey ?? NULL);
 
+        // Process members for CHAIR and CO_CHAIR.
+        $processed_item->members = [];
+        if (isset($item->members) && is_array($item->members)) {
+          foreach ($item->members as $member) {
+            if (isset($member->memberType->value) && in_array($member->memberType->value, ['CHAIR', 'CO_CHAIR'])) {
+              $formatted_name = $member->member->name;
+              if (!empty($member->memberType->label)) {
+                $formatted_name .= ', ' . $member->memberType->label;
+              }
+              $processed_item->members[] = $formatted_name;
+            }
+          }
+        }
+
         $data[] = $processed_item;
       }
     }
@@ -121,6 +135,28 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
       if ($entity->get('field_grad_program_phd')->isEmpty() ||
         $entity->get('field_grad_program_phd')->value !== $record->programKey) {
         $entity->set('field_grad_program_phd', $record->programKey);
+        $changed = TRUE;
+      }
+    }
+
+    // Process members for chairs field.
+    if (isset($record->members) && is_array($record->members)) {
+      $existing_chairs = $entity->get('field_thesis_defense_chairs')->getValue();
+      $existing_chairs_list = array_column($existing_chairs, 'value');
+
+      // Sort both arrays for comparison.
+      sort($record->members);
+      sort($existing_chairs_list);
+
+      if ($existing_chairs_list !== $record->members) {
+        $entity->set('field_thesis_defense_chairs', $record->members);
+        $changed = TRUE;
+      }
+    }
+    else {
+      // If no members in record but there are existing chairs, clear them.
+      if (!$entity->get('field_thesis_defense_chairs')->isEmpty()) {
+        $entity->set('field_thesis_defense_chairs', []);
         $changed = TRUE;
       }
     }
