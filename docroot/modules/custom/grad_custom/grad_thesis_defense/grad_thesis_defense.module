@@ -5,9 +5,13 @@
  * Contains grad_thesis_defense.module.
  */
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\grad_thesis_defense\Entity\ThesisDefense;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -107,5 +111,59 @@ function grad_thesis_defense_node_view(array &$build, EntityInterface $node, Ent
         ],
       ];
     }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function grad_thesis_defense_form_layout_builder_add_block_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof ConfigureBlockFormBase) {
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    $component = $form_object->getCurrentComponent();
+    $block = $component->getPlugin();
+    switch ($block->getPluginId()) {
+      case 'views_block:thesis_defenses-block_thesis_defenses':
+        if ($form['settings']['override']['items_per_page']) {
+          $form['settings']['override']['items_per_page']['#default_value'] = 50;
+        }
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function grad_thesis_defense_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if ($form['#id'] === 'views-exposed-form-thesis-defenses-block-thesis-defenses') {
+    $form['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function grad_thesis_defense_views_pre_view(ViewExecutable $view, $display_id, array &$args): void {
+  // Default the filter to today if exposed.
+  if ($view->id() === 'thesis_defenses' && $display_id === 'block_thesis_defenses') {
+    $exposed_input = $view->getExposedInput();
+    // If the date filter is not set and exposed, default it to today.
+    $exposed = $view->display_handler->getOption('block_config')['exposed']['filter-field_thesis_defense_date_value']['exposed'];
+    if (empty($exposed_input['field_thesis_defense_date_value']) && $exposed) {
+      $today = (new DrupalDateTime())->format('Y-m-d');
+      $exposed_input['field_thesis_defense_date_value'] = $today;
+      $view->setExposedInput($exposed_input);
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function grad_thesis_defense_views_pre_render(ViewExecutable $view): void {
+  if ($view->id() === 'thesis_defenses' && $view->current_display === 'block_thesis_defenses') {
+    $view->element['#cache']['tags'][] = 'time:daily';
   }
 }
