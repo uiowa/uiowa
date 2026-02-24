@@ -416,7 +416,7 @@ class MauiApi extends ApiClientBase {
   public function getThesisDefenseIds(): array {
     // Temporarily use a static array of IDs until we can fetch them from MAUI.
     // @todo Call from MAUI to return IDs and the names of the individuals.
-    $config = \Drupal::config('grad_core.settings');
+    $config = \Drupal::config('grad_thesis_defense.settings');
     return $config->get('university_ids') ?? [];
   }
 
@@ -431,7 +431,7 @@ class MauiApi extends ApiClientBase {
    */
   public function getThesisDefenseInfo($university_id): mixed {
     // Add basic auth credentials for this specific call.
-    $config = \Drupal::config('grad_core.settings');
+    $config = \Drupal::config('grad_thesis_defense.settings');
     $username = $config->get('thesis_defense_username');
     $password = $config->get('thesis_defense_password');
 

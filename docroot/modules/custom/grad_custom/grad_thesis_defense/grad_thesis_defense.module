@@ -23,6 +23,22 @@ function grad_thesis_defense_entity_bundle_info_alter(array &$bundles) {
 }
 
 /**
+ * Implements hook_entity_extra_field_info().
+ */
+function grad_thesis_defense_entity_extra_field_info(): array {
+  $extra = [];
+  // Disclaimer text.
+  $extra['node']['thesis_defense']['display']['field_thesis_defense_disclaimer'] = [
+    'label' => t('Disclaimer'),
+    'description' => t('Disclaimer text to be printed with each node.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
  * Implements hook_entity_presave().
  */
 function grad_thesis_defense_entity_presave(EntityInterface $entity) {
@@ -37,44 +53,42 @@ function grad_thesis_defense_entity_presave(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_preprocess_field().
+ * Implements hook_form_alter().
  */
-function grad_thesis_defense_preprocess_field(&$variables, $hook) {
-  switch ($variables['element']['#field_name']) {
-    case 'field_thesis_defense_date':
-      uiowa_core_set_field_icon($variables, 'fas fa-calendar-alt');
-
-      break;
-
-    case 'field_thesis_defense_location':
-      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
-
-      break;
-
-    case 'field_thesis_defense_title':
-      if ($variables['element']['#view_mode'] == 'full') {
-        $variables['item_tag'] = 'h2';
-        uiowa_core_set_attributes($variables, 'element--light-intro');
-      }
-
+function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_thesis_defense_form':
+    case 'node_thesis_defense_edit_form':
+      // These are imported fields that editors should not interact with.
+      $form['field_person_first_name']['#disabled'] = TRUE;
+      $form['field_person_last_name']['#disabled'] = TRUE;
+      $form['field_thesis_defense_title']['#disabled'] = TRUE;
+      $form['field_thesis_defense_sync_id']['#disabled'] = TRUE;
+      $form['field_thesis_defense_location']['#disabled'] = TRUE;
+      $form['field_grad_program_phd']['#disabled'] = TRUE;
+      $form['field_thesis_defense_date']['#disabled'] = TRUE;
+      $form['field_thesis_defense_chairs']['#disabled'] = TRUE;
       break;
   }
 }
 
 /**
- * Implements hook_entity_extra_field_info().
+ * Implements hook_form_FORM_ID_alter().
  */
-function grad_thesis_defense_entity_extra_field_info(): array {
-  $extra = [];
-  // Disclaimer text.
-  $extra['node']['thesis_defense']['display']['field_thesis_defense_disclaimer'] = [
-    'label' => t('Disclaimer'),
-    'description' => t('Disclaimer text to be printed with each node.'),
-    'weight' => 1,
-    'visible' => TRUE,
-  ];
-
-  return $extra;
+function grad_thesis_defense_form_layout_builder_add_block_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof ConfigureBlockFormBase) {
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    $component = $form_object->getCurrentComponent();
+    $block = $component->getPlugin();
+    switch ($block->getPluginId()) {
+      case 'views_block:thesis_defenses-block_thesis_defenses':
+        if ($form['settings']['override']['items_per_page']) {
+          $form['settings']['override']['items_per_page']['#default_value'] = 50;
+        }
+        break;
+    }
+  }
 }
 
 /**
@@ -115,21 +129,27 @@ function grad_thesis_defense_node_view(array &$build, EntityInterface $node, Ent
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_preprocess_field().
  */
-function grad_thesis_defense_form_layout_builder_add_block_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  $form_object = $form_state->getFormObject();
-  if ($form_object instanceof ConfigureBlockFormBase) {
-    /** @var \Drupal\layout_builder\SectionComponent $component */
-    $component = $form_object->getCurrentComponent();
-    $block = $component->getPlugin();
-    switch ($block->getPluginId()) {
-      case 'views_block:thesis_defenses-block_thesis_defenses':
-        if ($form['settings']['override']['items_per_page']) {
-          $form['settings']['override']['items_per_page']['#default_value'] = 50;
-        }
-        break;
-    }
+function grad_thesis_defense_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_thesis_defense_date':
+      uiowa_core_set_field_icon($variables, 'fas fa-calendar-alt');
+
+      break;
+
+    case 'field_thesis_defense_location':
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+
+      break;
+
+    case 'field_thesis_defense_title':
+      if ($variables['element']['#view_mode'] == 'full') {
+        $variables['item_tag'] = 'h2';
+        uiowa_core_set_attributes($variables, 'element--light-intro');
+      }
+
+      break;
   }
 }
 
@@ -139,6 +159,15 @@ function grad_thesis_defense_form_layout_builder_add_block_alter(&$form, FormSta
 function grad_thesis_defense_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   if ($form['#id'] === 'views-exposed-form-thesis-defenses-block-thesis-defenses') {
     $form['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function grad_thesis_defense_views_pre_render(ViewExecutable $view): void {
+  if ($view->id() === 'thesis_defenses' && $view->current_display === 'block_thesis_defenses') {
+    $view->element['#cache']['tags'][] = 'time:daily';
   }
 }
 
@@ -156,35 +185,5 @@ function grad_thesis_defense_views_pre_view(ViewExecutable $view, $display_id, a
       $exposed_input['field_thesis_defense_date_value'] = $today;
       $view->setExposedInput($exposed_input);
     }
-  }
-}
-
-/**
- * Implements hook_views_pre_view().
- */
-function grad_thesis_defense_views_pre_render(ViewExecutable $view): void {
-  if ($view->id() === 'thesis_defenses' && $view->current_display === 'block_thesis_defenses') {
-    $view->element['#cache']['tags'][] = 'time:daily';
-  }
-}
-
-
-/**
- * Implements hook_form_alter().
- */
-function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) {
-    case 'node_thesis_defense_form':
-    case 'node_thesis_defense_edit_form':
-      // These are imported fields that editors should not interact with.
-      $form['field_person_first_name']['#disabled'] = TRUE;
-      $form['field_person_last_name']['#disabled'] = TRUE;
-      $form['field_thesis_defense_title']['#disabled'] = TRUE;
-      $form['field_thesis_defense_sync_id']['#disabled'] = TRUE;
-      $form['field_thesis_defense_location']['#disabled'] = TRUE;
-      $form['field_grad_program_phd']['#disabled'] = TRUE;
-      $form['field_thesis_defense_date']['#disabled'] = TRUE;
-      $form['field_thesis_defense_chairs']['#disabled'] = TRUE;
-      break;
   }
 }
