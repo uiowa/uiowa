@@ -5,7 +5,15 @@
   max-width: 100%;
 }
 
-#search-results .gsc-tabHeader.gsc-tabhActive, .gsc-refinementHeader.gsc-refinementhActive {
+// Fix for making interactive a elements min size.
+#search-results .gcsc-branding-clickable,
+#search-results .gcsc-more-maybe-branding-root a {
+  min-height: 24px;
+  display: block;
+}
+
+#search-results .gsc-tabHeader.gsc-tabhActive,
+#search-results .gsc-refinementHeader.gsc-refinementhActive {
   color: #000;
 }
 
