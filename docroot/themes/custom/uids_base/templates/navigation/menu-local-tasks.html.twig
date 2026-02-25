@@ -13,14 +13,12 @@
 #}
 {% set primary_rendered = primary ? primary|render : '' %}
 {% set secondary_rendered = secondary ? secondary|render : '' %}
-{% set primary_has_items = '<li' in primary_rendered or 'drupal-render-placeholder' in primary_rendered or 'data-big-pipe-placeholder-id' in primary_rendered %}
-{% set secondary_has_items = '<li' in secondary_rendered or 'drupal-render-placeholder' in secondary_rendered or 'data-big-pipe-placeholder-id' in secondary_rendered %}
 
-{% if primary_has_items %}
+{% if primary_rendered|trim %}
   <h2 class="visually-hidden">{{ 'Primary tabs'|t }}</h2>
   <ul class="tabs primary">{{ primary_rendered }}</ul>
 {% endif %}
-{% if secondary_has_items %}
+{% if secondary_rendered|trim %}
   <h2 class="visually-hidden">{{ 'Secondary tabs'|t }}</h2>
   <ul class="tabs secondary">{{ secondary_rendered }}</ul>
 {% endif %}
