@@ -134,7 +134,7 @@ function grad_thesis_defense_node_view(array &$build, EntityInterface $node, Ent
 function grad_thesis_defense_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_thesis_defense_date':
-      uiowa_core_set_field_icon($variables, 'fas fa-calendar-alt');
+      uiowa_core_set_field_icon($variables, 'fas fa-clock');
 
       break;
 
