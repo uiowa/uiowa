@@ -300,9 +300,6 @@ function uids_base_preprocess_page(&$variables) {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $variables['uiowa_logo_path'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
-  $variables['uiowa_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
-  $variables['uihc_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/assets/images/uihc.png';
-
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
