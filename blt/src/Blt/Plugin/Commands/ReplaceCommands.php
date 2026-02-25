@@ -45,7 +45,8 @@ class ReplaceCommands extends BltTasks {
       $multisites = $manifest[$app] ?: [];
       $log_dir = '/shared/logs/';
 
-      // Ensure that default is added to uiowa app, so we update the default site.
+      // Ensure that default is added to uiowa app,
+      // so we update the default site.
       if ($app === 'uiowa') {
         $multisites = [...['default'], ...$multisites];
       }
@@ -71,22 +72,27 @@ class ReplaceCommands extends BltTasks {
       ->printOutput(FALSE)
       ->run();
 
-    $datetime = date('Ymd_His');
-    $log_file = $log_dir . 'parallel_deploy_log_' . $datetime . '.log';
+    // Generate a unique temporary log file name for this deployment.
+    $temp_log_file = $log_dir . 'parallel_deploy_' . uniqid() . '.log';
+
+    // Use a fixed log file name for the final aggregated log.
+    $final_log_file = $log_dir . 'parallel_deploy.log';
 
     // Check if the parallel command exists.
     if (trim($parallel_installed->getMessage())) {
       $this->say('Running multisite updates in parallel.');
 
       // Run site updates in parallel, logging output to terminal and file.
-      $command = 'parallel -j 3 blt uiowa:site:update ::: ' . implode(' ', array_map('escapeshellarg', $multisites)) . " 2>&1 | tee -a $log_file";
+      $command = 'parallel -j 3 blt uiowa:site:update ::: ' . implode(
+        ' ', array_map('escapeshellarg', $multisites)
+        ) . " 2>&1 | tee -a $temp_log_file";
 
       $this->taskExec($command)
         ->interactive(FALSE)
         ->run();
 
-      // After running, check the log file for errors using grep.
-      $grep_command = "grep -i 'error' $log_file";
+      // After running, check the temporary log file for errors using grep.
+      $grep_command = "grep -i 'error' $temp_log_file";
       $grep_result = $this->taskExec($grep_command)
         ->printOutput(FALSE)
         ->run()
@@ -94,6 +100,15 @@ class ReplaceCommands extends BltTasks {
 
       // Set the exception flag if grep found any error messages.
       $multisite_exception = !empty($grep_result);
+
+      // Always append the temp log to the final log file with markers.
+      $date = date('Y-m-d H:i:s');
+      $this->taskExec("echo 'START $date' >> $final_log_file")->run();
+      $this->taskExec("cat $temp_log_file >> $final_log_file")->run();
+      $this->taskExec("echo 'END $date' >> $final_log_file")->run();
+
+      // Remove the temporary file.
+      $this->taskExec("rm $temp_log_file")->run();
     }
     else {
       $this->say('Running multisite updates sequentially.');
