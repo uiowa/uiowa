@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteskaiwang.uiowa.ddev.site
+    protocol: https
+  machine_name: siteskaiwang
+  human_name: kaiwang.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteskaiwang.prod
+drupal:
+  db:
+    database: kaiwang_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteskaiwang.prod.drupal.uiowa.edu'
+  requester: kaiwang
+  site-name: 'Kai Wang, PhD'
