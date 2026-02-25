@@ -55,7 +55,8 @@ class UtilityAlertsController extends ControllerBase {
       $heading_size = 'h2';
     }
 
-    $data = $this->utilityAlertsApiClient->getAlerts(30);
+    $days = (int) $this->config('uiowa_facilities.apis')->get('utility_alerts.days') ?: 14;
+    $data = $this->utilityAlertsApiClient->getAlerts($days);
 
     $build = [];
 

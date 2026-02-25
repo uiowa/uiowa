@@ -88,6 +88,7 @@ class UtilityAlertsBlock extends BlockBase {
       '#attached' => [
         'library' => [
           'facilities_core/utility_alerts',
+          'uids_base/card',
         ],
         'drupalSettings' => [
           'facilities_core' => [
