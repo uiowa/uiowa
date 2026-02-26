@@ -28,7 +28,7 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  protected $skipDelete = TRUE;
+  protected $skipDelete = FALSE;
 
   /**
    * The MAUI API service.
