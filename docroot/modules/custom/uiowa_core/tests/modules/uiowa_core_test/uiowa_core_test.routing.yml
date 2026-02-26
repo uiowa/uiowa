@@ -6,3 +6,12 @@ card_test_element:
   requirements:
     # This is a public facing route used to render a test page.
     _access: 'TRUE'
+
+banner_test_element:
+  path: '/banner_test_element'
+  defaults:
+    _controller: '\Drupal\uiowa_core_test\Controller\BannerTestElementController:index'
+    _title: 'Banner test element'
+  requirements:
+    # This is a public facing route used to render a test page.
+    _access: 'TRUE'
