@@ -48,7 +48,7 @@
           parsetags: 'explicit',
           callback: Drupal.uiowaSearchResults,
         };
-        
+
         let cx = drupalSettings.uiowaSearch.engineId;
         let gcse = document.createElement('script');
         gcse.type = 'text/javascript';
