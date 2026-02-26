@@ -56,12 +56,13 @@ class HoursFilterForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state, $config = NULL) {
     $form['#attached']['library'][] = 'uiowa_hours/filter_form';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
+    $is_headline_renderable = trim((string) ($config['headline'] ?? '')) !== '';
 
-    if (empty($config['headline'])) {
-      $child_heading_size = $config['child_heading_size'];
+    if ($is_headline_renderable) {
+      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
     }
     else {
-      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
+      $child_heading_size = $config['child_heading_size'];
     }
 
     $block_config = [
