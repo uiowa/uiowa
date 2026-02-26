@@ -222,7 +222,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
         // Loop through map of default styles and append text indicating
         // that they are the defaults if appropriate.
-        // This ensures duplicates inherit the correct defaults when they're created.
+        // This ensures duplicates inherit
+        // the correct defaults when they're created.
         foreach ($lb_styles_extra_settings as $key => $settings) {
           // The key that is used in the form array.
           $key = 'layout_builder_style_' . $key;
@@ -1055,6 +1056,28 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
 }
 
 /**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function layout_builder_custom_field_widget_single_element_linkit_attributes_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+  if (!\Drupal::currentUser()
+    ->hasPermission('administer link field attributes')) {
+    $element['options']['attributes']['#access'] = FALSE;
+  }
+  if (isset($element['options']['attributes']['data-sn-event-component'])) {
+    // The default for this is set on a per-component basis,
+    // e.g. in the BannerBlockFormHandler,
+    // and should not be set by the user.
+    $element['options']['attributes']['data-sn-event-component']['#access'] = FALSE;
+  }
+  if (isset($element['options']['attributes']['data-sn-event-type'])) {
+    // The default for this is set platform-wide as 'click'
+    // in uiowa_core_link_attributes_plugin_alter, so
+    // remove access to change.
+    $element['options']['attributes']['data-sn-event-type']['#access'] = FALSE;
+  }
+}
+
+/**
  * Add an element to delineate the layout builder styles form section.
  *
  * The weights are important here. The layout_builder_custom module weighs all
@@ -1188,7 +1211,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
 /**
  * Implements hook_preprocess_HOOK() for block__inline_block__uiowa_banner.
  */
-function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$variables) {
+function layout_builder_custom_preprocess_block__inline_block__uiowa_banner(&$variables) {
   $block = $variables['elements']['content']['#block_content'];
   // Media entity template needs to change based on this block,
   // so invalidate cache.

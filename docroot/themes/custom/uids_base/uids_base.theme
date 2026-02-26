@@ -1018,6 +1018,7 @@ function uids_base_preprocess_block(&$variables) {
 
         $url = $link['#url'] ?? NULL;
         $title = $link['#title'] ?? NULL;
+        $link_attributes = $url?->getOptions()['attributes'] ?? [];
 
         if ($url) {
           if (LinkHelper::shouldClearTitle($title)) {
@@ -1027,6 +1028,7 @@ function uids_base_preprocess_block(&$variables) {
           $links[] = [
             'link_url' => $url->toString(),
             'link_text' => $title,
+            'link_attributes' => $link_attributes,
           ];
         }
       }
