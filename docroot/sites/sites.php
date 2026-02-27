@@ -7918,3 +7918,9 @@ $sites['sitesadaptivesportsday.uiowa.ddev.site'] = 'adaptivesportsday.sites.uiow
 $sites['sitesadaptivesportsday.dev.drupal.uiowa.edu'] = 'adaptivesportsday.sites.uiowa.edu';
 $sites['sitesadaptivesportsday.stage.drupal.uiowa.edu'] = 'adaptivesportsday.sites.uiowa.edu';
 $sites['sitesadaptivesportsday.prod.drupal.uiowa.edu'] = 'adaptivesportsday.sites.uiowa.edu';
+
+// Directory aliases for dsp.tippie.uiowa.edu.
+$sites['tippiedsp.uiowa.ddev.site'] = 'dsp.tippie.uiowa.edu';
+$sites['tippiedsp.dev.drupal.uiowa.edu'] = 'dsp.tippie.uiowa.edu';
+$sites['tippiedsp.stage.drupal.uiowa.edu'] = 'dsp.tippie.uiowa.edu';
+$sites['tippiedsp.prod.drupal.uiowa.edu'] = 'dsp.tippie.uiowa.edu';
