@@ -7912,3 +7912,9 @@ $sites['labhema.uiowa.ddev.site'] = 'hema.lab.uiowa.edu';
 $sites['labhema.dev.drupal.uiowa.edu'] = 'hema.lab.uiowa.edu';
 $sites['labhema.stage.drupal.uiowa.edu'] = 'hema.lab.uiowa.edu';
 $sites['labhema.prod.drupal.uiowa.edu'] = 'hema.lab.uiowa.edu';
+
+// Directory aliases for adaptivesportsday.sites.uiowa.edu.
+$sites['sitesadaptivesportsday.uiowa.ddev.site'] = 'adaptivesportsday.sites.uiowa.edu';
+$sites['sitesadaptivesportsday.dev.drupal.uiowa.edu'] = 'adaptivesportsday.sites.uiowa.edu';
+$sites['sitesadaptivesportsday.stage.drupal.uiowa.edu'] = 'adaptivesportsday.sites.uiowa.edu';
+$sites['sitesadaptivesportsday.prod.drupal.uiowa.edu'] = 'adaptivesportsday.sites.uiowa.edu';
