@@ -3,15 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.thesis_defense.field_grad_program_phd
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
     - field.field.node.thesis_defense.field_thesis_defense_location
+    - field.field.node.thesis_defense.field_thesis_defense_program
     - field.field.node.thesis_defense.field_thesis_defense_sync_id
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
-    - options
     - smart_date
     - user
 id: node.thesis_defense.default
@@ -19,13 +18,6 @@ targetEntityType: node
 bundle: thesis_defense
 mode: default
 content:
-  field_grad_program_phd:
-    type: list_default
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 4
-    region: content
   field_thesis_defense_chairs:
     type: string
     label: above
@@ -64,6 +56,14 @@ content:
   field_thesis_defense_location:
     type: string
     label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_thesis_defense_program:
+    type: string
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }

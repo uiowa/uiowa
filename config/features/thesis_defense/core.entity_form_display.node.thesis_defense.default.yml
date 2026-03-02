@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.thesis_defense.field_grad_program_phd
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
     - field.field.node.thesis_defense.field_thesis_defense_location
+    - field.field.node.thesis_defense.field_thesis_defense_program
     - field.field.node.thesis_defense.field_thesis_defense_sync_id
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
@@ -23,6 +23,7 @@ third_party_settings:
         - field_thesis_defense_title
         - field_thesis_defense_location
         - field_thesis_defense_date
+        - field_thesis_defense_program
         - field_grad_program_phd
         - field_thesis_defense_chairs
         - field_thesis_defense_sync_id
@@ -50,15 +51,9 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_grad_program_phd:
-    type: options_select
-    weight: 4
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_thesis_defense_chairs:
     type: string_textfield
-    weight: 5
+    weight: 6
     region: content
     settings:
       size: 60
@@ -92,9 +87,17 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_thesis_defense_program:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_thesis_defense_sync_id:
     type: string_textfield
-    weight: 6
+    weight: 7
     region: content
     settings:
       size: 60
