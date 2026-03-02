@@ -39,20 +39,6 @@ function grad_thesis_defense_entity_extra_field_info(): array {
 }
 
 /**
- * Implements hook_entity_presave().
- */
-function grad_thesis_defense_entity_presave(EntityInterface $entity) {
-  switch ($entity->bundle()) {
-    case 'thesis_defense':
-      // Setting the title with the first/last name values.
-      $output = $entity->get('field_person_first_name')->value . ' ' . $entity->get('field_person_last_name')->value;
-      $entity->setTitle($output);
-      break;
-
-  }
-}
-
-/**
  * Implements hook_form_alter().
  */
 function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -60,8 +46,7 @@ function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, 
     case 'node_thesis_defense_form':
     case 'node_thesis_defense_edit_form':
       // These are imported fields that editors should not interact with.
-      $form['field_person_first_name']['#disabled'] = TRUE;
-      $form['field_person_last_name']['#disabled'] = TRUE;
+      $form['title']['#disabled'] = TRUE;
       $form['field_thesis_defense_title']['#disabled'] = TRUE;
       $form['field_thesis_defense_sync_id']['#disabled'] = TRUE;
       $form['field_thesis_defense_location']['#disabled'] = TRUE;
