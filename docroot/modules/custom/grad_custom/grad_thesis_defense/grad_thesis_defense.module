@@ -165,10 +165,12 @@ function grad_thesis_defense_views_pre_view(ViewExecutable $view, $display_id, a
     $exposed_input = $view->getExposedInput();
     // If the date filter is not set and exposed, default it to today.
     $exposed = $view->display_handler->getOption('block_config')['exposed']['filter-field_thesis_defense_date_value']['exposed'];
-    if (empty($exposed_input['field_thesis_defense_date_value']) && $exposed) {
-      $today = (new DrupalDateTime())->format('Y-m-d');
-      $exposed_input['field_thesis_defense_date_value'] = $today;
-      $view->setExposedInput($exposed_input);
+    if (empty($exposed_input['combine'])) {
+      if (empty($exposed_input['field_thesis_defense_date_value']) && $exposed) {
+        $today = (new DrupalDateTime())->format('Y-m-d');
+        $exposed_input['field_thesis_defense_date_value'] = $today;
+        $view->setExposedInput($exposed_input);
+      }
     }
   }
 }
