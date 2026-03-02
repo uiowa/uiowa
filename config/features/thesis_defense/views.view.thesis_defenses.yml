@@ -418,14 +418,14 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_thesis_defense_date_1:
-          id: field_thesis_defense_date_1
+        field_thesis_defense_date_value:
+          id: field_thesis_defense_date_value
           table: node__field_thesis_defense_date
-          field: field_thesis_defense_date
+          field: field_thesis_defense_date_value
           relationship: none
           group_type: group
-          admin_label: groupdate
-          plugin_id: field
+          admin_label: 'Hidden Start'
+          plugin_id: date
           label: ''
           exclude: true
           alter:
@@ -467,34 +467,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: smartdate_default
-          settings:
-            timezone_override: ''
-            format: date_only
-            force_chronological: false
-            add_classes: false
-            time_wrapper: true
-            localize: false
-            parts:
-              start: start
-              end: '0'
-              duration: '0'
-            duration:
-              separator: ' | '
-              unit: ''
-              decimals: 2
-              suffix: h
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
+          date_format: medium
+          custom_date_format: ''
+          timezone: ''
       empty:
         area_text_custom:
           id: area_text_custom
@@ -642,7 +617,7 @@ display:
         options:
           grouping:
             -
-              field: field_thesis_defense_date_1
+              field: field_thesis_defense_date_value
               rendered: true
               rendered_strip: false
           row_class: ''
