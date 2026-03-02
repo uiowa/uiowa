@@ -36,7 +36,7 @@ class ThesisDefense extends NodeBundleBase implements RendersAsCardInterface {
       [
         'card_media_position' => 'card--layout-left',
         'border' => 'borderless',
-        'headline_class' => 'headline--serif',
+        'card_headline_style' => 'default',
       ]
     );
   }
