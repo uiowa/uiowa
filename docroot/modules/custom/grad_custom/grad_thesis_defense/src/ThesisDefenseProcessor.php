@@ -83,10 +83,10 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
         $processed_item->universityId = $university_id;
         $processed_item->name = $name ?? 'Thesis Defense - ' . $defense_item->id;
 
-        // Use subprogramKey if present, otherwise fall back to programKey.
-        $processed_item->programKey = !empty($defense_item->spos->programOfStudyDTO->subprogramKey)
-          ? $defense_item->spos->programOfStudyDTO->subprogramKey
-          : ($defense_item->spos->programOfStudyDTO->programKey ?? NULL);
+        // Use subprogram if present, otherwise fall back to program.
+        $program = $defense_item->spos->programOfStudyDTO->program ?? NULL;
+        $subprogram = $defense_item->spos->programOfStudyDTO->subprogram ?? NULL;
+        $processed_item->program = !empty($subprogram) ? $program . ' - ' . $subprogram : $program;
 
         // Process members for CHAIR and CO_CHAIR.
         $processed_item->members = [];
@@ -131,10 +131,10 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
       $changed = TRUE;
     }
 
-    if (isset($record->programKey)) {
-      if ($entity->get('field_grad_program_phd')->isEmpty() ||
-        $entity->get('field_grad_program_phd')->value !== $record->programKey) {
-        $entity->set('field_grad_program_phd', $record->programKey);
+    if (isset($record->program)) {
+      if ($entity->get('field_thesis_defense_program')->isEmpty() ||
+        $entity->get('field_thesis_defense_program')->value !== $record->program) {
+        $entity->set('field_thesis_defense_program', $record->program);
         $changed = TRUE;
       }
     }
