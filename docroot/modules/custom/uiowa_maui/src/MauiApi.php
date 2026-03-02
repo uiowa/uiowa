@@ -422,7 +422,7 @@ class MauiApi extends ApiClientBase {
     if ($username && $password) {
       $options['auth'] = [$username, $password];
       $options['query'] = [
-        'date' => date('Y-m-d'),
+        'date' => (new DrupalDateTime())->format('Y-m-d'),
       ];
 
       $result = $this->get('/auth/registrar/graduate-college/thesis-defense-students', $options);
