@@ -76,7 +76,7 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
         $processed_item->examTimestamp = $defense_item->examTimestamp;
         $processed_item->examType = $defense_item->examType;
         $processed_item->universityId = $university_id;
-        $processed_item->name = $name;
+        $processed_item->name = $name ?? 'Thesis Defense - ' . $defense_item->id;
 
         // Use subprogramKey if present, otherwise fall back to programKey.
         $processed_item->programKey = !empty($defense_item->spos->programOfStudyDTO->subprogramKey)
@@ -121,7 +121,7 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
       $changed = TRUE;
     }
 
-    if ($entity->get('title')->isEmpty()) {
+    if ($entity->get('title')->isEmpty() || $entity->get('title')->value !== $record->name) {
       $entity->set('title', $record->name);
       $changed = TRUE;
     }
