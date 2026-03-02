@@ -414,10 +414,28 @@ class MauiApi extends ApiClientBase {
    *   Array data.
    */
   public function getThesisDefenseIds(): array {
-    // Temporarily use a static array of IDs until we can fetch them from MAUI.
-    // @todo Call from MAUI to return IDs and the names of the individuals.
+    // Add basic auth credentials for this specific call.
     $config = \Drupal::config('grad_thesis_defense.settings');
-    return $config->get('university_ids') ?? [];
+    $username = $config->get('thesis_defense_username');
+    $password = $config->get('thesis_defense_password');
+
+    if ($username && $password) {
+      $options['auth'] = [$username, $password];
+      $options['query'] = [
+        'date' => date('Y-m-d'),
+      ];
+
+      $result = $this->get('/auth/registrar/graduate-college/thesis-defense-students', $options);
+
+      if ($result === FALSE || !is_array($result)) {
+        \Drupal::logger('uiowa_maui')->error('Failed to fetch thesis defense IDs.');
+        return [];
+      }
+
+      return $result;
+    }
+
+    return [];
   }
 
   /**
@@ -426,10 +444,10 @@ class MauiApi extends ApiClientBase {
    * @param string $university_id
    *   The university id to get thesis defense information for.
    *
-   * @return mixed
+   * @return array
    *   The API response data.
    */
-  public function getThesisDefenseInfo($university_id): mixed {
+  public function getThesisDefenseInfo($university_id): array {
     // Add basic auth credentials for this specific call.
     $config = \Drupal::config('grad_thesis_defense.settings');
     $username = $config->get('thesis_defense_username');
@@ -437,10 +455,17 @@ class MauiApi extends ApiClientBase {
 
     if ($username && $password) {
       $options['auth'] = [$username, $password];
-      return $this->get("/auth/personsTEMP/{$university_id}/student/comprehensive-exams", $options);
+      $result = $this->get("/auth/personsTEMP/{$university_id}/student/comprehensive-exams", $options);
+
+      if ($result === FALSE || !is_array($result)) {
+        \Drupal::logger('uiowa_maui')->error('Failed to fetch thesis defense info for university ID: @id', ['@id' => $university_id]);
+        return [];
+      }
+
+      return $result;
     }
 
-    return FALSE;
+    return [];
   }
 
 }

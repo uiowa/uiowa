@@ -49,11 +49,14 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
    * {@inheritdoc}
    */
   protected function getData() {
-    // Get the list of university IDs.
-    $university_ids = $this->mauiApi->getThesisDefenseIds();
+    // Get the list of university IDs with names.
+    $university_data = $this->mauiApi->getThesisDefenseIds();
 
     $data = [];
-    foreach ($university_ids as $university_id) {
+    foreach ($university_data as $item) {
+      $university_id = $item->universityId;
+      $name = $item->name;
+
       // Get thesis defense info for each university ID.
       $defense_info = $this->mauiApi->getThesisDefenseInfo($university_id);
 
@@ -61,27 +64,29 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
         continue;
       }
 
-      foreach ($defense_info as $item) {
+      foreach ($defense_info as $defense_item) {
         // Only process final exams that have thesis data.
-        if (($item->examType->value ?? NULL) !== 'FINAL' || !isset($item->spos->thesis)) {
+        if (($defense_item->examType->value ?? NULL) !== 'FINAL' || !isset($defense_item->spos->thesis)) {
           continue;
         }
 
         $processed_item = new \stdClass();
-        $processed_item->id = $item->id;
-        $processed_item->title = substr(strip_tags($item->spos->thesis), 0, 255);
-        $processed_item->examTimestamp = $item->examTimestamp;
-        $processed_item->examType = $item->examType;
+        $processed_item->id = $defense_item->id;
+        $processed_item->thesis = substr(strip_tags($defense_item->spos->thesis), 0, 255);
+        $processed_item->examTimestamp = $defense_item->examTimestamp;
+        $processed_item->examType = $defense_item->examType;
+        $processed_item->universityId = $university_id;
+        $processed_item->name = $name;
 
         // Use subprogramKey if present, otherwise fall back to programKey.
-        $processed_item->programKey = !empty($item->spos->programOfStudyDTO->subprogramKey)
-          ? $item->spos->programOfStudyDTO->subprogramKey
-          : ($item->spos->programOfStudyDTO->programKey ?? NULL);
+        $processed_item->programKey = !empty($defense_item->spos->programOfStudyDTO->subprogramKey)
+          ? $defense_item->spos->programOfStudyDTO->subprogramKey
+          : ($defense_item->spos->programOfStudyDTO->programKey ?? NULL);
 
         // Process members for CHAIR and CO_CHAIR.
         $processed_item->members = [];
-        if (isset($item->members) && is_array($item->members)) {
-          foreach ($item->members as $member) {
+        if (isset($defense_item->members) && is_array($defense_item->members)) {
+          foreach ($defense_item->members as $member) {
             if (isset($member->memberType->value) && in_array($member->memberType->value, ['CHAIR', 'CO_CHAIR'])) {
               $formatted_name = $member->member->name;
               if (!empty($member->memberType->label)) {
@@ -111,23 +116,13 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
     }
 
     if ($entity->get('field_thesis_defense_title')->isEmpty() ||
-      $entity->get('field_thesis_defense_title')->value !== $record->title) {
-      $entity->set('field_thesis_defense_title', $record->title);
+      $entity->get('field_thesis_defense_title')->value !== $record->thesis) {
+      $entity->set('field_thesis_defense_title', $record->thesis);
       $changed = TRUE;
     }
 
-    // Set the person's name based on the ID call data since the info call does
-    // not return any name data. The first name is set to "Thesis Defense" and
-    // the last name is set to the record id to ensure uniqueness.
-    // @todo Change to use name from the ID call instead.
-    if ($entity->get('field_person_first_name')->isEmpty()) {
-      $entity->set('field_person_first_name', 'Thesis Defense');
-      $changed = TRUE;
-    }
-
-    // @todo Change to use name from the ID call instead.
-    if ($entity->get('field_person_last_name')->isEmpty()) {
-      $entity->set('field_person_last_name', $record->id);
+    if ($entity->get('title')->isEmpty()) {
+      $entity->set('title', $record->name);
       $changed = TRUE;
     }
 
