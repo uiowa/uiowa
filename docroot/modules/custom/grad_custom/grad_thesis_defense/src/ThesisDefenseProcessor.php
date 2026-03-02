@@ -70,6 +70,11 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
           continue;
         }
 
+        // Only process items that are marked as scheduled and not "PASSED".
+        if (($defense_item->examStatus->value ?? NULL) !== 'SCHEDULED') {
+          continue;
+        }
+
         $processed_item = new \stdClass();
         $processed_item->id = $defense_item->id;
         $processed_item->thesis = substr(strip_tags($defense_item->spos->thesis), 0, 255);
