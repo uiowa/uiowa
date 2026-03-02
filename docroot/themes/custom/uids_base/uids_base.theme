@@ -512,7 +512,7 @@ function uids_base_preprocess_media(array &$variables) {
           if ($parent_entity instanceof BlockContent) {
             // Mark banner videos as decorative since they are background
             // media with no informational content.
-            // @todo Update this to check for an alt desciprition
+            // @todo Update this to check for an alt description
             //   when that option is available.
             $variables['content']['field_media_video_file'][0]['#attributes']['aria-hidden'] = 'true';
             // Play video inline instead of going to native player.
