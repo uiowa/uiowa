@@ -479,6 +479,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['admin_label']['#plain_text'] .= ' Menu';
             // Unset the menu option in the label.
             unset($form['settings']['advanced']['label_type']['#options']['menu']);
+            // Hide this option until menu_block fixes initialization of menuRoot.
+            // Fix is being tracked in https://github.com/uiowa/uiowa/issues/9647.
+            unset($form['settings']['advanced']['label_type']['#options']['visibility_level_parent']);
+            // Default existing blocks off unsupported label type.
+            if (($form['settings']['advanced']['label_type']['#default_value'] ?? NULL) === 'visibility_level_parent') {
+              $form['settings']['advanced']['label_type']['#default_value'] = 'block';
+            }
             // Adjust the default text.
             $form['settings']['advanced']['label_type']['#options']['block'] = t('"Section Menu" (default)');
             // Update the description on the label_type.
@@ -681,7 +688,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
         if ((int) $form_state->getValue(['settings', 'follow']) === 1) {
           // Set parent to default.
           $form_state->setValue(['settings', 'parent'], 'main:');
-          // Set level = 2.
+          // Set level = 1.
           $form_state->setValue(['settings', 'level'], 1);
         }
         break;
