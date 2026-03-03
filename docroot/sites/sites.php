@@ -7391,12 +7391,6 @@ $sites['siteslrj.dev.drupal.uiowa.edu'] = 'lrj.sites.uiowa.edu';
 $sites['siteslrj.stage.drupal.uiowa.edu'] = 'lrj.sites.uiowa.edu';
 $sites['siteslrj.prod.drupal.uiowa.edu'] = 'lrj.sites.uiowa.edu';
 
-// Directory aliases for heistad.lab.uiowa.edu.
-$sites['labheistad.uiowa.ddev.site'] = 'heistad.lab.uiowa.edu';
-$sites['labheistad.dev.drupal.uiowa.edu'] = 'heistad.lab.uiowa.edu';
-$sites['labheistad.stage.drupal.uiowa.edu'] = 'heistad.lab.uiowa.edu';
-$sites['labheistad.prod.drupal.uiowa.edu'] = 'heistad.lab.uiowa.edu';
-
 // Directory aliases for npl.lab.uiowa.edu.
 $sites['labnpl.uiowa.ddev.site'] = 'npl.lab.uiowa.edu';
 $sites['labnpl.dev.drupal.uiowa.edu'] = 'npl.lab.uiowa.edu';
