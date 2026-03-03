@@ -4713,33 +4713,3 @@ function sitenow_update_10034() {
 
   return t('No webform handlers required attachment changes.');
 }
-
-/**
- * Move menu block labels off unsupported visibility level parent option.
- */
-function sitenow_update_10035() {
-  $updated_components = 0;
-
-  // Target Layout Builder components for menu_block:main.
-  _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block = NULL) use (&$updated_components) {
-    $configuration = $component->get('configuration');
-    if (!is_array($configuration)) {
-      return;
-    }
-
-    if (($configuration['label_type'] ?? '') !== 'visibility_level_parent') {
-      return;
-    }
-
-    $configuration['label_type'] = 'block';
-    $component->setConfiguration($configuration);
-    $updated_components++;
-  });
-
-  return t(
-    'Updated @count menu block component(s) from "visibility_level_parent" to "block".',
-    [
-      '@count' => $updated_components,
-    ]
-  );
-}
