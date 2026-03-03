@@ -4787,12 +4787,6 @@ $sites['labstevens.dev.drupal.uiowa.edu'] = 'stevens.lab.uiowa.edu';
 $sites['labstevens.stage.drupal.uiowa.edu'] = 'stevens.lab.uiowa.edu';
 $sites['labstevens.prod.drupal.uiowa.edu'] = 'stevens.lab.uiowa.edu';
 
-// Directory aliases for bnelson.lab.uiowa.edu.
-$sites['labbnelson.uiowa.ddev.site'] = 'bnelson.lab.uiowa.edu';
-$sites['labbnelson.dev.drupal.uiowa.edu'] = 'bnelson.lab.uiowa.edu';
-$sites['labbnelson.stage.drupal.uiowa.edu'] = 'bnelson.lab.uiowa.edu';
-$sites['labbnelson.prod.drupal.uiowa.edu'] = 'bnelson.lab.uiowa.edu';
-
 // Directory aliases for dpriester.sites.uiowa.edu.
 $sites['sitesdpriester.uiowa.ddev.site'] = 'dpriester.sites.uiowa.edu';
 $sites['sitesdpriester.dev.drupal.uiowa.edu'] = 'dpriester.sites.uiowa.edu';
