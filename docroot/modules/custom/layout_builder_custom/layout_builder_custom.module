@@ -684,10 +684,6 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
         break;
 
       case 'menu_block:main':
-        // Prevent saving a label type that can fatal with current menu_block.
-        if ($form_state->getValue(['settings', 'label_type']) === 'visibility_level_parent') {
-          $form_state->setValue(['settings', 'label_type'], 'block');
-        }
         // If follow is checked...
         if ((int) $form_state->getValue(['settings', 'follow']) === 1) {
           // Set parent to default.
