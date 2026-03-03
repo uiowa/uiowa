@@ -19,6 +19,7 @@
     // Google injects this markup asynchronously after render.
     // Observe the results container so role="tab" can be removed when it appears.
     const removeRefinementTabRole = function () {
+      $('#search-results .gsc-tabHeader[role="tab"]').removeAttr('aria-label');
       $('#search-results .gsc-tabHeader[role="tab"]').removeAttr('role');
     };
 
