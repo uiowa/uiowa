@@ -222,7 +222,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
         // Loop through map of default styles and append text indicating
         // that they are the defaults if appropriate.
-        // This ensures duplicates inherit the correct defaults when they're created.
+        // This ensures duplicates inherit
+        // the correct defaults when they're created.
         foreach ($lb_styles_extra_settings as $key => $settings) {
           // The key that is used in the form array.
           $key = 'layout_builder_style_' . $key;
@@ -478,6 +479,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['admin_label']['#plain_text'] .= ' Menu';
             // Unset the menu option in the label.
             unset($form['settings']['advanced']['label_type']['#options']['menu']);
+            // Hide this option until menu_block fixes initialization of menuRoot.
+            // Fix is being tracked in https://github.com/uiowa/uiowa/issues/9647.
+            unset($form['settings']['advanced']['label_type']['#options']['visibility_level_parent']);
+            // Default existing blocks off unsupported label type.
+            if (($form['settings']['advanced']['label_type']['#default_value'] ?? NULL) === 'visibility_level_parent') {
+              $form['settings']['advanced']['label_type']['#default_value'] = 'block';
+            }
             // Adjust the default text.
             $form['settings']['advanced']['label_type']['#options']['block'] = t('"Section Menu" (default)');
             // Update the description on the label_type.
@@ -680,7 +688,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
         if ((int) $form_state->getValue(['settings', 'follow']) === 1) {
           // Set parent to default.
           $form_state->setValue(['settings', 'parent'], 'main:');
-          // Set level = 2.
+          // Set level = 1.
           $form_state->setValue(['settings', 'level'], 1);
         }
         break;
@@ -1055,6 +1063,28 @@ function layout_builder_custom_field_widget_single_element_paragraphs_form_alter
 }
 
 /**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function layout_builder_custom_field_widget_single_element_linkit_attributes_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+  if (!\Drupal::currentUser()
+    ->hasPermission('administer link field attributes')) {
+    $element['options']['attributes']['#access'] = FALSE;
+  }
+  if (isset($element['options']['attributes']['data-sn-event-component'])) {
+    // The default for this is set on a per-component basis,
+    // e.g. in the BannerBlockFormHandler,
+    // and should not be set by the user.
+    $element['options']['attributes']['data-sn-event-component']['#access'] = FALSE;
+  }
+  if (isset($element['options']['attributes']['data-sn-event-type'])) {
+    // The default for this is set platform-wide as 'click'
+    // in uiowa_core_link_attributes_plugin_alter, so
+    // remove access to change.
+    $element['options']['attributes']['data-sn-event-type']['#access'] = FALSE;
+  }
+}
+
+/**
  * Add an element to delineate the layout builder styles form section.
  *
  * The weights are important here. The layout_builder_custom module weighs all
@@ -1188,7 +1218,7 @@ function layout_builder_custom_preprocess_block__inline_block__featured_content(
 /**
  * Implements hook_preprocess_HOOK() for block__inline_block__uiowa_banner.
  */
-function layout_builder_custom_preproces_block__inline_block__uiowa_banner(&$variables) {
+function layout_builder_custom_preprocess_block__inline_block__uiowa_banner(&$variables) {
   $block = $variables['elements']['content']['#block_content'];
   // Media entity template needs to change based on this block,
   // so invalidate cache.
