@@ -67,6 +67,9 @@ class ReplaceCommands extends BltTasks {
       }
     }
 
+    // Capture the start time for logging.
+    $start_time = date('Y-m-d H:i:s');
+
     $parallel_installed = $this->taskExec('command -v parallel')
       ->printMetadata(FALSE)
       ->printOutput(FALSE)
@@ -102,10 +105,10 @@ class ReplaceCommands extends BltTasks {
       $multisite_exception = !empty($grep_result);
 
       // Always append the temp log to the final log file with markers.
-      $date = date('Y-m-d H:i:s');
-      $this->taskExec("echo 'START $date' >> $final_log_file")->run();
+      $end_time = date('Y-m-d H:i:s');
+      $this->taskExec("echo 'START $start_time' >> $final_log_file")->run();
       $this->taskExec("cat $temp_log_file >> $final_log_file")->run();
-      $this->taskExec("echo 'END $date' >> $final_log_file")->run();
+      $this->taskExec("echo 'END $end_time' >> $final_log_file")->run();
 
       // Remove the temporary file.
       $this->taskExec("rm $temp_log_file")->run();
