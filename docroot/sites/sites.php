@@ -7924,3 +7924,9 @@ $sites['tippiedsp.uiowa.ddev.site'] = 'dsp.tippie.uiowa.edu';
 $sites['tippiedsp.dev.drupal.uiowa.edu'] = 'dsp.tippie.uiowa.edu';
 $sites['tippiedsp.stage.drupal.uiowa.edu'] = 'dsp.tippie.uiowa.edu';
 $sites['tippiedsp.prod.drupal.uiowa.edu'] = 'dsp.tippie.uiowa.edu';
+
+// Directory aliases for ctsj.sites.uiowa.edu.
+$sites['sitesctsj.uiowa.ddev.site'] = 'ctsj.sites.uiowa.edu';
+$sites['sitesctsj.dev.drupal.uiowa.edu'] = 'ctsj.sites.uiowa.edu';
+$sites['sitesctsj.stage.drupal.uiowa.edu'] = 'ctsj.sites.uiowa.edu';
+$sites['sitesctsj.prod.drupal.uiowa.edu'] = 'ctsj.sites.uiowa.edu';
