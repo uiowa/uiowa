@@ -1967,12 +1967,6 @@ $sites['vote.dev.drupal.uiowa.edu'] = 'vote.uiowa.edu';
 $sites['vote.stage.drupal.uiowa.edu'] = 'vote.uiowa.edu';
 $sites['vote.prod.drupal.uiowa.edu'] = 'vote.uiowa.edu';
 
-// Directory aliases for inclusionteam.uiowa.edu.
-$sites['inclusionteam.uiowa.ddev.site'] = 'inclusionteam.uiowa.edu';
-$sites['inclusionteam.dev.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
-$sites['inclusionteam.stage.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
-$sites['inclusionteam.prod.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
-
 // Directory aliases for studentsuccess.uiowa.edu.
 $sites['studentsuccess.uiowa.ddev.site'] = 'studentsuccess.uiowa.edu';
 $sites['studentsuccess.dev.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
