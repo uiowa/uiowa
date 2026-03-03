@@ -480,6 +480,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Unset the menu option in the label.
             unset($form['settings']['advanced']['label_type']['#options']['menu']);
             // Hide this option until menu_block fixes initialization of menuRoot.
+            // Fix is being tracked in https://github.com/uiowa/uiowa/issues/9647.
             unset($form['settings']['advanced']['label_type']['#options']['visibility_level_parent']);
             // Default existing blocks off unsupported label type.
             if (($form['settings']['advanced']['label_type']['#default_value'] ?? NULL) === 'visibility_level_parent') {
