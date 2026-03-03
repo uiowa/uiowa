@@ -171,7 +171,9 @@ function registrar_core_fetch_correspondence_from_dispatch() {
     // Fetched archives are in descending chronological order
     // and we're only keeping ones that are 2 years or younger,
     // so once we've hit one that is older than 2 years old
-    // (63072000 seconds) we know we're done processing.
+// Fetched archives are in descending chronological order
+// and we're only keeping ones that are younger than the cutoff,
+// so once we've hit one that is older, we know we're done processing.
     if (strtotime($archive->createdOn) < $cutoff) {
       break;
     }
