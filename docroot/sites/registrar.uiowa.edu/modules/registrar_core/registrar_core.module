@@ -147,7 +147,8 @@ function registrar_core_fetch_correspondence_from_dispatch() {
   $logger->notice('Fetching correspondence archives.');
 
   $rows = [];
-  // Track currently visible Dispatch archive URLs so stale local rows can be removed.
+  // Track currently visible Dispatch archive URLs
+  // so stale local rows can be removed.
   $visible_archive_urls = [];
   $database = \Drupal::database();
   // Two-year retention window (63,072,000 seconds).
@@ -160,7 +161,8 @@ function registrar_core_fetch_correspondence_from_dispatch() {
   $query = UrlHelper::buildQuery($dispatch_params);
   $archives = registrar_core_dispatch_get_data("{$endpoint}archives?{$query}");
 
-  // If the API call fails, abort cleanup to avoid deleting valid local cache rows.
+  // If the API call fails, abort cleanup
+  // to avoid deleting valid local cache rows.
   if (!is_array($archives)) {
     $logger->warning('Unable to retrieve correspondence archives.');
     return;
@@ -169,11 +171,8 @@ function registrar_core_fetch_correspondence_from_dispatch() {
   foreach ($archives as $archive_url) {
     $archive = registrar_core_dispatch_get_data($archive_url);
     // Fetched archives are in descending chronological order
-    // and we're only keeping ones that are 2 years or younger,
-    // so once we've hit one that is older than 2 years old
-// Fetched archives are in descending chronological order
-// and we're only keeping ones that are younger than the cutoff,
-// so once we've hit one that is older, we know we're done processing.
+    // and we're only keeping ones that are younger than the cutoff,
+    // so once we've hit one that is older, we know we're done processing.
     if (strtotime($archive->createdOn) < $cutoff) {
       break;
     }
@@ -215,7 +214,8 @@ function registrar_core_fetch_correspondence_from_dispatch() {
     $query->execute();
   }
 
-  // Remove rows in the retention window that Dispatch no longer reports as visible.
+  // Remove rows in the retention window
+  // that Dispatch no longer reports as visible.
   $delete_query = $database->delete('correspondence_archives')
     ->condition('timestamp', $cutoff, '>=');
   // If Dispatch returned visible URLs, delete only rows not in that list.
