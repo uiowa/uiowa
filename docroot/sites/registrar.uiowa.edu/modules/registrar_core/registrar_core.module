@@ -141,8 +141,11 @@ function registrar_core_post_submit(&$form, FormStateInterface $form_state) {
 
 /**
  * Retrieve correspondence data from Dispatch.
+ *
+ * @param int $timestamp
+ *   The UNIX timestamp after which records should be retrieved.
  */
-function registrar_core_fetch_correspondence_from_dispatch() {
+function registrar_core_fetch_correspondence_from_dispatch(int $timestamp) {
   $logger = \Drupal::logger('registrar_core');
   $logger->notice('Fetching correspondence archives.');
 
@@ -151,8 +154,6 @@ function registrar_core_fetch_correspondence_from_dispatch() {
   // so stale local rows can be removed.
   $visible_archive_urls = [];
   $database = \Drupal::database();
-  // Two-year retention window (63,072,000 seconds).
-  $cutoff = time() - 63072000;
   $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
   $dispatch_params = [
     'VISIBLE' => 'true',
@@ -173,7 +174,7 @@ function registrar_core_fetch_correspondence_from_dispatch() {
     // Fetched archives are in descending chronological order
     // and we're only keeping ones that are younger than the cutoff,
     // so once we've hit one that is older, we know we're done processing.
-    if (strtotime($archive->createdOn) < $cutoff) {
+    if (strtotime($archive->createdOn) < $timestamp) {
       break;
     }
     $key = basename($archive_url);
@@ -217,7 +218,7 @@ function registrar_core_fetch_correspondence_from_dispatch() {
   // Remove rows in the retention window
   // that Dispatch no longer reports as visible.
   $delete_query = $database->delete('correspondence_archives')
-    ->condition('timestamp', $cutoff, '>=');
+    ->condition('timestamp', $timestamp, '>=');
   // If Dispatch returned visible URLs, delete only rows not in that list.
   if (!empty($visible_archive_urls)) {
     $delete_query->condition('url', $visible_archive_urls, 'NOT IN');
@@ -283,9 +284,11 @@ function registrar_core_cron() {
   $last_run = \Drupal::state()->get('registrar_core_daily_last');
 
   if (!$last_run || $request_date > $last_run) {
-    registrar_core_fetch_correspondence_from_dispatch();
-    // Prune entries older than 2 years (63072000 seconds).
-    registrar_core_prune_correspondence(time() - 63072000);
+    // Two-year retention window (63,072,000 seconds).
+    $timestamp = time() - 63072000;
+    registrar_core_fetch_correspondence_from_dispatch($timestamp);
+    // Prune entries older than the retention window.
+    registrar_core_prune_correspondence($timestamp);
 
     \Drupal::state()->set('registrar_core_daily_last', $request_date);
   }
