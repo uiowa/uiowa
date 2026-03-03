@@ -21,3 +21,11 @@ entity.node.facilities_core_dispatch:
         type: entity:node
         bundle:
           - alert
+
+facilities_core.utility_alerts:
+  path: '/facilities/api/utility-alerts'
+  defaults:
+    _title: 'Utility Alerts'
+    _controller: '\Drupal\facilities_core\Controller\UtilityAlertsController::getAlerts'
+  requirements:
+    _permission: 'access content'
