@@ -2957,12 +2957,6 @@ $sites['labgrumbach.dev.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
 $sites['labgrumbach.stage.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
 $sites['labgrumbach.prod.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
 
-// Directory aliases for mgnait.lab.uiowa.edu.
-$sites['labmgnait.uiowa.ddev.site'] = 'mgnait.lab.uiowa.edu';
-$sites['labmgnait.dev.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
-$sites['labmgnait.stage.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
-$sites['labmgnait.prod.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
-
 // Directory aliases for beckergroup.lab.uiowa.edu.
 $sites['labbeckergroup.uiowa.ddev.site'] = 'beckergroup.lab.uiowa.edu';
 $sites['labbeckergroup.dev.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
