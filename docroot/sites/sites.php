@@ -3449,12 +3449,6 @@ $sites['sitesmusictherapy.dev.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu
 $sites['sitesmusictherapy.stage.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu';
 $sites['sitesmusictherapy.prod.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu';
 
-// Directory aliases for sheffield.lab.uiowa.edu.
-$sites['labsheffield.uiowa.ddev.site'] = 'sheffield.lab.uiowa.edu';
-$sites['labsheffield.dev.drupal.uiowa.edu'] = 'sheffield.lab.uiowa.edu';
-$sites['labsheffield.stage.drupal.uiowa.edu'] = 'sheffield.lab.uiowa.edu';
-$sites['labsheffield.prod.drupal.uiowa.edu'] = 'sheffield.lab.uiowa.edu';
-
 // Directory aliases for mu.lab.uiowa.edu.
 $sites['labmu.uiowa.ddev.site'] = 'mu.lab.uiowa.edu';
 $sites['labmu.dev.drupal.uiowa.edu'] = 'mu.lab.uiowa.edu';
