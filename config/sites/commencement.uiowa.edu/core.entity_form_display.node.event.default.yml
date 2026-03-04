@@ -18,6 +18,8 @@ dependencies:
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_venue
+    - field.field.node.event.field_event_venue_address
+    - field.field.node.event.field_event_venue_name
     - field.field.node.event.field_event_website
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
@@ -198,6 +200,22 @@ content:
     settings:
       match_operator: CONTAINS
       match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_venue_address:
+    type: string_textfield
+    weight: 33
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_venue_name:
+    type: string_textfield
+    weight: 32
+    region: content
+    settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }

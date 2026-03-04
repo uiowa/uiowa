@@ -18,6 +18,8 @@ dependencies:
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_venue
+    - field.field.node.event.field_event_venue_address
+    - field.field.node.event.field_event_venue_name
     - field.field.node.event.field_event_website
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
@@ -53,6 +55,40 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: cf33205c-7fd1-4df4-a36c-1979f47d9623
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_venue_name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: be5ae8ab-f9ad-4ff0-8a55-e3257a66a4cb
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_venue_address'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 2
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -554,6 +590,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_event_venue_address:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_event_venue_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   body: true
