@@ -3521,12 +3521,6 @@ $sites['musicuisqrp.dev.drupal.uiowa.edu'] = 'uisqrp.music.uiowa.edu';
 $sites['musicuisqrp.stage.drupal.uiowa.edu'] = 'uisqrp.music.uiowa.edu';
 $sites['musicuisqrp.prod.drupal.uiowa.edu'] = 'uisqrp.music.uiowa.edu';
 
-// Directory aliases for collections.sites.uiowa.edu.
-$sites['sitescollections.uiowa.ddev.site'] = 'collections.sites.uiowa.edu';
-$sites['sitescollections.dev.drupal.uiowa.edu'] = 'collections.sites.uiowa.edu';
-$sites['sitescollections.stage.drupal.uiowa.edu'] = 'collections.sites.uiowa.edu';
-$sites['sitescollections.prod.drupal.uiowa.edu'] = 'collections.sites.uiowa.edu';
-
 // Directory aliases for template.clas.uiowa.edu.
 $sites['clastemplate.uiowa.ddev.site'] = 'template.clas.uiowa.edu';
 $sites['clastemplate.dev.drupal.uiowa.edu'] = 'template.clas.uiowa.edu';
