@@ -4319,12 +4319,6 @@ $sites['labholoreality.dev.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
 $sites['labholoreality.stage.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
 $sites['labholoreality.prod.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
 
-// Directory aliases for dholterhaus.sites.uiowa.edu.
-$sites['sitesdholterhaus.uiowa.ddev.site'] = 'dholterhaus.sites.uiowa.edu';
-$sites['sitesdholterhaus.dev.drupal.uiowa.edu'] = 'dholterhaus.sites.uiowa.edu';
-$sites['sitesdholterhaus.stage.drupal.uiowa.edu'] = 'dholterhaus.sites.uiowa.edu';
-$sites['sitesdholterhaus.prod.drupal.uiowa.edu'] = 'dholterhaus.sites.uiowa.edu';
-
 // Directory aliases for pih-engage.org.uiowa.edu.
 $sites['orgpih-engage.uiowa.ddev.site'] = 'pih-engage.org.uiowa.edu';
 $sites['orgpih-engage.dev.drupal.uiowa.edu'] = 'pih-engage.org.uiowa.edu';
