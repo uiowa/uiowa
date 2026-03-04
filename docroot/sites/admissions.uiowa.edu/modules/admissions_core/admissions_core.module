@@ -329,6 +329,7 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_link':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_field_label_icon($variables, 'fa-link');
       uiowa_core_set_title_attributes($variables, [
         'h4',
@@ -361,6 +362,7 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_scholarship':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_field_label_icon($variables, 'fa-link');
       uiowa_core_set_title_attributes($variables, [
         'h4',
@@ -412,6 +414,7 @@ function admissions_core_preprocess_field(&$variables) {
       $name = $term->field_major_community_college->entity->name->value;
       $variables['label'] = t('@name checkpoints', ['@name' => $name]);
 
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'h4',
         'headline',
@@ -421,6 +424,7 @@ function admissions_core_preprocess_field(&$variables) {
 
     case 'field_major_responsibilities':
     case 'field_major_uiowa_checkpoints':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'h4',
         'headline',

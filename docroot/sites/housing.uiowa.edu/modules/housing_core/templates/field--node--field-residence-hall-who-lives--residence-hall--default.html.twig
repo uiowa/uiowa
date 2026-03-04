@@ -1,4 +1,8 @@
-<div{{ title_attributes.addclass(title_classes) }}>{{ label }}</div>
+{% if label_tag is empty %}
+  {% set label_tag = 'div' %}
+{% endif %}
+
+<{{ label_tag }}{{ title_attributes.addclass(title_classes) }}>{{ label }}</{{ label_tag }}>
 <ul class="fa-field-item element--list-none">
   {% for item in items %}
     <li>
