@@ -503,12 +503,6 @@ $sites['orgombudsperson.dev.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
 $sites['orgombudsperson.stage.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
 $sites['orgombudsperson.prod.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
 
-// Directory aliases for cd2h.org.
-$sites['org-cd2h.uiowa.ddev.site'] = 'cd2h.org';
-$sites['org-cd2h.dev.drupal.uiowa.edu'] = 'cd2h.org';
-$sites['org-cd2h.stage.drupal.uiowa.edu'] = 'cd2h.org';
-$sites['org-cd2h.prod.drupal.uiowa.edu'] = 'cd2h.org';
-
 // Directory aliases for cfclincore.lab.uiowa.edu.
 $sites['labcfclincore.uiowa.ddev.site'] = 'cfclincore.lab.uiowa.edu';
 $sites['labcfclincore.dev.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
