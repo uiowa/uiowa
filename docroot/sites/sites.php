@@ -6503,12 +6503,6 @@ $sites['sitesyellowreview.dev.drupal.uiowa.edu'] = 'yellowreview.sites.uiowa.edu
 $sites['sitesyellowreview.stage.drupal.uiowa.edu'] = 'yellowreview.sites.uiowa.edu';
 $sites['sitesyellowreview.prod.drupal.uiowa.edu'] = 'yellowreview.sites.uiowa.edu';
 
-// Directory aliases for violetreview.sites.uiowa.edu.
-$sites['sitesvioletreview.uiowa.ddev.site'] = 'violetreview.sites.uiowa.edu';
-$sites['sitesvioletreview.dev.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
-$sites['sitesvioletreview.stage.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
-$sites['sitesvioletreview.prod.drupal.uiowa.edu'] = 'violetreview.sites.uiowa.edu';
-
 // Directory aliases for ebsl.lab.uiowa.edu.
 $sites['labebsl.uiowa.ddev.site'] = 'ebsl.lab.uiowa.edu';
 $sites['labebsl.dev.drupal.uiowa.edu'] = 'ebsl.lab.uiowa.edu';
