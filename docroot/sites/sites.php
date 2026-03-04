@@ -7463,12 +7463,6 @@ $sites['labortho-goetz.dev.drupal.uiowa.edu'] = 'ortho-goetz.lab.uiowa.edu';
 $sites['labortho-goetz.stage.drupal.uiowa.edu'] = 'ortho-goetz.lab.uiowa.edu';
 $sites['labortho-goetz.prod.drupal.uiowa.edu'] = 'ortho-goetz.lab.uiowa.edu';
 
-// Directory aliases for seol.lab.uiowa.edu.
-$sites['labseol.uiowa.ddev.site'] = 'seol.lab.uiowa.edu';
-$sites['labseol.dev.drupal.uiowa.edu'] = 'seol.lab.uiowa.edu';
-$sites['labseol.stage.drupal.uiowa.edu'] = 'seol.lab.uiowa.edu';
-$sites['labseol.prod.drupal.uiowa.edu'] = 'seol.lab.uiowa.edu';
-
 // Directory aliases for womeninhealthcare.org.uiowa.edu.
 $sites['orgwomeninhealthcare.uiowa.ddev.site'] = 'womeninhealthcare.org.uiowa.edu';
 $sites['orgwomeninhealthcare.dev.drupal.uiowa.edu'] = 'womeninhealthcare.org.uiowa.edu';
