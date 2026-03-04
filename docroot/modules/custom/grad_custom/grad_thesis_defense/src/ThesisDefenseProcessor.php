@@ -80,6 +80,7 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
         $processed_item->thesis = substr(strip_tags($defense_item->spos->thesis), 0, 255);
         $processed_item->examTimestamp = $defense_item->examTimestamp;
         $processed_item->examType = $defense_item->examType;
+        $processed_item->examLocation = $defense_item->examLocation;
         $processed_item->universityId = $university_id;
         $processed_item->name = $name ?? 'Thesis Defense - ' . $defense_item->id;
 
@@ -128,6 +129,11 @@ class ThesisDefenseProcessor extends EntityProcessorBase {
 
     if ($entity->get('title')->isEmpty() || $entity->get('title')->value !== $record->name) {
       $entity->set('title', $record->name);
+      $changed = TRUE;
+    }
+
+    if ($entity->get('field_thesis_defense_location')->isEmpty() || $entity->get('field_thesis_defense_location')->value !== $record->examLocation) {
+      $entity->set('field_thesis_defense_location', $record->examLocation);
       $changed = TRUE;
     }
 
