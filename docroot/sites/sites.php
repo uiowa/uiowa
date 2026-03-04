@@ -1685,12 +1685,6 @@ $sites['labkang.dev.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
 $sites['labkang.stage.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
 $sites['labkang.prod.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
 
-// Directory aliases for physicsresearch.sites.uiowa.edu.
-$sites['sitesphysicsresearch.uiowa.ddev.site'] = 'physicsresearch.sites.uiowa.edu';
-$sites['sitesphysicsresearch.dev.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
-$sites['sitesphysicsresearch.stage.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
-$sites['sitesphysicsresearch.prod.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
-
 // Directory aliases for newmoonmagazine.org.uiowa.edu.
 $sites['orgnewmoonmagazine.uiowa.ddev.site'] = 'newmoonmagazine.org.uiowa.edu';
 $sites['orgnewmoonmagazine.dev.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
