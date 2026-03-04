@@ -4763,12 +4763,6 @@ $sites['labadhd.dev.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
 $sites['labadhd.stage.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
 $sites['labadhd.prod.drupal.uiowa.edu'] = 'adhd.lab.uiowa.edu';
 
-// Directory aliases for uiowachoirauditions.org.uiowa.edu.
-$sites['orguiowachoirauditions.uiowa.ddev.site'] = 'uiowachoirauditions.org.uiowa.edu';
-$sites['orguiowachoirauditions.dev.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
-$sites['orguiowachoirauditions.stage.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
-$sites['orguiowachoirauditions.prod.drupal.uiowa.edu'] = 'uiowachoirauditions.org.uiowa.edu';
-
 // Directory aliases for stevens.lab.uiowa.edu.
 $sites['labstevens.uiowa.ddev.site'] = 'stevens.lab.uiowa.edu';
 $sites['labstevens.dev.drupal.uiowa.edu'] = 'stevens.lab.uiowa.edu';
