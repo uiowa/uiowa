@@ -4211,12 +4211,6 @@ $sites['labsowers.dev.drupal.uiowa.edu'] = 'sowers.lab.uiowa.edu';
 $sites['labsowers.stage.drupal.uiowa.edu'] = 'sowers.lab.uiowa.edu';
 $sites['labsowers.prod.drupal.uiowa.edu'] = 'sowers.lab.uiowa.edu';
 
-// Directory aliases for auditorytrainingindex.sites.uiowa.edu.
-$sites['sitesauditorytrainingindex.uiowa.ddev.site'] = 'auditorytrainingindex.sites.uiowa.edu';
-$sites['sitesauditorytrainingindex.dev.drupal.uiowa.edu'] = 'auditorytrainingindex.sites.uiowa.edu';
-$sites['sitesauditorytrainingindex.stage.drupal.uiowa.edu'] = 'auditorytrainingindex.sites.uiowa.edu';
-$sites['sitesauditorytrainingindex.prod.drupal.uiowa.edu'] = 'auditorytrainingindex.sites.uiowa.edu';
-
 // Directory aliases for hiew.lab.uiowa.edu.
 $sites['labhiew.uiowa.ddev.site'] = 'hiew.lab.uiowa.edu';
 $sites['labhiew.dev.drupal.uiowa.edu'] = 'hiew.lab.uiowa.edu';
