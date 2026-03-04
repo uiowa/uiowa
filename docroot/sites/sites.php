@@ -3467,12 +3467,6 @@ $sites['research.dev.drupal.uiowa.edu'] = 'research.uiowa.edu';
 $sites['research.stage.drupal.uiowa.edu'] = 'research.uiowa.edu';
 $sites['research.prod.drupal.uiowa.edu'] = 'research.uiowa.edu';
 
-// Directory aliases for cssa.org.uiowa.edu.
-$sites['orgcssa.uiowa.ddev.site'] = 'cssa.org.uiowa.edu';
-$sites['orgcssa.dev.drupal.uiowa.edu'] = 'cssa.org.uiowa.edu';
-$sites['orgcssa.stage.drupal.uiowa.edu'] = 'cssa.org.uiowa.edu';
-$sites['orgcssa.prod.drupal.uiowa.edu'] = 'cssa.org.uiowa.edu';
-
 // Directory aliases for herrmann.lab.uiowa.edu.
 $sites['labherrmann.uiowa.ddev.site'] = 'herrmann.lab.uiowa.edu';
 $sites['labherrmann.dev.drupal.uiowa.edu'] = 'herrmann.lab.uiowa.edu';
