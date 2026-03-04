@@ -3431,12 +3431,6 @@ $sites['asr.dev.drupal.uiowa.edu'] = 'asr.uiowa.edu';
 $sites['asr.stage.drupal.uiowa.edu'] = 'asr.uiowa.edu';
 $sites['asr.prod.drupal.uiowa.edu'] = 'asr.uiowa.edu';
 
-// Directory aliases for sipe.org.uiowa.edu.
-$sites['orgsipe.uiowa.ddev.site'] = 'sipe.org.uiowa.edu';
-$sites['orgsipe.dev.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
-$sites['orgsipe.stage.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
-$sites['orgsipe.prod.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
-
 // Directory aliases for musictherapy.sites.uiowa.edu.
 $sites['sitesmusictherapy.uiowa.ddev.site'] = 'musictherapy.sites.uiowa.edu';
 $sites['sitesmusictherapy.dev.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu';
