@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesadaptivesportsday.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesadaptivesportsday
+  human_name: adaptivesportsday.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesadaptivesportsday.prod
+drupal:
+  db:
+    database: adaptivesportsday_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesadaptivesportsday.prod.drupal.uiowa.edu'
+  requester: trigriffin
+  site-name: 'Adaptive Sports Day'
