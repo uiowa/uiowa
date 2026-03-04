@@ -6497,12 +6497,6 @@ $sites['centerpcn.dev.drupal.uiowa.edu'] = 'pcn.center.uiowa.edu';
 $sites['centerpcn.stage.drupal.uiowa.edu'] = 'pcn.center.uiowa.edu';
 $sites['centerpcn.prod.drupal.uiowa.edu'] = 'pcn.center.uiowa.edu';
 
-// Directory aliases for redreview.sites.uiowa.edu.
-$sites['sitesredreview.uiowa.ddev.site'] = 'redreview.sites.uiowa.edu';
-$sites['sitesredreview.dev.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
-$sites['sitesredreview.stage.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
-$sites['sitesredreview.prod.drupal.uiowa.edu'] = 'redreview.sites.uiowa.edu';
-
 // Directory aliases for yellowreview.sites.uiowa.edu.
 $sites['sitesyellowreview.uiowa.ddev.site'] = 'yellowreview.sites.uiowa.edu';
 $sites['sitesyellowreview.dev.drupal.uiowa.edu'] = 'yellowreview.sites.uiowa.edu';
