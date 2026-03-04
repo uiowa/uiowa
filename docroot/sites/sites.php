@@ -2705,12 +2705,6 @@ $sites['orgstar.dev.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
 $sites['orgstar.stage.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
 $sites['orgstar.prod.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
 
-// Directory aliases for upsa.org.uiowa.edu.
-$sites['orgupsa.uiowa.ddev.site'] = 'upsa.org.uiowa.edu';
-$sites['orgupsa.dev.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
-$sites['orgupsa.stage.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
-$sites['orgupsa.prod.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
-
 // Directory aliases for brogden.lab.uiowa.edu.
 $sites['labbrogden.uiowa.ddev.site'] = 'brogden.lab.uiowa.edu';
 $sites['labbrogden.dev.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
