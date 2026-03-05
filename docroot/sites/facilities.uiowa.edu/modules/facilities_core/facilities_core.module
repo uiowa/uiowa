@@ -356,6 +356,7 @@ function facilities_core_preprocess_field(&$variables) {
       // Append the details element to the field content.
       $variables['items'][0]['content']['#suffix'] = '<br />' . \Drupal::service('renderer')->render($details);
 
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'headline',
         'headline--serif',
