@@ -5,8 +5,13 @@
  * Contains grad_thesis_defense.module.
  */
 
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\grad_thesis_defense\Entity\ThesisDefense;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -18,16 +23,93 @@ function grad_thesis_defense_entity_bundle_info_alter(array &$bundles) {
 }
 
 /**
- * Implements hook_entity_presave().
+ * Implements hook_entity_extra_field_info().
  */
-function grad_thesis_defense_entity_presave(EntityInterface $entity) {
-  switch ($entity->bundle()) {
-    case 'thesis_defense':
-      // Setting the title with the first/last name values.
-      $output = $entity->get('field_person_first_name')->value . ' ' . $entity->get('field_person_last_name')->value;
-      $entity->setTitle($output);
-      break;
+function grad_thesis_defense_entity_extra_field_info(): array {
+  $extra = [];
+  // Disclaimer text.
+  $extra['node']['thesis_defense']['display']['field_thesis_defense_disclaimer'] = [
+    'label' => t('Disclaimer'),
+    'description' => t('Disclaimer text to be printed with each node.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
 
+  return $extra;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_thesis_defense_form':
+    case 'node_thesis_defense_edit_form':
+      // These are imported fields that editors should not interact with.
+      $form['title']['#disabled'] = TRUE;
+      $form['field_thesis_defense_title']['#disabled'] = TRUE;
+      $form['field_thesis_defense_sync_id']['#disabled'] = TRUE;
+      $form['field_thesis_defense_location']['#disabled'] = TRUE;
+      $form['field_thesis_defense_program']['#disabled'] = TRUE;
+      $form['field_thesis_defense_date']['#disabled'] = TRUE;
+      $form['field_thesis_defense_chairs']['#disabled'] = TRUE;
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function grad_thesis_defense_form_layout_builder_add_block_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof ConfigureBlockFormBase) {
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    $component = $form_object->getCurrentComponent();
+    $block = $component->getPlugin();
+    switch ($block->getPluginId()) {
+      case 'views_block:thesis_defenses-block_thesis_defenses':
+        if ($form['settings']['override']['items_per_page']) {
+          $form['settings']['override']['items_per_page']['#default_value'] = 50;
+        }
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function grad_thesis_defense_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode): void {
+  if ($node->bundle() === 'thesis_defense') {
+    if ($display->getComponent('field_thesis_defense_disclaimer')) {
+      $build['field_thesis_defense_disclaimer'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'field',
+            'field--name-field-thesis-defense-disclaimer',
+            'field--type-list-string',
+            'field--label-inline',
+          ],
+        ],
+      ];
+      $build['field_thesis_defense_disclaimer']['label'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => t('Disclaimer'),
+        '#attributes' => [
+          'class' => ['field__label visually-hidden'],
+        ],
+      ];
+      $build['field_thesis_defense_disclaimer']['value'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => '<em>' . t('Thesis title listed for defense is subject to change.') . '</em>',
+        '#attributes' => [
+          'class' => ['field__item'],
+        ],
+      ];
+    }
   }
 }
 
@@ -37,7 +119,7 @@ function grad_thesis_defense_entity_presave(EntityInterface $entity) {
 function grad_thesis_defense_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_thesis_defense_date':
-      uiowa_core_set_field_icon($variables, 'fas fa-calendar-alt');
+      uiowa_core_set_field_icon($variables, 'fas fa-clock');
 
       break;
 
@@ -57,12 +139,38 @@ function grad_thesis_defense_preprocess_field(&$variables, $hook) {
 }
 
 /**
- * Implements template_preprocess_views_view().
+ * Implements hook_form_FORM_ID_alter().
  */
-function grad_thesis_defense_preprocess_views_view(&$variables) {
-  // Check if the current view has a specific ID or display ID.
-  if ($variables['view']->id() == 'thesis_defenses') {
-    // Attach the library using the #attached property.
-    $variables['#attached']['library'][] = 'uids_base/view-calendar';
+function grad_thesis_defense_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if ($form['#id'] === 'views-exposed-form-thesis-defenses-block-thesis-defenses') {
+    $form['#attached']['library'][] = 'uids_base/view-bef';
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function grad_thesis_defense_views_pre_render(ViewExecutable $view): void {
+  if ($view->id() === 'thesis_defenses' && $view->current_display === 'block_thesis_defenses') {
+    $view->element['#cache']['tags'][] = 'time:daily';
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function grad_thesis_defense_views_pre_view(ViewExecutable $view, $display_id, array &$args): void {
+  // Default the filter to today if exposed.
+  if ($view->id() === 'thesis_defenses' && $display_id === 'block_thesis_defenses') {
+    $exposed_input = $view->getExposedInput();
+    // If the date filter is not set and exposed, default it to today.
+    $exposed = $view->display_handler->getOption('block_config')['exposed']['filter-field_thesis_defense_date_value']['exposed'];
+    if (empty($exposed_input['combine'])) {
+      if (empty($exposed_input['field_thesis_defense_date_value']) && $exposed) {
+        $today = (new DrupalDateTime())->format('Y-m-d');
+        $exposed_input['field_thesis_defense_date_value'] = $today;
+        $view->setExposedInput($exposed_input);
+      }
+    }
   }
 }
