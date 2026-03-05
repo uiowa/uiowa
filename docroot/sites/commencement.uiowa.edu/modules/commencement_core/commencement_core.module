@@ -94,6 +94,8 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_contact_phone']['#disabled'] = TRUE;
       $form['field_event_room']['#disabled'] = TRUE;
       $form['field_event_venue']['#disabled'] = TRUE;
+      $form['field_event_venue_name']['#disabled'] = TRUE;
+      $form['field_event_venue_address']['#disabled'] = TRUE;
       $form['field_event_id']['#disabled'] = TRUE;
       $form['field_event_when']['#disabled'] = TRUE;
       $form['field_event_link']['#disabled'] = TRUE;
@@ -338,6 +340,20 @@ function commencement_core_preprocess_field(&$variables) {
           $room = ' - ' . $node_value[0]['value'];
         }
         $variables['items'][0]['content']['#suffix'] = $room;
+      }
+      break;
+
+    case 'field_event_venue_name':
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      if ($node->bundle() === 'event') {
+        // Grab the off-campus venue name and address
+        // to combine. Drop the previous content, and replace
+        // with basic markup.
+        $venue_name = $node?->get('field_event_venue_name')?->getValue()[0]['value'];
+        $venue_address = $node?->get('field_event_venue_address')?->getValue()[0]['value'];
+        unset($variables['items'][0]['content']);
+        $variables['items'][0]['content']['#markup'] = "{$venue_name}<br>{$venue_address}";
       }
       break;
 
