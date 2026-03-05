@@ -112,7 +112,11 @@ class EventsProcessor extends EntityProcessorBase {
         // If the location venue did not exist, then move the name
         // and address into separate, plain text fields.
         $record->venue_name = $record->location_name;
-        $record->venue_address = $record->address;
+        $street = $record->geo->street;
+        $city = $record->geo->city;
+        $state = $record->geo->state;
+        $zip = $record->geo->zip;
+        $record->venue_address = "{$street}<br>{$city}, {$state} {$zip}";
       }
     }
 
