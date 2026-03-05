@@ -407,4 +407,65 @@ class MauiApi extends ApiClientBase {
     return $data->payload[0]->identities;
   }
 
+  /**
+   * Get an array of university ids to call against for thesis defense info.
+   *
+   * @return array
+   *   Array data.
+   */
+  public function getThesisDefenseIds(): array {
+    // Add basic auth credentials for this specific call.
+    $config = \Drupal::config('grad_thesis_defense.settings');
+    $username = $config->get('thesis_defense_username');
+    $password = $config->get('thesis_defense_password');
+
+    if ($username && $password) {
+      $options['auth'] = [$username, $password];
+      $options['query'] = [
+        'date' => (new DrupalDateTime())->format('Y-m-d'),
+      ];
+
+      $result = $this->get('/auth/registrar/graduate-college/thesis-defense-students', $options);
+
+      if ($result === FALSE || !is_array($result)) {
+        \Drupal::logger('uiowa_maui')->error('Failed to fetch thesis defense IDs.');
+        return [];
+      }
+
+      return $result;
+    }
+
+    return [];
+  }
+
+  /**
+   * Get thesis defense information for a given university id.
+   *
+   * @param string $university_id
+   *   The university id to get thesis defense information for.
+   *
+   * @return array
+   *   The API response data.
+   */
+  public function getThesisDefenseInfo($university_id): array {
+    // Add basic auth credentials for this specific call.
+    $config = \Drupal::config('grad_thesis_defense.settings');
+    $username = $config->get('thesis_defense_username');
+    $password = $config->get('thesis_defense_password');
+
+    if ($username && $password) {
+      $options['auth'] = [$username, $password];
+      $result = $this->get("/auth/personsTEMP/{$university_id}/student/comprehensive-exams", $options);
+
+      if ($result === FALSE || !is_array($result)) {
+        \Drupal::logger('uiowa_maui')->error('Failed to fetch thesis defense info for university ID: @id', ['@id' => $university_id]);
+        return [];
+      }
+
+      return $result;
+    }
+
+    return [];
+  }
+
 }
