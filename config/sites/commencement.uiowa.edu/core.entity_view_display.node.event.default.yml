@@ -57,40 +57,6 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-          -
-            uuid: cf33205c-7fd1-4df4-a36c-1979f47d9623
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_venue_name'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: be5ae8ab-f9ad-4ff0-8a55-e3257a66a4cb
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_venue_address'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_header
@@ -250,7 +216,7 @@ third_party_settings:
                     decimals: 2
                     suffix: h
                 third_party_settings: {  }
-            weight: 3
+            weight: 5
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -270,7 +236,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 9
+            weight: 10
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -333,7 +299,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -354,7 +320,7 @@ third_party_settings:
                 settings:
                   view_mode: teaser
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -447,6 +413,48 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: be5ae8ab-f9ad-4ff0-8a55-e3257a66a4cb
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_venue_address'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: cf33205c-7fd1-4df4-a36c-1979f47d9623
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_venue_name'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
