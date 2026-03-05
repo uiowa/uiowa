@@ -7852,3 +7852,9 @@ $sites['sitesctsj.uiowa.ddev.site'] = 'ctsj.sites.uiowa.edu';
 $sites['sitesctsj.dev.drupal.uiowa.edu'] = 'ctsj.sites.uiowa.edu';
 $sites['sitesctsj.stage.drupal.uiowa.edu'] = 'ctsj.sites.uiowa.edu';
 $sites['sitesctsj.prod.drupal.uiowa.edu'] = 'ctsj.sites.uiowa.edu';
+
+// Directory aliases for lu.lab.uiowa.edu.
+$sites['lablu.uiowa.ddev.site'] = 'lu.lab.uiowa.edu';
+$sites['lablu.dev.drupal.uiowa.edu'] = 'lu.lab.uiowa.edu';
+$sites['lablu.stage.drupal.uiowa.edu'] = 'lu.lab.uiowa.edu';
+$sites['lablu.prod.drupal.uiowa.edu'] = 'lu.lab.uiowa.edu';
