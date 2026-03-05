@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\media\Source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -146,7 +147,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
             ['query' => ['id' => $id]]
           );
           $html = (string) $response->getBody();
-          $document = \Drupal\Component\Utility\Html::load($html);
+          $document = Html::load($html);
           $title = trim($document->getElementsByTagName('title')->item(0)?->textContent ?? '');
           if (!empty($title)) {
             return $title;
