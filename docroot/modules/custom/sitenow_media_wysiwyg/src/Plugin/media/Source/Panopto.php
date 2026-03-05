@@ -150,7 +150,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
           $document = Html::load($html);
           $title = trim($document->getElementsByTagName('title')->item(0)?->textContent ?? '');
           if (!empty($title)) {
-            return $title;
+            return mb_substr($title, 0, 255);
           }
         }
         catch (\Exception $e) {
