@@ -293,11 +293,6 @@ class MultisiteCommands extends BltTasks {
         throw new \Exception('Aborted.');
       }
       else {
-        // Iterate over each environment and delete files.
-        foreach (['dev', 'test', 'prod'] as $env) {
-          $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir);
-        }
-
         /** @var \AcquiaCloudApi\Connector\Client $client */
         $client = $this->getAcquiaCloudApiClient(
           $this->getConfigValue('uiowa.credentials.acquia.key'),
@@ -310,6 +305,12 @@ class MultisiteCommands extends BltTasks {
         }
 
         $uuid = $uuids[$app];
+
+        // Iterate over each environment and delete files.
+        foreach (['dev', 'test', 'prod'] as $env) {
+          $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir, $client, $uuid);
+        }
+
         /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
         $databases = new Databases($client);
 
@@ -1049,7 +1050,7 @@ EOD;
         $this->logger->warning('Test mode. Skipping database deletion.');
       }
 
-      $this->deleteRemoteMultisiteFiles($id, $old, $mode, $site);
+      $this->deleteRemoteMultisiteFiles($id, $old, $mode, $site, $client, $applications[$old]);
     }
 
     $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
@@ -1176,32 +1177,38 @@ EOD;
    * @param string $id
    *   The multisite identifier.
    * @param string $app
-   *   THe application to use for Drush alias.
+   *   The application to use for Drush alias.
    * @param string $env
    *   The environment to use for the Drush alias.
    * @param string $site
    *   The multisite files directory to delete.
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   The Acquia Cloud API client.
+   * @param string $uuid
+   *   The application UUID.
    *
    * @throws \Robo\Exception\TaskException
    */
-  protected function deleteRemoteMultisiteFiles(string $id, string $app, string $env, string $site): void {
+  protected function deleteRemoteMultisiteFiles(string $id, string $app, string $env, string $site, Client $client, string $uuid): void {
     if ($site == '.' || $site == '*') {
       throw new \Exception('Deleting current directory or wildcard is not allowed.');
     }
 
-    $app_env = "$app.$env";
-
-    // Use ssh user information for proper directory location.
-    $whoami_result = $this->taskDrush()
-      ->alias("$id.$env")
-      ->drush('ssh')
-      ->arg('whoami')
-      ->printOutput(TRUE)
-      ->run();
-
-    if (str_contains($whoami_result->getMessage(), 'stage')) {
-      $app_env = trim($whoami_result->getMessage());
+    // Handle both old 'test' and alternative 'stage' naming conventions.
+    $env_name = $env;
+    if ($env === 'test') {
+      // Check if the application has a 'stage' environment instead of 'test'.
+      $environments = new Environments($client);
+      $envs = $environments->getAll($uuid);
+      foreach ($envs as $environment) {
+        if ($environment->name === 'stage') {
+          $env_name = 'stage';
+          break;
+        }
+      }
     }
+
+    $app_env = "$app.$env_name";
 
     $file_directories = [
       'files',
@@ -1217,7 +1224,8 @@ EOD;
         ->run();
 
       if (!$result->wasSuccessful()) {
-        throw new \Exception("Unable to delete multisite $directory for $site on $app_env.");
+        // Log the error but don't fail the entire operation.
+        $this->logger->warning("Unable to delete multisite $directory for $site on $app_env. Please delete manually.");
       }
     }
   }
