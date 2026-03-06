@@ -45,8 +45,6 @@ class ReportCommands extends Tasks {
       'Application',
       'Environment',
       'URL',
-      'Version',
-      'Status',
     ];
 
     $debug = $options['debug'];
