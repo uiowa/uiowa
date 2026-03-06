@@ -96,7 +96,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -117,10 +117,6 @@ display:
               secondary_label: 'Advanced options'
               secondary_open: false
               reset_button_always_show: false
-            pager:
-              plugin_id: default
-              advanced:
-                is_secondary: false
             filter:
               combine:
                 plugin_id: default
@@ -523,7 +519,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: Name
+            label: 'Search by name'
             description: ''
             use_operator: false
             operator: combine_op
@@ -575,7 +571,7 @@ display:
           exposed: true
           expose:
             operator_id: field_thesis_defense_date_value_op
-            label: Date
+            label: 'Search by date'
             description: ''
             use_operator: false
             operator: field_thesis_defense_date_value_op
