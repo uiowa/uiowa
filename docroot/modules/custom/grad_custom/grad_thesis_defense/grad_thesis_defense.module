@@ -148,6 +148,24 @@ function grad_thesis_defense_form_views_exposed_form_alter(&$form, FormStateInte
 }
 
 /**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function grad_thesis_defense_preprocess_views_view_unformatted(array &$variables): void {
+  $view = $variables['view'];
+
+  if ($view->id() === 'thesis_defenses' && $view->current_display === 'block_thesis_defenses' && !empty($variables['title'])) {
+    $variables['views_heading_classes'] = array_merge(
+      $variables['views_heading_classes'] ?? [],
+      [
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ],
+    );
+  }
+}
+
+/**
  * Implements hook_views_pre_view().
  */
 function grad_thesis_defense_views_pre_render(ViewExecutable $view): void {
