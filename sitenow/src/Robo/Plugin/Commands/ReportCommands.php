@@ -101,8 +101,15 @@ class ReportCommands extends Tasks {
 
       /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
       foreach ($api_environments->getAll($application->uuid) as $environment) {
+        // Some applications use 'stage' instead of 'test' (e.g. uiowa07).
+        // Treat 'stage' as equivalent to 'test' when filtering environments.
+        $env_name = $environment->name;
+        if ($env_name === 'stage' && in_array('test', $target_environments)) {
+          $env_name = 'test';
+        }
+
         // Only report on specified environments.
-        if (!in_array($environment->name, $target_environments)) {
+        if (!in_array($env_name, $target_environments)) {
           continue;
         }
 
