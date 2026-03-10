@@ -45,9 +45,9 @@ third_party_settings:
         - body
         - field_event_when
         - field_event_venue
+        - field_event_room
         - field_event_venue_name
         - field_event_venue_address
-        - field_event_room
         - field_event_link
         - field_event_contact
         - field_event_contact_email
@@ -183,7 +183,7 @@ content:
     third_party_settings: {  }
   field_event_room:
     type: string_textfield
-    weight: 27
+    weight: 25
     region: content
     settings:
       size: 60
@@ -206,16 +206,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_event_venue_address:
-    type: string_textfield
-    weight: 26
+    type: string_textarea
+    weight: 27
     region: content
     settings:
-      size: 60
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_event_venue_name:
     type: string_textfield
-    weight: 25
+    weight: 26
     region: content
     settings:
       size: 60
