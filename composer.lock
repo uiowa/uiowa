@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c7c7fbdbc006873a009a16d7f83345c",
+    "content-hash": "872e4712f019df857a1a027041af2115",
     "packages": [
         {
             "name": "acquia/blt",
@@ -5431,30 +5431,32 @@
         },
         {
             "name": "drupal/editor_advanced_link",
-            "version": "2.2.6",
+            "version": "2.2.9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/editor_advanced_link.git",
-                "reference": "2.2.6"
+                "reference": "2.2.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/editor_advanced_link-2.2.6.zip",
-                "reference": "2.2.6",
-                "shasum": "f6d7c437900f288b1e735b4faf2decc99bdd30e8"
+                "url": "https://ftp.drupal.org/files/projects/editor_advanced_link-2.2.9.zip",
+                "reference": "2.2.9",
+                "shasum": "fc1a4c6ad69a4bfc820ecfd0df47fbc7f5d6a885"
             },
             "require": {
-                "drupal/core": "^10.2 || ^11.0"
+                "drupal/core": "^10.2 <10.5 || ^11 <11.2"
+            },
+            "conflict": {
+                "drupal/core": "^10 >=10.5 || ^11 >=11.2"
             },
             "require-dev": {
-                "drupal/ckeditor": "*",
                 "phpro/grumphp": "^2.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.2.6",
-                    "datestamp": "1723183019",
+                    "version": "2.2.9",
+                    "datestamp": "1758044012",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5475,7 +5477,7 @@
                     "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
-            "description": "Editor Advanced link",
+            "description": "Add title, target etc. attributes to Text Editor''s link dialog if the text format allows them.",
             "homepage": "https://www.drupal.org/project/editor_advanced_link",
             "support": {
                 "source": "https://git.drupalcode.org/project/editor_advanced_link"
