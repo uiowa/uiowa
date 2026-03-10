@@ -347,13 +347,12 @@ function commencement_core_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
       if ($node->bundle() === 'event') {
-        // Grab the off-campus venue name and address
-        // to combine. Drop the previous content, and replace
-        // with basic markup.
-        $venue_name = $node?->get('field_event_venue_name')?->getValue()[0]['value'];
-        $venue_address = $node?->get('field_event_venue_address')?->getValue()[0]['value'];
+        // Grab the off-campus venue name and address to combine.
+        // Drop the previous content and replace with basic markup.
+        $venue_name = $node->get('field_event_venue_name')->getString();
+        $venue_address = $node->get('field_event_venue_address')->getString();
         unset($variables['items'][0]['content']);
-        $variables['items'][0]['content']['#markup'] = "{$venue_name}<br>{$venue_address}";
+        $variables['items'][0]['content']['#markup'] = "{$venue_name}<br>" . nl2br($venue_address);
       }
       break;
 

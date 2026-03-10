@@ -116,7 +116,7 @@ class EventsProcessor extends EntityProcessorBase {
         $city = $record->geo->city;
         $state = $record->geo->state;
         $zip = $record->geo->zip;
-        $record->venue_address = "{$street}<br>{$city}, {$state} {$zip}";
+        $record->venue_address = "{$street}\n{$city}, {$state} {$zip}";
       }
     }
 
