@@ -106,7 +106,7 @@ class EventsProcessor extends EntityProcessorBase {
     if (property_exists($record, 'location_name') && !is_null($record->location_name)) {
       $venue_id = $this->findVenueNid($record->location_name);
       if (!is_null($venue_id)) {
-        $record->location_name = $this->findVenueNid($record->location_name);
+        $record->location_name = $venue_id;
       }
       else {
         // If the location venue did not exist, then move the name
