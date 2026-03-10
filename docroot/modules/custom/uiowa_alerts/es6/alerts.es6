@@ -65,7 +65,8 @@ Drupal.behaviors.uiowaAlerts = {
           messages.add(alertContent, {
             id: id,
             type: 'error',
-            dismissible: false
+            dismissible: false,
+            announce: Drupal.t('Hawk Alert: @alert', { '@alert': item.attributes.alert }),
           });
 
           // Look for differences in existing and new alerts and remove any closed alerts.
