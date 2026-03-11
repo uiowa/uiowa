@@ -555,6 +555,18 @@ function template_preprocess_card(&$variables) {
     ...$button_classes,
   ];
 
+  // Apply link tracking attributes to the appropriate link element.
+  if (!empty($element['#link_attributes'])) {
+    if ($element['#linked_element'] === 'title') {
+      $element['#headline']['headline_url_attributes'] = $element['#link_attributes'];
+    }
+    elseif ($element['#linked_element'] === 'button') {
+      foreach ($element['#link_attributes'] as $attr => $value) {
+        $element['#button_attributes'][$attr] = $value;
+      }
+    }
+  }
+
   // Transfer properties and slots from the render element to variables for
   // processing in the template.
   foreach ([
