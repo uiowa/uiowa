@@ -7714,3 +7714,9 @@ $sites['lablu.uiowa.ddev.site'] = 'lu.lab.uiowa.edu';
 $sites['lablu.dev.drupal.uiowa.edu'] = 'lu.lab.uiowa.edu';
 $sites['lablu.stage.drupal.uiowa.edu'] = 'lu.lab.uiowa.edu';
 $sites['lablu.prod.drupal.uiowa.edu'] = 'lu.lab.uiowa.edu';
+
+// Directory aliases for shrm.tippie.uiowa.edu.
+$sites['tippieshrm.uiowa.ddev.site'] = 'shrm.tippie.uiowa.edu';
+$sites['tippieshrm.dev.drupal.uiowa.edu'] = 'shrm.tippie.uiowa.edu';
+$sites['tippieshrm.stage.drupal.uiowa.edu'] = 'shrm.tippie.uiowa.edu';
+$sites['tippieshrm.prod.drupal.uiowa.edu'] = 'shrm.tippie.uiowa.edu';
