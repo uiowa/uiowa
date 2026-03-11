@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\layout_builder_custom;
+namespace Drupal\uiowa_core;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
@@ -43,14 +43,12 @@ class LinkAnalyticsHelper {
   /**
    * Sanitizes analytics attributes on a menu_link_content form.
    *
-   * @param array $form
-   *   The form array.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    * @param string $component_type
    *   The component type (e.g. 'menu-link').
    */
-  public static function sanitizeMenuLinkAnalyticsAttributes(array $form, FormStateInterface $form_state, string $component_type): void {
+  public static function sanitizeMenuLinkAnalyticsAttributes(FormStateInterface $form_state, string $component_type): void {
     $attributes = $form_state->getValue(['link', 0, 'options', 'attributes']) ?? [];
     $fallback_label = trim($form_state->getValue(['title', 0, 'value']) ?? '');
     $attributes = self::sanitizeAttributes($attributes, $component_type, $fallback_label);

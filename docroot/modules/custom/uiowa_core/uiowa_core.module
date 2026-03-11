@@ -21,7 +21,6 @@ use Drupal\Core\Url;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
-use Drupal\layout_builder_custom\LinkAnalyticsHelper;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\symfony_mailer\EmailInterface;
@@ -31,6 +30,7 @@ use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\LinkAnalyticsHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Drupal\webform\Element\WebformRoles;
@@ -1206,7 +1206,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * Validation handler to clean up analytics attributes.
  */
 function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form_state) {
-  LinkAnalyticsHelper::sanitizeMenuLinkAnalyticsAttributes($form, $form_state, 'menu-link');
+  LinkAnalyticsHelper::sanitizeMenuLinkAnalyticsAttributes($form_state, 'menu-link');
 }
 
 /**

@@ -4,6 +4,7 @@ namespace Drupal\layout_builder_custom;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\uiowa_core\LinkAnalyticsHelper;
 
 /**
  * Handles form alterations for the uiowa_banner block.
