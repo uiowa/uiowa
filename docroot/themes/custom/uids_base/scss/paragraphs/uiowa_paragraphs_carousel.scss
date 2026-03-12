@@ -57,6 +57,7 @@ div[data-carousel="carousel"] {
 
   .slick-dots {
     z-index: 11;
+    position: relative;
     background: variables.$secondary;
     width: 100%;
     margin: 0;
@@ -65,6 +66,7 @@ div[data-carousel="carousel"] {
     display: flex;
     bottom: 0;
     justify-content: center;
+    flex-wrap: wrap;
 
     @include utilities.breakpoint(sm) {
       position: absolute;
@@ -78,8 +80,10 @@ div[data-carousel="carousel"] {
       flex: 1 1;
       max-width: 3rem;
       list-style: none;
-      height: 0.3rem;
-      margin: 0 .2rem .6rem;
+      margin: 0.2rem;
+      line-height: 1rem;
+      display: flex;
+      justify-content: center;
 
       button {
         height: 24px;
