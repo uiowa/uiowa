@@ -18,6 +18,8 @@ dependencies:
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_venue
+    - field.field.node.event.field_event_venue_address
+    - field.field.node.event.field_event_venue_name
     - field.field.node.event.field_event_website
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
@@ -214,7 +216,7 @@ third_party_settings:
                     decimals: 2
                     suffix: h
                 third_party_settings: {  }
-            weight: 3
+            weight: 5
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -234,7 +236,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 9
+            weight: 10
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -297,7 +299,7 @@ third_party_settings:
                 settings:
                   view_mode: default
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -318,7 +320,7 @@ third_party_settings:
                 settings:
                   view_mode: teaser
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
@@ -411,6 +413,27 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
+            third_party_settings: {  }
+          -
+            uuid: cf33205c-7fd1-4df4-a36c-1979f47d9623
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_venue_name'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -554,6 +577,21 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_event_venue_address:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_event_venue_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   body: true
