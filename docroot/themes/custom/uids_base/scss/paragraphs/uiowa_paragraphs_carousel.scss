@@ -3,6 +3,11 @@
 
 // Full-width.
 .field--name-field-section-content-block {
+  // Set overflow to hidden to keep slider
+  // Dots contained for mobile.
+  .slick-slider {
+    overflow: hidden;
+  }
   .col-md-12.div[data-carousel="carousel"] {
     padding: 0;
   }
@@ -52,30 +57,69 @@ div[data-carousel="carousel"] {
 
   .slick-dots {
     z-index: 11;
-    margin: calc(1.5rem - .15rem) 0.2rem;
+    position: relative;
+    background: variables.$secondary;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+
     display: flex;
-    position: absolute;
     bottom: 0;
-    width: calc(100% - 0.4rem);
-    justify-content: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: .5rem;
+
+    @include utilities.breakpoint(sm) {
+      //width: calc(100% - 0.4rem);
+      justify-content: center;
+      position: absolute;
+      margin: 0 0 .2rem;
+      width: calc(100% - 0.4rem);
+      background: none;
+      //padding: 0;
+      gap: 0;
+    }
 
     li {
       flex: 1 1;
       max-width: 3rem;
       list-style: none;
       height: 0.3rem;
-      margin: 0 0.2rem;
+      margin: 0.4rem;
+      line-height: 1rem;
+      display: flex;
+      justify-content: center;
+
+      @include utilities.breakpoint(sm) {
+        flex: 1 1;
+        max-width: 3rem;
+        height: 0.3rem;
+        margin: 0 0.2rem;
+      }
+
 
       button {
-        height: 0.3rem;
-        max-width: 3rem;
-        width: 100%;
+        //height: 24px;
+        //width: 24px;
+        //border-radius: 51% 50% 50% 50%;
+        //background-color: rgba(255,255,255,0.6);
+        //height: 0.7rem;
+
+        width: 3rem;
+        background-color: rgba(255,255,255,0.6);
         padding: 0;
         text-indent: -9999px;
         border: none;
-        background-color: rgba(255,255,255,0.6);
-        box-shadow: 0px 0px 30px 2px #727272;
         transition: background-color 0.3s ease-in-out;
+
+        @include utilities.breakpoint(sm) {
+          height: 0.3rem;
+          max-width: 3rem;
+          width: 100%;
+          box-shadow: 0px 0px 30px 2px #727272;
+          max-width: 3rem;
+          width: 100%;
+        }
 
         &:focus {
           outline: auto;
@@ -91,7 +135,7 @@ div[data-carousel="carousel"] {
 
   .slick-arrow {
     top: 0;
-    height: 100%;
+    height: 85%;
     width: 5rem;
     z-index: 10;
     position: absolute;
