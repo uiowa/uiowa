@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteswang.uiowa.ddev.site
+    protocol: https
+  machine_name: siteswang
+  human_name: wang.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteswang.prod
+drupal:
+  db:
+    database: wang_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteswang.prod.drupal.uiowa.edu'
+  requester: boxwang
+  site-name: wang

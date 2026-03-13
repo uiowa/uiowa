@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: ucpathways.uiowa.ddev.site
+    protocol: https
+  machine_name: ucpathways
+  human_name: pathways.uc.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: ucpathways.prod
+drupal:
+  db:
+    database: pathways_uc_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://ucpathways.prod.drupal.uiowa.edu'
+  requester: albeck
+  site-name: pathways.uc.uiowa.edu

@@ -25,6 +25,8 @@ dependencies:
     - core.entity_view_display.fragment.region_item.default
     - core.entity_view_display.fragment.region_item_after_content.default
     - core.entity_view_display.node.page.default
+    - entity_browser.browser.featured_content_browser
+    - entity_browser.browser.media_wysiwyg_browser
     - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
@@ -34,7 +36,6 @@ dependencies:
     - media.type.facebook
     - media.type.file
     - media.type.image
-    - media.type.instagram
     - media.type.panopto
     - media.type.remote_video
     - media.type.static_map
@@ -59,10 +60,12 @@ dependencies:
     - file
     - filter
     - find_text
+    - fontawesome
     - fragments
     - google_analytics
     - google_tag
     - layout_builder
+    - lb_direct_add
     - media
     - menu_admin_per_menu
     - metatag_extended_perms
@@ -87,8 +90,10 @@ dependencies:
     - tour
     - ui_icons_library
     - uiowa_alerts
+    - uiowa_core
     - uiowa_search
     - webform
+    - workbench_email
 _core:
   default_config_hash: WhzjEAuCYwDo5ylDwRiZOaGR2VMEvc8J26TNS7wmZ8E
 id: webmaster
@@ -107,7 +112,9 @@ permissions:
   - 'access featured_content_browser entity browser pages'
   - 'access files overview'
   - 'access find text'
+  - 'access fontawesome additional settings'
   - 'access fragments overview'
+  - 'access layout builder direct add more options'
   - 'access media overview'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag advanced__canonical_url'
@@ -167,8 +174,10 @@ permissions:
   - 'administer footer-tertiary menu items'
   - 'administer google analytics'
   - 'administer google tag manager'
+  - 'administer link field attributes'
   - 'administer main menu items'
   - 'administer maintenance mode'
+  - 'administer menu link attributes'
   - 'administer news feeds'
   - 'administer redirects'
   - 'administer sitenow articles'
@@ -183,6 +192,7 @@ permissions:
   - 'administer uiowa_alerts configuration'
   - 'administer uiowa_search configuration'
   - 'administer webform submission'
+  - 'administer workbench_email templates'
   - 'allow empty user mail'
   - 'configure all page node layout overrides'
   - 'configure all region_item fragment layout overrides'
@@ -232,7 +242,6 @@ permissions:
   - 'delete any featured_content block content'
   - 'delete any file media'
   - 'delete any image media'
-  - 'delete any instagram media'
   - 'delete any page content'
   - 'delete any panopto media'
   - 'delete any person content'
@@ -267,7 +276,6 @@ permissions:
   - 'delete own file media'
   - 'delete own files'
   - 'delete own image media'
-  - 'delete own instagram media'
   - 'delete own page content'
   - 'delete own panopto media'
   - 'delete own person content'
@@ -291,7 +299,6 @@ permissions:
   - 'edit any featured_content block content'
   - 'edit any file media'
   - 'edit any image media'
-  - 'edit any instagram media'
   - 'edit any page content'
   - 'edit any panopto media'
   - 'edit any person content'
@@ -324,7 +331,6 @@ permissions:
   - 'edit own facebook media'
   - 'edit own file media'
   - 'edit own image media'
-  - 'edit own instagram media'
   - 'edit own page content'
   - 'edit own panopto media'
   - 'edit own person content'
@@ -340,10 +346,10 @@ permissions:
   - 'enter article revision log entry'
   - 'enter page revision log entry'
   - 'enter person revision log entry'
-  - 'moderated content bulk archive'
-  - 'moderated content bulk pin content'
+  - 'moderated content bulk draft'
+  - 'moderated content bulk pin'
   - 'moderated content bulk publish'
-  - 'moderated content bulk unpin content'
+  - 'moderated content bulk unpin'
   - 'moderated content bulk unpublish'
   - 'opt-in or out of google analytics tracking'
   - 'override article authored by option'

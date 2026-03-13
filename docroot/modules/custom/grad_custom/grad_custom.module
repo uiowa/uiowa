@@ -103,28 +103,6 @@ function grad_custom_programs_all_majors_allowed_values() {
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_custom_programs_phd_allowed_values() {
-  $output = [];
-
-  $program_list = _grad_custom_program_list();
-
-  foreach ($program_list as $maui_code => $program) {
-    if (in_array('PHD', $program['objectives'])) {
-      $label = $program['label'];
-      if (isset($program['parent_code']) && isset($program_list[$program['parent_code']])) {
-        $label = $program_list[$program['parent_code']]['label'] . ' - ' . $label;
-      }
-      $output[$maui_code] = $label;
-    }
-  }
-  natsort($output);
-
-  return $output;
-}
-
-/**
- * Implements hook_allowed_values_function().
- */
 function grad_custom_degrees_offered_allowed_values(FieldStorageConfig $definition, ?ContentEntityInterface $entity, $cacheable) {
   return [
     'Au.D.' => 'AuD',

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labkrupina.uiowa.ddev.site
+    protocol: https
+  machine_name: labkrupina
+  human_name: krupina.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkrupina.prod
+drupal:
+  db:
+    database: krupina_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labkrupina.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Krupina Laboratory'

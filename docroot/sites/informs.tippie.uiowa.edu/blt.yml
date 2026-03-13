@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippieinforms.uiowa.ddev.site
+    protocol: https
+  machine_name: tippieinforms
+  human_name: informs.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippieinforms.prod
+drupal:
+  db:
+    database: informs_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippieinforms.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'INFORMS University of Iowa Student Chapter'

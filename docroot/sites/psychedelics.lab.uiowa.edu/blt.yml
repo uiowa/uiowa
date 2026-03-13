@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpsychedelics.uiowa.ddev.site
+    protocol: https
+  machine_name: labpsychedelics
+  human_name: psychedelics.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpsychedelics.prod
+drupal:
+  db:
+    database: psychedelics_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpsychedelics.prod.drupal.uiowa.edu'
+  requester: manders2
+  site-name: 'University of Iowa Psychedelics Research Program'

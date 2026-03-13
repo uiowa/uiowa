@@ -1,6 +1,6 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
-@use 'uids/scss/components/card.scss';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/components/card.scss';
 
 // @todo move back to UIDS
 // https://github.com/uiowa/uiowa/issues/6295
@@ -74,6 +74,12 @@
   .card__meta {
     .fa-field-item {
       margin-left: 0;
+      svg[class*="fa-"],
+      span[class*="fa-"] {
+        position: relative;
+        left: unset;
+        top: unset;
+      }
     }
   }
 }

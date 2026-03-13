@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineilhhrp.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineilhhrp
+  human_name: ilhhrp.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineilhhrp.prod
+drupal:
+  db:
+    database: ilhhrp_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineilhhrp.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'The Iowa Living Human Heart Research Program'

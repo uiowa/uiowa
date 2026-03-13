@@ -56,6 +56,7 @@ function registrar_core_form_alter(&$form, FormStateInterface $form_state, $form
       $form['gpa_row']['actions']['add_row']['#attributes']['class'][] = 'button--full-width';
       $form['#attached']['library'][] = 'uids_base/callout';
       $form['#submit'][] = 'registrar_core_post_submit';
+      $form["actions"]['submit']['#value'] = t('Estimate');
       break;
 
     case 'media_file_add_form':
@@ -140,12 +141,18 @@ function registrar_core_post_submit(&$form, FormStateInterface $form_state) {
 
 /**
  * Retrieve correspondence data from Dispatch.
+ *
+ * @param int $timestamp
+ *   The UNIX timestamp after which records should be retrieved.
  */
-function registrar_core_fetch_correspondence_from_dispatch() {
+function registrar_core_fetch_correspondence_from_dispatch(int $timestamp) {
   $logger = \Drupal::logger('registrar_core');
   $logger->notice('Fetching correspondence archives.');
 
   $rows = [];
+  // Track currently visible Dispatch archive URLs
+  // so stale local rows can be removed.
+  $visible_archive_urls = [];
   $database = \Drupal::database();
   $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
   $dispatch_params = [
@@ -155,21 +162,25 @@ function registrar_core_fetch_correspondence_from_dispatch() {
   $query = UrlHelper::buildQuery($dispatch_params);
   $archives = registrar_core_dispatch_get_data("{$endpoint}archives?{$query}");
 
-  if (empty($archives)) {
+  // If the API call fails, abort cleanup
+  // to avoid deleting valid local cache rows.
+  if (!is_array($archives)) {
     $logger->warning('Unable to retrieve correspondence archives.');
+    return;
   }
 
   foreach ($archives as $archive_url) {
     $archive = registrar_core_dispatch_get_data($archive_url);
     // Fetched archives are in descending chronological order
-    // and we're only keeping ones that are 2 years or younger,
-    // so once we've hit one that is older than 2 years old
-    // (63072000 seconds) we know we're done processing.
-    if (strtotime($archive->createdOn) < time() - 63072000) {
+    // and we're only keeping ones that are younger than the cutoff,
+    // so once we've hit one that is older, we know we're done processing.
+    if (strtotime($archive->createdOn) < $timestamp) {
       break;
     }
     $key = basename($archive_url);
     $url = "https://apps.its.uiowa.edu/dispatch/archive/{$key}";
+    // Remember every visible URL inside the retention window.
+    $visible_archive_urls[] = $url;
     $communication = registrar_core_dispatch_get_data($archive->communication);
     $campaign = registrar_core_dispatch_get_data($communication->campaign);
 
@@ -193,16 +204,32 @@ function registrar_core_fetch_correspondence_from_dispatch() {
       'tags' => implode(' ', $campaign->tags),
     ];
   }
-  $query = $database->upsert('correspondence_archives')
-    ->fields(['timestamp', 'from_name', 'subject', 'url', 'audience', 'tags'])
-    ->key('url');
-  foreach ($rows as $row) {
-    $query->values($row);
+  // Upsert still refreshes current visible rows.
+  if (!empty($rows)) {
+    $query = $database->upsert('correspondence_archives')
+      ->fields(['timestamp', 'from_name', 'subject', 'url', 'audience', 'tags'])
+      ->key('url');
+    foreach ($rows as $row) {
+      $query->values($row);
+    }
+    $query->execute();
   }
-  $query->execute();
+
+  // Remove rows in the retention window
+  // that Dispatch no longer reports as visible.
+  $delete_query = $database->delete('correspondence_archives')
+    ->condition('timestamp', $timestamp, '>=');
+  // If Dispatch returned visible URLs, delete only rows not in that list.
+  if (!empty($visible_archive_urls)) {
+    $delete_query->condition('url', $visible_archive_urls, 'NOT IN');
+  }
+  $deleted = $delete_query->execute();
 
   $logger->notice(t('@count archives upserted.', [
     '@count' => count($rows),
+  ]));
+  $logger->notice(t('@count archives removed because they are no longer visible in Dispatch.', [
+    '@count' => $deleted,
   ]));
 }
 
@@ -257,9 +284,11 @@ function registrar_core_cron() {
   $last_run = \Drupal::state()->get('registrar_core_daily_last');
 
   if (!$last_run || $request_date > $last_run) {
-    registrar_core_fetch_correspondence_from_dispatch();
-    // Prune entries older than 2 years (63072000 seconds).
-    registrar_core_prune_correspondence(time() - 63072000);
+    // Two-year retention window (63,072,000 seconds).
+    $timestamp = time() - 63072000;
+    registrar_core_fetch_correspondence_from_dispatch($timestamp);
+    // Prune entries older than the retention window.
+    registrar_core_prune_correspondence($timestamp);
 
     \Drupal::state()->set('registrar_core_daily_last', $request_date);
   }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: athleticssportspsych.uiowa.ddev.site
+    protocol: https
+  machine_name: athleticssportspsych
+  human_name: sportspsych.athletics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: athleticssportspsych.prod
+drupal:
+  db:
+    database: sportspsych_athletics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://athleticssportspsych.prod.drupal.uiowa.edu'
+  requester: eetsey
+  site-name: 'Counseling and Sports Psychology'

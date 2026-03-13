@@ -1,5 +1,5 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 // This file contains the styles for the /admin/config/sitenow/sitenow-people page.
 
@@ -100,12 +100,5 @@
     &.drag {
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
-  }
-}
-
-// Draggableviews weight inputs are not hidden to site visitors...
-body:not(.user-logged-in) {
-  .draggableviews-weight {
-    @include utilities.element-invisible;
   }
 }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmoon.uiowa.ddev.site
+    protocol: https
+  machine_name: labmoon
+  human_name: moon.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmoon.prod
+drupal:
+  db:
+    database: moon_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmoon.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Moon Research Lab'

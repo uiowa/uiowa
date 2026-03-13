@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orghfes.uiowa.ddev.site
+    protocol: https
+  machine_name: orghfes
+  human_name: hfes.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orghfes.prod
+drupal:
+  db:
+    database: hfes_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orghfes.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'HFES Student Chapter'

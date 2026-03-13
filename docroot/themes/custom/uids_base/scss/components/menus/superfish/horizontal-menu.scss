@@ -1,8 +1,17 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
+@use '../../../../uids/scss/abstracts/_variables.scss';
+@use '../../../../uids/scss/abstracts/_utilities.scss';
 
 .nav--horizontal {
   border-bottom: 1px solid #e6e5e5;
+}
+
+// Hide horizontal nav overflow before md breakpoint
+// so superfish can calculate small-screen menu behavior.
+.nav--horizontal .block-superfish > nav {
+  overflow: hidden;
+  @include utilities.breakpoint(md) {
+    overflow: visible;
+  }
 }
 
 .block-superfish .sf-menu.sf-horiz-menu ul {

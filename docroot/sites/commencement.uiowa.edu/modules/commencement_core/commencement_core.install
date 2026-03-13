@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @file
+ * Updates.
+ */
+
+/**
+ * Helper function to match old to new ids.
+ */
+function find_event_id_match($data, $searchRemoteId) {
+  if (!isset($data->events) || !is_array($data->events)) {
+    return NULL;
+  }
+
+  foreach ($data->events as $eventWrapper) {
+    if (isset($eventWrapper->event) && $eventWrapper->event->remote_id === $searchRemoteId) {
+      return $eventWrapper->event->id;
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * Update commencement event content with new ids from API.
+ */
+function commencement_core_update_10001() {
+  // Get return of all events with old ids.
+  $options = ['query' => ['display_id' => 'ids']];
+  $api_client = \Drupal::service('uiowa_events.content_hub_api_client');
+  $data = $api_client->getEvents($options);
+
+  // Get event nodes that have an event ID.
+  $query = \Drupal::entityQuery('node')
+    ->accessCheck()
+    ->condition('type', 'event')
+    ->exists('field_event_id');
+
+  $results = $query->execute();
+
+  foreach ($results as $nid) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $existing_id = $node->get('field_event_id')->value;
+    $new_id = find_event_id_match($data, $existing_id);
+    if (isset($new_id)) {
+      $node->set('field_event_id', $new_id);
+      $node->setRevisionLogMessage('Replaced event id ' . $existing_id . ' with event id ' . $new_id);
+      $node->setRevisionUserId(1);
+      $node->save();
+    }
+    else {
+      \Drupal::messenger()
+        ->addMessage(t('New ID for event @id was not found.', ['@id' => $existing_id]));
+    }
+  }
+}

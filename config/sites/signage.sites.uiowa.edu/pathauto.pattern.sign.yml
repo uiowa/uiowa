@@ -1,0 +1,22 @@
+uuid: a3ccd363-8469-414f-9a4b-c03ceb382725
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: sign
+label: Sign
+type: 'canonical_entities:node'
+pattern: 'sign/[node:title]'
+selection_criteria:
+  eda39a7a-130a-401f-81be-ca00c1be6046:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: eda39a7a-130a-401f-81be-ca00c1be6046
+    context_mapping:
+      node: node
+    bundles:
+      sign: sign
+selection_logic: and
+weight: -5
+relationships: {  }

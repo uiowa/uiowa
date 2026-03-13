@@ -509,7 +509,7 @@ class CourseDeadlinesForm extends FormBase {
           'independent_study' => [
             '#prefix' => '<span class="uiowa-maui-independent-study">',
             '#suffix' => '</span>',
-            '#markup' => $this->t('<p><span class="fa fa-info-circle"></span> This is an independent study course.</p>'),
+            '#markup' => $this->t('<p><span role="presentation" class="fa fa-info-circle"></span> This is an independent study course.</p>'),
           ],
         ];
       }
@@ -526,7 +526,7 @@ class CourseDeadlinesForm extends FormBase {
           'offcycle' => [
             '#prefix' => '<span class="uiowa-maui-offcycle">',
             '#suffix' => '</span>',
-            '#markup' => $this->t('<p><span class="fa fa-info-circle"></span> This is an off-cycle course.</p>'),
+            '#markup' => $this->t('<p><span role="presentation" class="fa fa-info-circle"></span> This is an off-cycle course.</p>'),
           ],
         ];
       }

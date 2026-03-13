@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.project.field_project_sub_complete_date
     - field.field.node.project.field_project_webcam
     - field.field.node.project.field_project_whats_new
+    - field.field.node.project.rabbit_hole__settings
     - node.type.project
   module:
     - datetime
@@ -74,10 +75,10 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: heading_text
+                type: string
                 label: above
                 settings:
-                  size: h1
+                  link_to_entity: false
                 third_party_settings: {  }
             weight: 1
             additional:
@@ -649,4 +650,5 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_meta_tags: true
+  rabbit_hole__settings: true
   search_api_excerpt: true

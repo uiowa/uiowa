@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitestippieconsultingclub.uiowa.ddev.site
+    protocol: https
+  machine_name: sitestippieconsultingclub
+  human_name: tippieconsultingclub.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitestippieconsultingclub.prod
+drupal:
+  db:
+    database: tippieconsultingclub_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitestippieconsultingclub.prod.drupal.uiowa.edu'
+  requester: srozz
+  site-name: 'Tippie Consulting Club'

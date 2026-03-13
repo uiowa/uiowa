@@ -50,6 +50,7 @@ dependencies:
     - field.field.node.building.field_main_coordinator_phone
     - field.field.node.building.field_main_coordinator_title
     - field.field.node.building.field_meta_tags
+    - field.field.node.building.rabbit_hole__settings
     - node.type.building
     - views.view.alerts_building_block
     - views.view.artwork
@@ -203,11 +204,12 @@ third_party_settings:
               provider: views
               context_mapping: {  }
               views_label: ''
-              items_per_page: none
+              items_per_page: '50'
               pager: some
+              exposed: {  }
               headline:
-                headline: ''
-                hide_headline: 0
+                headline: 'Building announcements'
+                hide_headline: 1
                 heading_size: h2
                 headline_style: default
                 headline_alignment: default
@@ -215,7 +217,8 @@ third_party_settings:
               exposed_filter_values: null
               layout_builder_styles: {  }
             weight: 0
-            additional: {  }
+            additional:
+              layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
@@ -848,4 +851,5 @@ hidden:
   field_main_coordinator_title: true
   field_meta_tags: true
   links: true
+  rabbit_hole__settings: true
   search_api_excerpt: true

@@ -1,0 +1,7 @@
+forecords_core.records_download:
+  path: '/export/records/download'
+  defaults:
+    _controller: '\Drupal\forecords_core\Controller\RecordsDownloadController::downloadRecordsExport'
+    _title: 'Download records export'
+  requirements:
+    _permission: 'access content'

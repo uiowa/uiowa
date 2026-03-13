@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgtippietech.uiowa.ddev.site
+    protocol: https
+  machine_name: orgtippietech
+  human_name: tippietech.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgtippietech.prod
+drupal:
+  db:
+    database: tippietech_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgtippietech.prod.drupal.uiowa.edu'
+  requester: bnhunter
+  site-name: tippietech.org.uiowa.edu

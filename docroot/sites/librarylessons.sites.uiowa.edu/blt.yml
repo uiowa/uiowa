@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteslibrarylessons.uiowa.ddev.site
+    protocol: https
+  machine_name: siteslibrarylessons
+  human_name: librarylessons.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteslibrarylessons.prod
+drupal:
+  db:
+    database: librarylessons_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteslibrarylessons.prod.drupal.uiowa.edu'
+  requester: jhockett
+  site-name: 'School Library Lessons'

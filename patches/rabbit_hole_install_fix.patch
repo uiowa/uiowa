@@ -1,0 +1,19 @@
+diff --git a/rabbit_hole.install b/rabbit_hole.install
+index a835ddb..d990336 100644
+--- a/rabbit_hole.install
++++ b/rabbit_hole.install
+@@ -205,7 +205,13 @@ function rabbit_hole_update_8106(&$sandbox) {
+       $sandbox['entity_types'][$entity_type_id]['progress'] = 0;
+       $sandbox['entity_types'][$entity_type_id]['current'] = 0;
+       $sandbox['entity_types'][$entity_type_id]['finished'] = FALSE;
+-      $sandbox['max'] += $sandbox['entity_types'][$entity_type_id]['max'] = $max_query->execute();
++      try {
++        $max = $max_query->execute();
++      }
++      catch (\Exception $e) {
++        $max = 0;
++      }
++      $sandbox['max'] += $sandbox['entity_types'][$entity_type_id]['max'] = $max;
+     }
+   }
+ 

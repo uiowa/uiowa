@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiepgn.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiepgn
+  human_name: pgn.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiepgn.prod
+drupal:
+  db:
+    database: pgn_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiepgn.prod.drupal.uiowa.edu'
+  requester: hpls
+  site-name: 'Phi Gamma Nu'

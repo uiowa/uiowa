@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiodigital.uiowa.ddev.site
+    protocol: https
+  machine_name: studiodigital
+  human_name: digital.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiodigital.prod
+drupal:
+  db:
+    database: digital_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiodigital.prod.drupal.uiowa.edu'
+  requester: mtbutler
+  site-name: 'The Digital Scholarship and Publishing Studio'

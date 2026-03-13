@@ -21,6 +21,9 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
       // Next, we need to set the value for _form to the form we have created.
       $route->setDefault('_form', 'Drupal\uiowa_core\Form\UiowaCoreSiteInformationForm');
     }
+    if ($route = $collection->get('entity.workbench_email_template.collection')) {
+      $route->setDefault('_title', 'Content notifications');
+    }
     $restricted_routes = [
       // Google Tag Manager settings.
       'google_tag.settings_form',

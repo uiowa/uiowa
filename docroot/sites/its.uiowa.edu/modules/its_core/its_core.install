@@ -94,3 +94,22 @@ function its_core_update_10002() {
     }
   }
 }
+
+/**
+ * Import default config_ignore to avoid deleting existing config.
+ */
+function its_core_update_10003() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings',
+    $source->read('config_ignore.settings'));
+
+  // Update existing workbench_email template to use minimal format.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('workbench_email.workbench_email_template.alert_created');
+  $body = $config->get('body');
+  $body['format'] = 'minimal';
+  $config->set('body', $body);
+  $config->save();
+}

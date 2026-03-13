@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labderin.uiowa.ddev.site
+    protocol: https
+  machine_name: labderin
+  human_name: derin.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labderin.prod
+drupal:
+  db:
+    database: derin_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labderin.prod.drupal.uiowa.edu'
+  requester: roggentienk
+  site-name: ' Derin Precipitation Lab'

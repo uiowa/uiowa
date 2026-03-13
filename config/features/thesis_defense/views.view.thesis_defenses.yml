@@ -6,9 +6,8 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_thesis_defense_date
     - node.type.thesis_defense
-    - system.menu.main
   module:
-    - fullcalendar_view
+    - better_exposed_filters
     - node
     - smart_date
     - user
@@ -76,19 +75,65 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: none
+        type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
+          items_per_page: 10
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
       exposed_form:
-        type: basic
+        type: bef
         options:
-          submit_button: Apply
-          reset_button: false
+          submit_button: Search
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: filtered_html
+          bef:
+            general:
+              autosubmit: false
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              secondary_open: false
+              reset_button_always_show: false
+            filter:
+              combine:
+                plugin_id: default
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  is_secondary: false
+                  hide_label: false
+              field_thesis_defense_date_value:
+                plugin_id: bef_datepicker
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  is_secondary: false
+                  hide_label: false
       access:
         type: perm
         options:
@@ -153,25 +198,23 @@ display:
             max: ''
             value: now
             type: offset
+            granularity: second
           group: 1
-          exposed: false
+          exposed: true
           expose:
-            operator_id: ''
-            label: ''
-            description: ''
+            label: 'Defense date - Start'
+            description: null
             use_operator: false
-            operator: ''
+            operator: field_thesis_defense_date_value_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: ''
+            identifier: field_thesis_defense_date_value
             required: false
             remember: false
             multiple: false
-            remember_roles:
-              authenticated: authenticated
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
+            min_placeholder: null
+            max_placeholder: null
+            placeholder: null
           is_grouped: false
           group_info:
             label: ''
@@ -205,7 +248,10 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      css_class: block-margin__top--extra
+      css_class: 'bef-form bef-form--inline'
+      use_ajax: true
+      link_display: custom_url
+      link_url: '<front>'
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -214,16 +260,17 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  page_calendar:
-    id: page_calendar
-    display_title: Calendar
-    display_plugin: page
-    position: 2
+  block_thesis_defenses:
+    id: block_thesis_defenses
+    display_title: Block
+    display_plugin: block
+    position: 1
     display_options:
-      title: 'Thesis Defense Calendar'
       fields:
         title:
           id: title
@@ -239,18 +286,36 @@ display:
           exclude: false
           alter:
             alter_text: false
+            text: ''
             make_link: false
+            path: ''
             absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
             word_boundary: false
             ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
             strip_tags: false
             trim: false
+            preserve_tags: ''
             html: false
           element_type: ''
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -328,6 +393,17 @@ display:
             format: default
             force_chronological: false
             add_classes: false
+            time_wrapper: true
+            localize: false
+            parts:
+              start: start
+              end: end
+              duration: '0'
+            duration:
+              separator: ' | '
+              unit: ''
+              decimals: 2
+              suffix: h
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -338,6 +414,58 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        field_thesis_defense_date_value:
+          id: field_thesis_defense_date_value
+          table: node__field_thesis_defense_date
+          field: field_thesis_defense_date_value
+          relationship: none
+          group_type: group
+          admin_label: 'Hidden Start'
+          plugin_id: date
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          date_format: medium
+          custom_date_format: ''
+          timezone: ''
       empty:
         area_text_custom:
           id: area_text_custom
@@ -348,9 +476,8 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'There are currently no results to display'
+          content: 'There are currently no results to display.'
           tokenize: false
-      sorts: {  }
       filters:
         status:
           id: status
@@ -374,9 +501,57 @@ display:
           plugin_id: bundle
           value:
             thesis_defense: thesis_defense
+          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: combine
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: 'Search by name'
+            description: ''
+            use_operator: false
+            operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: combine
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            title: title
         field_thesis_defense_date_value:
           id: field_thesis_defense_date_value
           table: node__field_thesis_defense_date
@@ -385,28 +560,35 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: date
-          operator: '>'
+          operator: '>='
           value:
             min: ''
             max: ''
-            value: '-1 year'
-            type: offset
+            value: ''
+            type: date
+            granularity: hour
           group: 1
-          exposed: false
+          exposed: true
           expose:
-            operator_id: ''
-            label: ''
+            operator_id: field_thesis_defense_date_value_op
+            label: 'Search by date'
             description: ''
             use_operator: false
-            operator: ''
+            operator: field_thesis_defense_date_value_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: ''
+            identifier: field_thesis_defense_date_value
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
@@ -427,43 +609,16 @@ display:
         groups:
           1: AND
       style:
-        type: fullcalendar_view_display
+        type: default
         options:
-          default_date_source: now
-          defaultDate: ''
-          start: field_thesis_defense_date
-          end: field_thesis_defense_date
-          title: title
-          left_buttons: 'prev,next today'
-          right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
-          default_view: dayGridMonth
-          firstDay: '0'
-          nav_links: 1
-          timeFormat: 'hh:mm a'
-          allowEventOverlap: 1
-          updateAllowed: 0
-          updateConfirm: 1
-          defaultLanguage: en
-          languageSelector: 0
-          dialogWindow: 0
-          openEntityInNewTab: 0
-          createEventLink: 0
-          eventLimit: '5'
-          tax_field: ''
-          vocabularies: ''
-          color_bundle:
-            article: '#63666a'
-            mentor: '#63666a'
-            page: '#63666a'
-            person: '#63666a'
-            scholar: '#63666a'
-            scholarship: '#63666a'
-            student_profile: '#63666a'
-            thesis_defense: '#63666a'
-          rrule: ''
-          duration: ''
-          bundle_type: ''
-          classes: ''
+          grouping:
+            -
+              field: field_thesis_defense_date_value
+              rendered: true
+              rendered_strip: false
+          row_class: ''
+          default_row_class: true
+          uses_fields: true
       row:
         type: 'entity:node'
         options:
@@ -471,64 +626,43 @@ display:
           view_mode: teaser
       defaults:
         empty: false
-        title: false
         style: false
         row: false
         fields: false
-        sorts: false
         filters: false
         filter_groups: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
-      path: academics/thesis-defenses
-      menu:
-        type: normal
-        title: 'Thesis Defense Calendar'
-        description: 'View upcoming thesis defenses.'
-        weight: 0
-        expanded: false
-        menu_name: main
-        parent: 'menu_link_content:31726bf1-35fb-41a4-824e-59d226527f34'
-        context: '0'
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      block_description: 'Upcoming Thesis Defenses'
+      block_category: 'Site custom'
+      allow:
+        items_per_page: true
+        offset: offset
+        pager: pager
+        hide_fields: hide_fields
+        sort_fields: '0'
+        configure_filters: configure_filters
+        disable_filters: '0'
+        configure_sorts: configure_sorts
+        use_more: use_more
+        configure_filters_custom: 0
+      general_help_text: ''
+      more_link_help_text: "Check to include a 'display more' link. By default this will link to the front page of the website. Alternatively, a custom URL path can be provided in the ‘Path’ text box below."
+      restrict_fields:
+        title: title
+        field_thesis_defense_date_value: field_thesis_defense_date_value
+        field_thesis_defense_date: 0
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.node.field_thesis_defense_date'
-  page_list:
-    id: page_list
-    display_title: 'Upcoming Listing'
-    display_plugin: page
-    position: 1
-    display_options:
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text_custom
-          empty: true
-          content: 'There are currently no results to display.'
-          tokenize: false
-      defaults:
-        empty: false
-      display_description: ''
-      display_extenders:
-        metatag_display_extender: {  }
-      path: academics/thesis-defenses/list
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - 'user.node_grants:view'
-        - user.permissions
-      tags: {  }

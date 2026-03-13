@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: programstemready.uiowa.ddev.site
+    protocol: https
+  machine_name: programstemready
+  human_name: stemready.program.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: programstemready.prod
+drupal:
+  db:
+    database: stemready_program_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://programstemready.prod.drupal.uiowa.edu'
+  requester: allevine
+  site-name: 'Project STEM Ready'

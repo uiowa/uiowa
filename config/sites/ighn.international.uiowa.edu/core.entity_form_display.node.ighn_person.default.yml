@@ -15,11 +15,13 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_person_last_name
     - field.field.node.ighn_person.field_ighn_person_position_title
     - field.field.node.ighn_person.field_ighn_primary_college
+    - field.field.node.ighn_person.rabbit_hole__settings
     - node.type.ighn_person
   module:
     - link
     - media_library
     - path
+    - rabbit_hole
     - text
 id: node.ighn_person.default
 targetEntityType: node
@@ -136,6 +138,13 @@ content:
     weight: 13
     region: content
     settings: {  }
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

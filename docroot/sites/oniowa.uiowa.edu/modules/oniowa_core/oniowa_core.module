@@ -9,12 +9,12 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
-function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Use the form['#id'] over $form_id because it is more specific.
-  switch ($form['#id']) {
-    case 'views-exposed-form-events-page-upcoming':
+function oniowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'events') {
+    if ($view->current_display === 'page_upcoming') {
       $cid = 'sitenow_events:event:dates';
       $data = \Drupal::cache()->get($cid);
       if (!$data) {
@@ -79,8 +79,7 @@ function oniowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id
           unset($form[$key]);
         }
       }
-
-      break;
+    }
   }
 }
 

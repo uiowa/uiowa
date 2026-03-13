@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: programiyws.uiowa.ddev.site
+    protocol: https
+  machine_name: programiyws
+  human_name: iyws.program.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: programiyws.prod
+drupal:
+  db:
+    database: iyws_program_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://programiyws.prod.drupal.uiowa.edu'
+  requester: gridgway
+  site-name: "Iowa Young Writers' Studio"

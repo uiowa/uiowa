@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: provostsds.uiowa.ddev.site
+    protocol: https
+  machine_name: provostsds
+  human_name: sds.provost.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: provostsds.prod
+drupal:
+  db:
+    database: sds_provost_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://provostsds.prod.drupal.uiowa.edu'
+  requester: jwhitsit
+  site-name: 'Student Disability Services'

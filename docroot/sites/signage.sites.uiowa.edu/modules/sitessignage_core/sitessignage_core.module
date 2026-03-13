@@ -1,0 +1,151 @@
+<?php
+
+/**
+ * @file
+ * Module code for signage.sites.uiowa.edu.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\user\Entity\User;
+use Drupal\views\Views;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitessignage_core_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  switch ($form_id) {
+    case 'node_slide_edit_form':
+    case 'node_slide_form':
+      // Disable access to the path field for the slide content type.
+      $form['path']['#access'] = FALSE;
+      break;
+
+    case 'og_membership_default_add_form':
+    case 'og_membership_default_edit_form':
+      // Only apply to the "add" form.
+      if ($form_id === 'og_membership_default_add_form') {
+        if (isset($form['uid']['widget'][0]['target_id'])) {
+          // Update the description of the uid field.
+          $form['uid']['widget'][0]['target_id']['#description'] = t('Enter the HawkID of the member you wish to add. If no user account exists for the HawkID, one will be created. HawkIDs can be found using the <a href=":url">University of Iowa Directory Search</a>.', [
+            ':url' => Url::fromUri('https://iam.uiowa.edu/whitepages/search')->toString(),
+          ]);
+
+          // Add a custom element processor.
+          $form['#validate'][] = 'sitessignage_core_og_user_validate';
+        }
+
+        // Remove access to the state field.
+        if (isset($form['state'])) {
+          $form['state']['#access'] = FALSE;
+        }
+      }
+
+      if (isset($form['roles']['widget'])) {
+        // Remove the administrator role from the options.
+        if (isset($form['roles']['widget']['#options'])) {
+          unset($form['roles']['widget']['#options']['node-signage_group-administrator']);
+        }
+        // Update the description of roles field.
+        $form['roles']['widget']['#description'] = t('Select if the member should have additional permissions within the group.');
+      }
+      break;
+
+  }
+}
+
+/**
+ * Custom validation to add a new user if they do not already exist.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function sitessignage_core_og_user_validate(array &$form, FormStateInterface $form_state): void {
+  // The target_id is set if the user already exists. Otherwise, it is null.
+  if (is_null($form_state->getValue('uid')[0]['target_id'])) {
+    $new_username = $form_state->getUserInput()['uid'][0]['target_id'];
+    // Check a username was entered.
+    if (!is_null($new_username)) {
+      $pass = \Drupal::service('password_generator')->generate();
+      // Create a new user account.
+      $new_account = User::create([
+        'name' => $new_username,
+        'pass' => $pass,
+        'mail' => uniqid('email_') . '@uiowa.edu',
+      ]);
+      $new_account->addRole('sign_manager');
+      $new_account->enforceIsNew();
+      $new_account->activate();
+      $new_account->save();
+
+      // Update form_state to set target_id to new account uid.
+      $form_state->setValue(['uid', 0, 'target_id'], $new_account->id());
+
+      // Add a message letting the user know that a new account was created.
+      \Drupal::service('messenger')->addMessage(t('New user @username created.', [
+        '@username' => $new_username,
+      ]));
+
+      // Remove the form error set by the previous validation.
+      // Copied from https://drupal.stackexchange.com/a/248055/6066.
+      $form_errors = $form_state->getErrors();
+      $form_state->clearErrors();
+      unset($form_errors['uid][0][target_id']);
+
+      foreach ($form_errors as $name => $error_message) {
+        $form_state->setErrorByName($name, $error_message);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function sitessignage_core_entity_view_alter(array &$build, $entity, $display) {
+  // Only alter full view mode for signage_group content type.
+  if ($entity->getEntityTypeId() == 'node' &&
+    $entity->bundle() == 'signage_group' &&
+    $display->getMode() == 'default') {
+
+    // Fetch our view and embed it into the content.
+    $view = Views::getView('signage_group_content');
+    if (is_object($view)) {
+      $view->setDisplay('block_1');
+      $view->setArguments([$entity->id()]);
+      $view->preExecute();
+      $view->execute();
+      $content = $view->buildRenderable();
+      $build['signage_group_content'] = $content;
+      // Sink it down below other fields, like the body.
+      $build['signage_group_content']['#weight'] = 10;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitessignage_core_preprocess_block__local_actions_block(&$variables) {
+  // Get the current route node and check its bundle type.
+  /** @var \Drupal\Core\Routing\RouteMatch $route_match */
+  $route_match = \Drupal::service('current_route_match');
+  if ($route_match->getRouteName() == 'entity.node.canonical') {
+    $node = $route_match->getParameter('node');
+    if ($node->bundle() !== 'signage_group') {
+      unset($variables['content']['sitessignage_core.group_add_sign']);
+      unset($variables['content']['sitessignage_core.group_add_slide']);
+    }
+    else {
+      foreach (['sign', 'slide'] as $type) {
+        if (isset($variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'])) {
+          /** @var \Drupal\Core\Url $url */
+          $url = $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'];
+          $options = $url->getOptions();
+          $options['query']['group'] = $node->id();
+          $url->setOptions($options);
+          $variables['content']["sitessignage_core.group_add_{$type}"]['#link']['url'] = $url;
+        }
+      }
+    }
+  }
+}

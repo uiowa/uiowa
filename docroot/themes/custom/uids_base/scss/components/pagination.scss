@@ -1,5 +1,5 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 //////////// pagination
 
@@ -15,7 +15,7 @@
   display: table;
   order: 1;
   content: ' ';
-  @include utilities.flex(variables.$fb: 0);
+  flex:1 0 0;
 }
 
 .pager::after {
@@ -64,7 +64,7 @@ screen and (min-width: 40em) {
 
 .pager .disabled {
   cursor: not-allowed;
-  color: variables.$grey-light;
+  color: variables.$gray-light;
   @include utilities.padding(variables.$top: variables.$sm, variables.$right: variables.$md, variables.$bottom: variables.$sm, variables.$left: variables.$md);
 }
 

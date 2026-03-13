@@ -1,0 +1,24 @@
+uuid: eb73f1b8-cf99-420d-beee-b24ba3a0c0c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.slide_video.field_slide_video
+    - paragraphs.paragraphs_type.slide_video
+  module:
+    - media_library
+id: paragraph.slide_video.default
+targetEntityType: paragraph
+bundle: slide_video
+mode: default
+content:
+  field_slide_video:
+    type: media_library_widget
+    weight: 0
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

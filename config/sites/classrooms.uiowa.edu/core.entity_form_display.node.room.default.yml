@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.room.field_room_tile_details
     - field.field.node.room.field_room_type
     - field.field.node.room.field_room_video
+    - field.field.node.room.rabbit_hole__settings
     - node.type.room
     - workflows.workflow.editorial
   module:
@@ -35,6 +36,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - text
 third_party_settings:
   field_group:
@@ -59,7 +61,7 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         open: false
-        description: 'These fields are imported from MAUI''s Astra room data on save.'
+        description: "These fields are imported from MAUI's Astra room data on save."
         required_fields: true
 id: node.room.default
 targetEntityType: node
@@ -278,6 +280,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

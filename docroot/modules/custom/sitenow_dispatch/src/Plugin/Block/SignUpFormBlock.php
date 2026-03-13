@@ -124,14 +124,20 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $build = [];
 
     if (!empty($this->configFactory->get('sitenow_dispatch.settings')->get('api_key'))) {
-      $build['heading'] = [
-        '#theme' => 'uiowa_core_headline',
-        '#headline' => $this->configuration['headline'],
-        '#hide_headline' => $this->configuration['hide_headline'],
-        '#heading_size' => $this->configuration['heading_size'],
-        '#headline_style' => $this->configuration['headline_style'],
-        '#headline_alignment' => $this->configuration['headline_alignment'] ?? 'default',
-      ];
+
+      // Check if the headline exists, and isn't and empty string.
+      $is_headline_renderable = !empty($this?->configuration['headline']);
+
+      if ($is_headline_renderable) {
+        $build['heading'] = [
+          '#theme' => 'uiowa_core_headline',
+          '#headline' => $this->configuration['headline'],
+          '#hide_headline' => $this->configuration['hide_headline'],
+          '#heading_size' => $this->configuration['heading_size'],
+          '#headline_style' => $this->configuration['headline_style'],
+          '#headline_alignment' => $this->configuration['headline_alignment'] ?? 'default',
+        ];
+      }
 
       $build['form'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
 

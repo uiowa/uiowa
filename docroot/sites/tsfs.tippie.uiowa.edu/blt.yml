@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippietsfs.uiowa.ddev.site
+    protocol: https
+  machine_name: tippietsfs
+  human_name: tsfs.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippietsfs.prod
+drupal:
+  db:
+    database: tsfs_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippietsfs.prod.drupal.uiowa.edu'
+  requester: hpls
+  site-name: 'Tippie Students for Service'

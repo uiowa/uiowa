@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labs-cube.uiowa.ddev.site
+    protocol: https
+  machine_name: labs-cube
+  human_name: s-cube.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labs-cube.prod
+drupal:
+  db:
+    database: s_cube_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labs-cube.prod.drupal.uiowa.edu'
+  requester: ekutlu
+  site-name: 'Speech Sign and Systems Lab'

@@ -1,0 +1,6 @@
+services:
+  sitenow_piwikpro.piwik_pro_override:
+    class: Drupal\sitenow_piwikpro\ConfigOverride\PiwikProOverride
+    arguments: [ '@request_stack' ]
+    tags:
+      - { name: config.factory.override }

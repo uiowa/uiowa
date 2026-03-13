@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: siteslibrarylessons.uiowa.ddev.site
+  paths:
+    files: sites/librarylessons.sites.uiowa.edu/files
+dev:
+  uri: siteslibrarylessons.dev.drupal.uiowa.edu
+  host: uiowa09dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/librarylessons.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.dev/docroot
+  user: uiowa09.dev
+prod:
+  uri: librarylessons.sites.uiowa.edu
+  host: uiowa09prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/librarylessons.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.prod/docroot
+  user: uiowa09.prod
+test:
+  uri: siteslibrarylessons.stage.drupal.uiowa.edu
+  host: uiowa09stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/librarylessons.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.stage/docroot
+  user: uiowa09.stage

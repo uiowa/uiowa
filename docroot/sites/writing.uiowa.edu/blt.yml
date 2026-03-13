@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: writing.uiowa.ddev.site
+    protocol: https
+  machine_name: writing
+  human_name: writing.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: writing.prod
+drupal:
+  db:
+    database: writing_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://writing.prod.drupal.uiowa.edu'
+  requester: lhaldema
+  site-name: 'Office of Writing and Communication'

@@ -158,7 +158,9 @@ class HoursApi {
    */
   public function getResources($group) {
     $resources = $this->request('GET', $group);
-
+    if (empty($resources) || !is_array($resources)) {
+      return [];
+    }
     // Capitalize all resources before sorting because some are already caps.
     $resources = array_map('strtoupper', $resources);
     sort($resources);
@@ -180,10 +182,6 @@ class HoursApi {
       'start' => date('m/d/Y', $start),
       'end' => ($end <= $start) ? $start : date('m/d/Y', $end),
     ]);
-
-    // This isn't used and borks the foreach loop. Unset it.
-    unset($data['$id']);
-    unset($data['resourceAlias']);
 
     return [
       'data' => $data,

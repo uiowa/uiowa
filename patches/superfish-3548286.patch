@@ -1,0 +1,25 @@
+diff --git a/src/Plugin/Block/SuperfishBlock.php b/src/Plugin/Block/SuperfishBlock.php
+index d69ca834d8738b1815f56dfa1e25678f5dd1deb0..4a77e3fb5fd863eb2dbe866feb938791bcc585c2 100644
+--- a/src/Plugin/Block/SuperfishBlock.php
++++ b/src/Plugin/Block/SuperfishBlock.php
+@@ -1257,7 +1257,7 @@ class SuperfishBlock extends SystemMenuBlock {
+     // Build the original menu tree to calculate cache tags and contexts.
+     $tree_build = $this->menuTree->build($tree);
+     $build['#cache'] = $tree_build['#cache'];
+-    if (empty($tree)) {
++    if (empty($tree_build['#items'])) {
+       return $build;
+     }
+
+diff --git a/superfish.module b/superfish.module
+index d3109790b8364c06b81e4295886863ef8ec43c61..be103cb1406f9fa10ed21502e6dd19413c93e40e 100644
+--- a/superfish.module
++++ b/superfish.module
+@@ -180,7 +180,6 @@ function superfish_library_info_build() {
+       ],
+     ];
+     if ($easing_library_path = superfish_library_path('easing')) {
+-      $easing_library_path = '/' . $easing_library_path;
+       $libraries += [
+         'superfish_easing' => [
+           'js' => [

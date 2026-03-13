@@ -170,14 +170,6 @@ function classrooms_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:room:field_room_guide':
-      uiowa_core_set_title_attributes($variables, [
-        'h4',
-        'headline',
-        'headline--serif',
-        'headline--underline',
-      ]);
-      break;
-
     case 'field_block:node:room:field_room_technology_features':
       uiowa_core_set_title_attributes($variables, [
         'h4',
@@ -187,12 +179,8 @@ function classrooms_core_preprocess_block(&$variables) {
       ]);
       break;
 
-    // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      uiowa_core_set_attributes($variables, [
-        'media--widescreen',
-        'photoswipe-gallery',
-      ]);
+      uiowa_core_set_attributes($variables, 'media--widescreen');
       break;
 
     // Add inline class for blocks to appear inline.
@@ -287,9 +275,9 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 
     case 'field_gallery_images':
       if ($variables['element']['#bundle'] === 'room') {
+        $variables['label_tag'] = 'h2';
         $variables['field_container_classes'] = 'uiowa-image-gallery';
         uiowa_core_set_title_attributes($variables, [
-          'h2',
           'block__headline',
           'headline',
           'headline--serif',
@@ -336,6 +324,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_design_details':
     case 'field_room_classroom_furniture':
     case 'field_room_accessibility_feature':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'h5',
         'headline',
@@ -346,6 +335,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 
     case 'field_room_technology_features':
       $variables['field_container_classes'] = 'element--three-column';
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'h5',
         'headline',
@@ -362,6 +352,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
         uiowa_core_set_attributes($variables, 'fa-field-item');
       }
       else {
+        $variables['label_tag'] = 'h2';
         uiowa_core_set_title_attributes($variables, [
           'h5',
           'headline',
@@ -531,56 +522,6 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       ],
     ],
   ];
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $view = $form_state->get('view');
-  $view_display = $view->getDisplay();
-  $block_id = $view_display->display['id'];
-
-  if (in_array($block_id, ['block_rooms', 'block_programmed_rooms_list'])) {
-    $building_filter = 'field_room_building_id_target_id';
-    if (isset($form[$building_filter])) {
-      uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
-
-      // Change the label from default `- Any -`.
-      $form[$building_filter]['#empty_option'] = t('Building');
-
-      // Hack to further treat this field as a select as it relates to BEF.
-      // This is dependent on BEF select fields not changing in structure.
-      $form[$building_filter]['#process'] = [
-        [
-          'Drupal\Core\Render\Element\Select',
-          'processSelect',
-        ],
-        [
-          'Drupal\Core\Render\Element\Select',
-          'processAjaxForm',
-        ],
-        [
-          'Drupal\inline_form_errors\RenderElementHelper',
-          'processElement',
-        ],
-        [
-          '\Drupal\Core\Render\Element\RenderElement',
-          'processGroup',
-        ],
-      ];
-      $form[$building_filter]['#pre_render'] = [
-        [
-          'Drupal\Core\Render\Element\Select',
-          'preRenderSelect',
-        ],
-        [
-          '\Drupal\Core\Render\Element\RenderElement',
-          'preRenderGroup',
-        ],
-      ];
-    }
-  }
 }
 
 /**

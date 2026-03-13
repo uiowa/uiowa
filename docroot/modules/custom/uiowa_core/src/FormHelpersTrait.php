@@ -3,6 +3,9 @@
 namespace Drupal\uiowa_core;
 
 use Drupal\Core\Form\FormStateInterface;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\HttpFoundation\InputBag;
 
 /**
@@ -39,6 +42,48 @@ trait FormHelpersTrait {
     }
 
     return $param;
+  }
+
+  /**
+   * Parse and validate a phone number.
+   */
+  protected function parsePhoneNumber($phone, $region = 'US') {
+    if (empty($phone)) {
+      return NULL;
+    }
+
+    $phoneUtil = PhoneNumberUtil::getInstance();
+    try {
+      $phoneNumber = $phoneUtil->parse($phone, $region);
+      return $phoneUtil->isValidNumber($phoneNumber) ? $phoneNumber : NULL;
+    }
+    catch (NumberParseException $e) {
+      return NULL;
+    }
+  }
+
+  /**
+   * Format phone number using libphonenumber library.
+   */
+  protected function formatPhoneNumber($phone, $format = PhoneNumberFormat::INTERNATIONAL, $region = 'US') {
+    $phoneNumber = $this->parsePhoneNumber($phone, $region);
+
+    if ($phoneNumber) {
+      $phoneUtil = PhoneNumberUtil::getInstance();
+      return $phoneUtil->format($phoneNumber, $format);
+    }
+
+    return $phone;
+  }
+
+  /**
+   * Validate a phone number field.
+   */
+  protected function validatePhoneField($phone, FormStateInterface $form_state, $field_name, $region = 'US', $error_message = NULL) {
+    if (!empty($phone) && !$this->parsePhoneNumber($phone, $region)) {
+      $message = $error_message ?: $this->t('Please enter a valid phone number.');
+      $form_state->setErrorByName($field_name, $message);
+    }
   }
 
 }

@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
     - field.field.node.scholarship.field_scholarship_more_info
+    - field.field.node.scholarship.rabbit_hole__settings
     - field.field.node.scholarship.field_scholarship_renewal
     - field.field.node.scholarship.field_scholarship_requirements
     - field.field.node.scholarship.field_scholarship_value
@@ -20,6 +21,7 @@ dependencies:
     - link
     - metatag
     - path
+    - rabbit_hole
     - text
 id: node.scholarship.default
 targetEntityType: node
@@ -142,6 +144,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

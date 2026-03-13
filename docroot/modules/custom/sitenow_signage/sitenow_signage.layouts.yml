@@ -1,0 +1,43 @@
+signage_onecol:
+  label: 'Signage - One column'
+  template: templates/layouts/signage--onecol
+  library: uids_base/onecol
+  category: 'Columns: 1'
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Content
+
+signage_twocol:
+  label: 'Signage - Two column'
+  template: templates/layouts/signage--twocol
+  library: uids_base/twocol
+  class: '\Drupal\layout_builder\Plugin\Layout\TwoColumnLayout'
+  category: 'Columns: 2'
+  default_region: first
+  icon_map:
+    - [first, second]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+
+signage_threecol:
+  label: 'Signage - Three column'
+  template: templates/layouts/signage--threecol
+  library: uids_base/threecol
+  class: '\Drupal\layout_builder\Plugin\Layout\ThreeColumnLayout'
+  category: 'Columns: 3'
+  default_region: second
+  icon_map:
+    - [first, second, third]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third

@@ -5,6 +5,8 @@
  * Primary module hooks for uiowa_aggregator module.
  */
 
+use Drupal\aggregator\Entity\Feed;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -177,6 +179,28 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
 
   foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $list_string_item) {
     $feeds[] = $list_string_item->getString();
+  }
+
+  // Add cache tags for selected feeds.
+  if ($feeds) {
+    $feed_entities = Feed::loadMultiple($feeds);
+    $feed_tags = [];
+
+    foreach ($feed_entities as $feed) {
+      // Attempt to get these from aggregator since all of
+      // this functionality exists.
+      $tags = $feed->getCacheTags();
+      if (empty($tags)) {
+        // But... fallback to a manually constructed tag if not.
+        $tags = ['aggregator_feed:' . $feed->id()];
+      }
+      $feed_tags = Cache::mergeTags($feed_tags, $tags);
+    }
+
+    $variables['#cache']['tags'] = Cache::mergeTags(
+      $variables['#cache']['tags'] ?? [],
+      $feed_tags
+    );
   }
 
   $per_page = (int) $block->get('field_uiowa_aggregator_count')->getString();

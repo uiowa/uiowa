@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdudek.uiowa.ddev.site
+    protocol: https
+  machine_name: labdudek
+  human_name: dudek.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdudek.prod
+drupal:
+  db:
+    database: dudek_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdudek.prod.drupal.uiowa.edu'
+  requester: amdudek
+  site-name: 'Dudek Lab'

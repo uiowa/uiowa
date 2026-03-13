@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.service.field_service_quick_links
     - field.field.node.service.field_service_related_service
     - field.field.node.service.field_service_website
+    - field.field.node.service.rabbit_hole__settings
     - node.type.service
     - workflows.workflow.draft
   module:
@@ -22,6 +23,7 @@ dependencies:
     - link
     - metatag
     - path
+    - rabbit_hole
     - text
 id: node.service.default
 targetEntityType: node
@@ -144,6 +146,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 18

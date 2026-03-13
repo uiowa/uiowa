@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labctfoster.uiowa.ddev.site
+    protocol: https
+  machine_name: labctfoster
+  human_name: ctfoster.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labctfoster.prod
+drupal:
+  db:
+    database: ctfoster_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labctfoster.prod.drupal.uiowa.edu'
+  requester: ctfoster
+  site-name: 'Metamorphic Petrology'

@@ -1,0 +1,601 @@
+diff --git a/fontawesome.ckeditor5.yml b/fontawesome.ckeditor5.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..0ed7ae47c2690ebadc2d9268e60cfe5919e2eab7
+--- /dev/null
++++ b/fontawesome.ckeditor5.yml
+@@ -0,0 +1,18 @@
++fontawesome_drupalfontawesome:
++  ckeditor5:
++    plugins:
++      - drupalfontawesome.FontAwesome
++  drupal:
++    label: Fontawesome
++    library: fontawesome/fontawesome.ckeditor5.plugin
++    admin_library: fontawesome/fontawesome.ckeditor5.plugin.admin
++    toolbar_items:
++      fontawesome:
++        label: Fontawesome
++    elements:
++      - <i>
++      - <i class>
++      - <i data-fa-transform>
++      - <span>
++      - <span class>
++      - <span data-fa-transform>
+diff --git a/fontawesome.libraries.yml b/fontawesome.libraries.yml
+index 578a34c831eedadda72b7dfa1ecdf420850d88b3..7e0cb55a1ccd34f4a8cf257d65ac8aeebad214ba 100644
+--- a/fontawesome.libraries.yml
++++ b/fontawesome.libraries.yml
+@@ -1,10 +1,22 @@
++fontawesome.ckeditor5.plugin:
++  js:
++    js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js: { preprocess: false, minified: true }
++  dependencies:
++    - core/ckeditor5
++    - core/drupal.ajax
++
++fontawesome.ckeditor5.plugin.admin:
++  css:
++    theme:
++      js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css: { minified: false }
++
+ fontawesome.svg:
+-  remote: &fontawesome_remote https://use.fontawesome.com/releases/v6.4.2/fontawesome-free-6.4.2-web.zip
++  remote: &fontawesome_remote https://use.fontawesome.com/releases/v6.7.2/fontawesome-free-6.7.2-web.zip
+   license: &fontawesome_svg_license
+     name: CC BY 4.0
+     url: https://fontawesome.com/license
+     gpl-compatible: true
+-  version: &fontawesome_version "6.4.2"
++  version: &fontawesome_version "6.7.2"
+   header: true
+   js:
+     /libraries/fontawesome/js/all.min.js: { minified: true, attributes: { defer: true } }
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js b/js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..91fcfeb76eeb92eb2ad9f51951c8282784e77f5e
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/build/drupalfontawesome.min.js
+@@ -0,0 +1 @@
++!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t(require("Drupal")):"function"==typeof define&&define.amd?define(["Drupal"],t):"object"==typeof exports?exports.CKEditor5=t(require("Drupal")):(e.CKEditor5=e.CKEditor5||{},e.CKEditor5.drupalfontawesome=t(e.Drupal))}(self,(e=>(()=>{var t={Drupal:t=>{"use strict";t.exports=e},"ckeditor5/src/core.js":(e,t,o)=>{e.exports=o("dll-reference CKEditor5.dll")("./src/core.js")},"ckeditor5/src/ui.js":(e,t,o)=>{e.exports=o("dll-reference CKEditor5.dll")("./src/ui.js")},"ckeditor5/src/widget.js":(e,t,o)=>{e.exports=o("dll-reference CKEditor5.dll")("./src/widget.js")},"dll-reference CKEditor5.dll":e=>{"use strict";e.exports=CKEditor5.dll}},o={};function n(e){var r=o[e];if(void 0!==r)return r.exports;var s=o[e]={exports:{}};return t[e](s,s.exports,n),s.exports}n.d=(e,t)=>{for(var o in t)n.o(t,o)&&!n.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:t[o]})},n.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);var r={};return(()=>{"use strict";n.d(r,{default:()=>l});var e=n("ckeditor5/src/core.js"),t=n("ckeditor5/src/widget.js");class o extends e.Command{constructor(e){super(e)}execute(e,t){const{model:o}=this.editor;o.change((n=>{o.insertContent(function(e,t,o){const n=e.createElement("fontAwesomeIconInline",t);return e.setAttribute("data-tag",o,n),n}(n,e,t))}))}refresh(){const{model:e}=this.editor,{selection:t}=e.document,o=e.schema.findAllowedParent(t.getFirstPosition(),"fontAwesomeIcon");this.isEnabled=null!==o}}class s extends e.Plugin{init(){this._defineSchema(),this._defineConverters(),this.editor.commands.add("insertFontAwesomeIcon",new o(this.editor))}_defineSchema(){const e=this.editor.model.schema;e.register("fontAwesomeIconInline",{inheritAllFrom:"$inlineObject",allowAttributes:["class","data-fa-transform","data-tag"]}),e.register("fontAwesomeIcon",{inheritAllFrom:"$inlineObject",allowAttributes:["class","data-fa-transform","data-tag"]})}_defineConverters(){const{conversion:e}=this.editor;function o(e,t){const o=e.getAttribute("data-tag")?e.getAttribute("data-tag"):"span",n=e.getAttribute("class"),r=e.getAttribute("data-fa-transform");return t.createRawElement("span",{class:"fontawesome-icon-inline"},(function(e){const t=r?`data-fa-transform="${r}"`:"";e.innerHTML=`<${o} class="${n}" ${t}>&nbsp;</${o}>`}))}e.for("upcast").elementToElement({view:{name:"span",classes:"fontawesome-icon-inline"},model:(e,{writer:t})=>{const o=e.getChild(0);if(!o||!o.name)return null;const n=t.createElement("fontAwesomeIconInline",o.getAttributes());return t.setAttribute("data-tag",o.name,n),n}}),e.for("upcast").elementToElement({view:{name:/^(span|i)$/,classes:/^(fa|fa-classic|fa-sharp|fas|fa-solid|far|fa-regular|fab|fa-brands)$/},model:(e,{writer:t})=>{const o=t.createElement("fontAwesomeIcon",e.getAttributes());return t.setAttribute("data-tag",e.name,o),o}}),e.for("dataDowncast").elementToElement({model:{name:"fontAwesomeIconInline",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:t})=>o(e,t)}),e.for("dataDowncast").elementToElement({model:{name:"fontAwesomeIcon",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:t})=>o(e,t)}),e.for("editingDowncast").elementToElement({model:{name:"fontAwesomeIconInline",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:n})=>{const r=o(e,n),s=n.createContainerElement("span",{},[r]);return(0,t.toWidget)(s,n)}}),e.for("editingDowncast").elementToElement({model:{name:"fontAwesomeIcon",attributes:["class","data-fa-transform","data-tag"]},view:(e,{writer:n})=>{const r=o(e,n),s=n.createContainerElement("span",{},[r]);return(0,t.toWidget)(s,n)}})}}var a=n("ckeditor5/src/ui.js");class i extends e.Plugin{init(){this.drupal=n("Drupal");const e=this.editor,t=e.sourceElement.getAttribute("data-editor-active-text-format");e.ui.componentFactory.add("fontAwesome",(o=>{const n=new a.ButtonView(o),r=e.commands.get("insertFontAwesomeIcon");return n.set({label:e.t("Insert Fontawesome Icon"),icon:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">\x3c!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.--\x3e<path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32v448c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4 44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"/></svg>',tooltip:!0}),n.bind("isEnabled").to(r,"isEnabled"),this.listenTo(n,"execute",(()=>{this.drupal.ckeditor5.openDialog(this.drupal.url(`fontawesome/dialog/icon/${t}`),(({attributes:t,tag:o})=>{e.execute("insertFontAwesomeIcon",t,o)}),{title:"FontAwesome",dialogClass:"fontawesome-icon-dialog"})})),n}))}}class c extends e.Plugin{static get requires(){return[s,i]}}const l={FontAwesome:c}})(),r=r.default})()));
+\ No newline at end of file
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css b/js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css
+new file mode 100644
+index 0000000000000000000000000000000000000000..7f7588cd86c95952c67449dfaa7bf1727ce0da9d
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/css/drupalfontawesome.admin.css
+@@ -0,0 +1,3 @@
++.ckeditor5-toolbar-button-fontawesome {
++  background-image: url(../icons/drupalfontawesome.svg);
++}
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/icons/drupalfontawesome.svg b/js/ckeditor5_plugins/drupalfontawesome/icons/drupalfontawesome.svg
+new file mode 100644
+index 0000000000000000000000000000000000000000..9cd103f083ea6d2fe3c364bcd0bdd13a62465551
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/icons/drupalfontawesome.svg
+@@ -0,0 +1 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.--><path d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32v448c0 17.7 14.3 32 32 32s32-14.3 32-32V352l64.3-16.1c41.1-10.3 84.6-5.5 122.5 13.4 44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0-35.1-17.6-75.4-22-113.5-12.5L64 48V32z"/></svg>
+\ No newline at end of file
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesome.js b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesome.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..7daa60a94613cf2304c8fee4e2a1f89178e71de0
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesome.js
+@@ -0,0 +1,9 @@
++import FontAwesomeEditing from './FontAwesomeEditing';
++import FontAwesomeUI from './FontAwesomeUI';
++import { Plugin } from 'ckeditor5/src/core';
++
++export default class FontAwesome extends Plugin {
++  static get requires() {
++    return [FontAwesomeEditing, FontAwesomeUI];
++  }
++}
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeEditing.js b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeEditing.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..5f1857c82675f5a56beac6d19344ad1b3496e2c2
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeEditing.js
+@@ -0,0 +1,141 @@
++import { Plugin } from 'ckeditor5/src/core';
++import { toWidget, toWidgetEditable } from 'ckeditor5/src/widget';
++import InsertFontAwesomeIcon from './InsertFontAwesomeIcon';
++
++
++export default class FontAwesomeEditing extends Plugin {
++
++  init() {
++    this._defineSchema();
++    this._defineConverters();
++    this.editor.commands.add(
++      'insertFontAwesomeIcon',
++      new InsertFontAwesomeIcon(this.editor),
++    );
++  }
++
++  _defineSchema() {
++    const schema = this.editor.model.schema;
++
++    schema.register('fontAwesomeIconInline', {
++      inheritAllFrom: '$inlineObject',
++      allowAttributes: ['class', 'data-fa-transform', 'data-tag'],
++    });
++
++    schema.register('fontAwesomeIcon', {
++      inheritAllFrom: '$inlineObject',
++      allowAttributes: ['class', 'data-fa-transform', 'data-tag'],
++    });
++  }
++
++  _defineConverters() {
++    const { conversion } = this.editor;
++
++    conversion.for('upcast').elementToElement({
++      view: {
++        name: 'span',
++        classes: 'fontawesome-icon-inline',
++      },
++      model: (viewElement, { writer }) => {
++        // Get the first child element inside the wrapper span
++        const childElement = viewElement.getChild(0);
++
++        if (!childElement || !childElement.name) {
++            return null;
++        }
++
++        // Create the model element and preserve child attributes
++        const fontAwesomeIconInline = writer.createElement(
++            'fontAwesomeIconInline',
++            childElement.getAttributes()
++        );
++
++        writer.setAttribute('data-tag', childElement.name, fontAwesomeIconInline);
++        return fontAwesomeIconInline;
++      }
++    });
++
++    conversion.for('upcast').elementToElement({
++      view: {
++        name: /^(span|i)$/,
++        classes: /^(fa|fa-classic|fa-sharp|fas|fa-solid|far|fa-regular|fab|fa-brands)$/,
++      },
++      model: ( viewElement, { writer } ) => {
++        const fontAwesomeIcon = writer.createElement('fontAwesomeIcon', viewElement.getAttributes());
++        writer.setAttribute('data-tag', viewElement.name, fontAwesomeIcon);
++        return fontAwesomeIcon;
++      }
++    });
++
++    conversion.for('dataDowncast').elementToElement({
++      model: {
++        name: 'fontAwesomeIconInline',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: (modelElement, { writer }) => {
++        return createFontAwesomeIconInlineView(modelElement, writer);
++      }
++    });
++
++    conversion.for('dataDowncast').elementToElement( {
++      model: {
++        name: 'fontAwesomeIcon',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: (modelElement, { writer }) => {
++        return createFontAwesomeIconInlineView(modelElement, writer);
++      }
++    } );
++
++    conversion.for('editingDowncast').elementToElement( {
++      model: {
++        name: 'fontAwesomeIconInline',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: (modelElement, { writer}) => {
++        const icon = createFontAwesomeIconInlineView(modelElement, writer);
++        const widgetElement = writer.createContainerElement('span', {}, [icon]);
++        return toWidget(widgetElement, writer);
++      }
++    } );
++
++    conversion.for('editingDowncast').elementToElement( {
++      model: {
++        name: 'fontAwesomeIcon',
++        attributes: ['class', 'data-fa-transform', 'data-tag']
++      },
++      view: ( modelElement, { writer} ) => {
++        const icon = createFontAwesomeIconInlineView(modelElement, writer);
++        const widgetElement = writer.createContainerElement('span', {}, [icon]);
++        return toWidget(widgetElement, writer);
++      }
++    } );
++
++    function createFontAwesomeIconInlineView(modelElement, writer) {
++      const tag = modelElement.getAttribute('data-tag')? modelElement.getAttribute('data-tag') : 'span';
++      const classes = modelElement.getAttribute('class');
++      const transforms = modelElement.getAttribute('data-fa-transform');
++      return writer.createRawElement('span', { class: 'fontawesome-icon-inline' }, function(domElement) {
++        const transformAttribute = transforms ? `data-fa-transform="${transforms}"` : '';
++        domElement.innerHTML = `<${tag} class="${classes}" ${transformAttribute}>&nbsp;</${tag}>`;
++      });
++    }
++
++    function createFontAwesomeIconView(modelElement, writer) {
++      const attributes = { class: modelElement.getAttribute('class') };
++      const tag = modelElement.getAttribute('data-tag');
++      const classes = modelElement.getAttribute('class');
++      const transforms = modelElement.getAttribute('data-fa-transform');
++      if (transforms) {
++        attributes['data-fa-transform'] = transforms;
++      }
++      return writer.createRawElement('span', [], function (domElement) {
++        // domElement.innerHTML = '&nbsp;';
++        const transformAttribute = transforms ? `data-fa-transform="${transforms}"` : '';
++        domElement.innerHTML = `<${tag} class="${classes}" ${transformAttribute}>&nbsp;</${tag}>`;
++      });
++    }
++  }
++}
++
++
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeUI.js b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeUI.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..531ed95d185240bb9ada3267f712396de4a779ab
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/FontAwesomeUI.js
+@@ -0,0 +1,37 @@
++import { Plugin } from 'ckeditor5/src/core';
++import {  ButtonView, ContextualBalloon, clickOutsideHandler  } from 'ckeditor5/src/ui';
++import icon from '../icons/drupalfontawesome.svg';
++
++export default class FontAwesomeUI extends Plugin {
++  init() {
++    this.drupal = require('Drupal');
++    const editor = this.editor;
++    const activeFormat = editor.sourceElement.getAttribute('data-editor-active-text-format');
++
++    editor.ui.componentFactory.add('fontAwesome', (locale) => {
++      const buttonView = new ButtonView(locale);
++      const command = editor.commands.get( 'insertFontAwesomeIcon' );
++
++      buttonView.set({
++        label: editor.t('Insert Fontawesome Icon'),
++        icon,
++        tooltip: true,
++      });
++
++      buttonView.bind('isEnabled').to( command, 'isEnabled' );
++
++      this.listenTo(buttonView, 'execute', () => {
++        const dialogSettings = {
++          title: 'FontAwesome',
++          dialogClass: 'fontawesome-icon-dialog',
++        };
++
++        this.drupal.ckeditor5.openDialog(this.drupal.url(`fontawesome/dialog/icon/${activeFormat}`), ({attributes, tag})=>{
++          editor.execute('insertFontAwesomeIcon', attributes, tag);
++        }, dialogSettings);
++      } );
++
++      return buttonView;
++    });
++  }
++}
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/InsertFontAwesomeIcon.js b/js/ckeditor5_plugins/drupalfontawesome/src/InsertFontAwesomeIcon.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..f663f0f62415bc865c19adeac930208ec2025dd8
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/InsertFontAwesomeIcon.js
+@@ -0,0 +1,32 @@
++import { Command } from 'ckeditor5/src/core';
++
++export default class InsertFontAwesomeIcon extends Command {
++  constructor( locale ) {
++    super( locale );
++  }
++
++  execute(attributes, tag) {
++    const { model } = this.editor;
++
++    model.change((writer) => {
++      model.insertContent(createFontAwesomeIcon(writer, attributes, tag));
++    });
++  }
++
++  refresh() {
++    const { model } = this.editor;
++    const { selection } = model.document;
++    const allowedIn = model.schema.findAllowedParent(
++      selection.getFirstPosition(),
++      'fontAwesomeIcon',
++    );
++
++    this.isEnabled = allowedIn !== null;
++  }
++}
++
++function createFontAwesomeIcon(writer, attributes, tag) {
++  const fontAwesomeIconElement = writer.createElement('fontAwesomeIconInline', attributes);
++  writer.setAttribute('data-tag', tag, fontAwesomeIconElement);
++  return fontAwesomeIconElement;
++}
+diff --git a/js/ckeditor5_plugins/drupalfontawesome/src/index.js b/js/ckeditor5_plugins/drupalfontawesome/src/index.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..63ac8d9d20bfa192b49e115bd7461f466acf6257
+--- /dev/null
++++ b/js/ckeditor5_plugins/drupalfontawesome/src/index.js
+@@ -0,0 +1,5 @@
++import FontAwesome from './FontAwesome';
++
++export default {
++  FontAwesome,
++};
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a6726e942ffbe9da665f73593274e82c02b74b12
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,20 @@
++{
++  "name": "fontawesome-ckeditor5",
++  "version": "1.0.0",
++  "description": "Fontawesome Ckdeditor 5 plugin.",
++  "author": "",
++  "license": "GPL-2.0-or-later",
++  "scripts": {
++    "watch": "webpack --mode development --watch",
++    "build": "webpack"
++  },
++  "devDependencies": {
++    "@ckeditor/ckeditor5-dev-utils": "^30.0.0",
++    "@ckeditor/ckeditor5-widget": "^37.0.1",
++    "ckeditor5": "~34.1.0",
++    "raw-loader": "^4.0.2",
++    "terser-webpack-plugin": "^5.2.0",
++    "webpack": "^5.51.1",
++    "webpack-cli": "^4.4.0"
++  }
++}
+diff --git a/src/Plugin/CKEditor4To5Upgrade/FontAwesomeCKEditor5.php b/src/Plugin/CKEditor4To5Upgrade/FontAwesomeCKEditor5.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..e108999dd7da045f2f469234557b6ba51de3fff5
+--- /dev/null
++++ b/src/Plugin/CKEditor4To5Upgrade/FontAwesomeCKEditor5.php
+@@ -0,0 +1,52 @@
++<?php
++
++namespace Drupal\fontawesome\Plugin\CKEditor4To5Upgrade;
++
++use Drupal\ckeditor5\HTMLRestrictions;
++use Drupal\ckeditor5\Plugin\CKEditor4To5UpgradePluginInterface;
++use Drupal\Core\Plugin\PluginBase;
++use Drupal\filter\FilterFormatInterface;
++
++  /**
++   * @CKEditor4To5Upgrade(
++   *   id = "ckeditor5_fontawesome",
++   *   cke4_buttons = {
++   *     "DrupalFontAwesome",
++   *   },
++   *   cke4_plugin_settings = {},
++   *   cke5_plugin_elements_subset_configuration = {}
++   * )
++   *
++   * @internal
++   *   Plugin classes are internal.
++   */
++class FontAwesomeCKEditor5 extends PluginBase implements CKEditor4To5UpgradePluginInterface {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function mapCKEditor4ToolbarButtonToCKEditor5ToolbarItem(string $cke4_button, HTMLRestrictions $text_format_html_restrictions): ?array {
++    switch ($cke4_button) {
++      case 'DrupalFontAwesome':
++        return ['fontawesome'];
++
++      default:
++        throw new \OutOfBoundsException();
++    }
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function mapCKEditor4SettingsToCKEditor5Configuration(string $cke4_plugin_id, array $cke4_plugin_settings): ?array {
++    throw new \OutOfBoundsException();
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function computeCKEditor5PluginSubsetConfiguration(string $cke5_plugin_id, FilterFormatInterface $text_format): ?array {
++    throw new \OutOfBoundsException();
++  }
++
++}
+diff --git a/tests/src/Kernel/UpgradePathTest.php b/tests/src/Kernel/UpgradePathTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..ad8336089e4a86172a9b44f560ce29bb470434c1
+--- /dev/null
++++ b/tests/src/Kernel/UpgradePathTest.php
+@@ -0,0 +1,110 @@
++<?php
++
++declare(strict_types = 1);
++
++namespace Drupal\Tests\fontawesome\Kernel;
++
++use Drupal\editor\Entity\Editor;
++use Drupal\filter\Entity\FilterFormat;
++use Drupal\Tests\ckeditor5\Kernel\SmartDefaultSettingsTest;
++
++/**
++ * @covers \Drupal\fontawesome\Plugin\CKEditor4To5Upgrade\FontAwesomeCKEditor5
++ * @group fontawesome
++ * @group ckeditor5
++ * @requires module ckeditor5
++ * @internal
++ */
++class UpgradePathTest extends SmartDefaultSettingsTest {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'fontawesome',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++
++    $filter_config = [
++      'filter_html' => [
++        'status' => 1,
++        'settings' => [
++          'allowed_html' => '<p> <br> <strong>',
++        ],
++      ],
++    ];
++
++    FilterFormat::create([
++      'format' => 'font_awesome_enabled',
++      'name' => 'Font Awesome Enabled',
++      'filters' => $filter_config,
++    ])->setSyncing(TRUE)->save();
++
++
++    $editor_settings =  [
++        'toolbar' => [
++          'rows' => [
++            0 => [
++              [
++                'name' => 'Basic Formatting',
++                'items' => [
++                  'Bold',
++                  'Format',
++                ],
++              ],
++              [
++                'name' => 'Embedding',
++                'items' => ['DrupalFontAwesome'],
++              ],
++            ],
++          ],
++        ],
++        'plugins' => [],
++      ];
++
++
++    Editor::create([
++      'format' => 'font_awesome_enabled',
++      'editor' => 'ckeditor',
++      'settings' => $editor_settings,
++    ])->setSyncing(TRUE)->save();
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function provider() {
++    $expected_ckeditor5_toolbar = [
++      'items' => [
++        'bold',
++        '|',
++        'fontawesome',
++      ],
++    ];
++
++
++    yield "Fontawesome enabled" => [
++      'format_id' => 'font_awesome_enabled',
++      'filters_to_drop' => [],
++      'expected_ckeditor5_settings' => [
++        'toolbar' => $expected_ckeditor5_toolbar,
++        'plugins' => [],
++      ],
++      'expected_superset' => '<i class data-fa-transform> <span class data-fa-transform>',
++      'expected_fundamental_compatibility_violations' => [],
++      'expected_db_logs' => [],
++      'expected_messages' => [
++        'warning' => [
++          'Updating to CKEditor 5 added support for some previously unsupported tags/attributes. A plugin introduced support for the following:  The tags <em class="placeholder">&lt;i&gt;, &lt;span&gt;</em>; These attributes: <em class="placeholder"> class (for &lt;i&gt;, &lt;span&gt;), data-fa-transform (for &lt;i&gt;, &lt;span&gt;)</em>; Additional details are available in your logs.'
++        ],
++      ],
++    ];
++  }
++
++}
+diff --git a/webpack.config.js b/webpack.config.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..0876f7d156a5f3df3cea30fa62ceb718949853e4
+--- /dev/null
++++ b/webpack.config.js
+@@ -0,0 +1,63 @@
++const path = require('path');
++const fs = require('fs');
++const webpack = require('webpack');
++const TerserPlugin = require('terser-webpack-plugin');
++
++function getDirectories(srcpath) {
++  return fs
++    .readdirSync(srcpath)
++    .filter((item) => fs.statSync(path.join(srcpath, item)).isDirectory());
++}
++
++module.exports = [];
++getDirectories('./js/ckeditor5_plugins').forEach((dir) => {
++  const bc = {
++    mode: 'production',
++    optimization: {
++      minimize: true,
++      minimizer: [
++        new TerserPlugin({
++          terserOptions: {
++            format: {
++              comments: false,
++            },
++          },
++          test: /\.js(\?.*)?$/i,
++          extractComments: false,
++        }),
++      ],
++      moduleIds: 'named',
++    },
++    entry: {
++      path: path.resolve(
++        __dirname,
++        'js/ckeditor5_plugins',
++        dir,
++        'src/index.js',
++      ),
++    },
++    externals: {
++      Drupal: 'Drupal',
++      drupalSettings: 'drupalSettings',
++    },
++    output: {
++      path: path.resolve(__dirname, './js/ckeditor5_plugins', dir, 'build'),
++      filename: `${dir}.min.js`,
++      library: ['CKEditor5', dir],
++      libraryTarget: 'umd',
++      libraryExport: 'default',
++    },
++    plugins: [
++      new webpack.DllReferencePlugin({
++        manifest: require('./node_modules/ckeditor5/build/ckeditor5-dll.manifest.json'), // eslint-disable-line global-require, import/no-unresolved
++        scope: 'ckeditor5/src',
++        name: 'CKEditor5.dll',
++      }),
++    ],
++    module: {
++      rules: [{ test: /\.svg$/, use: 'raw-loader' }],
++    },
++  };
++
++  module.exports.push(bc);
++});

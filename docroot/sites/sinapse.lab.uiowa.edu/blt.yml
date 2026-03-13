@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsinapse.uiowa.ddev.site
+    protocol: https
+  machine_name: labsinapse
+  human_name: sinapse.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsinapse.prod
+drupal:
+  db:
+    database: sinapse_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsinapse.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: SINAPSE

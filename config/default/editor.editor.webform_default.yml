@@ -6,6 +6,7 @@ dependencies:
     - filter.format.webform_default
   module:
     - ckeditor5
+    - ckeditor_small_tag
 format: webform_default
 editor: ckeditor5
 settings:
@@ -15,8 +16,9 @@ settings:
       - '|'
       - bold
       - italic
-      - subscript
       - superscript
+      - subscript
+      - small
       - '|'
       - specialCharacters
       - '|'
@@ -43,6 +45,7 @@ settings:
       properties:
         reversed: true
         startIndex: true
+        styles: true
       multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags: {  }

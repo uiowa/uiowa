@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgappliedai.uiowa.ddev.site
+    protocol: https
+  machine_name: orgappliedai
+  human_name: appliedai.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgappliedai.prod
+drupal:
+  db:
+    database: appliedai_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgappliedai.prod.drupal.uiowa.edu'
+  requester: mvanfleet
+  site-name: appliedai

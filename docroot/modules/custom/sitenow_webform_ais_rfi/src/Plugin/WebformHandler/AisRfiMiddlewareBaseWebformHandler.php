@@ -112,7 +112,7 @@ abstract class AisRfiMiddlewareBaseWebformHandler extends WebformHandlerBase {
     // If not set, use the default URL based on environment.
     if (!$endpoint_url) {
       $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
-      $endpoint_url = ($env === 'prod') ? 'https://app.its.uiowa.edu/prospect-api/api/prospect/submit' : 'https://test.its.uiowa.edu/prospect-api/api/prospect/submit';
+      $endpoint_url = ($env === 'prod') ? 'https://apps.its.uiowa.edu/prospect-api/api/prospect/submit' : 'https://test.its.uiowa.edu/prospect-api/api/prospect/submit';
     }
 
     if (!$auth) {

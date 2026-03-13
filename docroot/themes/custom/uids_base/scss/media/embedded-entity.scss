@@ -1,5 +1,5 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
 
 .embedded-entity {
   max-width: 100%;
@@ -46,7 +46,8 @@ figure.caption {
     max-width: none;
     caption-side: bottom;
     font-size: 95%;
-    margin-top: 1rem;
+    margin-block-start: .5rem;
+    margin-block-end: 1.5rem;
 
     p {
       font-size: 95%;
@@ -88,7 +89,7 @@ figure.align-right,
 
 figure.caption .embedded-entity+figcaption {
   font-size: 90%;
-  color: variables.$grey;
+  color: variables.$gray;
   margin-top: variables.$sm;
   margin-bottom: variables.$sm;
 }
@@ -101,6 +102,6 @@ figure.caption.align-right .embedded-entity+figcaption {
 
 .alert {
   figure.caption .embedded-entity+figcaption {
-    color: variables.$grey;
+    color: variables.$gray;
   }
 }

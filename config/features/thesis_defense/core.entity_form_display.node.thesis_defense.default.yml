@@ -3,20 +3,43 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.thesis_defense.field_grad_program_phd
-    - field.field.node.thesis_defense.field_person_first_name
-    - field.field.node.thesis_defense.field_person_last_name
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
-    - field.field.node.thesis_defense.field_thesis_defense_file
     - field.field.node.thesis_defense.field_thesis_defense_location
+    - field.field.node.thesis_defense.field_thesis_defense_program
+    - field.field.node.thesis_defense.field_thesis_defense_sync_id
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
     - content_moderation
-    - media_library
+    - field_group
     - path
     - smart_date
+third_party_settings:
+  field_group:
+    group_imported:
+      children:
+        - title
+        - field_thesis_defense_title
+        - field_thesis_defense_location
+        - field_thesis_defense_date
+        - field_thesis_defense_program
+        - field_grad_program_phd
+        - field_thesis_defense_chairs
+        - field_thesis_defense_sync_id
+      label: Imported
+      region: content
+      parent_name: ''
+      weight: 16
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: 'These fields are imported from MAUI.'
+        required_fields: true
 id: node.thesis_defense.default
 targetEntityType: node
 bundle: thesis_defense
@@ -28,31 +51,9 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_grad_program_phd:
-    type: options_select
-    weight: 13
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_person_first_name:
-    type: string_textfield
-    weight: 8
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_last_name:
-    type: string_textfield
-    weight: 9
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_thesis_defense_chairs:
     type: string_textfield
-    weight: 14
+    weight: 6
     region: content
     settings:
       size: 60
@@ -60,7 +61,7 @@ content:
     third_party_settings: {  }
   field_thesis_defense_date:
     type: smartdate_inline
-    weight: 11
+    weight: 3
     region: content
     settings:
       modal: false
@@ -71,20 +72,32 @@ content:
         90
         120|2 hours
         custom
-      show_extra: true
+      show_extra: false
       hide_date: true
+      allday: true
+      remove_seconds: true
+      duration_overlay: false
       separator: to
-    third_party_settings: {  }
-  field_thesis_defense_file:
-    type: media_library_widget
-    weight: 26
-    region: content
-    settings:
-      media_types: {  }
     third_party_settings: {  }
   field_thesis_defense_location:
     type: string_textfield
-    weight: 12
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_thesis_defense_program:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_thesis_defense_sync_id:
+    type: string_textfield
+    weight: 7
     region: content
     settings:
       size: 60
@@ -92,7 +105,7 @@ content:
     third_party_settings: {  }
   field_thesis_defense_title:
     type: string_textfield
-    weight: 10
+    weight: 1
     region: content
     settings:
       size: 60
@@ -118,7 +131,7 @@ content:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -135,6 +148,14 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
@@ -154,6 +175,5 @@ content:
 hidden:
   publish_on: true
   publish_state: true
-  title: true
   unpublish_on: true
   unpublish_state: true

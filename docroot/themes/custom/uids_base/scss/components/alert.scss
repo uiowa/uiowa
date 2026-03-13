@@ -1,6 +1,6 @@
-@use 'uids/scss/abstracts/_variables.scss';
-@use 'uids/scss/abstracts/_utilities.scss';
-@use 'uids/scss/components/alert.scss';
+@use '../../uids/scss/abstracts/_variables.scss';
+@use '../../uids/scss/abstracts/_utilities.scss';
+@use '../../uids/scss/components/alert.scss';
 
 .alert {
  [class*="bg--black"] & {
@@ -67,4 +67,8 @@
 
 .alert__icon + div {
   width: 100%;
+}
+
+.alert[data-once="uidsStatusMessages"] details summary {
+  white-space: normal;
 }

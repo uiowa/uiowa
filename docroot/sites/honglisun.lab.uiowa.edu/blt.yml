@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhonglisun.uiowa.ddev.site
+    protocol: https
+  machine_name: labhonglisun
+  human_name: honglisun.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhonglisun.prod
+drupal:
+  db:
+    database: honglisun_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhonglisun.prod.drupal.uiowa.edu'
+  requester: jrossi
+  site-name: 'Hongli Sun Lab'

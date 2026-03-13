@@ -34,6 +34,7 @@ dependencies:
     - field.field.node.book.field_image
     - field.field.node.book.field_meta_tags
     - field.field.node.book.field_pages_art_trim
+    - field.field.node.book.rabbit_hole__settings
     - node.type.book
     - workflows.workflow.editorial
   module:
@@ -44,6 +45,7 @@ dependencies:
     - metatag
     - paragraphs
     - path
+    - rabbit_hole
     - text
 third_party_settings:
   field_group:
@@ -411,6 +413,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

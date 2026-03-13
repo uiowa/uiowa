@@ -1,0 +1,29 @@
+uuid: c7a0f7f1-c921-446a-bd3c-a527bc1918c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_record_ad_unit_responsible
+    - node.type.record
+    - taxonomy.vocabulary.administrative_units
+id: node.record.field_record_ad_unit_responsible
+field_name: field_record_ad_unit_responsible
+entity_type: node
+bundle: record
+label: 'Administrative unit responsible for establishing retention criteria'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      administrative_units: administrative_units
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

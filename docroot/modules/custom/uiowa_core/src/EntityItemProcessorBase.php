@@ -56,11 +56,28 @@ abstract class EntityItemProcessorBase {
       }
     }
 
+    // Allow subclasses to modify values before they are set on the entity.
+    static::prepareUpdatedValues($values, $entity, $record);
+
     foreach ($values as $field => $value) {
       $entity->set($field, $value);
     }
 
     return $updated;
+  }
+
+  /**
+   * Prepare updated values before they are set on the entity.
+   *
+   * @param array $values
+   *   The values to be set on the entity, passed by reference.
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity being processed.
+   * @param mixed $record
+   *   The source record being processed.
+   */
+  protected static function prepareUpdatedValues(array &$values, FieldableEntityInterface $entity, $record): void {
+    // By default, do nothing. Subclasses may override.
   }
 
   /**

@@ -1,0 +1,155 @@
+diff --git a/layout_builder_styles.module b/layout_builder_styles.module
+index 8d878e831ab53fcb65e8d53a0483897ace887739..843741f879617133654bffed028ea1c31bdf5699 100644
+--- a/layout_builder_styles.module
++++ b/layout_builder_styles.module
+@@ -214,6 +214,10 @@ function _layout_builder_styles_add_style_selection_form_elements(array &$form,
+     // If there were multiple saved, we just clear them both out. There's not
+     // a good way to recover from that situation.
+     if ($group->getMultiselect() === 'single') {
++      // If single form type config is radio, then render as radio.
++      if($group->getFormType() === 'radio'){
++        $form[$element_name]['#type'] = 'radios';
++      }
+       if (count($elementSelectedStyles) === 1) {
+         $elementSelectedStyles = array_shift($elementSelectedStyles);
+       }
+diff --git a/src/Form/LayoutBuilderStyleGroupForm.php b/src/Form/LayoutBuilderStyleGroupForm.php
+index 9fdf3780f12971d9527b8722a2fd1bfb687029ea..81f3dad0de383f82b422da4d65fc1412e485c89d 100644
+--- a/src/Form/LayoutBuilderStyleGroupForm.php
++++ b/src/Form/LayoutBuilderStyleGroupForm.php
+@@ -99,25 +99,33 @@ class LayoutBuilderStyleGroupForm extends EntityForm implements ContainerInjecti
+         LayoutBuilderStyleGroupInterface::TYPE_SINGLE => $this->t('User may only apply one style from this group per per section or block.'),
+         LayoutBuilderStyleGroupInterface::TYPE_MULTIPLE => $this->t('User may apply multiple styles from this group per section or block.'),
+       ],
++
++      '#ajax' => [
++        'callback' => '::formTypeOptions',
++        'disable-refocus' => FALSE,
++        'event' => 'change',
++        'wrapper' => 'form_type_select_wrapper',
++        'progress' => [
++          'type' => 'throbber',
++          'message' => $this->t('Updating options...'),
++        ],
++      ],
+     ];
+
+     $form['form_type'] = [
+-      '#title' => $this->t('Form element for multiple styles'),
+-      '#type' => 'radios',
+-      '#default_value' => $group->getFormType() ?? LayoutBuilderStyleGroupInterface::TYPE_CHECKBOXES,
+-      '#description' => $this->t('Determines whether the styles selector should display as multiple checkboxes or a select (multiple) box.'),
++      '#title' => $this->t('Form element for styles'),
++      '#type' => 'select',
++      '#default_value' => $group->getFormType() ?? '',
++      '#description' => $this->t('Determines the display of the styles selector.'),
+       '#required' => TRUE,
+-      '#options' => [
+-        LayoutBuilderStyleGroupInterface::TYPE_CHECKBOXES => $this->t('Checkboxes'),
+-        LayoutBuilderStyleGroupInterface::TYPE_MULTIPLE_SELECT => $this->t('Select (multiple) box'),
+-      ],
+-      '#states' => [
+-        'visible' => [
+-          ':input[name="multiselect"]' => ['value' => 'multiple'],
+-        ],
+-      ],
++      '#options' => '',
++      '#prefix' => '<div id="form_type_select_wrapper">',
++      '#suffix' =>'</div>',
+     ];
+
++    // Build default options based on the AJAX callback.
++    $this->formTypeOptions($form, $form_state);
++
+     $form['required'] = [
+       '#title' => $this->t('Require Selection'),
+       '#type' => 'checkbox',
+@@ -127,6 +135,16 @@ class LayoutBuilderStyleGroupForm extends EntityForm implements ContainerInjecti
+
+     return $form;
+   }
++  /**
++   * {@inheritdoc}
++   */
++  public function validateForm(array &$form, FormStateInterface $form_state) {
++    // Because the AJAX adds validate to the options field, we have to re-validate the value (e.g. not empty)
++    if(($form_state->isValueEmpty('form_type'))){
++      $form_state->setErrorByName('form_type', $this->t('Form element for styles cannot be empty.'));
++    }
++    parent::validateForm($form, $form_state);
++  }
+
+   /**
+    * {@inheritdoc}
+@@ -150,4 +168,35 @@ class LayoutBuilderStyleGroupForm extends EntityForm implements ContainerInjecti
+     $form_state->setRedirectUrl($group->toUrl('collection'));
+   }
+
++// Get the value from example select field and fill
++// the textbox with the selected text.
++public function formTypeOptions(array &$form, FormStateInterface $form_state) {
++  $group = $this->entity;
++  $form_type = $form_state->getValue('multiselect') ?? $group->getMultiselect();
++  $form_type_options = [];
++
++  // Check if switched to multiple or single values
++  if ($form_type == LayoutBuilderStyleGroupInterface::TYPE_MULTIPLE) {
++    $form_type_options = [
++      LayoutBuilderStyleGroupInterface::TYPE_CHECKBOXES => $this->t('Checkboxes'),
++      LayoutBuilderStyleGroupInterface::TYPE_MULTIPLE_SELECT => $this->t('Select (multiple) box'),
++    ];
++
++    $form['form_type']['#options'] = $form_type_options;
++  }
++  else {
++    $form_type_options = [
++      LayoutBuilderStyleGroupInterface::TYPE_SELECT => $this->t('Select box'),
++      LayoutBuilderStyleGroupInterface::TYPE_RADIO => $this->t('Radio list'),
++    ];
++    $form['form_type']['#options'] = $form_type_options;
++  }
++
++  // Without this, a user could save an empty value for this setting.
++  $form['form_type']['#validated'] = TRUE;
++  $form_state->setRebuild(TRUE);
++  // Return the prepared form field.
++  return $form['form_type'];
++}
++
+ }
+diff --git a/src/LayoutBuilderStyleGroupInterface.php b/src/LayoutBuilderStyleGroupInterface.php
+index 2c10fbe1677d557d41266ba241598aa5d71f5c2d..5c03be270dd949b51e43beb0ebbe83cfc688c574 100644
+--- a/src/LayoutBuilderStyleGroupInterface.php
++++ b/src/LayoutBuilderStyleGroupInterface.php
+@@ -12,6 +12,9 @@ interface LayoutBuilderStyleGroupInterface extends ConfigEntityInterface {
+   const TYPE_CHECKBOXES = 'checkboxes';
+   const TYPE_MULTIPLE_SELECT = 'multiple-select';
+
++  const TYPE_SELECT = 'select';
++  const TYPE_RADIO = 'radio';
++
+   const TYPE_SINGLE = 'single';
+   const TYPE_MULTIPLE = 'multiple';
+
+@@ -19,7 +22,7 @@ interface LayoutBuilderStyleGroupInterface extends ConfigEntityInterface {
+    * Returns the group of style (eg, margin, padding, color_scheme).
+    *
+    * @return string
+-   *   Either "checkboxes" or "multiple-select".
++   *   Either "checkboxes", "multiple-select" (multiple) or "dropdown", "radio" (single).
+    */
+   public function getFormType();
+
+diff --git a/src/LayoutBuilderStyleGroupListBuilder.php b/src/LayoutBuilderStyleGroupListBuilder.php
+index 06db3dfeba47b612c99d29805b8bac2216af2bad..f4f7459e8d089da259937d6e07e893ad91700925 100644
+--- a/src/LayoutBuilderStyleGroupListBuilder.php
++++ b/src/LayoutBuilderStyleGroupListBuilder.php
+@@ -40,7 +40,7 @@ class LayoutBuilderStyleGroupListBuilder extends DraggableListBuilder {
+       '#plain_text' => $entity->getMultiselect() === LayoutBuilderStyleGroupInterface::TYPE_MULTIPLE ? 'Yes' : 'No',
+     ];
+     $row['form_type'] = [
+-      '#plain_text' => $entity->getMultiselect() === LayoutBuilderStyleGroupInterface::TYPE_MULTIPLE ? $entity->getFormType() : 'select',
++      '#plain_text' => $entity->getFormType(),
+     ];
+     $row['required'] = (empty($entity->getRequired())) ? ['#plain_text' => 'Optional'] : ['#plain_text' => 'Required'];
+     return $row + parent::buildRow($entity);

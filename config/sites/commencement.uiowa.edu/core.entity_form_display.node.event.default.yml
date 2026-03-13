@@ -18,6 +18,8 @@ dependencies:
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_venue
+    - field.field.node.event.field_event_venue_address
+    - field.field.node.event.field_event_venue_name
     - field.field.node.event.field_event_website
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
@@ -44,6 +46,8 @@ third_party_settings:
         - field_event_when
         - field_event_venue
         - field_event_room
+        - field_event_venue_name
+        - field_event_venue_address
         - field_event_link
         - field_event_contact
         - field_event_contact_email
@@ -120,7 +124,7 @@ content:
     third_party_settings: {  }
   field_event_contact:
     type: string_textfield
-    weight: 28
+    weight: 29
     region: content
     settings:
       size: 60
@@ -128,7 +132,7 @@ content:
     third_party_settings: {  }
   field_event_contact_email:
     type: email_default
-    weight: 29
+    weight: 30
     region: content
     settings:
       placeholder: ''
@@ -136,7 +140,7 @@ content:
     third_party_settings: {  }
   field_event_contact_phone:
     type: telephone_default
-    weight: 30
+    weight: 31
     region: content
     settings:
       placeholder: ''
@@ -150,7 +154,7 @@ content:
     third_party_settings: {  }
   field_event_link:
     type: link_default
-    weight: 27
+    weight: 28
     region: content
     settings:
       placeholder_url: ''
@@ -179,7 +183,7 @@ content:
     third_party_settings: {  }
   field_event_room:
     type: string_textfield
-    weight: 26
+    weight: 25
     region: content
     settings:
       size: 60
@@ -193,7 +197,7 @@ content:
     third_party_settings: {  }
   field_event_venue:
     type: entity_reference_autocomplete
-    weight: 25
+    weight: 24
     region: content
     settings:
       match_operator: CONTAINS
@@ -201,9 +205,25 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_event_venue_address:
+    type: string_textarea
+    weight: 27
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_event_venue_name:
+    type: string_textfield
+    weight: 26
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_event_website:
     type: link_default
-    weight: 31
+    weight: 32
     region: content
     settings:
       placeholder_url: ''
@@ -223,9 +243,10 @@ content:
         120|2 hours
         custom
       show_extra: false
-      hide_date: true
+      hide_date: false
       allday: true
-      remove_seconds: false
+      remove_seconds: true
+      duration_overlay: false
       separator: to
     third_party_settings: {  }
   field_meta_tags:

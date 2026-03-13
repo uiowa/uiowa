@@ -14,7 +14,7 @@ type: content_moderation
 type_settings:
   states:
     archived:
-      label: Archived
+      label: Unpublished
       weight: 1
       published: false
       default_revision: true
@@ -35,13 +35,13 @@ type_settings:
       default_revision: false
   transitions:
     archive:
-      label: Archive
+      label: Unpublish
       from:
         - published
       to: archived
       weight: 1
     archived_published:
-      label: 'Restore from archive'
+      label: 'Restore from unpublished'
       from:
         - archived
       to: published

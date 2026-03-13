@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesoliviahubbardportfolio.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesoliviahubbardportfolio
+  human_name: oliviahubbardportfolio.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesoliviahubbardportfolio.prod
+drupal:
+  db:
+    database: oliviahubbardportfolio_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesoliviahubbardportfolio.prod.drupal.uiowa.edu'
+  requester: oahubbard
+  site-name: 'Olivia Hubbard'

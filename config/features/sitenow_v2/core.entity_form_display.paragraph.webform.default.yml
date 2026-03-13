@@ -26,10 +26,12 @@ third_party_settings:
       weight: 3
       format_type: details
       format_settings:
-        label: 'Additional Webform Settings'
         classes: ''
+        show_empty_fields: false
         id: ''
+        label_as_html: false
         open: false
+        description: ''
         required_fields: true
 id: paragraph.webform.default
 targetEntityType: paragraph
@@ -77,6 +79,7 @@ content:
     region: content
     settings:
       default_data: true
+      webforms: {  }
     third_party_settings: {  }
 hidden:
   created: true

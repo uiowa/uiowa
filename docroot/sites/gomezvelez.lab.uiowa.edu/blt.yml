@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgomezvelez.uiowa.ddev.site
+    protocol: https
+  machine_name: labgomezvelez
+  human_name: gomezvelez.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgomezvelez.prod
+drupal:
+  db:
+    database: gomezvelez_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgomezvelez.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Gomez-Velez Lab'

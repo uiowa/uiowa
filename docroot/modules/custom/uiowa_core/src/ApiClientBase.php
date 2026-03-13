@@ -177,15 +177,49 @@ abstract class ApiClientBase implements ApiClientInterface {
    * {@inheritdoc}
    */
   public function get($endpoint, array $options = [], $type = 'json') {
+    return $this->methodlessRequest($endpoint, $options, $type, 'GET');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function post($endpoint, array $options = [], $type = 'json') {
+    return $this->methodlessRequest($endpoint, $options, $type, 'POST');
+  }
+
+  /**
+   * Performs either a 'GET' or 'POST' request and returns response data.
+   *
+   * @param string $endpoint
+   *   The endpoint.
+   * @param array $options
+   *   The options.
+   * @param string $type
+   *   The application to accept, e.g. json or xml.
+   * @param string $method
+   *   The request method, either 'GET' or 'POST'.
+   *
+   * @return false|mixed
+   *   The response data or FALSE.
+   */
+  public function methodlessRequest(string $endpoint, array $options = [], string $type = 'json', string $method = 'GET'): mixed {
     $cache_id = $this->getRequestCacheId($endpoint, $options);
+    // Allow per-request cache override via options.
+    $cache_length = NULL;
+    if (isset($options['cache_length'])) {
+      $cache_length = (int) $options['cache_length'];
+      unset($options['cache_length']);
+    }
+
     if ($cache = $this->cache->get($cache_id)) {
       $data = $cache->data;
     }
     else {
-      $data = $this->request('GET', $endpoint, $options, $type);
+      $data = $this->request($method, $endpoint, $options, $type);
       if ($data) {
-        // Cache for 15 minutes.
-        $this->cache->set($cache_id, $data, time() + $this->cacheLength);
+        // Cache for time specified by cacheLength or through get() options.
+        $expire = time() + ($cache_length ?? $this->cacheLength);
+        $this->cache->set($cache_id, $data, $expire);
       }
     }
 

@@ -1,26 +1,48 @@
 _core:
   default_config_hash: V8V4qoFWUmhf9Atc_VX3qfO2bgt4z7cF4YCm7hlVdeY
 photoswipe_always_load_non_admin: false
+enable_cdn: false
 options:
+  showHideAnimationType: zoom
   showAnimationDuration: 333
   hideAnimationDuration: 333
-  showHideOpacity: false
+  zoomAnimationDuration: 333
+  maxWidthToAnimate: 4000
+  easing: 'cubic-bezier(.4,0,.22,1)'
   bgOpacity: 1.0
-  spacing: 0.12
+  spacing: 0.1
+  initialZoomLevel: fit
+  secondaryZoomLevel: '1'
+  maxZoomLevel: '2.5'
   allowPanToNext: true
-  maxSpreadZoom: 2
   loop: true
+  wheelToZoom: false
   pinchToClose: true
-  closeOnScroll: true
+  clickToCloseNonZoomable: true
   closeOnVerticalDrag: true
-  mouseUsed: false
+  trapFocus: true
+  returnFocus: true
   escKey: true
   arrowKeys: true
-  history: true
+  imageClickAction: zoom-or-close
+  tapAction: toggle-controls
+  doubleTapAction: zoom
+  bgClickAction: close
+  closeTitle: Close
+  zoomTitle: Zoom
+  arrowPrevTitle: Previous
+  arrowNextTitle: Next
+  indexIndicatorSep: ' / '
   errorMsg: '<div class="pswp__error-msg"><a href="%url%" target="_blank">The image</a> could not be loaded.</div>'
   preload:
     - 1
     - 1
-  mainClass: null
+  preloaderDelay: 2000
+  mainClass: ''
+  showHideOpacity: false
+  maxSpreadZoom: 2
+  closeOnScroll: true
+  mouseUsed: false
+  history: true
   focus: true
   modal: true
