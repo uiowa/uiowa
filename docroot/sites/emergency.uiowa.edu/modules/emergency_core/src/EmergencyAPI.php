@@ -84,6 +84,11 @@ class EmergencyAPI {
       /** @var object $data */
       $data = json_decode($json, TRUE);
 
+      $identifier = $data['info']['identifier'] ?? $data['identifier'] ?? 'unknown';
+      $this->logger->notice('RAVE response received from @endpoint. Identifier: @identifier.', [
+        '@endpoint' => $base,
+        '@identifier' => $identifier,
+      ]);
     }
 
     return ($data);
