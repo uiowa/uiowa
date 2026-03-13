@@ -53,8 +53,10 @@ Drupal.behaviors.uiowaAlerts = {
           const id = `hawk-alert-${item.attributes.date}`;
           newAlerts.push(id);
 
-          // If it is already in the Drupal messages section, do not continue.
-          if (messages.select(id)) {
+          // If it is already in the Drupal messages section, set its aria-label and do not continue.
+          const existingMessage = messages.select(id);
+          if (existingMessage) {
+            existingMessage.setAttribute('aria-label', 'Alert');
             return;
           }
 
@@ -66,8 +68,13 @@ Drupal.behaviors.uiowaAlerts = {
             id: id,
             type: 'error',
             dismissible: false,
-            announce: Drupal.t('Hawk Alert: @alert', { '@alert': item.attributes.alert }),
+            announce: '',
           });
+
+          const addedMessage = messages.select(id);
+          if (addedMessage) {
+            addedMessage.setAttribute('aria-label', 'Alert');
+          }
 
           // Look for differences in existing and new alerts and remove any closed alerts.
           const difference = existingAlerts.filter(existingAlert => !newAlerts.includes(existingAlert));
