@@ -1,9 +1,10 @@
 /**
  * @file
- * Adds aria-atomic to CKEditor 5 live regions.
+ * Adds aria-atomic to CKEditor 5 assertive live regions.
  *
- * CKEditor 5's AriaLiveAnnouncer creates live regions without aria-atomic,
- * which causes Siteimprove to flag WCAG 3.3.1/4.1.3 violations.
+ * CKEditor 5's AriaLiveAnnouncer creates assertive live regions without
+ * aria-atomic, which causes Siteimprove to flag WCAG 3.3.1/4.1.3 violations
+ * ("Field input error is not announced in full").
  *
  * CKEditor appends its announcer to a .ck-body-wrapper element on
  * document.body, outside any Drupal-managed context, so a MutationObserver
@@ -17,7 +18,7 @@
   let observing = false;
 
   function patchLiveRegions() {
-    document.querySelectorAll('.ck-body-wrapper div[aria-live]:not([aria-atomic])').forEach((el) => {
+    document.querySelectorAll('.ck-body-wrapper div[aria-live="assertive"]:not([aria-atomic])').forEach((el) => {
       el.setAttribute('aria-atomic', 'true');
     });
   }
