@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesctsj.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesctsj
+  human_name: ctsj.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesctsj.prod
+drupal:
+  db:
+    database: ctsj_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesctsj.prod.drupal.uiowa.edu'
+  requester: bpanders
+  site-name: CTSJ
