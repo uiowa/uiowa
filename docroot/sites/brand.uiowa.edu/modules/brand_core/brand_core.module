@@ -150,7 +150,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           $email = $user->getEmail();
           $username = $user->getAccountName();
           $timestamp = $record->revision_timestamp;
-          $date = \Drupal::service('date.formatter')->format($timestamp, 'short');
+          $date = \Drupal::service('date_ap_style.formatter')->formatTimestamp($timestamp);
           if (!empty($record->revision_log)) {
             $log_items .= '<strong>' . $date . '</strong> - ' . $username . ' (' . $email . ')<br /><em>' . $record->revision_log . '</em><br /><br />';
           }
