@@ -104,7 +104,20 @@ class EventsProcessor extends EntityProcessorBase {
     // If the location field exists and is not null, it needs to be converted
     // to an entity ID for an existing venue.
     if (property_exists($record, 'location_name') && !is_null($record->location_name)) {
-      $record->location_name = $this->findVenueNid($record->location_name);
+      $venue_id = $this->findVenueNid($record->location_name);
+      if (!is_null($venue_id)) {
+        $record->location_name = $venue_id;
+      }
+      else {
+        // If the location venue did not exist, then move the name
+        // and address into separate, plain text fields.
+        $record->venue_name = $record->location_name;
+        $street = $record->geo->street;
+        $city = $record->geo->city;
+        $state = $record->geo->state;
+        $zip = $record->geo->zip;
+        $record->venue_address = "{$street}\n{$city}, {$state} {$zip}";
+      }
     }
 
     // Convert empty strings to null for the room number field.
