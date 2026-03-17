@@ -208,3 +208,12 @@ function sitenow_media_wysiwyg_config_schema_info_alter(&$definitions) {
     unset($definitions['ckeditor5.plugin.ckeditor5_sourceEditing']['mapping']['allowed_tags']['sequence']['constraints']['SourceEditingRedundantTags']);
   }
 }
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function sitenow_media_wysiwyg_library_info_alter(&$libraries, $extension) {
+  if ($extension === 'ckeditor5' && isset($libraries['internal.drupal.ckeditor5'])) {
+    $libraries['internal.drupal.ckeditor5']['dependencies'][] = 'sitenow_media_wysiwyg/ckeditor5-a11y';
+  }
+}
