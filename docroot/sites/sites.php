@@ -7726,3 +7726,9 @@ $sites['ai.uiowa.ddev.site'] = 'ai.uiowa.edu';
 $sites['ai.dev.drupal.uiowa.edu'] = 'ai.uiowa.edu';
 $sites['ai.stage.drupal.uiowa.edu'] = 'ai.uiowa.edu';
 $sites['ai.prod.drupal.uiowa.edu'] = 'ai.uiowa.edu';
+
+// Directory aliases for hawkeyeventures.tippie.uiowa.edu.
+$sites['tippiehawkeyeventures.uiowa.ddev.site'] = 'hawkeyeventures.tippie.uiowa.edu';
+$sites['tippiehawkeyeventures.dev.drupal.uiowa.edu'] = 'hawkeyeventures.tippie.uiowa.edu';
+$sites['tippiehawkeyeventures.stage.drupal.uiowa.edu'] = 'hawkeyeventures.tippie.uiowa.edu';
+$sites['tippiehawkeyeventures.prod.drupal.uiowa.edu'] = 'hawkeyeventures.tippie.uiowa.edu';
