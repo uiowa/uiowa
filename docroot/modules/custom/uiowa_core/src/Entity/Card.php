@@ -35,12 +35,16 @@ class Card extends BlockContent implements RendersAsCardInterface {
       $title = $build['field_uiowa_card_link'][0]['#title'] ?? NULL;
 
       if ($url) {
+        $link_attributes = $url->getOptions()['attributes'] ?? [];
         $url = $url->toString();
         if (LinkHelper::shouldClearTitle($title)) {
           $title = NULL;
         }
         $build['#url'] = $url;
         $build['#link_text'] = $title;
+        if (!empty($link_attributes)) {
+          $build['#link_attributes'] = $link_attributes;
+        }
       }
 
       // Remove the original field to prevent further processing.

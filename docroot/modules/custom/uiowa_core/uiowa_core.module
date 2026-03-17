@@ -30,6 +30,7 @@ use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\LinkAnalyticsHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Drupal\webform\Element\WebformRoles;
@@ -553,6 +554,18 @@ function template_preprocess_card(&$variables) {
     ...$element['#button_attributes']['class'],
     ...$button_classes,
   ];
+
+  // Apply link tracking attributes to the appropriate link element.
+  if (!empty($element['#link_attributes'])) {
+    if ($element['#linked_element'] === 'title') {
+      $element['#headline']['headline_url_attributes'] = $element['#link_attributes'];
+    }
+    elseif ($element['#linked_element'] === 'button') {
+      foreach ($element['#link_attributes'] as $attr => $value) {
+        $element['#button_attributes'][$attr] = $value;
+      }
+    }
+  }
 
   // Transfer properties and slots from the render element to variables for
   // processing in the template.
@@ -1193,30 +1206,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * Validation handler to clean up analytics attributes.
  */
 function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form_state) {
-  $attributes = $form_state->getValue(['link', 0, 'options', 'attributes']) ?? [];
-  $event_name = trim($attributes['data-sn-event'] ?? '');
-
-  // If event name is empty, clear all analytics attributes.
-  if (empty($event_name)) {
-    unset($attributes['data-sn-event']);
-    unset($attributes['data-sn-event-type']);
-    unset($attributes['data-sn-event-component']);
-    unset($attributes['data-sn-event-label']);
-  }
-  else {
-    // Sanitize event name: lowercase and underscores.
-    $event_name = strtolower(Html::cleanCssIdentifier($event_name));
-    $attributes['data-sn-event'] = str_replace('-', '_', $event_name);
-    // Use menu link title as label if label is empty.
-    if (empty(trim($attributes['data-sn-event-label'] ?? ''))) {
-      $menu_link_title = trim($form_state->getValue(['title', 0, 'value']) ?? '');
-      if (!empty($menu_link_title)) {
-        $attributes['data-sn-event-label'] = $menu_link_title;
-      }
-    }
-  }
-
-  $form_state->setValue(['link', 0, 'options', 'attributes'], $attributes);
+  LinkAnalyticsHelper::sanitizeMenuLinkAnalyticsAttributes($form_state, 'link');
 }
 
 /**
