@@ -83,12 +83,12 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form = parent::blockForm($form, $form_state);
 
     $config = $this->getConfiguration();
+    $endpoint_selector = 'edit-settings-endpoint';
     $form['markup'] = [
       '#type' => 'markup',
       '#markup' => $this->t('<p>This is a generic search block you can use to send queries to site search or a view filter.</p>'),
     ];
-    $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
-    $form['endpoint'] = [
+    $form['endpoint_uri'] = [
       '#type' => 'linkit',
       '#title' => $this->t('Endpoint Path'),
       '#description' => $this->t('Start typing to see a list of results. Click to select. Relative paths are allowed. External links are allowed.'),
@@ -98,6 +98,44 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       ],
       '#default_value' => $config['endpoint'] ?? '/search',
       '#required' => TRUE,
+      '#wrapper_attributes' => [
+        'class' => [
+          'form-item--linkit-widget-uri',
+        ],
+      ],
+    ];
+    $form['endpoint_attributes'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'linkit-widget-container',
+        ],
+      ],
+    ];
+    $form['endpoint_attributes']['href_dirty_check'] = [
+      '#type' => 'hidden',
+      '#value' => $config['endpoint'] ?? '/search',
+      '#name' => 'href_dirty_check',
+    ];
+    $form['endpoint_attributes']['href'] = [
+      '#type' => 'hidden',
+      '#default_value' => $config['endpoint'] ?? '/search',
+      '#id' => $endpoint_selector . '-attributes-href',
+    ];
+    $form['endpoint_attributes']['data_entity_type'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
+      '#id' => $endpoint_selector . '-attributes-data-entity-type',
+    ];
+    $form['endpoint_attributes']['data_entity_uuid'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
+      '#id' => $endpoint_selector . '-attributes-data-entity-uuid',
+    ];
+    $form['endpoint_attributes']['data_entity_substitution'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
+      '#id' => $endpoint_selector . '-attributes-data-entity-substitution',
     ];
     $form['query_parameter'] = [
       '#type' => 'textfield',
@@ -157,7 +195,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
-    $this->configuration['endpoint'] = $values['endpoint'];
+    $this->configuration['endpoint'] = $values['endpoint_uri'];
     $this->configuration['query_parameter'] = $values['query_parameter'];
     $this->configuration['query_prepend'] = $values['advanced']['query_prepend'];
     $this->configuration['additional_parameters'] = $values['advanced']['additional_parameters'];
