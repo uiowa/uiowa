@@ -28,7 +28,7 @@
 
   {% for link in links %}
     {% set block_button = {
-      'classes': create_attribute().addClass(classes),
+      'classes': create_attribute(link.link_attributes|default({})).addClass(classes),
       'link_url': link.link_url|render,
       'link_title': link.link_text|render,
     } %}
