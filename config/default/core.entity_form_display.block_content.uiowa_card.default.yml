@@ -13,7 +13,7 @@ dependencies:
     - field.field.block_content.uiowa_card.field_uiowa_card_title
   module:
     - heading
-    - linkit
+    - linkit_attributes
     - media_library
     - text
     - ui_icons_field
@@ -61,7 +61,7 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_uiowa_card_link:
-    type: linkit
+    type: linkit_attributes
     weight: 4
     region: content
     settings:
@@ -69,6 +69,20 @@ content:
       placeholder_title: ''
       linkit_profile: default
       linkit_auto_link_text: true
+      enabled_attributes:
+        data-sn-event: true
+        data-sn-event-type: true
+        data-sn-event-component: true
+        data-sn-event-label: true
+        id: false
+        name: false
+        target: false
+        rel: false
+        class: false
+        accesskey: false
+        aria-label: false
+        title: false
+      widget_default_open: collapsed
     third_party_settings: {  }
   field_uiowa_card_title:
     type: heading
