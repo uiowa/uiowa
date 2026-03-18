@@ -2285,12 +2285,6 @@ $sites['orgpeacebypeace.dev.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
 $sites['orgpeacebypeace.stage.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
 $sites['orgpeacebypeace.prod.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
 
-// Directory aliases for cjones.iihr.uiowa.edu.
-$sites['iihrcjones.uiowa.ddev.site'] = 'cjones.iihr.uiowa.edu';
-$sites['iihrcjones.dev.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
-$sites['iihrcjones.stage.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
-$sites['iihrcjones.prod.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
-
 // Directory aliases for glefevre.iihr.uiowa.edu.
 $sites['iihrglefevre.uiowa.ddev.site'] = 'glefevre.iihr.uiowa.edu';
 $sites['iihrglefevre.dev.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
@@ -7720,3 +7714,21 @@ $sites['tippieshrm.uiowa.ddev.site'] = 'shrm.tippie.uiowa.edu';
 $sites['tippieshrm.dev.drupal.uiowa.edu'] = 'shrm.tippie.uiowa.edu';
 $sites['tippieshrm.stage.drupal.uiowa.edu'] = 'shrm.tippie.uiowa.edu';
 $sites['tippieshrm.prod.drupal.uiowa.edu'] = 'shrm.tippie.uiowa.edu';
+
+// Directory aliases for ai.uiowa.edu.
+$sites['ai.uiowa.ddev.site'] = 'ai.uiowa.edu';
+$sites['ai.dev.drupal.uiowa.edu'] = 'ai.uiowa.edu';
+$sites['ai.stage.drupal.uiowa.edu'] = 'ai.uiowa.edu';
+$sites['ai.prod.drupal.uiowa.edu'] = 'ai.uiowa.edu';
+
+// Directory aliases for hawkeyeventures.tippie.uiowa.edu.
+$sites['tippiehawkeyeventures.uiowa.ddev.site'] = 'hawkeyeventures.tippie.uiowa.edu';
+$sites['tippiehawkeyeventures.dev.drupal.uiowa.edu'] = 'hawkeyeventures.tippie.uiowa.edu';
+$sites['tippiehawkeyeventures.stage.drupal.uiowa.edu'] = 'hawkeyeventures.tippie.uiowa.edu';
+$sites['tippiehawkeyeventures.prod.drupal.uiowa.edu'] = 'hawkeyeventures.tippie.uiowa.edu';
+
+// Directory aliases for mpu.sites.uiowa.edu.
+$sites['sitesmpu.uiowa.ddev.site'] = 'mpu.sites.uiowa.edu';
+$sites['sitesmpu.dev.drupal.uiowa.edu'] = 'mpu.sites.uiowa.edu';
+$sites['sitesmpu.stage.drupal.uiowa.edu'] = 'mpu.sites.uiowa.edu';
+$sites['sitesmpu.prod.drupal.uiowa.edu'] = 'mpu.sites.uiowa.edu';
