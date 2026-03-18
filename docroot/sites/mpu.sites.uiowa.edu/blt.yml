@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesmpu.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesmpu
+  human_name: mpu.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmpu.prod
+drupal:
+  db:
+    database: mpu_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesmpu.prod.drupal.uiowa.edu'
+  requester: acchan
+  site-name: 'Medical-Psychiatry Unit Consortium'
