@@ -1,0 +1,57 @@
+From 6c0dc0f032be82424d8995d567402ad41469d6e9 Mon Sep 17 00:00:00 2001
+From: Sakthi Shanmuga Sundaram M
+ <62943-sakthi_dev@users.noreply.drupalcode.org>
+Date: Tue, 8 Aug 2023 14:07:08 +0000
+Subject: [PATCH 1/2] Issue#3379989: Update overriding parent options.
+
+---
+ src/LinkWithAttributesWidgetTrait.php | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/LinkWithAttributesWidgetTrait.php b/src/LinkWithAttributesWidgetTrait.php
+index f3d5f4c..fd0cb84 100644
+--- a/src/LinkWithAttributesWidgetTrait.php
++++ b/src/LinkWithAttributesWidgetTrait.php
+@@ -128,6 +128,9 @@ trait LinkWithAttributesWidgetTrait {
+   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+     // Convert a class string to an array so that it can be merged reliable.
+     foreach ($values as $delta => $value) {
++      if (isset($value['options']['attributes'])) {
++        $values[$delta]['options']['attributes'] += $value['options']['attributes'];
++      }
+       if (isset($value['options']['attributes']['class']) && is_string($value['options']['attributes']['class'])) {
+         $values[$delta]['options']['attributes']['class'] = explode(' ', $value['options']['attributes']['class']);
+       }
+-- 
+GitLab
+
+
+From a6d00b7806e5db9d96a7672b1e3d2414b5801a81 Mon Sep 17 00:00:00 2001
+From: Christopher Lewis <christopher.lewis@brandcode.de>
+Date: Tue, 8 Aug 2023 16:28:04 +0200
+Subject: [PATCH 2/2] Copy attributes to options where LinkitFormatter expects
+ them, not options => attributes. Simplify empiness check.
+
+---
+ src/LinkWithAttributesWidgetTrait.php | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/src/LinkWithAttributesWidgetTrait.php b/src/LinkWithAttributesWidgetTrait.php
+index fd0cb84..e6822a2 100644
+--- a/src/LinkWithAttributesWidgetTrait.php
++++ b/src/LinkWithAttributesWidgetTrait.php
+@@ -128,9 +128,8 @@ trait LinkWithAttributesWidgetTrait {
+   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+     // Convert a class string to an array so that it can be merged reliable.
+     foreach ($values as $delta => $value) {
+-      if (isset($value['options']['attributes'])) {
+-        $values[$delta]['options']['attributes'] += $value['options']['attributes'];
+-      }
++      $values[$delta] += ['options' => []];
++      $values[$delta]['options'] += $value['attributes'];
+       if (isset($value['options']['attributes']['class']) && is_string($value['options']['attributes']['class'])) {
+         $values[$delta]['options']['attributes']['class'] = explode(' ', $value['options']['attributes']['class']);
+       }
+-- 
+GitLab
+
