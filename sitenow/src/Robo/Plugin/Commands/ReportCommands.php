@@ -18,7 +18,7 @@ use Symfony\Component\Console\Helper\Table;
 class ReportCommands extends Tasks {
 
   /**
-   * List domains on DEV and STAGE environments.
+   * List domains on PROD environment (default) or specified environments.
    *
    * @command uiowa:report:domains
    *
@@ -49,10 +49,10 @@ class ReportCommands extends Tasks {
 
     $debug = $options['debug'];
 
-    // Parse env filter — default to dev and test if not specified.
+    // Parse env filter — default to prod if not specified.
     $target_environments = !empty($options['env'])
       ? array_map('trim', explode(',', $options['env']))
-      : ['dev', 'test'];
+      : ['prod'];
 
     // Parse application filter — empty means all applications.
     $target_applications = !empty($options['application'])
