@@ -78,6 +78,10 @@
 .layout--title--hidden {
   .block-system-breadcrumb-block {
     @include utilities.element-invisible;
+
+    &:focus-within {
+      @include utilities.element-invisible-off;
+    }
   }
 }
 
