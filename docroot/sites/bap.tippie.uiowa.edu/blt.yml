@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiebap.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiebap
+  human_name: bap.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiebap.prod
+drupal:
+  db:
+    database: bap_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiebap.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'Beta Alpha Psi'
