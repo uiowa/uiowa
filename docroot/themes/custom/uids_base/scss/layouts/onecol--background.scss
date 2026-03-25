@@ -81,8 +81,27 @@
 
     &:focus-within {
       @include utilities.element-invisible-off;
+      padding-left: .2rem;
+      a {
+        background: variables.$gray-light;
+        padding: .2rem;
+      }
     }
   }
+  // Featured images have a black background set making
+  // links white so the breadcrumb background needs to be
+  // black in order to be visible.
+ &.layout--title--with-background {
+   .block-system-breadcrumb-block {
+     @include utilities.element-invisible;
+
+     &:focus-within {
+       a {
+         background: variables.$secondary;
+       }
+     }
+   }
+ }
 }
 
 // Fix for featured image banners on custom content types.
