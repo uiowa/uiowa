@@ -7738,3 +7738,9 @@ $sites['tippiebap.uiowa.ddev.site'] = 'bap.tippie.uiowa.edu';
 $sites['tippiebap.dev.drupal.uiowa.edu'] = 'bap.tippie.uiowa.edu';
 $sites['tippiebap.stage.drupal.uiowa.edu'] = 'bap.tippie.uiowa.edu';
 $sites['tippiebap.prod.drupal.uiowa.edu'] = 'bap.tippie.uiowa.edu';
+
+// Directory aliases for pacs.lab.uiowa.edu.
+$sites['labpacs.uiowa.ddev.site'] = 'pacs.lab.uiowa.edu';
+$sites['labpacs.dev.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
+$sites['labpacs.stage.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
+$sites['labpacs.prod.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
