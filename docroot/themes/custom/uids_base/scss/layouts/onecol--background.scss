@@ -93,10 +93,9 @@
   // black in order to be visible.
  &.layout--title--with-background {
    .block-system-breadcrumb-block {
-     @include utilities.element-invisible;
 
      &:focus-within {
-       a {
+       li, a {
          background: variables.$secondary;
        }
      }
