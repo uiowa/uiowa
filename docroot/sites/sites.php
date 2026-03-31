@@ -7744,3 +7744,9 @@ $sites['labpacs.uiowa.ddev.site'] = 'pacs.lab.uiowa.edu';
 $sites['labpacs.dev.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
 $sites['labpacs.stage.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
 $sites['labpacs.prod.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
+
+// Directory aliases for sla.conference.uiowa.edu.
+$sites['conferencesla.uiowa.ddev.site'] = 'sla.conference.uiowa.edu';
+$sites['conferencesla.dev.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
+$sites['conferencesla.stage.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
+$sites['conferencesla.prod.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
