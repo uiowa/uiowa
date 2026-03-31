@@ -7750,3 +7750,9 @@ $sites['conferencesla.uiowa.ddev.site'] = 'sla.conference.uiowa.edu';
 $sites['conferencesla.dev.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
 $sites['conferencesla.stage.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
 $sites['conferencesla.prod.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
+
+// Directory aliases for marmaduke.sites.uiowa.edu.
+$sites['sitesmarmaduke.uiowa.ddev.site'] = 'marmaduke.sites.uiowa.edu';
+$sites['sitesmarmaduke.dev.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
+$sites['sitesmarmaduke.stage.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
+$sites['sitesmarmaduke.prod.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
