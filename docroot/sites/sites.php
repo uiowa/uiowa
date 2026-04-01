@@ -1805,12 +1805,6 @@ $sites['orguimsa.dev.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
 $sites['orguimsa.stage.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
 $sites['orguimsa.prod.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
 
-// Directory aliases for cheatum.lab.uiowa.edu.
-$sites['labcheatum.uiowa.ddev.site'] = 'cheatum.lab.uiowa.edu';
-$sites['labcheatum.dev.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
-$sites['labcheatum.stage.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
-$sites['labcheatum.prod.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
-
 // Directory aliases for boes.lab.uiowa.edu.
 $sites['labboes.uiowa.ddev.site'] = 'boes.lab.uiowa.edu';
 $sites['labboes.dev.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
@@ -7738,3 +7732,27 @@ $sites['tippiebap.uiowa.ddev.site'] = 'bap.tippie.uiowa.edu';
 $sites['tippiebap.dev.drupal.uiowa.edu'] = 'bap.tippie.uiowa.edu';
 $sites['tippiebap.stage.drupal.uiowa.edu'] = 'bap.tippie.uiowa.edu';
 $sites['tippiebap.prod.drupal.uiowa.edu'] = 'bap.tippie.uiowa.edu';
+
+// Directory aliases for pacs.lab.uiowa.edu.
+$sites['labpacs.uiowa.ddev.site'] = 'pacs.lab.uiowa.edu';
+$sites['labpacs.dev.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
+$sites['labpacs.stage.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
+$sites['labpacs.prod.drupal.uiowa.edu'] = 'pacs.lab.uiowa.edu';
+
+// Directory aliases for sla.conference.uiowa.edu.
+$sites['conferencesla.uiowa.ddev.site'] = 'sla.conference.uiowa.edu';
+$sites['conferencesla.dev.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
+$sites['conferencesla.stage.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
+$sites['conferencesla.prod.drupal.uiowa.edu'] = 'sla.conference.uiowa.edu';
+
+// Directory aliases for marmaduke.sites.uiowa.edu.
+$sites['sitesmarmaduke.uiowa.ddev.site'] = 'marmaduke.sites.uiowa.edu';
+$sites['sitesmarmaduke.dev.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
+$sites['sitesmarmaduke.stage.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
+$sites['sitesmarmaduke.prod.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
+
+// Directory aliases for rlenth.sites.uiowa.edu.
+$sites['sitesrlenth.uiowa.ddev.site'] = 'rlenth.sites.uiowa.edu';
+$sites['sitesrlenth.dev.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
+$sites['sitesrlenth.stage.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
+$sites['sitesrlenth.prod.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
