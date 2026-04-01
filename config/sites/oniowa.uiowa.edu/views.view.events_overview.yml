@@ -365,25 +365,13 @@ display:
       pager:
         type: full
         options:
-          offset: 0
           pagination_heading_level: h2
           items_per_page: 50
-          total_pages: null
-          id: 0
           tags:
             next: 'Next ›'
             previous: '‹ Previous'
             first: '« First'
             last: 'Last »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
       exposed_form:
         type: basic
         options:
@@ -628,11 +616,14 @@ display:
           columns:
             node_bulk_form: node_bulk_form
             title: title
-            field_event_when_value: field_event_when_value
-            field_event_location: field_event_location
-            field_event_geolocation: field_event_geolocation
+            type: type
+            name: name
+            status: status
             changed: changed
-            operations: operations
+            edit_node: edit_node
+            delete_node: delete_node
+            dropbutton: dropbutton
+            timestamp: title
           default: changed
           info:
             node_bulk_form:
@@ -647,22 +638,22 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_event_when_value:
-              sortable: false
+            type:
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_event_location:
+            name:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
-              responsive: ''
-            field_event_geolocation:
-              sortable: false
+              responsive: priority-low
+            status:
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -675,7 +666,30 @@ display:
               separator: ''
               empty_column: false
               responsive: priority-low
-            operations:
+            edit_node:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            delete_node:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            dropbutton:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            timestamp:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
