@@ -7756,3 +7756,9 @@ $sites['sitesmarmaduke.uiowa.ddev.site'] = 'marmaduke.sites.uiowa.edu';
 $sites['sitesmarmaduke.dev.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
 $sites['sitesmarmaduke.stage.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
 $sites['sitesmarmaduke.prod.drupal.uiowa.edu'] = 'marmaduke.sites.uiowa.edu';
+
+// Directory aliases for rlenth.sites.uiowa.edu.
+$sites['sitesrlenth.uiowa.ddev.site'] = 'rlenth.sites.uiowa.edu';
+$sites['sitesrlenth.dev.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
+$sites['sitesrlenth.stage.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
+$sites['sitesrlenth.prod.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
