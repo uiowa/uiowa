@@ -7756,3 +7756,9 @@ $sites['sitesrlenth.uiowa.ddev.site'] = 'rlenth.sites.uiowa.edu';
 $sites['sitesrlenth.dev.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
 $sites['sitesrlenth.stage.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
 $sites['sitesrlenth.prod.drupal.uiowa.edu'] = 'rlenth.sites.uiowa.edu';
+
+// Directory aliases for luke-tierney.sites.uiowa.edu.
+$sites['sitesluke-tierney.uiowa.ddev.site'] = 'luke-tierney.sites.uiowa.edu';
+$sites['sitesluke-tierney.dev.drupal.uiowa.edu'] = 'luke-tierney.sites.uiowa.edu';
+$sites['sitesluke-tierney.stage.drupal.uiowa.edu'] = 'luke-tierney.sites.uiowa.edu';
+$sites['sitesluke-tierney.prod.drupal.uiowa.edu'] = 'luke-tierney.sites.uiowa.edu';
