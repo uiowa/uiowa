@@ -617,11 +617,11 @@ function its_core_preprocess_field(&$variables, $hook) {
       if ($variables['element']['#view_mode'] == 'teaser') {
         if (!empty($variables['element']['#items']) && !empty($variables['element']['#object']->field_alert_building->getValue())) {
           uiowa_core_set_attributes($variables, 'fa-field-item element--inline field--separator');
-          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services and buildings affected');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info');
         }
         elseif (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_building->getValue())) {
           uiowa_core_set_attributes($variables, 'fa-field-item element--inline');
-          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Services affected');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info');
         }
       }
       break;
@@ -630,7 +630,7 @@ function its_core_preprocess_field(&$variables, $hook) {
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_attributes($variables, 'element--inline');
         if (!empty($variables['element']['#items']) && empty($variables['element']['#object']->field_alert_service_affected->getValue())) {
-          uiowa_core_set_field_icon($variables, 'fa-circle-info', '', 'Buildings affected');
+          uiowa_core_set_field_icon($variables, 'fa-circle-info');
           uiowa_core_set_attributes($variables, 'fa-field-item');
         }
       }
