@@ -121,12 +121,20 @@ class AlertsProcessor extends EntityProcessorBase {
 
       if (!is_null($existing_nid)) {
         $this->skipped++;
+        static::getLogger('emergency_core')->notice('Alert @identifier skipped (already exists as node @nid).', [
+          '@identifier' => $recordSyncKey,
+          '@nid' => $existing_nid,
+        ]);
       }
       else {
         $entity->enforceIsNew();
         $entity->setPublished();
         $entity->save();
         $this->created++;
+        static::getLogger('emergency_core')->notice('Alert @identifier created as node @nid.', [
+          '@identifier' => $recordSyncKey,
+          '@nid' => $entity->id(),
+        ]);
       }
     }
   }
