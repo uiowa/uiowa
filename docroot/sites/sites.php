@@ -7762,3 +7762,9 @@ $sites['sitesluke-tierney.uiowa.ddev.site'] = 'luke-tierney.sites.uiowa.edu';
 $sites['sitesluke-tierney.dev.drupal.uiowa.edu'] = 'luke-tierney.sites.uiowa.edu';
 $sites['sitesluke-tierney.stage.drupal.uiowa.edu'] = 'luke-tierney.sites.uiowa.edu';
 $sites['sitesluke-tierney.prod.drupal.uiowa.edu'] = 'luke-tierney.sites.uiowa.edu';
+
+// Directory aliases for hughbrown.sites.uiowa.edu.
+$sites['siteshughbrown.uiowa.ddev.site'] = 'hughbrown.sites.uiowa.edu';
+$sites['siteshughbrown.dev.drupal.uiowa.edu'] = 'hughbrown.sites.uiowa.edu';
+$sites['siteshughbrown.stage.drupal.uiowa.edu'] = 'hughbrown.sites.uiowa.edu';
+$sites['siteshughbrown.prod.drupal.uiowa.edu'] = 'hughbrown.sites.uiowa.edu';
