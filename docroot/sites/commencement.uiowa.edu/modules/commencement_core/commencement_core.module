@@ -346,7 +346,8 @@ function commencement_core_preprocess_field(&$variables) {
     case 'field_event_venue_name':
       uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
       uiowa_core_set_attributes($variables, 'fa-field-item');
-      if ($node->bundle() === 'event') {
+      // The teaser needs only the name, and shouldn't be adjusted further.
+      if ($node->bundle() === 'event' && $variables['element']['#view_mode'] !== 'teaser') {
         // Grab the off-campus venue name and address to combine.
         // Drop the previous content and replace with basic markup.
         $venue_name = $node->get('field_event_venue_name')->getString();
