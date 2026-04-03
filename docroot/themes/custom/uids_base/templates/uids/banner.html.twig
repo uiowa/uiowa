@@ -38,6 +38,7 @@
   'headline--serif',
   'headline--large',
 ] %}
+{% set banner_pre_title_classes = banner_pre_title_classes ?: headline_class %}
 
 <div{{ attributes.addClass(banner_classes) }}{% if layout_builder_style_media_overlay is not empty and field_styles_gradient_midpoint is not empty %} style="--banner-overlay-gradient-midpoint: {{ field_styles_gradient_midpoint }};"{% endif %}>
   {% block banner_image %}
@@ -54,7 +55,7 @@
         {% if banner_pre_title is not empty %}
           {% set banner_pre_title_heading = {
             'headline_level': 'div',
-            'headline_class' : headline_class|filter(class => class != 'headline--highlight')|merge(['banner__pre-title']),
+            'headline_class' : banner_pre_title_classes|filter(class => class != 'headline--highlight')|merge(['banner__pre-title']),
             'headline_text' : banner_pre_title,
           } %}
           {% include '@uids_base/uids/headline.html.twig' with banner_pre_title_heading only %}
