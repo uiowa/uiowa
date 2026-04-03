@@ -442,7 +442,10 @@ ul.sf-accordion ul:focus-within {
     text-decoration: underline;
     cursor: pointer;
     outline: none;
-    background: #e1e1e1;
+    // Additional focus indicator for sub-menu items.
+    &:not(.sf-depth-1) {
+      background: #e1e1e1;
+    }
   }
 
   &:hover {
