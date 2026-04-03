@@ -25,8 +25,9 @@
 
       {% block cta_link %}
         {% if cta_link_url is not empty %}
+          {% set cta_link_element_attributes = create_attribute(cta_link_attributes|default({})) %}
           <div class="cta__link">
-            <a href="{{ cta_link_url }}" class="bttn bttn--primary">{{ cta_link_title }}
+            <a {{ cta_link_element_attributes.addClass('bttn', 'bttn--primary') }} href="{{ cta_link_url }}">{{ cta_link_title }}
               <i role="presentation" class="fas fa-arrow-right"></i>
             </a>
           </div>
