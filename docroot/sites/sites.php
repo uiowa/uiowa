@@ -7768,3 +7768,9 @@ $sites['siteshughbrown.uiowa.ddev.site'] = 'hughbrown.sites.uiowa.edu';
 $sites['siteshughbrown.dev.drupal.uiowa.edu'] = 'hughbrown.sites.uiowa.edu';
 $sites['siteshughbrown.stage.drupal.uiowa.edu'] = 'hughbrown.sites.uiowa.edu';
 $sites['siteshughbrown.prod.drupal.uiowa.edu'] = 'hughbrown.sites.uiowa.edu';
+
+// Directory aliases for zigrino.sites.uiowa.edu.
+$sites['siteszigrino.uiowa.ddev.site'] = 'zigrino.sites.uiowa.edu';
+$sites['siteszigrino.dev.drupal.uiowa.edu'] = 'zigrino.sites.uiowa.edu';
+$sites['siteszigrino.stage.drupal.uiowa.edu'] = 'zigrino.sites.uiowa.edu';
+$sites['siteszigrino.prod.drupal.uiowa.edu'] = 'zigrino.sites.uiowa.edu';
