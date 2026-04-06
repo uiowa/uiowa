@@ -442,14 +442,18 @@ ul.sf-accordion ul:focus-within {
     text-decoration: underline;
     cursor: pointer;
     outline: none;
-    // Additional focus indicator for sub-menu items.
-    &:not(.sf-depth-1) {
-      background: #e1e1e1;
-    }
   }
 
   &:hover {
     cursor: pointer;
+  }
+}
+
+// Additional focus indicator for sub-menu items in non-toggle menus.
+.block-superfish .menu:not(.sf-accordion) li .nolink,
+.block-superfish .menu:not(.sf-accordion) li a {
+  &:focus:not(.sf-depth-1) {
+    background: #e1e1e1;
   }
 }
 
