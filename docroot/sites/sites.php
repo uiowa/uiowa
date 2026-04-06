@@ -7774,3 +7774,9 @@ $sites['siteszigrino.uiowa.ddev.site'] = 'zigrino.sites.uiowa.edu';
 $sites['siteszigrino.dev.drupal.uiowa.edu'] = 'zigrino.sites.uiowa.edu';
 $sites['siteszigrino.stage.drupal.uiowa.edu'] = 'zigrino.sites.uiowa.edu';
 $sites['siteszigrino.prod.drupal.uiowa.edu'] = 'zigrino.sites.uiowa.edu';
+
+// Directory aliases for fbleher.sites.uiowa.edu.
+$sites['sitesfbleher.uiowa.ddev.site'] = 'fbleher.sites.uiowa.edu';
+$sites['sitesfbleher.dev.drupal.uiowa.edu'] = 'fbleher.sites.uiowa.edu';
+$sites['sitesfbleher.stage.drupal.uiowa.edu'] = 'fbleher.sites.uiowa.edu';
+$sites['sitesfbleher.prod.drupal.uiowa.edu'] = 'fbleher.sites.uiowa.edu';
