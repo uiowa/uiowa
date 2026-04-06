@@ -37,8 +37,11 @@ complete_list:
   - 'field.storage.node.field_resource_*'
   - 'taxonomy.vocabulary.writer_bio_*'
   - 'taxonomy.vocabulary.resource_*'
+third_party_settings:
+  config_split_ignore:
+    entities:
+      - iwp_core.settings
 partial_list:
-  - config_ignore.settings
   - core.entity_form_display.taxonomy_term.tags.default
   - core.entity_view_display.taxonomy_term.tags.default
   - metatag.settings
