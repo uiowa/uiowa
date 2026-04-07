@@ -394,6 +394,8 @@ display:
           bef:
             general:
               autosubmit: true
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
               autosubmit_textfield_minimum_length: 3
@@ -408,6 +410,7 @@ display:
               advanced:
                 combine: true
                 combine_rewrite: "Combined ID Ascending|Sort by: A - Z\r\nCombined ID Descending|Sort by: Z - A\r\nMax Occupancy Ascending|Sort by: Occupancy (Low to High)\r\nMax Occupancy Descending|Sort by: Occupancy (High to Low)\r\n"
+                combine_param: sort_bef_combine
                 reset: false
                 reset_label: ''
                 collapsible: false
@@ -420,97 +423,141 @@ display:
                   placeholder_text: Search
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  sort_options_unsupported: ''
               field_room_building_id_target_id:
                 plugin_id: default
                 advanced:
                   sort_options: true
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Building'
                     filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: true
                   hide_label: false
+                  field_classes: ''
               field_room_max_occupancy_value:
                 plugin_id: default
                 advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: '- Any -|Occupancy'
                     filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: true
                   hide_label: false
+                  field_classes: ''
               field_room_scheduling_regions_target_id:
                 plugin_id: default
                 advanced:
                   sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Region'
                     filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: true
                   hide_label: false
+                  field_classes: ''
               field_room_type_target_id:
                 plugin_id: bef
                 advanced:
                   sort_options: true
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Type'
                     filter_rewrite_values_key: false
                   collapsible: true
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: true
                   hide_label: false
+                  field_classes: ''
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
+                soft_limit: 0
+                soft_limit_label_less: 'Show less'
+                soft_limit_label_more: 'Show more'
               field_room_technology_features_target_id:
                 plugin_id: bef
                 advanced:
                   sort_options: true
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Technology'
                     filter_rewrite_values_key: false
                   collapsible: true
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: true
                   hide_label: false
+                  field_classes: ''
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
+                soft_limit: 0
+                soft_limit_label_less: 'Show less'
+                soft_limit_label_more: 'Show more'
               field_room_features_target_id:
                 plugin_id: bef
                 advanced:
                   sort_options: true
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Room features'
                     filter_rewrite_values_key: false
                   collapsible: true
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: true
                   hide_label: false
+                  field_classes: ''
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
+                soft_limit: 0
+                soft_limit_label_less: 'Show less'
+                soft_limit_label_more: 'Show more'
               field_room_accessibility_feature_target_id:
                 plugin_id: bef
                 advanced:
                   sort_options: true
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: ''
                     filter_rewrite_values_key: false
                   collapsible: true
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: true
                   hide_label: false
+                  field_classes: ''
                 select_all_none: false
                 select_all_none_nested: false
                 display_inline: false
+                soft_limit: 0
+                soft_limit_label_less: 'Show less'
+                soft_limit_label_more: 'Show more'
       access:
         type: perm
         options:
