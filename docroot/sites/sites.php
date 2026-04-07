@@ -7780,3 +7780,9 @@ $sites['sitesfbleher.uiowa.ddev.site'] = 'fbleher.sites.uiowa.edu';
 $sites['sitesfbleher.dev.drupal.uiowa.edu'] = 'fbleher.sites.uiowa.edu';
 $sites['sitesfbleher.stage.drupal.uiowa.edu'] = 'fbleher.sites.uiowa.edu';
 $sites['sitesfbleher.prod.drupal.uiowa.edu'] = 'fbleher.sites.uiowa.edu';
+
+// Directory aliases for tinelli.sites.uiowa.edu.
+$sites['sitestinelli.uiowa.ddev.site'] = 'tinelli.sites.uiowa.edu';
+$sites['sitestinelli.dev.drupal.uiowa.edu'] = 'tinelli.sites.uiowa.edu';
+$sites['sitestinelli.stage.drupal.uiowa.edu'] = 'tinelli.sites.uiowa.edu';
+$sites['sitestinelli.prod.drupal.uiowa.edu'] = 'tinelli.sites.uiowa.edu';
