@@ -76,7 +76,7 @@ class EventsProcessor extends EntityProcessorBase {
             'department' => 329,
             'type' => 28,
           ],
-          'items_per_page' => 100,
+          'items_per_page' => 150,
         ],
       ]);
       if (property_exists($response, 'events') && is_array($response->events)) {
