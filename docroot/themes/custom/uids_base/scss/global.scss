@@ -75,27 +75,6 @@ details {
   align-self: start;
 }
 
-// Position absolute.
-.element--absolute {
-  @include utilities.breakpoint(md) {
-    position: absolute;
-    z-index: 1;
-  }
-}
-
-.element--absolute--left {
-  margin-inline-start: variables.$desktop-width-gutter;
-  @include utilities.breakpoint(md) {
-    margin: 0;
-    left: variables.$desktop-width-gutter;
-  }
-
-}
-
-.element--absolute--bottom {
-  bottom: variables.$desktop-width-gutter;
-}
-
 // Set object to cover.
 .element--cover {
   * {
