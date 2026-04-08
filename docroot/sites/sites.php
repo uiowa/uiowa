@@ -7792,3 +7792,9 @@ $sites['siteskrohn.uiowa.ddev.site'] = 'krohn.sites.uiowa.edu';
 $sites['siteskrohn.dev.drupal.uiowa.edu'] = 'krohn.sites.uiowa.edu';
 $sites['siteskrohn.stage.drupal.uiowa.edu'] = 'krohn.sites.uiowa.edu';
 $sites['siteskrohn.prod.drupal.uiowa.edu'] = 'krohn.sites.uiowa.edu';
+
+// Directory aliases for stroyan.sites.uiowa.edu.
+$sites['sitesstroyan.uiowa.ddev.site'] = 'stroyan.sites.uiowa.edu';
+$sites['sitesstroyan.dev.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
+$sites['sitesstroyan.stage.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
+$sites['sitesstroyan.prod.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
