@@ -98,7 +98,7 @@ class AlertsProcessor extends EntityProcessorBase {
     $this->processedRecords[] = $recordSyncKey;
 
     // Alert cancellations should be skipped so they don't
-    // double the existing alert.
+    // create duplicate alerts.
     if ($record['msgType'] === 'Cancel') {
       $this->skipped++;
       static::getLogger('emergency_core')->notice('Alert @identifier skipped (msgType "Cancel").', [
