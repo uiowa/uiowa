@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteskrohn.uiowa.ddev.site
+    protocol: https
+  machine_name: siteskrohn
+  human_name: krohn.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteskrohn.prod
+drupal:
+  db:
+    database: krohn_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteskrohn.prod.drupal.uiowa.edu'
+  requester: eakrohn
+  site-name: 'Erik Krohn Website'
