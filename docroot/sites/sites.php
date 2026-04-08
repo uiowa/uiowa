@@ -7786,3 +7786,9 @@ $sites['sitestinelli.uiowa.ddev.site'] = 'tinelli.sites.uiowa.edu';
 $sites['sitestinelli.dev.drupal.uiowa.edu'] = 'tinelli.sites.uiowa.edu';
 $sites['sitestinelli.stage.drupal.uiowa.edu'] = 'tinelli.sites.uiowa.edu';
 $sites['sitestinelli.prod.drupal.uiowa.edu'] = 'tinelli.sites.uiowa.edu';
+
+// Directory aliases for krohn.sites.uiowa.edu.
+$sites['siteskrohn.uiowa.ddev.site'] = 'krohn.sites.uiowa.edu';
+$sites['siteskrohn.dev.drupal.uiowa.edu'] = 'krohn.sites.uiowa.edu';
+$sites['siteskrohn.stage.drupal.uiowa.edu'] = 'krohn.sites.uiowa.edu';
+$sites['siteskrohn.prod.drupal.uiowa.edu'] = 'krohn.sites.uiowa.edu';
