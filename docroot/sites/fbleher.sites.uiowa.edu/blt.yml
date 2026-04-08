@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesfbleher.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesfbleher
+  human_name: fbleher.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesfbleher.prod
+drupal:
+  db:
+    database: fbleher_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesfbleher.prod.drupal.uiowa.edu'
+  requester: fbleher
+  site-name: 'Frauke Bleher'
