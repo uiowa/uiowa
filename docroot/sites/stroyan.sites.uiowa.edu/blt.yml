@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesstroyan.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesstroyan
+  human_name: stroyan.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesstroyan.prod
+drupal:
+  db:
+    database: stroyan_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesstroyan.prod.drupal.uiowa.edu'
+  requester: stroyan
+  site-name: stroyan.sites.uiowa.edu
