@@ -1,0 +1,26 @@
+.page-node-type-venue {
+  /* override map default height to stretch to fill vertical height. */
+  .field--name-field-geolocation {
+    height: 100%;
+  }
+
+  .block-field-blocknodevenuefield-geolocation {
+    [id^="leaflet-map-"] {
+      height: 100% !important;
+      min-height: 650px;
+    }
+  }
+
+  /* position directions link button */
+  .block-directionslink-block {
+    position: absolute;
+    z-index: 1;
+    left: 3rem;
+    bottom: 3rem;
+  }
+
+  /* set layout container to contain absolutely positioned directions button */
+  .layout__region--first:has(#map) {
+    position: relative;
+  }
+}

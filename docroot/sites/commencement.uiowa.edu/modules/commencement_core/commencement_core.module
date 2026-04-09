@@ -10,6 +10,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
@@ -223,16 +224,7 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
  */
 function commencement_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'directionslink_block':
-      uiowa_core_set_attributes($variables, [
-        'element--absolute',
-        'element--absolute--left',
-        'element--absolute--bottom',
-      ]);
-      break;
-
     case 'field_block:node:venue:field_geolocation':
-      uiowa_core_set_attributes($variables, 'element--cover');
       $variables['attributes']['id'] = 'map';
       break;
 
@@ -467,9 +459,27 @@ function commencement_core_preprocess_layout(&$variables) {
  * Implements hook_preprocess_HOOK() for page templates.
  */
 function commencement_core_preprocess_page(array &$variables) {
-  // @todo remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
   if (isset($variables['node']) && $variables['node']->getType() == 'venue') {
+    $variables['#attached']['library'][] = 'commencement_core/venue';
+    // @todo remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
     $variables['#attached']['library'][] = 'uids_base/leaflet_attach';
+  }
+}
+
+/**
+ * Implements hook_leaflet_formatter_feature_alter().
+ */
+function commencement_core_leaflet_formatter_feature_alter(array &$feature, FieldItemInterface $item, ContentEntityInterface $entity) {
+  if (!$entity instanceof NodeInterface || $entity->bundle() !== 'venue') {
+    return;
+  }
+
+  if ($item->getFieldDefinition()->getName() !== 'field_geolocation' || ($feature['type'] ?? NULL) !== 'point') {
+    return;
+  }
+
+  if ($entity->label() !== '') {
+    $feature['title'] = $entity->label();
   }
 }
 
