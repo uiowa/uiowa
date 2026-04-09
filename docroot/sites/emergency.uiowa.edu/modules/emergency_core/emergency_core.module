@@ -15,6 +15,13 @@ use Drupal\emergency_core\Entity\SituationUpdate;
 use Drupal\emergency_core\MoreLink;
 
 /**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function emergency_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'emergency_core.settings';
+}
+
+/**
  * Implements hook_entity_base_field_info().
  */
 function emergency_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {

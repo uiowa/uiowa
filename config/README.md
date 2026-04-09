@@ -1,18 +1,26 @@
+# Configuration Management
+SiteNow utilizes a managed configuration strategy. Config is stored as part of the codebase in exported YAML files and that file-based config is authoritative. On every deployment config values stored in the database will be updated to match the file-based config.
+
+Configuration that is shared amongst all sites is stored in the `default` folder. Customizations that extend or deviate from the baseline configuration are handled by the Configuration Split module. A small amount of configuration can be managed by site operators without being reverted during deployment configuration import. This ignored config is handled by the Config Ignore module.
+
+# Config Ignore
+The Config Ignore module defines a config entity for excluding config entities or their values from normal config import or export processing. This means that those config entities and values are only stored in the database and has no file-based representation.
+
+Config split status (which determines whether the split is active or not) should be included in the ignored config values list. This allows us to enabled or disable a split without needing to do a code deployment.
+
+Note: Configuration that is ignored cannot be selectively enabled/disabled in
+environment splits. Use Drupal's [configuration override system](https://www.drupal.org/docs/8/api/configuration-api/configuration-override-system) if you need to override configuration per environment.
+
 # Configuration Splits
+The Configuration Split module defines a configuration entity that allows defining modules, themes, configuration entities and their values that can be different from or additional to the baseline config. In SiteNow, we utilize splits in two flavors: feature and site splits.
+
 There are a few prerequisites that you should read and understand before
 working with config splits.
 
 - https://docs.acquia.com/blt/developer/config-split/
 - https://www.drupal.org/project/config_split/issues/2885643#comment-12125863
 
-## Config Ignore
-### Weight: 100
-This split should be used for configuration that editors, webmasters, etc. can
-change in production. Think of it as a config split with database storage. The
-high weight means config entities in this split will take precedence on import.
-
-Configuration that is ignored cannot be selectively enabled/disabled in
-environment splits. Use Drupal's [configuration override system](https://www.drupal.org/docs/8/api/configuration-api/configuration-override-system) if you need to override configuration per environment.
+If there is config that should be ignored as part of a config split, the appropriate mechanism for defining this is by implementing the `hook_config_ignore_settings_alter` hook. See `commencement_core.module` for an example implementation.
 
 ## Feature Splits
 ### Weight: 80

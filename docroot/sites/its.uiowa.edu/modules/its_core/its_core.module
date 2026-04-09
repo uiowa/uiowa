@@ -21,6 +21,13 @@ use Drupal\sitenow_alerts\Entity\ClosableInterface;
 use Drupal\smart_date\Entity\SmartDateFormat;
 
 /**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function its_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'its_core.settings';
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
 function its_core_entity_bundle_info_alter(array &$bundles) {
