@@ -105,3 +105,120 @@
     top: 1.7rem;
   }
 }
+
+.klaro.uiowa-privacy-notice {
+  --notice-left: 1rem;
+  --notice-right: auto;
+  --notice-bottom: 1rem;
+  --notice-max-width: 450px;
+  --border-radius: 0;
+  --dark1: #f3f3f3;
+  --dark2: #000;
+  --light1: #000;
+  --green1: var(--brand-primary);
+  --green2: var(--brand-primary);
+  --green3: var(--brand-primary);
+  --klaro-link-color: var(--link-color);
+  --klaro-link-color-hover: var(--link-color);
+  --klaro-link-decoration-line: underline;
+  --klaro-link-decoration-line-hover: underline;
+  --klaro-button-bg: var(--brand-primary);
+  --klaro-button-text-color: var(--brand-secondary);
+  --klaro-button-border: 1px solid var(--brand-primary);
+  --klaro-button-border-radius: 0;
+  --klaro-button-bg-hover: var(--brand-primary);
+  --klaro-button-text-color-hover: var(--brand-secondary);
+  --klaro-button-border-hover: 1px solid var(--brand-primary);
+  --klaro-button-focus-outline: 3px solid var(--brand-secondary);
+  --klaro-button-focus-outline-offset: 3px;
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) {
+  background: #f3f3f3;
+  border: 0;
+  border-radius: 0;
+  border-top: 0.875rem solid var(--brand-primary);
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body {
+  padding: 2rem 2rem 1.85rem;
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body p {
+  font-size: 1.1rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons {
+  display: block;
+  width: 100%;
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success {
+  align-items: center;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  font-family: Roboto, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  justify-content: center;
+  letter-spacing: 0.04rem;
+  line-height: 1.05;
+  min-height: 4rem;
+  padding: 0.95rem 2rem 0.9rem;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 100%;
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn::after,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success::after {
+  background-color: var(--brand-secondary);
+  bottom: 0;
+  content: "";
+  height: 4px;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 0) scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:hover::after,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus::after,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus-visible::after,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:hover::after,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus::after,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus-visible::after {
+  transform: translate(-50%, 0) scaleX(1);
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus-visible,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus-visible {
+  text-decoration: underline;
+}
+
+@media (min-width: 64rem) {
+  .klaro.uiowa-privacy-notice {
+    --notice-left: 1.5rem;
+    --notice-bottom: 1.5rem;
+  }
+}
