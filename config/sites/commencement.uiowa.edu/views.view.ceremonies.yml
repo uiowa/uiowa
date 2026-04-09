@@ -113,6 +113,8 @@ display:
           bef:
             general:
               autosubmit: true
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
               autosubmit_textfield_minimum_length: 3
@@ -127,49 +129,68 @@ display:
                 plugin_id: default
                 advanced:
                   sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: ''
                     filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: false
                   hide_label: false
-              field_event_college_target_id:
-                plugin_id: bef
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Select -|College'
-                    filter_rewrite_values_key: false
-                  collapsible: true
-                  collapsible_disable_automatic_open: false
-                  is_secondary: false
-                  hide_label: false
-                select_all_none: true
-                select_all_none_nested: false
-                display_inline: false
+                  field_classes: ''
               field_event_venue_target_id:
                 plugin_id: default
                 advanced:
                   sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Venue'
                     filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
               field_event_other_celebrations_target_id:
                 plugin_id: default
                 advanced:
                   sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   rewrite:
                     filter_rewrite_values: '- Any -|Other Celebrations'
                     filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+              field_event_college_target_id:
+                plugin_id: bef
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: '- Select -|College'
+                    filter_rewrite_values_key: false
+                  collapsible: true
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+                select_all_none: true
+                select_all_none_nested: false
+                display_inline: false
+                soft_limit: 0
+                soft_limit_label_less: 'Show less'
+                soft_limit_label_more: 'Show more'
       access:
         type: perm
         options:

@@ -216,14 +216,16 @@
     flex-wrap: wrap;
     align-items: flex-start;
 
-    &[class*='side'] {
-      display: inline-flex;
-
-      &.form-item {
-        margin-top: .5rem;
-        margin-bottom: .5rem;
-      }
-    }
+    // This class is too global and should be
+    // adjusted if we can find a place where this was used. 
+    //&[class*='side'] {
+    //  display: inline-flex;
+    //
+    //  &.form-item {
+    //    margin-top: .5rem;
+    //    margin-bottom: .5rem;
+    //  }
+    //}
   }
 
   [type='checkbox'],
