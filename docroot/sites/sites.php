@@ -7798,3 +7798,9 @@ $sites['sitesstroyan.uiowa.ddev.site'] = 'stroyan.sites.uiowa.edu';
 $sites['sitesstroyan.dev.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
 $sites['sitesstroyan.stage.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
 $sites['sitesstroyan.prod.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
+
+// Directory aliases for vsa.org.uiowa.edu.
+$sites['orgvsa.uiowa.ddev.site'] = 'vsa.org.uiowa.edu';
+$sites['orgvsa.dev.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
+$sites['orgvsa.stage.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
+$sites['orgvsa.prod.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
