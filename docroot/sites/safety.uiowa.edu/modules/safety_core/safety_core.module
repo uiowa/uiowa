@@ -6,6 +6,13 @@
  */
 
 /**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function safety_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'safety_core.settings';
+}
+
+/**
  * Implements hook_theme().
  */
 function safety_core_theme() {

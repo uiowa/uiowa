@@ -72,6 +72,12 @@ if ($ah_env !== 'local') {
   $config['symfony_mailer.mailer_transport.sendmail']['configuration']['query']['command'] = '/usr/sbin/sendmail -t';
 }
 
+// Run config_ignore before config_split (priority 0) so that ignored config is
+// filtered before split processing during both import and export.
+// @see https://www.drupal.org/project/config_ignore/issues/3421466
+$settings['config_ignore_import_priority'] = 10;
+$settings['config_ignore_export_priority'] = 10;
+
 // Set recommended New Relic configuration.
 // @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
 ini_set('newrelic.loglevel', 'error');
