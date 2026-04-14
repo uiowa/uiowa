@@ -10,6 +10,7 @@ dependencies:
     - entity_reference_revisions
     - node
     - user
+    - views_auto_refresh
 id: hawk_alerts
 label: 'Hawk Alerts'
 module: views
@@ -248,7 +249,7 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
+        type: none
         options: {  }
       empty:
         area:
@@ -354,7 +355,29 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      header: {  }
+      use_ajax: true
+      header:
+        auto_refresh:
+          id: auto_refresh
+          table: views
+          field: auto_refresh
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_auto_refresh_area
+          empty: false
+          interval: 55000
+          auto_refresh_toggle_button: false
+          auto_refresh_button_enable_label: 'Enable auto refresh'
+          auto_refresh_button_disable_label: 'Disable auto refresh'
+          refresh_now_button: false
+          refresh_now_button_label: 'Refresh now'
+          auto_start_refresh: false
+          stop_on_pagination: false
+          restore_focus_after_refresh: true
+          stop_on_focused_view_content: true
+          disable_ajax_scroll_top: true
+          disable_ajax_throbber: true
       footer: {  }
       display_extenders: {  }
     cache_metadata:
@@ -372,6 +395,8 @@ display:
     display_plugin: block
     position: 1
     display_options:
+      defaults:
+        use_ajax: true
       display_extenders:
         metatag_display_extender:
           metatags: {  }
