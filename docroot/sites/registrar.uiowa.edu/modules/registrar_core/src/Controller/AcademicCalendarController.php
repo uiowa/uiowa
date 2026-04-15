@@ -167,6 +167,11 @@ class AcademicCalendarController extends ControllerBase {
     // If both events have the same date, we need to do more sorting.
     // COMMENT HERE.
     if ($event1->start === $event2->start) {
+      // If an event is a Five Year Date and the other is not,
+      // the Five Year should come first.
+      if ($event1->fiveYearDate !== $event2->fiveYearDate) {
+        return ($event1->fiveYearDate) ? -1 : 1;
+      }
       $sortString1 = $event1->sortString;
       $sortString2 = $event2->sortString;
 
@@ -407,6 +412,11 @@ class AcademicCalendarController extends ControllerBase {
 
     // Add description.
     $event->description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
+
+    // Include "Is Five Year" boolean.
+    $event->fiveYearDate = $date->fiveYearDate;
+    // @todo Remove this.
+    $start = ($event->fiveYearDate) ? '5 year' : 'Not 5 year';
 
     // Build card.
     $attributes = [];
