@@ -134,8 +134,8 @@
 .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) {
   background: #f3f3f3;
   border: 0;
-  border-radius: 0;
   border-top: 0.875rem solid var(--brand-primary);
+  border-radius: 0;
   box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
 }
 
@@ -168,13 +168,12 @@
   box-shadow: none;
   display: flex;
   font-family: Roboto, sans-serif;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 400;
   justify-content: center;
   letter-spacing: 0.04rem;
-  line-height: 1.05;
-  min-height: 4rem;
-  padding: 0.95rem 2rem 0.9rem;
+  line-height: 1.4;
+  padding: 1rem 2rem 1rem;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -217,5 +216,9 @@
 @media (min-width: 64rem) {
   .klaro.uiowa-privacy-notice {
     --notice-bottom: 1.5rem;
+  }
+
+  .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) {
+    border-top: 0;
   }
 }
