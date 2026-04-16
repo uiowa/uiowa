@@ -163,10 +163,15 @@ class AcademicCalendarController extends ControllerBase {
    *   And greater than 0 if $event1 should be placed after $event2.
    */
   private function eventCompare(object $event1, object $event2): int {
+    // Convert timestamps to simple strings
+    // with day granularity for accurate comparison.
+    $event1Timestamp = strtotime($event1->start);
+    $event2Timestamp = strtotime($event2->start);
+    $event1Date = date('Y-m-d', $event1Timestamp);
+    $event2Date = date('Y-m-d', $event2Timestamp);
 
     // If both events have the same date, we need to do more sorting.
-    // COMMENT HERE.
-    if ($event1->start === $event2->start) {
+    if ($event1Date === $event2Date) {
       // If an event is a Five Year Date and the other is not,
       // the Five Year should come first.
       if ($event1->fiveYearDate !== $event2->fiveYearDate) {
@@ -180,7 +185,7 @@ class AcademicCalendarController extends ControllerBase {
 
     // If they are not the same date, return the comparison.
     else {
-      return ($event1->start < $event2->start) ? -1 : 1;
+      return $event1Timestamp <=> $event2Timestamp;
     }
   }
 
