@@ -23,6 +23,13 @@ use Drupal\taxonomy\TermInterface;
 use Drupal\views\ViewExecutable;
 
 /**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function commencement_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'commencement_core.settings';
+}
+
+/**
  * Implements hook_entity_bundle_info_alter().
  */
 function commencement_core_entity_bundle_info_alter(array &$bundles) {
