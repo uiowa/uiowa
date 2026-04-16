@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "clean": "rm -f css/*.css",
-    "sass-compile": "mkdir -p css && sass --no-source-map sass/global.scss css/global.css",
-    "sass-watch": "mkdir -p css && sass --watch --no-source-map sass/global.scss css/global.css",
+    "clean": "rm -rf assets/css assets/js",
+    "sass-compile": "sass --no-source-map --style=compressed sass:assets/css",
+    "sass-watch": "sass --watch --style=compressed sass:assets/css",
     "prebuild": "run-s clean",
     "build": "run-p sass-compile",
     "watch": "run-p sass-watch"
