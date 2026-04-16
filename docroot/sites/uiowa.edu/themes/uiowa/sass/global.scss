@@ -1,8 +1,6 @@
 @use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
 @use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
 
-$klaro-notice-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
-
 .block-superfishmain .menu.sf-horiz-menu > li:nth-child(6) > a,
 .block-superfishmain .menu.sf-horiz-menu > li:nth-child(7) > a,
 .block-superfishmain .menu.sf-horiz-menu > li:nth-child(8) > a {
@@ -119,7 +117,7 @@ $klaro-notice-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
   border: 0;
   border-top: 0.875rem solid variables.$primary;
   border-radius: 0;
-  box-shadow: $klaro-notice-shadow;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
 }
 
 .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body {
@@ -162,6 +160,12 @@ $klaro-notice-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
   letter-spacing: 0.04rem;
   padding: 1rem 2rem;
   width: 100%;
+  @include utilities.bttn--focus;
+}
+
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn::after,
+.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success::after {
+  background-color: variables.$secondary;
 }
 
 .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:hover,
@@ -171,36 +175,12 @@ $klaro-notice-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
   color: variables.$secondary;
 }
 
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn::after,
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success::after {
-  background-color: variables.$secondary;
-  bottom: 0;
-  content: "";
-  height: 4px;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, 0) scaleX(0);
-  transform-origin: center;
-  transition: transform 0.3s ease-in-out;
-  width: 100%;
-}
-
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:hover::after,
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus::after,
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus-visible::after,
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:hover::after,
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus::after,
-.klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus-visible::after {
-  transform: translate(-50%, 0) scaleX(1);
-}
-
 .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus,
 .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn:focus-visible,
 .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus,
 .klaro.uiowa-privacy-notice .cookie-notice:not(.cookie-modal-notice) .cn-body .cn-buttons button.cm-btn.cm-btn-success:focus-visible {
   outline: 3px solid variables.$secondary;
   outline-offset: 3px;
-  text-decoration: underline;
 }
 
 @media (min-width: 1024px) {
