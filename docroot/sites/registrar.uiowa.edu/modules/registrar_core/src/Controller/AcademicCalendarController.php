@@ -420,8 +420,6 @@ class AcademicCalendarController extends ControllerBase {
 
     // Include "Is Five Year" boolean.
     $event->fiveYearDate = $date->fiveYearDate;
-    // @todo Remove this.
-    $start = ($event->fiveYearDate) ? '5 year' : 'Not 5 year';
 
     // Build card.
     $attributes = [];
