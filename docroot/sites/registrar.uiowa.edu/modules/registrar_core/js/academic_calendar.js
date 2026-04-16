@@ -433,6 +433,19 @@
     // Function to display events grouped by session.
     displayGroupedBySession(events) {
       Drupal.announce(`Grouping events by session.`);
+      const fiveYearEvents = events.filter(event => event.fiveYearDate);
+      const regularEvents = events.filter(event => !event.fiveYearDate);
+
+      // Render all Five Year events first, then the rest.
+      fiveYearEvents.forEach(event => this.renderEvent(event, false));
+      this.renderSessionGroups(regularEvents);
+    }
+
+    renderSessionGroups(events) {
+      if (events.length === 0) {
+        return;
+      }
+
       // Group events by id.
       const groupedEvents = events.reduce((groups, event) => {
         const group = groups[event.sessionId] || { sessionDisplay: event.sessionDisplay, events: [] };
