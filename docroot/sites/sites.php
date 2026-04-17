@@ -7804,3 +7804,9 @@ $sites['orgvsa.uiowa.ddev.site'] = 'vsa.org.uiowa.edu';
 $sites['orgvsa.dev.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
 $sites['orgvsa.stage.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
 $sites['orgvsa.prod.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
+
+// Directory aliases for erningli.sites.uiowa.edu.
+$sites['siteserningli.uiowa.ddev.site'] = 'erningli.sites.uiowa.edu';
+$sites['siteserningli.dev.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
+$sites['siteserningli.stage.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
+$sites['siteserningli.prod.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
