@@ -11,9 +11,9 @@ no_patching: false
 storage: folder
 folder: ../config/sites/uiowa.edu
 module:
+  klaro: 0
   schema_organization: 0
   uiowa_edu_core: 0
-  klaro: 0
 theme: {  }
 complete_list:
   - block_content.type.uiowa_vertical_video
@@ -23,10 +23,7 @@ complete_list:
   - taxonomy.vocabulary.a_z_list
   - views.view.a_z_list
   - 'field.storage.block_content.field_uiowa_vertical_*'
-  - klaro.settings
-  - klaro.texts
-  - klaro.klaro_app.uiowa_privacy_notice
-  - klaro.klaro_purpose.privacy_notice
+  - 'klaro.*'
 partial_list:
   - metatag.metatag_defaults.front
   - simple_sitemap.custom_links.default
