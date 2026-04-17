@@ -8,6 +8,7 @@ Drupal.behaviors.uiowaAlerts = {
       const messagesWrapper = el.querySelector('.hawk-alerts-wrapper');
       const messages = new Drupal.Message(messagesWrapper);
       let existingAlerts = getExistingAlerts();
+      console.log('I`m here.');
 
       // Get alerts on page load.
       updateAlerts();

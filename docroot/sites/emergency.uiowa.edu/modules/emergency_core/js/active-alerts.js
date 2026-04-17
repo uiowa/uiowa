@@ -3,9 +3,10 @@
     attach: function (context) {
       once('active-alerts', '.active-alerts-container', context).forEach(function (container) {
         var url = drupalSettings.emergency_core.activeAlertsUrl;
-        console.log(drupalSettings.emergency_core.activeAlertsUrl);
         var headingSize = drupalSettings.emergency_core.headingSize || 'h2';
 
+        url = 'https://emergency.stage.drupal.uiowa.edu/api/active';
+        console.log(url + '?heading_size=' + encodeURIComponent(headingSize));
         fetch(url + '?heading_size=' + encodeURIComponent(headingSize))
           .then(function (response) {
             if (!response.ok) {
