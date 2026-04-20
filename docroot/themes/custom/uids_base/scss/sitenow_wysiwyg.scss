@@ -43,44 +43,67 @@
     padding: initial;
   }
 
-  .table {
-    table,
-    table caption,
-    table > tr > td,
-    table > tr > th,
-    table > tbody > tr > td,
-    table > tbody > tr > th,
-    table > thead > tr > td,
-    table > thead > tr > th,
-    table > tfoot > tr > td,
-    table > tfoot > tr > th {
+  // Match CKEditor's injected selectors closely enough to win without !important.
+  // Keep the figure/figcaption behavior CKEditor needs, but replace the visual defaults
+  // with our editor table styling.
+  figure.table {
+    margin: 0;
+
+    > table {
+      height: auto;
+      display: table-footer-group;
       border: #d3d3d3 1px dotted;
     }
-    table th {
-      padding: 1.05rem;
-    }
-  }
 
-  // CKEditor uses figcaption for table captions, but renders as caption..
-  figure.table {
-    table {
-      display: table-footer-group;
+    > table > caption,
+    > table > tr > :is(td, th),
+    > table > tbody > tr > :is(td, th),
+    > table > thead > tr > :is(td, th),
+    > table > tfoot > tr > :is(td, th) {
+      border: #d3d3d3 1px dotted;
+      min-width: 0;
+      padding: variables.$md;
     }
-    figcaption {
+
+    > table > thead > tr > :is(td, th) {
+      color: variables.$secondary;
+      background-color: variables.$primary;
+      border: none;
+      padding: variables.$md;
+    }
+
+    > table > tbody > tr > th {
+      background-color: transparent;
+      border: none;
+      position: static;
+      left: 0;
+      padding-left: variables.$md;
+    }
+
+    > table > tbody > tr:not(.is-selected):nth-child(even),
+    > table > tbody > tr:not(.is-selected):nth-child(even) > th {
+      background-color: variables.$light;
+    }
+
+    // CKEditor uses figcaption for table captions.
+    > figcaption {
       display: table-caption;
       width: 100%;
-      padding: 1.05rem;
+      padding: variables.$md;
       text-align: center;
       font-size: 1rem;
-      color: #fff;
+      color: variables.$white;
       background-color: #333;
       font-weight: bold;
+
       em, strong, sup, sub {
-        color: inherit!important;
+        color: inherit !important;
       }
+
       a,
       :where(p) a:not(.bttn) {
         color: variables.$primary;
+
         [class*="bg--"] &,
         [class*="bg--"] [class*="bg--"] & {
           color: variables.$primary;
