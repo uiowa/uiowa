@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24005416069355baf8314fc0a8a4c5ae",
+    "content-hash": "74dcf87c37ffc25631cdb2c92b653b51",
     "packages": [
         {
             "name": "acquia/blt",
@@ -100,16 +100,15 @@
         },
         {
             "name": "acquia/blt-drupal-test",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/modularlab/blt-drupal-test.git",
-                "reference": "bb2103f"
+            "version": "dev-drupal_10_6",
+            "dist": {
+                "type": "path",
+                "url": "./packages/blt-drupal-test",
+                "reference": "3f894114bfa7446ba55d2c914d2ccc1d76055353"
             },
             "require": {
                 "drupal/core-dev": "^9.0 || ^10"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -127,7 +126,9 @@
                 }
             ],
             "description": "PHPUnit integration for Acquia BLT",
-            "time": "2023-08-11T14:34:36+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "acquia/blt-multisite",
@@ -24500,7 +24501,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "acquia/blt-drupal-test": 20,
         "acquia/blt-multisite": 20,
         "drupal/bigmenu": 5,
         "drupal/ckeditor_small_tag": 5,
