@@ -7,8 +7,17 @@
   font-family: Roboto, sans-serif;
 
   // Colors
-  --brand-primary: #FFCD00;
-  --brand-secondary: #000000;
+  --uiowa-gold: #FFCD00;
+  --uiowa-black: #000000;
+  --brand-primary: var(--uiowa-gold);
+  --brand-secondary: var(--uiowa-black);
+  --uids-gray-cool: #63666A;
+  --link-color: #00558C;
+  --uids-light: #F3F3F3;
+  --uids-gray-mid: #9a9a9a;
+  --uids-gray: #737373;
+  --uids-gray-light: #CACACA;
+  --transparent-border: rgb(0 0 0 / .125);
 
   // Margin/Padding
   --space-lg-width-gutter: 3rem;
@@ -43,6 +52,14 @@
     padding: initial;
   }
 
+  // Claro adds a global row border for admin tables; remove it inside editor content.
+  table > tr,
+  table > thead > tr,
+  table > tbody > tr,
+  table > tfoot > tr {
+    border-bottom: none;
+  }
+
   // Match CKEditor's injected selectors so these overrides win without !important.
   // Keep the figure/figcaption behavior CKEditor needs, but replace the visual defaults
   // with our editor table styling.
@@ -51,24 +68,52 @@
 
     > table {
       height: auto;
-      display: table-footer-group;
-      border: #d3d3d3 1px dotted;
+      // Keep editor tables full width for now; revisit here if/when we add
+      // intentional author-controlled table widths in the WYSIWYG.
+      width: 100%;
+      display: table;
+      margin: 0;
     }
 
     > table > caption,
-    > table > tr > :is(td, th),
-    > table > tbody > tr > :is(td, th),
-    > table > thead > tr > :is(td, th),
-    > table > tfoot > tr > :is(td, th) {
-      border: #d3d3d3 1px dotted;
+    > table > tr > td,
+    > table > tr > th,
+    > table > tbody > tr > td,
+    > table > tbody > tr > th,
+    > table > thead > tr > td,
+    > table > thead > tr > th,
+    > table > tfoot > tr > td,
+    > table > tfoot > tr > th {
+      height: auto;
       min-width: 0;
       padding: variables.$md;
     }
 
+    > table:not(.table--gray-borders) {
+      border: none;
+    }
+
+    // Match CKEditor's injected td/th selectors directly so the border reset wins
+    // for standard tables while still allowing .table--gray-borders to opt in.
+    > table:not(.table--gray-borders) > caption,
+    > table:not(.table--gray-borders) > tr > td,
+    > table:not(.table--gray-borders) > tr > th,
+    > table:not(.table--gray-borders) > tbody > tr > td,
+    > table:not(.table--gray-borders) > tbody > tr > th,
+    > table:not(.table--gray-borders) > thead > tr > td,
+    > table:not(.table--gray-borders) > thead > tr > th,
+    > table:not(.table--gray-borders) > tfoot > tr > td,
+    > table:not(.table--gray-borders) > tfoot > tr > th {
+      border: none;
+    }
+
     > table > thead > tr > :is(td, th) {
       color: variables.$secondary;
-      border: none;
       padding: variables.$md;
+    }
+
+    > table:not(.table--gray-borders) > thead > tr > :is(td, th) {
+      border: none;
     }
 
     > table > thead > tr > :is(td, th):not(.ck-editor__nested-editable_focused):not(:focus) {
@@ -76,10 +121,13 @@
     }
 
     > table > tbody > tr > th {
-      border: none;
       position: static;
       left: 0;
       padding-left: variables.$md;
+    }
+
+    > table:not(.table--gray-borders) > tbody > tr > th {
+      border: none;
     }
 
     > table > tbody > tr > th:not(.ck-editor__nested-editable_focused):not(:focus) {
@@ -91,10 +139,26 @@
       background-color: variables.$light;
     }
 
+    // Re-assert cell padding after CKEditor's injected table defaults.
+    // Repeating the `.table` class here slightly increases specificity
+    // without changing which elements are targeted.
+    &.table > table > tr > td,
+    &.table > table > tr > th,
+    &.table > table > tbody > tr > td,
+    &.table > table > tbody > tr > th,
+    &.table > table > thead > tr > td,
+    &.table > table > thead > tr > th,
+    &.table > table > tfoot > tr > td,
+    &.table > table > tfoot > tr > th {
+      height: auto;
+      padding: variables.$md;
+    }
+
     // CKEditor uses figcaption for table captions.
     > figcaption {
       display: table-caption;
-      width: 100%;
+      box-sizing: border-box;
+      width: auto;
       padding: variables.$md;
       text-align: center;
       font-size: 1rem;
