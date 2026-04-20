@@ -43,10 +43,10 @@
     padding: initial;
   }
 
-  // Match CKEditor's injected selectors closely enough to win without !important.
+  // Match CKEditor's injected selectors so these overrides win without !important.
   // Keep the figure/figcaption behavior CKEditor needs, but replace the visual defaults
   // with our editor table styling.
-  figure.table {
+  figure.table:not(.layout-table) {
     margin: 0;
 
     > table {
@@ -67,21 +67,27 @@
 
     > table > thead > tr > :is(td, th) {
       color: variables.$secondary;
-      background-color: variables.$primary;
       border: none;
       padding: variables.$md;
     }
 
+    > table > thead > tr > :is(td, th):not(.ck-editor__nested-editable_focused):not(:focus) {
+      background-color: variables.$primary;
+    }
+
     > table > tbody > tr > th {
-      background-color: transparent;
       border: none;
       position: static;
       left: 0;
       padding-left: variables.$md;
     }
 
+    > table > tbody > tr > th:not(.ck-editor__nested-editable_focused):not(:focus) {
+      background-color: transparent;
+    }
+
     > table > tbody > tr:not(.is-selected):nth-child(even),
-    > table > tbody > tr:not(.is-selected):nth-child(even) > th {
+    > table > tbody > tr:not(.is-selected):nth-child(even) > th:not(.ck-editor__nested-editable_focused):not(:focus) {
       background-color: variables.$light;
     }
 
@@ -112,7 +118,7 @@
     }
   }
 
-  figure.table .table-responsive {
+  figure.table:not(.layout-table) .table-responsive {
     figcaption {
       text-align: left;
       @include utilities.breakpoint(sm) {
@@ -121,7 +127,7 @@
     }
   }
 
-  figure.table table.table--gray-borders {
+  figure.table:not(.layout-table) table.table--gray-borders {
     & > figcaption {
       & > td,
       & > th {
@@ -129,7 +135,6 @@
       }
     }
   }
-
 
   .drupal-media {
     max-width: max-content;
