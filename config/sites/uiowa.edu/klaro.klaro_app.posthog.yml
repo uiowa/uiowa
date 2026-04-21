@@ -1,0 +1,25 @@
+uuid: a2fe73ef-f8bb-4fc2-afe8-90ab25c33920
+langcode: en
+status: false
+dependencies: {  }
+_core:
+  default_config_hash: 2QmmFXxK6yL17WYSR6MUjCozQWX31lLNqIvni_S5dNk
+id: posthog
+label: Posthog
+description: 'Posthog description'
+default: false
+purposes:
+  - analytics
+cookies: {  }
+required: false
+opt_out: false
+only_once: false
+contextual_consent_only: false
+contextual_consent_text: ''
+info_url: 'https://posthog.com/docs/privacy/data-collection'
+privacy_policy_url: 'https://posthog.com/privacy'
+javascripts: {  }
+callback_code: "window.posthog.set_config({ cookieless_mode: 'on_reject' })\r\nif (consent === true) {\r\n  window.posthog.opt_in_capturing()\r\n}\r\nif (consent === false) {\r\n  window.posthog.opt_out_capturing()\r\n}\r\n"
+wrapper_identifier: {  }
+attachments: {  }
+weight: 0
