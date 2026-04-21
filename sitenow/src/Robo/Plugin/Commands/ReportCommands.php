@@ -2,12 +2,7 @@
 
 namespace SiteNow\Robo\Plugin\Commands;
 
-use Consolidation\Config\Config;
-use Consolidation\Config\Loader\ConfigProcessor;
-use Consolidation\Config\Loader\YamlConfigLoader;
-use AcquiaCloudApi\Connector\Client;
-use AcquiaCloudApi\Connector\Connector;
-use AcquiaCloudApi\Endpoints\Applications;
+use SiteNow\Robo\Traits\SiteNowCommandsTrait;
 use AcquiaCloudApi\Endpoints\Environments;
 use Robo\Tasks;
 use Symfony\Component\Console\Helper\Table;
@@ -16,6 +11,7 @@ use Symfony\Component\Console\Helper\Table;
  * Robo commands for reporting domain information.
  */
 class ReportCommands extends Tasks {
+  use SiteNowCommandsTrait;
 
   /**
    * List domains on PROD environment (default) or specified environments.
@@ -81,10 +77,10 @@ class ReportCommands extends Tasks {
       $this->getConfigValue('uiowa.credentials.acquia.secret')
     );
 
-    $api_applications = new Applications($client);
     $api_environments = new Environments($client);
+    $applications = $this->getSortedApplications($client);
 
-    foreach ($api_applications->getAll() as $application) {
+    foreach ($applications as $application) {
       // Skip UIHC applications.
       if ($application->organization->name === 'University of Iowa Healthcare') {
         continue;
@@ -149,7 +145,6 @@ class ReportCommands extends Tasks {
     }
 
     // Free memory.
-    $api_applications = NULL;
     $api_environments = NULL;
 
     $this->say('Done.');
@@ -167,48 +162,118 @@ class ReportCommands extends Tasks {
   }
 
   /**
-   * Build and return an Acquia Cloud API v2 client.
+   * Report of inactive SiteNow sites.
    *
-   * @param string $key
-   *   The API key (UUID) from cloud.acquia.com/a/profile/tokens.
-   * @param string $secret
-   *   The API secret from cloud.acquia.com/a/profile/tokens.
+   * @command uiowa:report:inactive
    *
-   * @return \AcquiaCloudApi\Connector\Client
-   *   An authenticated Acquia Cloud API client.
+   * @option apps
+   *   Comma-separated list of app names to filter by (e.g. uiowa,uiowa03).
+   * @option threshold
+   *   Inactivity threshold (e.g. "1 year", "6 months"). Default: "1 year".
    */
-  protected function getAcquiaCloudApiClient(string $key, string $secret): Client {
-    $connector = new Connector([
-      'key'    => $key,
-      'secret' => $secret,
-    ]);
+  public function inactive(
+    $options = [
+      'apps' => '',
+      'threshold' => '1 year',
+    ],
+  ) {
+    $site_data = [];
+    $now = time();
 
-    return Client::factory($connector);
-  }
+    // Parse app filter — empty means all applications.
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
+      : [];
 
-  /**
-   * Get a config value by key from blt/local.blt.yml.
-   *
-   * @param string $key
-   *   Dot-separated config key, e.g. 'uiowa.credentials.acquia.key'.
-   *
-   * @return mixed
-   *   The config value, or NULL if not found.
-   */
-  protected function getConfigValue(string $key): mixed {
-    $blt_local = getcwd() . '/blt/local.blt.yml';
-
-    if (!file_exists($blt_local)) {
-      return NULL;
+    // Parse threshold.
+    $threshold_period = trim($options['threshold']);
+    $cutoff = strtotime("-{$threshold_period}", $now);
+    if ($cutoff === FALSE) {
+      $this->say("Error: Could not parse threshold '$threshold_period'");
+      return;
     }
 
-    $config = new Config();
-    $loader = new YamlConfigLoader();
-    $processor = new ConfigProcessor();
-    $processor->extend($loader->load($blt_local));
-    $config->replace($processor->export());
+    $headers = ['Application', 'URL', 'Days Since Login', "Inactive: $threshold_period"];
 
-    return $config->get($key);
+    $this->say('Fetching domains from Acquia Cloud API...');
+    $client = $this->getAcquiaCloudApiClient(
+      $this->getConfigValue('uiowa.credentials.acquia.key'),
+      $this->getConfigValue('uiowa.credentials.acquia.secret')
+    );
+
+    $api_environments = new Environments($client);
+    $applications = $this->getSortedApplications($client);
+
+    foreach ($applications as $application) {
+      // Skip UIHC applications.
+      if ($application->organization->name === 'University of Iowa Healthcare') {
+        continue;
+      }
+
+      $app_name = str_replace('prod:', '', $application->hosting->id);
+
+      // Skip if not in the requested application list.
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
+        continue;
+      }
+
+      $this->say("Processing $app_name...");
+
+      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
+      foreach ($api_environments->getAll($application->uuid) as $environment) {
+        // Only check PROD environments.
+        if ($environment->name !== 'prod') {
+          continue;
+        }
+
+        $domains = array_values(array_filter(
+          $environment->domains,
+          function ($domain) use ($app_name, $environment) {
+            // Filter out internal Acquia platform domains.
+            return !(
+              str_contains($domain, '.prod.drupal.') ||
+              str_contains($domain, '.acquia-sites.com') ||
+              str_starts_with($domain, "$app_name.{$environment->name}")
+            );
+          }
+        ));
+
+        foreach ($domains as $domain) {
+          $this->say("  Checking $domain...");
+
+          $last_login = $this->getLastUserLogin($domain);
+
+          if ($last_login === FALSE) {
+            $days_since_login = 'Error';
+            $status = 'Error';
+          }
+          elseif ($last_login === NULL) {
+            $days_since_login = 'Never logged in';
+            $status = 'Active';
+          }
+          else {
+            $days_since_login = ceil(($now - $last_login) / 86400);
+            $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
+          }
+
+          $site_data[] = [
+            'application' => $app_name,
+            'url' => $domain,
+            'days_since_login' => $days_since_login,
+            'inactive' => $status,
+          ];
+        }
+      }
+    }
+
+    // Free memory.
+    $api_environments = NULL;
+
+    $this->say('Here are the results.');
+    $table = new Table($this->output());
+    $table->setHeaders($headers);
+    $table->setRows($site_data);
+    $table->render();
   }
 
 }
