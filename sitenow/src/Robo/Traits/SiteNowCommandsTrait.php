@@ -95,4 +95,32 @@ trait SiteNowCommandsTrait {
     return Multisite::getIdentifier('http://' . $multisite);
   }
 
+  /**
+   * Initialize a CSV export file with headers.
+   *
+   * @param string $filename_prefix
+   *   Prefix for the CSV filename (e.g., 'SiteNow-Domains-Report').
+   * @param array $headers
+   *   Array of header column names.
+   *
+   * @return string
+   *   The filepath where the CSV file was created.
+   */
+  protected function initializeCsvExport(string $filename_prefix, array $headers): string {
+    $now = date('Ymd-His');
+    $filename = "{$filename_prefix}-{$now}.csv";
+    $root = $this->getConfigValue('repo.root') ?: getcwd();
+    $filepath = "$root/$filename";
+
+    if (file_exists($filepath)) {
+      unlink($filepath);
+    }
+    $this->say("Created export file $filepath");
+    $fp = fopen($filepath, 'w+');
+    fputcsv($fp, $headers, ',', '"', '\\');
+    fclose($fp);
+
+    return $filepath;
+  }
+
 }

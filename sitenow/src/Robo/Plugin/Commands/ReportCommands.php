@@ -36,6 +36,7 @@ class ReportCommands extends Tasks {
     ],
   ) {
     $site_data = [];
+    $filepath = NULL;
 
     $headers = [
       'Application',
@@ -56,18 +57,7 @@ class ReportCommands extends Tasks {
       : [];
 
     if ($options['export']) {
-      $now = date('Ymd-His');
-      $filename = "SiteNow-Domains-Report-$now.csv";
-      $root = $this->getConfigValue('repo.root') ?: getcwd();
-      $filepath = "$root/$filename";
-
-      if (file_exists($filepath)) {
-        unlink($filepath);
-      }
-      $this->say("Created export file $filepath");
-      $fp = fopen($filepath, 'w+');
-      fputcsv($fp, $headers, ',', '"', '\\');
-      fclose($fp);
+      $filepath = $this->initializeCsvExport('SiteNow-Domains-Report', $headers);
     }
 
     $this->say('Starting to check environments.');
@@ -170,15 +160,19 @@ class ReportCommands extends Tasks {
    *   Comma-separated list of app names to filter by (e.g. uiowa,uiowa03).
    * @option threshold
    *   Inactivity threshold (e.g. "1 year", "6 months"). Default: "1 year".
+   * @option export
+   *   Whether to export results to a CSV file.
    */
   public function inactive(
     $options = [
       'apps' => '',
       'threshold' => '1 year',
+      'export' => FALSE,
     ],
   ) {
     $site_data = [];
     $now = time();
+    $filepath = NULL;
 
     // Parse app filter — empty means all applications.
     $target_apps = !empty($options['apps'])
@@ -194,6 +188,10 @@ class ReportCommands extends Tasks {
     }
 
     $headers = ['Application', 'URL', 'Days Since Revision', 'Days Since Login', "Login Inactive: $threshold_period"];
+
+    if ($options['export']) {
+      $filepath = $this->initializeCsvExport('SiteNow-Inactive-Report', $headers);
+    }
 
     $this->say('Fetching domains from Acquia Cloud API...');
     $client = $this->getAcquiaCloudApiClient(
@@ -268,13 +266,28 @@ class ReportCommands extends Tasks {
             $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
           }
 
-          $site_data[] = [
-            'application' => $app_name,
-            'url' => $domain,
-            'days_since_revision' => $days_since_revision,
-            'days_since_login' => $days_since_login,
-            'inactive' => $status,
+          $site = [
+            $app_name,
+            $domain,
+            $days_since_revision,
+            $days_since_login,
+            $status,
           ];
+
+          if ($options['export']) {
+            $fp = fopen($filepath, 'a');
+            fputcsv($fp, $site, ',', '"', '\\');
+            fclose($fp);
+          }
+          else {
+            $site_data[] = [
+              'application' => $app_name,
+              'url' => $domain,
+              'days_since_revision' => $days_since_revision,
+              'days_since_login' => $days_since_login,
+              'inactive' => $status,
+            ];
+          }
         }
       }
     }
@@ -282,11 +295,16 @@ class ReportCommands extends Tasks {
     // Free memory.
     $api_environments = NULL;
 
-    $this->say('Here are the results.');
-    $table = new Table($this->output());
-    $table->setHeaders($headers);
-    $table->setRows($site_data);
-    $table->render();
+    if ($options['export']) {
+      $this->say("Results exported to $filepath");
+    }
+    else {
+      $this->say('Here are the results.');
+      $table = new Table($this->output());
+      $table->setHeaders($headers);
+      $table->setRows($site_data);
+      $table->render();
+    }
   }
 
   /**
