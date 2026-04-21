@@ -7816,3 +7816,9 @@ $sites['conferencepsaps2026meeting.uiowa.ddev.site'] = 'psaps2026meeting.confere
 $sites['conferencepsaps2026meeting.dev.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
 $sites['conferencepsaps2026meeting.stage.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
 $sites['conferencepsaps2026meeting.prod.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
+
+// Directory aliases for mftehrani.sites.uiowa.edu.
+$sites['sitesmftehrani.uiowa.ddev.site'] = 'mftehrani.sites.uiowa.edu';
+$sites['sitesmftehrani.dev.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
+$sites['sitesmftehrani.stage.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
+$sites['sitesmftehrani.prod.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
