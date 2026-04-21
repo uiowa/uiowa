@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: cif.uiowa.ddev.site
+  paths:
+    files: sites/cif.uiowa.edu/files
+dev:
+  uri: cif.dev.drupal.uiowa.edu
+  host: uiowa09dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cif.uiowa.edu/files
+  root: /var/www/html/uiowa09.dev/docroot
+  user: uiowa09.dev
+prod:
+  uri: cif.uiowa.edu
+  host: uiowa09prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cif.uiowa.edu/files
+  root: /var/www/html/uiowa09.prod/docroot
+  user: uiowa09.prod
+test:
+  uri: cif.stage.drupal.uiowa.edu
+  host: uiowa09stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cif.uiowa.edu/files
+  root: /var/www/html/uiowa09.stage/docroot
+  user: uiowa09.stage

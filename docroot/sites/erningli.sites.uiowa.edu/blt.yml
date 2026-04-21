@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteserningli.uiowa.ddev.site
+    protocol: https
+  machine_name: siteserningli
+  human_name: erningli.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteserningli.prod
+drupal:
+  db:
+    database: erningli_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteserningli.prod.drupal.uiowa.edu'
+  requester: ernli
+  site-name: 'Erning Li'
