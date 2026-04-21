@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesmftehrani.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesmftehrani
+  human_name: mftehrani.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmftehrani.prod
+drupal:
+  db:
+    database: mftehrani_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesmftehrani.prod.drupal.uiowa.edu'
+  requester: mftehrani
+  site-name: mftehrani
