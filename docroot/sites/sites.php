@@ -7822,3 +7822,9 @@ $sites['sitesmftehrani.uiowa.ddev.site'] = 'mftehrani.sites.uiowa.edu';
 $sites['sitesmftehrani.dev.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
 $sites['sitesmftehrani.stage.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
 $sites['sitesmftehrani.prod.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
+
+// Directory aliases for cif.uiowa.edu.
+$sites['cif.uiowa.ddev.site'] = 'cif.uiowa.edu';
+$sites['cif.dev.drupal.uiowa.edu'] = 'cif.uiowa.edu';
+$sites['cif.stage.drupal.uiowa.edu'] = 'cif.uiowa.edu';
+$sites['cif.prod.drupal.uiowa.edu'] = 'cif.uiowa.edu';
