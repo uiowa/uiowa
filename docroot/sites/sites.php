@@ -7798,3 +7798,33 @@ $sites['sitesstroyan.uiowa.ddev.site'] = 'stroyan.sites.uiowa.edu';
 $sites['sitesstroyan.dev.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
 $sites['sitesstroyan.stage.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
 $sites['sitesstroyan.prod.drupal.uiowa.edu'] = 'stroyan.sites.uiowa.edu';
+
+// Directory aliases for vsa.org.uiowa.edu.
+$sites['orgvsa.uiowa.ddev.site'] = 'vsa.org.uiowa.edu';
+$sites['orgvsa.dev.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
+$sites['orgvsa.stage.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
+$sites['orgvsa.prod.drupal.uiowa.edu'] = 'vsa.org.uiowa.edu';
+
+// Directory aliases for erningli.sites.uiowa.edu.
+$sites['siteserningli.uiowa.ddev.site'] = 'erningli.sites.uiowa.edu';
+$sites['siteserningli.dev.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
+$sites['siteserningli.stage.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
+$sites['siteserningli.prod.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
+
+// Directory aliases for psaps2026meeting.conference.uiowa.edu.
+$sites['conferencepsaps2026meeting.uiowa.ddev.site'] = 'psaps2026meeting.conference.uiowa.edu';
+$sites['conferencepsaps2026meeting.dev.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
+$sites['conferencepsaps2026meeting.stage.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
+$sites['conferencepsaps2026meeting.prod.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
+
+// Directory aliases for mftehrani.sites.uiowa.edu.
+$sites['sitesmftehrani.uiowa.ddev.site'] = 'mftehrani.sites.uiowa.edu';
+$sites['sitesmftehrani.dev.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
+$sites['sitesmftehrani.stage.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
+$sites['sitesmftehrani.prod.drupal.uiowa.edu'] = 'mftehrani.sites.uiowa.edu';
+
+// Directory aliases for cif.uiowa.edu.
+$sites['cif.uiowa.ddev.site'] = 'cif.uiowa.edu';
+$sites['cif.dev.drupal.uiowa.edu'] = 'cif.uiowa.edu';
+$sites['cif.stage.drupal.uiowa.edu'] = 'cif.uiowa.edu';
+$sites['cif.prod.drupal.uiowa.edu'] = 'cif.uiowa.edu';
