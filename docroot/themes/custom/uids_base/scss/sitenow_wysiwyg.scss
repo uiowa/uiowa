@@ -63,6 +63,12 @@
   // Match CKEditor's injected selectors so these overrides win without !important.
   // Keep the figure/figcaption behavior CKEditor needs, but replace the visual defaults
   // with our editor table styling.
+  // Editor-only mirror of frontend table styles.
+  // Keep this block in sync with `uids/scss/components/tables.scss` when
+  // base table padding, header colors, zebra striping, hover styles,
+  // caption styles, or `table--gray-borders` behavior changes.
+  // These overrides exist because CKEditor and Claro inject admin table
+  // defaults that do not match frontend output.
   figure.table:not(.layout-table) {
     margin: 0;
 
@@ -95,6 +101,8 @@
 
     // Match CKEditor's injected td/th selectors directly so the border reset wins
     // for standard tables while still allowing .table--gray-borders to opt in.
+    // `table--gray-borders` is an explicit variant, so only reset borders for
+    // non-gray tables here.
     > table:not(.table--gray-borders) > caption,
     > table:not(.table--gray-borders) > tr > td,
     > table:not(.table--gray-borders) > tr > th,
@@ -146,8 +154,8 @@
       background-color: #fff3c3;
     }
 
-    // Re-assert cell padding after CKEditor's injected table defaults.
-    // Repeating the `.table` class here slightly increases specificity
+    // Re-assert cell padding/height after CKEditor's and Claro's injected table
+    // defaults. Repeating the `.table` class here slightly increases specificity
     // without changing which elements are targeted.
     &.table > table > tr > td,
     &.table > table > tr > th,
@@ -161,7 +169,8 @@
       padding: variables.$md;
     }
 
-    // CKEditor uses figcaption for table captions.
+    // CKEditor renders captions as `figure.table > figcaption`, so frontend
+    // `table caption` styles must be mirrored here.
     > figcaption {
       display: table-caption;
       box-sizing: border-box;
