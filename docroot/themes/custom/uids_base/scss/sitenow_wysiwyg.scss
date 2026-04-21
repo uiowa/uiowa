@@ -139,6 +139,13 @@
       background-color: variables.$light;
     }
 
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):hover,
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):nth-child(even):hover,
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):hover > th:not(.ck-editor__nested-editable_focused):not(:focus),
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):nth-child(even):hover > th:not(.ck-editor__nested-editable_focused):not(:focus) {
+      background-color: #fff3c3;
+    }
+
     // Re-assert cell padding after CKEditor's injected table defaults.
     // Repeating the `.table` class here slightly increases specificity
     // without changing which elements are targeted.
