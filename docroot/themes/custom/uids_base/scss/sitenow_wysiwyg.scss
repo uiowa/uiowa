@@ -6,6 +6,11 @@
 .ck-content {
   font-family: Roboto, sans-serif;
 
+  // Re-declare the core custom properties in the editor scope.
+  // `uids-core.scss` defines these on `:root`, but that file is imported inside
+  // `.ck-content` here, so those root-level declarations do not become usable
+  // editor variables. Keeping them on `.ck-content` ensures the WYSIWYG can use
+  // the same tokens as the frontend, even when admin/Claro does not provide them.
   // Colors
   --uiowa-gold: #FFCD00;
   --uiowa-black: #000000;
