@@ -7810,3 +7810,9 @@ $sites['siteserningli.uiowa.ddev.site'] = 'erningli.sites.uiowa.edu';
 $sites['siteserningli.dev.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
 $sites['siteserningli.stage.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
 $sites['siteserningli.prod.drupal.uiowa.edu'] = 'erningli.sites.uiowa.edu';
+
+// Directory aliases for psaps2026meeting.conference.uiowa.edu.
+$sites['conferencepsaps2026meeting.uiowa.ddev.site'] = 'psaps2026meeting.conference.uiowa.edu';
+$sites['conferencepsaps2026meeting.dev.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
+$sites['conferencepsaps2026meeting.stage.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
+$sites['conferencepsaps2026meeting.prod.drupal.uiowa.edu'] = 'psaps2026meeting.conference.uiowa.edu';
