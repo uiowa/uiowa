@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74dcf87c37ffc25631cdb2c92b653b51",
+    "content-hash": "08e496b0bce0f567a80d1e36939291b5",
     "packages": [
         {
             "name": "acquia/blt",
@@ -100,11 +100,11 @@
         },
         {
             "name": "acquia/blt-drupal-test",
-            "version": "dev-drupal_10_6",
+            "version": "1.0.0",
             "dist": {
                 "type": "path",
                 "url": "./packages/blt-drupal-test",
-                "reference": "3f894114bfa7446ba55d2c914d2ccc1d76055353"
+                "reference": "cf38296facecaa469f7bbeb354135352bc602174"
             },
             "require": {
                 "drupal/core-dev": "^9.0 || ^10"
@@ -508,12 +508,12 @@
             "version": "v1.8.7",
             "source": {
                 "type": "git",
-                "url": "git@github.com:harvesthq/bower-chosen.git",
+                "url": "https://github.com/harvesthq/chosen-package.git",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/harvesthq/bower-chosen/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "type": "bower-asset",
@@ -541,7 +541,7 @@
             "version": "5.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/aFarkas/lazysizes.git",
+                "url": "git@github.com:aFarkas/lazysizes.git",
                 "reference": "81cf774c6a7f4d8f7f3909e225a65d8acb10cb20"
             },
             "dist": {
@@ -7320,6 +7320,101 @@
                 "source": "https://git.drupalcode.org/project/key",
                 "issues": "http://drupal.org/project/key"
             }
+        },
+        {
+            "name": "drupal/klaro",
+            "version": "3.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/klaro.git",
+                "reference": "3.0.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/klaro-3.0.8.zip",
+                "reference": "3.0.8",
+                "shasum": "b2cb6d85a75177a6707fa053ec8c7741b41b5355"
+            },
+            "require": {
+                "drupal/core": "^10.2 || ^11",
+                "drupal/klaro_js": "~3.0.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.0.8",
+                    "datestamp": "1765384478",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "jan kellermann",
+                    "homepage": "https://www.drupal.org/user/371731"
+                },
+                {
+                    "name": "jurgenhaas",
+                    "homepage": "https://www.drupal.org/user/168924"
+                },
+                {
+                    "name": "kulmjens",
+                    "homepage": "https://www.drupal.org/user/3595515"
+                },
+                {
+                    "name": "metalbote",
+                    "homepage": "https://www.drupal.org/user/2809357"
+                },
+                {
+                    "name": "sascha_meissner",
+                    "homepage": "https://www.drupal.org/user/3678470"
+                }
+            ],
+            "description": "Implements the Klaro! consent manager utility into Drupal.",
+            "homepage": "https://www.drupal.org/project/klaro",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/klaro",
+                "issues": "https://www.drupal.org/project/issues/klaro"
+            }
+        },
+        {
+            "name": "drupal/klaro_js",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/klaro_js.git",
+                "reference": "c5398a0bc9dccd3ccc2c33c9393966bc874bba8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Fklaro_js/repository/archive.zip?sha=c5398a0bc9dccd3ccc2c33c9393966bc874bba8c",
+                "reference": "c5398a0bc9dccd3ccc2c33c9393966bc874bba8c",
+                "shasum": ""
+            },
+            "type": "drupal-library",
+            "extra": {
+                "installer-name": "klaro",
+                "upstream-version": "v0.7.22"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Mirror of the Klaro consent manager javascript library tagged as a Drupal library.",
+            "homepage": "https://github.com/klaro-org/klaro-js/",
+            "support": {
+                "source": "https://git.drupalcode.org/project/klaro_js/-/tree/3.0.1"
+            },
+            "time": "2024-12-19T08:40:21+00:00"
         },
         {
             "name": "drupal/layout_builder_limit",
