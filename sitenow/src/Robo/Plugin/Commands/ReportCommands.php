@@ -193,7 +193,7 @@ class ReportCommands extends Tasks {
       return;
     }
 
-    $headers = ['Application', 'URL', 'Days Since Login', "Inactive: $threshold_period"];
+    $headers = ['Application', 'URL', 'Days Since Revision', 'Days Since Login', "Login Inactive: $threshold_period"];
 
     $this->say('Fetching domains from Acquia Cloud API...');
     $client = $this->getAcquiaCloudApiClient(
@@ -241,15 +241,27 @@ class ReportCommands extends Tasks {
         foreach ($domains as $domain) {
           $this->say("  Checking $domain...");
 
+          $last_revision = $this->getLastContentRevision($domain);
+
+          if ($last_revision === FALSE) {
+            $days_since_revision = 'N/A';
+          }
+          elseif ($last_revision === NULL) {
+            $days_since_revision = 'Never';
+          }
+          else {
+            $days_since_revision = ceil(($now - $last_revision) / 86400);
+          }
+
           $last_login = $this->getLastUserLogin($domain);
 
           if ($last_login === FALSE) {
-            $days_since_login = 'Error';
+            $days_since_login = 'N/A';
             $status = 'Error';
           }
           elseif ($last_login === NULL) {
-            $days_since_login = 'Never logged in';
-            $status = 'Active';
+            $days_since_login = 'Never';
+            $status = 'Inactive';
           }
           else {
             $days_since_login = ceil(($now - $last_login) / 86400);
@@ -259,6 +271,7 @@ class ReportCommands extends Tasks {
           $site_data[] = [
             'application' => $app_name,
             'url' => $domain,
+            'days_since_revision' => $days_since_revision,
             'days_since_login' => $days_since_login,
             'inactive' => $status,
           ];
@@ -274,6 +287,102 @@ class ReportCommands extends Tasks {
     $table->setHeaders($headers);
     $table->setRows($site_data);
     $table->render();
+  }
+
+  /**
+   * Get last non-admin user login timestamp via drush alias (prod).
+   *
+   * @param string $multisite
+   *   The multisite domain.
+   *
+   * @return int|null|false
+   *   Unix timestamp if found, NULL if no login data, FALSE if error querying.
+   */
+  private function getLastUserLogin(string $multisite): int|null|false {
+    $alias = $this->getDrushAlias($multisite) . '.prod';
+    $cmd = "drush @{$alias} users:list --no-roles=administrator --format=json --no-interaction < /dev/null 2>&1";
+    $output = shell_exec($cmd);
+
+    if (empty($output)) {
+      return FALSE;
+    }
+
+    // Check for drush errors (e.g., alias not found for redirecting domains).
+    if (stripos($output, 'could not be found') !== FALSE ||
+        stripos($output, 'failed to run') !== FALSE ||
+        stripos($output, 'error') !== FALSE ||
+        stripos($output, 'exception') !== FALSE) {
+      return FALSE;
+    }
+
+    // Strip Acquia Cloud connection messages before the JSON.
+    if (($pos = strpos($output, '{')) !== FALSE) {
+      $output = substr($output, $pos);
+    }
+
+    $users = json_decode($output, TRUE);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      return FALSE;
+    }
+    if (!is_array($users) || empty($users)) {
+      return NULL;
+    }
+
+    $latest_login = NULL;
+
+    foreach ($users as $user) {
+      if (isset($user['uid']) && $user['uid'] == 1) {
+        continue;
+      }
+
+      if (!empty($user['login'])) {
+        $login_time = strtotime($user['login']);
+        // Skip UNIX start time defaults (Dec 31, 1969).
+        if ($login_time && $login_time > strtotime('2000-01-01') && ($latest_login === NULL || $login_time > $latest_login)) {
+          $latest_login = $login_time;
+        }
+      }
+    }
+
+    return $latest_login;
+  }
+
+  /**
+   * Get the timestamp of the last node revision (excluding admin edits).
+   *
+   * @param string $multisite
+   *   The multisite domain.
+   *
+   * @return int|null|false
+   *   Unix timestamp if found, NULL if no revisions, FALSE if error querying.
+   */
+  private function getLastContentRevision(string $multisite): int|null|false {
+    $alias = $this->getDrushAlias($multisite) . '.prod';
+    $cmd = "drush @{$alias} sqlq \"SELECT MAX(revision_timestamp) FROM node_revision WHERE revision_uid != 1\" --no-interaction < /dev/null 2>&1";
+    $output = shell_exec($cmd);
+
+    if (empty($output)) {
+      return FALSE;
+    }
+
+    // Check for drush errors.
+    if (stripos($output, 'could not be found') !== FALSE ||
+        stripos($output, 'failed to run') !== FALSE ||
+        stripos($output, 'error') !== FALSE ||
+        stripos($output, 'exception') !== FALSE) {
+      return FALSE;
+    }
+
+    // Extract numeric timestamp from output (may include connection messages).
+    foreach (explode("\n", $output) as $line) {
+      $line = trim($line);
+      if (is_numeric($line)) {
+        $timestamp = (int) $line;
+        return $timestamp > 0 ? $timestamp : NULL;
+      }
+    }
+
+    return FALSE;
   }
 
 }
