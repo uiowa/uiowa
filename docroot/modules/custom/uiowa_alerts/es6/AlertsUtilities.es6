@@ -6,10 +6,15 @@ class AlertsUtilities {
 
   // Send a GET request to the alerts endpoint and hand off to handleResponse.
   updateAlerts(source = this.settings.uiowaAlerts.source) {
+    const response = AlertsUtilities.fetchAlerts(source);
+    this.handleResponse(response);
+  }
+
+  static fetchAlerts(source) {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => {
       if (xhttp.readyState === 4 && xhttp.status === 200) {
-        this.handleResponse(xhttp);
+        return JSON.parse(xhttp.responseText);
       }
     };
     xhttp.open('GET', source, true);
@@ -21,9 +26,8 @@ class AlertsUtilities {
     const messages = new Drupal.Message(messagesWrapper);
     const existingAlerts = AlertsUtilities.getExistingAlerts(messagesWrapper);
     const newAlerts = [];
-    const responseJSON = JSON.parse(response.responseText);
 
-    responseJSON.data.forEach((item) => {
+    response.data.forEach((item) => {
       const id = `hawk-alert-${item.attributes.date}`;
       newAlerts.push(id);
 

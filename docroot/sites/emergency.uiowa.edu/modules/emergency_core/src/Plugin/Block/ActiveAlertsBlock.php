@@ -66,6 +66,7 @@ class ActiveAlertsBlock extends BlockBase {
    */
   public function build() {
     $config = $this->getConfiguration();
+    $source = \Drupal::config('uiowa_alerts.settings')->get('hawk_alert.source');
 
     if (empty($config['headline'])) {
       $child_heading_size = $config['child_heading_size'];
@@ -92,7 +93,7 @@ class ActiveAlertsBlock extends BlockBase {
         ],
         'drupalSettings' => [
           'emergency_core' => [
-            'activeAlertsUrl' => Url::fromRoute('emergency_core.active_alerts')->toString(),
+            'activeAlertsUrl' => $source,
             'headingSize' => $child_heading_size,
           ],
         ],
