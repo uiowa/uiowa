@@ -6,12 +6,19 @@ class AlertsUtilities {
 
   // Send a GET request to the alerts endpoint and hand off to handleResponse.
   async updateAlerts(source = this.settings.uiowaAlerts.source) {
-    const response = await AlertsUtilities.fetchAlerts(source);
-    this.handleResponse(response);
+    try {
+      const response = await AlertsUtilities.fetchAlerts(source);
+      this.handleResponse(response);
+    } catch (error) {
+      console.warn('uiowa_alerts: failed to fetch alerts', error);
+    }
   }
 
   static async fetchAlerts(source) {
     const response = await fetch(source);
+    if (!response.ok) {
+      throw new Error('Unable to load active alerts. Please try again later.');
+    }
     return response.json();
   }
 

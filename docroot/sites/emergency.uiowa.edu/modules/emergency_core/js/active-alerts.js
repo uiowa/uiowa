@@ -8,21 +8,13 @@
         setInterval(() => updateAlerts(), 10000);
         let debugcounter = 0;
         function updateAlerts() {
-          const url = drupalSettings.emergency_core.activeAlertsUrl;
+          // const url = drupalSettings.emergency_core.activeAlertsUrl;
           const headingSize = drupalSettings.emergency_core.headingSize || 'h2';
 
-          // const url = 'https://emergency.stage.drupal.uiowa.edu/api/active';
-          fetch(url + '?heading_size=' + encodeURIComponent(headingSize))
+          const url = 'https://emergency.stage.drupal.uiowa.edu/api/active';
+          AlertsUtilities.fetchAlerts(url)
             .then(function (response) {
-              debugcounter++;
-              if (!response.ok) {
-                throw new Error('Unable to load active alerts. Please try again later.');
-              }
-              return response.text();
-            })
-            .then(function (json) {
               let html = '';
-              const response = JSON.parse(json);
               if (response.data.length > 0) {
                 response.data.forEach((item) => {
                   const alert_content = AlertsUtilities.hawkAlertContent(item);
@@ -31,11 +23,10 @@
                     <div class="alert__icon">
                       <span class="fa-stack fa-1x">
                         <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
-<!--                        <span-->
-<!--                          role="presentation"-->
-<!--                          class="fas fa-stack-1x fa-inverse fa-exclamation"-->
-<!--                        ></span>-->
-                        <span style="position: relative;display: flex;width: 100%;height: 100%;z-index: 500;justify-content: center;align-items: center;font-weight: bold;color: white;">${debugcounter}</span>
+                        <span
+                          role="presentation"
+                          class="fas fa-stack-1x fa-inverse fa-exclamation"
+                        ></span>
                       </span>
                     </div>
                     ${alert_content}
@@ -49,8 +40,7 @@
                   <div class="alert__icon">
                     <span class="fa-stack fa-1x">
                       <svg role="presentation" class="svg-inline--fa fa-circle fa-stack-2x" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"></path></svg><!-- <span role="presentation" class="fas fa-circle fa-stack-2x"></span> Font Awesome fontawesome.com -->
-<!--                      <svg role="presentation" class="svg-inline&#45;&#45;fa fa-check fa-inverse fa-stack-1x" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>&lt;!&ndash; <span role="presentation" class="fas fa-stack-1x fa-inverse fa-check"></span> Font Awesome fontawesome.com &ndash;&gt;-->
-                      <span style="position: relative;display: flex;width: 100%;height: 100%;z-index: 500;justify-content: center;align-items: center;font-weight: bold;color: white;">${debugcounter}</span>
+                      <svg role="presentation" class="svg-inline--fa fa-check fa-inverse fa-stack-1x" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg><!-- <span role="presentation" class="fas fa-stack-1x fa-inverse fa-check"></span> Font Awesome fontawesome.com -->
                     </span>
                   </div>
                   <div>
