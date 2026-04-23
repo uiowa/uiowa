@@ -5,20 +5,14 @@ class AlertsUtilities {
   }
 
   // Send a GET request to the alerts endpoint and hand off to handleResponse.
-  updateAlerts(source = this.settings.uiowaAlerts.source) {
-    const response = AlertsUtilities.fetchAlerts(source);
+  async updateAlerts(source = this.settings.uiowaAlerts.source) {
+    const response = await AlertsUtilities.fetchAlerts(source);
     this.handleResponse(response);
   }
 
-  static fetchAlerts(source) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-      if (xhttp.readyState === 4 && xhttp.status === 200) {
-        return JSON.parse(xhttp.responseText);
-      }
-    };
-    xhttp.open('GET', source, true);
-    xhttp.send();
+  static async fetchAlerts(source) {
+    const response = await fetch(source);
+    return response.json();
   }
 
   handleResponse(response) {
