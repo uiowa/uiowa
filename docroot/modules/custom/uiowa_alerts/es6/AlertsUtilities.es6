@@ -111,7 +111,7 @@ class AlertsUtilities {
             <span class="hawk-alert-label">${title}</span>
           </span>
         </h2>
-        <p><em><span class="hawk-alert-date">${day}${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span></em><br />
+        <p><em><span class="hawk-alert-date">${day}${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span></em><br /></p>
           ${hawk_alert_body}
           ${emergency_link}
       </div>
@@ -120,7 +120,7 @@ class AlertsUtilities {
 
   static hawkAlertStatusUpdateContent(item) {
     const rawDate = item.attributes.date;                  // ISO string from API
-    const description = item.attributes.description.processed || ''; // rendered HTML (incl. media)
+    const description = item.attributes.description?.processed ?? ''; // rendered HTML (incl. media)
 
     const date = new Date(rawDate);
     const dateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -154,7 +154,6 @@ class AlertsUtilities {
   static hawkAlertSituationUpdateSectionTitle() {
     return `<p><small><strong>Situation update(s):</strong></small></p>`;
   }
-
 
   static async getSituationUpdates(item) {
     if (item?.relationships?.field_hawk_alert_situation?.links?.related?.href !== undefined) {

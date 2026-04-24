@@ -10,7 +10,7 @@ Drupal.behaviors.uiowaAlerts = {
       // Check for changes every 60 seconds.
       setInterval(() => {
         au.updateAlerts();
-      }, 10000);
+      }, 60000);
     });
   }
 };
