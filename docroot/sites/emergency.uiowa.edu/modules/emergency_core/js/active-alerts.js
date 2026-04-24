@@ -10,32 +10,35 @@
         function updateAlerts() {
           // const url = drupalSettings.emergency_core.activeAlertsUrl;
           const headingSize = drupalSettings.emergency_core.headingSize || 'h2';
-
-          const url = 'https://emergency.stage.drupal.uiowa.edu/api/active';
+          const url = 'https://emergency.uiowa.ddev.site/api/active';
+          // const url = 'https://emergency.stage.drupal.uiowa.edu/api/active';
+          container.innerHTML = '';
           AlertsUtilities.fetchAlerts(url)
             .then(function (response) {
-              let html = '';
               if (response.data.length > 0) {
-                response.data.forEach((item) => {
+                response.data.forEach(async (item) => {
                   const alert_content = AlertsUtilities.hawkAlertContent(item);
-                  const alert_markup = `
-                  <div class="alert alert--danger alert--icon">
-                    <div class="alert__icon">
-                      <span class="fa-stack fa-1x">
-                        <span role="presentation" class="fas fa-circle fa-stack-2x"></span>
-                        <span
-                          role="presentation"
-                          class="fas fa-stack-1x fa-inverse fa-exclamation"
-                        ></span>
-                      </span>
-                    </div>
-                    ${alert_content}
-                  </div>`;
-                  html += alert_markup;
+                  const full_hawk_alert_string = AlertsUtilities.fullHawkAlertMarkup(alert_content);
+                  const hawk_alert_dom_elements = AlertsUtilities.createElementFromHTML(full_hawk_alert_string)
+                  container.append(hawk_alert_dom_elements);
+
+                  if (item?.relationships?.field_hawk_alert_situation?.data !== undefined) {
+                    const update_data = item?.relationships?.field_hawk_alert_situation?.data;
+                    if (update_data.length > 0) {
+                      const hawk_alert_body = hawk_alert_dom_elements.querySelector('.hawk-alert-body.updates');
+                      await AlertsUtilities.getSituationUpdates(item)
+                        .then((response)=>{
+                          hawk_alert_body.innerHTML += AlertsUtilities.hawkAlertSituationUpdateSectionTitle();
+                          response.data.forEach((update) => {
+                            hawk_alert_body.innerHTML += AlertsUtilities.hawkAlertStatusUpdateContent(update);
+                          });
+                        })
+                    }
+                  }
                 });
               }
               else {
-                html = `
+                container.innerHTML = `
                 <div class="alert alert--success alert--icon">
                   <div class="alert__icon">
                     <span class="fa-stack fa-1x">
@@ -49,9 +52,8 @@
                   </div>
                 </div>`;
               }
-
-              container.innerHTML = html;
               Drupal.announce(Drupal.t('Active alerts have been loaded.'));
+
             })
             .catch(function () {
               container.innerHTML = '<p>Unable to load active alerts.</p>';
