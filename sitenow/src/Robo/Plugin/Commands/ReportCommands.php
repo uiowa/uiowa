@@ -159,7 +159,7 @@ class ReportCommands extends Tasks {
    * @option apps
    *   Comma-separated list of app names to filter by (e.g. uiowa,uiowa03).
    * @option threshold
-   *   Inactivity threshold (e.g. "1 year", "6 months"). Default: "1 year".
+   *   Inactivity threshold (e.g. "1 year", "6 months"). Defaults to 1 year.
    * @option export
    *   Whether to export results to a CSV file.
    */
