@@ -1,20 +1,19 @@
 class AlertsUtilities {
-  constructor(el, settings) {
+  constructor(el) {
     this.el = el;
-    this.settings = settings;
   }
 
   // Send a GET request to the alerts endpoint and hand off to handleResponse.
-  async updateAlerts(source = this.settings.uiowaAlerts.source) {
+  async updateAlerts() {
     try {
-      const response = await AlertsUtilities.fetchAlerts(source);
+      const response = await AlertsUtilities.fetchAlerts();
       this.handleResponse(response);
     } catch (error) {
       console.warn('uiowa_alerts: failed to fetch alerts', error);
     }
   }
 
-  static async fetchAlerts(source) {
+  static async fetchAlerts(source = drupalSettings.uiowaAlerts.source) {
     const response = await fetch(source);
     if (!response.ok) {
       throw new Error('Unable to load active alerts. Please try again later.');

@@ -14,12 +14,8 @@
             loadingEl.remove();
           }
 
-          const url = drupalSettings.emergency_core.activeAlertsUrl;
-          const headingSize = drupalSettings.emergency_core.headingSize || 'h2';
           try {
-            const response = await AlertsUtilities.fetchAlerts(
-              url + '?heading_size=' + encodeURIComponent(headingSize)
-            );
+            const response = await AlertsUtilities.fetchAlerts();
             if (response.data.length > 0) {
               await syncAlerts(response.data);
             }

@@ -92,9 +92,8 @@ class ActiveAlertsBlock extends BlockBase {
           'uids_base/card',
         ],
         'drupalSettings' => [
-          'emergency_core' => [
-            'activeAlertsUrl' => $source,
-            'headingSize' => $child_heading_size,
+          'uiowaAlerts' => [
+            'source' => $source,
           ],
         ],
       ],
