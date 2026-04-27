@@ -97,12 +97,9 @@ class AlertsUtilities {
         timeZone: 'America/Chicago',
       });
       day = dayFormatter.format(date) + ', ';
-      if (item?.relationships?.field_hawk_alert_situation?.data !== undefined) {
-        const update_data = item?.relationships?.field_hawk_alert_situation?.data;
-        if (update_data.length > 0) {
-          hawk_alert_body = `<div class="hawk-alert-body updates"></div>`;
-        }
-      }
+      // Always emit the updates body so situation updates can be diffed in,
+      // including the 0 -> N transition when an update is posted later.
+      hawk_alert_body = `<div class="hawk-alert-body updates"></div>`;
     }
     return `
       <div class="hawk-alert-message" role="region" aria-label="hawk alert message">
@@ -134,7 +131,7 @@ class AlertsUtilities {
     const display = `${dateFormatter.format(date)} - ${timeFormatter.format(date)}`;
 
     return `
-    <div class="block-margin__top borderless block--word-break card" data-uids-no-link="">
+    <div class="block-margin__top borderless block--word-break card" data-uids-no-link="" data-update-id="hawk-update-${rawDate}">
       <div class="card__body">
         <div class="card__details">
           <div class="card__subtitle">
@@ -152,7 +149,7 @@ class AlertsUtilities {
   }
 
   static hawkAlertSituationUpdateSectionTitle() {
-    return `<p><small><strong>Situation update(s):</strong></small></p>`;
+    return `<p class="hawk-alert-updates-title"><small><strong>Situation update(s):</strong></small></p>`;
   }
 
   static async getSituationUpdates(item) {

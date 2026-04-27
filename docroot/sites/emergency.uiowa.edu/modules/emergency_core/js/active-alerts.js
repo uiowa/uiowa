@@ -6,44 +6,133 @@
 
         // Check for changes every 55 seconds.
         setInterval(() => updateActiveAlerts(), 55000);
-        function updateActiveAlerts() {
+
+        async function updateActiveAlerts() {
+          // Drop a loading text if one is currently showing.
+          const loadingEl = container.querySelector('.loading');
+          if (loadingEl) {
+            loadingEl.remove();
+          }
+
           const url = drupalSettings.emergency_core.activeAlertsUrl;
           const headingSize = drupalSettings.emergency_core.headingSize || 'h2';
-          container.innerHTML = '';
-          AlertsUtilities.fetchAlerts(url + '?heading_size=' + encodeURIComponent(headingSize))
-            .then(function (response) {
-              if (response.data.length > 0) {
-                response.data.forEach(async (item) => {
-                  const alert_content = AlertsUtilities.hawkAlertContent(item);
-                  const full_hawk_alert_string = AlertsUtilities.fullHawkAlertMarkup(alert_content);
-                  const hawk_alert_dom_elements = AlertsUtilities.createElementFromHTML(full_hawk_alert_string)
-                  container.append(hawk_alert_dom_elements);
+          try {
+            const response = await AlertsUtilities.fetchAlerts(
+              url + '?heading_size=' + encodeURIComponent(headingSize)
+            );
+            if (response.data.length > 0) {
+              await syncAlerts(response.data);
+            }
+            else {
+              renderCampusNormal();
+            }
+            Drupal.announce(Drupal.t('Active alerts have been loaded.'));
+          }
+          catch (e) {
+            container.innerHTML = '<p>Unable to load active alerts.</p>';
+            Drupal.announce(Drupal.t('Unable to load active alerts.'));
+          }
+        }
 
-                  if (item?.relationships?.field_hawk_alert_situation?.data !== undefined) {
-                    const update_data = item?.relationships?.field_hawk_alert_situation?.data;
-                    if (update_data.length > 0) {
-                      const hawk_alert_body = hawk_alert_dom_elements.querySelector('.hawk-alert-body.updates');
-                      await AlertsUtilities.getSituationUpdates(item)
-                        .then((response)=>{
-                          hawk_alert_body.innerHTML += AlertsUtilities.hawkAlertSituationUpdateSectionTitle();
-                          response.data.forEach((update) => {
-                            hawk_alert_body.innerHTML += AlertsUtilities.hawkAlertStatusUpdateContent(update);
-                          });
-                        })
-                    }
-                  }
-                });
-              }
-              else {
-                container.innerHTML = campusNormalContent();
-              }
-              Drupal.announce(Drupal.t('Active alerts have been loaded.'));
+        async function syncAlerts(items) {
+          // Drop a campus-normal block if one is currently showing.
+          const normalEl = container.querySelector('.alert--success');
+          if (normalEl) {
+            normalEl.remove();
+          }
 
-            })
-            .catch(function () {
-              container.innerHTML = '<p>Unable to load active alerts.</p>';
-              Drupal.announce(Drupal.t('Unable to load active alerts.'));
-            });
+          const existing = new Map();
+          container.querySelectorAll('[data-alert-id]').forEach((el) => {
+            existing.set(el.getAttribute('data-alert-id'), el);
+          });
+
+          const seen = new Set();
+          for (const item of items) {
+            const id = `hawk-alert-${item.attributes.date}`;
+            seen.add(id);
+            let alertEl = existing.get(id);
+            if (!alertEl) {
+              const markup = AlertsUtilities.fullHawkAlertMarkup(
+                AlertsUtilities.hawkAlertContent(item)
+              );
+              alertEl = AlertsUtilities.createElementFromHTML(markup);
+              alertEl.setAttribute('data-alert-id', id);
+              container.append(alertEl);
+            }
+            await syncSituationUpdates(alertEl, item);
+          }
+
+          existing.forEach((el, id) => {
+            if (!seen.has(id)) {
+              el.remove();
+            }
+          });
+        }
+
+        async function syncSituationUpdates(alertEl, item) {
+          const body = alertEl.querySelector('.hawk-alert-body.updates');
+          if (!body) {
+            return;
+          }
+
+          const updateData = item?.relationships?.field_hawk_alert_situation?.data;
+          const hasUpdates = Array.isArray(updateData) && updateData.length > 0;
+          const title = body.querySelector('.hawk-alert-updates-title');
+
+          if (!hasUpdates) {
+            // Clear any stale updates + title on the N -> 0 transition.
+            body.querySelectorAll('[data-update-id]').forEach((el) => el.remove());
+            if (title) {
+              title.remove();
+            }
+            return;
+          }
+
+          const response = await AlertsUtilities.getSituationUpdates(item);
+          if (!response || !response.data) {
+            return;
+          }
+
+          // Insert section title on the 0 -> N transition.
+          if (!title) {
+            body.insertAdjacentHTML(
+              'afterbegin',
+              AlertsUtilities.hawkAlertSituationUpdateSectionTitle()
+            );
+          }
+
+          const existing = new Map();
+          body.querySelectorAll('[data-update-id]').forEach((el) => {
+            existing.set(el.getAttribute('data-update-id'), el);
+          });
+
+          const seen = new Set();
+          for (const update of response.data) {
+            const id = `hawk-update-${update.attributes.date}`;
+            seen.add(id);
+            let updateEl = existing.get(id);
+            if (!updateEl) {
+              updateEl = AlertsUtilities.createElementFromHTML(
+                AlertsUtilities.hawkAlertStatusUpdateContent(update)
+              );
+            }
+            // append() moves existing nodes, so this also normalizes order.
+            body.append(updateEl);
+          }
+
+          existing.forEach((el, id) => {
+            if (!seen.has(id)) {
+              el.remove();
+            }
+          });
+        }
+
+        function renderCampusNormal() {
+          if (container.querySelector('.alert--success')) {
+            return;
+          }
+          container.querySelectorAll('[data-alert-id]').forEach((el) => el.remove());
+          container.insertAdjacentHTML('beforeend', campusNormalContent());
         }
 
         function campusNormalContent() {

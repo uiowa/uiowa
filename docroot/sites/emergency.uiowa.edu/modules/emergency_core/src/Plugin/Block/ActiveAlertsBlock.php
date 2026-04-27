@@ -85,7 +85,7 @@ class ActiveAlertsBlock extends BlockBase {
     ];
 
     $build['alerts'] = [
-      '#markup' => '<div class="active-alerts-container"><p>Loading active alerts...</p></div>',
+      '#markup' => '<div class="active-alerts-container"><p class="loading">Loading active alerts...</p></div>',
       '#attached' => [
         'library' => [
           'emergency_core/active_alerts',
