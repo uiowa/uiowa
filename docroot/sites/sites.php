@@ -7822,3 +7822,9 @@ $sites['cif.uiowa.ddev.site'] = 'cif.uiowa.edu';
 $sites['cif.dev.drupal.uiowa.edu'] = 'cif.uiowa.edu';
 $sites['cif.stage.drupal.uiowa.edu'] = 'cif.uiowa.edu';
 $sites['cif.prod.drupal.uiowa.edu'] = 'cif.uiowa.edu';
+
+// Directory aliases for sound.lab.uiowa.edu.
+$sites['labsound.uiowa.ddev.site'] = 'sound.lab.uiowa.edu';
+$sites['labsound.dev.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+$sites['labsound.stage.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+$sites['labsound.prod.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
