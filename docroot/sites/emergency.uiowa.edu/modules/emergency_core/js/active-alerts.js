@@ -5,7 +5,7 @@
         updateActiveAlerts();
 
         // Check for changes every 55 seconds.
-        setInterval(() => updateActiveAlerts(), 55000);
+        setInterval(() => updateActiveAlerts(), 10000);
 
         async function updateActiveAlerts() {
           // Drop a loading text if one is currently showing.
@@ -111,9 +111,10 @@
               updateEl = AlertsUtilities.createElementFromHTML(
                 AlertsUtilities.hawkAlertStatusUpdateContent(update)
               );
+
+              // // New update — append at end.
+              body.append(updateEl);
             }
-            // append() moves existing nodes, so this also normalizes order.
-            body.append(updateEl);
           }
 
           existing.forEach((el, id) => {
