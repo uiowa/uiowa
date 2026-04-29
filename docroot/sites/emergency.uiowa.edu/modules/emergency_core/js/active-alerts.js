@@ -90,11 +90,13 @@
           }
 
           // Insert section title on the 0 -> N transition.
-          if (!title) {
+          let titleEl = title;
+          if (!titleEl) {
             body.insertAdjacentHTML(
               'afterbegin',
               AlertsUtilities.hawkAlertSituationUpdateSectionTitle()
             );
+            titleEl = body.querySelector('.hawk-alert-updates-title');
           }
 
           const existing = new Map();
@@ -102,18 +104,21 @@
             existing.set(el.getAttribute('data-update-id'), el);
           });
 
+          // Oldest-first so each insert-after-title pushes prior ones down,
+          // leaving the newest update directly beneath the title.
+          const sorted = [...response.data].sort(
+            (a, b) => new Date(a.attributes.date) - new Date(b.attributes.date)
+          );
+
           const seen = new Set();
-          for (const update of response.data) {
+          for (const update of sorted) {
             const id = `hawk-update-${update.attributes.date}`;
             seen.add(id);
-            let updateEl = existing.get(id);
-            if (!updateEl) {
-              updateEl = AlertsUtilities.createElementFromHTML(
+            if (!existing.get(id)) {
+              const updateEl = AlertsUtilities.createElementFromHTML(
                 AlertsUtilities.hawkAlertStatusUpdateContent(update)
               );
-
-              // // New update — append at end.
-              body.append(updateEl);
+              titleEl.after(updateEl);
             }
           }
 
