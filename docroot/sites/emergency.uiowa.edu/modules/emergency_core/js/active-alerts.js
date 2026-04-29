@@ -5,7 +5,7 @@
         updateActiveAlerts();
 
         // Check for changes every 55 seconds.
-        setInterval(() => updateActiveAlerts(), 10000);
+        setInterval(() => updateActiveAlerts(), 55000);
 
         async function updateActiveAlerts() {
           // Drop a loading text if one is currently showing.
