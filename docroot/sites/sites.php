@@ -7834,3 +7834,9 @@ $sites['labadrain.uiowa.ddev.site'] = 'adrain.lab.uiowa.edu';
 $sites['labadrain.dev.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
 $sites['labadrain.stage.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
 $sites['labadrain.prod.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
+
+// Directory aliases for pryor.sites.uiowa.edu.
+$sites['sitespryor.uiowa.ddev.site'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.dev.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.stage.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.prod.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
