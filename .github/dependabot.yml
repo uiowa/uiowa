@@ -22,9 +22,16 @@ updates:
           - "drupal/core-composer-scaffold"
           - "drupal/core-recommended"
           - "drupal/core-dev"
+      symfony:
+        patterns:
+          - "symfony/*"
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: daily
       time: "11:00"
       timezone: America/Chicago
+    groups:
+      npm-all:
+        patterns:
+          - "*"
