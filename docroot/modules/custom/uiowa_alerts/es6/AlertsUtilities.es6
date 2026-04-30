@@ -62,7 +62,7 @@ class AlertsUtilities {
     ).map((node) => node.getAttribute('data-drupal-message-id'));
   }
 
-  static hawkAlertContent(item) {
+  static hawkAlertContent(item, customConfig = null) {
     const date = new Date(item.attributes.date);
     const monthFormatter = new Intl.DateTimeFormat('en-US', {
       month: 'long',
@@ -75,32 +75,31 @@ class AlertsUtilities {
       hour12: true,
     });
     let day = '';
+    if (customConfig?.displayDay) {
+      const dayFormatter = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+        timeZone: 'America/Chicago',
+      });
+      day = dayFormatter.format(date) + ', ';
+    }
+
     const month = monthFormatter.format(date);
     const time = timeFormatter
       .format(date)
       .replace('AM', 'a.m.')
       .replace('PM', 'p.m.');
 
-    const is_emergency = window.location.host.startsWith('emergency');
-    let title = 'Hawk Alert';
-    let hawk_alert_body = '';
-    let emergency_link = '';
-    if (!is_emergency) {
-      hawk_alert_body = `<span class="hawk-alert-body">${item.attributes.alert}</span>`;
-      emergency_link = `<a class="hawk-alert-link alert-link" href="${item.attributes.more_info_link}">Visit ${item.attributes.more_info_link} for more information.</a></p>\n`
-    }
-    else {
-      title = `${item.attributes.alert}`;
-      const dayFormatter = new Intl.DateTimeFormat('en-US', {
-        weekday: 'long',
-        timeZone: 'America/Chicago',
-      });
-      day = dayFormatter.format(date) + ', ';
-      // Always emit the updates body so situation updates can be diffed in,
-      // including the 0 -> N transition when an update is posted later.
-      hawk_alert_body = `<div class="hawk-alert-body updates"></div>`;
-    }
-    return `
+    let title = customConfig?.title ?? 'Hawk Alert';
+    
+    let hawkAlertBody = 
+      customConfig?.body ?? 
+      `<span class="hawk-alert-body">${item.attributes.alert}</span>`;
+
+    let emergencyLink = 
+      customConfig?.link ?? 
+      `<a class="hawk-alert-link alert-link" href="${item.attributes.more_info_link}">Visit ${item.attributes.more_info_link} for more information.</a></p>\n`;
+
+    return  `
       <div class="hawk-alert-message" role="region" aria-label="hawk alert message">
         <h2 class="headline headline--serif">
           <span class="hawk-alert-heading">
@@ -108,8 +107,8 @@ class AlertsUtilities {
           </span>
         </h2>
         <p><em><span class="hawk-alert-date">${day}${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span></em><br /></p>
-          ${hawk_alert_body}
-          ${emergency_link}
+          ${hawkAlertBody}
+          ${emergencyLink}
       </div>
     `;
   }
@@ -153,8 +152,8 @@ class AlertsUtilities {
 
   static async getSituationUpdates(item) {
     if (item?.relationships?.field_hawk_alert_situation?.links?.related?.href !== undefined) {
-      const updates_url = item.relationships.field_hawk_alert_situation.links.related.href;
-      return await AlertsUtilities.fetchAlerts(updates_url);
+      const updatesUrl = item.relationships.field_hawk_alert_situation.links.related.href;
+      return await AlertsUtilities.fetchAlerts(updatesUrl);
     }
     else {
       return '';

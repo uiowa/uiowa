@@ -49,7 +49,15 @@
             let alertEl = existing.get(id);
             if (!alertEl) {
               const markup = AlertsUtilities.fullHawkAlertMarkup(
-                AlertsUtilities.hawkAlertContent(item)
+                AlertsUtilities.hawkAlertContent(
+                  item,
+                  {
+                    title: item.attributes.alert,
+                    displayDay: true,
+                    body:`<div class="hawk-alert-body updates"></div>`,
+                    link:''
+                  }
+                )
               );
               alertEl = AlertsUtilities.createElementFromHTML(markup);
               alertEl.setAttribute('data-alert-id', id);
