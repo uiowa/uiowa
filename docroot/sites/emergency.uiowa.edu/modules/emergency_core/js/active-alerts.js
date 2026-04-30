@@ -93,7 +93,7 @@
           }
 
           const response = await AlertsUtilities.getSituationUpdates(item);
-          if (!response || !response.data) {
+          if (!response?.data) {
             return;
           }
 

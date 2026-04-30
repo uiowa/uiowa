@@ -151,13 +151,11 @@ class AlertsUtilities {
   }
 
   static async getSituationUpdates(item) {
-    if (item?.relationships?.field_hawk_alert_situation?.links?.related?.href !== undefined) {
-      const updatesUrl = item.relationships.field_hawk_alert_situation.links.related.href;
-      return await AlertsUtilities.fetchAlerts(updatesUrl);
+    const updatesUrl = item?.relationships?.field_hawk_alert_situation?.links?.related?.href;
+    if (!updatesUrl) {
+      return null;
     }
-    else {
-      return '';
-    }
+    return AlertsUtilities.fetchAlerts(updatesUrl);
   }
 
   static fullHawkAlertMarkup(content) {
