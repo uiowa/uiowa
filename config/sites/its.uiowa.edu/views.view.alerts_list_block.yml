@@ -18,7 +18,7 @@ dependencies:
     - 'taxonomy_term:alert_categories:cdc70262-0b08-46a0-abd3-030b7a583128'
   module:
     - better_exposed_filters
-    - fullcalendar_view
+    - fullcalendar
     - node
     - smart_date
     - taxonomy
@@ -1548,6 +1548,7 @@ display:
     display_plugin: block
     position: 1
     display_options:
+      enabled: true
       fields:
         title:
           id: title
@@ -1867,63 +1868,195 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_alert_date_value:
+          id: field_alert_date_value
+          table: node__field_alert_date
+          field: field_alert_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: date
+          operator: '>='
+          value:
+            min: ''
+            max: ''
+            value: '-90 day'
+            type: offset
+            granularity: second
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
           1: AND
       style:
-        type: fullcalendar_view_display
+        type: fullcalendar
         options:
           uses_fields: true
-          default_date_source: now
-          defaultDate: ''
-          start: field_alert_date
-          end: field_alert_date
-          title: title
-          left_buttons: 'prev,next today'
-          right_buttons: 'dayGridMonth,listMonth'
-          default_view: dayGridMonth
-          firstDay: '0'
-          nav_links: 1
-          timeFormat: 'hh:mm a'
-          allowEventOverlap: 1
-          updateAllowed: 1
-          updateConfirm: 1
-          defaultLanguage: en
-          languageSelector: 0
-          dialogWindow: 0
-          openEntityInNewTab: 1
-          createEventLink: 0
-          eventLimit: '6'
-          tax_field: field_alert_category
-          vocabularies: alert_categories
-          color_bundle:
-            alert: '#3a87ad'
-            article: '#3a87ad'
-            page: '#3a87ad'
-            person: '#3a87ad'
-            service: '#3a87ad'
-          rrule: ''
-          duration: ''
-          bundle_type: ''
-          classes: ''
-          default_mobile_view: listMonth
-          mobile_width: '768'
-          minTime: '00:00:00'
-          maxTime: '23:59:59'
-          dialogModal: 0
-          slotDuration: '00:30:00'
-          color_taxonomies:
-            406: '#bd472a'
-            411: '#00664f'
-            421: '#63666a'
-            416: '#00558c'
+          header: "left:'prev,next today', center:'title', right:"
+          footer: ''
+          titleFormat: ''
+          titleRangeSeparator: \u2013
+          buttonText: "today:'today', month:'month', week:'week', day:'day', list:'list'"
+          buttonIcons: "prev:'left-single-arrow', next:'right-single-arrow', prevYear:'left-double-arrow', nextYear:'right-double-arrow'"
+          month_view: true
+          timegrid_view: false
+          daygrid_view: false
+          list_view: false
+          fields:
+            title: false
+            title_field: ''
+            url: false
+            url_field: ''
+            date: false
+            date_field: {  }
+          event_format:
+            eventColor: '#3788d8'
+            eventDisplay: block
+            displayEventTime: true
+            nextDayThreshold: '00:00:00'
+          links:
+            navLinks: false
+            navLinkDayClick: ''
+            navLinkWeekClick: ''
+            bundle_type: ''
+            createTarget: ''
+            modalWidth: 600
+            updateConfirm: false
+            showMessages: true
+          colors:
+            color_bundle:
+              alert:
+                color: '#3a87ad'
+              article: {  }
+              page: {  }
+              person: {  }
+              service: {  }
+              support_article: {  }
+            tax_field: field_alert_category
+            vocabularies: alert_categories
+            color_taxonomies:
+              406:
+                color: '#bd472a'
+              411:
+                color: '#00664f'
+              421:
+                color: '#63666a'
+              416:
+                color: '#00558c'
+          month_view_settings:
+            fixedWeekCount: true
+            showNonCurrentDates: '1'
+          timegrid_view_settings:
+            allDaySlot: true
+            allDayContent: all-day
+            slotEventOverlap: true
+            timeGridEventMinHeight: ''
+          list_view_settings:
+            listDayFormat: "weekday:'long'"
+            listDayAltFormat: "month:'long', day:'numeric', year:'numeric'"
+            noEventsMessage: 'No events to display'
+          views_year:
+            listYear_buttonText: "buttonText: 'list'"
+            listYear_titleFormat: "year: 'numeric'"
+          views_month:
+            listMonth_buttonText: "buttonText: 'list'"
+            listMonth_titleFormat: "year: 'numeric', month: 'long'"
+            dayGridMonth_buttonText: "buttonText: 'month'"
+            dayGridMonth_titleFormat: "year: 'numeric', month: 'long'"
+            dayGridMonth_dayHeaderFormat: "weekday:'short'"
+          views_week:
+            listWeek_buttonText: "buttonText: 'list'"
+            listWeek_titleFormat: "year: 'numeric', month: 'short', day: 'numeric'"
+            dayGridWeek_buttonText: "buttonText: 'week'"
+            dayGridWeek_titleFormat: "year: 'numeric', month: 'short', day: 'numeric'"
+            dayGridWeek_dayHeaderFormat: "weekday:'short', month:'numeric', day:'numeric', omitCommas:true"
+            timeGridWeek_buttonText: "buttonText: 'week'"
+            timeGridWeek_titleFormat: "year: 'numeric', month: 'short', day: 'numeric'"
+            timeGridWeek_dayHeaderFormat: "weekday:'short', month:'numeric', day:'numeric', omitCommas:true"
+          views_day:
+            listDay_buttonText: "buttonText: 'list'"
+            listDay_titleFormat: "year: 'numeric', month: 'long', day: 'numeric'"
+            dayGridDay_buttonText: "buttonText: 'day'"
+            dayGridDay_titleFormat: "year: 'numeric', month: 'long', day: 'numeric'"
+            dayGridDay_dayHeaderFormat: "weekday:'long'"
+            timeGridDay_buttonText: "buttonText: 'day'"
+            timeGridDay_titleFormat: "year: 'numeric', month: 'long', day: 'numeric'"
+            timeGridDay_dayHeaderFormat: "weekday:'long'"
+          display:
+            initialView: dayGridMonth
+            firstDay: '0'
+          times:
+            convert_timezones: true
+            weekends: true
+            hiddenDays: ''
+            dayHeaders: '1'
+          axis:
+            slotDuration: ''
+            slotLabelInterval: ''
+            slotLabelFormat: ''
+            slotMinTime: ''
+            slotMaxTime: ''
+            scrollTime: ''
+          nav:
+            initialDate: ''
+            validRange: ''
+          week:
+            weekNumbers: false
+            weekNumberCalculation: local
+            weekText: W
+          now:
+            nowIndicator: false
+            now: false
+          business:
+            businessHours: false
+            businessHours2: ''
+          style:
+            themeSystem: standard
+            height: ''
+            contentHeight: ''
+            aspectRatio: '1.35'
+            handleWindowResize: true
+            windowResizeDelay: '100'
+          google:
+            googleCalendarApiKey: ''
+            googleCalendarId: ''
       row:
         type: 'entity:node'
         options:
           relationship: none
           view_mode: teaser
       defaults:
+        use_ajax: false
         pager: false
         style: false
         row: false
@@ -1931,6 +2064,7 @@ display:
         filters: false
         filter_groups: false
         footer: false
+      use_ajax: false
       display_description: ''
       footer:
         area_text_custom:
