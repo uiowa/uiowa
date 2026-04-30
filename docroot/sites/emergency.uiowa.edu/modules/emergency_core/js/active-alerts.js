@@ -2,6 +2,7 @@
   Drupal.behaviors.activeAlerts = {
     attach: function (context, settings) {
       once('active-alerts', '.active-alerts-container', context).forEach(function (container) {
+        const au = Drupal.uiowaAlerts.AlertsUtilities;
         updateActiveAlerts();
 
         // Check for changes every 55 seconds.
@@ -15,7 +16,7 @@
           }
 
           try {
-            const response = await AlertsUtilities.fetchAlerts();
+            const response = await au.fetchAlerts();
             if (response.data.length > 0) {
               await syncAlerts(response.data);
             }
@@ -48,8 +49,8 @@
             seen.add(id);
             let alertEl = existing.get(id);
             if (!alertEl) {
-              const markup = AlertsUtilities.fullHawkAlertMarkup(
-                AlertsUtilities.hawkAlertContent(
+              const markup = au.fullHawkAlertMarkup(
+                au.hawkAlertContent(
                   item,
                   {
                     title: item.attributes.alert,
@@ -59,7 +60,7 @@
                   }
                 )
               );
-              alertEl = AlertsUtilities.createElementFromHTML(markup);
+              alertEl = au.createElementFromHTML(markup);
               alertEl.setAttribute('data-alert-id', id);
               container.append(alertEl);
             }
@@ -92,7 +93,7 @@
             return;
           }
 
-          const response = await AlertsUtilities.getSituationUpdates(item);
+          const response = await au.getSituationUpdates(item);
           if (!response?.data) {
             return;
           }
@@ -102,7 +103,7 @@
           if (!titleEl) {
             body.insertAdjacentHTML(
               'afterbegin',
-              AlertsUtilities.hawkAlertSituationUpdateSectionTitle()
+              au.hawkAlertSituationUpdateSectionTitle()
             );
             titleEl = body.querySelector('.hawk-alert-updates-title');
           }
@@ -123,8 +124,8 @@
             const id = `hawk-update-${update.attributes.date}`;
             seen.add(id);
             if (!existing.get(id)) {
-              const updateEl = AlertsUtilities.createElementFromHTML(
-                AlertsUtilities.hawkAlertStatusUpdateContent(update)
+              const updateEl = au.createElementFromHTML(
+                au.hawkAlertStatusUpdateContent(update)
               );
               titleEl.after(updateEl);
             }
