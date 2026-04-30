@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsound.uiowa.ddev.site
+    protocol: https
+  machine_name: labsound
+  human_name: sound.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsound.prod
+drupal:
+  db:
+    database: sound_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsound.prod.drupal.uiowa.edu'
+  requester: shea
+  site-name: 'Sound Lab (SoLa)'
