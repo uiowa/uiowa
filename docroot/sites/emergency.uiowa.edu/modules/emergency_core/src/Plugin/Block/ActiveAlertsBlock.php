@@ -106,13 +106,6 @@ class ActiveAlertsBlock extends BlockBase implements ContainerFactoryPluginInter
     $config = $this->getConfiguration();
     $source = $this->configFactory->get('uiowa_alerts.settings')->get('hawk_alert.source');
 
-    if (empty($config['headline'])) {
-      $child_heading_size = $config['child_heading_size'];
-    }
-    else {
-      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
-    }
-
     $build['heading'] = [
       '#theme' => 'uiowa_core_headline',
       '#headline' => $config['headline'],
