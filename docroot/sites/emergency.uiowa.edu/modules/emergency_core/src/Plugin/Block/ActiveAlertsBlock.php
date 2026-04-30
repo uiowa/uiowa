@@ -106,14 +106,16 @@ class ActiveAlertsBlock extends BlockBase implements ContainerFactoryPluginInter
     $config = $this->getConfiguration();
     $source = $this->configFactory->get('uiowa_alerts.settings')->get('hawk_alert.source');
 
-    $build['heading'] = [
-      '#theme' => 'uiowa_core_headline',
-      '#headline' => $config['headline'],
-      '#hide_headline' => $config['hide_headline'],
-      '#heading_size' => $config['heading_size'],
-      '#headline_style' => $config['headline_style'],
-      '#headline_alignment' => $config['headline_alignment'] ?? 'default',
-    ];
+    if (!empty($config['headline'])) {
+      $build['heading'] = [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $config['headline'],
+        '#hide_headline' => $config['hide_headline'],
+        '#heading_size' => $config['heading_size'],
+        '#headline_style' => $config['headline_style'],
+        '#headline_alignment' => $config['headline_alignment'] ?? 'default',
+      ];
+    }
 
     $build['alerts'] = [
       '#markup' => '<div class="active-alerts-container"><p class="loading">Loading active alerts...</p></div>',
