@@ -824,6 +824,15 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
             }
           }
 
+          // If it is marked to display the room number,
+          // append it to the location name before
+          // creating the card.
+          if ($paragraph?->field_slide_events_room_num?->value) {
+            if (!is_null($event['location_name']) && !is_null($event['room_number'])) {
+              $event['location_name'] = implode(' - ', [$event['location_name'], $event['room_number']]);
+            }
+          }
+
           $variables['content'][] = sitenow_events_build_card($event);
         }
       }
