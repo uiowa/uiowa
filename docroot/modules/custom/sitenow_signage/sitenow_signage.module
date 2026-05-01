@@ -824,7 +824,8 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
             }
           }
 
-          $variables['content'][] = sitenow_events_build_card($event);
+          $include_room_number = (bool) $paragraph?->field_slide_events_room_num?->value;
+          $variables['content'][] = sitenow_events_build_card($event, $include_room_number);
         }
       }
       else {
@@ -879,7 +880,8 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           if (isset($room['value'])) {
             $building_and_room = explode('-', $room['value']);
 
-            // We add them this way so that we don't have duplicates in the array.
+            // We add them this way so that
+            // we don't have duplicates in the array.
             $building_and_room[0] ? $request_body['buildingIds'][$building_and_room[0]] = 0 : NULL;
             $building_and_room[1] ? $request_body['roomIds'][$building_and_room[1]] = 0 : NULL;
           }

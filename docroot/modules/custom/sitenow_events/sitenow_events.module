@@ -518,7 +518,7 @@ function sitenow_events_preprocess_node__event(&$variables) {
 /**
  * Helper function to build out card renders from event data.
  */
-function sitenow_events_build_card(array $event): array {
+function sitenow_events_build_card(array $event, bool $include_room_number = FALSE): array {
 
   // Construct event link based on site-wide configuration.
   $external_link = ($event['sitenow_events_config']->get('event_link') === 'event-link-external');
@@ -598,14 +598,21 @@ function sitenow_events_build_card(array $event): array {
       '#markup' => t('Virtual'),
     ];
   }
-  elseif (!is_null($event["location_name"])) {
+  elseif (!is_null($event['location_name'])) {
+    // If we're including the room number,
+    // append it to the location name.
+    $location_name = $event['location_name'];
+    if ($include_room_number && !is_null($event['room_number'])) {
+      $location_name = implode(' - ', [$location_name, $event['room_number']]);
+    }
+
     $card['#meta']['icon'] = [
       '#type' => 'markup',
       '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
     ];
     $card['#meta']['location'] = [
       '#type' => 'markup',
-      '#markup' => $event['location_name'],
+      '#markup' => $location_name,
     ];
   }
 
