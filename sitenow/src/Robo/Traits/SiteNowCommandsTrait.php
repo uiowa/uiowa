@@ -106,6 +106,17 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Determine if SSH agent has keys loaded.
+   *
+   * @return bool
+   *   TRUE if keys are available, FALSE otherwise.
+   */
+  protected function hasSshAgent(): bool {
+    exec('ssh-add -l >/dev/null', $output, $exit_code);
+    return $exit_code === 0;
+  }
+
+  /**
    * Initialize a CSV export file with headers.
    *
    * @param string $filename_prefix

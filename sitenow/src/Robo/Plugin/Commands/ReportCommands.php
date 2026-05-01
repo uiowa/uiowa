@@ -180,6 +180,11 @@ class ReportCommands extends Tasks {
       return;
     }
 
+    if (!$this->hasSshAgent()) {
+      $this->say("[ERROR] No SSH keys loaded. Please 'ddev auth ssh' before running this command.");
+      return;
+    }
+
     $site_data = [];
     $now = time();
     $filepath = NULL;
