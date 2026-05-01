@@ -96,6 +96,16 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Determine if the command is running inside the DDEV container.
+   *
+   * @return bool
+   *   TRUE if running in DDEV, FALSE otherwise.
+   */
+  protected function isDdev(): bool {
+    return (bool) getenv('IS_DDEV_PROJECT');
+  }
+
+  /**
    * Initialize a CSV export file with headers.
    *
    * @param string $filename_prefix

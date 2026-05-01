@@ -35,6 +35,11 @@ class ReportCommands extends Tasks {
       'application' => '',
     ],
   ) {
+    if (!$this->isDdev()) {
+      $this->say('[ERROR] This command must be run inside the DDEV container. Use: ddev exec ./vendor/bin/robo uiowa:report:domains');
+      return;
+    }
+
     $site_data = [];
     $filepath = NULL;
 
@@ -170,6 +175,11 @@ class ReportCommands extends Tasks {
       'export' => FALSE,
     ],
   ) {
+    if (!$this->isDdev()) {
+      $this->say('[ERROR] This command must be run inside the DDEV container. Use: ddev exec ./vendor/bin/robo uiowa:report:inactive');
+      return;
+    }
+
     $site_data = [];
     $now = time();
     $filepath = NULL;
