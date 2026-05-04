@@ -1,13 +1,15 @@
+// Polls the alerts feed on a fixed interval and updates the alerts block
+// in place.
 Drupal.behaviors.uiowaAlerts = {
   attach: function (context, settings) {
-    // We want to use Drupal.once() in this instance because we don't want
-    // to set multiple timeouts.
     once('uiowaAlertsGetAlerts', '.block-uiowa-alerts-block', context).forEach(el => {
       const au = new Drupal.uiowaAlerts.AlertsUtilities(el);
-      // Get alerts on page load.
+
+      // Initial fetch on page load; subsequent fetches are timer-driven.
       au.updateAlerts();
 
-      // Check for changes every 60 seconds.
+      // 60s cadence balances responsiveness against load on the alerts
+      // endpoint.
       setInterval(() => {
         au.updateAlerts();
       }, 60000);

@@ -1,7 +1,12 @@
+// Shared alerts utilities.
+//
+// Provides per-instance polling state plus static helpers for fetching
+// the alerts feed, composing Hawk Alert markup, and formatting timestamps.
 ((Drupal) => {
   class AlertsUtilities {
     constructor(el) {
       this.el = el;
+
       // IDs from the previous successful fetch — used to announce only the
       // alerts that are actually new since the last poll.
       this.prevIds = new Set();
@@ -17,6 +22,9 @@
       }
     }
 
+    // The optional `source` lets callers reuse this against any compatible
+    // JSON:API endpoint — e.g., a relationship link returned by an alert
+    // (see getSituationUpdates) — rather than only the configured feed.
     static async fetchAlerts(source = drupalSettings.uiowaAlerts.source) {
       const response = await fetch(source);
       if (!response.ok) {
@@ -45,6 +53,7 @@
           id,
           type: 'error',
           dismissible: false,
+
           // Suppress the default per-message announce; we announce diffs
           // explicitly below so screen readers only hear about real changes.
           announce: false,
@@ -74,8 +83,12 @@
       ).map((node) => node.getAttribute('data-drupal-message-id'));
     }
 
+    // customConfig lets callers override title / body / link to compose
+    // alternate Hawk Alert layouts without forking this template.
     static hawkAlertContent(item, customConfig = null) {
       const date = new Date(item.attributes.date);
+
+      // Pin formatting to Iowa local time.
       const monthFormatter = new Intl.DateTimeFormat('en-US', {
         month: 'long',
         timeZone: 'America/Chicago',

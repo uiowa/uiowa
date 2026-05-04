@@ -1,8 +1,17 @@
+// Active Alerts block.
+//
+// Polls the Hawk Alerts feed and renders alerts (with their situation
+// updates) directly into the container.
+//
+// Unlike the global alerts block, this block owns its own markup and
+// update flow rather than going through Drupal.Message so it can
+// present a richer per-alert layout.
 (function (Drupal, drupalSettings, once) {
   Drupal.behaviors.activeAlerts = {
     attach: function (context, settings) {
       once('activeAlerts', '.active-alerts-container', context).forEach(function (container) {
         const au = Drupal.uiowaAlerts.AlertsUtilities;
+
         // Cached state from the previous successful fetch — used to detect
         // real content changes so screen readers only hear about diffs.
         // Starts empty so first-load alerts announce as "new"; first load
@@ -12,9 +21,10 @@
         updateActiveAlerts();
 
         // Check for changes every 55 seconds.
-        setInterval(() => updateActiveAlerts(), 10000);
+        setInterval(() => updateActiveAlerts(), 55000);
 
         async function updateActiveAlerts() {
+
           // Drop a loading text if one is currently showing.
           const loadingEl = container.querySelector('.loading');
           if (loadingEl) {
@@ -44,6 +54,10 @@
           }
         }
 
+        // Read alert state straight from the DOM rather than tracking a
+        // parallel JS model. The DOM is what the user actually sees, so
+        // diffing against it avoids drift if a render is ever interrupted
+        // or markup is mutated by something outside this behavior.
         function readAlertState() {
           const state = new Map();
           container.querySelectorAll('[data-alert-id]').forEach((el) => {
@@ -76,7 +90,13 @@
           });
         }
 
+        // Reconcile the rendered alerts with the latest feed.
+        //
+        // Diffs by data-alert-id and changes the alert in place. Reusing
+        // existing nodes preserves focus, ARIA state, and in-flight CSS
+        // transitions across polls.
         async function syncAlerts(items) {
+
           // Drop a campus-normal block if one is currently showing.
           const normalEl = container.querySelector('.alert--success');
           if (normalEl) {
@@ -119,6 +139,7 @@
           });
         }
 
+        // Sync the situation-updates list inside a single alert.
         async function syncSituationUpdates(alertEl, item) {
           const body = alertEl.querySelector('.hawk-alert-body.updates');
           if (!body) {
@@ -130,6 +151,7 @@
           const title = body.querySelector('.hawk-alert-updates-title');
 
           if (!hasUpdates) {
+
             // Clear any stale updates + title on the N -> 0 transition.
             body.querySelectorAll('[data-update-id]').forEach((el) => el.remove());
             if (title) {
