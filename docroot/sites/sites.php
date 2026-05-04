@@ -3359,12 +3359,6 @@ $sites['oneit.dev.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
 $sites['oneit.stage.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
 $sites['oneit.prod.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
 
-// Directory aliases for asr.uiowa.edu.
-$sites['asr.uiowa.ddev.site'] = 'asr.uiowa.edu';
-$sites['asr.dev.drupal.uiowa.edu'] = 'asr.uiowa.edu';
-$sites['asr.stage.drupal.uiowa.edu'] = 'asr.uiowa.edu';
-$sites['asr.prod.drupal.uiowa.edu'] = 'asr.uiowa.edu';
-
 // Directory aliases for musictherapy.sites.uiowa.edu.
 $sites['sitesmusictherapy.uiowa.ddev.site'] = 'musictherapy.sites.uiowa.edu';
 $sites['sitesmusictherapy.dev.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu';
@@ -7828,3 +7822,21 @@ $sites['cif.uiowa.ddev.site'] = 'cif.uiowa.edu';
 $sites['cif.dev.drupal.uiowa.edu'] = 'cif.uiowa.edu';
 $sites['cif.stage.drupal.uiowa.edu'] = 'cif.uiowa.edu';
 $sites['cif.prod.drupal.uiowa.edu'] = 'cif.uiowa.edu';
+
+// Directory aliases for sound.lab.uiowa.edu.
+$sites['labsound.uiowa.ddev.site'] = 'sound.lab.uiowa.edu';
+$sites['labsound.dev.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+$sites['labsound.stage.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+$sites['labsound.prod.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+
+// Directory aliases for adrain.lab.uiowa.edu.
+$sites['labadrain.uiowa.ddev.site'] = 'adrain.lab.uiowa.edu';
+$sites['labadrain.dev.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
+$sites['labadrain.stage.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
+$sites['labadrain.prod.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
+
+// Directory aliases for pryor.sites.uiowa.edu.
+$sites['sitespryor.uiowa.ddev.site'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.dev.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.stage.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.prod.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
