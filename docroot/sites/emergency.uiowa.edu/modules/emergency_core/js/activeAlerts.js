@@ -1,7 +1,7 @@
 (function (Drupal, drupalSettings, once) {
   Drupal.behaviors.activeAlerts = {
     attach: function (context, settings) {
-      once('active-alerts', '.active-alerts-container', context).forEach(function (container) {
+      once('activeAlerts', '.active-alerts-container', context).forEach(function (container) {
         const au = Drupal.uiowaAlerts.AlertsUtilities;
         // Cached state from the previous successful fetch — used to detect
         // real content changes so screen readers only hear about diffs.
