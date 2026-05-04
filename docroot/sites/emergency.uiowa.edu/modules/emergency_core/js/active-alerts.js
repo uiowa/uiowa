@@ -3,10 +3,16 @@
     attach: function (context, settings) {
       once('active-alerts', '.active-alerts-container', context).forEach(function (container) {
         const au = Drupal.uiowaAlerts.AlertsUtilities;
+        // Cached state from the previous successful fetch — used to detect
+        // real content changes so screen readers only hear about diffs.
+        // Starts empty so first-load alerts announce as "new"; first load
+        // with no alerts stays silent (empty diff).
+        let prevAlerts = new Map();
+        let lastError = false;
         updateActiveAlerts();
 
         // Check for changes every 55 seconds.
-        setInterval(() => updateActiveAlerts(), 55000);
+        setInterval(() => updateActiveAlerts(), 10000);
 
         async function updateActiveAlerts() {
           // Drop a loading text if one is currently showing.
@@ -23,12 +29,51 @@
             else {
               renderCampusNormal();
             }
-            Drupal.announce(Drupal.t('Active alerts have been loaded.'));
+
+            const current = readAlertState();
+            announceChanges(prevAlerts, current);
+            prevAlerts = current;
+            lastError = false;
           }
           catch (e) {
             container.innerHTML = '<p>Unable to load active alerts.</p>';
-            Drupal.announce(Drupal.t('Unable to load active alerts.'));
+            if (!lastError) {
+              Drupal.announce(Drupal.t('Unable to load active alerts.'));
+              lastError = true;
+            }
           }
+        }
+
+        function readAlertState() {
+          const state = new Map();
+          container.querySelectorAll('[data-alert-id]').forEach((el) => {
+            const id = el.getAttribute('data-alert-id');
+            const title = el.querySelector('.hawk-alert-label')?.textContent.trim() ?? 'Active alert';
+            const updateIds = new Set(
+              [...el.querySelectorAll('[data-update-id]')].map((u) => u.getAttribute('data-update-id'))
+            );
+            state.set(id, { title, updateIds });
+          });
+          return state;
+        }
+
+        function announceChanges(prev, current) {
+          if (prev.size > 0 && current.size === 0) {
+            Drupal.announce(Drupal.t('Campus status normal.'));
+            return;
+          }
+
+          current.forEach(({ title, updateIds }, id) => {
+            if (!prev.has(id)) {
+              Drupal.announce(Drupal.t('New alert - @title', { '@title': title }));
+              return;
+            }
+            const prevUpdates = prev.get(id).updateIds;
+            const hasNewUpdate = [...updateIds].some((u) => !prevUpdates.has(u));
+            if (hasNewUpdate) {
+              Drupal.announce(Drupal.t('Updates made to @title', { '@title': title }));
+            }
+          });
         }
 
         async function syncAlerts(items) {

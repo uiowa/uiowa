@@ -2,6 +2,9 @@
   class AlertsUtilities {
     constructor(el) {
       this.el = el;
+      // IDs from the previous successful fetch — used to announce only the
+      // alerts that are actually new since the last poll.
+      this.prevIds = new Set();
     }
 
     // Send a GET request to the alerts endpoint and hand off to handleResponse.
@@ -42,12 +45,18 @@
           id,
           type: 'error',
           dismissible: false,
-          announce: '',
+          // Suppress the default per-message announce; we announce diffs
+          // explicitly below so screen readers only hear about real changes.
+          announce: false,
         });
 
         const addedMessage = messages.select(id);
         if (addedMessage) {
           addedMessage.setAttribute('aria-label', 'Alert');
+        }
+
+        if (!this.prevIds.has(id)) {
+          Drupal.announce(Drupal.t('New alert - @title', { '@title': item.attributes.alert }));
         }
       });
 
@@ -55,6 +64,8 @@
       existingAlerts
         .filter((existing) => !newAlerts.includes(existing))
         .forEach((closed) => messages.remove(closed));
+
+      this.prevIds = new Set(newAlerts);
     }
 
     static getExistingAlerts(messagesWrapper) {
