@@ -71,6 +71,8 @@
           return state;
         }
 
+        // Campus-normal is a baseline. New alerts announce and existing
+        // alerts only announce when situation updates change.
         function announceChanges(prev, current) {
           if (prev.size > 0 && current.size === 0) {
             Drupal.announce(Drupal.t('Campus status normal.'));
@@ -192,7 +194,7 @@
             seen.add(id);
             if (!existing.get(id)) {
               const updateEl = au.createElementFromHTML(
-                au.hawkAlertStatusUpdateContent(update)
+                au.hawkAlertSituationUpdateContent(update)
               );
               titleEl.after(updateEl);
             }
@@ -205,6 +207,7 @@
           });
         }
 
+        // Renders the "Campus status normal" block if necessary.
         function renderCampusNormal() {
           if (container.querySelector('.alert--success')) {
             return;

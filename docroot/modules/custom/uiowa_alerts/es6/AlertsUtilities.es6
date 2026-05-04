@@ -33,6 +33,8 @@
       return response.json();
     }
 
+    // Reconcile the rendered messages with the latest call: check for
+    // tag matches, add new alerts, drop ones that have rolled off.
     handleResponse(response) {
       const messagesWrapper = this.el.querySelector('.hawk-alerts-wrapper');
       const messages = new Drupal.Message(messagesWrapper);
@@ -138,7 +140,9 @@
       `;
     }
 
-    static hawkAlertStatusUpdateContent(item) {
+    // Markup for a single situation update card; distinct from
+    // hawkAlertContent, which builds the alert it lives inside.
+    static hawkAlertSituationUpdateContent(item) {
       const rawDate = item.attributes.date;                  // ISO string from API
       const description = item.attributes.description?.processed ?? ''; // rendered HTML (incl. media)
 
@@ -175,6 +179,8 @@
       return `<p class="hawk-alert-updates-title"><small><strong>Situation update(s):</strong></small></p>`;
     }
 
+    // Returns null when the alert has no situation-updates relationship,
+    // so callers must null-check before reading .data.
     static async getSituationUpdates(item) {
       const updatesUrl = item?.relationships?.field_hawk_alert_situation?.links?.related?.href;
       if (!updatesUrl) {
