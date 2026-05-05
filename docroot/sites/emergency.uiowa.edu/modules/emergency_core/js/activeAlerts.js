@@ -20,8 +20,8 @@
         let lastError = false;
         updateActiveAlerts();
 
-        // Check for changes every 55 seconds.
-        setInterval(() => updateActiveAlerts(), 55000);
+        // Check for changes every 30 seconds.
+        setInterval(() => updateActiveAlerts(), 30000);
 
         async function updateActiveAlerts() {
 
