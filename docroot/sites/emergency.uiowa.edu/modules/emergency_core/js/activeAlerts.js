@@ -120,6 +120,7 @@
                 au.hawkAlertContent(
                   item,
                   {
+                    region:'',
                     title: item.attributes.alert,
                     displayDay: true,
                     body:`<div class="hawk-alert-body updates"></div>`,
