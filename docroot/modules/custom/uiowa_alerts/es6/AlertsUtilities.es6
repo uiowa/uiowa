@@ -58,7 +58,7 @@
 
           // Suppress the default per-message announce; we announce diffs
           // explicitly below so screen readers only hear about real changes.
-          announce: false,
+          announce: '',
         });
 
         const addedMessage = messages.select(id);
@@ -68,6 +68,7 @@
 
         if (!this.prevIds.has(id)) {
           Drupal.announce(Drupal.t('New alert - @title', { '@title': item.attributes.alert }));
+          console.log('utility announce');
         }
       });
 
