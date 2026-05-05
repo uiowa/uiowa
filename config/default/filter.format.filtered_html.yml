@@ -31,6 +31,7 @@ dependencies:
     - responsive_table_filter
     - table_header_scope_attribute
     - uiowa_core
+    - mathjax
 _core:
   default_config_hash: yA6WNEdG-8nJeOmDKvvJehwG-BwwchNYeLXOg6QjiY8
 name: 'Filtered HTML'
@@ -112,6 +113,12 @@ filters:
     provider: filter
     status: true
     weight: -43
+    settings: {  }
+  filter_mathjax:
+    id: filter_mathjax
+    provider: mathjax
+    status: true
+    weight: -30
     settings: {  }
   filter_responsive_table:
     id: filter_responsive_table
