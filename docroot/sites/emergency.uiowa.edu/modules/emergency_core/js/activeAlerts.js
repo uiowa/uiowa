@@ -41,7 +41,9 @@
             }
 
             const current = readAlertState();
-            announceChanges(prevAlerts, current);
+            // Defer announce briefly so VoiceOver finishes processing DOM
+            // mutations from syncAlerts before the aria-live update fires.
+            setTimeout(() => announceChanges(prevAlerts, current), 200);
             prevAlerts = current;
             lastError = false;
           }
@@ -74,20 +76,25 @@
         // Campus-normal is a baseline. New alerts announce and existing
         // alerts only announce when situation updates change.
         function announceChanges(prev, current) {
+          console.log('announce function triggered');
           if (prev.size > 0 && current.size === 0) {
             Drupal.announce(Drupal.t('Campus status normal.'));
+            console.log('normal');
             return;
           }
 
           current.forEach(({ title, updateIds }, id) => {
             if (!prev.has(id)) {
-              Drupal.announce(Drupal.t('New alert - @title', { '@title': title }));
+              console.log('Drupal.announce type:', typeof Drupal.announce, 'title:', title);
+              Drupal.announce(Drupal.t('New alert - @title', { '@title': title }), 'assertive');
+              console.log('new');
               return;
             }
             const prevUpdates = prev.get(id).updateIds;
             const hasNewUpdate = [...updateIds].some((u) => !prevUpdates.has(u));
             if (hasNewUpdate) {
               Drupal.announce(Drupal.t('Updates made to @title', { '@title': title }));
+              console.log('new update');
             }
           });
         }
