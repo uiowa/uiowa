@@ -43,8 +43,9 @@
             const current = readAlertState();
             // Defer announce briefly so VoiceOver finishes processing DOM
             // mutations from syncAlerts before the aria-live update fires.
-            setTimeout(() => announceChanges(prevAlerts, current), 200);
+            const prev = prevAlerts;
             prevAlerts = current;
+            setTimeout(() => announceChanges(prev, current), 200);
             lastError = false;
           }
           catch (e) {
@@ -77,6 +78,8 @@
         // alerts only announce when situation updates change.
         function announceChanges(prev, current) {
           console.log('announce function triggered');
+
+          // Only announces if alerts go away and the status goes back to normal.
           if (prev.size > 0 && current.size === 0) {
             Drupal.announce(Drupal.t('Campus status normal.'));
             console.log('normal');
@@ -94,7 +97,6 @@
             const hasNewUpdate = [...updateIds].some((u) => !prevUpdates.has(u));
             if (hasNewUpdate) {
               Drupal.announce(Drupal.t('Updates made to @title', { '@title': title }));
-              console.log('new update');
             }
           });
         }
