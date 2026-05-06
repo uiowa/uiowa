@@ -1,0 +1,24 @@
+From 15cc8332fd0577994572691b43bee4944b60b9e5 Mon Sep 17 00:00:00 2001
+From: Joe Whitsitt <20452-joewhitsitt@users.noreply.drupalcode.org>
+Date: Fri, 16 Jan 2026 16:55:31 +0000
+Subject: [PATCH] override role generic with region for use with aria-label
+
+---
+ src/Plugin/Filter/FilterResponsiveTable.php | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/Plugin/Filter/FilterResponsiveTable.php b/src/Plugin/Filter/FilterResponsiveTable.php
+index 243ce96..7561ba6 100644
+--- a/src/Plugin/Filter/FilterResponsiveTable.php
++++ b/src/Plugin/Filter/FilterResponsiveTable.php
+@@ -89,6 +89,7 @@ class FilterResponsiveTable extends FilterBase {
+    */
+   private function getWrapperAttributes(): Attribute {
+     return new Attribute([
++      'role' => 'region',
+       'class' => [$this->settings['wrapper_classes']],
+       'tabindex' => '0',
+       'aria-label' => $this->t('Scrollable table'),
+-- 
+GitLab
+
