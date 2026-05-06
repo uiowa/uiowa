@@ -41,11 +41,8 @@
             }
 
             const current = readAlertState();
-            // Defer announce briefly so VoiceOver finishes processing DOM
-            // mutations from syncAlerts before the aria-live update fires.
-            const prev = prevAlerts;
+            announceChanges(prevAlerts, current);
             prevAlerts = current;
-            setTimeout(() => announceChanges(prev, current), 200);
             lastError = false;
           }
           catch (e) {
@@ -88,7 +85,6 @@
 
           current.forEach(({ title, updateIds }, id) => {
             if (!prev.has(id)) {
-              console.log('Drupal.announce type:', typeof Drupal.announce, 'title:', title);
               Drupal.announce(Drupal.t('New alert - @title', { '@title': title }), 'assertive');
               console.log('new');
               return;
