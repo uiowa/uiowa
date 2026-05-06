@@ -6,10 +6,6 @@
   class AlertsUtilities {
     constructor(el) {
       this.el = el;
-
-      // IDs from the previous successful fetch — used to announce only the
-      // alerts that are actually new since the last poll.
-      this.prevIds = new Set();
     }
 
     // Send a GET request to the alerts endpoint and hand off to handleResponse.
@@ -65,19 +61,12 @@
         if (addedMessage) {
           addedMessage.setAttribute('aria-label', 'Alert');
         }
-
-        if (!this.prevIds.has(id)) {
-          Drupal.announce(Drupal.t('New alert - @title', { '@title': item.attributes.alert }));
-          console.log('utility announce');
-        }
       });
 
       // Remove alerts no longer in the response.
       existingAlerts
         .filter((existing) => !newAlerts.includes(existing))
         .forEach((closed) => messages.remove(closed));
-
-      this.prevIds = new Set(newAlerts);
     }
 
     static getExistingAlerts(messagesWrapper) {
@@ -128,7 +117,7 @@
         `<a class="hawk-alert-link alert-link" href="${item.attributes.more_info_link}">Visit ${item.attributes.more_info_link} for more information.</a></p>\n`;
 
       return  `
-        <div class="hawk-alert-message" role="region" aria-label="hawk alert message">
+        <div class="hawk-alert-message" role="alert" aria-label="hawk alert message">
           <h2 class="headline headline--serif">
             <span class="hawk-alert-heading">
               <span class="hawk-alert-label">${title}</span>

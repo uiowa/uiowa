@@ -71,22 +71,16 @@
           return state;
         }
 
-        // Campus-normal is a baseline. New alerts announce and existing
-        // alerts only announce when situation updates change.
+        // New alerts announce via role="alert" on insertion. This handles
+        // the remaining transitions: campus-normal and situation updates.
         function announceChanges(prev, current) {
-          console.log('announce function triggered');
-
-          // Only announces if alerts go away and the status goes back to normal.
           if (prev.size > 0 && current.size === 0) {
             Drupal.announce(Drupal.t('Campus status normal.'));
-            console.log('normal');
             return;
           }
 
           current.forEach(({ title, updateIds }, id) => {
             if (!prev.has(id)) {
-              Drupal.announce(Drupal.t('New alert - @title', { '@title': title }), 'assertive');
-              console.log('new');
               return;
             }
             const prevUpdates = prev.get(id).updateIds;
@@ -125,7 +119,6 @@
                 au.hawkAlertContent(
                   item,
                   {
-                    region:'',
                     title: item.attributes.alert,
                     displayDay: true,
                     body:`<div class="hawk-alert-body updates"></div>`,
