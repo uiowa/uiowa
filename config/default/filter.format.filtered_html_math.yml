@@ -1,4 +1,4 @@
-uuid: 806729f3-4ae7-48c2-9998-8345edb95d8d
+uuid: bde027f9-da69-493b-8b7d-27a6303b7312
 langcode: en
 status: true
 dependencies:
@@ -31,11 +31,10 @@ dependencies:
     - responsive_table_filter
     - table_header_scope_attribute
     - uiowa_core
-_core:
-  default_config_hash: yA6WNEdG-8nJeOmDKvvJehwG-BwwchNYeLXOg6QjiY8
-name: 'Filtered HTML'
-format: filtered_html
-weight: -10
+    - mathjax
+name: 'Filtered HTML + Math'
+format: filtered_html_math
+weight: -9
 filters:
   editor_file_reference:
     id: editor_file_reference
@@ -112,6 +111,12 @@ filters:
     provider: filter
     status: true
     weight: -43
+    settings: {  }
+  filter_mathjax:
+    id: filter_mathjax
+    provider: mathjax
+    status: true
+    weight: -60
     settings: {  }
   filter_responsive_table:
     id: filter_responsive_table
