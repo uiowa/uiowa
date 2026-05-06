@@ -18,7 +18,15 @@
         // with no alerts stays silent (empty diff).
         let prevAlerts = new Map();
         let lastError = false;
-        updateActiveAlerts();
+
+        // Assistive tech only announces role="alert" for dynamic additions.
+        // Since Drupal.Message is not used here, we need to wait to announce.
+        if (document.readyState === 'complete') {
+          updateActiveAlerts();
+        }
+        else {
+          window.addEventListener('load', updateActiveAlerts, { once: true });
+        }
 
         // Check for changes every 30 seconds.
         setInterval(() => updateActiveAlerts(), 30000);
