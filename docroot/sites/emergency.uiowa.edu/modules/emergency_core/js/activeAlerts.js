@@ -10,7 +10,7 @@
   Drupal.behaviors.activeAlerts = {
     attach: function (context, settings) {
       once('activeAlerts', '.active-alerts-container', context).forEach(function (container) {
-        const au = Drupal.uiowaAlerts.AlertsUtilities;
+        const AlertsUtil = Drupal.uiowaAlerts.AlertsUtilities;
 
         // Cached state from the previous successful fetch — used to detect
         // real content changes so screen readers only hear about diffs.
@@ -19,14 +19,7 @@
         let prevAlerts = new Map();
         let lastError = false;
 
-        // Assistive tech only announces role="alert" for dynamic additions.
-        // Since Drupal.Message is not used here, we need to wait to announce.
-        if (document.readyState === 'complete') {
-          updateActiveAlerts();
-        }
-        else {
-          window.addEventListener('load', updateActiveAlerts, { once: true });
-        }
+        AlertsUtil.whenDocumentLoaded(updateActiveAlerts);
 
         // Check for changes every 30 seconds.
         setInterval(() => updateActiveAlerts(), 30000);
@@ -40,7 +33,7 @@
           }
 
           try {
-            const response = await au.fetchAlerts();
+            const response = await AlertsUtil.fetchAlerts();
             if (response.data.length > 0) {
               await syncAlerts(response.data);
             }
@@ -123,8 +116,8 @@
             seen.add(id);
             let alertEl = existing.get(id);
             if (!alertEl) {
-              const markup = au.fullHawkAlertMarkup(
-                au.hawkAlertContent(
+              const markup = AlertsUtil.fullHawkAlertMarkup(
+                AlertsUtil.hawkAlertContent(
                   item,
                   {
                     title: item.attributes.alert,
@@ -134,7 +127,7 @@
                   }
                 )
               );
-              alertEl = au.createElementFromHTML(markup);
+              alertEl = AlertsUtil.createElementFromHTML(markup);
               alertEl.setAttribute('data-alert-id', id);
               container.append(alertEl);
             }
@@ -169,7 +162,7 @@
             return;
           }
 
-          const response = await au.getSituationUpdates(item);
+          const response = await AlertsUtil.getSituationUpdates(item);
           if (!response?.data) {
             return;
           }
@@ -179,7 +172,7 @@
           if (!titleEl) {
             body.insertAdjacentHTML(
               'afterbegin',
-              au.hawkAlertSituationUpdateSectionTitle()
+              AlertsUtil.hawkAlertSituationUpdateSectionTitle()
             );
             titleEl = body.querySelector('.hawk-alert-updates-title');
           }
@@ -200,8 +193,8 @@
             const id = `hawk-update-${update.attributes.date}`;
             seen.add(id);
             if (!existing.get(id)) {
-              const updateEl = au.createElementFromHTML(
-                au.hawkAlertSituationUpdateContent(update)
+              const updateEl = AlertsUtil.createElementFromHTML(
+                AlertsUtil.hawkAlertSituationUpdateContent(update)
               );
               titleEl.after(updateEl);
             }

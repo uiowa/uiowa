@@ -3,15 +3,16 @@
 Drupal.behaviors.uiowaAlerts = {
   attach: function (context, settings) {
     once('uiowaAlertsGetAlerts', '.block-uiowa-alerts-block', context).forEach(el => {
-      const au = new Drupal.uiowaAlerts.AlertsUtilities(el);
+      const AlertsUtil = Drupal.uiowaAlerts.AlertsUtilities;
+      const alertsBlock = new AlertsUtil(el);
 
       // Initial fetch on page load; subsequent fetches are timer-driven.
-      au.updateAlerts();
+      AlertsUtil.whenDocumentLoaded(() => alertsBlock.updateAlerts());
 
       // 60s cadence balances responsiveness against load on the alerts
       // endpoint.
       setInterval(() => {
-        au.updateAlerts();
+        alertsBlock.updateAlerts();
       }, 60000);
     });
   }

@@ -195,6 +195,20 @@
         </div>`;
     }
 
+    // Run `fn` once the document has finished loading. Used to defer the
+    // first insertion of role="alert" content — assistive tech doesn't
+    // announce role="alert" elements that were already in the DOM before
+    // it finished building the accessibility tree, so the initial render
+    // needs to land after `load`.
+    static whenDocumentLoaded(fn) {
+      if (document.readyState === 'complete') {
+        fn();
+      }
+      else {
+        window.addEventListener('load', fn, { once: true });
+      }
+    }
+
     static createElementFromHTML(htmlString) {
       const div = document.createElement('div');
       div.innerHTML = htmlString.trim();
