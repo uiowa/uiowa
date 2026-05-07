@@ -122,10 +122,11 @@
                   {
                     title: item.attributes.alert,
                     displayDay: true,
-                    body:`<div class="hawk-alert-body updates"></div>`,
-                    link:''
+                    body: '',
+                    link: ''
                   }
-                )
+                ),
+                '<div class="hawk-alert-body updates"></div>'
               );
               alertEl = AlertsUtil.createElementFromHTML(markup);
               alertEl.setAttribute('data-alert-id', id);

@@ -179,7 +179,7 @@
       return AlertsUtilities.fetchAlerts(updatesUrl);
     }
 
-    static fullHawkAlertMarkup(content) {
+    static fullHawkAlertMarkup(content, siblingContent = '') {
       return `
         <div class="alert alert--danger alert--icon">
           <div class="alert__icon">
@@ -191,7 +191,10 @@
               ></span>
             </span>
           </div>
-          ${content}
+          <div class="hawk-alert__content">
+            ${content}
+            ${siblingContent}
+          </div>
         </div>`;
     }
 
