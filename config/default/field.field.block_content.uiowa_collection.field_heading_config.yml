@@ -1,0 +1,26 @@
+uuid: 4dceb237-c690-459b-9223-af32851e1571
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_collection
+    - field.storage.block_content.field_heading_config
+  module:
+    - uiowa_heading_advanced
+id: block_content.uiowa_collection.field_heading_config
+field_name: field_heading_config
+entity_type: block_content
+bundle: uiowa_collection
+label: 'Headline Configuration'
+description: 'Configure how the headline should be displayed and set heading size for child elements.'
+required: false
+translatable: false
+default_value:
+  -
+    hide_headline: 0
+    headline_style: default
+    headline_alignment: default
+    child_heading_size: h2
+default_value_callback: ''
+settings: {  }
+field_type: heading_config

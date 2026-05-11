@@ -1,26 +1,24 @@
-uuid: b2728f79-86dc-45f0-a618-f198f62f0337
+uuid: 48df6507-ffad-4cb2-b595-5f2b39920ee2
 langcode: en
 status: true
 dependencies:
   config:
     - block_content.type.uiowa_card
-    - field.storage.block_content.field_uiowa_card_title
+    - field.storage.block_content.field_heading
   module:
     - heading
-_core:
-  default_config_hash: s7l79O5pYUoz4fVcZcdzBtSNbeaXcO4yq8T7-0uRfJM
-id: block_content.uiowa_card.field_uiowa_card_title
-field_name: field_uiowa_card_title
+id: block_content.uiowa_card.field_heading
+field_name: field_heading
 entity_type: block_content
 bundle: uiowa_card
 label: Title
-description: 'Choose a headline or title text.'
+description: 'Enter the card title text and select the heading size.'
 required: true
 translatable: false
 default_value:
   -
-    size: h2
     text: ''
+    size: h2
 default_value_callback: ''
 settings:
   label: Heading
@@ -30,5 +28,5 @@ settings:
     h4: h4
     h5: h5
     h6: h6
-    h1: 0
+    h1: '0'
 field_type: heading

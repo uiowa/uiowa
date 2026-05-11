@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Default theme implementation for advanced heading.
+ *
+ * Available variables:
+ * - text: The heading text.
+ * - size: The heading size (h1-h6).
+ * - styles: CSS classes for styling.
+ * - alignment: CSS classes for alignment.
+ * - attributes: HTML attributes for the heading element.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if text %}
+  <{{ size }}{{ attributes }}>{{ text }}</{{ size }}>
+{% endif %}

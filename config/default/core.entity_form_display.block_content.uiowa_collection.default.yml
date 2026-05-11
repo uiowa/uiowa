@@ -6,11 +6,13 @@ dependencies:
     - block_content.type.uiowa_collection
     - field.field.block_content.uiowa_collection.field_accordion_label_color
     - field.field.block_content.uiowa_collection.field_accordion_type
+    - field.field.block_content.uiowa_collection.field_heading
+    - field.field.block_content.uiowa_collection.field_heading_config
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
-    - field.field.block_content.uiowa_collection.field_uiowa_headline
   module:
-    - layout_builder_custom
+    - heading
     - paragraphs
+    - uiowa_heading_advanced
 id: block_content.uiowa_collection.default
 targetEntityType: block_content
 bundle: uiowa_collection
@@ -25,6 +27,18 @@ content:
   field_accordion_type:
     type: options_select
     weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_heading:
+    type: heading
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_heading_config:
+    type: heading_config_widget
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -46,12 +60,6 @@ content:
         add_above: '0'
         collapse_edit_all: '0'
         duplicate: '0'
-    third_party_settings: {  }
-  field_uiowa_headline:
-    type: uiowa_headline_widget
-    weight: 1
-    region: content
-    settings: {  }
     third_party_settings: {  }
   info:
     type: string_textfield

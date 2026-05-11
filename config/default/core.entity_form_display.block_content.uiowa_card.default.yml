@@ -4,19 +4,21 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_card
+    - field.field.block_content.uiowa_card.field_heading
+    - field.field.block_content.uiowa_card.field_heading_config
     - field.field.block_content.uiowa_card.field_icon
     - field.field.block_content.uiowa_card.field_uiowa_card_author
     - field.field.block_content.uiowa_card.field_uiowa_card_button_display
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
-    - field.field.block_content.uiowa_card.field_uiowa_card_title
   module:
     - heading
     - linkit_attributes
     - media_library
     - text
     - ui_icons_field
+    - uiowa_heading_advanced
 _core:
   default_config_hash: hZEWAooCZcl2FsmhveTi2RnTTu9MomdxM4GWF1aeWOY
 id: block_content.uiowa_card.default
@@ -24,6 +26,18 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
+  field_heading:
+    type: heading
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_heading_config:
+    type: heading_config_simple_widget
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_icon:
     type: icon_widget
     weight: 26
@@ -83,12 +97,6 @@ content:
         aria-label: false
         title: false
       widget_default_open: collapsed
-    third_party_settings: {  }
-  field_uiowa_card_title:
-    type: heading
-    weight: 0
-    region: content
-    settings: {  }
     third_party_settings: {  }
   info:
     type: string_textfield

@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * @file
+ * Contains uiowa_heading_advanced.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function uiowa_heading_advanced_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.uiowa_heading_advanced':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides advanced heading configuration options to extend the drupal/heading module.') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_heading_advanced_theme($existing, $type, $theme, $path) {
+  return [
+    'uiowa_heading_advanced' => [
+      'variables' => [
+        'text' => NULL,
+        'size' => 'h2',
+        'styles' => '',
+        'alignment' => '',
+      ],
+      'template' => 'uiowa-heading-advanced',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for uiowa_heading_advanced template.
+ *
+ * Default template: uiowa-heading-advanced.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - text: The heading text.
+ *   - size: The heading size (h1-h6).
+ *   - styles: CSS classes for styling.
+ *   - alignment: CSS classes for alignment.
+ */
+function template_preprocess_uiowa_heading_advanced(array &$variables) {
+  // Ensure size is valid.
+  $valid_sizes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  if (!in_array($variables['size'], $valid_sizes)) {
+    $variables['size'] = 'h2';
+  }
+
+  // Combine style and alignment classes.
+  $classes = array_filter([
+    $variables['styles'],
+    $variables['alignment'],
+  ]);
+  $variables['attributes']['class'] = $classes;
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ *
+ * Add heading size logic for child elements using new field structure.
+ */
+function uiowa_heading_advanced_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  
+  // For collection items, sliders, and timeline items, get heading size from parent.
+  if (in_array($paragraph->bundle(), [
+    'uiowa_collection_item',
+    'uiowa_slide',
+    'uiowa_timeline_item',
+  ])) {
+    if ($paragraph->hasField('parent_id') && !$paragraph->get('parent_id')->isEmpty()) {
+      $parent_id = $paragraph->get('parent_id')->getValue();
+      if (!empty($parent_id[0]['value'])) {
+        $parent = \Drupal::entityTypeManager()
+          ->getStorage('block_content')
+          ->load($parent_id[0]['value']);
+
+        if ($parent) {
+          // Try new field structure first.
+          if ($parent->hasField('field_heading') && $parent->hasField('field_heading_config')) {
+            $heading = $parent->get('field_heading')->first();
+            $config = $parent->get('field_heading_config')->first();
+            
+            if ($heading && $config) {
+              // If no headline text, use child_heading_size directly.
+              if (empty($heading->text)) {
+                $variables['h_size'] = $config->child_heading_size ?? 'h2';
+              }
+              else {
+                // Size up from the parent heading size.
+                $variables['h_size'] = \Drupal\uiowa_core\HeadlineHelper::getHeadingSizeUp($heading->size);
+              }
+            }
+          }
+          // Fall back to old field structure for backward compatibility.
+          elseif ($parent->hasField('field_uiowa_headline')) {
+            $headline_fields = $parent->get('field_uiowa_headline')->getValue();
+            foreach ($headline_fields as $headline_field) {
+              if (empty($headline_field['headline'])) {
+                $variables['h_size'] = $headline_field['child_heading_size'];
+              }
+              else {
+                $variables['h_size'] = \Drupal\uiowa_core\HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

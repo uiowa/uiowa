@@ -52,7 +52,13 @@ class Card extends BlockContent implements RendersAsCardInterface {
     }
 
     // Handle the title field.
-    if (isset($build['field_uiowa_card_title']) && count(Element::children($build['field_uiowa_card_title'])) > 0) {
+    // Try new field structure first, fall back to old for backward compatibility.
+    if (isset($build['field_heading']) && count(Element::children($build['field_heading'])) > 0) {
+      $build['#title'] = $build['field_heading'][0]['#text'];
+      $build['#title_heading_size'] = $build['field_heading'][0]['#size'];
+      unset($build['field_heading']);
+    }
+    elseif (isset($build['field_uiowa_card_title']) && count(Element::children($build['field_uiowa_card_title'])) > 0) {
       $build['#title'] = $build['field_uiowa_card_title'][0]['#text'];
       $build['#title_heading_size'] = $build['field_uiowa_card_title'][0]['#size'];
       unset($build['field_uiowa_card_title']);

@@ -7,12 +7,13 @@ dependencies:
     - core.entity_view_mode.block_content.accordion
     - field.field.block_content.uiowa_collection.field_accordion_label_color
     - field.field.block_content.uiowa_collection.field_accordion_type
+    - field.field.block_content.uiowa_collection.field_heading
+    - field.field.block_content.uiowa_collection.field_heading_config
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
-    - field.field.block_content.uiowa_collection.field_uiowa_headline
   module:
     - entity_reference_revisions
+    - heading
     - layout_builder
-    - layout_builder_custom
 third_party_settings:
   layout_builder:
     enabled: false
@@ -22,19 +23,19 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: accordion
 content:
+  field_heading:
+    type: heading
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
     label: hidden
     settings:
       view_mode: accordion
       link: ''
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_uiowa_headline:
-    type: uiowa_headline_formatter
-    label: hidden
-    settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
@@ -44,4 +45,5 @@ hidden:
   entity_print_view_word_docx: true
   field_accordion_label_color: true
   field_accordion_type: true
+  field_heading_config: true
   search_api_excerpt: true

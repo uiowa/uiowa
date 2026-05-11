@@ -4,18 +4,19 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_card
+    - field.field.block_content.uiowa_card.field_heading
+    - field.field.block_content.uiowa_card.field_heading_config
     - field.field.block_content.uiowa_card.field_icon
     - field.field.block_content.uiowa_card.field_uiowa_card_author
     - field.field.block_content.uiowa_card.field_uiowa_card_button_display
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
-    - field.field.block_content.uiowa_card.field_uiowa_card_title
   module:
-    - heading
     - linkit
     - text
     - ui_icons_field
+    - uiowa_heading_advanced
 _core:
   default_config_hash: FVCsCd-0IpApFOBsBVnax1xAb3UO94cIAtksGnBVygE
 id: block_content.uiowa_card.default
@@ -23,6 +24,14 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
+  field_heading:
+    type: heading_advanced_formatter
+    label: hidden
+    settings:
+      config_field: field_heading_config
+    third_party_settings: {  }
+    weight: 0
+    region: content
   field_icon:
     type: icon_formatter
     label: above
@@ -73,16 +82,10 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  field_uiowa_card_title:
-    type: heading
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_heading_config: true
   field_uiowa_card_button_display: true
   search_api_excerpt: true

@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the uiowa_heading_advanced module.
+ */
+
+use Drupal\block_content\Entity\BlockContent;
+
+/**
+ * Implements hook_install().
+ */
+function uiowa_heading_advanced_install() {
+  // Set module weight to run after layout_builder_custom.
+  module_set_weight('uiowa_heading_advanced', 10);
+}
+//
+///**
+// * Migrate uiowa_collection blocks from field_uiowa_headline to new field structure.
+// */
+//function uiowa_heading_advanced_post_update_migrate_uiowa_collection(&$sandbox) {
+//  $block_storage = \Drupal::entityTypeManager()->getStorage('block_content');
+//
+//  if (!isset($sandbox['progress'])) {
+//    // Initialize the batch.
+//    $query = $block_storage->getQuery()
+//      ->condition('type', 'uiowa_collection')
+//      ->accessCheck(FALSE);
+//    $sandbox['ids'] = $query->execute();
+//    $sandbox['progress'] = 0;
+//    $sandbox['max'] = count($sandbox['ids']);
+//    $sandbox['messages'] = [];
+//  }
+//
+//  // Process 10 blocks at a time.
+//  $ids_to_process = array_slice($sandbox['ids'], $sandbox['progress'], 10, TRUE);
+//
+//  foreach ($ids_to_process as $id) {
+//    $block = $block_storage->load($id);
+//
+//    if ($block && $block->hasField('field_uiowa_headline')) {
+//      $old_data = $block->get('field_uiowa_headline')->first();
+//
+//      if ($old_data) {
+//        // Migrate to field_heading.
+//        if ($block->hasField('field_heading')) {
+//          $block->set('field_heading', [
+//            'text' => $old_data->get('headline')->getValue() ?? '',
+//            'size' => $old_data->get('heading_size')->getValue() ?? 'h2',
+//          ]);
+//        }
+//
+//        // Migrate to field_heading_config.
+//        if ($block->hasField('field_heading_config')) {
+//          $block->set('field_heading_config', [
+//            'hide_headline' => $old_data->get('hide_headline')->getValue() ?? 0,
+//            'headline_style' => $old_data->get('headline_style')->getValue() ?? 'default',
+//            'headline_alignment' => $old_data->get('headline_alignment')->getValue() ?? 'default',
+//            'child_heading_size' => $old_data->get('child_heading_size')->getValue() ?? 'h2',
+//          ]);
+//        }
+//
+//        try {
+//          $block->save();
+//          $sandbox['messages'][] = t('Migrated block @id (@label)', [
+//            '@id' => $block->id(),
+//            '@label' => $block->label(),
+//          ]);
+//        }
+//        catch (\Exception $e) {
+//          \Drupal::logger('uiowa_heading_advanced')->error('Error migrating block @id: @message', [
+//            '@id' => $block->id(),
+//            '@message' => $e->getMessage(),
+//          ]);
+//        }
+//      }
+//    }
+//
+//    $sandbox['progress']++;
+//  }
+//
+//  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['progress'] / $sandbox['max']);
+//
+//  if ($sandbox['#finished'] >= 1) {
+//    return t('Migrated @count uiowa_collection blocks to new field structure.', [
+//      '@count' => $sandbox['max'],
+//    ]);
+//  }
+//}
+//
+///**
+// * Migrate uiowa_card blocks from field_uiowa_card_title to new field structure.
+// */
+//function uiowa_heading_advanced_post_update_migrate_uiowa_card(&$sandbox) {
+////  $block_storage = \Drupal::entityTypeManager()->getStorage('block_content');
+////
+////  if (!isset($sandbox['progress'])) {
+////    // Initialize the batch.
+////    $query = $block_storage->getQuery()
+////      ->condition('type', 'uiowa_card')
+////      ->accessCheck(FALSE);
+////    $sandbox['ids'] = $query->execute();
+////    $sandbox['progress'] = 0;
+////    $sandbox['max'] = count($sandbox['ids']);
+////    $sandbox['messages'] = [];
+////  }
+////
+////  // Process 10 blocks at a time.
+////  $ids_to_process = array_slice($sandbox['ids'], $sandbox['progress'], 10, TRUE);
+////
+////  foreach ($ids_to_process as $id) {
+////    $block = $block_storage->load($id);
+////
+////    if ($block && $block->hasField('field_uiowa_card_title')) {
+////      $old_data = $block->get('field_uiowa_card_title')->first();
+////
+////      if ($old_data) {
+////        // Migrate to field_heading.
+////        if ($block->hasField('field_heading')) {
+////          $block->set('field_heading', [
+////            'text' => $old_data->get('text')->getValue() ?? '',
+////            'size' => $old_data->get('size')->getValue() ?? 'h2',
+////          ]);
+////        }
+////
+////        // Set default values for field_heading_config.
+////        // uiowa_card uses simple config (no advanced styling in current implementation).
+////        if ($block->hasField('field_heading_config')) {
+////          $block->set('field_heading_config', [
+////            'hide_headline' => 0,
+////            'headline_style' => 'default',
+////            'headline_alignment' => 'default',
+////            'child_heading_size' => 'h2',
+////          ]);
+////        }
+////
+////        try {
+////          $block->save();
+////          $sandbox['messages'][] = t('Migrated block @id (@label)', [
+////            '@id' => $block->id(),
+////            '@label' => $block->label(),
+////          ]);
+////        }
+////        catch (\Exception $e) {
+////          \Drupal::logger('uiowa_heading_advanced')->error('Error migrating block @id: @message', [
+////            '@id' => $block->id(),
+////            '@message' => $e->getMessage(),
+////          ]);
+////        }
+////      }
+////    }
+////
+////    $sandbox['progress']++;
+////  }
+////
+////  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['progress'] / $sandbox['max']);
+////
+////  if ($sandbox['#finished'] >= 1) {
+////    return t('Migrated @count uiowa_card blocks to new field structure.', [
+////      '@count' => $sandbox['max'],
+////    ]);
+////  }
+//}

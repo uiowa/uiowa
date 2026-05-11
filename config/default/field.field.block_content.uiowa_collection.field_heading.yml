@@ -1,0 +1,29 @@
+uuid: 1bdfb43f-bb15-4d7a-bba4-aa210c67f14a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_collection
+    - field.storage.block_content.field_heading
+  module:
+    - heading
+id: block_content.uiowa_collection.field_heading
+field_name: field_heading
+entity_type: block_content
+bundle: uiowa_collection
+label: Headline
+description: 'Enter the headline text and select the heading size.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  label: Headline
+  allowed_sizes:
+    h1: h1
+    h2: h2
+    h3: h3
+    h4: h4
+    h5: h5
+    h6: h6
+field_type: heading
