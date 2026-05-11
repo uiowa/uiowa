@@ -7834,3 +7834,9 @@ $sites['sitespryor.uiowa.ddev.site'] = 'pryor.sites.uiowa.edu';
 $sites['sitespryor.dev.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
 $sites['sitespryor.stage.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
 $sites['sitespryor.prod.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
+
+// Directory aliases for organ.studio.uiowa.edu.
+$sites['studioorgan.uiowa.ddev.site'] = 'organ.studio.uiowa.edu';
+$sites['studioorgan.dev.drupal.uiowa.edu'] = 'organ.studio.uiowa.edu';
+$sites['studioorgan.stage.drupal.uiowa.edu'] = 'organ.studio.uiowa.edu';
+$sites['studioorgan.prod.drupal.uiowa.edu'] = 'organ.studio.uiowa.edu';
