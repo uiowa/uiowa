@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\uiowa_core\HeadlineHelper;
 
 /**
  * Implements hook_help().
@@ -70,8 +71,9 @@ function template_preprocess_uiowa_heading_advanced(array &$variables) {
  */
 function uiowa_heading_advanced_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
-  
-  // For collection items, sliders, and timeline items, get heading size from parent.
+
+  // For collection items, sliders, and timeline items,
+  // get heading size from parent.
   if (in_array($paragraph->bundle(), [
     'uiowa_collection_item',
     'uiowa_slide',
@@ -89,7 +91,7 @@ function uiowa_heading_advanced_preprocess_paragraph(&$variables) {
           if ($parent->hasField('field_heading') && $parent->hasField('field_heading_config')) {
             $heading = $parent->get('field_heading')->first();
             $config = $parent->get('field_heading_config')->first();
-            
+
             if ($heading && $config) {
               // If no headline text, use child_heading_size directly.
               if (empty($heading->text)) {
@@ -97,7 +99,7 @@ function uiowa_heading_advanced_preprocess_paragraph(&$variables) {
               }
               else {
                 // Size up from the parent heading size.
-                $variables['h_size'] = \Drupal\uiowa_core\HeadlineHelper::getHeadingSizeUp($heading->size);
+                $variables['h_size'] = HeadlineHelper::getHeadingSizeUp($heading->size);
               }
             }
           }
@@ -109,7 +111,7 @@ function uiowa_heading_advanced_preprocess_paragraph(&$variables) {
                 $variables['h_size'] = $headline_field['child_heading_size'];
               }
               else {
-                $variables['h_size'] = \Drupal\uiowa_core\HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+                $variables['h_size'] = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
               }
             }
           }
