@@ -114,7 +114,7 @@
 
       let emergencyLink =
         customConfig?.link ??
-        `<a class="hawk-alert-link alert-link" href="${item.attributes.more_info_link}">Visit ${item.attributes.more_info_link} for more information.</a></p>\n`;
+        `<a class="hawk-alert-link alert-link" href="${item.attributes.more_info_link}">Visit ${item.attributes.more_info_link} for more information.</a>\n`;
 
       return  `
         <div class="hawk-alert-message" role="alert" aria-label="hawk alert message">
