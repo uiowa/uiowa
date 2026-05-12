@@ -6,6 +6,7 @@ use SiteNow\Robo\Traits\SiteNowCommandsTrait;
 use AcquiaCloudApi\Endpoints\Environments;
 use Robo\Tasks;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Robo commands for reporting domain information.
@@ -200,82 +201,57 @@ class ReportCommands extends Tasks {
     // Grouped per-split for table output: $results[split_id][] = [app, domain].
     $results = [];
 
-    $this->say('Fetching domains from Acquia Cloud API...');
-    $client = $this->getAcquiaCloudApiClient(
-      $this->getConfigValue('uiowa.credentials.acquia.key'),
-      $this->getConfigValue('uiowa.credentials.acquia.secret')
-    );
+    // Use blt/manifest.yml — it's the authoritative SiteNow fleet list and is
+    // already deduplicated (www/redirect pairs collapsed), unlike the Acquia
+    // API domain list. Top-level keys are Acquia app names; values are arrays
+    // of multisite domains.
+    $root = $this->getConfigValue('repo.root') ?: getcwd();
+    $manifest_path = "$root/blt/manifest.yml";
 
-    $api_environments = new Environments($client);
-    $applications = $this->getSortedApplications($client);
+    if (!file_exists($manifest_path)) {
+      $this->say("[ERROR] Manifest file not found at $manifest_path");
+      return;
+    }
 
-    foreach ($applications as $application) {
-      // Skip UIHC applications.
-      if ($application->organization->name === 'University of Iowa Healthcare') {
-        continue;
-      }
+    $manifest = Yaml::parseFile($manifest_path);
 
-      $app_name = str_replace('prod:', '', $application->hosting->id);
-
+    foreach ($manifest as $app_name => $domains) {
       if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
         continue;
       }
 
       $this->say("Processing $app_name...");
 
-      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
-      foreach ($api_environments->getAll($application->uuid) as $environment) {
-        // Prod only.
-        if ($environment->name !== 'prod') {
+      foreach ($domains as $domain) {
+        $this->say("  Checking $domain...");
+        $statuses = $this->getSplitStatuses($domain);
+
+        if ($statuses === FALSE) {
           continue;
         }
 
-        $domains = array_values(array_filter(
-          $environment->domains,
-          function ($domain) use ($app_name, $environment) {
-            // Filter out internal Acquia platform domains.
-            return !(
-              str_contains($domain, '.prod.drupal.') ||
-              str_contains($domain, '.acquia-sites.com') ||
-              str_starts_with($domain, "$app_name.{$environment->name}")
-            );
+        foreach ($statuses as $split_id => $is_active) {
+          // Active only.
+          if (!$is_active) {
+            continue;
           }
-        ));
-
-        foreach ($domains as $domain) {
-          $this->say("  Checking $domain...");
-          $statuses = $this->getSplitStatuses($domain);
-
-          if ($statuses === FALSE) {
+          if (!empty($target_splits) && !in_array($split_id, $target_splits)) {
             continue;
           }
 
-          foreach ($statuses as $split_id => $is_active) {
-            // Active only.
-            if (!$is_active) {
-              continue;
-            }
-            if (!empty($target_splits) && !in_array($split_id, $target_splits)) {
-              continue;
-            }
+          $row = [$app_name, $domain, $split_id];
 
-            $row = [$app_name, $domain, $split_id];
-
-            if ($options['export']) {
-              $fp = fopen($filepath, 'a');
-              fputcsv($fp, $row, ',', '"', '\\');
-              fclose($fp);
-            }
-            else {
-              $results[$split_id][] = [$app_name, $domain];
-            }
+          if ($options['export']) {
+            $fp = fopen($filepath, 'a');
+            fputcsv($fp, $row, ',', '"', '\\');
+            fclose($fp);
+          }
+          else {
+            $results[$split_id][] = [$app_name, $domain];
           }
         }
       }
     }
-
-    // Free memory.
-    $api_environments = NULL;
 
     if ($options['export']) {
       $this->say("Results exported to $filepath");
