@@ -157,6 +157,191 @@ class ReportCommands extends Tasks {
   }
 
   /**
+   * Report which sites have which config splits enabled.
+   *
+   * Reports only active splits by default (i.e. "which sites are running X").
+   *
+   * @command uiowa:report:splits
+   *
+   * @option split
+   *   Comma-separated list of split IDs to filter to (e.g. event,thesis_defense).
+   * @option apps
+   *   Comma-separated list of app names to filter by (e.g. uiowa02,uiowa03).
+   * @option export
+   *   Whether to export results to a CSV file.
+   */
+  public function splits(
+    $options = [
+      'split' => '',
+      'apps' => '',
+      'export' => FALSE,
+    ],
+  ) {
+    if (!$this->hasSshAgent()) {
+      $this->say("[ERROR] No SSH keys loaded. Please load your SSH keys before running this command.");
+      return;
+    }
+
+    $target_splits = !empty($options['split'])
+      ? array_map('trim', explode(',', $options['split']))
+      : [];
+
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
+      : [];
+
+    $filepath = NULL;
+    $headers = ['Application', 'Domain', 'Split'];
+
+    if ($options['export']) {
+      $filepath = $this->initializeCsvExport('SiteNow-Splits-Report', $headers);
+    }
+
+    // Grouped per-split for table output: $results[split_id][] = [app, domain].
+    $results = [];
+
+    $this->say('Fetching domains from Acquia Cloud API...');
+    $client = $this->getAcquiaCloudApiClient(
+      $this->getConfigValue('uiowa.credentials.acquia.key'),
+      $this->getConfigValue('uiowa.credentials.acquia.secret')
+    );
+
+    $api_environments = new Environments($client);
+    $applications = $this->getSortedApplications($client);
+
+    foreach ($applications as $application) {
+      // Skip UIHC applications.
+      if ($application->organization->name === 'University of Iowa Healthcare') {
+        continue;
+      }
+
+      $app_name = str_replace('prod:', '', $application->hosting->id);
+
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
+        continue;
+      }
+
+      $this->say("Processing $app_name...");
+
+      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
+      foreach ($api_environments->getAll($application->uuid) as $environment) {
+        // Prod only.
+        if ($environment->name !== 'prod') {
+          continue;
+        }
+
+        $domains = array_values(array_filter(
+          $environment->domains,
+          function ($domain) use ($app_name, $environment) {
+            // Filter out internal Acquia platform domains.
+            return !(
+              str_contains($domain, '.prod.drupal.') ||
+              str_contains($domain, '.acquia-sites.com') ||
+              str_starts_with($domain, "$app_name.{$environment->name}")
+            );
+          }
+        ));
+
+        foreach ($domains as $domain) {
+          $this->say("  Checking $domain...");
+          $statuses = $this->getSplitStatuses($domain);
+
+          if ($statuses === FALSE) {
+            continue;
+          }
+
+          foreach ($statuses as $split_id => $is_active) {
+            // Active only.
+            if (!$is_active) {
+              continue;
+            }
+            if (!empty($target_splits) && !in_array($split_id, $target_splits)) {
+              continue;
+            }
+
+            $row = [$app_name, $domain, $split_id];
+
+            if ($options['export']) {
+              $fp = fopen($filepath, 'a');
+              fputcsv($fp, $row, ',', '"', '\\');
+              fclose($fp);
+            }
+            else {
+              $results[$split_id][] = [$app_name, $domain];
+            }
+          }
+        }
+      }
+    }
+
+    // Free memory.
+    $api_environments = NULL;
+
+    if ($options['export']) {
+      $this->say("Results exported to $filepath");
+      return;
+    }
+
+    if (empty($results)) {
+      $this->say('No active splits found matching the filters.');
+      return;
+    }
+
+    ksort($results);
+    foreach ($results as $split_id => $rows) {
+      $this->say('');
+      $this->say("== {$split_id} ==");
+      $table = new Table($this->output());
+      $table->setHeaders(['Application', 'Domain']);
+      $table->setRows($rows);
+      $table->render();
+    }
+  }
+
+  /**
+   * Get config_split entity statuses for a multisite (prod).
+   *
+   * @param string $multisite
+   *   The multisite domain.
+   *
+   * @return array<string, bool>|false
+   *   Map of split_id => active. FALSE if the query errored or returned no
+   *   parseable JSON.
+   */
+  private function getSplitStatuses(string $multisite): array|false {
+    $alias = $this->getDrushAlias($multisite) . '.prod';
+    $php = 'echo json_encode(array_map(function ($s) { return $s->status(); }, \\Drupal::entityTypeManager()->getStorage("config_split")->loadMultiple()));';
+    $cmd = "drush @{$alias} php:eval " . escapeshellarg($php) . " --no-interaction < /dev/null 2>&1";
+    $output = shell_exec($cmd);
+
+    if (empty($output)) {
+      return FALSE;
+    }
+
+    // Bail on common drush failure patterns.
+    if (stripos($output, 'could not be found') !== FALSE ||
+        stripos($output, 'failed to run') !== FALSE ||
+        stripos($output, 'exception') !== FALSE) {
+      return FALSE;
+    }
+
+    // Slice to the JSON payload — drush prepends Acquia connection chatter.
+    if (($start = strpos($output, '{')) !== FALSE) {
+      $output = substr($output, $start);
+    }
+    if (($end = strrpos($output, '}')) !== FALSE) {
+      $output = substr($output, 0, $end + 1);
+    }
+
+    $statuses = json_decode($output, TRUE);
+    if (!is_array($statuses)) {
+      return FALSE;
+    }
+
+    return $statuses;
+  }
+
+  /**
    * Report of inactive SiteNow sites.
    *
    * @command uiowa:report:inactive
