@@ -34,6 +34,7 @@
 
           try {
             const response = await AlertsUtil.fetchAlerts();
+            container.querySelector('.alerts-load-error')?.remove();
             if (response.data.length > 0) {
               await syncAlerts(response.data);
             }
@@ -47,10 +48,16 @@
             lastError = false;
           }
           catch (e) {
-            container.innerHTML = '<p>Unable to load active alerts.</p>';
-            if (!lastError) {
-              Drupal.announce(Drupal.t('Unable to load active alerts.'));
-              lastError = true;
+
+            // Keep existing alerts / campus-normal in place on a transient
+            // fetch failure so a network blip doesn't hide valid info.
+            const hasContent = container.querySelector('[data-alert-id], .alert--success');
+            if (!hasContent) {
+              container.innerHTML = '<p class="alerts-load-error">Unable to load active alerts.</p>';
+              if (!lastError) {
+                Drupal.announce(Drupal.t('Unable to load active alerts.'));
+                lastError = true;
+              }
             }
           }
         }
