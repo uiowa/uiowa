@@ -7307,12 +7307,6 @@ $sites['orgwomeninhealthcare.dev.drupal.uiowa.edu'] = 'womeninhealthcare.org.uio
 $sites['orgwomeninhealthcare.stage.drupal.uiowa.edu'] = 'womeninhealthcare.org.uiowa.edu';
 $sites['orgwomeninhealthcare.prod.drupal.uiowa.edu'] = 'womeninhealthcare.org.uiowa.edu';
 
-// Directory aliases for intellectualfreedom.center.uiowa.edu.
-$sites['centerintellectualfreedom.uiowa.ddev.site'] = 'intellectualfreedom.center.uiowa.edu';
-$sites['centerintellectualfreedom.dev.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
-$sites['centerintellectualfreedom.stage.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
-$sites['centerintellectualfreedom.prod.drupal.uiowa.edu'] = 'intellectualfreedom.center.uiowa.edu';
-
 // Directory aliases for bunsawat.lab.uiowa.edu.
 $sites['labbunsawat.uiowa.ddev.site'] = 'bunsawat.lab.uiowa.edu';
 $sites['labbunsawat.dev.drupal.uiowa.edu'] = 'bunsawat.lab.uiowa.edu';
@@ -7822,3 +7816,21 @@ $sites['cif.uiowa.ddev.site'] = 'cif.uiowa.edu';
 $sites['cif.dev.drupal.uiowa.edu'] = 'cif.uiowa.edu';
 $sites['cif.stage.drupal.uiowa.edu'] = 'cif.uiowa.edu';
 $sites['cif.prod.drupal.uiowa.edu'] = 'cif.uiowa.edu';
+
+// Directory aliases for sound.lab.uiowa.edu.
+$sites['labsound.uiowa.ddev.site'] = 'sound.lab.uiowa.edu';
+$sites['labsound.dev.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+$sites['labsound.stage.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+$sites['labsound.prod.drupal.uiowa.edu'] = 'sound.lab.uiowa.edu';
+
+// Directory aliases for adrain.lab.uiowa.edu.
+$sites['labadrain.uiowa.ddev.site'] = 'adrain.lab.uiowa.edu';
+$sites['labadrain.dev.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
+$sites['labadrain.stage.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
+$sites['labadrain.prod.drupal.uiowa.edu'] = 'adrain.lab.uiowa.edu';
+
+// Directory aliases for pryor.sites.uiowa.edu.
+$sites['sitespryor.uiowa.ddev.site'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.dev.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.stage.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';
+$sites['sitespryor.prod.drupal.uiowa.edu'] = 'pryor.sites.uiowa.edu';

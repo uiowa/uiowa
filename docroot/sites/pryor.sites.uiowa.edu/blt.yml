@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitespryor.uiowa.ddev.site
+    protocol: https
+  machine_name: sitespryor
+  human_name: pryor.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitespryor.prod
+drupal:
+  db:
+    database: pryor_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitespryor.prod.drupal.uiowa.edu'
+  requester: gmccrory
+  site-name: 'Craig Pryor'
