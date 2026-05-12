@@ -7828,3 +7828,9 @@ $sites['studioorgan.uiowa.ddev.site'] = 'organ.studio.uiowa.edu';
 $sites['studioorgan.dev.drupal.uiowa.edu'] = 'organ.studio.uiowa.edu';
 $sites['studioorgan.stage.drupal.uiowa.edu'] = 'organ.studio.uiowa.edu';
 $sites['studioorgan.prod.drupal.uiowa.edu'] = 'organ.studio.uiowa.edu';
+
+// Directory aliases for dancook.lab.uiowa.edu.
+$sites['labdancook.uiowa.ddev.site'] = 'dancook.lab.uiowa.edu';
+$sites['labdancook.dev.drupal.uiowa.edu'] = 'dancook.lab.uiowa.edu';
+$sites['labdancook.stage.drupal.uiowa.edu'] = 'dancook.lab.uiowa.edu';
+$sites['labdancook.prod.drupal.uiowa.edu'] = 'dancook.lab.uiowa.edu';
