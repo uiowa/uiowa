@@ -282,18 +282,21 @@ class ReportCommands extends Tasks {
   }
 
   /**
-   * Get config_split entity statuses for a multisite (prod).
+   * Get config_split statuses for a multisite (prod).
+   *
+   * One drush call per site returning all splits — avoids the N+1 round
+   * trips that `drush config:get` would require.
    *
    * @param string $multisite
    *   The multisite domain.
    *
    * @return array<string, bool>|false
    *   Map of split_id => active. FALSE if the query errored or returned no
-   *   parseable JSON.
+   *   parseable output.
    */
   private function getSplitStatuses(string $multisite): array|false {
     $alias = $this->getDrushAlias($multisite) . '.prod';
-    $php = 'echo json_encode(array_map(function ($s) { return $s->status(); }, \\Drupal::entityTypeManager()->getStorage("config_split")->loadMultiple()));';
+    $php = 'foreach (\\Drupal::configFactory()->listAll("config_split.config_split.") as $n) { echo substr($n, 28) . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
     $cmd = "drush @{$alias} php:eval " . escapeshellarg($php) . " --no-interaction < /dev/null 2>&1";
     $output = shell_exec($cmd);
 
@@ -308,20 +311,21 @@ class ReportCommands extends Tasks {
       return FALSE;
     }
 
-    // Slice to the JSON payload — drush prepends Acquia connection chatter.
-    if (($start = strpos($output, '{')) !== FALSE) {
-      $output = substr($output, $start);
-    }
-    if (($end = strrpos($output, '}')) !== FALSE) {
-      $output = substr($output, 0, $end + 1);
+    // Parse "<split_id>:<0|1>" lines. Skips drush/Acquia chatter that
+    // doesn't match the pattern.
+    $statuses = [];
+    foreach (explode("\n", $output) as $line) {
+      $line = trim($line);
+      if ($line === '' || !str_contains($line, ':')) {
+        continue;
+      }
+      [$id, $val] = explode(':', $line, 2);
+      if ($id !== '' && ($val === '0' || $val === '1')) {
+        $statuses[$id] = $val === '1';
+      }
     }
 
-    $statuses = json_decode($output, TRUE);
-    if (!is_array($statuses)) {
-      return FALSE;
-    }
-
-    return $statuses;
+    return $statuses ?: FALSE;
   }
 
   /**
