@@ -230,7 +230,14 @@ class ReportCommands extends Tasks {
           continue;
         }
 
+        // Environmental splits (ci/dev/local/prod/stage) are a proxy for
+        // which environment a site is in — not useful in this report.
+        $env_splits = ['ci', 'dev', 'local', 'prod', 'stage'];
+
         foreach ($statuses as $split_id => $is_active) {
+          if (in_array($split_id, $env_splits)) {
+            continue;
+          }
           // Active only.
           if (!$is_active) {
             continue;
