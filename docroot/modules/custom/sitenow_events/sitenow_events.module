@@ -602,7 +602,7 @@ function sitenow_events_build_card(array $event, bool $include_room_number = FAL
     // If we're including the room number,
     // append it to the location name.
     $location_name = $event['location_name'];
-    if ($include_room_number && !is_null($event['room_number'])) {
+    if ($include_room_number && !empty($event['room_number'])) {
       $location_name = implode(' - ', [$location_name, $event['room_number']]);
     }
 
