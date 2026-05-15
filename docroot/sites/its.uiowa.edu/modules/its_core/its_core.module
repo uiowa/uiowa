@@ -6,12 +6,14 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
+use Drupal\fullcalendar\Plugin\views\style\FullCalendar;
 use Drupal\its_core\Entity\AlertUpdate;
 use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
@@ -19,6 +21,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
 use Drupal\smart_date\Entity\SmartDateFormat;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_config_ignore_settings_alter().
@@ -501,6 +504,29 @@ function its_core_preprocess_block(&$variables) {
       break;
 
   }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Bound the alerts calendar's navigable range to the view's date filter so
+ * users can't navigate to empty months past the data window.
+ */
+function its_core_views_pre_render(ViewExecutable $view) {
+  if ($view->id() !== 'alerts_list_block' || $view->current_display !== 'alerts_calendar') {
+    return;
+  }
+  if (!($view->style_plugin instanceof FullCalendar)) {
+    return;
+  }
+  $filter = $view->filter['field_alert_date_value'] ?? NULL;
+  $offset = $filter->options['value']['value'] ?? '-90 days';
+  $cutoff = (new DrupalDateTime($offset))->format('Y-m-d');
+  // The fullcalendar module's own hook_views_pre_view runs first and converts
+  // the raw textfield options into the JS-ready structure under
+  // `options.options`. Inject directly there since pre_render is too late to
+  // go through the textfield-parser path.
+  $view->style_plugin->options['options']['validRange'] = ['start' => $cutoff];
 }
 
 /**
