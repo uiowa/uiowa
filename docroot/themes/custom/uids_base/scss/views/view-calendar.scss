@@ -41,14 +41,13 @@ a.fc-event {
   background-color: variables.$brand-cool-gray!important;
 }
 
-.fc-day-grid-event {
-  padding: .5rem !important;
+.fc-daygrid-event {
+  padding: 0.25rem;
 }
-.fc-day-header,
 .fc-col-header-cell {
   padding: .5rem !important;
 }
-.fc-day-number {
+.fc-daygrid-day-number {
   padding: .5rem !important;
 }
 
@@ -60,4 +59,9 @@ a.fc-event {
 // Allow event title text to wrap so long alert titles aren't truncated.
 .fc-daygrid-event .fc-event-title {
   white-space: normal;
+}
+
+// Stack time above title for readability in narrow day cells.
+.fc-daygrid-event .fc-event-main-frame {
+  flex-direction: column;
 }
