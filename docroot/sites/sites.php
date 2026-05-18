@@ -7840,3 +7840,9 @@ $sites['sitespengjiang.uiowa.ddev.site'] = 'pengjiang.sites.uiowa.edu';
 $sites['sitespengjiang.dev.drupal.uiowa.edu'] = 'pengjiang.sites.uiowa.edu';
 $sites['sitespengjiang.stage.drupal.uiowa.edu'] = 'pengjiang.sites.uiowa.edu';
 $sites['sitespengjiang.prod.drupal.uiowa.edu'] = 'pengjiang.sites.uiowa.edu';
+
+// Directory aliases for theatrereps.org.uiowa.edu.
+$sites['orgtheatrereps.uiowa.ddev.site'] = 'theatrereps.org.uiowa.edu';
+$sites['orgtheatrereps.dev.drupal.uiowa.edu'] = 'theatrereps.org.uiowa.edu';
+$sites['orgtheatrereps.stage.drupal.uiowa.edu'] = 'theatrereps.org.uiowa.edu';
+$sites['orgtheatrereps.prod.drupal.uiowa.edu'] = 'theatrereps.org.uiowa.edu';
