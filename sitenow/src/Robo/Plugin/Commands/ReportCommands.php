@@ -201,6 +201,15 @@ class ReportCommands extends Tasks {
     // Grouped per-split for table output: $results[split_id][] = [app, domain].
     $results = [];
 
+    // Apps whose results were discarded because at least one site failed to
+    // respond. Trustworthy aggregates require every site in an app to answer;
+    // a partial app is worse than no app, so we drop it entirely.
+    $failed_apps = [];
+
+    // Environmental splits (ci/dev/local/prod/stage) are a proxy for which
+    // environment a site is in — not useful in this report.
+    $env_splits = ['ci', 'dev', 'local', 'prod', 'stage'];
+
     // Use blt/manifest.yml — it's the authoritative SiteNow fleet list and is
     // already deduplicated (www/redirect pairs collapsed), unlike the Acquia
     // API domain list. Top-level keys are Acquia app names; values are arrays
@@ -210,7 +219,7 @@ class ReportCommands extends Tasks {
 
     if (!file_exists($manifest_path)) {
       $this->say("[ERROR] Manifest file not found at $manifest_path");
-      return;
+      return 1;
     }
 
     $manifest = Yaml::parseFile($manifest_path);
@@ -222,62 +231,80 @@ class ReportCommands extends Tasks {
 
       $this->say("Processing $app_name...");
 
+      // Buffer this app's rows so we can discard them wholesale if any site
+      // in the app fails to respond.
+      $app_rows = [];
+      $abort_reason = NULL;
+
       foreach ($domains as $domain) {
         $this->say("  Checking $domain...");
-        $statuses = $this->getSplitStatuses($domain);
+        $error = NULL;
+        $statuses = $this->getSplitStatuses($domain, $error);
 
         if ($statuses === FALSE) {
-          continue;
+          $abort_reason = "$domain — $error";
+          $this->say("[ERROR] $app_name aborted: $abort_reason");
+          break;
         }
-
-        // Environmental splits (ci/dev/local/prod/stage) are a proxy for
-        // which environment a site is in — not useful in this report.
-        $env_splits = ['ci', 'dev', 'local', 'prod', 'stage'];
 
         foreach ($statuses as $split_id => $is_active) {
           if (in_array($split_id, $env_splits)) {
             continue;
           }
-          // Active only.
           if (!$is_active) {
             continue;
           }
           if (!empty($target_splits) && !in_array($split_id, $target_splits)) {
             continue;
           }
+          $app_rows[] = [$app_name, $domain, $split_id];
+        }
+      }
 
-          $row = [$app_name, $domain, $split_id];
+      if ($abort_reason !== NULL) {
+        $failed_apps[$app_name] = $abort_reason;
+        continue;
+      }
 
-          if ($options['export']) {
-            $fp = fopen($filepath, 'a');
-            fputcsv($fp, $row, ',', '"', '\\');
-            fclose($fp);
-          }
-          else {
-            $results[$split_id][] = [$app_name, $domain];
-          }
+      // Commit this app's rows now that it completed cleanly.
+      foreach ($app_rows as $row) {
+        if ($options['export']) {
+          $fp = fopen($filepath, 'a');
+          fputcsv($fp, $row, ',', '"', '\\');
+          fclose($fp);
+        }
+        else {
+          [, $domain, $split_id] = $row;
+          $results[$split_id][] = [$app_name, $domain];
         }
       }
     }
 
     if ($options['export']) {
       $this->say("Results exported to $filepath");
-      return;
     }
-
-    if (empty($results)) {
+    elseif (empty($results)) {
       $this->say('No active splits found matching the filters.');
-      return;
+    }
+    else {
+      ksort($results);
+      foreach ($results as $split_id => $rows) {
+        $this->say('');
+        $this->say("== {$split_id} ==");
+        $table = new Table($this->output());
+        $table->setHeaders(['Application', 'Domain']);
+        $table->setRows($rows);
+        $table->render();
+      }
     }
 
-    ksort($results);
-    foreach ($results as $split_id => $rows) {
+    if (!empty($failed_apps)) {
       $this->say('');
-      $this->say("== {$split_id} ==");
-      $table = new Table($this->output());
-      $table->setHeaders(['Application', 'Domain']);
-      $table->setRows($rows);
-      $table->render();
+      $this->say('[WARNING] ' . count($failed_apps) . ' application(s) excluded from report due to errors:');
+      foreach ($failed_apps as $app_name => $reason) {
+        $this->say("  $app_name: $reason");
+      }
+      return 1;
     }
   }
 
@@ -289,32 +316,31 @@ class ReportCommands extends Tasks {
    *
    * @param string $multisite
    *   The multisite domain.
+   * @param string|null $error
+   *   Out-param populated with a human-readable reason when FALSE is returned.
    *
    * @return array<string, bool>|false
-   *   Map of split_id => active. FALSE if the query errored or returned no
-   *   parseable output.
+   *   Map of split_id => active. FALSE if drush exited non-zero or returned
+   *   no parseable output.
    */
-  private function getSplitStatuses(string $multisite): array|false {
+  private function getSplitStatuses(string $multisite, ?string &$error = NULL): array|false {
     $alias = $this->getDrushAlias($multisite) . '.prod';
-    $php = 'foreach (\\Drupal::configFactory()->listAll("config_split.config_split.") as $n) { echo substr($n, 28) . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
+    $php = 'foreach (\\Drupal::configFactory()->listAll("config_split.config_split.") as $n) { echo substr($n, 26) . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
     $cmd = "drush @{$alias} php:eval " . escapeshellarg($php) . " --no-interaction < /dev/null 2>&1";
-    $output = shell_exec($cmd);
 
-    if (empty($output)) {
+    $output_lines = [];
+    $exit_code = 0;
+    exec($cmd, $output_lines, $exit_code);
+
+    if ($exit_code !== 0) {
+      $tail = trim((string) end($output_lines));
+      $error = "drush exit $exit_code" . ($tail !== '' ? " ($tail)" : '');
       return FALSE;
     }
 
-    // Bail on common drush failure patterns.
-    if (stripos($output, 'could not be found') !== FALSE ||
-        stripos($output, 'failed to run') !== FALSE ||
-        stripos($output, 'exception') !== FALSE) {
-      return FALSE;
-    }
-
-    // Parse "<split_id>:<0|1>" lines. Skips drush/Acquia chatter that
-    // doesn't match the pattern.
+    // Parse "<split_id>:<0|1>" lines. Drush/Acquia chatter is skipped.
     $statuses = [];
-    foreach (explode("\n", $output) as $line) {
+    foreach ($output_lines as $line) {
       $line = trim($line);
       if ($line === '' || !str_contains($line, ':')) {
         continue;
@@ -325,7 +351,12 @@ class ReportCommands extends Tasks {
       }
     }
 
-    return $statuses ?: FALSE;
+    if (empty($statuses)) {
+      $error = 'no parseable split status lines in drush output';
+      return FALSE;
+    }
+
+    return $statuses;
   }
 
   /**
