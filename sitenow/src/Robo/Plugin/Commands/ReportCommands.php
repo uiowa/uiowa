@@ -4,6 +4,7 @@ namespace SiteNow\Robo\Plugin\Commands;
 
 use SiteNow\Robo\Traits\SiteNowCommandsTrait;
 use AcquiaCloudApi\Endpoints\Environments;
+use Robo\ResultData;
 use Robo\Tasks;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Yaml\Yaml;
@@ -219,7 +220,7 @@ class ReportCommands extends Tasks {
 
     if (!file_exists($manifest_path)) {
       $this->say("[ERROR] Manifest file not found at $manifest_path");
-      return 1;
+      return new ResultData(ResultData::EXITCODE_ERROR);
     }
 
     $manifest = Yaml::parseFile($manifest_path);
@@ -304,7 +305,7 @@ class ReportCommands extends Tasks {
       foreach ($failed_apps as $app_name => $reason) {
         $this->say("  $app_name: $reason");
       }
-      return 1;
+      return new ResultData(ResultData::EXITCODE_ERROR);
     }
   }
 
