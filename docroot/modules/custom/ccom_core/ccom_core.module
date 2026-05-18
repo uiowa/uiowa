@@ -12,7 +12,8 @@ function ccom_core_preprocess_block(&$variables) {
   if (isset($variables['attributes']['id']) && str_contains($variables['attributes']['id'], 'footercontactinfo')) {
     $current_path = \Drupal::request()->getRequestUri();
     $full_url = \Drupal::request()->server->get('HTTP_HOST') . $current_path;
-    $newlink = '<p><a href="http://hc-vbugtracker.healthcare.uiowa.edu/projects/uihc-org/issues/new?issue[custom_field_values][1]=' . $full_url . '">Report an issue with this page</a></p>';
+    $encoded_url = urlencode($full_url);
+    $newlink = '<p><a href="https://service.uiowa.edu/portal/service?id=1733&customfield_1489=' . $encoded_url . '&customfield_1487=2">Report an issue with this page</a></p>';
     $variables["content"]["field_uiowa_text_area"][0]['#text'] .= $newlink;
     $variables['#cache'] = [
       'max-age' => 0,
