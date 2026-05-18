@@ -520,7 +520,7 @@ function its_core_views_pre_render(ViewExecutable $view) {
     return;
   }
   $filter = $view->filter['field_alert_date_value'] ?? NULL;
-  $offset = $filter->options['value']['value'] ?? '-90 days';
+  $offset = $filter?->options['value']['value'] ?? '-90 days';
   $cutoff = (new DrupalDateTime($offset))->format('Y-m-d');
   // The fullcalendar module's own hook_views_pre_view runs first and converts
   // the raw textfield options into the JS-ready structure under
