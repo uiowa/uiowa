@@ -7834,3 +7834,9 @@ $sites['labdancook.uiowa.ddev.site'] = 'dancook.lab.uiowa.edu';
 $sites['labdancook.dev.drupal.uiowa.edu'] = 'dancook.lab.uiowa.edu';
 $sites['labdancook.stage.drupal.uiowa.edu'] = 'dancook.lab.uiowa.edu';
 $sites['labdancook.prod.drupal.uiowa.edu'] = 'dancook.lab.uiowa.edu';
+
+// Directory aliases for pengjiang.sites.uiowa.edu.
+$sites['sitespengjiang.uiowa.ddev.site'] = 'pengjiang.sites.uiowa.edu';
+$sites['sitespengjiang.dev.drupal.uiowa.edu'] = 'pengjiang.sites.uiowa.edu';
+$sites['sitespengjiang.stage.drupal.uiowa.edu'] = 'pengjiang.sites.uiowa.edu';
+$sites['sitespengjiang.prod.drupal.uiowa.edu'] = 'pengjiang.sites.uiowa.edu';
