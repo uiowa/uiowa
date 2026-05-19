@@ -8,11 +8,9 @@ dependencies:
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_category
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_count
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_feed_url
-    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_no_results
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_pager
   module:
     - layout_builder_custom
-    - text
 _core:
   default_config_hash: e2ylEIvRY_ADuxYgbOrcpxwi37tb6UhWy43ktEWH4Qk
 id: block_content.uiowa_jobs.default
@@ -48,14 +46,6 @@ content:
     settings:
       size: 60
       placeholder: 'https://hris.uiowa.edu/otac-rss/faculty.php?dept-code=...'
-    third_party_settings: {  }
-  field_uiowa_jobs_no_results:
-    type: text_textarea
-    weight: 5
-    region: content
-    settings:
-      rows: 3
-      placeholder: ''
     third_party_settings: {  }
   field_uiowa_jobs_pager:
     type: boolean_checkbox
