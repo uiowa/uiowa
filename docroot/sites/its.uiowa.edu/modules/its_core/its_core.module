@@ -527,6 +527,15 @@ function its_core_views_pre_render(ViewExecutable $view) {
   // `options.options`. Inject directly there since pre_render is too late to
   // go through the textfield-parser path.
   $view->style_plugin->options['options']['validRange'] = ['start' => $cutoff];
+
+  // Match production's time display format (e.g., "11:46 am") instead of FC
+  // v6's default abbreviated form ("11:46a"). The module doesn't expose
+  // eventTimeFormat as a form-side option.
+  $view->style_plugin->options['options']['eventTimeFormat'] = [
+    'hour' => 'numeric',
+    'minute' => '2-digit',
+    'meridiem' => 'short',
+  ];
 }
 
 /**
