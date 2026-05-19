@@ -1,0 +1,27 @@
+uuid: a8f610d6-8daa-4ecf-a32c-4801b9f5cb8b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_jobs
+    - field.storage.block_content.field_uiowa_jobs_count
+_core:
+  default_config_hash: JV6bgSsj4wWLHkMbhNUlg7c5xQDC4DyOBLlcXqSfwn4
+id: block_content.uiowa_jobs.field_uiowa_jobs_count
+field_name: field_uiowa_jobs_count
+entity_type: block_content
+bundle: uiowa_jobs
+label: 'Number of jobs to display'
+description: 'How many job postings to show (1-25).'
+required: true
+translatable: false
+default_value:
+  -
+    value: 10
+default_value_callback: ''
+settings:
+  min: 1
+  max: 25
+  prefix: ''
+  suffix: ''
+field_type: integer
