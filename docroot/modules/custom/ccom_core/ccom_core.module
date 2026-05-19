@@ -13,7 +13,7 @@ function ccom_core_preprocess_block(&$variables) {
     $current_path = \Drupal::request()->getRequestUri();
     $full_url = \Drupal::request()->server->get('HTTP_HOST') . $current_path;
     $encoded_url = urlencode($full_url);
-    $newlink = '<p><a href="https://service.uiowa.edu/portal/service?id=1733&customfield_1489=' . $encoded_url . '&customfield_1487=2">Report an issue with this page</a></p>';
+    $newlink = '<p><a href="https://service.uiowa.edu/portal/service?id=1734&customfield_1489=' . $encoded_url . '&customfield_1487=2">Report an issue with this page</a></p>';
     $variables["content"]["field_uiowa_text_area"][0]['#text'] .= $newlink;
     $variables['#cache'] = [
       'max-age' => 0,
