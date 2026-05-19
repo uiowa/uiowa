@@ -97,6 +97,16 @@ class AlertsProcessor extends EntityProcessorBase {
     $recordSyncKey = $record[$this->apiRecordSyncKey];
     $this->processedRecords[] = $recordSyncKey;
 
+    // Alert cancellations should be skipped so they don't
+    // create duplicate alerts.
+    if ($record['msgType'] === 'Cancel') {
+      $this->skipped++;
+      static::getLogger('emergency_core')->notice('Alert @identifier skipped (msgType "Cancel").', [
+        '@identifier' => $recordSyncKey,
+      ]);
+      return;
+    }
+
     $info = $record['info'];
     $info['identifier'] = $record['identifier'];
     $record = $info;
@@ -121,12 +131,20 @@ class AlertsProcessor extends EntityProcessorBase {
 
       if (!is_null($existing_nid)) {
         $this->skipped++;
+        static::getLogger('emergency_core')->notice('Alert @identifier skipped (already exists as node @nid).', [
+          '@identifier' => $recordSyncKey,
+          '@nid' => $existing_nid,
+        ]);
       }
       else {
         $entity->enforceIsNew();
         $entity->setPublished();
         $entity->save();
         $this->created++;
+        static::getLogger('emergency_core')->notice('Alert @identifier created as node @nid.', [
+          '@identifier' => $recordSyncKey,
+          '@nid' => $entity->id(),
+        ]);
       }
     }
   }

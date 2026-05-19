@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablu.uiowa.ddev.site
+    protocol: https
+  machine_name: lablu
+  human_name: lu.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablu.prod
+drupal:
+  db:
+    database: lu_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablu.prod.drupal.uiowa.edu'
+  requester: housholders
+  site-name: 'Lu Laboratory'

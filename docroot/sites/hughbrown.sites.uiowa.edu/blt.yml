@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteshughbrown.uiowa.ddev.site
+    protocol: https
+  machine_name: siteshughbrown
+  human_name: hughbrown.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshughbrown.prod
+drupal:
+  db:
+    database: hughbrown_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshughbrown.prod.drupal.uiowa.edu'
+  requester: hbrown
+  site-name: 'Hugh Brown'

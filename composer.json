@@ -28,8 +28,8 @@
             "url": "https://asset-packagist.org"
         },
         "blt-drupal-test": {
-            "type": "git",
-            "url": "https://github.com/modularlab/blt-drupal-test.git"
+            "type": "path",
+            "url": "./packages/blt-drupal-test"
         },
         "drupal": {
             "type": "composer",
@@ -67,7 +67,10 @@
         "audit": {
             "abandoned": "ignore",
             "ignore": {
-                "CVE-2025-67746": "Temporarily ignore."
+                "CVE-2025-67746": "Temporarily ignore.",
+                "CVE-2026-40261": "Temporarily ignore.",
+                "CVE-2026-40176": "Temporarily ignore.",
+                "PKSA-pwvr-3754-v57r": "Temporarily ignore."
             }
         },
         "sort-packages": true,
@@ -91,13 +94,13 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "acquia/blt": "^13.7.4",
-        "acquia/blt-drupal-test": "dev-main#bb2103f",
+        "acquia/blt-drupal-test": "*",
         "acquia/blt-multisite": "dev-master",
         "acquia/blt-travis": "^1.1.0",
         "acquia/drupal-environment-detector": "^1.6",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
-        "bower-asset/fontawesome": "6.x-dev#d19ab26a33b4d80f9af604e85d4194757276f01d",
+        "bower-asset/fontawesome": "6.7.2",
         "bower-asset/lazysizes": "^5.2",
         "bower-asset/photoswipe": "^5",
         "cweagans/composer-patches": "^1.7",
@@ -109,18 +112,18 @@
         "drupal/aggregator": "^2.1",
         "drupal/allowed_formats": "^3.0",
         "drupal/antibot": "^2.0",
-        "drupal/better_exposed_filters": "^7.0",
+        "drupal/better_exposed_filters": "^7.1",
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/bigmenu": "^2.0@RC",
         "drupal/captcha": "^2.0",
         "drupal/charts": "^5.1",
         "drupal/ckeditor_small_tag": "^1.0@RC",
         "drupal/classy": "^2.0",
-        "drupal/config_ignore": "3.0.0-beta2",
+        "drupal/config_ignore": "^3.3",
         "drupal/config_inspector": "^2.1",
         "drupal/config_split": "^2.0",
-        "drupal/core-composer-scaffold": "10.4.9",
-        "drupal/core-recommended": "10.4.9",
+        "drupal/core-composer-scaffold": "~10.5.9",
+        "drupal/core-recommended": "~10.5.9",
         "drupal/crop": "^2.4",
         "drupal/cshs": "^4.0",
         "drupal/ctools": "^4.1",
@@ -131,7 +134,7 @@
         "drupal/diff": "^2.0@beta",
         "drupal/draggableviews": "^2.0",
         "drupal/easy_breadcrumb": "^2.0",
-        "drupal/editor_advanced_link": "^2.2",
+        "drupal/editor_advanced_link": "^2.3",
         "drupal/entity_browser": "^2.4.0",
         "drupal/entity_print": "^2.6",
         "drupal/entity_reference_revisions": "^1.5",
@@ -141,7 +144,7 @@
         "drupal/field_delimiter": "^2.0",
         "drupal/field_group": "^4.0",
         "drupal/file_mdm": "^3.0",
-        "drupal/find_text": "^2.0@beta",
+        "drupal/find_text": "3.0.1",
         "drupal/focal_point": "^2.1",
         "drupal/fontawesome": "^3.0",
         "drupal/fragments": "^2.1",
@@ -150,7 +153,7 @@
         "drupal/google_analytics": "^4.0",
         "drupal/google_tag": "^1.8",
         "drupal/gpa_calculator": "^2.0",
-        "drupal/heading": "^1.4",
+        "drupal/heading": "^2.0",
         "drupal/honeypot": "2.2.2",
         "drupal/iframe_title_filter": "^3.0",
         "drupal/imagecache_external": "^3.0",
@@ -158,6 +161,7 @@
         "drupal/inline_entity_form": "^3.0.0-rc19",
         "drupal/jsonapi_extras": "^3.23",
         "drupal/jsonapi_include": "^1.6",
+        "drupal/klaro": "^3.0",
         "drupal/layout_builder_limit": "^1.0@beta",
         "drupal/layout_builder_lock": "^2.0@RC",
         "drupal/layout_builder_operation_link": "^2.2",
@@ -170,33 +174,33 @@
         "drupal/link_attributes": "^2.1",
         "drupal/linkit": "^7.0",
         "drupal/linkit_media_library": "^2.0",
-        "drupal/masquerade": "^2.0@beta",
+        "drupal/masquerade": "^2.0.0",
         "drupal/media_entity_facebook": "^4.0",
-        "drupal/media_entity_file_replace": "^1.0@beta",
+        "drupal/media_entity_file_replace": "^1.3",
         "drupal/media_entity_instagram": "^4.0@beta",
         "drupal/media_entity_twitter": "^2.10",
         "drupal/media_library_theme_reset": "^2.0@beta",
         "drupal/media_thumbnails_video": "^2.0",
         "drupal/memcache": "^2.7",
         "drupal/menu_admin_per_menu": "^1.6",
-        "drupal/menu_block": "^1.7",
+        "drupal/menu_block": "^1.14",
         "drupal/menu_breadcrumb": "^2.0",
         "drupal/menu_link_weight": "^1.0@beta",
         "drupal/menu_per_role": "^1.8",
-        "drupal/metatag": "^2.0",
-        "drupal/moderated_content_bulk_publish": "^3.0@beta",
-        "drupal/node_revision_delete": "^2.0",
+        "drupal/metatag": "^2.2",
+        "drupal/moderated_content_bulk_publish": "^3.0.0-rc4",
+        "drupal/node_revision_delete": "^2.0.2",
         "drupal/node_view_permissions": "^2.0",
-        "drupal/og": "2.x-dev#578b4678",
+        "drupal/og": "^2.0.1",
         "drupal/override_node_options": "^2.4",
-        "drupal/paragraphs": "^1.10",
-        "drupal/pathauto": "^1.6",
+        "drupal/paragraphs": "^1.20",
+        "drupal/pathauto": "^1.14",
         "drupal/photoswipe": "^5.0",
         "drupal/piwik_pro": "^1.3",
         "drupal/private_content": "^2.1",
-        "drupal/purge": "^3.4",
+        "drupal/purge": "^3.6.0",
         "drupal/rabbit_hole": "^2.0@beta",
-        "drupal/redirect": "^1.8",
+        "drupal/redirect": "^1.12.0",
         "drupal/replicate": "^1.3",
         "drupal/replicate_ui": "^1.2",
         "drupal/reroute_email": "^2.1",
@@ -222,7 +226,7 @@
         "drupal/turnstile": "^1.1",
         "drupal/tvi": "^2.0",
         "drupal/ui_icons": "^1.0@beta",
-        "drupal/views_bulk_operations": "^4.3",
+        "drupal/views_bulk_operations": "^4.4",
         "drupal/views_core_entity_reference": "^1.0@alpha",
         "drupal/views_custom_cache_tag": "^1.3",
         "drupal/views_data_export": "^1.6",
@@ -271,11 +275,11 @@
                 "[2605218] Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2024-06-13/2605218-135.patch",
                 "[2984272] Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
                 "[3160785] Fix LB contextual links after dragging block to new section": "https://www.drupal.org/files/issues/2023-06-09/3160785-uuid_0.patch",
-                "[3008292] ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "https://www.drupal.org/files/issues/2024-08-06/3008292-105.patch",
+                "[3008292] ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "https://www.drupal.org/files/issues/2025-07-11/3008292-10.5x-108.patch",
                 "[3015152] Support third party settings for components within a section": "https://www.drupal.org/files/issues/2024-06-27/3015152-213.patch",
                 "[3030154] layout_builder__layout_section column hitting database limit": "https://www.drupal.org/files/issues/2021-10-11/3030154-44.patch",
                 "[3359465] Layout builder off-canvas positioning problem when resizing browser ": "https://www.drupal.org/files/issues/2023-07-19/3359465-8.patch",
-                "[2230909] Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2023-12-21/2230909-309.patch",
+                "[2230909] Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2025-09-04/2230909-381.patch",
                 "[3163299] Ajax exposed filters not working for multiple instances of the same Views block placed on one page": "patches/core-3163299.patch",
                 "[3047022] Layout builder fails to assign inline block access dependencies for the overrides section storage on entities with pending revisions": "patches/core-3047022.patch",
                 "[2755791] Ajax error ajax.$form.ajaxSubmit() is not a function": "patches/core-2755791.patch",
@@ -292,9 +296,6 @@
             },
             "drupal/draggableviews": {
                 "Completely hide the weights field for anonymous users": "https://www.drupal.org/files/issues/2021-08-31/3229357-7.patch"
-            },
-            "drupal/editor_advanced_link": {
-                "[3371633] Fix for new window option not rendering under the\n advanced group on initial dialog open.": "patches/14.patch"
             },
             "drupal/entity_reference_revisions": {
                 "[3201705] Orphan purger : if entity's parent is invalid (NULL), dig deeper": "patches/3201705.patch"
@@ -317,15 +318,14 @@
                 "Some styles get added multiple times": "https://www.drupal.org/files/issues/2023-02-14/3341740-3.patch",
                 "Allow radio buttons for single-select group form type": "patches/lbs_3290930.patch"
             },
+            "drupal/link_attributes": {
+                "Linkit with attributes widget overrides parent options": "patches/3379989.patch"
+            },
             "drupal/linkit": {
                 "Add Webform Matcher": "https://www.drupal.org/files/issues/2023-06-13/linkit-webform-matcher-2946234-36.patch",
                 "[3223781]Add Support for <nolink>": "patches/3223781.patch"
             },
-            "drupal/menu_block": {
-                "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch"
-            },
             "drupal/paragraphs": {
-                "Better error messages for missing referenced entities": "https://www.drupal.org/files/issues/2022-02-10/3095945-paragraphs-error-message-20.patch",
                 "find the correct revision ID of the parent": "https://www.drupal.org/files/issues/2020-07-08/access-controll-issue-3090200-22.patch"
             },
             "drupal/rabbit_hole": {
@@ -336,6 +336,9 @@
             },
             "drupal/replicate": {
                 "Replicate components in the proper order.": "patches/3392959.patch"
+            },
+            "drupal/responsive_table_filter": {
+                "[3567997] Improper use of aria-label on scrollable div": "patches/3567997.patch"
             },
             "drupal/scheduler_content_moderation_integration": {
                 "Set a default value in the publish / unpublish state dropdowns": "https://www.drupal.org/files/issues/2023-04-19/3270462-25.patch"

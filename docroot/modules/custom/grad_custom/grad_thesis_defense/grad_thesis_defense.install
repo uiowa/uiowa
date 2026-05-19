@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Grad Thesis Defense module.
+ */
+
+/**
+ * Delete existing thesis_defenese entities.
+ */
+function grad_thesis_defense_update_10000() {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'thesis_defense')
+    ->accessCheck(FALSE);
+  $nids = $query->execute();
+
+  foreach ($nids as $nid) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $node->delete();
+  }
+
+  $count = count($nids);
+  return t('Deleted @count thesis defense nodes.', ['@count' => $count]);
+}

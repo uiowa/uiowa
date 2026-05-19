@@ -4,6 +4,7 @@ namespace Drupal\layout_builder_custom;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\uiowa_core\LinkAnalyticsHelper;
 
 /**
  * Handles form alterations for the uiowa_banner block.
@@ -321,6 +322,9 @@ class BannerBlockFormHandler {
     ];
 
     self::syncDuplicateFields($form_state, $fields_to_sync);
+
+    // Sanitize analytics attributes on banner links.
+    LinkAnalyticsHelper::sanitizeLinkAnalyticsAttributes($form_state, 'field_uiowa_banner_link', 'button');
 
     // Validation for links.
     $link_set = FALSE;

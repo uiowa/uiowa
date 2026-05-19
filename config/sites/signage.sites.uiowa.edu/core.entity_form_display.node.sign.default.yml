@@ -13,7 +13,6 @@ dependencies:
     - content_moderation
     - entity_browser_entity_form
     - inline_entity_form
-    - og
     - path
 id: node.sign.default
 targetEntityType: node
@@ -65,7 +64,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   og_audience:
-    type: og_complex
+    type: entity_reference_autocomplete
     weight: 123
     region: content
     settings:

@@ -223,7 +223,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 1
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -269,6 +269,7 @@ third_party_settings:
                   hide_empty_map: true
                   disable_wheel: true
                   gesture_handling: false
+                  fitbounds_options: '{"padding":[0,0]}'
                   reset_map:
                     control: false
                     options: '{"position":"topleft","title":"Reset View"}'
@@ -283,9 +284,9 @@ third_party_settings:
                     value: ''
                     options: '{"permanent":false,"direction":"center"}'
                   leaflet_popup:
-                    control: '0'
-                    content: ''
-                    options: '{"maxWidth":"300","minWidth":"50","autoPan":true}'
+                    control: '1'
+                    content: "[node:title]<br />\r\n[node:field_location:address_line1], [node:field_location:locality], [node:field_location:administrative_area] \t [node:field_location:postal_code] "
+                    options: '{"maxWidth":300,"minWidth":50,"autoPan":true}'
                   map_position:
                     force: false
                     center:

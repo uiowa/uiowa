@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesmarmaduke.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesmarmaduke
+  human_name: marmaduke.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmarmaduke.prod
+drupal:
+  db:
+    database: marmaduke_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesmarmaduke.prod.drupal.uiowa.edu'
+  requester: marmaduke
+  site-name: marmaduke

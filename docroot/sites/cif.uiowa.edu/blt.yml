@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: cif.uiowa.ddev.site
+    protocol: https
+  machine_name: cif
+  human_name: cif.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: cif.prod
+drupal:
+  db:
+    database: cif_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://cif.prod.drupal.uiowa.edu'
+  requester: csawyer
+  site-name: 'Center for Intellectual Freedom'

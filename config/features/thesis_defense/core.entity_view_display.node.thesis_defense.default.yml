@@ -3,17 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.thesis_defense.field_grad_program_phd
-    - field.field.node.thesis_defense.field_person_first_name
-    - field.field.node.thesis_defense.field_person_last_name
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
-    - field.field.node.thesis_defense.field_thesis_defense_file
     - field.field.node.thesis_defense.field_thesis_defense_location
+    - field.field.node.thesis_defense.field_thesis_defense_program
+    - field.field.node.thesis_defense.field_thesis_defense_sync_id
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
-    - options
     - smart_date
     - user
 id: node.thesis_defense.default
@@ -21,20 +18,13 @@ targetEntityType: node
 bundle: thesis_defense
 mode: default
 content:
-  field_grad_program_phd:
-    type: list_default
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
-    region: content
   field_thesis_defense_chairs:
     type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_thesis_defense_date:
     type: smartdate_default
@@ -47,17 +37,21 @@ content:
       add_classes: false
       time_wrapper: true
       localize: false
+      parts:
+        - start
+        - end
+      duration:
+        separator: ' | '
+        unit: ''
+        decimals: 2
+        suffix: h
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_thesis_defense_disclaimer:
+    settings: {  }
     third_party_settings: {  }
     weight: 1
-    region: content
-  field_thesis_defense_file:
-    type: entity_reference_entity_view
-    label: visually_hidden
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    weight: 5
     region: content
   field_thesis_defense_location:
     type: string
@@ -65,7 +59,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 3
+    region: content
+  field_thesis_defense_program:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
     region: content
   field_thesis_defense_title:
     type: string
@@ -79,7 +81,6 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_person_first_name: true
-  field_person_last_name: true
+  field_thesis_defense_sync_id: true
   links: true
   search_api_excerpt: true

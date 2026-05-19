@@ -300,9 +300,6 @@ function uids_base_preprocess_page(&$variables) {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $variables['uiowa_logo_path'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
-  $variables['uiowa_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
-  $variables['uihc_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/assets/images/uihc.png';
-
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
@@ -513,8 +510,11 @@ function uids_base_preprocess_media(array &$variables) {
         if ($parent instanceof EntityAdapter) {
           $parent_entity = $parent->getEntity();
           if ($parent_entity instanceof BlockContent) {
-            // Flag for the template to add a decorative caption track.
-            $variables['content']['field_media_video_file'][0]['#attributes']['data-decorative'] = 'true';
+            // Mark banner videos as decorative since they are background
+            // media with no informational content.
+            // @todo Update this to check for an alt description
+            //   when that option is available.
+            $variables['content']['field_media_video_file'][0]['#attributes']['aria-hidden'] = 'true';
             // Play video inline instead of going to native player.
             $variables['content']['field_media_video_file'][0]['#attributes']['playsinline'] = 'playsinline';
             // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'
@@ -1021,6 +1021,7 @@ function uids_base_preprocess_block(&$variables) {
 
         $url = $link['#url'] ?? NULL;
         $title = $link['#title'] ?? NULL;
+        $link_attributes = $url?->getOptions()['attributes'] ?? [];
 
         if ($url) {
           if (LinkHelper::shouldClearTitle($title)) {
@@ -1030,6 +1031,7 @@ function uids_base_preprocess_block(&$variables) {
           $links[] = [
             'link_url' => $url->toString(),
             'link_text' => $title,
+            'link_attributes' => $link_attributes,
           ];
         }
       }
@@ -1043,12 +1045,26 @@ function uids_base_preprocess_block(&$variables) {
       $links = [];
       foreach (Element::children($variables['elements']['content']['field_uiowa_button_link']) as $delta) {
         $link = $variables['elements']['content']['field_uiowa_button_link'][$delta];
+        $url = $link['#url'] ?? NULL;
+        $link_attributes = $url?->getOptions()['attributes'] ?? [];
         $links[] = [
           'link_url' => $link['#url']->toString(),
           'link_text' => $link['#title'],
+          'link_attributes' => $link_attributes,
         ];
       }
       $variables['links'] = $links;
+    }
+  }
+
+  if ($variables['derivative_plugin_id'] === 'uiowa_cta') {
+    $variables['cta_link_attributes'] = [];
+    if (isset($variables['elements']['content']['field_uiowa_cta_link'])) {
+      foreach (Element::children($variables['elements']['content']['field_uiowa_cta_link']) as $delta) {
+        $url = $variables['elements']['content']['field_uiowa_cta_link'][$delta]['#url'] ?? NULL;
+        $variables['cta_link_attributes'] = $url?->getOptions()['attributes'] ?? [];
+        break;
+      }
     }
   }
 

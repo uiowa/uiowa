@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgvsa.uiowa.ddev.site
+    protocol: https
+  machine_name: orgvsa
+  human_name: vsa.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgvsa.prod
+drupal:
+  db:
+    database: vsa_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgvsa.prod.drupal.uiowa.edu'
+  requester: fjcastillo
+  site-name: vsa

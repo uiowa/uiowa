@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for the CeCredential validation module.
+ */
+
+/**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function cevalidationsr_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'cevalidationsr.settings';
+}

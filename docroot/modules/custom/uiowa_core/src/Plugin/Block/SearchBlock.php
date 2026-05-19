@@ -87,8 +87,25 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#type' => 'markup',
       '#markup' => $this->t('<p>This is a generic search block you can use to send queries to site search or a view filter.</p>'),
     ];
-    $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
+    // The Linkit #type element only provides the autocomplete textfield.
+    // Linkit's JS also expects hidden fields for entity metadata and a
+    // .linkit-widget-container ancestor wrapping both the input and the
+    // hidden fields. Normally the LinkitWidget field widget provides this
+    // scaffolding, but since this is a standalone Form API usage we must
+    // replicate it. The form tree naming convention is critical: the input
+    // must end in "uri" so the JS can derive the base selector and locate
+    // the sibling "attributes" hidden fields by data-drupal-selector.
+    // @see \Drupal\linkit\Plugin\Field\FieldWidget\LinkitWidget::formElement()
+    // @see docroot/modules/contrib/linkit/js/linkit.autocomplete.js
     $form['endpoint'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'linkit-widget-container',
+        ],
+      ],
+    ];
+    $form['endpoint']['uri'] = [
       '#type' => 'linkit',
       '#title' => $this->t('Endpoint Path'),
       '#description' => $this->t('Start typing to see a list of results. Click to select. Relative paths are allowed. External links are allowed.'),
@@ -98,6 +115,32 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       ],
       '#default_value' => $config['endpoint'] ?? '/search',
       '#required' => TRUE,
+      '#wrapper_attributes' => [
+        'class' => [
+          'form-item--linkit-widget-uri',
+        ],
+      ],
+    ];
+    $form['endpoint']['href_dirty_check'] = [
+      '#type' => 'hidden',
+      '#default_value' => $config['endpoint'] ?? '/search',
+      '#name' => 'href_dirty_check',
+    ];
+    $form['endpoint']['attributes']['href'] = [
+      '#type' => 'hidden',
+      '#default_value' => $config['endpoint'] ?? '/search',
+    ];
+    $form['endpoint']['attributes']['data_entity_type'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
+    ];
+    $form['endpoint']['attributes']['data_entity_uuid'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
+    ];
+    $form['endpoint']['attributes']['data_entity_substitution'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
     ];
     $form['query_parameter'] = [
       '#type' => 'textfield',
@@ -157,7 +200,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
-    $this->configuration['endpoint'] = $values['endpoint'];
+    $this->configuration['endpoint'] = $values['endpoint']['uri'];
     $this->configuration['query_parameter'] = $values['query_parameter'];
     $this->configuration['query_prepend'] = $values['advanced']['query_prepend'];
     $this->configuration['additional_parameters'] = $values['advanced']['additional_parameters'];

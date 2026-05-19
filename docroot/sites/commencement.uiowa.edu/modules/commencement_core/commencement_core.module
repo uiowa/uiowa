@@ -10,6 +10,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
@@ -20,6 +21,13 @@ use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\taxonomy\TermInterface;
 use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function commencement_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'commencement_core.settings';
+}
 
 /**
  * Implements hook_entity_bundle_info_alter().
@@ -94,6 +102,8 @@ function commencement_core_form_alter(&$form, FormStateInterface $form_state, $f
       $form['field_event_contact_phone']['#disabled'] = TRUE;
       $form['field_event_room']['#disabled'] = TRUE;
       $form['field_event_venue']['#disabled'] = TRUE;
+      $form['field_event_venue_name']['#disabled'] = TRUE;
+      $form['field_event_venue_address']['#disabled'] = TRUE;
       $form['field_event_id']['#disabled'] = TRUE;
       $form['field_event_when']['#disabled'] = TRUE;
       $form['field_event_link']['#disabled'] = TRUE;
@@ -214,16 +224,7 @@ function commencement_core_form_views_exposed_form_alter(&$form, FormStateInterf
  */
 function commencement_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'directionslink_block':
-      uiowa_core_set_attributes($variables, [
-        'element--absolute',
-        'element--absolute--left',
-        'element--absolute--bottom',
-      ]);
-      break;
-
     case 'field_block:node:venue:field_geolocation':
-      uiowa_core_set_attributes($variables, 'element--cover');
       $variables['attributes']['id'] = 'map';
       break;
 
@@ -234,7 +235,7 @@ function commencement_core_preprocess_block(&$variables) {
       break;
 
     case 'views_block:events_by_venue-block_1':
-      uiowa_core_set_attributes($variables, 'block-margin__top');
+      uiowa_core_set_attributes($variables, 'block-margin__top--extra');
       $variables['attributes']['id'] = 'events';
       break;
   }
@@ -324,7 +325,7 @@ function commencement_core_preprocess_field(&$variables) {
 
     case 'field_coll_section_content':
       uiowa_core_set_attributes($variables, [
-        'block-margin__top',
+        'block-margin__top--extra',
       ]);
       break;
 
@@ -341,6 +342,20 @@ function commencement_core_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_event_venue_name':
+      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt');
+      uiowa_core_set_attributes($variables, 'fa-field-item');
+      // The teaser needs only the name, and shouldn't be adjusted further.
+      if ($node->bundle() === 'event' && $variables['element']['#view_mode'] !== 'teaser') {
+        // Grab the off-campus venue name and address to combine.
+        // Drop the previous content and replace with basic markup.
+        $venue_name = $node->get('field_event_venue_name')->getString();
+        $venue_address = $node->get('field_event_venue_address')->getString();
+        unset($variables['items'][0]['content']);
+        $variables['items'][0]['content']['#markup'] = "{$venue_name}<br>" . nl2br($venue_address);
+      }
+      break;
+
     case 'field_event_when':
       if ($node->bundle() === 'event') {
         $variables['items'][1]['content']['#markup'] = '<p>(Times listed are in central time)</p>';
@@ -353,7 +368,7 @@ function commencement_core_preprocess_field(&$variables) {
         'banner__text',
         'field--type-address--inline',
         'element--inline',
-        'block-margin__top',
+        'block-margin__top--extra',
       ]);
 
       break;
@@ -444,9 +459,27 @@ function commencement_core_preprocess_layout(&$variables) {
  * Implements hook_preprocess_HOOK() for page templates.
  */
 function commencement_core_preprocess_page(array &$variables) {
-  // @todo remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
   if (isset($variables['node']) && $variables['node']->getType() == 'venue') {
+    $variables['#attached']['library'][] = 'commencement_core/venue';
+    // @todo remove this when https://github.com/uiowa/uiowa/issues/8430 is resolved.
     $variables['#attached']['library'][] = 'uids_base/leaflet_attach';
+  }
+}
+
+/**
+ * Implements hook_leaflet_formatter_feature_alter().
+ */
+function commencement_core_leaflet_formatter_feature_alter(array &$feature, FieldItemInterface $item, ContentEntityInterface $entity) {
+  if (!$entity instanceof NodeInterface || $entity->bundle() !== 'venue') {
+    return;
+  }
+
+  if ($item->getFieldDefinition()->getName() !== 'field_geolocation' || ($feature['type'] ?? NULL) !== 'point') {
+    return;
+  }
+
+  if ($entity->label() !== '') {
+    $feature['title'] = $entity->label();
   }
 }
 
@@ -458,7 +491,7 @@ function commencement_core_preprocess_paragraph(&$variables) {
   switch ($paragraph->bundle()) {
     case 'uiowa_collection_section':
       uiowa_core_set_attributes($variables, [
-        'block-margin__top',
+        'block-margin__top--extra',
       ]);
   }
 }

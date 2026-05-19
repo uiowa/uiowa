@@ -286,6 +286,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   public function build() {
     $config = $this->getConfiguration();
+    $headline = (string) ($config['headline'] ?? '');
+    $is_headline_renderable = trim($headline) !== '';
 
     $build = [
       '#attached' => [
@@ -294,26 +296,28 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     ];
 
     // Replace the dynamic placeholder value with the session name.
-    if (stristr($config['headline'], '@session')) {
+    if ($is_headline_renderable && stristr($headline, '@session')) {
       $bounding = $this->maui->getSessionsBounded(0, 3);
       $current = $bounding[$config['session']];
-      $config['headline'] = str_replace('@session', $current->shortDescription, $config['headline']);
+      $headline = str_replace('@session', $current->shortDescription, $headline);
     }
 
-    $build['heading'] = [
-      '#theme' => 'uiowa_core_headline',
-      '#headline' => $config['headline'],
-      '#hide_headline' => $config['hide_headline'],
-      '#heading_size' => $config['heading_size'],
-      '#headline_style' => $config['headline_style'],
-      '#headline_alignment' => $config['headline_alignment'] ?? 'default',
-    ];
+    if ($is_headline_renderable) {
+      $build['heading'] = [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $headline,
+        '#hide_headline' => $config['hide_headline'],
+        '#heading_size' => $config['heading_size'],
+        '#headline_style' => $config['headline_style'],
+        '#headline_alignment' => $config['headline_alignment'] ?? 'default',
+      ];
+    }
 
-    if (empty($config['headline'])) {
-      $child_heading_size = $config['child_heading_size'];
+    if ($is_headline_renderable) {
+      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
     }
     else {
-      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
+      $child_heading_size = $config['child_heading_size'];
     }
 
     $build['form'] = $this->formBuilder->getForm(

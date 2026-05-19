@@ -2,6 +2,9 @@ services:
   uiowa_facilities.bizhub_api_client:
     class: Drupal\uiowa_facilities\BizHubApiClient
     arguments: ['@http_client', '@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@config.factory']
+  uiowa_facilities.utility_alerts_api_client:
+    class: Drupal\uiowa_facilities\UtilityAlertsApiClient
+    arguments: ['@http_client', '@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@config.factory']
   uiowa_facilities.buildui_api_client:
     class: Drupal\uiowa_facilities\BuildUiApiClient
     arguments: ['@http_client', '@logger.channel.uiowa_facilities', '@cache.uiowa_facilities', '@config.factory']

@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: siteserningli.uiowa.ddev.site
+  paths:
+    files: sites/erningli.sites.uiowa.edu/files
+dev:
+  uri: siteserningli.dev.drupal.uiowa.edu
+  host: uiowa08dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/erningli.sites.uiowa.edu/files
+  root: /var/www/html/uiowa08.dev/docroot
+  user: uiowa08.dev
+prod:
+  uri: erningli.sites.uiowa.edu
+  host: uiowa08prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/erningli.sites.uiowa.edu/files
+  root: /var/www/html/uiowa08.prod/docroot
+  user: uiowa08.prod
+test:
+  uri: siteserningli.stage.drupal.uiowa.edu
+  host: uiowa08stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/erningli.sites.uiowa.edu/files
+  root: /var/www/html/uiowa08.stage/docroot
+  user: uiowa08.stage

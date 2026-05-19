@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteszigrino.uiowa.ddev.site
+    protocol: https
+  machine_name: siteszigrino
+  human_name: zigrino.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteszigrino.prod
+drupal:
+  db:
+    database: zigrino_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteszigrino.prod.drupal.uiowa.edu'
+  requester: icurto
+  site-name: uiowa

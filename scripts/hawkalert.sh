@@ -10,13 +10,13 @@ start=$(date +%s)
 # curl, etc. that you would like to execute once a
 # minute.
 log="/shared/logs/drush-cron-hawkalert.log"
-echo [HAWK ALERT IMPORT] `date` &>> $log
+echo [HAWK ALERT IMPORT] $(date) &>> $log
 drush @${AH_SITE_GROUP}.${AH_SITE_ENVIRONMENT} -l emergency.uiowa.edu rave-alerts &>> $log
 
 # Ensure it does not run more frequently than once
 # per minute by sleeping if the command takes less
 # than a minute to execute.
-sleep $(( 60 - $(date +%s) + $start ))
+sleep $(( 60 - ( $(date +%s) - $start ) ))
 
 # Exit the loop if the current timestamp exceeds the
 # end timestamp.
