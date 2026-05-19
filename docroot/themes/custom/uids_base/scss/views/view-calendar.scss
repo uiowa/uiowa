@@ -70,3 +70,28 @@ a.fc-event {
 .fc .fc-list-sticky .fc-list-day > * {
   z-index: 1;
 }
+
+// FullCalendar v6 narrow-viewport rendering fixes. With aspectRatio set, FC's
+// measurement returning null at sub-768px cascades into collapsed widths and
+// heights. The view config's height/contentHeight: auto (enabled by patch
+// 3499954) handles the outer chrome; these rules address the inner sizing.
+@media (max-width: 768px) {
+  // FC sets height: 1px on scrollgrid sections expecting content to push them
+  // back open. At narrow widths the content can't, so sections stay collapsed.
+  .fc .fc-scrollgrid-section,
+  .fc .fc-scrollgrid-section table,
+  .fc .fc-scrollgrid-section > td {
+    height: auto !important;
+  }
+  // Min-width keeps day columns wide enough to be legible; the grid scrolls
+  // horizontally when the viewport is narrower (via .fc-view overflow below).
+  .fc-scrollgrid {
+    min-width: 700px;
+  }
+  // Horizontal scroll on .fc-view (abs-positioned inside the harness, so
+  // overflow has to live here for content to scroll).
+  .fc .fc-view {
+    overflow-x: auto;
+  }
+}
+
