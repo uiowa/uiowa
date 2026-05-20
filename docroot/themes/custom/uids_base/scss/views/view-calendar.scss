@@ -93,5 +93,21 @@ a.fc-event {
   .fc .fc-view {
     overflow-x: auto;
   }
+  // Wrap the toolbar and pull the title-chunk to its own line above the
+  // button groups so the header is readable at narrow widths.
+  .fc-header-toolbar.fc-toolbar {
+    flex-wrap: wrap;
+  }
+  .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+    order: -1;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 8px;
+  }
+}
+
+// Match production's denser event-title line-height (default uids_base is 1.6).
+.fc-daygrid-event .fc-event-title {
+  line-height: 1.4;
 }
 

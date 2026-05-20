@@ -536,6 +536,12 @@ function its_core_views_pre_render(ViewExecutable $view) {
     'minute' => '2-digit',
     'meridiem' => 'short',
   ];
+
+  // Make day numbers in month view clickable — navigates to that day's list
+  // (production behavior we lost in the v3 swap). With list_view enabled and
+  // no timegrid/daygrid day views, FC routes to listDay.
+  $view->style_plugin->options['options']['navLinks'] = TRUE;
+  $view->style_plugin->options['options']['navLinkDayClick'] = 'listDay';
 }
 
 /**
