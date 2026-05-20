@@ -4,6 +4,7 @@ namespace Drupal\uiowa_jobs;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\smart_trim\TruncateHTML;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Laminas\Feed\Reader\Reader;
@@ -102,7 +103,8 @@ class RssFeedParser {
         $job->guid = $item->getId();
         $job->title = $item->getTitle();
         $job->link = $item->getLink();
-        $job->description = $this->cleanHtml($item->getDescription());
+        // Clean up the HTML and trim it to 300 characters.
+        $job->description = $this->cleanHtml($item->getDescription(), 300);
 
         // Get publication date.
         $job->pubDate = 0;
@@ -169,23 +171,24 @@ class RssFeedParser {
   }
 
   /**
-   * Clean and sanitize HTML from job descriptions.
+   * Clean and sanitize HTML from job descriptions, and trim length.
    *
    * @param string $html
    *   The HTML content.
+   * @param int $trim_length
+   *   The max length before trimming.
    *
    * @return string
    *   Cleaned HTML.
    */
-  protected function cleanHtml(string $html): string {
+  protected function cleanHtml(string $html, int $trim_length): string {
     // Strip tags but preserve basic formatting.
     $allowed_tags = '<p><br><strong><em><ul><ol><li>';
     $cleaned = strip_tags($html, $allowed_tags);
 
-    // Truncate to reasonable length (2000 characters).
-    if (mb_strlen($cleaned) > 2000) {
-      $cleaned = mb_substr($cleaned, 0, 2000) . '...';
-    }
+    // Use smart_trim's helper to safely truncate without breaking HTML.
+    $truncate = new TruncateHTML();
+    $cleaned = $truncate->truncateChars($cleaned, $trim_length, '...');
 
     return $cleaned;
   }
