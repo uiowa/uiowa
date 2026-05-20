@@ -9,6 +9,7 @@ dependencies:
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_feed_url
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_pager
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_show_date
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_show_desc
   module:
     - layout_builder_custom
 _core:
@@ -49,6 +50,13 @@ content:
   field_uiowa_jobs_show_date:
     type: boolean_checkbox
     weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_uiowa_jobs_show_desc:
+    type: boolean_checkbox
+    weight: 26
     region: content
     settings:
       display_label: true

@@ -73,6 +73,7 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
   $per_page = (int) $block->get('field_uiowa_jobs_count')->getString() ?: 10;
   $show_pager = (bool) $block->get('field_uiowa_jobs_pager')->getString();
   $include_date = (bool) $block->get('field_uiowa_jobs_show_date')->getString();
+  $include_description = (bool) $block->get('field_uiowa_jobs_show_desc')->getString();
   $no_results_text = 'No job postings are currently available.';
 
   if (empty($feed_url)) {
@@ -156,6 +157,7 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
         $job,
         $heading_size,
         $include_date,
+        $include_description,
         $override_styles,
       );
     }
@@ -202,13 +204,15 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
  *   The heading size for the card title.
  * @param bool $include_date
  *   Whether to include the job posting date.
+ * @param bool $include_description
+ *    Whether to include the job posting summary.
  * @param array $override_styles
  *   Optional style overrides from layout builder.
  *
  * @return array
  *   Render array for the job card.
  */
-function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', $include_date = TRUE, array $override_styles = []): array {
+function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', $include_date = TRUE, $include_desciption = FALSE, array $override_styles = []): array {
   $build = [
     '#type' => 'card',
     '#prefix' => '<div class="column-container">',
@@ -234,7 +238,7 @@ function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', 
   }
 
   // Set content with cleaned description.
-  if (!empty($job->description)) {
+  if ($include_desciption && !empty($job->description)) {
     $build['#content'] = [
       '#markup' => $job->description,
     ];
