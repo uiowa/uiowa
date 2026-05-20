@@ -31,6 +31,10 @@ updates:
       interval: daily
       time: "11:00"
       timezone: America/Chicago
+    ignore:
+      # We don't want dependabot to handle major version upgrades.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       npm-all:
         patterns:
