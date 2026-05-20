@@ -221,10 +221,11 @@ function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', 
   // Set the URL (links to HRIS).
   $build['#url'] = $job->link;
 
-  // Set subtitle with formatted date.
+  // Set subtitle with formatted date and a simple label.
   if (!empty($job->pubDate)) {
+    $formatted_date = \Drupal::service('date.formatter')->format($job->pubDate, 'medium');
     $build['#subtitle']['posted_date'] = [
-      '#markup' => \Drupal::service('date.formatter')->format($job->pubDate, 'medium'),
+      '#markup' => "Posted {$formatted_date}",
     ];
   }
 
