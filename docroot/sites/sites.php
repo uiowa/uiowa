@@ -7846,3 +7846,9 @@ $sites['orgtheatrereps.uiowa.ddev.site'] = 'theatrereps.org.uiowa.edu';
 $sites['orgtheatrereps.dev.drupal.uiowa.edu'] = 'theatrereps.org.uiowa.edu';
 $sites['orgtheatrereps.stage.drupal.uiowa.edu'] = 'theatrereps.org.uiowa.edu';
 $sites['orgtheatrereps.prod.drupal.uiowa.edu'] = 'theatrereps.org.uiowa.edu';
+
+// Directory aliases for cerebrovascularimaging.lab.uiowa.edu.
+$sites['labcerebrovascularimaging.uiowa.ddev.site'] = 'cerebrovascularimaging.lab.uiowa.edu';
+$sites['labcerebrovascularimaging.dev.drupal.uiowa.edu'] = 'cerebrovascularimaging.lab.uiowa.edu';
+$sites['labcerebrovascularimaging.stage.drupal.uiowa.edu'] = 'cerebrovascularimaging.lab.uiowa.edu';
+$sites['labcerebrovascularimaging.prod.drupal.uiowa.edu'] = 'cerebrovascularimaging.lab.uiowa.edu';
