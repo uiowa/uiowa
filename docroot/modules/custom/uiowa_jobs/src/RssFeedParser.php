@@ -103,19 +103,6 @@ class RssFeedParser {
         $job->title = $item->getTitle();
         $job->link = $item->getLink();
         $job->description = $this->cleanHtml($item->getDescription());
-        $job->category = '';
-
-        // Extract category if available.
-        try {
-          $categories = $item->getCategories();
-          if (is_array($categories) && !empty($categories)) {
-            $first_category = array_shift($categories);
-            $job->category = $first_category['term'] ?? '';
-          }
-        }
-        catch (\Exception $e) {
-          // Category extraction failed, leave empty.
-        }
 
         // Get publication date.
         $job->pubDate = 0;
