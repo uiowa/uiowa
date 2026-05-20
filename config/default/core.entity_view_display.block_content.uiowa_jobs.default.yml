@@ -8,6 +8,7 @@ dependencies:
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_count
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_feed_url
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_pager
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_show_date
   module:
     - layout_builder_custom
 _core:
@@ -23,6 +24,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_uiowa_jobs_show_date:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true

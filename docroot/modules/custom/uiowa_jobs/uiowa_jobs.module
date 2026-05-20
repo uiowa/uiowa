@@ -72,6 +72,7 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
   $feed_url = $block->get('field_uiowa_jobs_feed_url')->getString();
   $per_page = (int) $block->get('field_uiowa_jobs_count')->getString() ?: 10;
   $show_pager = (bool) $block->get('field_uiowa_jobs_pager')->getString();
+  $include_date = (bool) $block->get('field_uiowa_jobs_show_date')->getString();
   $no_results_text = 'No job postings are currently available.';
 
   if (empty($feed_url)) {
@@ -154,7 +155,8 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
       $variables['content']['jobs']['items'][$index] = uiowa_jobs_build_job_card(
         $job,
         $heading_size,
-        $override_styles
+        $include_date,
+        $override_styles,
       );
     }
 
@@ -198,13 +200,15 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
  *   The job object from RSS parser.
  * @param string $heading_size
  *   The heading size for the card title.
+ * @param bool $include_date
+ *   Whether to include the job posting date.
  * @param array $override_styles
  *   Optional style overrides from layout builder.
  *
  * @return array
  *   Render array for the job card.
  */
-function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', array $override_styles = []): array {
+function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', $include_date = TRUE, array $override_styles = []): array {
   $build = [
     '#type' => 'card',
     '#prefix' => '<div class="column-container">',
@@ -222,7 +226,7 @@ function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', 
   $build['#url'] = $job->link;
 
   // Set subtitle with formatted date and a simple label.
-  if (!empty($job->pubDate)) {
+  if ($include_date && !empty($job->pubDate)) {
     $formatted_date = \Drupal::service('date.formatter')->format($job->pubDate, 'medium');
     $build['#subtitle']['posted_date'] = [
       '#markup' => "Posted {$formatted_date}",
