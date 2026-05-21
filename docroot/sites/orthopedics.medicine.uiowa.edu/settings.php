@@ -775,12 +775,11 @@ if (file_exists('/var/www/site-php')) {
   require "/var/www/site-php/{$ah_group}/orthopedics_medicine_uiowa_edu-settings.inc";
 }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+require DRUPAL_ROOT . '/sites/settings/global.settings.php';
 /**
  * IMPORTANT.
  *
  * Do not include additional settings here. Instead, add them to settings
- * included by `blt.settings.php`. See BLT's documentation for more detail.
- *
- * @link http://blt.readthedocs.io
+ * included by `global.settings.php` or to a per-site
+ * `settings/includes.settings.php` file.
  */

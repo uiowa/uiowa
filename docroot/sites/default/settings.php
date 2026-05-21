@@ -769,12 +769,11 @@ $settings['entity_update_batch_size'] = 50;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+require DRUPAL_ROOT . '/sites/settings/global.settings.php';
 /**
  * IMPORTANT.
  *
  * Do not include additional settings here. Instead, add them to settings
- * included by `blt.settings.php`. See BLT's documentation for more detail.
- *
- * @link http://blt.readthedocs.io
+ * included by `global.settings.php` or to a per-site
+ * `settings/includes.settings.php` file.
  */

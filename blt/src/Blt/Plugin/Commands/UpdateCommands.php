@@ -651,33 +651,101 @@ EOD;
    */
   protected function update1018() {
     $root = $this->getConfigValue('repo.root');
-    $search = 'require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";';
-    $replace = 'require DRUPAL_ROOT . "/sites/settings/global.settings.php";';
+    $search_require = 'require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";';
+    // Double-quoted PHP string so the embedded single quotes don't need
+    // escaping — see Drupal coding standards re: single quotes for the
+    // emitted PHP literal.
+    $replace_require = "require DRUPAL_ROOT . '/sites/settings/global.settings.php';";
+    $search_comment = <<<EOD
+/**
+ * IMPORTANT.
+ *
+ * Do not include additional settings here. Instead, add them to settings
+ * included by `blt.settings.php`. See BLT's documentation for more detail.
+ *
+ * @link http://blt.readthedocs.io
+ */
+EOD;
+    $replace_comment = <<<EOD
+/**
+ * IMPORTANT.
+ *
+ * Do not include additional settings here. Instead, add them to settings
+ * included by `global.settings.php` or to a per-site
+ * `settings/includes.settings.php` file.
+ */
+EOD;
 
-    // Process all multisites.
-    $sites = Multisite::getAllSites($root);
-    foreach ($sites as $site) {
-      $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$site}/settings.php")
-        ->from($search)
-        ->to($replace)
+    // Build the list of settings.php files to process. Multisite::getAllSites()
+    // excludes default/g/settings/simpletest, so handle default separately.
+    $targets = [];
+    foreach (Multisite::getAllSites($root) as $site) {
+      $targets[$site] = "{$root}/docroot/sites/{$site}/settings.php";
+    }
+    $targets['default'] = "{$root}/docroot/sites/default/settings.php";
+
+    $modified = 0;
+    $skipped_missing_file = 0;
+    $skipped_missing_search = [];
+    $failures = [];
+
+    foreach ($targets as $label => $path) {
+      // Skip cleanly if the file doesn't exist (e.g. local cruft directories).
+      if (!file_exists($path)) {
+        $skipped_missing_file++;
+        continue;
+      }
+
+      // Pre-check that the require line is present before attempting the
+      // replace. taskReplaceInFile reports success even if the search isn't
+      // found, so without this check we can't distinguish a real replacement
+      // from a silent no-op. (The comment block is rewritten best-effort —
+      // we don't require it to be present, since the file is still usable
+      // without it.)
+      $contents = file_get_contents($path);
+      if (strpos($contents, $search_require) === FALSE) {
+        $skipped_missing_search[] = $label;
+        continue;
+      }
+
+      $result = $this->taskReplaceInFile($path)
+        ->from([$search_require, $search_comment])
+        ->to([$replace_require, $replace_comment])
         ->run();
 
-      if (!$result->wasSuccessful()) {
-        $this->logger->error("Unable to update settings.php file for {$site}.");
+      if ($result->wasSuccessful()) {
+        $modified++;
+      }
+      else {
+        $failures[] = $label;
+        $this->logger->error("Unable to update settings.php file for {$label}.");
       }
     }
 
-    // Also process the default site.
-    $default_settings = "{$root}/docroot/sites/default/settings.php";
-    if (file_exists($default_settings)) {
-      $result = $this->taskReplaceInFile($default_settings)
-        ->from($search)
-        ->to($replace)
-        ->run();
+    // Summary.
+    $total = count($targets);
+    $this->say("Modified {$modified} of {$total} settings.php files.");
+    if ($skipped_missing_file > 0) {
+      $this->logger->info("Skipped {$skipped_missing_file} sites: no settings.php file present.");
+    }
+    if (!empty($skipped_missing_search)) {
+      $this->logger->warning(sprintf(
+        'Skipped %d sites: BLT require line not found in expected form. Sites: %s',
+        count($skipped_missing_search),
+        implode(', ', $skipped_missing_search)
+      ));
+    }
 
-      if (!$result->wasSuccessful()) {
-        $this->logger->error("Unable to update settings.php file for default.");
-      }
+    // Only bump the schema version if every file with the search string was
+    // updated successfully. A partial failure here would otherwise mark the
+    // update complete and be unrecoverable without manually editing
+    // blt/.uiowa_schema_version.
+    if (!empty($failures)) {
+      throw new \Exception(sprintf(
+        'Update 1018 failed for %d sites: %s. Schema version NOT bumped — fix and re-run.',
+        count($failures),
+        implode(', ', $failures)
+      ));
     }
 
     $this->setSchemaVersion(1018);
