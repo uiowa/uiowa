@@ -10,7 +10,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Robo commands for reporting domain information.
+ * Robo commands for SiteNow specific reporting.
  */
 class ReportCommands extends Tasks {
   use SiteNowCommandsTrait;
@@ -26,7 +26,7 @@ class ReportCommands extends Tasks {
    *   Enable debug output.
    * @option env
    *   Comma-separated list of environments to filter by (e.g. dev,test).
-   * @option application
+   * @option apps
    *   Comma-separated list of app names to filter by (e.g. uiowa02,uiowa03).
    */
   public function domains(
@@ -34,7 +34,7 @@ class ReportCommands extends Tasks {
       'export' => FALSE,
       'debug' => FALSE,
       'env' => '',
-      'application' => '',
+      'apps' => '',
     ],
   ) {
     if (!$this->isDdev()) {
@@ -58,9 +58,9 @@ class ReportCommands extends Tasks {
       ? array_map('trim', explode(',', $options['env']))
       : ['prod'];
 
-    // Parse application filter — empty means all applications.
-    $target_applications = !empty($options['application'])
-      ? array_map('trim', explode(',', $options['application']))
+    // Parse app filter — empty means all apps.
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
       : [];
 
     if ($options['export']) {
@@ -75,26 +75,26 @@ class ReportCommands extends Tasks {
     );
 
     $api_environments = new Environments($client);
-    $applications = $this->getSortedApplications($client);
+    $apps = $this->getSortedApplications($client);
 
-    foreach ($applications as $application) {
-      // Skip UIHC applications.
-      if ($application->organization->name === 'University of Iowa Healthcare') {
+    foreach ($apps as $app) {
+      // Skip UIHC apps.
+      if ($app->organization->name === 'University of Iowa Healthcare') {
         continue;
       }
 
-      $app_name = str_replace('prod:', '', $application->hosting->id);
+      $app_name = str_replace('prod:', '', $app->hosting->id);
 
-      // Skip if not in the requested application list.
-      if (!empty($target_applications) && !in_array($app_name, $target_applications)) {
+      // Skip if not in the requested app list.
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
         continue;
       }
 
       $this->say("Getting environments for $app_name...");
 
       /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
-      foreach ($api_environments->getAll($application->uuid) as $environment) {
-        // Some applications use 'stage' instead of 'test' (e.g. uiowa07).
+      foreach ($api_environments->getAll($app->uuid) as $environment) {
+        // Some apps use 'stage' instead of 'test' (e.g. uiowa07).
         // Treat 'stage' as equivalent to 'test' when filtering environments.
         $env_name = $environment->name;
         if ($env_name === 'stage' && in_array('test', $target_environments)) {
@@ -124,7 +124,7 @@ class ReportCommands extends Tasks {
           }
 
           $site = [
-            'application' => $app_name,
+            'app' => $app_name,
             'environment' => $environment->name,
             'domain'      => $domain,
           ];
@@ -179,6 +179,10 @@ class ReportCommands extends Tasks {
       'export' => FALSE,
     ],
   ) {
+    if (!$this->isDdev()) {
+      $this->say('[ERROR] This command must be run inside the DDEV container. Use: ddev exec ./vendor/bin/robo uiowa:report:splits');
+      return;
+    }
     if (!$this->hasSshAgent()) {
       $this->say("[ERROR] No SSH keys loaded. Please load your SSH keys before running this command.");
       return;
