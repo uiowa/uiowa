@@ -21,30 +21,10 @@ mode: default
 content:
   field_uiowa_headline:
     type: uiowa_headline_formatter
-    label: hidden
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_uiowa_jobs_show_date:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_uiowa_jobs_show_desc:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 2
     region: content
 hidden:
   entity_print_view_epub: true
@@ -53,4 +33,6 @@ hidden:
   field_uiowa_jobs_count: true
   field_uiowa_jobs_feed_url: true
   field_uiowa_jobs_pager: true
+  field_uiowa_jobs_show_date: true
+  field_uiowa_jobs_show_desc: true
   search_api_excerpt: true
