@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitespengjiang.uiowa.ddev.site
+    protocol: https
+  machine_name: sitespengjiang
+  human_name: pengjiang.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitespengjiang.prod
+drupal:
+  db:
+    database: pengjiang_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitespengjiang.prod.drupal.uiowa.edu'
+  requester: penjiang
+  site-name: "Peng Jiang's Home Page"
