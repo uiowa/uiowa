@@ -159,7 +159,7 @@ if (file_exists('/var/www/site-php')) {
   require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
 }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+require DRUPAL_ROOT . '/sites/settings/global.settings.php';
 EOD;
 
       $file = "{$path}/settings.php";
