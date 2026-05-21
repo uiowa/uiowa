@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgtheatrereps.uiowa.ddev.site
+    protocol: https
+  machine_name: orgtheatrereps
+  human_name: theatrereps.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgtheatrereps.prod
+drupal:
+  db:
+    database: theatrereps_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgtheatrereps.prod.drupal.uiowa.edu'
+  requester: apilipovic
+  site-name: 'Theatre Student Representatives'
