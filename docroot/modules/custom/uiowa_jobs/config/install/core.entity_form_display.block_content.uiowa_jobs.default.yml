@@ -3,21 +3,29 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_jobs
+    - field.field.block_content.uiowa_jobs.field_uiowa_headline
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_category
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_count
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_feed_url
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_no_results
     - field.field.block_content.uiowa_jobs.field_uiowa_jobs_pager
   module:
+    - layout_builder_custom
     - text
 id: block_content.uiowa_jobs.default
 targetEntityType: block_content
 bundle: uiowa_jobs
 mode: default
 content:
+  field_uiowa_headline:
+    type: uiowa_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_jobs_category:
     type: string_textfield
-    weight: 3
+    weight: 4
     region: content
     settings:
       size: 60
@@ -25,14 +33,14 @@ content:
     third_party_settings: {  }
   field_uiowa_jobs_count:
     type: number
-    weight: 2
+    weight: 3
     region: content
     settings:
       placeholder: '10'
     third_party_settings: {  }
   field_uiowa_jobs_feed_url:
     type: string_textfield
-    weight: 1
+    weight: 2
     region: content
     settings:
       size: 60
@@ -40,7 +48,7 @@ content:
     third_party_settings: {  }
   field_uiowa_jobs_no_results:
     type: text_textarea
-    weight: 5
+    weight: 6
     region: content
     settings:
       rows: 3
@@ -48,7 +56,7 @@ content:
     third_party_settings: {  }
   field_uiowa_jobs_pager:
     type: boolean_checkbox
-    weight: 4
+    weight: 5
     region: content
     settings:
       display_label: true
