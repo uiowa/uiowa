@@ -4,11 +4,13 @@ namespace SiteNow\Robo\Plugin\Commands;
 
 use SiteNow\Robo\Traits\SiteNowCommandsTrait;
 use AcquiaCloudApi\Endpoints\Environments;
+use Robo\ResultData;
 use Robo\Tasks;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Yaml\Yaml;
 
 /**
- * Robo commands for reporting domain information.
+ * Robo commands for SiteNow specific reporting.
  */
 class ReportCommands extends Tasks {
   use SiteNowCommandsTrait;
@@ -24,7 +26,7 @@ class ReportCommands extends Tasks {
    *   Enable debug output.
    * @option env
    *   Comma-separated list of environments to filter by (e.g. dev,test).
-   * @option application
+   * @option apps
    *   Comma-separated list of app names to filter by (e.g. uiowa02,uiowa03).
    */
   public function domains(
@@ -32,7 +34,7 @@ class ReportCommands extends Tasks {
       'export' => FALSE,
       'debug' => FALSE,
       'env' => '',
-      'application' => '',
+      'apps' => '',
     ],
   ) {
     if (!$this->isDdev()) {
@@ -56,9 +58,9 @@ class ReportCommands extends Tasks {
       ? array_map('trim', explode(',', $options['env']))
       : ['prod'];
 
-    // Parse application filter — empty means all applications.
-    $target_applications = !empty($options['application'])
-      ? array_map('trim', explode(',', $options['application']))
+    // Parse app filter — empty means all apps.
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
       : [];
 
     if ($options['export']) {
@@ -73,26 +75,26 @@ class ReportCommands extends Tasks {
     );
 
     $api_environments = new Environments($client);
-    $applications = $this->getSortedApplications($client);
+    $apps = $this->getSortedApplications($client);
 
-    foreach ($applications as $application) {
-      // Skip UIHC applications.
-      if ($application->organization->name === 'University of Iowa Healthcare') {
+    foreach ($apps as $app) {
+      // Skip UIHC apps.
+      if ($app->organization->name === 'University of Iowa Healthcare') {
         continue;
       }
 
-      $app_name = str_replace('prod:', '', $application->hosting->id);
+      $app_name = str_replace('prod:', '', $app->hosting->id);
 
-      // Skip if not in the requested application list.
-      if (!empty($target_applications) && !in_array($app_name, $target_applications)) {
+      // Skip if not in the requested app list.
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
         continue;
       }
 
       $this->say("Getting environments for $app_name...");
 
       /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
-      foreach ($api_environments->getAll($application->uuid) as $environment) {
-        // Some applications use 'stage' instead of 'test' (e.g. uiowa07).
+      foreach ($api_environments->getAll($app->uuid) as $environment) {
+        // Some apps use 'stage' instead of 'test' (e.g. uiowa07).
         // Treat 'stage' as equivalent to 'test' when filtering environments.
         $env_name = $environment->name;
         if ($env_name === 'stage' && in_array('test', $target_environments)) {
@@ -122,7 +124,7 @@ class ReportCommands extends Tasks {
           }
 
           $site = [
-            'application' => $app_name,
+            'app' => $app_name,
             'environment' => $environment->name,
             'domain'      => $domain,
           ];
@@ -154,6 +156,212 @@ class ReportCommands extends Tasks {
     else {
       $this->say("Results exported to $filepath");
     }
+  }
+
+  /**
+   * Report which sites have which config splits enabled.
+   *
+   * Reports only active splits by default (i.e. "which sites are running X").
+   *
+   * @command uiowa:report:splits
+   *
+   * @option split
+   *   Comma-separated list of split IDs to filter to (e.g. event,thesis_defense).
+   * @option apps
+   *   Comma-separated list of app names to filter by (e.g. uiowa02,uiowa03).
+   * @option export
+   *   Whether to export results to a CSV file.
+   */
+  public function splits(
+    $options = [
+      'split' => '',
+      'apps' => '',
+      'export' => FALSE,
+    ],
+  ) {
+    if (!$this->isDdev()) {
+      $this->say('[ERROR] This command must be run inside the DDEV container. Use: ddev exec ./vendor/bin/robo uiowa:report:splits');
+      return;
+    }
+    if (!$this->hasSshAgent()) {
+      $this->say("[ERROR] No SSH keys loaded. Please load your SSH keys before running this command.");
+      return;
+    }
+
+    $target_splits = !empty($options['split'])
+      ? array_map('trim', explode(',', $options['split']))
+      : [];
+
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
+      : [];
+
+    $filepath = NULL;
+    $headers = ['Application', 'Domain', 'Split'];
+
+    if ($options['export']) {
+      $filepath = $this->initializeCsvExport('SiteNow-Splits-Report', $headers);
+    }
+
+    // Grouped per-split for table output: $results[split_id][] = [app, domain].
+    $results = [];
+
+    // Apps whose results were discarded because at least one site failed to
+    // respond. Trustworthy aggregates require every site in an app to answer;
+    // a partial app is worse than no app, so we drop it entirely.
+    $failed_apps = [];
+
+    // Environmental splits (ci/dev/local/prod/stage) are a proxy for which
+    // environment a site is in — not useful in this report.
+    $env_splits = ['ci', 'dev', 'local', 'prod', 'stage'];
+
+    // Use blt/manifest.yml — it's the authoritative SiteNow fleet list and is
+    // already deduplicated (www/redirect pairs collapsed), unlike the Acquia
+    // API domain list. Top-level keys are Acquia app names; values are arrays
+    // of multisite domains.
+    $root = $this->getConfigValue('repo.root') ?: getcwd();
+    $manifest_path = "$root/blt/manifest.yml";
+
+    if (!file_exists($manifest_path)) {
+      $this->say("[ERROR] Manifest file not found at $manifest_path");
+      return new ResultData(ResultData::EXITCODE_ERROR);
+    }
+
+    $manifest = Yaml::parseFile($manifest_path);
+
+    foreach ($manifest as $app_name => $domains) {
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
+        continue;
+      }
+
+      $this->say("Processing $app_name...");
+
+      // Buffer this app's rows so we can discard them wholesale if any site
+      // in the app fails to respond.
+      $app_rows = [];
+      $abort_reason = NULL;
+
+      foreach ($domains as $domain) {
+        $this->say("  Checking $domain...");
+        $error = NULL;
+        $statuses = $this->getSplitStatuses($domain, $error);
+
+        if ($statuses === FALSE) {
+          $abort_reason = "$domain — $error";
+          $this->say("[ERROR] $app_name aborted: $abort_reason");
+          break;
+        }
+
+        foreach ($statuses as $split_id => $is_active) {
+          if (in_array($split_id, $env_splits)) {
+            continue;
+          }
+          if (!$is_active) {
+            continue;
+          }
+          if (!empty($target_splits) && !in_array($split_id, $target_splits)) {
+            continue;
+          }
+          $app_rows[] = [$app_name, $domain, $split_id];
+        }
+      }
+
+      if ($abort_reason !== NULL) {
+        $failed_apps[$app_name] = $abort_reason;
+        continue;
+      }
+
+      // Commit this app's rows now that it completed cleanly.
+      foreach ($app_rows as $row) {
+        if ($options['export']) {
+          $fp = fopen($filepath, 'a');
+          fputcsv($fp, $row, ',', '"', '\\');
+          fclose($fp);
+        }
+        else {
+          [, $domain, $split_id] = $row;
+          $results[$split_id][] = [$app_name, $domain];
+        }
+      }
+    }
+
+    if ($options['export']) {
+      $this->say("Results exported to $filepath");
+    }
+    elseif (empty($results)) {
+      $this->say('No active splits found matching the filters.');
+    }
+    else {
+      ksort($results);
+      foreach ($results as $split_id => $rows) {
+        $this->say('');
+        $this->say("== {$split_id} ==");
+        $table = new Table($this->output());
+        $table->setHeaders(['Application', 'Domain']);
+        $table->setRows($rows);
+        $table->render();
+      }
+    }
+
+    if (!empty($failed_apps)) {
+      $this->say('');
+      $this->say('[WARNING] ' . count($failed_apps) . ' application(s) excluded from report due to errors:');
+      foreach ($failed_apps as $app_name => $reason) {
+        $this->say("  $app_name: $reason");
+      }
+      return new ResultData(ResultData::EXITCODE_ERROR);
+    }
+  }
+
+  /**
+   * Get config_split statuses for a multisite (prod).
+   *
+   * One drush call per site returning all splits — avoids the N+1 round
+   * trips that `drush config:get` would require.
+   *
+   * @param string $multisite
+   *   The multisite domain.
+   * @param string|null $error
+   *   Out-param populated with a human-readable reason when FALSE is returned.
+   *
+   * @return array<string, bool>|false
+   *   Map of split_id => active. FALSE if drush exited non-zero or returned
+   *   no parseable output.
+   */
+  private function getSplitStatuses(string $multisite, ?string &$error = NULL): array|false {
+    $alias = $this->getDrushAlias($multisite) . '.prod';
+    $php = 'foreach (\\Drupal::configFactory()->listAll("config_split.config_split.") as $n) { echo substr($n, 26) . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
+    $cmd = "drush @{$alias} php:eval " . escapeshellarg($php) . " --no-interaction < /dev/null 2>&1";
+
+    $output_lines = [];
+    $exit_code = 0;
+    exec($cmd, $output_lines, $exit_code);
+
+    if ($exit_code !== 0) {
+      $tail = trim((string) end($output_lines));
+      $error = "drush exit $exit_code" . ($tail !== '' ? " ($tail)" : '');
+      return FALSE;
+    }
+
+    // Parse "<split_id>:<0|1>" lines. Drush/Acquia chatter is skipped.
+    $statuses = [];
+    foreach ($output_lines as $line) {
+      $line = trim($line);
+      if ($line === '' || !str_contains($line, ':')) {
+        continue;
+      }
+      [$id, $val] = explode(':', $line, 2);
+      if ($id !== '' && ($val === '0' || $val === '1')) {
+        $statuses[$id] = $val === '1';
+      }
+    }
+
+    if (empty($statuses)) {
+      $error = 'no parseable split status lines in drush output';
+      return FALSE;
+    }
+
+    return $statuses;
   }
 
   /**
