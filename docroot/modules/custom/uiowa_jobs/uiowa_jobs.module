@@ -13,16 +13,12 @@ use Drupal\uiowa_core\HeadlineHelper;
  * Implements hook_form_alter().
  */
 function uiowa_jobs_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $help_text = t('Enter a valid HRIS feed URL from hris.uiowa.edu. Example: https://hris.uiowa.edu/otac-rss/faculty.php?dept-code=17-3255');
   $validator = 'uiowa_jobs_validate_feed_url';
   // Add validation to the feed URL field on uiowa_jobs block forms.
   if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
     if (isset($form['settings']['block_form']['field_uiowa_jobs_feed_url'])) {
       // Add validation handler.
       $form['settings']['block_form']['field_uiowa_jobs_feed_url']['widget'][0]['value']['#element_validate'][] = $validator;
-
-      // Add help text.
-      $form['settings']['block_form']['field_uiowa_jobs_feed_url']['widget'][0]['value']['#description'] = $help_text;
     }
   }
 
@@ -51,7 +47,7 @@ function uiowa_jobs_validate_feed_url($element, FormStateInterface $form_state, 
   $parser = \Drupal::service('uiowa_jobs.rss_parser');
 
   if (!$parser->validateFeedUrl($url)) {
-    $form_state->setError($element, t('Feed URL must be from hris.uiowa.edu and use the OTAC RSS format (https://hris.uiowa.edu/otac-rss/...). Example: https://hris.uiowa.edu/otac-rss/faculty.php?dept-code=17-3255'));
+    $form_state->setError($element, t('Feed URL must be from hris.uiowa.edu and use the OTAC RSS format (https://hris.uiowa.edu/otac-rss/...).'));
   }
 }
 
