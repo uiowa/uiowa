@@ -1096,13 +1096,12 @@ EOD;
 
       // Activate and import any config splits.
       if ($split = $this->getConfigValue('uiowa.config.split')) {
-        $this->taskDrush()
-          ->stopOnFail(FALSE)
-          ->drush('config:set')
-          ->args("config_split.config_split.{$split}", 'status', TRUE)
-          ->drush('cache:rebuild')
-          ->drush('config:import')
-          ->run();
+        $splits = is_array($split) ? $split : [$split];
+        $task = $this->taskDrush()->stopOnFail(FALSE);
+        foreach ($splits as $split_name) {
+          $task->drush('config:set')->args("config_split.config_split.{$split_name}", 'status', TRUE);
+        }
+        $task->drush('cache:rebuild')->drush('config:import')->run();
       }
     }
   }
