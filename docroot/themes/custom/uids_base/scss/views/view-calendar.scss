@@ -56,45 +56,38 @@ a.fc-event {
   opacity: 1;
 }
 
-// Allow event title text to wrap so long alert titles aren't truncated.
+// Wrap long alert titles.
 .fc-daygrid-event .fc-event-title {
   white-space: normal;
 }
 
-// Stack time above title for readability in narrow day cells.
+// Stack time above title in narrow cells.
 .fc-daygrid-event .fc-event-main-frame {
   flex-direction: column;
 }
 
-// Keep list view's sticky day headers above the rows they overlap on scroll.
+// Sticky list-view day headers above their rows on scroll.
 .fc .fc-list-sticky .fc-list-day > * {
   z-index: 1;
 }
 
-// FullCalendar v6 narrow-viewport rendering fixes. With aspectRatio set, FC's
-// measurement returning null at sub-768px cascades into collapsed widths and
-// heights. The view config's height/contentHeight: auto (enabled by patch
-// 3499954) handles the outer chrome; these rules address the inner sizing.
+// Mobile rendering fixes for FC v6 narrow-viewport sizing bugs.
 @media (max-width: 768px) {
-  // FC sets height: 1px on scrollgrid sections expecting content to push them
-  // back open. At narrow widths the content can't, so sections stay collapsed.
+  // Override FC's height: 1px floor on scrollgrid sections.
   .fc .fc-scrollgrid-section,
   .fc .fc-scrollgrid-section table,
   .fc .fc-scrollgrid-section > td {
     height: auto !important;
   }
-  // Min-width keeps day columns wide enough to be legible; the grid scrolls
-  // horizontally when the viewport is narrower (via .fc-view overflow below).
+  // Legible column widths; grid scrolls horizontally via .fc-view below.
   .fc-scrollgrid {
     min-width: 700px;
   }
-  // Horizontal scroll on .fc-view (abs-positioned inside the harness, so
-  // overflow has to live here for content to scroll).
+  // Horizontal scroll lives on .fc-view (abs-positioned, overflow has to live here).
   .fc .fc-view {
     overflow-x: auto;
   }
-  // Wrap the toolbar and pull the title-chunk to its own line above the
-  // button groups so the header is readable at narrow widths.
+  // Wrap toolbar; title on its own line above the buttons.
   .fc-header-toolbar.fc-toolbar {
     flex-wrap: wrap;
   }
@@ -106,7 +99,7 @@ a.fc-event {
   }
 }
 
-// Match production's denser event-title line-height (default uids_base is 1.6).
+// Match production's denser line-height (default uids_base is 1.6).
 .fc-daygrid-event .fc-event-title {
   line-height: 1.4;
 }
