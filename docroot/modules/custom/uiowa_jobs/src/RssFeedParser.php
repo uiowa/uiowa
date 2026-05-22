@@ -98,6 +98,7 @@ class RssFeedParser {
       $channel = Reader::importString($feed_content);
 
       $jobs = [];
+      $count = 0;
       foreach ($channel as $item) {
         $job = new \stdClass();
         $job->guid = $item->getId();
@@ -113,6 +114,10 @@ class RssFeedParser {
         }
 
         $jobs[] = $job;
+        // Limit processing to a maximum of 50 jobs.
+        if (++$count == 50) {
+          break;
+        }
       }
 
       // Cache the results.
