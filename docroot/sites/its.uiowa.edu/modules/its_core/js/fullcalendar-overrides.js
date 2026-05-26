@@ -5,10 +5,10 @@
     return width <= MOBILE_BREAKPOINT ? 'listMonth' : 'dayGridMonth';
   }
 
-  Drupal.behaviors.uidsViewCalendar = {
+  Drupal.behaviors.itsFullcalendarOverrides = {
     attach: function (context) {
-      once('uids-view-calendar', '.fc', context).forEach(function (root) {
-        // Icon span is decorative — button already has the accessible name.
+      once('its-fullcalendar-overrides', '.fc', context).forEach(function (root) {
+        // Icon span is decorative; button already has the accessible name.
         const fix = () => root.querySelectorAll('.fc-icon[role="img"]')
           .forEach(el => el.setAttribute('role', 'presentation'));
         fix();
