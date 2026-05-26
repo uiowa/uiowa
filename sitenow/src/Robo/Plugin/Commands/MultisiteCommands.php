@@ -313,6 +313,7 @@ class MultisiteCommands extends Tasks {
       if ($bar === NULL) {
         $bar = new ProgressBar($out, $total);
         $bar->setFormat(' %current%/%max% [%bar%] %message%');
+        $bar->setMessage($name);
         $bar->start();
       }
       $bar->setMessage($name);
