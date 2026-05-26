@@ -78,7 +78,10 @@ display:
           hide_alter_empty: true
           action_title: Action
           include_exclude: exclude
-          selected_actions: {  }
+          selected_actions:
+            - entity_print_pdf_download_action
+            - node_promote_action
+            - node_unpromote_action
         title:
           id: title
           table: node_field_data
