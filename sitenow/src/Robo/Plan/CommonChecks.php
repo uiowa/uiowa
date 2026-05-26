@@ -53,9 +53,12 @@ trait CommonChecks {
           : Precondition::pass('on_feature_branch', ['branch' => $branch]);
       }),
       new Check('clean_working_tree', function (): Precondition {
-        $dirty = trim((string) shell_exec('git status --porcelain 2>/dev/null'));
+        // Ignore untracked files: the command stages only its own generated
+        // paths, so untracked local files (secrets.php, IDE config, etc.)
+        // cannot end up in its commit. Only tracked changes matter.
+        $dirty = trim((string) shell_exec('git status --porcelain --untracked-files=no 2>/dev/null'));
         return $dirty
-          ? Precondition::fail('clean_working_tree', 'Working tree has uncommitted changes.')
+          ? Precondition::fail('clean_working_tree', 'Working tree has uncommitted changes to tracked files.')
           : Precondition::pass('clean_working_tree');
       }),
       new Check('up_to_date_with_origin', function () use ($branch): Precondition {
