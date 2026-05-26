@@ -1,3 +1,16 @@
+Expose the FullCalendar Calendar instance on the calendar's DOM element so
+external JS (themes, modules) can retrieve it and call API methods.
+
+The Drupal fullcalendar module captures the Calendar in a buildCalendars()
+closure with no documented way for external code to access it. This patch
+adds `calendarEl._fcCalendar = calendar` before `.render()` so consumers can
+do things like:
+
+  document.querySelector('.fc')._fcCalendar.changeView('listMonth');
+
+Not tied to a drupal.org issue (yet). Used by:
+  - its_core's fullcalendar-overrides.js for responsive view switching
+
 diff --git a/assets/js/fullcalendar.views.js b/assets/js/fullcalendar.views.js
 --- a/assets/js/fullcalendar.views.js
 +++ b/assets/js/fullcalendar.views.js
