@@ -509,8 +509,8 @@ function its_core_preprocess_block(&$variables) {
 /**
  * Implements hook_views_pre_render().
  *
- * Bound the alerts calendar's navigable range to the view's date filter so
- * users can't navigate to empty months past the data window.
+ * Inject FullCalendar options for the alerts calendar that the module's
+ * form-side config doesn't expose.
  */
 function its_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() !== 'alerts_list_block' || $view->current_display !== 'alerts_calendar') {
@@ -519,29 +519,25 @@ function its_core_views_pre_render(ViewExecutable $view) {
   if (!($view->style_plugin instanceof FullCalendar)) {
     return;
   }
+
+  // Bound calendar nav to the view's date filter (e.g., -90 days).
   $filter = $view->filter['field_alert_date_value'] ?? NULL;
   $offset = $filter?->options['value']['value'] ?? '-90 days';
   $cutoff = (new DrupalDateTime($offset))->format('Y-m-d');
-  // The fullcalendar module's own hook_views_pre_view runs first and converts
-  // the raw textfield options into the JS-ready structure under
-  // `options.options`. Inject directly there since pre_render is too late to
-  // go through the textfield-parser path.
+
+  // Write to options.options where FC's JS reads from; the module's preView()
+  // has already converted textfield-format options by pre_render time.
   $view->style_plugin->options['options']['validRange'] = ['start' => $cutoff];
 
-  // Match production's time display format (e.g., "11:46 am"). The module
-  // doesn't expose eventTimeFormat as a form-side option. Using "lowercase"
-  // instead of "short" preserves the space before am/pm: FC's MERIDIEM_RE
-  // eats the leading space in the 'short' replacer but keeps it in
-  // 'lowercase' (which lowercases the whole match including the space).
+  // Match production format "11:46 am". meridiem: 'lowercase' preserves the
+  // leading space that meridiem: 'short' would strip.
   $view->style_plugin->options['options']['eventTimeFormat'] = [
     'hour' => 'numeric',
     'minute' => '2-digit',
     'meridiem' => 'lowercase',
   ];
 
-  // Make day numbers in month view clickable — navigates to that day's list
-  // (production behavior we lost in the v3 swap). With list_view enabled and
-  // no timegrid/daygrid day views, FC routes to listDay.
+  // Restore production's clickable day numbers in month view.
   $view->style_plugin->options['options']['navLinks'] = TRUE;
   $view->style_plugin->options['options']['navLinkDayClick'] = 'listDay';
 }
