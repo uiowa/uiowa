@@ -26,7 +26,6 @@ function uiowa_jobs_form_alter(&$form, FormStateInterface $form_state, $form_id)
   if (str_starts_with($form_id, 'block_content_uiowa_jobs_')) {
     if (isset($form['field_uiowa_jobs_feed_url'])) {
       $form['field_uiowa_jobs_feed_url']['widget'][0]['value']['#element_validate'][] = $validator;
-      $form['field_uiowa_jobs_feed_url']['widget'][0]['value']['#description'] = $help_text;
     }
   }
 }
