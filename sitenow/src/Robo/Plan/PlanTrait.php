@@ -3,10 +3,12 @@
 namespace SiteNow\Robo\Plan;
 
 /**
- * Plan-then-execute UX helpers for Robo commands.
+ * Plan-then-execute orchestration for Robo commands.
  *
- * Provides plan rendering, validation aggregation, and an apply prompt.
- * The calling command supplies domain-specific titles, summary rows, and steps.
+ * Owns the generic loop: run declared checks, render the plan, dispatch the
+ * execution mode, and run the step collection. A calling command supplies the
+ * domain-specific pieces: a decide() method that returns a Plan and a
+ * buildSteps() method that returns label/task pairs.
  */
 trait PlanTrait {
 
@@ -19,7 +21,7 @@ trait PlanTrait {
    *   Optional key/value rows shown before validation, assembled by the
    *   calling command. Each entry: ['label' => string, 'value' => string].
    * @param array $validation
-   *   Output of buildValidation().
+   *   Output of runChecks().
    * @param array $steps
    *   Each entry has a 'label' key. Empty array renders no Actions block.
    */
@@ -79,6 +81,93 @@ trait PlanTrait {
   }
 
   /**
+   * Run a decided plan through the standard mode dispatch.
+   *
+   * Handles every execution mode in one place: FAIL short-circuit, JSON
+   * output, dry-run, the --yes warning gate, and the interactive prompt.
+   * Steps are built lazily so no work happens on paths that exit early.
+   *
+   * @param \SiteNow\Robo\Plan\Plan $plan
+   *   The decided plan.
+   * @param array $options
+   *   Command options. Reads 'output', 'dry-run', and 'yes'.
+   * @param callable $build_steps
+   *   Returns the ordered steps when invoked:
+   *   function (): array of ['label' => string, 'task' => TaskInterface].
+   */
+  protected function executePlan(Plan $plan, array $options, callable $build_steps): void {
+    if ($plan->failed()) {
+      $this->renderPlan($plan->title, [], $plan->validation);
+      return;
+    }
+
+    $steps = $build_steps();
+
+    if (($options['output'] ?? '') === 'json') {
+      $payload = [
+        'input' => $plan->input,
+        'decisions' => $plan->context,
+        'validation' => $plan->validation,
+        'actions_summary' => array_column($steps, 'label'),
+      ];
+      $this->output()->writeln(json_encode($payload, JSON_PRETTY_PRINT));
+      return;
+    }
+
+    $this->renderPlan($plan->title, $plan->summary, $plan->validation, $steps);
+
+    if (!empty($options['dry-run'])) {
+      return;
+    }
+
+    if (!empty($options['yes'])) {
+      if ($plan->warned()) {
+        $this->io()->error('Aborting: --yes was passed but validation has a WARN. Resolve the warning or run interactively.');
+        return;
+      }
+    }
+    elseif ($this->promptApply() === 'n') {
+      $this->say('Aborted.');
+      return;
+    }
+
+    $this->applyPlan($steps);
+  }
+
+  /**
+   * Run plan steps in a Robo collection with rollback on failure.
+   *
+   * @param array $steps
+   *   Ordered steps: [['label' => string, 'task' => TaskInterface], ...].
+   */
+  protected function applyPlan(array $steps): void {
+    $collection = $this->collectionBuilder();
+    foreach ($steps as $step) {
+      $collection->addTask($step['task']);
+    }
+
+    $result = $collection->run();
+
+    if (!$result->wasSuccessful()) {
+      $this->io()->error('Plan execution failed. Rolled back where possible.');
+      return;
+    }
+
+    $this->say('<info>Done.</info>');
+    $this->afterApply($steps);
+  }
+
+  /**
+   * Hook invoked after a successful apply.
+   *
+   * Commands override this to print domain-specific follow-up guidance.
+   *
+   * @param array $steps
+   *   The steps that were executed.
+   */
+  protected function afterApply(array $steps): void {}
+
+  /**
    * Prompt for apply/abort. Returns 'y' or 'n'.
    */
   protected function promptApply(): string {
@@ -96,34 +185,54 @@ trait PlanTrait {
   }
 
   /**
-   * Convert an array of Precondition objects into a serializable validation
-   * summary with an 'overall' status and per-check details.
+   * Evaluate declared checks into a serializable validation block.
    *
-   * @param Precondition[] $checks
-   *   Keyed by check name.
+   * @param \SiteNow\Robo\Plan\Check[] $checks
+   *   Checks evaluated in declared order.
    *
    * @return array
    *   ['overall' => PASS|WARN|FAIL, 'checks' => [name => [status, message, context]]]
    */
-  protected function buildValidation(array $checks): array {
+  protected function runChecks(array $checks): array {
     $result = ['checks' => [], 'overall' => Precondition::PASS];
 
-    foreach ($checks as $name => $check) {
-      $result['checks'][$name] = [
-        'status' => $check->status,
-        'message' => $check->message,
-        'context' => $check->context,
+    foreach ($checks as $check) {
+      $precondition = $check->evaluate();
+      $result['checks'][$precondition->name] = [
+        'status' => $precondition->status,
+        'message' => $precondition->message,
+        'context' => $precondition->context,
       ];
 
-      if ($check->isFail()) {
+      if ($precondition->isFail()) {
         $result['overall'] = Precondition::FAIL;
       }
-      elseif ($check->isWarn() && $result['overall'] !== Precondition::FAIL) {
+      elseif ($precondition->isWarn() && $result['overall'] !== Precondition::FAIL) {
         $result['overall'] = Precondition::WARN;
       }
     }
 
     return $result;
+  }
+
+  /**
+   * Merge a second validation block into a base, keeping the worst status.
+   *
+   * @param array $base
+   *   The base validation block.
+   * @param array $extra
+   *   Additional checks to fold in.
+   *
+   * @return array
+   *   The merged validation block.
+   */
+  protected function mergeValidation(array $base, array $extra): array {
+    $rank = [Precondition::PASS => 0, Precondition::WARN => 1, Precondition::FAIL => 2];
+    $base['checks'] = array_merge($base['checks'], $extra['checks']);
+    if ($rank[$extra['overall']] > $rank[$base['overall']]) {
+      $base['overall'] = $extra['overall'];
+    }
+    return $base;
   }
 
 }

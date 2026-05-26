@@ -1,0 +1,308 @@
+<?php
+
+namespace Uiowa\Tests\PHPUnit\Unit;
+
+use Drupal\Tests\UnitTestCase;
+use SiteNow\Robo\Plan\Check;
+use SiteNow\Robo\Plan\Plan;
+use SiteNow\Robo\Plan\PlanTrait;
+use SiteNow\Robo\Plan\Precondition;
+use SiteNow\Robo\Plugin\Commands\MultisiteCommands;
+
+/**
+ * Unit tests for the multisite create command's plan layer.
+ *
+ * Covers the generic plan primitives (Precondition, Check, Plan, and the
+ * PlanTrait validation aggregation) and the command's application-selection
+ * rules. Both are pure logic: no Acquia API, git, or filesystem access.
+ *
+ * @group unit
+ */
+class MultisiteCreateTest extends UnitTestCase {
+
+  /**
+   * Build an application facts fixture as getApplicationFacts() would return.
+   */
+  private function app(string $name, int $dbs, bool $ssl): array {
+    return [
+      'uuid' => "uuid-{$name}",
+      'name' => $name,
+      'dbs' => $dbs,
+      'has_ssl' => $ssl,
+      'ssl_match' => $ssl ? '*.uiowa.edu' : NULL,
+      'related' => NULL,
+      'sans' => $ssl ? 50 : NULL,
+    ];
+  }
+
+  /**
+   * A command instance exposing the protected selection methods.
+   */
+  private function command(): MultisiteCommands {
+    return new class extends MultisiteCommands {
+
+      public function pubSelectApp(array $candidates, array $options): array {
+        return $this->selectApp($candidates, $options);
+      }
+
+      public function pubEligibleApps(array $candidates): array {
+        return $this->eligibleApps($candidates);
+      }
+
+    };
+  }
+
+  /**
+   * A harness exposing the protected PlanTrait aggregation helpers.
+   */
+  private function planHarness(): object {
+    return new class {
+
+      use PlanTrait;
+
+      public function checks(array $checks): array {
+        return $this->runChecks($checks);
+      }
+
+      public function merge(array $base, array $extra): array {
+        return $this->mergeValidation($base, $extra);
+      }
+
+    };
+  }
+
+  // --- Application selection (command domain rules) ---------------------------
+
+  /**
+   * Auto-pick chooses the lowest DB count among SSL-covered applications.
+   */
+  public function testAutoPicksLowestDbCountAmongSslCovered() {
+    $candidates = [
+      'uiowa' => $this->app('uiowa', 87, TRUE),
+      'uiowa02' => $this->app('uiowa02', 65, TRUE),
+      'uiowa03' => $this->app('uiowa03', 12, TRUE),
+    ];
+
+    [$app, $reasoning, $check] = $this->command()->pubSelectApp($candidates, []);
+
+    $this->assertSame('uiowa03', $app['name']);
+    $this->assertStringContainsString('12', $reasoning);
+    $this->assertNull($check);
+  }
+
+  /**
+   * The Healthcare application is excluded from auto-pick even when lowest.
+   */
+  public function testExcludesHealthcareFromAutoPick() {
+    $candidates = [
+      'uiowa06' => $this->app('uiowa06', 2, TRUE),
+      'uiowa03' => $this->app('uiowa03', 12, TRUE),
+    ];
+
+    [$app, , $check] = $this->command()->pubSelectApp($candidates, []);
+
+    $this->assertSame('uiowa03', $app['name']);
+    $this->assertNull($check);
+  }
+
+  /**
+   * With no SSL coverage anywhere, auto-pick falls back to non-Healthcare apps.
+   */
+  public function testFallsBackToNonSslWhenNoCoverage() {
+    $candidates = [
+      'uiowa' => $this->app('uiowa', 87, FALSE),
+      'uiowa04' => $this->app('uiowa04', 30, FALSE),
+      'uiowa06' => $this->app('uiowa06', 5, FALSE),
+    ];
+
+    [$app, , $check] = $this->command()->pubSelectApp($candidates, []);
+
+    $this->assertSame('uiowa04', $app['name']);
+    $this->assertNull($check);
+  }
+
+  /**
+   * A tie in DB count leaves the app unresolved for interactive resolution.
+   */
+  public function testTieLeavesAppUnresolved() {
+    $candidates = [
+      'uiowa02' => $this->app('uiowa02', 12, TRUE),
+      'uiowa03' => $this->app('uiowa03', 12, TRUE),
+    ];
+
+    [$app, , $check] = $this->command()->pubSelectApp($candidates, []);
+
+    $this->assertNull($app);
+    $this->assertNull($check);
+  }
+
+  /**
+   * An explicit --app overrides auto-pick, even against the lowest count.
+   */
+  public function testExplicitAppOverridesAutoPick() {
+    $candidates = [
+      'uiowa' => $this->app('uiowa', 87, TRUE),
+      'uiowa03' => $this->app('uiowa03', 12, TRUE),
+    ];
+
+    [$app, $reasoning, $check] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa']);
+
+    $this->assertSame('uiowa', $app['name']);
+    $this->assertStringContainsString('--app', $reasoning);
+    $this->assertNull($check);
+  }
+
+  /**
+   * The Healthcare application is accepted when named explicitly.
+   */
+  public function testExplicitHealthcareAppAccepted() {
+    $candidates = [
+      'uiowa06' => $this->app('uiowa06', 5, TRUE),
+      'uiowa03' => $this->app('uiowa03', 12, TRUE),
+    ];
+
+    [$app, , $check] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa06']);
+
+    $this->assertSame('uiowa06', $app['name']);
+    $this->assertNull($check);
+  }
+
+  /**
+   * An unknown --app yields no app and a failing app_exists check.
+   */
+  public function testExplicitUnknownAppReturnsFailCheck() {
+    $candidates = [
+      'uiowa03' => $this->app('uiowa03', 12, TRUE),
+    ];
+
+    [$app, , $check] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa99']);
+
+    $this->assertNull($app);
+    $this->assertInstanceOf(Check::class, $check);
+    $this->assertTrue($check->evaluate()->isFail());
+    $this->assertSame('app_exists', $check->name);
+  }
+
+  /**
+   * Eligible filtering prefers SSL-covered apps and drops Healthcare.
+   */
+  public function testEligibleAppsPrefersSslAndDropsHealthcare() {
+    $candidates = [
+      'uiowa' => $this->app('uiowa', 87, TRUE),
+      'uiowa04' => $this->app('uiowa04', 30, FALSE),
+      'uiowa06' => $this->app('uiowa06', 5, TRUE),
+    ];
+
+    $eligible = $this->command()->pubEligibleApps($candidates);
+
+    $this->assertSame(['uiowa'], array_keys($eligible));
+  }
+
+  // --- Validation aggregation (generic PlanTrait) -----------------------------
+
+  /**
+   * All passing checks yield an overall PASS.
+   */
+  public function testRunChecksAllPass() {
+    $result = $this->planHarness()->checks([
+      new Check('a', fn() => Precondition::pass('a')),
+      new Check('b', fn() => Precondition::pass('b')),
+    ]);
+
+    $this->assertSame(Precondition::PASS, $result['overall']);
+    $this->assertCount(2, $result['checks']);
+  }
+
+  /**
+   * A single WARN raises the overall status to WARN.
+   */
+  public function testRunChecksWarnRaisesOverall() {
+    $result = $this->planHarness()->checks([
+      new Check('a', fn() => Precondition::pass('a')),
+      new Check('b', fn() => Precondition::warn('b', 'careful')),
+    ]);
+
+    $this->assertSame(Precondition::WARN, $result['overall']);
+    $this->assertSame('careful', $result['checks']['b']['message']);
+  }
+
+  /**
+   * A FAIL dominates a WARN regardless of order.
+   */
+  public function testRunChecksFailDominatesWarn() {
+    $result = $this->planHarness()->checks([
+      new Check('a', fn() => Precondition::warn('a', 'careful')),
+      new Check('b', fn() => Precondition::fail('b', 'nope')),
+    ]);
+
+    $this->assertSame(Precondition::FAIL, $result['overall']);
+  }
+
+  /**
+   * Merging keeps the worst status and combines both check sets.
+   */
+  public function testMergeValidationKeepsWorstStatusAndCombines() {
+    $harness = $this->planHarness();
+    $base = $harness->checks([new Check('a', fn() => Precondition::pass('a'))]);
+    $extra = $harness->checks([new Check('b', fn() => Precondition::fail('b', 'nope'))]);
+
+    $merged = $harness->merge($base, $extra);
+
+    $this->assertSame(Precondition::FAIL, $merged['overall']);
+    $this->assertArrayHasKey('a', $merged['checks']);
+    $this->assertArrayHasKey('b', $merged['checks']);
+  }
+
+  /**
+   * Merging a lower-severity extra does not downgrade the base status.
+   */
+  public function testMergeValidationDoesNotDowngrade() {
+    $harness = $this->planHarness();
+    $base = $harness->checks([new Check('a', fn() => Precondition::warn('a', 'careful'))]);
+    $extra = $harness->checks([new Check('b', fn() => Precondition::pass('b'))]);
+
+    $merged = $harness->merge($base, $extra);
+
+    $this->assertSame(Precondition::WARN, $merged['overall']);
+  }
+
+  // --- Value objects ----------------------------------------------------------
+
+  /**
+   * Plan reflects its overall validation status.
+   */
+  public function testPlanStatusHelpers() {
+    $fail = new Plan('t', [], ['overall' => Precondition::FAIL, 'checks' => []]);
+    $warn = new Plan('t', [], ['overall' => Precondition::WARN, 'checks' => []]);
+    $pass = new Plan('t', [], ['overall' => Precondition::PASS, 'checks' => []]);
+
+    $this->assertTrue($fail->failed());
+    $this->assertFalse($fail->warned());
+    $this->assertTrue($warn->warned());
+    $this->assertFalse($warn->failed());
+    $this->assertFalse($pass->failed());
+    $this->assertFalse($pass->warned());
+  }
+
+  /**
+   * Precondition factories set the expected status and predicates.
+   */
+  public function testPreconditionFactories() {
+    $this->assertTrue(Precondition::pass('a')->isPass());
+    $this->assertTrue(Precondition::warn('a', 'm')->isWarn());
+    $this->assertTrue(Precondition::fail('a', 'm')->isFail());
+    $this->assertSame('m', Precondition::fail('a', 'm')->message);
+  }
+
+  /**
+   * A Check evaluates its closure on demand.
+   */
+  public function testCheckEvaluatesClosure() {
+    $check = new Check('a', fn() => Precondition::fail('a', 'boom'));
+    $result = $check->evaluate();
+
+    $this->assertTrue($result->isFail());
+    $this->assertSame('boom', $result->message);
+  }
+
+}

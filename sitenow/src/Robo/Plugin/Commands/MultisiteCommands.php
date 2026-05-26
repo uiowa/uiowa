@@ -2,16 +2,19 @@
 
 namespace SiteNow\Robo\Plugin\Commands;
 
-use AcquiaCloudApi\Endpoints\Databases;
-use AcquiaCloudApi\Endpoints\Environments;
-use AcquiaCloudApi\Endpoints\SslCertificates;
+use AcquiaCloudApi\Connector\Client;
 use Robo\Tasks;
-use SiteNow\Robo\Plan\Precondition;
+use SiteNow\Robo\Plan\Check;
+use SiteNow\Robo\Plan\CommonChecks;
+use SiteNow\Robo\Plan\Plan;
 use SiteNow\Robo\Plan\PlanTrait;
+use SiteNow\Robo\Plan\Precondition;
 use SiteNow\Robo\Task\Acquia\Tasks as AcquiaTasks;
 use SiteNow\Robo\Task\Multisite\Tasks as MultisiteTasks;
 use SiteNow\Robo\Traits\SiteNowCommandsTrait;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -24,6 +27,7 @@ class MultisiteCommands extends Tasks {
   use AcquiaTasks;
   use MultisiteTasks;
   use PlanTrait;
+  use CommonChecks;
 
   const HEALTHCARE_APP = 'uiowa06';
 
@@ -62,252 +66,286 @@ class MultisiteCommands extends Tasks {
       'app' => InputOption::VALUE_REQUIRED,
     ],
   ): void {
-    $decisions = $this->decide($host, $options);
-
-    $title = "uiowa:multisite:create {$host}";
-
-    if ($decisions['validation']['overall'] === Precondition::FAIL) {
-      $this->renderPlan($title, [], $decisions['validation']);
-      return;
-    }
-
-    // Resolve tied app selection.
-    if ($decisions['decisions']['app'] === NULL) {
-      if ($options['yes'] || $options['dry-run'] || $options['output'] === 'json') {
-        $this->renderPlan($title, [], $decisions['validation']);
-        $this->io()->warning('Application selection is ambiguous (tied DB counts). Use --app= to specify.');
-        return;
-      }
-      $candidates = $decisions['decisions']['app_candidates'];
-      $eligible = array_filter($candidates, fn($c) => $c['has_ssl'] && $c['name'] !== self::HEALTHCARE_APP);
-      $names = array_column(array_values($eligible), 'name');
-      $chosen = $this->askChoice('Which cloud application should be used?', $names);
-      $decisions['decisions']['app'] = $eligible[$chosen] + ['reasoning' => 'Selected interactively.'];
-    }
-
-    $steps = $this->buildSteps($host, $options, $decisions);
-
-    if ($options['output'] === 'json') {
-      $out = $decisions;
-      $out['actions_summary'] = array_column($steps, 'label');
-      $this->output()->writeln(json_encode($out, JSON_PRETTY_PRINT));
-      return;
-    }
-
-    $this->renderPlan($title, $this->planSummary($decisions), $decisions['validation'], $steps);
-
-    if ($options['dry-run']) {
-      return;
-    }
-
-    if ($options['yes']) {
-      if ($decisions['validation']['overall'] === Precondition::WARN) {
-        $this->io()->error('Aborting: --yes was passed but validation has a WARN. Resolve the warning or run interactively.');
-        return;
-      }
-    }
-    else {
-      if ($this->promptApply() === 'n') {
-        $this->say('Aborted.');
-        return;
-      }
-    }
-
-    $this->apply($steps);
+    $plan = $this->decide($host, $options);
+    $plan = $this->resolveAppSelection($plan, $options);
+    $this->executePlan($plan, $options, fn() => $this->buildSteps($host, $options, $plan));
   }
 
   /**
    * Queries Acquia Cloud and runs pre-flight checks.
    *
-   * Returns a decisions array with 'input', 'decisions', and 'validation' keys.
+   * Read-only: gathers facts and evaluates validation checks. Cheap env and
+   * input checks run first and gate the Acquia API work behind them.
+   *
+   * @param string $host
+   *   The multisite host.
+   * @param array $options
+   *   Command options.
+   *
+   * @return \SiteNow\Robo\Plan\Plan
+   *   The decided plan. App may be unresolved on a tie; see
+   *   resolveAppSelection().
    */
-  private function decide(string $host, array $options): array {
+  private function decide(string $host, array $options): Plan {
     $root = getcwd();
-    $checks = [];
+    $title = "uiowa:multisite:create {$host}";
+
     $umc_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'output', 'app'];
     $flags = array_filter(
       array_intersect_key($options, array_flip($umc_keys)),
       fn($v) => $v !== NULL && $v !== FALSE && $v !== '' && $v !== InputOption::VALUE_REQUIRED
     );
 
-    // --- Environment checks ---
+    $input = [
+      'host' => $host,
+      'db' => Multisite::getDatabaseName($host),
+      'id' => Multisite::getIdentifier("https://{$host}"),
+      'flags' => $flags,
+    ];
 
-    $checks['running_on_host_shell'] = $this->isDdev()
-      ? Precondition::fail('running_on_host_shell', 'Must run on host shell, not inside DDEV. Use: ./vendor/bin/robo uiowa:multisite:create')
-      : Precondition::pass('running_on_host_shell');
+    // Cheap checks: environment and input. A FAIL here short-circuits before
+    // any Acquia API call.
+    $cheap = [
+      $this->checkHostShell(),
+      $this->checkAcquiaCredentials(),
+      new Check('hostname_format', function () use ($host): Precondition {
+        $valid = (bool) preg_match(
+          '/^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$/',
+          $host
+        );
+        return $valid
+          ? Precondition::pass('hostname_format')
+          : Precondition::fail('hostname_format', "Invalid hostname: {$host}. Must be a valid dot-separated domain.");
+      }),
+      new Check('site_dir_does_not_exist', function () use ($root, $host): Precondition {
+        return is_dir("{$root}/docroot/sites/{$host}")
+          ? Precondition::fail('site_dir_does_not_exist', "Site directory docroot/sites/{$host} already exists.")
+          : Precondition::pass('site_dir_does_not_exist');
+      }),
+      new Check('no_normalized_conflicts', function () use ($root, $host): Precondition {
+        $manifest = file_exists("{$root}/blt/manifest.yml")
+          ? (Yaml::parseFile("{$root}/blt/manifest.yml") ?? [])
+          : [];
+        $all_sites = array_merge(...(array_values($manifest) ?: [[]]));
+        return in_array($host, $all_sites)
+          ? Precondition::fail('no_normalized_conflicts', "Site {$host} already exists in blt/manifest.yml.")
+          : Precondition::pass('no_normalized_conflicts');
+      }),
+    ];
 
-    $key = $this->getConfigValue('uiowa.credentials.acquia.key');
-    $secret = $this->getConfigValue('uiowa.credentials.acquia.secret');
-    $checks['has_acquia_credentials'] = ($key && $secret)
-      ? Precondition::pass('has_acquia_credentials')
-      : Precondition::fail('has_acquia_credentials', 'Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
+    $validation = $this->runChecks($cheap);
 
-    // --- Input checks ---
+    if ($validation['overall'] === Precondition::FAIL) {
+      return new Plan($title, $input, $validation);
+    }
 
-    $valid_host = (bool) preg_match(
-      '/^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$/',
-      $host
+    // Acquia API: gather per-application facts with progress feedback.
+    $client = $this->getAcquiaCloudApiClient(
+      $this->getConfigValue('uiowa.credentials.acquia.key'),
+      $this->getConfigValue('uiowa.credentials.acquia.secret')
     );
-    $checks['hostname_format'] = $valid_host
-      ? Precondition::pass('hostname_format')
-      : Precondition::fail('hostname_format', "Invalid hostname: {$host}. Must be a valid dot-separated domain.");
-
-    $checks['site_dir_does_not_exist'] = is_dir("{$root}/docroot/sites/{$host}")
-      ? Precondition::fail('site_dir_does_not_exist', "Site directory docroot/sites/{$host} already exists.")
-      : Precondition::pass('site_dir_does_not_exist');
-
-    $manifest = file_exists("{$root}/blt/manifest.yml")
-      ? (Yaml::parseFile("{$root}/blt/manifest.yml") ?? [])
-      : [];
-    $all_sites = array_merge(...(array_values($manifest) ?: [[]]));
-    $checks['no_normalized_conflicts'] = in_array($host, $all_sites)
-      ? Precondition::fail('no_normalized_conflicts', "Site {$host} already exists in blt/manifest.yml.")
-      : Precondition::pass('no_normalized_conflicts');
-
-    // Short-circuit before API calls if env/input checks fail.
-    if (array_filter($checks, fn($c) => $c->isFail())) {
-      return [
-        'input' => ['host' => $host, 'db' => NULL, 'id' => NULL, 'flags' => $flags],
-        'decisions' => ['app' => NULL, 'app_candidates' => []],
-        'validation' => $this->buildValidation($checks),
-      ];
-    }
-
-    // --- Acquia API ---
-
-    $client = $this->getAcquiaCloudApiClient($key, $secret);
-    $databases_api = new Databases($client);
-    $environments_api = new Environments($client);
-    $certificates_api = new SslCertificates($client);
-
     $ssl_parts = Multisite::getSslParts($host);
-    $candidates = [];
-    $has_ssl_coverage = FALSE;
+    $candidates = $this->gatherAcquiaFacts($client, $ssl_parts);
+    $has_ssl_coverage = (bool) array_filter($candidates, fn($c) => $c['has_ssl']);
 
-    foreach ($this->getSortedApplications($client) as $app) {
-      $app_name = str_replace('prod:', '', $app->hosting->id);
-      $db_count = count($databases_api->getAll($app->uuid));
-      $ssl_match = NULL;
-      $related_match = NULL;
-      $sans_count = NULL;
+    // SSL and git checks.
+    $checks = [
+      new Check('has_ssl_coverage', function () use ($has_ssl_coverage, $host): Precondition {
+        return $has_ssl_coverage
+          ? Precondition::pass('has_ssl_coverage')
+          : Precondition::warn('has_ssl_coverage', "No SSL coverage found for {$host}. Install a certificate before updating DNS.");
+      }),
+    ];
 
-      foreach ($environments_api->getAll($app->uuid) as $env) {
-        if ($env->name !== 'prod') {
-          continue;
-        }
-        foreach ($certificates_api->getAll($env->uuid) as $cert) {
-          if (!$cert->flags->active) {
-            continue;
-          }
-          $sans_count = count($cert->domains);
-          foreach ($cert->domains as $domain) {
-            if ($domain === $ssl_parts['sans']) {
-              $ssl_match = $domain;
-              $has_ssl_coverage = TRUE;
-            }
-            elseif ($domain === $ssl_parts['related'] && !$related_match) {
-              $related_match = $domain;
-            }
-          }
-        }
-      }
-
-      $candidates[$app_name] = [
-        'uuid' => $app->uuid,
-        'name' => $app_name,
-        'dbs' => $db_count,
-        'has_ssl' => $ssl_match !== NULL,
-        'ssl_match' => $ssl_match,
-        'related' => $related_match,
-        'sans' => $sans_count,
-      ];
-    }
-
-    $checks['has_ssl_coverage'] = $has_ssl_coverage
-      ? Precondition::pass('has_ssl_coverage')
-      : Precondition::warn('has_ssl_coverage', "No SSL coverage found for {$host}. Install a certificate before updating DNS.");
-
-    // --- Git checks (only when committing) ---
-
-    if (!($options['no-commit'] ?? FALSE)) {
+    if (empty($options['no-commit'])) {
       $branch = trim((string) shell_exec('git rev-parse --abbrev-ref HEAD 2>/dev/null'));
-      $protected = ['main', 'master', 'develop'];
-      $checks['on_feature_branch'] = in_array($branch, $protected)
-        ? Precondition::fail('on_feature_branch', "Cannot commit on protected branch '{$branch}'.")
-        : Precondition::pass('on_feature_branch', ['branch' => $branch]);
-
-      $dirty = trim((string) shell_exec('git status --porcelain 2>/dev/null'));
-      $checks['clean_working_tree'] = $dirty
-        ? Precondition::fail('clean_working_tree', 'Working tree has uncommitted changes.')
-        : Precondition::pass('clean_working_tree');
-
-      shell_exec('git fetch origin --quiet 2>/dev/null');
-      $rev = trim((string) shell_exec("git rev-list --left-right --count origin/{$branch}...HEAD 2>/dev/null"));
-      $parts = explode("\t", $rev);
-      $behind = (int) ($parts[0] ?? 0);
-      $checks['up_to_date_with_origin'] = $behind > 0
-        ? Precondition::fail('up_to_date_with_origin', "Branch is {$behind} commit(s) behind origin/{$branch}.")
-        : Precondition::pass('up_to_date_with_origin');
+      $checks = array_merge($checks, $this->gitChecks($branch));
     }
 
-    // --- App selection ---
+    $validation = $this->mergeValidation($validation, $this->runChecks($checks));
 
-    $selected_app = NULL;
-    $reasoning = '';
+    // App selection.
+    [$app, $reasoning, $app_check] = $this->selectApp($candidates, $options);
+    if ($app_check) {
+      $validation = $this->mergeValidation($validation, $this->runChecks([$app_check]));
+    }
+    if ($app) {
+      $app['reasoning'] = $reasoning;
+    }
 
+    return new Plan(
+      $title,
+      $input,
+      $validation,
+      $this->planSummary($app, $input),
+      ['app' => $app, 'app_candidates' => $candidates],
+    );
+  }
+
+  /**
+   * Resolve an ambiguous (tied) application selection.
+   *
+   * A clear auto-pick or an explicit --app is already resolved by decide().
+   * On a tie this prompts interactively; in a non-interactive mode it records
+   * the ambiguity as a validation failure so the standard FAIL path handles it.
+   *
+   * @param \SiteNow\Robo\Plan\Plan $plan
+   *   The decided plan.
+   * @param array $options
+   *   Command options.
+   *
+   * @return \SiteNow\Robo\Plan\Plan
+   *   The plan with a resolved app, or an added failure.
+   */
+  private function resolveAppSelection(Plan $plan, array $options): Plan {
+    if ($plan->failed() || !empty($plan->context['app'])) {
+      return $plan;
+    }
+
+    $eligible = $this->eligibleApps($plan->context['app_candidates'] ?? []);
+
+    if (empty($eligible)) {
+      $plan->validation = $this->mergeValidation($plan->validation, $this->runChecks([
+        new Check('app_selection', fn() => Precondition::fail('app_selection', 'No eligible Acquia application found.')),
+      ]));
+      return $plan;
+    }
+
+    $non_interactive = !empty($options['yes']) || !empty($options['dry-run']) || ($options['output'] ?? '') === 'json';
+    if ($non_interactive) {
+      $plan->validation = $this->mergeValidation($plan->validation, $this->runChecks([
+        new Check('app_selection', fn() => Precondition::fail('app_selection', 'Application selection is ambiguous (tied DB counts). Use --app= to specify.')),
+      ]));
+      return $plan;
+    }
+
+    $names = array_column(array_values($eligible), 'name');
+    $chosen = $this->askChoice('Which cloud application should be used?', $names);
+    $plan->context['app'] = $eligible[$chosen] + ['reasoning' => 'Selected interactively.'];
+    $plan->summary = $this->planSummary($plan->context['app'], $plan->input);
+
+    return $plan;
+  }
+
+  /**
+   * Pick the target application from gathered facts.
+   *
+   * Honors an explicit --app, otherwise auto-picks the eligible application
+   * with the lowest database count. A tie returns a NULL app for interactive
+   * resolution.
+   *
+   * @param array $candidates
+   *   Application facts keyed by name.
+   * @param array $options
+   *   Command options.
+   *
+   * @return array
+   *   [?array $app, string $reasoning, ?\SiteNow\Robo\Plan\Check $check].
+   */
+  protected function selectApp(array $candidates, array $options): array {
     if (!empty($options['app'])) {
       if (!isset($candidates[$options['app']])) {
-        $checks['app_exists'] = Precondition::fail(
+        return [NULL, '', new Check('app_exists', fn() => Precondition::fail(
           'app_exists',
           "Specified application '{$options['app']}' not found in Acquia Cloud."
-        );
+        ))];
       }
-      else {
-        $selected_app = $candidates[$options['app']];
-        $reasoning = 'Explicitly specified via --app.';
-      }
-    }
-    else {
-      $eligible = array_filter(
-        $candidates,
-        fn($c) => $c['has_ssl'] && $c['name'] !== self::HEALTHCARE_APP
-      );
-
-      if (empty($eligible)) {
-        $eligible = array_filter($candidates, fn($c) => $c['name'] !== self::HEALTHCARE_APP);
-      }
-
-      if (!empty($eligible)) {
-        $sorted = array_values($eligible);
-        usort($sorted, fn($a, $b) => $a['dbs'] <=> $b['dbs']);
-        $min = $sorted[0]['dbs'];
-        $tied = array_filter($sorted, fn($c) => $c['dbs'] === $min);
-
-        if (count($tied) === 1) {
-          $selected_app = reset($tied);
-          $reasoning = "Lowest DB count ({$min}) among eligible apps.";
-        }
-        // else: $selected_app stays NULL — caller handles interactive pick.
-      }
+      return [$candidates[$options['app']], 'Explicitly specified via --app.', NULL];
     }
 
-    if ($selected_app) {
-      $selected_app['reasoning'] = $reasoning;
+    $eligible = $this->eligibleApps($candidates);
+    if (empty($eligible)) {
+      return [NULL, '', NULL];
     }
 
-    return [
-      'input' => [
-        'host' => $host,
-        'db' => Multisite::getDatabaseName($host),
-        'id' => Multisite::getIdentifier("https://{$host}"),
-        'flags' => $flags,
-      ],
-      'decisions' => [
-        'app' => $selected_app,
-        'app_candidates' => $candidates,
-      ],
-      'validation' => $this->buildValidation($checks),
-    ];
+    $sorted = array_values($eligible);
+    usort($sorted, fn($a, $b) => $a['dbs'] <=> $b['dbs']);
+    $min = $sorted[0]['dbs'];
+    $tied = array_filter($sorted, fn($c) => $c['dbs'] === $min);
+
+    if (count($tied) === 1) {
+      return [reset($tied), "Lowest DB count ({$min}) among eligible apps.", NULL];
+    }
+
+    return [NULL, '', NULL];
+  }
+
+  /**
+   * Filter application facts to those eligible for auto-selection.
+   *
+   * Prefers SSL-covered applications and always excludes the Healthcare app.
+   * Falls back to all non-Healthcare applications when none have coverage.
+   *
+   * @param array $candidates
+   *   Application facts keyed by name.
+   *
+   * @return array
+   *   The eligible subset, keyed by name.
+   */
+  protected function eligibleApps(array $candidates): array {
+    $eligible = array_filter(
+      $candidates,
+      fn($c) => $c['has_ssl'] && $c['name'] !== self::HEALTHCARE_APP
+    );
+
+    if (empty($eligible)) {
+      $eligible = array_filter($candidates, fn($c) => $c['name'] !== self::HEALTHCARE_APP);
+    }
+
+    return $eligible;
+  }
+
+  /**
+   * Gather Acquia application facts with a console progress bar.
+   *
+   * Progress writes to stderr so it never corrupts stdout plan output.
+   *
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   The Acquia Cloud API client.
+   * @param array $ssl_parts
+   *   Output of Multisite::getSslParts().
+   *
+   * @return array
+   *   Application facts keyed by name.
+   */
+  private function gatherAcquiaFacts(Client $client, array $ssl_parts): array {
+    $out = $this->acquiaProgress();
+    $out->writeln('<comment>Gathering details from Acquia Cloud applications...</comment>');
+
+    $bar = NULL;
+    $facts = $this->getApplicationFacts($client, $ssl_parts, function (string $name, int $total) use (&$bar, $out) {
+      if ($bar === NULL) {
+        $bar = new ProgressBar($out, $total);
+        $bar->setFormat(' %current%/%max% [%bar%] %message%');
+        $bar->start();
+      }
+      $bar->setMessage($name);
+      $bar->advance();
+    });
+
+    if ($bar !== NULL) {
+      $bar->setMessage('done');
+      $bar->finish();
+    }
+    $out->writeln('');
+
+    return $facts;
+  }
+
+  /**
+   * Resolve the output stream for query progress.
+   *
+   * Progress feedback writes to stderr so it never corrupts stdout plan
+   * output (notably the JSON emitted under --output=json).
+   *
+   * @return \Symfony\Component\Console\Output\OutputInterface
+   *   The error output when available, otherwise the standard output.
+   */
+  private function acquiaProgress() {
+    $output = $this->output();
+    return $output instanceof ConsoleOutputInterface
+      ? $output->getErrorOutput()
+      : $output;
   }
 
   /**
@@ -320,17 +358,17 @@ class MultisiteCommands extends Tasks {
    *   The multisite host.
    * @param array $options
    *   Command options.
-   * @param array $decisions
-   *   Output of decide(), with a resolved (non-null) app.
+   * @param \SiteNow\Robo\Plan\Plan $plan
+   *   The decided plan, with a resolved app.
    *
    * @return array
    *   Ordered array of ['label' => string, 'task' => \Robo\Contract\TaskInterface].
    */
-  private function buildSteps(string $host, array $options, array $decisions): array {
+  private function buildSteps(string $host, array $options, Plan $plan): array {
     $root = getcwd();
-    $app = $decisions['decisions']['app'];
-    $id = $decisions['input']['id'];
-    $db = $decisions['input']['db'];
+    $app = $plan->context['app'];
+    $id = $plan->input['id'];
+    $db = $plan->input['db'];
 
     $domains = Multisite::getInternalDomains($id);
     $local = $domains['local'];
@@ -383,14 +421,13 @@ EOD;
 
     $steps = [];
 
-    if (!($options['no-db'] ?? FALSE)) {
-      $client = $this->getAcquiaCloudApiClient(
-        $this->getConfigValue('uiowa.credentials.acquia.key'),
-        $this->getConfigValue('uiowa.credentials.acquia.secret')
-      );
+    if (empty($options['no-db'])) {
       $steps[] = [
         'label' => "Create cloud DB <info>{$db}</info> on <info>{$app['name']}</info>",
-        'task' => $this->taskCloudDbCreate($client, $app['uuid'], $app['name'], $db),
+        'task' => $this->taskCloudDbCreate($this->getAcquiaCloudApiClient(
+          $this->getConfigValue('uiowa.credentials.acquia.key'),
+          $this->getConfigValue('uiowa.credentials.acquia.secret')
+        ), $app['uuid'], $app['name'], $db),
       ];
     }
 
@@ -437,7 +474,7 @@ EOD;
         ->option('site', $host, '='),
     ];
 
-    if (!($options['no-commit'] ?? FALSE)) {
+    if (empty($options['no-commit'])) {
       $steps[] = [
         'label' => "Commit \"Initialize {$host} multisite on {$app['name']}\"",
         'task' => $this->taskGitStack()
@@ -457,48 +494,34 @@ EOD;
   }
 
   /**
-   * Run all steps in a Robo collection with rollback on failure.
-   */
-  private function apply(array $steps): void {
-    $collection = $this->collectionBuilder();
-    foreach ($steps as $step) {
-      $collection->addTask($step['task']);
-    }
-
-    $result = $collection->run();
-
-    if (!$result->wasSuccessful()) {
-      $this->io()->error('Multisite creation failed. Rolled back where possible.');
-      return;
-    }
-
-    $this->say('<info>Done.</info>');
-    $this->printNextSteps($steps);
-  }
-
-  /**
    * Assembles the application and database rows for the plan header.
+   *
+   * @param array|null $app
+   *   The selected application facts, or NULL when unresolved.
+   * @param array $input
+   *   Normalized command input.
    *
    * @return array
    *   Array of ['label' => string, 'value' => string] rows.
    */
-  private function planSummary(array $decisions): array {
-    $app = $decisions['decisions']['app'] ?? NULL;
+  private function planSummary(?array $app, array $input): array {
     if (!$app) {
       return [];
     }
     return [
       ['label' => 'Application', 'value' => $app['name']],
-      ['label' => 'Database', 'value' => $decisions['input']['db'] ?? '—'],
+      ['label' => 'Database', 'value' => $input['db'] ?? 'n/a'],
       ['label' => 'Reason', 'value' => $app['reasoning'] ?? ''],
     ];
   }
 
   /**
-   * Print post-creation next steps.
+   * Print domain-specific follow-up guidance after a successful apply.
+   *
+   * @param array $steps
+   *   The steps that were executed.
    */
-  private function printNextSteps(array $steps): void {
-    // Determine if a commit was included by checking step labels.
+  protected function afterApply(array $steps): void {
     $committed = (bool) array_filter($steps, fn($s) => str_starts_with($s['label'], 'Commit'));
 
     if ($committed) {
