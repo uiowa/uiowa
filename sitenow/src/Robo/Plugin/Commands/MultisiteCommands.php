@@ -109,11 +109,7 @@ class MultisiteCommands extends Tasks {
       $this->checkHostShell(),
       $this->checkAcquiaCredentials(),
       new Check('hostname_format', function () use ($host): Precondition {
-        $valid = (bool) preg_match(
-          '/^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$/',
-          $host
-        );
-        return $valid
+        return Multisite::isValidHost($host)
           ? Precondition::pass('hostname_format')
           : Precondition::fail('hostname_format', "Invalid hostname: {$host}. Must be a valid dot-separated domain.");
       }),
@@ -387,27 +383,7 @@ class MultisiteCommands extends Tasks {
     $drush_alias['prod']['uri'] = $host;
     $drush_alias['prod']['paths']['files'] = $files_path;
 
-    $blt = [
-      'project' => [
-        'machine_name' => $id,
-        'human_name' => $host,
-        'local' => ['hostname' => $local, 'protocol' => 'https'],
-      ],
-      'drush' => ['aliases' => ['local' => 'self', 'remote' => "{$id}.prod"]],
-      'drupal' => ['db' => ['database' => $db]],
-      'uiowa' => ['stage_file_proxy' => ['origin' => "https://{$prod_domain}"]],
-    ];
-
-    if (!empty($options['requester'])) {
-      $blt['uiowa']['requester'] = $options['requester'];
-    }
-    if (!empty($options['split'])) {
-      $splits = array_map('trim', explode(',', $options['split']));
-      $blt['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
-    }
-    if (!empty($options['site-name'])) {
-      $blt['uiowa']['site-name'] = $options['site-name'];
-    }
+    $blt = $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
 
     $acquia_block = <<<EOD
 \$ah_group = getenv('AH_SITE_GROUP');
@@ -491,6 +467,54 @@ EOD;
     }
 
     return $steps;
+  }
+
+  /**
+   * Assemble the per-site blt.yml configuration array.
+   *
+   * A single split is stored as a scalar and multiple splits as an array,
+   * matching the shape the BLT install hook reads.
+   *
+   * @param string $host
+   *   The multisite host.
+   * @param string $id
+   *   The site identifier.
+   * @param string $db
+   *   The database name.
+   * @param string $local
+   *   The local internal domain.
+   * @param string $prod_domain
+   *   The prod internal domain, used for the stage_file_proxy origin.
+   * @param array $options
+   *   Command options. Reads 'requester', 'split', and 'site-name'.
+   *
+   * @return array
+   *   The per-site blt.yml structure.
+   */
+  protected function buildSiteConfig(string $host, string $id, string $db, string $local, string $prod_domain, array $options): array {
+    $blt = [
+      'project' => [
+        'machine_name' => $id,
+        'human_name' => $host,
+        'local' => ['hostname' => $local, 'protocol' => 'https'],
+      ],
+      'drush' => ['aliases' => ['local' => 'self', 'remote' => "{$id}.prod"]],
+      'drupal' => ['db' => ['database' => $db]],
+      'uiowa' => ['stage_file_proxy' => ['origin' => "https://{$prod_domain}"]],
+    ];
+
+    if (!empty($options['requester'])) {
+      $blt['uiowa']['requester'] = $options['requester'];
+    }
+    if (!empty($options['split'])) {
+      $splits = array_map('trim', explode(',', $options['split']));
+      $blt['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
+    }
+    if (!empty($options['site-name'])) {
+      $blt['uiowa']['site-name'] = $options['site-name'];
+    }
+
+    return $blt;
   }
 
   /**

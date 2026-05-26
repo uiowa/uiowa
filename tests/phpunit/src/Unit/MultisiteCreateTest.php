@@ -8,6 +8,7 @@ use SiteNow\Robo\Plan\Plan;
 use SiteNow\Robo\Plan\PlanTrait;
 use SiteNow\Robo\Plan\Precondition;
 use SiteNow\Robo\Plugin\Commands\MultisiteCommands;
+use Uiowa\Multisite;
 
 /**
  * Unit tests for the multisite create command's plan layer.
@@ -49,7 +50,25 @@ class MultisiteCreateTest extends UnitTestCase {
         return $this->eligibleApps($candidates);
       }
 
+      public function pubBuildSiteConfig(string $host, string $id, string $db, string $local, string $prod_domain, array $options): array {
+        return $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
+      }
+
     };
+  }
+
+  /**
+   * Build a per-site config with default fixture arguments.
+   */
+  private function siteConfig(array $options): array {
+    return $this->command()->pubBuildSiteConfig(
+      'newsite.uiowa.edu',
+      'newsite',
+      'newsite_uiowa_edu',
+      'newsite.dev.local.drupal.uiowa.edu',
+      'newsite.prod.drupal.uiowa.edu',
+      $options
+    );
   }
 
   /**
@@ -303,6 +322,110 @@ class MultisiteCreateTest extends UnitTestCase {
 
     $this->assertTrue($result->isFail());
     $this->assertSame('boom', $result->message);
+  }
+
+  // --- Per-site config shaping ------------------------------------------------
+
+  /**
+   * A single split is stored as a scalar string.
+   */
+  public function testSingleSplitStoredAsScalar() {
+    $blt = $this->siteConfig(['split' => 'sitenow_v2']);
+
+    $this->assertSame('sitenow_v2', $blt['uiowa']['config']['split']);
+  }
+
+  /**
+   * Multiple splits are stored as a trimmed array.
+   */
+  public function testMultipleSplitsStoredAsTrimmedArray() {
+    $blt = $this->siteConfig(['split' => 'ccom, research ,sitenow_v2']);
+
+    $this->assertSame(['ccom', 'research', 'sitenow_v2'], $blt['uiowa']['config']['split']);
+  }
+
+  /**
+   * No split option leaves the config split unset.
+   */
+  public function testNoSplitOmitsConfigKey() {
+    $blt = $this->siteConfig([]);
+
+    $this->assertArrayNotHasKey('config', $blt['uiowa']);
+  }
+
+  /**
+   * Requester and site name are included only when provided.
+   */
+  public function testOptionalFieldsIncludedWhenProvided() {
+    $bare = $this->siteConfig([]);
+    $this->assertArrayNotHasKey('requester', $bare['uiowa']);
+    $this->assertArrayNotHasKey('site-name', $bare['uiowa']);
+
+    $full = $this->siteConfig(['requester' => 'hawkid', 'site-name' => 'New Site']);
+    $this->assertSame('hawkid', $full['uiowa']['requester']);
+    $this->assertSame('New Site', $full['uiowa']['site-name']);
+  }
+
+  /**
+   * The core project and database keys derive from the host and identifier.
+   */
+  public function testCoreConfigDerivation() {
+    $blt = $this->siteConfig([]);
+
+    $this->assertSame('newsite', $blt['project']['machine_name']);
+    $this->assertSame('newsite.uiowa.edu', $blt['project']['human_name']);
+    $this->assertSame('newsite_uiowa_edu', $blt['drupal']['db']['database']);
+    $this->assertSame('https://newsite.prod.drupal.uiowa.edu', $blt['uiowa']['stage_file_proxy']['origin']);
+  }
+
+  // --- Hostname validation ----------------------------------------------------
+
+  /**
+   * Well-formed hosts validate.
+   *
+   * @dataProvider validHostProvider
+   */
+  public function testValidHosts(string $host) {
+    $this->assertTrue(Multisite::isValidHost($host));
+  }
+
+  /**
+   * Malformed hosts are rejected.
+   *
+   * @dataProvider invalidHostProvider
+   */
+  public function testInvalidHosts(string $host) {
+    $this->assertFalse(Multisite::isValidHost($host));
+  }
+
+  /**
+   * Valid host fixtures.
+   */
+  public function validHostProvider(): array {
+    return [
+      ['newsite.uiowa.edu'],
+      ['a.b.uiowa.edu'],
+      ['my-site.uiowa.edu'],
+      ['site123.uiowa.edu'],
+      ['foo.bar.baz.uiowa.edu'],
+    ];
+  }
+
+  /**
+   * Invalid host fixtures.
+   */
+  public function invalidHostProvider(): array {
+    return [
+      'uppercase' => ['NewSite.uiowa.edu'],
+      'underscore' => ['new_site.uiowa.edu'],
+      'single label' => ['localhost'],
+      'leading dot' => ['.uiowa.edu'],
+      'trailing dot' => ['newsite.uiowa.edu.'],
+      'leading hyphen' => ['-site.uiowa.edu'],
+      'trailing hyphen' => ['site-.uiowa.edu'],
+      'space' => ['new site.uiowa.edu'],
+      'empty' => [''],
+    ];
   }
 
 }
