@@ -13,31 +13,43 @@ use Drupal\uiowa_core\HeadlineHelper;
  * Implements hook_form_alter().
  */
 function uiowa_jobs_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $validator = 'uiowa_jobs_validate_feed_url';
   // Add validation to the feed URL field on uiowa_jobs block forms.
   if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
     if (isset($form['settings']['block_form']['field_uiowa_jobs_feed_url'])) {
-      // Add validation handler.
-      $form['settings']['block_form']['field_uiowa_jobs_feed_url']['widget'][0]['value']['#element_validate'][] = $validator;
+      // Add form-level validation.
+      $form['#validate'][] = 'uiowa_jobs_validate_block_form';
     }
   }
 
   // Also handle non-layout-builder forms.
   if (str_starts_with($form_id, 'block_content_uiowa_jobs_')) {
     if (isset($form['field_uiowa_jobs_feed_url'])) {
-      $form['field_uiowa_jobs_feed_url']['widget'][0]['value']['#element_validate'][] = $validator;
+      // Add form-level validation.
+      $form['#validate'][] = 'uiowa_jobs_validate_block_form';
     }
   }
 }
 
 /**
- * Validation callback for feed URL field.
+ * Form validation callback for uiowa_jobs block forms.
  */
-function uiowa_jobs_validate_feed_url($element, FormStateInterface $form_state, $form) {
-  $url = $element['#value'];
+function uiowa_jobs_validate_block_form(array &$form, FormStateInterface $form_state) {
+  // Get feed URL from form state.
+  $feed_url = NULL;
 
-  if (empty($url)) {
-    // Empty is okay if field is not required or has a default.
+  // Check layout builder form structure.
+  if ($form_state->hasValue(['settings', 'block_form', 'field_uiowa_jobs_feed_url'])) {
+    $feed_url_value = $form_state->getValue(['settings', 'block_form', 'field_uiowa_jobs_feed_url']);
+    $feed_url = $feed_url_value[0]['value'] ?? NULL;
+  }
+  // Check regular block form structure.
+  elseif ($form_state->hasValue('field_uiowa_jobs_feed_url')) {
+    $feed_url_value = $form_state->getValue('field_uiowa_jobs_feed_url');
+    $feed_url = $feed_url_value[0]['value'] ?? NULL;
+  }
+
+  if (empty($feed_url)) {
+    // Empty is okay if field is not required.
     return;
   }
 
@@ -45,8 +57,8 @@ function uiowa_jobs_validate_feed_url($element, FormStateInterface $form_state, 
   /** @var \Drupal\uiowa_jobs\RssFeedParser $parser */
   $parser = \Drupal::service('uiowa_jobs.rss_parser');
 
-  if (!$parser->validateFeedUrl($url)) {
-    $form_state->setError($element, t('Feed URL must be from hris.uiowa.edu and use the OTAC RSS format (https://hris.uiowa.edu/otac-rss/...).'));
+  if (!$parser->validateFeedUrl($feed_url)) {
+    $form_state->setErrorByName('field_uiowa_jobs_feed_url', t('Feed URL must be from hris.uiowa.edu and use the OTAC RSS format (https://hris.uiowa.edu/otac-rss/...). Example: https://hris.uiowa.edu/otac-rss/faculty.php?dept-code=17-3255'));
   }
 }
 
@@ -69,11 +81,11 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
   $show_pager = (bool) $block->get('field_uiowa_jobs_pager')->getString();
   $include_date = (bool) $block->get('field_uiowa_jobs_show_date')->getString();
   $include_description = (bool) $block->get('field_uiowa_jobs_show_desc')->getString();
-  $no_results_text = 'No job postings are currently available.';
+  $no_results_text = t('No job postings are currently available.');
 
   if (empty($feed_url)) {
     $variables['content']['no_results'] = [
-      '#markup' => '<p>Feed URL is not configured.</p>',
+      '#markup' => '<p>' . t('Feed URL is not configured.') . '</p>',
     ];
     return;
   }
@@ -170,10 +182,8 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
     $cache_id = 'uiowa_jobs:feed:' . md5($feed_url);
     $variables['#cache']['tags'] = Cache::mergeTags(
       $variables['#cache']['tags'] ?? [],
-      ['uiowa_jobs:feed', $cache_id]
+      ['uiowa_jobs:feed', $cache_id, 'time:hourly']
     );
-    // Cache for an hour by default.
-    $variables['#cache']['max-age'] = 3600;
 
     // Add cache context for pager.
     if ($show_pager) {
@@ -185,7 +195,7 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
       '@error' => $e->getMessage(),
     ]);
     $variables['content']['error'] = [
-      '#markup' => '<p>Unable to load job postings. Please try again later.</p>',
+      '#markup' => '<p>' . t('Unable to load job postings. Please try again later.') . '</p>',
     ];
   }
 }
@@ -228,7 +238,7 @@ function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', 
   if ($include_date && !empty($job->pubDate)) {
     $formatted_date = \Drupal::service('date.formatter')->format($job->pubDate, 'medium');
     $build['#subtitle']['posted_date'] = [
-      '#markup' => "Posted {$formatted_date}",
+      '#markup' => t('Posted @date', ['@date' => $formatted_date]),
     ];
   }
 
