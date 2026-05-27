@@ -8,7 +8,6 @@ use Consolidation\Config\Loader\YamlConfigLoader;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Applications;
-use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use Uiowa\Multisite;
@@ -62,6 +61,24 @@ trait SiteNowCommandsTrait {
     ]);
 
     return Client::factory($connector);
+  }
+
+  /**
+   * Resolve the Acquia Cloud API credentials.
+   *
+   * Single seam for credential sourcing. Reads blt/local.blt.yml for now; the
+   * post-BLT source (environment variables) is a pending team decision, after
+   * which only this method changes. See the credential sourcing section in the
+   * BLT Replacement epic.
+   *
+   * @return array
+   *   ['key' => string|null, 'secret' => string|null].
+   */
+  protected function getAcquiaCredentials(): array {
+    return [
+      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
+      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
+    ];
   }
 
   /**
@@ -119,14 +136,17 @@ trait SiteNowCommandsTrait {
   }
 
   /**
-   * Gather per-application facts from Acquia Cloud.
+   * Gather active prod SSL coverage for a set of Acquia applications.
    *
-   * For each application: its database count and whether its active prod SSL
-   * certificate covers the given host. This is the read-only data access that
-   * plan-based commands query before deciding on a target application.
+   * The only live API query in the multisite-create decision: for each given
+   * application it inspects the active prod certificate's SANs to see whether
+   * the host (or a related domain) is covered. Application identity and load
+   * come from the registry and manifest, not the API.
    *
    * @param \AcquiaCloudApi\Connector\Client $client
    *   The Acquia Cloud API client.
+   * @param array $apps
+   *   Application UUIDs keyed by application name.
    * @param array $ssl_parts
    *   Output of Multisite::getSslParts(), with 'sans' and 'related' keys.
    * @param callable|null $on_progress
@@ -134,30 +154,26 @@ trait SiteNowCommandsTrait {
    *   function (string $app_name, int $total): void.
    *
    * @return array
-   *   Facts keyed by application name, each with: uuid, name, dbs, has_ssl,
-   *   ssl_match, related, sans.
+   *   Coverage keyed by application name, each with: has_ssl, ssl_match,
+   *   related, sans.
    */
-  protected function getApplicationFacts(Client $client, array $ssl_parts, ?callable $on_progress = NULL): array {
-    $databases = new Databases($client);
+  protected function getSslCoverage(Client $client, array $apps, array $ssl_parts, ?callable $on_progress = NULL): array {
     $environments = new Environments($client);
     $certificates = new SslCertificates($client);
 
-    $applications = $this->getSortedApplications($client);
-    $total = count($applications);
-    $facts = [];
+    $total = count($apps);
+    $coverage = [];
 
-    foreach ($applications as $app) {
-      $name = str_replace('prod:', '', $app->hosting->id);
+    foreach ($apps as $name => $uuid) {
       if ($on_progress) {
         $on_progress($name, $total);
       }
 
-      $db_count = count($databases->getAll($app->uuid));
       $ssl_match = NULL;
       $related_match = NULL;
       $sans_count = NULL;
 
-      foreach ($environments->getAll($app->uuid) as $env) {
+      foreach ($environments->getAll($uuid) as $env) {
         if ($env->name !== 'prod') {
           continue;
         }
@@ -177,10 +193,7 @@ trait SiteNowCommandsTrait {
         }
       }
 
-      $facts[$name] = [
-        'uuid' => $app->uuid,
-        'name' => $name,
-        'dbs' => $db_count,
+      $coverage[$name] = [
         'has_ssl' => $ssl_match !== NULL,
         'ssl_match' => $ssl_match,
         'related' => $related_match,
@@ -188,7 +201,7 @@ trait SiteNowCommandsTrait {
       ];
     }
 
-    return $facts;
+    return $coverage;
   }
 
   /**

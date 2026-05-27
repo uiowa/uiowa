@@ -22,13 +22,14 @@ use Uiowa\Multisite;
 class MultisiteCreateTest extends UnitTestCase {
 
   /**
-   * Build an application facts fixture as getApplicationFacts() would return.
+   * Build an application candidate fixture as decide() assembles it.
    */
-  private function app(string $name, int $dbs, bool $ssl): array {
+  private function app(string $name, int $sites, bool $ssl, bool $reserved = FALSE): array {
     return [
       'uuid' => "uuid-{$name}",
       'name' => $name,
-      'dbs' => $dbs,
+      'sites' => $sites,
+      'reserved' => $reserved,
       'has_ssl' => $ssl,
       'ssl_match' => $ssl ? '*.uiowa.edu' : NULL,
       'related' => NULL,
@@ -97,9 +98,9 @@ class MultisiteCreateTest extends UnitTestCase {
   // --- Application selection (command domain rules) ---------------------------
 
   /**
-   * Auto-pick chooses the lowest DB count among SSL-covered applications.
+   * Auto-pick chooses the fewest sites among SSL-covered applications.
    */
-  public function testAutoPicksLowestDbCountAmongSslCovered() {
+  public function testAutoPicksFewestSitesAmongSslCovered() {
     $candidates = [
       'uiowa' => $this->app('uiowa', 87, TRUE),
       'uiowa02' => $this->app('uiowa02', 65, TRUE),
@@ -114,11 +115,11 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * The Healthcare application is excluded from auto-pick even when lowest.
+   * A reserved application is excluded from auto-pick even when smallest.
    */
-  public function testExcludesHealthcareFromAutoPick() {
+  public function testExcludesReservedFromAutoPick() {
     $candidates = [
-      'uiowa06' => $this->app('uiowa06', 2, TRUE),
+      'uiowa06' => $this->app('uiowa06', 2, TRUE, TRUE),
       'uiowa03' => $this->app('uiowa03', 12, TRUE),
     ];
 
@@ -129,13 +130,13 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * With no SSL coverage anywhere, auto-pick falls back to non-Healthcare apps.
+   * With no SSL coverage anywhere, auto-pick falls back to non-reserved apps.
    */
   public function testFallsBackToNonSslWhenNoCoverage() {
     $candidates = [
       'uiowa' => $this->app('uiowa', 87, FALSE),
       'uiowa04' => $this->app('uiowa04', 30, FALSE),
-      'uiowa06' => $this->app('uiowa06', 5, FALSE),
+      'uiowa06' => $this->app('uiowa06', 5, FALSE, TRUE),
     ];
 
     [$app, , $check] = $this->command()->pubSelectApp($candidates, []);
@@ -145,7 +146,7 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * A tie in DB count leaves the app unresolved for interactive resolution.
+   * A tie in site count leaves the app unresolved for interactive resolution.
    */
   public function testTieLeavesAppUnresolved() {
     $candidates = [
@@ -160,7 +161,7 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * An explicit --app overrides auto-pick, even against the lowest count.
+   * An explicit --app overrides auto-pick, even against the smallest app.
    */
   public function testExplicitAppOverridesAutoPick() {
     $candidates = [
@@ -176,11 +177,11 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * The Healthcare application is accepted when named explicitly.
+   * A reserved application is accepted when named explicitly.
    */
-  public function testExplicitHealthcareAppAccepted() {
+  public function testExplicitReservedAppAccepted() {
     $candidates = [
-      'uiowa06' => $this->app('uiowa06', 5, TRUE),
+      'uiowa06' => $this->app('uiowa06', 5, TRUE, TRUE),
       'uiowa03' => $this->app('uiowa03', 12, TRUE),
     ];
 
@@ -207,13 +208,13 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * Eligible filtering prefers SSL-covered apps and drops Healthcare.
+   * Eligible filtering prefers SSL-covered apps and drops reserved ones.
    */
-  public function testEligibleAppsPrefersSslAndDropsHealthcare() {
+  public function testEligibleAppsPrefersSslAndDropsReserved() {
     $candidates = [
       'uiowa' => $this->app('uiowa', 87, TRUE),
       'uiowa04' => $this->app('uiowa04', 30, FALSE),
-      'uiowa06' => $this->app('uiowa06', 5, TRUE),
+      'uiowa06' => $this->app('uiowa06', 5, TRUE, TRUE),
     ];
 
     $eligible = $this->command()->pubEligibleApps($candidates);

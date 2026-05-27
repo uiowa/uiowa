@@ -6,7 +6,7 @@ namespace SiteNow\Plan;
  * Pre-flight checks shared across plan-based commands.
  *
  * The using class must also use SiteNowCommandsTrait, which provides
- * isHostShell() and getConfigValue().
+ * isHostShell() and getAcquiaCredentials().
  */
 trait CommonChecks {
 
@@ -26,9 +26,8 @@ trait CommonChecks {
    */
   protected function checkAcquiaCredentials(): Check {
     return new Check('has_acquia_credentials', function (): Precondition {
-      $key = $this->getConfigValue('uiowa.credentials.acquia.key');
-      $secret = $this->getConfigValue('uiowa.credentials.acquia.secret');
-      return ($key && $secret)
+      $creds = $this->getAcquiaCredentials();
+      return (!empty($creds['key']) && !empty($creds['secret']))
         ? Precondition::pass('has_acquia_credentials')
         : Precondition::fail('has_acquia_credentials', 'Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
     });

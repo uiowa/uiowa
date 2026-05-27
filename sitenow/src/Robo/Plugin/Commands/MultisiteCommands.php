@@ -4,6 +4,7 @@ namespace SiteNow\Robo\Plugin\Commands;
 
 use AcquiaCloudApi\Connector\Client;
 use Robo\Tasks;
+use SiteNow\Config\Applications;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
@@ -28,8 +29,6 @@ class MultisiteCommands extends Tasks {
   use MultisiteTasks;
   use PlanTrait;
   use CommonChecks;
-
-  const HEALTHCARE_APP = 'uiowa06';
 
   /**
    * Create a new SiteNow multisite.
@@ -131,13 +130,28 @@ class MultisiteCommands extends Tasks {
       return new Plan($title, $input, $validation);
     }
 
-    // Acquia API: gather per-application facts with progress feedback.
-    $client = $this->getAcquiaCloudApiClient(
-      $this->getConfigValue('uiowa.credentials.acquia.key'),
-      $this->getConfigValue('uiowa.credentials.acquia.secret')
-    );
+    // Candidates come from the SiteNow registry (identity + reserved flag) and
+    // the manifest (relative load by site count). No API needed for either.
+    $registry = new Applications("{$root}/sitenow/applications.yml");
+    $site_counts = $this->siteCountsByApp($root);
+    $candidates = [];
+    foreach ($registry->all() as $name => $entry) {
+      $candidates[$name] = [
+        'name' => $name,
+        'uuid' => $entry['uuid'],
+        'reserved' => !empty($entry['reserved']),
+        'sites' => $site_counts[$name] ?? 0,
+      ];
+    }
+
+    // SSL coverage is the only live API query.
+    $creds = $this->getAcquiaCredentials();
+    $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
     $ssl_parts = Multisite::getSslParts($host);
-    $candidates = $this->gatherAcquiaFacts($client, $ssl_parts);
+    $coverage = $this->gatherSslCoverage($client, array_column($candidates, 'uuid', 'name'), $ssl_parts);
+    foreach ($coverage as $name => $ssl) {
+      $candidates[$name] += $ssl;
+    }
     $has_ssl_coverage = (bool) array_filter($candidates, fn($c) => $c['has_ssl']);
 
     // SSL and git checks.
@@ -206,7 +220,7 @@ class MultisiteCommands extends Tasks {
     $non_interactive = !empty($options['yes']) || !empty($options['dry-run']) || ($options['output'] ?? '') === 'json';
     if ($non_interactive) {
       $plan->validation = $this->mergeValidation($plan->validation, $this->runChecks([
-        new Check('app_selection', fn() => Precondition::fail('app_selection', 'Application selection is ambiguous (tied DB counts). Use --app= to specify.')),
+        new Check('app_selection', fn() => Precondition::fail('app_selection', 'Application selection is ambiguous (tied site counts). Use --app= to specify.')),
       ]));
       return $plan;
     }
@@ -220,14 +234,14 @@ class MultisiteCommands extends Tasks {
   }
 
   /**
-   * Pick the target application from gathered facts.
+   * Pick the target application from the candidates.
    *
-   * Honors an explicit --app, otherwise auto-picks the eligible application
-   * with the lowest database count. A tie returns a NULL app for interactive
-   * resolution.
+   * Honors an explicit --app (validated against the registry), otherwise
+   * auto-picks the eligible application with the fewest sites. A tie returns a
+   * NULL app for interactive resolution.
    *
    * @param array $candidates
-   *   Application facts keyed by name.
+   *   Application candidates keyed by name.
    * @param array $options
    *   Command options.
    *
@@ -239,7 +253,7 @@ class MultisiteCommands extends Tasks {
       if (!isset($candidates[$options['app']])) {
         return [NULL, '', new Check('app_exists', fn() => Precondition::fail(
           'app_exists',
-          "Specified application '{$options['app']}' not found in Acquia Cloud."
+          "Specified application '{$options['app']}' is not in the SiteNow application registry."
         ))];
       }
       return [$candidates[$options['app']], 'Explicitly specified via --app.', NULL];
@@ -251,25 +265,25 @@ class MultisiteCommands extends Tasks {
     }
 
     $sorted = array_values($eligible);
-    usort($sorted, fn($a, $b) => $a['dbs'] <=> $b['dbs']);
-    $min = $sorted[0]['dbs'];
-    $tied = array_filter($sorted, fn($c) => $c['dbs'] === $min);
+    usort($sorted, fn($a, $b) => $a['sites'] <=> $b['sites']);
+    $min = $sorted[0]['sites'];
+    $tied = array_filter($sorted, fn($c) => $c['sites'] === $min);
 
     if (count($tied) === 1) {
-      return [reset($tied), "Lowest DB count ({$min}) among eligible apps.", NULL];
+      return [reset($tied), "Fewest sites ({$min}) among eligible apps.", NULL];
     }
 
     return [NULL, '', NULL];
   }
 
   /**
-   * Filter application facts to those eligible for auto-selection.
+   * Filter candidates to those eligible for auto-selection.
    *
-   * Prefers SSL-covered applications and always excludes the Healthcare app.
-   * Falls back to all non-Healthcare applications when none have coverage.
+   * Prefers SSL-covered applications and excludes reserved ones. Falls back to
+   * all non-reserved applications when none have coverage.
    *
    * @param array $candidates
-   *   Application facts keyed by name.
+   *   Application candidates keyed by name.
    *
    * @return array
    *   The eligible subset, keyed by name.
@@ -277,14 +291,32 @@ class MultisiteCommands extends Tasks {
   protected function eligibleApps(array $candidates): array {
     $eligible = array_filter(
       $candidates,
-      fn($c) => $c['has_ssl'] && $c['name'] !== self::HEALTHCARE_APP
+      fn($c) => $c['has_ssl'] && empty($c['reserved'])
     );
 
     if (empty($eligible)) {
-      $eligible = array_filter($candidates, fn($c) => $c['name'] !== self::HEALTHCARE_APP);
+      $eligible = array_filter($candidates, fn($c) => empty($c['reserved']));
     }
 
     return $eligible;
+  }
+
+  /**
+   * Count multisites per application from the manifest.
+   *
+   * The manifest (app => [hosts]) is the repo-local proxy for relative load,
+   * used to rank applications without querying the API for database counts.
+   *
+   * @param string $root
+   *   The repository root.
+   *
+   * @return array
+   *   Site counts keyed by application name.
+   */
+  private function siteCountsByApp(string $root): array {
+    $path = "{$root}/blt/manifest.yml";
+    $manifest = file_exists($path) ? (Yaml::parseFile($path) ?? []) : [];
+    return array_map(fn($sites) => is_array($sites) ? count($sites) : 0, $manifest);
   }
 
   /**
@@ -313,24 +345,26 @@ class MultisiteCommands extends Tasks {
   }
 
   /**
-   * Gather Acquia application facts with a console progress bar.
+   * Gather SSL coverage for the candidate applications, with progress feedback.
    *
    * Progress writes to stderr so it never corrupts stdout plan output.
    *
    * @param \AcquiaCloudApi\Connector\Client $client
    *   The Acquia Cloud API client.
+   * @param array $apps
+   *   Application UUIDs keyed by application name.
    * @param array $ssl_parts
    *   Output of Multisite::getSslParts().
    *
    * @return array
-   *   Application facts keyed by name.
+   *   SSL coverage keyed by application name.
    */
-  private function gatherAcquiaFacts(Client $client, array $ssl_parts): array {
+  private function gatherSslCoverage(Client $client, array $apps, array $ssl_parts): array {
     $out = $this->acquiaProgress();
-    $out->writeln('<comment>Gathering details from Acquia Cloud applications...</comment>');
+    $out->writeln('<comment>Checking SSL coverage across Acquia Cloud applications...</comment>');
 
     $bar = NULL;
-    $facts = $this->getApplicationFacts($client, $ssl_parts, function (string $name, int $total) use (&$bar, $out) {
+    $coverage = $this->getSslCoverage($client, $apps, $ssl_parts, function (string $name, int $total) use (&$bar, $out) {
       if ($bar === NULL) {
         $bar = new ProgressBar($out, $total);
         $bar->setFormat(' %current%/%max% [%bar%] %message%');
@@ -347,7 +381,7 @@ class MultisiteCommands extends Tasks {
     }
     $out->writeln('');
 
-    return $facts;
+    return $coverage;
   }
 
   /**
@@ -420,12 +454,15 @@ EOD;
     $steps = [];
 
     if (empty($options['no-db'])) {
+      $creds = $this->getAcquiaCredentials();
       $steps[] = [
         'label' => "Create cloud DB <info>{$db}</info> on <info>{$app['name']}</info>",
-        'task' => $this->taskCloudDbCreate($this->getAcquiaCloudApiClient(
-          $this->getConfigValue('uiowa.credentials.acquia.key'),
-          $this->getConfigValue('uiowa.credentials.acquia.secret')
-        ), $app['uuid'], $app['name'], $db),
+        'task' => $this->taskCloudDbCreate(
+          $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']),
+          $app['uuid'],
+          $app['name'],
+          $db
+        ),
       ];
     }
 
