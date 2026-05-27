@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labirish.uiowa.ddev.site
+    protocol: https
+  machine_name: labirish
+  human_name: irish.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labirish.prod
+drupal:
+  db:
+    database: irish_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labirish.prod.drupal.uiowa.edu'
+  requester: airish
+  site-name: Irish
