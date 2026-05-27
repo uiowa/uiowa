@@ -1,0 +1,33 @@
+# SiteNow application registry.
+#
+# The canonical list of Acquia Cloud applications that are valid SiteNow
+# multisite targets, with their application UUIDs. Adding an application
+# here is the deliberate step that makes it available to uiowa:multisite:create.
+#
+# reserved: true  excludes an application from automatic selection (it can
+# still be chosen explicitly with --app). uiowa06 is reserved for Healthcare.
+#
+# Not secret: UUIDs only. Acquia API credentials live elsewhere, never here.
+
+applications:
+  uiowa:
+    uuid: 6bcc006f-9a0e-425e-aba0-198585dd2b56
+  uiowa01:
+    uuid: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
+  uiowa02:
+    uuid: a912cf23-b421-4071-99a4-2f6f6edb97e3
+  uiowa03:
+    uuid: 3d87eca7-89d1-47e2-84db-bc7ad52a9363
+  uiowa04:
+    uuid: bf806a95-49a1-4bfe-9eed-6b91a89e694a
+  uiowa05:
+    uuid: c87bbab2-34fe-475b-a30b-6414b83e0c69
+  uiowa06:
+    uuid: efb3347a-e483-48a6-bb6f-c48b72fa86ea
+    reserved: true
+  uiowa07:
+    uuid: 25f49632-0a90-4134-bcc3-bb64fd5a0f67
+  uiowa08:
+    uuid: 74f7607a-0d2a-4d97-bafe-cb59551d4258
+  uiowa09:
+    uuid: 36a4089a-92c3-479d-bfd5-70c1d20cc6ec
