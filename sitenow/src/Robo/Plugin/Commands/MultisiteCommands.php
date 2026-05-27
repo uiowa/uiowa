@@ -4,14 +4,14 @@ namespace SiteNow\Robo\Plugin\Commands;
 
 use AcquiaCloudApi\Connector\Client;
 use Robo\Tasks;
-use SiteNow\Robo\Plan\Check;
-use SiteNow\Robo\Plan\CommonChecks;
-use SiteNow\Robo\Plan\Plan;
-use SiteNow\Robo\Plan\PlanTrait;
-use SiteNow\Robo\Plan\Precondition;
-use SiteNow\Robo\Task\Acquia\Tasks as AcquiaTasks;
-use SiteNow\Robo\Task\Multisite\Tasks as MultisiteTasks;
-use SiteNow\Robo\Traits\SiteNowCommandsTrait;
+use SiteNow\Plan\Check;
+use SiteNow\Plan\CommonChecks;
+use SiteNow\Plan\Plan;
+use SiteNow\Plan\PlanTrait;
+use SiteNow\Plan\Precondition;
+use SiteNow\Task\Acquia\Tasks as AcquiaTasks;
+use SiteNow\Task\Multisite\Tasks as MultisiteTasks;
+use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -82,7 +82,7 @@ class MultisiteCommands extends Tasks {
    * @param array $options
    *   Command options.
    *
-   * @return \SiteNow\Robo\Plan\Plan
+   * @return \SiteNow\Plan\Plan
    *   The decided plan. App may be unresolved on a tie; see
    *   resolveAppSelection().
    */
@@ -119,12 +119,8 @@ class MultisiteCommands extends Tasks {
           : Precondition::pass('site_dir_does_not_exist');
       }),
       new Check('no_normalized_conflicts', function () use ($root, $host): Precondition {
-        $manifest = file_exists("{$root}/blt/manifest.yml")
-          ? (Yaml::parseFile("{$root}/blt/manifest.yml") ?? [])
-          : [];
-        $all_sites = array_merge(...(array_values($manifest) ?: [[]]));
-        return in_array($host, $all_sites)
-          ? Precondition::fail('no_normalized_conflicts', "Site {$host} already exists in blt/manifest.yml.")
+        return $this->hasIdentifierConflict($host, Multisite::getAllSites($root))
+          ? Precondition::fail('no_normalized_conflicts', "Site {$host} normalizes to an identifier already used by an existing site.")
           : Precondition::pass('no_normalized_conflicts');
       }),
     ];
@@ -185,12 +181,12 @@ class MultisiteCommands extends Tasks {
    * On a tie this prompts interactively; in a non-interactive mode it records
    * the ambiguity as a validation failure so the standard FAIL path handles it.
    *
-   * @param \SiteNow\Robo\Plan\Plan $plan
+   * @param \SiteNow\Plan\Plan $plan
    *   The decided plan.
    * @param array $options
    *   Command options.
    *
-   * @return \SiteNow\Robo\Plan\Plan
+   * @return \SiteNow\Plan\Plan
    *   The plan with a resolved app, or an added failure.
    */
   private function resolveAppSelection(Plan $plan, array $options): Plan {
@@ -236,7 +232,7 @@ class MultisiteCommands extends Tasks {
    *   Command options.
    *
    * @return array
-   *   [?array $app, string $reasoning, ?\SiteNow\Robo\Plan\Check $check].
+   *   [?array $app, string $reasoning, ?\SiteNow\Plan\Check $check].
    */
   protected function selectApp(array $candidates, array $options): array {
     if (!empty($options['app'])) {
@@ -289,6 +285,31 @@ class MultisiteCommands extends Tasks {
     }
 
     return $eligible;
+  }
+
+  /**
+   * Determine whether a host collides with an existing site's identifier.
+   *
+   * The drush alias filename and the sites.php internal-domain entries derive
+   * from Multisite::getIdentifier(), so two different hosts that normalize to
+   * the same identifier collide globally even though their directories differ.
+   *
+   * @param string $host
+   *   The candidate host.
+   * @param array $existing_sites
+   *   Existing site hosts, e.g. from Multisite::getAllSites().
+   *
+   * @return bool
+   *   TRUE if the candidate's identifier matches an existing site's.
+   */
+  protected function hasIdentifierConflict(string $host, array $existing_sites): bool {
+    $id = Multisite::getIdentifier("https://{$host}");
+    foreach ($existing_sites as $site) {
+      if (Multisite::getIdentifier("https://{$site}") === $id) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
@@ -355,7 +376,7 @@ class MultisiteCommands extends Tasks {
    *   The multisite host.
    * @param array $options
    *   Command options.
-   * @param \SiteNow\Robo\Plan\Plan $plan
+   * @param \SiteNow\Plan\Plan $plan
    *   The decided plan, with a resolved app.
    *
    * @return array

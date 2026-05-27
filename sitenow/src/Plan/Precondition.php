@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Plan;
+namespace SiteNow\Plan;
 
 /**
  * A single validation check result.

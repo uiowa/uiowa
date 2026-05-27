@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Plan;
+namespace SiteNow\Plan;
 
 /**
  * Pre-flight checks shared across plan-based commands.
@@ -40,7 +40,7 @@ trait CommonChecks {
    * @param string $branch
    *   The current branch name.
    *
-   * @return \SiteNow\Robo\Plan\Check[]
+   * @return \SiteNow\Plan\Check[]
    *   Checks for branch, working tree cleanliness, and origin sync.
    */
   protected function gitChecks(string $branch): array {

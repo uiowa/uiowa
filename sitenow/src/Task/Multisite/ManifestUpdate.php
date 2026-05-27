@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Task\Multisite;
+namespace SiteNow\Task\Multisite;
 
 use Robo\Contract\RollbackInterface;
 use Robo\Contract\SimulatedInterface;

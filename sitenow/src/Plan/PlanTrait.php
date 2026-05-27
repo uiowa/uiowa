@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Plan;
+namespace SiteNow\Plan;
 
 /**
  * Plan-then-execute orchestration for Robo commands.
@@ -87,7 +87,7 @@ trait PlanTrait {
    * output, dry-run, the --yes warning gate, and the interactive prompt.
    * Steps are built lazily so no work happens on paths that exit early.
    *
-   * @param \SiteNow\Robo\Plan\Plan $plan
+   * @param \SiteNow\Plan\Plan $plan
    *   The decided plan.
    * @param array $options
    *   Command options. Reads 'output', 'dry-run', and 'yes'.
@@ -187,7 +187,7 @@ trait PlanTrait {
   /**
    * Evaluate declared checks into a serializable validation block.
    *
-   * @param \SiteNow\Robo\Plan\Check[] $checks
+   * @param \SiteNow\Plan\Check[] $checks
    *   Checks evaluated in declared order.
    *
    * @return array

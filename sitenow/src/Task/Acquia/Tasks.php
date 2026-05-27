@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Task\Acquia;
+namespace SiteNow\Task\Acquia;
 
 use AcquiaCloudApi\Connector\Client;
 

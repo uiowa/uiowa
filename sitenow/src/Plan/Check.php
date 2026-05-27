@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Plan;
+namespace SiteNow\Plan;
 
 /**
  * A declared pre-flight check.
@@ -25,7 +25,7 @@ final class Check {
   /**
    * Evaluate the check.
    *
-   * @return \SiteNow\Robo\Plan\Precondition
+   * @return \SiteNow\Plan\Precondition
    *   The check result.
    */
   public function evaluate(): Precondition {

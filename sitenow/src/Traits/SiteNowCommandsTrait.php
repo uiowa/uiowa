@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Traits;
+namespace SiteNow\Traits;
 
 use Consolidation\Config\Config;
 use Consolidation\Config\Loader\ConfigProcessor;

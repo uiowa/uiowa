@@ -1,6 +1,6 @@
 <?php
 
-namespace SiteNow\Robo\Plan;
+namespace SiteNow\Plan;
 
 /**
  * A decided plan: validated facts ready for display and execution.

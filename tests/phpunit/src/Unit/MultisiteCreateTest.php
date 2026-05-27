@@ -3,10 +3,10 @@
 namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use SiteNow\Robo\Plan\Check;
-use SiteNow\Robo\Plan\Plan;
-use SiteNow\Robo\Plan\PlanTrait;
-use SiteNow\Robo\Plan\Precondition;
+use SiteNow\Plan\Check;
+use SiteNow\Plan\Plan;
+use SiteNow\Plan\PlanTrait;
+use SiteNow\Plan\Precondition;
 use SiteNow\Robo\Plugin\Commands\MultisiteCommands;
 use Uiowa\Multisite;
 
@@ -52,6 +52,10 @@ class MultisiteCreateTest extends UnitTestCase {
 
       public function pubBuildSiteConfig(string $host, string $id, string $db, string $local, string $prod_domain, array $options): array {
         return $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
+      }
+
+      public function pubHasIdentifierConflict(string $host, array $existing): bool {
+        return $this->hasIdentifierConflict($host, $existing);
       }
 
     };
@@ -409,6 +413,37 @@ class MultisiteCreateTest extends UnitTestCase {
       ['site123.uiowa.edu'],
       ['foo.bar.baz.uiowa.edu'],
     ];
+  }
+
+  // --- Normalized identifier conflict -----------------------------------------
+
+  /**
+   * Hosts that normalize to the same identifier are flagged as conflicts.
+   */
+  public function testIdentifierConflictDetectsNormalizedCollision() {
+    // www is stripped, so www.foo.uiowa.edu and foo.uiowa.edu share an id.
+    $this->assertTrue(
+      $this->command()->pubHasIdentifierConflict('www.foo.uiowa.edu', ['foo.uiowa.edu'])
+    );
+  }
+
+  /**
+   * Distinct identifiers do not conflict.
+   */
+  public function testIdentifierConflictAllowsDistinctHosts() {
+    $this->assertFalse(
+      $this->command()->pubHasIdentifierConflict('bar.uiowa.edu', ['foo.uiowa.edu'])
+    );
+  }
+
+  /**
+   * The normalization that drives the conflict check collapses www.
+   */
+  public function testGetIdentifierCollapsesWww() {
+    $this->assertSame(
+      Multisite::getIdentifier('https://foo.uiowa.edu'),
+      Multisite::getIdentifier('https://www.foo.uiowa.edu')
+    );
   }
 
   /**
