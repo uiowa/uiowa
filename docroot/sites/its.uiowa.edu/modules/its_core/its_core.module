@@ -6,12 +6,14 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
+use Drupal\fullcalendar\Plugin\views\style\FullCalendar;
 use Drupal\its_core\Entity\AlertUpdate;
 use Drupal\its_core\Entity\ItsAlert;
 use Drupal\its_core\Entity\Service;
@@ -19,6 +21,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
 use Drupal\smart_date\Entity\SmartDateFormat;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_config_ignore_settings_alter().
@@ -485,7 +488,7 @@ function its_core_preprocess_block(&$variables) {
       break;
 
     case 'views_block:alerts_list_block-alerts_calendar':
-      $variables['#attached']['library'][] = 'uids_base/view-calendar';
+      $variables['#attached']['library'][] = 'its_core/fullcalendar-overrides';
       break;
 
     case 'views_block:services_support_articles-articles_block':
@@ -888,6 +891,42 @@ function its_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterfa
     $form['actions']['submit']['#disabled'] = TRUE;
     $form['description']['#markup'] = its_core_prevent_tag_delete_message($tag->getName());
   }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Inject FullCalendar options for the alerts calendar that the module's
+ * form-side config doesn't expose.
+ */
+function its_core_views_pre_render(ViewExecutable $view) {
+  if ($view->id() !== 'alerts_list_block' || $view->current_display !== 'alerts_calendar') {
+    return;
+  }
+  if (!($view->style_plugin instanceof FullCalendar)) {
+    return;
+  }
+
+  // Bound calendar nav to the view's date filter (e.g., -90 days).
+  $filter = $view->filter['field_alert_date_value'] ?? NULL;
+  $offset = $filter?->options['value']['value'] ?? '-90 days';
+  $cutoff = (new DrupalDateTime($offset))->format('Y-m-d');
+
+  // Write to options.options where FC's JS reads from; the module's preView()
+  // has already converted textfield-format options by pre_render time.
+  $view->style_plugin->options['options']['validRange'] = ['start' => $cutoff];
+
+  // Match production format "11:46 am". meridiem: 'lowercase' preserves the
+  // leading space that meridiem: 'short' would strip.
+  $view->style_plugin->options['options']['eventTimeFormat'] = [
+    'hour' => 'numeric',
+    'minute' => '2-digit',
+    'meridiem' => 'lowercase',
+  ];
+
+  // Restore production's clickable day numbers in month view.
+  $view->style_plugin->options['options']['navLinks'] = TRUE;
+  $view->style_plugin->options['options']['navLinkDayClick'] = 'listDay';
 }
 
 /**
