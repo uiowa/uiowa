@@ -188,8 +188,16 @@ class RssFeedParser {
    */
   protected function cleanHtml(string $html, int $trim_length): string {
     // Strip tags but preserve basic formatting.
-    $allowed_tags = '<p><br><strong><b><em><ul><ol><li>';
-    $cleaned = strip_tags($html, $allowed_tags);
+    $allowed_tags = ['p',
+      'br',
+      'strong',
+      'b',
+      'em',
+      'ul',
+      'ol',
+      'li',
+    ];
+    $cleaned = uiowa_core_html_cleanup($html, $allowed_tags);
 
     // Use smart_trim's helper to safely truncate without breaking HTML.
     $truncate = new TruncateHTML();

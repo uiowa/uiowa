@@ -15,18 +15,23 @@ use Drupal\uiowa_core\HeadlineHelper;
 function uiowa_jobs_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Add validation to the feed URL field on uiowa_jobs block forms.
   if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
-    if (isset($form['settings']['block_form']['field_uiowa_jobs_feed_url'])) {
-      // Add form-level validation.
-      $form['#validate'][] = 'uiowa_jobs_validate_block_form';
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof \Drupal\layout_builder\Form\ConfigureBlockFormBase) {
+      $component = $form_object->getCurrentComponent();
+      $block = $component->getPlugin();
+
+      // Check if this is a uiowa_jobs block.
+      if ($block->getPluginId() === 'inline_block:uiowa_jobs') {
+        // Add form-level validation.
+        $form['#validate'][] = 'uiowa_jobs_validate_block_form';
+      }
     }
   }
 
   // Also handle non-layout-builder forms.
   if (str_starts_with($form_id, 'block_content_uiowa_jobs_')) {
-    if (isset($form['field_uiowa_jobs_feed_url'])) {
-      // Add form-level validation.
-      $form['#validate'][] = 'uiowa_jobs_validate_block_form';
-    }
+    // Add form-level validation.
+    $form['#validate'][] = 'uiowa_jobs_validate_block_form';
   }
 }
 
