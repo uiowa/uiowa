@@ -7852,3 +7852,9 @@ $sites['labcerebrovascularimaging.uiowa.ddev.site'] = 'cerebrovascularimaging.la
 $sites['labcerebrovascularimaging.dev.drupal.uiowa.edu'] = 'cerebrovascularimaging.lab.uiowa.edu';
 $sites['labcerebrovascularimaging.stage.drupal.uiowa.edu'] = 'cerebrovascularimaging.lab.uiowa.edu';
 $sites['labcerebrovascularimaging.prod.drupal.uiowa.edu'] = 'cerebrovascularimaging.lab.uiowa.edu';
+
+// Directory aliases for irish.lab.uiowa.edu.
+$sites['labirish.uiowa.ddev.site'] = 'irish.lab.uiowa.edu';
+$sites['labirish.dev.drupal.uiowa.edu'] = 'irish.lab.uiowa.edu';
+$sites['labirish.stage.drupal.uiowa.edu'] = 'irish.lab.uiowa.edu';
+$sites['labirish.prod.drupal.uiowa.edu'] = 'irish.lab.uiowa.edu';
