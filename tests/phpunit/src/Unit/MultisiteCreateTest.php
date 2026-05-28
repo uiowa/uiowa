@@ -146,17 +146,18 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * A tie in site count leaves the app unresolved for interactive resolution.
+   * Ties at the lowest site count break deterministically by application name.
    */
-  public function testTieLeavesAppUnresolved() {
+  public function testTiesBreakByApplicationName() {
     $candidates = [
-      'uiowa02' => $this->app('uiowa02', 12, TRUE),
       'uiowa03' => $this->app('uiowa03', 12, TRUE),
+      'uiowa02' => $this->app('uiowa02', 12, TRUE),
     ];
 
-    [$app, , $check] = $this->command()->pubSelectApp($candidates, []);
+    [$app, $reasoning, $check] = $this->command()->pubSelectApp($candidates, []);
 
-    $this->assertNull($app);
+    $this->assertSame('uiowa02', $app['name']);
+    $this->assertStringContainsString('12', $reasoning);
     $this->assertNull($check);
   }
 

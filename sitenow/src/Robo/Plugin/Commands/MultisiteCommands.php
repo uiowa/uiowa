@@ -66,7 +66,6 @@ class MultisiteCommands extends Tasks {
     ],
   ): void {
     $plan = $this->decide($host, $options);
-    $plan = $this->resolveAppSelection($plan, $options);
     $this->executePlan($plan, $options, fn() => $this->buildSteps($host, $options, $plan));
   }
 
@@ -82,8 +81,7 @@ class MultisiteCommands extends Tasks {
    *   Command options.
    *
    * @return \SiteNow\Plan\Plan
-   *   The decided plan. App may be unresolved on a tie; see
-   *   resolveAppSelection().
+   *   The decided plan, ready to render and execute.
    */
   private function decide(string $host, array $options): Plan {
     $root = getcwd();
@@ -175,6 +173,11 @@ class MultisiteCommands extends Tasks {
     if ($app_check) {
       $validation = $this->mergeValidation($validation, $this->runChecks([$app_check]));
     }
+    elseif (!$app) {
+      $validation = $this->mergeValidation($validation, $this->runChecks([
+        new Check('app_selection', fn() => Precondition::fail('app_selection', 'No eligible Acquia application found in the registry.')),
+      ]));
+    }
     if ($app) {
       $app['reasoning'] = $reasoning;
     }
@@ -189,56 +192,11 @@ class MultisiteCommands extends Tasks {
   }
 
   /**
-   * Resolve an ambiguous (tied) application selection.
-   *
-   * A clear auto-pick or an explicit --app is already resolved by decide().
-   * On a tie this prompts interactively; in a non-interactive mode it records
-   * the ambiguity as a validation failure so the standard FAIL path handles it.
-   *
-   * @param \SiteNow\Plan\Plan $plan
-   *   The decided plan.
-   * @param array $options
-   *   Command options.
-   *
-   * @return \SiteNow\Plan\Plan
-   *   The plan with a resolved app, or an added failure.
-   */
-  private function resolveAppSelection(Plan $plan, array $options): Plan {
-    if ($plan->failed() || !empty($plan->context['app'])) {
-      return $plan;
-    }
-
-    $eligible = $this->eligibleApps($plan->context['app_candidates'] ?? []);
-
-    if (empty($eligible)) {
-      $plan->validation = $this->mergeValidation($plan->validation, $this->runChecks([
-        new Check('app_selection', fn() => Precondition::fail('app_selection', 'No eligible Acquia application found.')),
-      ]));
-      return $plan;
-    }
-
-    $non_interactive = !empty($options['yes']) || !empty($options['dry-run']) || ($options['output'] ?? '') === 'json';
-    if ($non_interactive) {
-      $plan->validation = $this->mergeValidation($plan->validation, $this->runChecks([
-        new Check('app_selection', fn() => Precondition::fail('app_selection', 'Application selection is ambiguous (tied site counts). Use --app= to specify.')),
-      ]));
-      return $plan;
-    }
-
-    $names = array_column(array_values($eligible), 'name');
-    $chosen = $this->askChoice('Which cloud application should be used?', $names);
-    $plan->context['app'] = $eligible[$chosen] + ['reasoning' => 'Selected interactively.'];
-    $plan->summary = $this->planSummary($plan->context['app'], $plan->input);
-
-    return $plan;
-  }
-
-  /**
    * Pick the target application from the candidates.
    *
    * Honors an explicit --app (validated against the registry), otherwise
-   * auto-picks the eligible application with the fewest sites. A tie returns a
-   * NULL app for interactive resolution.
+   * auto-picks the eligible application with the fewest sites, breaking ties
+   * by application name (natural sort).
    *
    * @param array $candidates
    *   Application candidates keyed by name.
@@ -265,15 +223,10 @@ class MultisiteCommands extends Tasks {
     }
 
     $sorted = array_values($eligible);
-    usort($sorted, fn($a, $b) => $a['sites'] <=> $b['sites']);
-    $min = $sorted[0]['sites'];
-    $tied = array_filter($sorted, fn($c) => $c['sites'] === $min);
+    usort($sorted, fn($a, $b) => $a['sites'] <=> $b['sites'] ?: strnatcmp($a['name'], $b['name']));
+    $winner = $sorted[0];
 
-    if (count($tied) === 1) {
-      return [reset($tied), "Fewest sites ({$min}) among eligible apps.", NULL];
-    }
-
-    return [NULL, '', NULL];
+    return [$winner, "Fewest sites ({$winner['sites']}) among eligible apps.", NULL];
   }
 
   /**
