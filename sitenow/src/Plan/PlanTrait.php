@@ -3,12 +3,12 @@
 namespace SiteNow\Plan;
 
 /**
- * Plan-then-execute orchestration for Robo commands.
+ * Shared loop for Robo commands that render a plan, prompt for confirmation,
+ * and then apply it.
  *
- * Owns the generic loop: run declared checks, render the plan, dispatch the
- * execution mode, and run the step collection. A calling command supplies the
- * domain-specific pieces: a decide() method that returns a Plan and a
- * buildSteps() method that returns label/task pairs.
+ * A command using this trait supplies its own `decide()` (returning a Plan)
+ * and `buildSteps()` (returning the steps), and calls `executePlan()` to
+ * drive the rest of the loop.
  */
 trait PlanTrait {
 
@@ -206,15 +206,16 @@ trait PlanTrait {
   }
 
   /**
-   * Merge a second validation block into a base, keeping the worst status.
+   * Merge a second set of validation results into a base, keeping the worst
+   * overall status.
    *
    * @param array $base
-   *   The base validation block.
+   *   The base validation results.
    * @param array $extra
    *   Additional checks to fold in.
    *
    * @return array
-   *   The merged validation block.
+   *   The merged validation results.
    */
   protected function mergeValidation(array $base, array $extra): array {
     $rank = [Precondition::PASS => 0, Precondition::WARN => 1, Precondition::FAIL => 2];

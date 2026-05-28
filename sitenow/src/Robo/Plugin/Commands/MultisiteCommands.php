@@ -68,10 +68,10 @@ class MultisiteCommands extends Tasks {
   }
 
   /**
-   * Queries Acquia Cloud and runs pre-flight checks.
+   * Build the Plan for a multisite create: gather facts and evaluate checks.
    *
-   * Read-only: gathers facts and evaluates validation checks. Cheap env and
-   * input checks run first and gate the Acquia API work behind them.
+   * Read-only. Cheap env and input checks run first and gate the Acquia API
+   * work behind them.
    *
    * @param string $host
    *   The multisite host.

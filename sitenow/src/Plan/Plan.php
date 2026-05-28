@@ -3,9 +3,11 @@
 namespace SiteNow\Plan;
 
 /**
- * A decided plan: validated facts ready for display and execution.
+ * A snapshot of what a command would do.
+ *
+ * Returned by a command's `decide()` method and consumed by `executePlan()`.
  */
-final class Plan {
+class Plan {
 
   /**
    * @param string $title
@@ -13,11 +15,11 @@ final class Plan {
    * @param array $input
    *   Normalized command input (e.g. host, flags).
    * @param array $validation
-   *   Validation block: ['overall' => PASS|WARN|FAIL, 'checks' => [...]].
+   *   Validation results: ['overall' => PASS|WARN|FAIL, 'checks' => [...]].
    * @param array $summary
    *   Display rows: [['label' => string, 'value' => string], ...].
    * @param array $context
-   *   Command-specific decisions carried for buildSteps() and JSON output.
+   *   Command-specific decisions carried for buildSteps().
    */
   public function __construct(
     public readonly string $title,

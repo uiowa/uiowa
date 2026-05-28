@@ -3,10 +3,14 @@
 namespace SiteNow\Plan;
 
 /**
- * Pre-flight checks shared across plan-based commands.
+ * Reusable validation checks shared by commands that use `PlanTrait`.
  *
- * The using class must also use SiteNowCommandsTrait, which provides
- * isHostShell() and getAcquiaCredentials().
+ * Provides Check builders for the common preconditions: host-shell
+ * environment, Acquia credentials, and git state. A command picks the ones
+ * it needs and includes them in the list it passes to `runChecks()`.
+ *
+ * Requires the using class to also use `SiteNowCommandsTrait` for
+ * `isHostShell()` and `getAcquiaCredentials()`.
  */
 trait CommonChecks {
 

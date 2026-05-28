@@ -64,12 +64,7 @@ trait SiteNowCommandsTrait {
   }
 
   /**
-   * Resolve the Acquia Cloud API credentials.
-   *
-   * Single seam for credential sourcing. Reads blt/local.blt.yml for now; the
-   * post-BLT source (environment variables) is a pending team decision, after
-   * which only this method changes. See the credential sourcing section in the
-   * BLT Replacement epic.
+   * Read the Acquia Cloud API credentials from blt/local.blt.yml.
    *
    * @return array
    *   ['key' => string|null, 'secret' => string|null].

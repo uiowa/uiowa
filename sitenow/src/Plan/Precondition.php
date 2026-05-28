@@ -3,7 +3,10 @@
 namespace SiteNow\Plan;
 
 /**
- * A single validation check result.
+ * The result of evaluating a Check.
+ *
+ * Created via the static pass/warn/fail factories, typically inside a Check
+ * closure.
  */
 class Precondition {
 

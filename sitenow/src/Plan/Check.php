@@ -3,17 +3,17 @@
 namespace SiteNow\Plan;
 
 /**
- * A declared pre-flight check.
+ * A named, deferred validation check.
  *
- * A check is lazy: its closure runs only when the validation runner evaluates
- * it. Declaring checks rather than evaluating them inline lets a command gate
- * expensive work, such as API calls, behind a cheaper batch.
+ * Used by `PlanTrait::runChecks()`. Deferring evaluation lets the runner gate
+ * expensive checks (Acquia API calls, git operations) behind cheaper ones
+ * (input validation).
  */
-final class Check {
+class Check {
 
   /**
    * @param string $name
-   *   Machine name recorded in the validation block.
+   *   Machine name recorded in the validation results.
    * @param \Closure $run
    *   Returns a Precondition when invoked: function (): Precondition.
    */
