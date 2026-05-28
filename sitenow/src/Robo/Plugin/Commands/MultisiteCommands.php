@@ -127,7 +127,7 @@ class MultisiteCommands extends Tasks {
     }
 
     // Candidates come from the SiteNow registry (identity + reserved flag) and
-    // the manifest (relative load by site count). No API needed for either.
+    // the manifest (relative load by site count).
     $registry = new Applications("{$root}/sitenow/applications.yml");
     $site_counts = $this->siteCountsByApp($root);
     $candidates = [];
@@ -255,8 +255,8 @@ class MultisiteCommands extends Tasks {
   /**
    * Count multisites per application from the manifest.
    *
-   * The manifest (app => [hosts]) is the repo-local proxy for relative load,
-   * used to rank applications without querying the API for database counts.
+   * The manifest (app => [hosts]) is the repo-local proxy for relative load
+   * used to rank applications.
    *
    * @param string $root
    *   The repository root.

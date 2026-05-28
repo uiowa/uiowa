@@ -53,8 +53,7 @@ trait CommonChecks {
       }),
       new Check('clean_working_tree', function (): Precondition {
         // Ignore untracked files: the command stages only its own generated
-        // paths, so untracked local files (secrets.php, IDE config, etc.)
-        // cannot end up in its commit. Only tracked changes matter.
+        // paths, so untracked local files cannot pollute its commit.
         $dirty = trim((string) shell_exec('git status --porcelain --untracked-files=no 2>/dev/null'));
         return $dirty
           ? Precondition::fail('clean_working_tree', 'Working tree has uncommitted changes to tracked files.')

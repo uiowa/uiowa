@@ -174,7 +174,8 @@ trait PlanTrait {
   }
 
   /**
-   * Evaluate declared checks into a serializable validation block.
+   * Run each declared check and return the per-check results with an overall
+   * worst-case status.
    *
    * @param \SiteNow\Plan\Check[] $checks
    *   Checks evaluated in declared order.
