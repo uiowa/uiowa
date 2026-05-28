@@ -1,0 +1,68 @@
+diff --git a/src/Plugin/fullcalendar/type/OptionsFormHelperTrait.php b/src/Plugin/fullcalendar/type/OptionsFormHelperTrait.php
+index 572e7005497d9be5bad65cfc0f5ded8d23fc5462..b9a5acb0ad6890473ebfa849f09789dd9bbe80f0 100644
+--- a/src/Plugin/fullcalendar/type/OptionsFormHelperTrait.php
++++ b/src/Plugin/fullcalendar/type/OptionsFormHelperTrait.php
+@@ -361,6 +361,8 @@ trait OptionsFormHelperTrait {
+         'eventDisplay',
+         'displayEventTime',
+         'nextDayThreshold',
++        'height',
++        'contentHeight',
+       ],
+       'array' => [
+         'hiddenDays',
+diff --git a/tests/src/Unit/Plugin/fullcalendar/type/FullCalendarTest.php b/tests/src/Unit/Plugin/fullcalendar/type/FullCalendarTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..74af7c346325847b19916ad1742761d182251b69
+--- /dev/null
++++ b/tests/src/Unit/Plugin/fullcalendar/type/FullCalendarTest.php
+@@ -0,0 +1,49 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\fullcalendar\Unit\Plugin\fullcalendar\type;
++
++use Drupal\fullcalendar\Plugin\fullcalendar\type\FullCalendar;
++use Drupal\Tests\UnitTestCase;
++use PHPUnit\Framework\Attributes\DataProvider;
++use PHPUnit\Framework\Attributes\Group;
++
++/**
++ * Tests the FullCalendarTest plugin.
++ */
++#[Group('fullcalendar')]
++class FullCalendarTest extends UnitTestCase {
++
++  /**
++   * Tests the normalization of settings in ::preView().
++   *
++   * @param array $settings
++   *   An array of settings passed by the view.
++   * @param array $expected
++   *   The expected array of processed settings.
++   */
++  #[DataProvider('providerPreViewSettingsNormalization')]
++  public function testPreViewSettingsNormalization($settings, $expected): void {
++    $fullcalendar = $this->createPartialMock(FullCalendar::class, []);
++    $fullcalendar->preView($settings);
++    $this->assertEquals($expected, $settings);
++  }
++
++  /**
++   * Provides data for testPreViewSettingsNormalization().
++   */
++  public static function providerPreViewSettingsNormalization(): array {
++    return [
++      'basic height option test' => [
++        ['style' => ['height' => 'auto']],
++        ['options' => ['height' => 'auto'], 'convert_timezones' => FALSE],
++      ],
++      'basic contentHeight option test' => [
++        ['style' => ['contentHeight' => 'auto']],
++        ['options' => ['contentHeight' => 'auto'], 'convert_timezones' => FALSE],
++      ],
++    ];
++  }
++
++}

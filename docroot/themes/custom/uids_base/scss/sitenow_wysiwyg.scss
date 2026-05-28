@@ -6,9 +6,23 @@
 .ck-content {
   font-family: Roboto, sans-serif;
 
+  // Re-declare the core custom properties in the editor scope.
+  // `uids-core.scss` defines these on `:root`, but that file is imported inside
+  // `.ck-content` here, so those root-level declarations do not become usable
+  // editor variables. Keeping them on `.ck-content` ensures the WYSIWYG can use
+  // the same tokens as the frontend, even when admin/Claro does not provide them.
   // Colors
-  --brand-primary: #FFCD00;
-  --brand-secondary: #000000;
+  --uiowa-gold: #FFCD00;
+  --uiowa-black: #000000;
+  --brand-primary: var(--uiowa-gold);
+  --brand-secondary: var(--uiowa-black);
+  --uids-gray-cool: #63666A;
+  --link-color: #00558C;
+  --uids-light: #F3F3F3;
+  --uids-gray-mid: #9a9a9a;
+  --uids-gray: #737373;
+  --uids-gray-light: #CACACA;
+  --transparent-border: rgb(0 0 0 / .125);
 
   // Margin/Padding
   --space-lg-width-gutter: 3rem;
@@ -43,44 +57,144 @@
     padding: initial;
   }
 
-  .table {
-    table,
-    table caption,
-    table > tr > td,
-    table > tr > th,
-    table > tbody > tr > td,
-    table > tbody > tr > th,
-    table > thead > tr > td,
-    table > thead > tr > th,
-    table > tfoot > tr > td,
-    table > tfoot > tr > th {
-      border: #d3d3d3 1px dotted;
-    }
-    table th {
-      padding: 1.05rem;
-    }
+  // Claro adds a global row border for admin tables; remove it inside editor content.
+  table > tr,
+  table > thead > tr,
+  table > tbody > tr,
+  table > tfoot > tr {
+    border-bottom: none;
   }
 
-  // CKEditor uses figcaption for table captions, but renders as caption..
-  figure.table {
-    table {
-      display: table-footer-group;
-    }
-    figcaption {
-      display: table-caption;
+  // Match CKEditor's injected selectors so these overrides win without !important.
+  // Keep the figure/figcaption behavior CKEditor needs, but replace the visual defaults
+  // with our editor table styling.
+  // Editor-only mirror of frontend table styles.
+  // Keep this block in sync with `uids/scss/components/tables.scss` when
+  // base table padding, header colors, zebra striping, hover styles,
+  // caption styles, or `table--gray-borders` behavior changes.
+  // These overrides exist because CKEditor and Claro inject admin table
+  // defaults that do not match frontend output.
+  figure.table:not(.layout-table) {
+    margin: 0;
+
+    > table {
+      height: auto;
+      // Keep editor tables full width for now; revisit here if/when we add
+      // intentional author-controlled table widths in the WYSIWYG.
       width: 100%;
-      padding: 1.05rem;
+      display: table;
+      margin: 0;
+    }
+
+    > table > caption,
+    > table > tr > td,
+    > table > tr > th,
+    > table > tbody > tr > td,
+    > table > tbody > tr > th,
+    > table > thead > tr > td,
+    > table > thead > tr > th,
+    > table > tfoot > tr > td,
+    > table > tfoot > tr > th {
+      height: auto;
+      min-width: 0;
+      padding: variables.$md;
+    }
+
+    > table:not(.table--gray-borders) {
+      border: none;
+    }
+
+    // Match CKEditor's injected td/th selectors directly so the border reset wins
+    // for standard tables while still allowing .table--gray-borders to opt in.
+    // `table--gray-borders` is an explicit variant, so only reset borders for
+    // non-gray tables here.
+    > table:not(.table--gray-borders) > caption,
+    > table:not(.table--gray-borders) > tr > td,
+    > table:not(.table--gray-borders) > tr > th,
+    > table:not(.table--gray-borders) > tbody > tr > td,
+    > table:not(.table--gray-borders) > tbody > tr > th,
+    > table:not(.table--gray-borders) > thead > tr > td,
+    > table:not(.table--gray-borders) > thead > tr > th,
+    > table:not(.table--gray-borders) > tfoot > tr > td,
+    > table:not(.table--gray-borders) > tfoot > tr > th {
+      border: none;
+    }
+
+    > table > thead > tr > :is(td, th) {
+      color: variables.$secondary;
+      padding: variables.$md;
+    }
+
+    > table:not(.table--gray-borders) > thead > tr > :is(td, th) {
+      border: none;
+    }
+
+    > table > thead > tr > :is(td, th):not(.ck-editor__nested-editable_focused):not(:focus) {
+      background-color: variables.$primary;
+    }
+
+    > table > tbody > tr > th {
+      position: static;
+      left: 0;
+      padding-left: variables.$md;
+    }
+
+    > table:not(.table--gray-borders) > tbody > tr > th {
+      border: none;
+    }
+
+    > table > tbody > tr > th:not(.ck-editor__nested-editable_focused):not(:focus) {
+      background-color: transparent;
+    }
+
+    > table > tbody > tr:not(.is-selected):nth-child(even),
+    > table > tbody > tr:not(.is-selected):nth-child(even) > th:not(.ck-editor__nested-editable_focused):not(:focus) {
+      background-color: variables.$light;
+    }
+
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):hover,
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):nth-child(even):hover,
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):hover > th:not(.ck-editor__nested-editable_focused):not(:focus),
+    > table.table--hover-highlight > tbody > tr:not(.is-selected):nth-child(even):hover > th:not(.ck-editor__nested-editable_focused):not(:focus) {
+      background-color: #fff3c3;
+    }
+
+    // Re-assert cell padding/height after CKEditor's and Claro's injected table
+    // defaults. Repeating the `.table` class here slightly increases specificity
+    // without changing which elements are targeted.
+    &.table > table > tr > td,
+    &.table > table > tr > th,
+    &.table > table > tbody > tr > td,
+    &.table > table > tbody > tr > th,
+    &.table > table > thead > tr > td,
+    &.table > table > thead > tr > th,
+    &.table > table > tfoot > tr > td,
+    &.table > table > tfoot > tr > th {
+      height: auto;
+      padding: variables.$md;
+    }
+
+    // CKEditor renders captions as `figure.table > figcaption`, so frontend
+    // `table caption` styles must be mirrored here.
+    > figcaption {
+      display: table-caption;
+      box-sizing: border-box;
+      width: auto;
+      padding: variables.$md;
       text-align: center;
       font-size: 1rem;
-      color: #fff;
+      color: variables.$white;
       background-color: #333;
       font-weight: bold;
+
       em, strong, sup, sub {
-        color: inherit!important;
+        color: inherit !important;
       }
+
       a,
       :where(p) a:not(.bttn) {
         color: variables.$primary;
+
         [class*="bg--"] &,
         [class*="bg--"] [class*="bg--"] & {
           color: variables.$primary;
@@ -89,7 +203,7 @@
     }
   }
 
-  figure.table .table-responsive {
+  figure.table:not(.layout-table) .table-responsive {
     figcaption {
       text-align: left;
       @include utilities.breakpoint(sm) {
@@ -98,7 +212,7 @@
     }
   }
 
-  figure.table table.table--gray-borders {
+  figure.table:not(.layout-table) table.table--gray-borders {
     & > figcaption {
       & > td,
       & > th {
@@ -106,7 +220,6 @@
       }
     }
   }
-
 
   .drupal-media {
     max-width: max-content;

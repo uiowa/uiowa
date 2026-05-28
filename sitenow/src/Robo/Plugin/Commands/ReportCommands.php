@@ -2,20 +2,18 @@
 
 namespace SiteNow\Robo\Plugin\Commands;
 
-use Consolidation\Config\Config;
-use Consolidation\Config\Loader\ConfigProcessor;
-use Consolidation\Config\Loader\YamlConfigLoader;
-use AcquiaCloudApi\Connector\Client;
-use AcquiaCloudApi\Connector\Connector;
-use AcquiaCloudApi\Endpoints\Applications;
+use SiteNow\Robo\Traits\SiteNowCommandsTrait;
 use AcquiaCloudApi\Endpoints\Environments;
+use Robo\ResultData;
 use Robo\Tasks;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Yaml\Yaml;
 
 /**
- * Robo commands for reporting domain information.
+ * Robo commands for SiteNow specific reporting.
  */
 class ReportCommands extends Tasks {
+  use SiteNowCommandsTrait;
 
   /**
    * List domains on PROD environment (default) or specified environments.
@@ -28,7 +26,7 @@ class ReportCommands extends Tasks {
    *   Enable debug output.
    * @option env
    *   Comma-separated list of environments to filter by (e.g. dev,test).
-   * @option application
+   * @option apps
    *   Comma-separated list of app names to filter by (e.g. uiowa02,uiowa03).
    */
   public function domains(
@@ -36,10 +34,16 @@ class ReportCommands extends Tasks {
       'export' => FALSE,
       'debug' => FALSE,
       'env' => '',
-      'application' => '',
+      'apps' => '',
     ],
   ) {
+    if (!$this->isDdev()) {
+      $this->say('[ERROR] This command must be run inside the DDEV container. Use: ddev exec ./vendor/bin/robo uiowa:report:domains');
+      return;
+    }
+
     $site_data = [];
+    $filepath = NULL;
 
     $headers = [
       'Application',
@@ -54,24 +58,13 @@ class ReportCommands extends Tasks {
       ? array_map('trim', explode(',', $options['env']))
       : ['prod'];
 
-    // Parse application filter — empty means all applications.
-    $target_applications = !empty($options['application'])
-      ? array_map('trim', explode(',', $options['application']))
+    // Parse app filter — empty means all apps.
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
       : [];
 
     if ($options['export']) {
-      $now = date('Ymd-His');
-      $filename = "SiteNow-Domains-Report-$now.csv";
-      $root = $this->getConfigValue('repo.root') ?: getcwd();
-      $filepath = "$root/$filename";
-
-      if (file_exists($filepath)) {
-        unlink($filepath);
-      }
-      $this->say("Created export file $filepath");
-      $fp = fopen($filepath, 'w+');
-      fputcsv($fp, $headers, ',', '"', '\\');
-      fclose($fp);
+      $filepath = $this->initializeCsvExport('SiteNow-Domains-Report', $headers);
     }
 
     $this->say('Starting to check environments.');
@@ -81,27 +74,27 @@ class ReportCommands extends Tasks {
       $this->getConfigValue('uiowa.credentials.acquia.secret')
     );
 
-    $api_applications = new Applications($client);
     $api_environments = new Environments($client);
+    $apps = $this->getSortedApplications($client);
 
-    foreach ($api_applications->getAll() as $application) {
-      // Skip UIHC applications.
-      if ($application->organization->name === 'University of Iowa Healthcare') {
+    foreach ($apps as $app) {
+      // Skip UIHC apps.
+      if ($app->organization->name === 'University of Iowa Healthcare') {
         continue;
       }
 
-      $app_name = str_replace('prod:', '', $application->hosting->id);
+      $app_name = str_replace('prod:', '', $app->hosting->id);
 
-      // Skip if not in the requested application list.
-      if (!empty($target_applications) && !in_array($app_name, $target_applications)) {
+      // Skip if not in the requested app list.
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
         continue;
       }
 
       $this->say("Getting environments for $app_name...");
 
       /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
-      foreach ($api_environments->getAll($application->uuid) as $environment) {
-        // Some applications use 'stage' instead of 'test' (e.g. uiowa07).
+      foreach ($api_environments->getAll($app->uuid) as $environment) {
+        // Some apps use 'stage' instead of 'test' (e.g. uiowa07).
         // Treat 'stage' as equivalent to 'test' when filtering environments.
         $env_name = $environment->name;
         if ($env_name === 'stage' && in_array('test', $target_environments)) {
@@ -131,7 +124,7 @@ class ReportCommands extends Tasks {
           }
 
           $site = [
-            'application' => $app_name,
+            'app' => $app_name,
             'environment' => $environment->name,
             'domain'      => $domain,
           ];
@@ -149,7 +142,6 @@ class ReportCommands extends Tasks {
     }
 
     // Free memory.
-    $api_applications = NULL;
     $api_environments = NULL;
 
     $this->say('Done.');
@@ -167,48 +159,471 @@ class ReportCommands extends Tasks {
   }
 
   /**
-   * Build and return an Acquia Cloud API v2 client.
+   * Report which sites have which config splits enabled.
    *
-   * @param string $key
-   *   The API key (UUID) from cloud.acquia.com/a/profile/tokens.
-   * @param string $secret
-   *   The API secret from cloud.acquia.com/a/profile/tokens.
+   * Reports only active splits by default (i.e. "which sites are running X").
    *
-   * @return \AcquiaCloudApi\Connector\Client
-   *   An authenticated Acquia Cloud API client.
+   * @command uiowa:report:splits
+   *
+   * @option split
+   *   Comma-separated list of split IDs to filter to (e.g. event,thesis_defense).
+   * @option apps
+   *   Comma-separated list of app names to filter by (e.g. uiowa02,uiowa03).
+   * @option export
+   *   Whether to export results to a CSV file.
    */
-  protected function getAcquiaCloudApiClient(string $key, string $secret): Client {
-    $connector = new Connector([
-      'key'    => $key,
-      'secret' => $secret,
-    ]);
+  public function splits(
+    $options = [
+      'split' => '',
+      'apps' => '',
+      'export' => FALSE,
+    ],
+  ) {
+    if (!$this->isDdev()) {
+      $this->say('[ERROR] This command must be run inside the DDEV container. Use: ddev exec ./vendor/bin/robo uiowa:report:splits');
+      return;
+    }
+    if (!$this->hasSshAgent()) {
+      $this->say("[ERROR] No SSH keys loaded. Please load your SSH keys before running this command.");
+      return;
+    }
 
-    return Client::factory($connector);
+    $target_splits = !empty($options['split'])
+      ? array_map('trim', explode(',', $options['split']))
+      : [];
+
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
+      : [];
+
+    $filepath = NULL;
+    $headers = ['Application', 'Domain', 'Split'];
+
+    if ($options['export']) {
+      $filepath = $this->initializeCsvExport('SiteNow-Splits-Report', $headers);
+    }
+
+    // Grouped per-split for table output: $results[split_id][] = [app, domain].
+    $results = [];
+
+    // Apps whose results were discarded because at least one site failed to
+    // respond. Trustworthy aggregates require every site in an app to answer;
+    // a partial app is worse than no app, so we drop it entirely.
+    $failed_apps = [];
+
+    // Environmental splits (ci/dev/local/prod/stage) are a proxy for which
+    // environment a site is in — not useful in this report.
+    $env_splits = ['ci', 'dev', 'local', 'prod', 'stage'];
+
+    // Use blt/manifest.yml — it's the authoritative SiteNow fleet list and is
+    // already deduplicated (www/redirect pairs collapsed), unlike the Acquia
+    // API domain list. Top-level keys are Acquia app names; values are arrays
+    // of multisite domains.
+    $root = $this->getConfigValue('repo.root') ?: getcwd();
+    $manifest_path = "$root/blt/manifest.yml";
+
+    if (!file_exists($manifest_path)) {
+      $this->say("[ERROR] Manifest file not found at $manifest_path");
+      return new ResultData(ResultData::EXITCODE_ERROR);
+    }
+
+    $manifest = Yaml::parseFile($manifest_path);
+
+    foreach ($manifest as $app_name => $domains) {
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
+        continue;
+      }
+
+      $this->say("Processing $app_name...");
+
+      // Buffer this app's rows so we can discard them wholesale if any site
+      // in the app fails to respond.
+      $app_rows = [];
+      $abort_reason = NULL;
+
+      foreach ($domains as $domain) {
+        $this->say("  Checking $domain...");
+        $error = NULL;
+        $statuses = $this->getSplitStatuses($domain, $error);
+
+        if ($statuses === FALSE) {
+          $abort_reason = "$domain — $error";
+          $this->say("[ERROR] $app_name aborted: $abort_reason");
+          break;
+        }
+
+        foreach ($statuses as $split_id => $is_active) {
+          if (in_array($split_id, $env_splits)) {
+            continue;
+          }
+          if (!$is_active) {
+            continue;
+          }
+          if (!empty($target_splits) && !in_array($split_id, $target_splits)) {
+            continue;
+          }
+          $app_rows[] = [$app_name, $domain, $split_id];
+        }
+      }
+
+      if ($abort_reason !== NULL) {
+        $failed_apps[$app_name] = $abort_reason;
+        continue;
+      }
+
+      // Commit this app's rows now that it completed cleanly.
+      foreach ($app_rows as $row) {
+        if ($options['export']) {
+          $fp = fopen($filepath, 'a');
+          fputcsv($fp, $row, ',', '"', '\\');
+          fclose($fp);
+        }
+        else {
+          [, $domain, $split_id] = $row;
+          $results[$split_id][] = [$app_name, $domain];
+        }
+      }
+    }
+
+    if ($options['export']) {
+      $this->say("Results exported to $filepath");
+    }
+    elseif (empty($results)) {
+      $this->say('No active splits found matching the filters.');
+    }
+    else {
+      ksort($results);
+      foreach ($results as $split_id => $rows) {
+        $this->say('');
+        $this->say("== {$split_id} ==");
+        $table = new Table($this->output());
+        $table->setHeaders(['Application', 'Domain']);
+        $table->setRows($rows);
+        $table->render();
+      }
+    }
+
+    if (!empty($failed_apps)) {
+      $this->say('');
+      $this->say('[WARNING] ' . count($failed_apps) . ' application(s) excluded from report due to errors:');
+      foreach ($failed_apps as $app_name => $reason) {
+        $this->say("  $app_name: $reason");
+      }
+      return new ResultData(ResultData::EXITCODE_ERROR);
+    }
   }
 
   /**
-   * Get a config value by key from blt/local.blt.yml.
+   * Get config_split statuses for a multisite (prod).
    *
-   * @param string $key
-   *   Dot-separated config key, e.g. 'uiowa.credentials.acquia.key'.
+   * One drush call per site returning all splits — avoids the N+1 round
+   * trips that `drush config:get` would require.
    *
-   * @return mixed
-   *   The config value, or NULL if not found.
+   * @param string $multisite
+   *   The multisite domain.
+   * @param string|null $error
+   *   Out-param populated with a human-readable reason when FALSE is returned.
+   *
+   * @return array<string, bool>|false
+   *   Map of split_id => active. FALSE if drush exited non-zero or returned
+   *   no parseable output.
    */
-  protected function getConfigValue(string $key): mixed {
-    $blt_local = getcwd() . '/blt/local.blt.yml';
+  private function getSplitStatuses(string $multisite, ?string &$error = NULL): array|false {
+    $alias = $this->getDrushAlias($multisite) . '.prod';
+    $php = 'foreach (\\Drupal::configFactory()->listAll("config_split.config_split.") as $n) { echo substr($n, 26) . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
+    $cmd = "drush @{$alias} php:eval " . escapeshellarg($php) . " --no-interaction < /dev/null 2>&1";
 
-    if (!file_exists($blt_local)) {
+    $output_lines = [];
+    $exit_code = 0;
+    exec($cmd, $output_lines, $exit_code);
+
+    if ($exit_code !== 0) {
+      $tail = trim((string) end($output_lines));
+      $error = "drush exit $exit_code" . ($tail !== '' ? " ($tail)" : '');
+      return FALSE;
+    }
+
+    // Parse "<split_id>:<0|1>" lines. Drush/Acquia chatter is skipped.
+    $statuses = [];
+    foreach ($output_lines as $line) {
+      $line = trim($line);
+      if ($line === '' || !str_contains($line, ':')) {
+        continue;
+      }
+      [$id, $val] = explode(':', $line, 2);
+      if ($id !== '' && ($val === '0' || $val === '1')) {
+        $statuses[$id] = $val === '1';
+      }
+    }
+
+    if (empty($statuses)) {
+      $error = 'no parseable split status lines in drush output';
+      return FALSE;
+    }
+
+    return $statuses;
+  }
+
+  /**
+   * Report of inactive SiteNow sites.
+   *
+   * @command uiowa:report:inactive
+   *
+   * @option apps
+   *   Comma-separated list of app names to filter by (e.g. uiowa,uiowa03).
+   * @option threshold
+   *   Inactivity threshold (e.g. "1 year", "6 months"). Defaults to 1 year.
+   * @option export
+   *   Whether to export results to a CSV file.
+   */
+  public function inactive(
+    $options = [
+      'apps' => '',
+      'threshold' => '1 year',
+      'export' => FALSE,
+    ],
+  ) {
+    if (!$this->isDdev()) {
+      $this->say('[ERROR] This command must be run inside the DDEV container. Use: ddev exec ./vendor/bin/robo uiowa:report:inactive');
+      return;
+    }
+
+    if (!$this->hasSshAgent()) {
+      $this->say("[ERROR] No SSH keys loaded. Please 'ddev auth ssh' before running this command.");
+      return;
+    }
+
+    $site_data = [];
+    $now = time();
+    $filepath = NULL;
+
+    // Parse app filter — empty means all applications.
+    $target_apps = !empty($options['apps'])
+      ? array_map('trim', explode(',', $options['apps']))
+      : [];
+
+    // Parse threshold.
+    $threshold_period = trim($options['threshold']);
+    $cutoff = strtotime("-{$threshold_period}", $now);
+    if ($cutoff === FALSE) {
+      $this->say("Error: Could not parse threshold '$threshold_period'");
+      return;
+    }
+
+    $headers = ['Application', 'URL', 'Days Since Revision', 'Days Since Login', "Login Inactive: $threshold_period"];
+
+    if ($options['export']) {
+      $filepath = $this->initializeCsvExport('SiteNow-Inactive-Report', $headers);
+    }
+
+    $this->say('Fetching domains from Acquia Cloud API...');
+    $client = $this->getAcquiaCloudApiClient(
+      $this->getConfigValue('uiowa.credentials.acquia.key'),
+      $this->getConfigValue('uiowa.credentials.acquia.secret')
+    );
+
+    $api_environments = new Environments($client);
+    $applications = $this->getSortedApplications($client);
+
+    foreach ($applications as $application) {
+      // Skip UIHC applications.
+      if ($application->organization->name === 'University of Iowa Healthcare') {
+        continue;
+      }
+
+      $app_name = str_replace('prod:', '', $application->hosting->id);
+
+      // Skip if not in the requested application list.
+      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
+        continue;
+      }
+
+      $this->say("Processing $app_name...");
+
+      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
+      foreach ($api_environments->getAll($application->uuid) as $environment) {
+        // Only check PROD environments.
+        if ($environment->name !== 'prod') {
+          continue;
+        }
+
+        $domains = array_values(array_filter(
+          $environment->domains,
+          function ($domain) use ($app_name, $environment) {
+            // Filter out internal Acquia platform domains.
+            return !(
+              str_contains($domain, '.prod.drupal.') ||
+              str_contains($domain, '.acquia-sites.com') ||
+              str_starts_with($domain, "$app_name.{$environment->name}")
+            );
+          }
+        ));
+
+        foreach ($domains as $domain) {
+          $this->say("  Checking $domain...");
+
+          $last_revision = $this->getLastContentRevision($domain);
+
+          if ($last_revision === FALSE) {
+            $days_since_revision = 'N/A';
+          }
+          elseif ($last_revision === NULL) {
+            $days_since_revision = 'Never';
+          }
+          else {
+            $days_since_revision = ceil(($now - $last_revision) / 86400);
+          }
+
+          $last_login = $this->getLastUserLogin($domain);
+
+          if ($last_login === FALSE) {
+            $days_since_login = 'N/A';
+            $status = 'Error';
+          }
+          elseif ($last_login === NULL) {
+            $days_since_login = 'Never';
+            $status = 'Inactive';
+          }
+          else {
+            $days_since_login = ceil(($now - $last_login) / 86400);
+            $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
+          }
+
+          $site = [
+            $app_name,
+            $domain,
+            $days_since_revision,
+            $days_since_login,
+            $status,
+          ];
+
+          if ($options['export']) {
+            $fp = fopen($filepath, 'a');
+            fputcsv($fp, $site, ',', '"', '\\');
+            fclose($fp);
+          }
+          else {
+            $site_data[] = [
+              'application' => $app_name,
+              'url' => $domain,
+              'days_since_revision' => $days_since_revision,
+              'days_since_login' => $days_since_login,
+              'inactive' => $status,
+            ];
+          }
+        }
+      }
+    }
+
+    // Free memory.
+    $api_environments = NULL;
+
+    if ($options['export']) {
+      $this->say("Results exported to $filepath");
+    }
+    else {
+      $this->say('Here are the results.');
+      $table = new Table($this->output());
+      $table->setHeaders($headers);
+      $table->setRows($site_data);
+      $table->render();
+    }
+  }
+
+  /**
+   * Get last non-admin user login timestamp via drush alias (prod).
+   *
+   * @param string $multisite
+   *   The multisite domain.
+   *
+   * @return int|null|false
+   *   Unix timestamp if found, NULL if no login data, FALSE if error querying.
+   */
+  private function getLastUserLogin(string $multisite): int|null|false {
+    $alias = $this->getDrushAlias($multisite) . '.prod';
+    $cmd = "drush @{$alias} users:list --no-roles=administrator --format=json --no-interaction < /dev/null 2>&1";
+    $output = shell_exec($cmd);
+
+    if (empty($output)) {
+      return FALSE;
+    }
+
+    // Check for drush errors (e.g., alias not found for redirecting domains).
+    if (stripos($output, 'could not be found') !== FALSE ||
+        stripos($output, 'failed to run') !== FALSE ||
+        stripos($output, 'error') !== FALSE ||
+        stripos($output, 'exception') !== FALSE) {
+      return FALSE;
+    }
+
+    // Strip Acquia Cloud connection messages before the JSON.
+    if (($pos = strpos($output, '{')) !== FALSE) {
+      $output = substr($output, $pos);
+    }
+
+    $users = json_decode($output, TRUE);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      return FALSE;
+    }
+    if (!is_array($users) || empty($users)) {
       return NULL;
     }
 
-    $config = new Config();
-    $loader = new YamlConfigLoader();
-    $processor = new ConfigProcessor();
-    $processor->extend($loader->load($blt_local));
-    $config->replace($processor->export());
+    $latest_login = NULL;
 
-    return $config->get($key);
+    foreach ($users as $user) {
+      if (isset($user['uid']) && $user['uid'] == 1) {
+        continue;
+      }
+
+      if (!empty($user['login'])) {
+        $login_time = strtotime($user['login']);
+        // Skip UNIX start time defaults (Dec 31, 1969).
+        if ($login_time && $login_time > strtotime('2000-01-01') && ($latest_login === NULL || $login_time > $latest_login)) {
+          $latest_login = $login_time;
+        }
+      }
+    }
+
+    return $latest_login;
+  }
+
+  /**
+   * Get the timestamp of the last node revision (excluding admin edits).
+   *
+   * @param string $multisite
+   *   The multisite domain.
+   *
+   * @return int|null|false
+   *   Unix timestamp if found, NULL if no revisions, FALSE if error querying.
+   */
+  private function getLastContentRevision(string $multisite): int|null|false {
+    $alias = $this->getDrushAlias($multisite) . '.prod';
+    $cmd = "drush @{$alias} sqlq \"SELECT MAX(revision_timestamp) FROM node_revision WHERE revision_uid != 1\" --no-interaction < /dev/null 2>&1";
+    $output = shell_exec($cmd);
+
+    if (empty($output)) {
+      return FALSE;
+    }
+
+    // Check for drush errors.
+    if (stripos($output, 'could not be found') !== FALSE ||
+        stripos($output, 'failed to run') !== FALSE ||
+        stripos($output, 'error') !== FALSE ||
+        stripos($output, 'exception') !== FALSE) {
+      return FALSE;
+    }
+
+    // Extract numeric timestamp from output (may include connection messages).
+    foreach (explode("\n", $output) as $line) {
+      $line = trim($line);
+      if (is_numeric($line)) {
+        $timestamp = (int) $line;
+        return $timestamp > 0 ? $timestamp : NULL;
+      }
+    }
+
+    return FALSE;
   }
 
 }

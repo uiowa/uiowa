@@ -1,0 +1,104 @@
+table thead th.fc-col-header-cell {
+  background-color: var(--brand-primary);
+}
+
+a.fc-event {
+  border: none;
+}
+
+.fc-button-primary {
+  background-color: var(--brand-secondary) !important;
+}
+
+.fc-button-primary:hover {
+  background-color: var(--brand-secondary) !important;
+}
+
+.fc-button-primary:focus {
+  box-shadow: 0 0 0 0.2rem var(--brand-secondary) !important;
+}
+
+.fc-button-primary:disabled {
+  background-color: #424242 !important;
+  border-color: #424242 !important;
+}
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:not(:disabled).fc-button-active {
+  border-color: var(--brand-secondary) !important;
+}
+
+.fc-button-primary:not(:disabled):active:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus {
+  box-shadow: 0 0 0 0.2rem var(--brand-secondary) !important;
+}
+
+.fc-button-primary:not(:disabled).fc-button-active,
+.fc-button-primary:not(:disabled):active {
+  background-color: var(--uids-gray-cool) !important;
+}
+
+.fc-daygrid-event {
+  padding: 0.25rem;
+}
+
+.fc-col-header-cell {
+  padding: 0.5rem !important;
+}
+
+.fc-daygrid-day-number {
+  padding: 0.5rem !important;
+}
+
+.fc .fc-day-other .fc-daygrid-day-top {
+  color: var(--uids-gray-cool);
+  opacity: 1;
+}
+
+/* Wrap long alert titles. */
+.fc-daygrid-event .fc-event-title {
+  white-space: normal;
+}
+
+/* Stack time above title in narrow cells. */
+.fc-daygrid-event .fc-event-main-frame {
+  flex-direction: column;
+}
+
+/* Sticky list-view day headers above their rows on scroll. */
+.fc .fc-list-sticky .fc-list-day > * {
+  z-index: 1;
+}
+
+/* Mobile rendering fixes for FC v6 narrow-viewport sizing bugs. */
+@media (max-width: 768px) {
+  /* Override FC's height: 1px floor on scrollgrid sections. */
+  .fc .fc-scrollgrid-section,
+  .fc .fc-scrollgrid-section table,
+  .fc .fc-scrollgrid-section > td {
+    height: auto !important;
+  }
+  /* Legible column widths; grid scrolls horizontally via .fc-view below. */
+  .fc-scrollgrid {
+    min-width: 700px;
+  }
+  /* Horizontal scroll lives on .fc-view (abs-positioned, overflow has to live here). */
+  .fc .fc-view {
+    overflow-x: auto;
+  }
+  /* Wrap toolbar; title on its own line above the buttons. */
+  .fc-header-toolbar.fc-toolbar {
+    flex-wrap: wrap;
+  }
+  .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+    order: -1;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 8px;
+  }
+}
+
+/* Match production's denser line-height (default uids_base is 1.6). */
+.fc-daygrid-event .fc-event-title {
+  line-height: 1.4;
+}
