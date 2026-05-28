@@ -43,7 +43,6 @@ class MultisiteCommands extends Tasks {
    * @option site-name The desired site name.
    * @option dry-run Show plan and exit; no side effects.
    * @option yes Apply without prompting. Blocked by any WARN.
-   * @option output Output format. Pass 'json' for machine-readable plan.
    * @option app Override the target Acquia application.
    *
    * @command uiowa:multisite:create
@@ -61,7 +60,6 @@ class MultisiteCommands extends Tasks {
       'site-name' => InputOption::VALUE_REQUIRED,
       'dry-run' => FALSE,
       'yes' => FALSE,
-      'output' => '',
       'app' => InputOption::VALUE_REQUIRED,
     ],
   ): void {
@@ -87,7 +85,7 @@ class MultisiteCommands extends Tasks {
     $root = getcwd();
     $title = "uiowa:multisite:create {$host}";
 
-    $umc_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'output', 'app'];
+    $umc_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'app'];
     $flags = array_filter(
       array_intersect_key($options, array_flip($umc_keys)),
       fn($v) => $v !== NULL && $v !== FALSE && $v !== '' && $v !== InputOption::VALUE_REQUIRED
@@ -340,8 +338,8 @@ class MultisiteCommands extends Tasks {
   /**
    * Resolve the output stream for query progress.
    *
-   * Progress feedback writes to stderr so it never corrupts stdout plan
-   * output (notably the JSON emitted under --output=json).
+   * Progress feedback writes to stderr so it stays out of stdout when the
+   * rendered plan is piped or redirected.
    *
    * @return \Symfony\Component\Console\Output\OutputInterface
    *   The error output when available, otherwise the standard output.

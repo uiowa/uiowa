@@ -56,9 +56,9 @@ trait PlanTrait {
     $this->output()->writeln("  <options=bold>Validation:</> <fg={$color}>{$overall}</>");
 
     $non_pass = array_filter($validation['checks'], fn($c) => $c['status'] !== Precondition::PASS);
-    foreach ($non_pass as $name => $check) {
+    foreach ($non_pass as $check) {
       $icon = $check['status'] === Precondition::FAIL ? '<fg=red>✗</>' : '<fg=yellow>!</>';
-      $this->output()->writeln("    {$icon} [{$check['status']}] {$name}: {$check['message']}");
+      $this->output()->writeln("    {$icon} [{$check['status']}] {$check['message']}");
     }
 
     if ($overall === Precondition::FAIL) {
@@ -83,14 +83,14 @@ trait PlanTrait {
   /**
    * Run a decided plan through the standard mode dispatch.
    *
-   * Handles every execution mode in one place: FAIL short-circuit, JSON
-   * output, dry-run, the --yes warning gate, and the interactive prompt.
-   * Steps are built lazily so no work happens on paths that exit early.
+   * Handles every execution mode in one place: FAIL short-circuit, dry-run,
+   * the --yes warning gate, and the interactive prompt. Steps are built
+   * lazily so no work happens on paths that exit early.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The decided plan.
    * @param array $options
-   *   Command options. Reads 'output', 'dry-run', and 'yes'.
+   *   Command options. Reads 'dry-run' and 'yes'.
    * @param callable $build_steps
    *   Returns the ordered steps when invoked:
    *   function (): array of ['label' => string, 'task' => TaskInterface].
@@ -102,17 +102,6 @@ trait PlanTrait {
     }
 
     $steps = $build_steps();
-
-    if (($options['output'] ?? '') === 'json') {
-      $payload = [
-        'input' => $plan->input,
-        'decisions' => $plan->context,
-        'validation' => $plan->validation,
-        'actions_summary' => array_column($steps, 'label'),
-      ];
-      $this->output()->writeln(json_encode($payload, JSON_PRETTY_PRINT));
-      return;
-    }
 
     $this->renderPlan($plan->title, $plan->summary, $plan->validation, $steps);
 
