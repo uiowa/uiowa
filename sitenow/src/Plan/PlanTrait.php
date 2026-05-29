@@ -5,8 +5,7 @@ namespace SiteNow\Plan;
 /**
  * Shared plan execution for Robo commands: render, confirm, apply.
  *
- * A using command supplies a decide step (returns a Plan) and a step builder
- * (returns the steps to run); `executePlan()` drives the rest.
+ * A using command produces a Plan and passes it to `executePlan()`.
  */
 trait PlanTrait {
 
@@ -78,8 +77,7 @@ trait PlanTrait {
   /**
    * Dispatch a decided plan: render it, then exit or apply based on mode.
    *
-   * Reads everything it needs from the Plan, so any number of plan-driven
-   * commands can share this method without per-command hooks.
+   * All command-specific data comes from the Plan.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The decided plan.
