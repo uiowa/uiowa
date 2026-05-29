@@ -188,7 +188,7 @@ function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
     $cache_id = 'uiowa_jobs:feed:' . md5($feed_url);
     $variables['#cache']['tags'] = Cache::mergeTags(
       $variables['#cache']['tags'] ?? [],
-      ['uiowa_jobs:feed', $cache_id, 'time:hourly']
+      ['uiowa_jobs:feed', 'time:hourly']
     );
 
     // Add cache context for pager.
