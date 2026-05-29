@@ -6,7 +6,7 @@ namespace SiteNow\Plan;
  * The result of evaluating a Check.
  *
  * Created via the static pass/warn/fail factories, typically inside a Check
- * closure. The check's name lives on the Check, not here.
+ * closure.
  */
 class CheckResult {
 

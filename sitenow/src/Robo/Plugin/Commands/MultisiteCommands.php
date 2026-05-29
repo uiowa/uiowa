@@ -31,9 +31,7 @@ class MultisiteCommands extends Tasks {
   use PlanTrait;
   use CommonChecks;
 
-  // Check names are stable identifiers. A future automated paper trail (see
-  // the BLT Replacement epic) will reference them, so treat renames as a
-  // breaking change.
+  // Machine names recorded in validation results.
   const CHECK_HOSTNAME_FORMAT = 'hostname_format';
   const CHECK_SITE_DIR_DOES_NOT_EXIST = 'site_dir_does_not_exist';
   const CHECK_NO_NORMALIZED_CONFLICTS = 'no_normalized_conflicts';
@@ -77,7 +75,7 @@ class MultisiteCommands extends Tasks {
     ],
   ): void {
     $plan = $this->decide($host, $options);
-    $this->executePlan($plan, $options, fn() => $this->buildSteps($host, $options, $plan));
+    $this->executePlan($plan, $options, fn() => $this->buildCreateSteps($host, $options, $plan));
   }
 
   /**
@@ -367,7 +365,7 @@ class MultisiteCommands extends Tasks {
   }
 
   /**
-   * Build the ordered list of steps to execute.
+   * Build the ordered steps that create the multisite.
    *
    * Each step carries a display label and the Robo task that performs the
    * action. The same list drives both the plan display and the collection.
@@ -382,7 +380,7 @@ class MultisiteCommands extends Tasks {
    * @return array
    *   Ordered array of ['label' => string, 'task' => \Robo\Contract\TaskInterface].
    */
-  private function buildSteps(string $host, array $options, Plan $plan): array {
+  private function buildCreateSteps(string $host, array $options, Plan $plan): array {
     $root = getcwd();
     $app = $plan->context['app'];
     $id = $plan->input['id'];

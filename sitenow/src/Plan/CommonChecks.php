@@ -3,20 +3,17 @@
 namespace SiteNow\Plan;
 
 /**
- * Reusable validation checks shared by commands that use `PlanTrait`.
+ * Reusable check builders shared by commands that use `PlanTrait`.
  *
- * Provides Check builders for the common preconditions: host-shell
- * environment, Acquia credentials, and git state. A command picks the ones
- * it needs and includes them in the list it passes to `runChecks()`.
+ * A command picks the builders it needs and includes them in the list it
+ * passes to `runChecks()`.
  *
  * Requires the using class to also use `SiteNowCommandsTrait` for
  * `isHostShell()` and `getAcquiaCredentials()`.
  */
 trait CommonChecks {
 
-  // Check names are stable identifiers. A future automated paper trail (see
-  // the BLT Replacement epic) will reference them, so treat renames as a
-  // breaking change.
+  // Machine names recorded in validation results.
   const CHECK_HOST_SHELL = 'running_on_host_shell';
   const CHECK_ACQUIA_CREDENTIALS = 'has_acquia_credentials';
   const CHECK_ON_FEATURE_BRANCH = 'on_feature_branch';

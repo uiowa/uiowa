@@ -3,11 +3,10 @@
 namespace SiteNow\Plan;
 
 /**
- * Shared loop for Robo commands that render, confirm, and apply a plan.
+ * Shared plan execution for Robo commands: render, confirm, apply.
  *
- * A command using this trait supplies its own `decide()` (returning a Plan)
- * and `buildSteps()` (returning the steps), and calls `executePlan()` to
- * drive the rest of the loop.
+ * A using command supplies a decide step (returns a Plan) and a step builder
+ * (returns the steps to run); `executePlan()` drives the rest.
  */
 trait PlanTrait {
 
@@ -74,17 +73,10 @@ trait PlanTrait {
       }
       $this->output()->writeln('');
     }
-
-    $this->output()->writeln('<options=bold>─────────────────────────────────────────────────────────────────</>');
-    $this->output()->writeln('');
   }
 
   /**
-   * Run a decided plan through the standard mode dispatch.
-   *
-   * Handles every execution mode in one place: FAIL short-circuit, dry-run,
-   * the --yes warning gate, and the interactive prompt. Steps are built
-   * lazily so no work happens on paths that exit early.
+   * Dispatch a decided plan: render it, then exit or apply based on mode.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The decided plan.
@@ -95,19 +87,23 @@ trait PlanTrait {
    *   function (): array of ['label' => string, 'task' => TaskInterface].
    */
   protected function executePlan(Plan $plan, array $options, callable $build_steps): void {
+    // Validation failed: show the failing checks and stop before any work.
     if ($plan->failed()) {
       $this->renderPlan($plan->title, [], $plan->validation);
       return;
     }
 
+    // Build the executable steps now that validation has passed.
     $steps = $build_steps();
 
     $this->renderPlan($plan->title, $plan->summary, $plan->validation, $steps);
 
+    // Dry run: the plan was previewed; make no changes.
     if (!empty($options['dry-run'])) {
       return;
     }
 
+    // --yes applies without prompting, but never past a warning.
     if (!empty($options['yes'])) {
       if ($plan->warned()) {
         $this->io()->error('Aborting: --yes was passed but validation has a WARN. Resolve the warning or run interactively.');
@@ -173,9 +169,10 @@ trait PlanTrait {
   }
 
   /**
-   * Run each declared check into per-check results with an overall status.
+   * Evaluate each check and aggregate the results.
    *
-   * The overall status is the worst of the individual check statuses.
+   * Returns the per-check results keyed by name, plus an overall status that
+   * is the worst of the individual statuses.
    *
    * @param \SiteNow\Plan\Check[] $checks
    *   Checks evaluated in declared order.

@@ -3,7 +3,7 @@
 namespace SiteNow\Plan;
 
 /**
- * A snapshot of what a command would do.
+ * A snapshot of what a command would do if executed.
  *
  * Returned by a command's `decide()` method and consumed by `executePlan()`.
  */
@@ -21,7 +21,7 @@ class Plan {
    * @param array $summary
    *   Display rows: [['label' => string, 'value' => string], ...].
    * @param array $context
-   *   Command-specific decisions carried for buildSteps().
+   *   Command-specific decisions carried for the step builder.
    */
   public function __construct(
     public readonly string $title,
