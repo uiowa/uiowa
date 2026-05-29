@@ -14,11 +14,20 @@ namespace SiteNow\Plan;
  */
 trait CommonChecks {
 
+  // Check names are stable identifiers. A future automated paper trail (see
+  // the BLT Replacement epic) will reference them, so treat renames as a
+  // breaking change.
+  const CHECK_HOST_SHELL = 'running_on_host_shell';
+  const CHECK_ACQUIA_CREDENTIALS = 'has_acquia_credentials';
+  const CHECK_ON_FEATURE_BRANCH = 'on_feature_branch';
+  const CHECK_CLEAN_WORKING_TREE = 'clean_working_tree';
+  const CHECK_UP_TO_DATE_WITH_ORIGIN = 'up_to_date_with_origin';
+
   /**
    * Require the command to run on the host shell.
    */
   protected function checkHostShell(): Check {
-    return new Check('running_on_host_shell', function (): CheckResult {
+    return new Check(self::CHECK_HOST_SHELL, function (): CheckResult {
       return $this->isHostShell()
         ? CheckResult::pass()
         : CheckResult::fail('Must run on the host shell, not inside DDEV or Acquia Cloud. Use: ./vendor/bin/robo');
@@ -29,7 +38,7 @@ trait CommonChecks {
    * Require Acquia Cloud API credentials to be configured.
    */
   protected function checkAcquiaCredentials(): Check {
-    return new Check('has_acquia_credentials', function (): CheckResult {
+    return new Check(self::CHECK_ACQUIA_CREDENTIALS, function (): CheckResult {
       $creds = $this->getAcquiaCredentials();
       return (!empty($creds['key']) && !empty($creds['secret']))
         ? CheckResult::pass()
@@ -50,12 +59,12 @@ trait CommonChecks {
     $protected = ['main', 'master', 'develop'];
 
     return [
-      new Check('on_feature_branch', function () use ($branch, $protected): CheckResult {
+      new Check(self::CHECK_ON_FEATURE_BRANCH, function () use ($branch, $protected): CheckResult {
         return in_array($branch, $protected)
           ? CheckResult::fail("Cannot commit on protected branch '{$branch}'.")
           : CheckResult::pass(['branch' => $branch]);
       }),
-      new Check('clean_working_tree', function (): CheckResult {
+      new Check(self::CHECK_CLEAN_WORKING_TREE, function (): CheckResult {
         // Ignore untracked files: the command stages only its own generated
         // paths, so untracked local files cannot pollute its commit.
         $dirty = trim((string) shell_exec('git status --porcelain --untracked-files=no 2>/dev/null'));
@@ -63,7 +72,7 @@ trait CommonChecks {
           ? CheckResult::fail('Working tree has uncommitted changes to tracked files.')
           : CheckResult::pass();
       }),
-      new Check('up_to_date_with_origin', function () use ($branch): CheckResult {
+      new Check(self::CHECK_UP_TO_DATE_WITH_ORIGIN, function () use ($branch): CheckResult {
         shell_exec('git fetch origin --quiet 2>/dev/null');
         $rev = trim((string) shell_exec("git rev-list --left-right --count origin/{$branch}...HEAD 2>/dev/null"));
         $parts = explode("\t", $rev);

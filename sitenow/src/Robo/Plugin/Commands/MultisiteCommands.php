@@ -31,6 +31,16 @@ class MultisiteCommands extends Tasks {
   use PlanTrait;
   use CommonChecks;
 
+  // Check names are stable identifiers. A future automated paper trail (see
+  // the BLT Replacement epic) will reference them, so treat renames as a
+  // breaking change.
+  const CHECK_HOSTNAME_FORMAT = 'hostname_format';
+  const CHECK_SITE_DIR_DOES_NOT_EXIST = 'site_dir_does_not_exist';
+  const CHECK_NO_NORMALIZED_CONFLICTS = 'no_normalized_conflicts';
+  const CHECK_SSL_COVERAGE = 'has_ssl_coverage';
+  const CHECK_APP_SELECTION = 'app_selection';
+  const CHECK_APP_EXISTS = 'app_exists';
+
   /**
    * Create a new SiteNow multisite.
    *
@@ -106,17 +116,17 @@ class MultisiteCommands extends Tasks {
     $cheap = [
       $this->checkHostShell(),
       $this->checkAcquiaCredentials(),
-      new Check('hostname_format', function () use ($host): CheckResult {
+      new Check(self::CHECK_HOSTNAME_FORMAT, function () use ($host): CheckResult {
         return Multisite::isValidHost($host)
           ? CheckResult::pass()
           : CheckResult::fail("Invalid hostname: {$host}. Must be a valid dot-separated domain.");
       }),
-      new Check('site_dir_does_not_exist', function () use ($root, $host): CheckResult {
+      new Check(self::CHECK_SITE_DIR_DOES_NOT_EXIST, function () use ($root, $host): CheckResult {
         return is_dir("{$root}/docroot/sites/{$host}")
           ? CheckResult::fail("Site directory docroot/sites/{$host} already exists.")
           : CheckResult::pass();
       }),
-      new Check('no_normalized_conflicts', function () use ($root, $host): CheckResult {
+      new Check(self::CHECK_NO_NORMALIZED_CONFLICTS, function () use ($root, $host): CheckResult {
         return $this->hasIdentifierConflict($host, Multisite::getAllSites($root))
           ? CheckResult::fail("Site {$host} normalizes to an identifier already used by an existing site.")
           : CheckResult::pass();
@@ -155,7 +165,7 @@ class MultisiteCommands extends Tasks {
 
     // SSL and git checks.
     $checks = [
-      new Check('has_ssl_coverage', function () use ($has_ssl_coverage, $host): CheckResult {
+      new Check(self::CHECK_SSL_COVERAGE, function () use ($has_ssl_coverage, $host): CheckResult {
         return $has_ssl_coverage
           ? CheckResult::pass()
           : CheckResult::warn("No SSL coverage found for {$host}. Install a certificate before updating DNS.");
@@ -176,7 +186,7 @@ class MultisiteCommands extends Tasks {
     }
     elseif (!$app) {
       $validation = $this->mergeValidation($validation, $this->runChecks([
-        new Check('app_selection', fn() => CheckResult::fail('No eligible Acquia application found in the registry.')),
+        new Check(self::CHECK_APP_SELECTION, fn() => CheckResult::fail('No eligible Acquia application found in the registry.')),
       ]));
     }
     if ($app) {
@@ -210,7 +220,7 @@ class MultisiteCommands extends Tasks {
   protected function selectApp(array $candidates, array $options): array {
     if (!empty($options['app'])) {
       if (!isset($candidates[$options['app']])) {
-        $check = new Check('app_exists', fn() => CheckResult::fail(
+        $check = new Check(self::CHECK_APP_EXISTS, fn() => CheckResult::fail(
           "Specified application '{$options['app']}' is not in the SiteNow application registry."
         ));
         return [NULL, '', $check];

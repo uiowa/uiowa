@@ -206,7 +206,7 @@ class MultisiteCreateTest extends UnitTestCase {
     $this->assertNull($app);
     $this->assertInstanceOf(Check::class, $check);
     $this->assertSame(CheckStatus::Fail, $check->evaluate()->status);
-    $this->assertSame('app_exists', $check->name);
+    $this->assertSame(MultisiteCommands::CHECK_APP_EXISTS, $check->name);
   }
 
   /**
