@@ -83,8 +83,8 @@ class MultisiteCommands extends Tasks {
   /**
    * Build the Plan for a multisite create: gather facts and evaluate checks.
    *
-   * Read-only. Cheap env and input checks run first and gate the Acquia API
-   * work behind them.
+   * Read-only. Local checks (no Acquia API) run first; a failure among them
+   * returns before any API call.
    *
    * @param string $host
    *   The multisite host.
@@ -111,9 +111,9 @@ class MultisiteCommands extends Tasks {
       'flags' => $flags,
     ];
 
-    // Cheap checks: environment and input. A FAIL here short-circuits before
-    // any Acquia API call.
-    $cheap = [
+    // Checks that need no Acquia API: environment, input, and local
+    // filesystem. Run these first so a FAIL returns before any API call.
+    $local_checks = [
       $this->checkHostShell(),
       $this->checkAcquiaCredentials(),
       new Check(self::CHECK_HOSTNAME_FORMAT, function () use ($host): CheckResult {
@@ -133,8 +133,10 @@ class MultisiteCommands extends Tasks {
       }),
     ];
 
-    $validation = $this->runChecks($cheap);
+    $validation = $this->runChecks($local_checks);
 
+    // Gate the API work: if a local check already failed, return the plan
+    // without querying Acquia.
     if ($validation['overall'] === CheckStatus::Fail) {
       return new Plan($title, $input, $validation);
     }

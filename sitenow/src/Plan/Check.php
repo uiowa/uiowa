@@ -3,11 +3,11 @@
 namespace SiteNow\Plan;
 
 /**
- * A named, deferred validation check.
+ * A named validation check.
  *
- * Used by `PlanTrait::runChecks()`. Deferring evaluation lets the runner gate
- * expensive checks (Acquia API calls, git operations) behind cheaper ones
- * (input validation).
+ * Pairs a check name with the logic (a closure) that produces its result. A
+ * command assembles a list of checks and hands it to `PlanTrait::runChecks()`,
+ * which evaluates each one and collects the results keyed by name.
  */
 class Check {
 
