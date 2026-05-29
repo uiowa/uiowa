@@ -15,7 +15,7 @@ class Check {
    * @param string $name
    *   Machine name recorded in the validation results.
    * @param \Closure $run
-   *   Returns a Precondition when invoked: function (): Precondition.
+   *   Returns a CheckResult when invoked: function (): CheckResult.
    */
   public function __construct(
     public readonly string $name,
@@ -25,10 +25,10 @@ class Check {
   /**
    * Evaluate the check.
    *
-   * @return \SiteNow\Plan\Precondition
+   * @return \SiteNow\Plan\CheckResult
    *   The check result.
    */
-  public function evaluate(): Precondition {
+  public function evaluate(): CheckResult {
     return ($this->run)();
   }
 

@@ -6,10 +6,11 @@ use AcquiaCloudApi\Connector\Client;
 use Robo\Tasks;
 use SiteNow\Config\Applications;
 use SiteNow\Plan\Check;
+use SiteNow\Plan\CheckResult;
+use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
-use SiteNow\Plan\Precondition;
 use SiteNow\Task\Acquia\Tasks as AcquiaTasks;
 use SiteNow\Task\Multisite\Tasks as MultisiteTasks;
 use SiteNow\Traits\SiteNowCommandsTrait;
@@ -103,26 +104,26 @@ class MultisiteCommands extends Tasks {
     $cheap = [
       $this->checkHostShell(),
       $this->checkAcquiaCredentials(),
-      new Check('hostname_format', function () use ($host): Precondition {
+      new Check('hostname_format', function () use ($host): CheckResult {
         return Multisite::isValidHost($host)
-          ? Precondition::pass('hostname_format')
-          : Precondition::fail('hostname_format', "Invalid hostname: {$host}. Must be a valid dot-separated domain.");
+          ? CheckResult::pass()
+          : CheckResult::fail("Invalid hostname: {$host}. Must be a valid dot-separated domain.");
       }),
-      new Check('site_dir_does_not_exist', function () use ($root, $host): Precondition {
+      new Check('site_dir_does_not_exist', function () use ($root, $host): CheckResult {
         return is_dir("{$root}/docroot/sites/{$host}")
-          ? Precondition::fail('site_dir_does_not_exist', "Site directory docroot/sites/{$host} already exists.")
-          : Precondition::pass('site_dir_does_not_exist');
+          ? CheckResult::fail("Site directory docroot/sites/{$host} already exists.")
+          : CheckResult::pass();
       }),
-      new Check('no_normalized_conflicts', function () use ($root, $host): Precondition {
+      new Check('no_normalized_conflicts', function () use ($root, $host): CheckResult {
         return $this->hasIdentifierConflict($host, Multisite::getAllSites($root))
-          ? Precondition::fail('no_normalized_conflicts', "Site {$host} normalizes to an identifier already used by an existing site.")
-          : Precondition::pass('no_normalized_conflicts');
+          ? CheckResult::fail("Site {$host} normalizes to an identifier already used by an existing site.")
+          : CheckResult::pass();
       }),
     ];
 
     $validation = $this->runChecks($cheap);
 
-    if ($validation['overall'] === Precondition::FAIL) {
+    if ($validation['overall'] === CheckStatus::Fail) {
       return new Plan($title, $input, $validation);
     }
 
@@ -152,10 +153,10 @@ class MultisiteCommands extends Tasks {
 
     // SSL and git checks.
     $checks = [
-      new Check('has_ssl_coverage', function () use ($has_ssl_coverage, $host): Precondition {
+      new Check('has_ssl_coverage', function () use ($has_ssl_coverage, $host): CheckResult {
         return $has_ssl_coverage
-          ? Precondition::pass('has_ssl_coverage')
-          : Precondition::warn('has_ssl_coverage', "No SSL coverage found for {$host}. Install a certificate before updating DNS.");
+          ? CheckResult::pass()
+          : CheckResult::warn("No SSL coverage found for {$host}. Install a certificate before updating DNS.");
       }),
     ];
 
@@ -173,7 +174,7 @@ class MultisiteCommands extends Tasks {
     }
     elseif (!$app) {
       $validation = $this->mergeValidation($validation, $this->runChecks([
-        new Check('app_selection', fn() => Precondition::fail('app_selection', 'No eligible Acquia application found in the registry.')),
+        new Check('app_selection', fn() => CheckResult::fail('No eligible Acquia application found in the registry.')),
       ]));
     }
     if ($app) {
@@ -207,8 +208,7 @@ class MultisiteCommands extends Tasks {
   protected function selectApp(array $candidates, array $options): array {
     if (!empty($options['app'])) {
       if (!isset($candidates[$options['app']])) {
-        return [NULL, '', new Check('app_exists', fn() => Precondition::fail(
-          'app_exists',
+        return [NULL, '', new Check('app_exists', fn() => CheckResult::fail(
           "Specified application '{$options['app']}' is not in the SiteNow application registry."
         ))];
       }

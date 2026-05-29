@@ -4,16 +4,17 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use SiteNow\Plan\Check;
+use SiteNow\Plan\CheckResult;
+use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
-use SiteNow\Plan\Precondition;
 use SiteNow\Robo\Plugin\Commands\MultisiteCommands;
 use Uiowa\Multisite;
 
 /**
  * Unit tests for the multisite create command's plan layer.
  *
- * Covers the generic plan primitives (Precondition, Check, Plan, and the
+ * Covers the generic plan primitives (CheckResult, Check, Plan, and the
  * PlanTrait validation aggregation) and the command's application-selection
  * rules. Both are pure logic: no Acquia API, git, or filesystem access.
  *
@@ -204,7 +205,7 @@ class MultisiteCreateTest extends UnitTestCase {
 
     $this->assertNull($app);
     $this->assertInstanceOf(Check::class, $check);
-    $this->assertTrue($check->evaluate()->isFail());
+    $this->assertSame(CheckStatus::Fail, $check->evaluate()->status);
     $this->assertSame('app_exists', $check->name);
   }
 
@@ -230,11 +231,11 @@ class MultisiteCreateTest extends UnitTestCase {
    */
   public function testRunChecksAllPass() {
     $result = $this->planHarness()->checks([
-      new Check('a', fn() => Precondition::pass('a')),
-      new Check('b', fn() => Precondition::pass('b')),
+      new Check('a', fn() => CheckResult::pass()),
+      new Check('b', fn() => CheckResult::pass()),
     ]);
 
-    $this->assertSame(Precondition::PASS, $result['overall']);
+    $this->assertSame(CheckStatus::Pass, $result['overall']);
     $this->assertCount(2, $result['checks']);
   }
 
@@ -243,11 +244,11 @@ class MultisiteCreateTest extends UnitTestCase {
    */
   public function testRunChecksWarnRaisesOverall() {
     $result = $this->planHarness()->checks([
-      new Check('a', fn() => Precondition::pass('a')),
-      new Check('b', fn() => Precondition::warn('b', 'careful')),
+      new Check('a', fn() => CheckResult::pass()),
+      new Check('b', fn() => CheckResult::warn('careful')),
     ]);
 
-    $this->assertSame(Precondition::WARN, $result['overall']);
+    $this->assertSame(CheckStatus::Warn, $result['overall']);
     $this->assertSame('careful', $result['checks']['b']['message']);
   }
 
@@ -256,11 +257,11 @@ class MultisiteCreateTest extends UnitTestCase {
    */
   public function testRunChecksFailDominatesWarn() {
     $result = $this->planHarness()->checks([
-      new Check('a', fn() => Precondition::warn('a', 'careful')),
-      new Check('b', fn() => Precondition::fail('b', 'nope')),
+      new Check('a', fn() => CheckResult::warn('careful')),
+      new Check('b', fn() => CheckResult::fail('nope')),
     ]);
 
-    $this->assertSame(Precondition::FAIL, $result['overall']);
+    $this->assertSame(CheckStatus::Fail, $result['overall']);
   }
 
   /**
@@ -268,12 +269,12 @@ class MultisiteCreateTest extends UnitTestCase {
    */
   public function testMergeValidationKeepsWorstStatusAndCombines() {
     $harness = $this->planHarness();
-    $base = $harness->checks([new Check('a', fn() => Precondition::pass('a'))]);
-    $extra = $harness->checks([new Check('b', fn() => Precondition::fail('b', 'nope'))]);
+    $base = $harness->checks([new Check('a', fn() => CheckResult::pass())]);
+    $extra = $harness->checks([new Check('b', fn() => CheckResult::fail('nope'))]);
 
     $merged = $harness->merge($base, $extra);
 
-    $this->assertSame(Precondition::FAIL, $merged['overall']);
+    $this->assertSame(CheckStatus::Fail, $merged['overall']);
     $this->assertArrayHasKey('a', $merged['checks']);
     $this->assertArrayHasKey('b', $merged['checks']);
   }
@@ -283,12 +284,12 @@ class MultisiteCreateTest extends UnitTestCase {
    */
   public function testMergeValidationDoesNotDowngrade() {
     $harness = $this->planHarness();
-    $base = $harness->checks([new Check('a', fn() => Precondition::warn('a', 'careful'))]);
-    $extra = $harness->checks([new Check('b', fn() => Precondition::pass('b'))]);
+    $base = $harness->checks([new Check('a', fn() => CheckResult::warn('careful'))]);
+    $extra = $harness->checks([new Check('b', fn() => CheckResult::pass())]);
 
     $merged = $harness->merge($base, $extra);
 
-    $this->assertSame(Precondition::WARN, $merged['overall']);
+    $this->assertSame(CheckStatus::Warn, $merged['overall']);
   }
 
   // --- Value objects ----------------------------------------------------------
@@ -297,9 +298,9 @@ class MultisiteCreateTest extends UnitTestCase {
    * Plan reflects its overall validation status.
    */
   public function testPlanStatusHelpers() {
-    $fail = new Plan('t', [], ['overall' => Precondition::FAIL, 'checks' => []]);
-    $warn = new Plan('t', [], ['overall' => Precondition::WARN, 'checks' => []]);
-    $pass = new Plan('t', [], ['overall' => Precondition::PASS, 'checks' => []]);
+    $fail = new Plan('t', [], ['overall' => CheckStatus::Fail, 'checks' => []]);
+    $warn = new Plan('t', [], ['overall' => CheckStatus::Warn, 'checks' => []]);
+    $pass = new Plan('t', [], ['overall' => CheckStatus::Pass, 'checks' => []]);
 
     $this->assertTrue($fail->failed());
     $this->assertFalse($fail->warned());
@@ -310,23 +311,23 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * Precondition factories set the expected status and predicates.
+   * CheckResult factories set the expected status.
    */
-  public function testPreconditionFactories() {
-    $this->assertTrue(Precondition::pass('a')->isPass());
-    $this->assertTrue(Precondition::warn('a', 'm')->isWarn());
-    $this->assertTrue(Precondition::fail('a', 'm')->isFail());
-    $this->assertSame('m', Precondition::fail('a', 'm')->message);
+  public function testCheckResultFactories() {
+    $this->assertSame(CheckStatus::Pass, CheckResult::pass()->status);
+    $this->assertSame(CheckStatus::Warn, CheckResult::warn('m')->status);
+    $this->assertSame(CheckStatus::Fail, CheckResult::fail('m')->status);
+    $this->assertSame('m', CheckResult::fail('m')->message);
   }
 
   /**
    * A Check evaluates its closure on demand.
    */
   public function testCheckEvaluatesClosure() {
-    $check = new Check('a', fn() => Precondition::fail('a', 'boom'));
+    $check = new Check('a', fn() => CheckResult::fail('boom'));
     $result = $check->evaluate();
 
-    $this->assertTrue($result->isFail());
+    $this->assertSame(CheckStatus::Fail, $result->status);
     $this->assertSame('boom', $result->message);
   }
 

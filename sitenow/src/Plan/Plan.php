@@ -33,14 +33,14 @@ class Plan {
    * Whether validation failed overall.
    */
   public function failed(): bool {
-    return ($this->validation['overall'] ?? Precondition::PASS) === Precondition::FAIL;
+    return ($this->validation['overall'] ?? CheckStatus::Pass) === CheckStatus::Fail;
   }
 
   /**
    * Whether validation produced a warning overall.
    */
   public function warned(): bool {
-    return ($this->validation['overall'] ?? Precondition::PASS) === Precondition::WARN;
+    return ($this->validation['overall'] ?? CheckStatus::Pass) === CheckStatus::Warn;
   }
 
 }

@@ -48,20 +48,20 @@ trait PlanTrait {
 
     $overall = $validation['overall'];
     $color = match($overall) {
-      Precondition::FAIL => 'red',
-      Precondition::WARN => 'yellow',
+      CheckStatus::Fail => 'red',
+      CheckStatus::Warn => 'yellow',
       default => 'green',
     };
 
-    $this->output()->writeln("  <options=bold>Validation:</> <fg={$color}>{$overall}</>");
+    $this->output()->writeln("  <options=bold>Validation:</> <fg={$color}>{$overall->value}</>");
 
-    $non_pass = array_filter($validation['checks'], fn($c) => $c['status'] !== Precondition::PASS);
+    $non_pass = array_filter($validation['checks'], fn($c) => $c['status'] !== CheckStatus::Pass);
     foreach ($non_pass as $check) {
-      $icon = $check['status'] === Precondition::FAIL ? '<fg=red>✗</>' : '<fg=yellow>!</>';
-      $this->output()->writeln("    {$icon} [{$check['status']}] {$check['message']}");
+      $icon = $check['status'] === CheckStatus::Fail ? '<fg=red>✗</>' : '<fg=yellow>!</>';
+      $this->output()->writeln("    {$icon} [{$check['status']->value}] {$check['message']}");
     }
 
-    if ($overall === Precondition::FAIL) {
+    if ($overall === CheckStatus::Fail) {
       $this->output()->writeln('');
       return;
     }
@@ -181,24 +181,21 @@ trait PlanTrait {
    *   Checks evaluated in declared order.
    *
    * @return array
-   *   ['overall' => PASS|WARN|FAIL, 'checks' => [name => [status, message, context]]]
+   *   ['overall' => CheckStatus, 'checks' => [name => [status, message, context]]]
    */
   protected function runChecks(array $checks): array {
-    $result = ['checks' => [], 'overall' => Precondition::PASS];
+    $result = ['checks' => [], 'overall' => CheckStatus::Pass];
 
     foreach ($checks as $check) {
-      $precondition = $check->evaluate();
-      $result['checks'][$precondition->name] = [
-        'status' => $precondition->status,
-        'message' => $precondition->message,
-        'context' => $precondition->context,
+      $outcome = $check->evaluate();
+      $result['checks'][$check->name] = [
+        'status' => $outcome->status,
+        'message' => $outcome->message,
+        'context' => $outcome->context,
       ];
 
-      if ($precondition->isFail()) {
-        $result['overall'] = Precondition::FAIL;
-      }
-      elseif ($precondition->isWarn() && $result['overall'] !== Precondition::FAIL) {
-        $result['overall'] = Precondition::WARN;
+      if ($outcome->status->rank() > $result['overall']->rank()) {
+        $result['overall'] = $outcome->status;
       }
     }
 
@@ -218,9 +215,8 @@ trait PlanTrait {
    *   The merged validation results.
    */
   protected function mergeValidation(array $base, array $extra): array {
-    $rank = [Precondition::PASS => 0, Precondition::WARN => 1, Precondition::FAIL => 2];
     $base['checks'] = array_merge($base['checks'], $extra['checks']);
-    if ($rank[$extra['overall']] > $rank[$base['overall']]) {
+    if ($extra['overall']->rank() > $base['overall']->rank()) {
       $base['overall'] = $extra['overall'];
     }
     return $base;
