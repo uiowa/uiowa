@@ -1,0 +1,72 @@
+uuid: 466f8760-b3c5-4aea-8bcd-4b9fa269bac9
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_jobs
+    - field.field.block_content.uiowa_jobs.field_uiowa_headline
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_count
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_feed_url
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_pager
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_show_date
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_show_desc
+  module:
+    - layout_builder_custom
+_core:
+  default_config_hash: e2ylEIvRY_ADuxYgbOrcpxwi37tb6UhWy43ktEWH4Qk
+id: block_content.uiowa_jobs.default
+targetEntityType: block_content
+bundle: uiowa_jobs
+mode: default
+content:
+  field_uiowa_headline:
+    type: uiowa_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_uiowa_jobs_count:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: '10'
+    third_party_settings: {  }
+  field_uiowa_jobs_feed_url:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_uiowa_jobs_pager:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_uiowa_jobs_show_date:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_uiowa_jobs_show_desc:
+    type: boolean_checkbox
+    weight: 26
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
