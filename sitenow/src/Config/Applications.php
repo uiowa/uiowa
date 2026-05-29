@@ -21,6 +21,8 @@ class Applications {
   private array $applications;
 
   /**
+   * Constructs an Applications registry reader.
+   *
    * @param string $path
    *   Absolute path to the registry YAML file.
    */

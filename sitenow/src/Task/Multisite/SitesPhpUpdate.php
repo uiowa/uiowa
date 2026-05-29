@@ -12,15 +12,61 @@ use Robo\Task\BaseTask;
  */
 class SitesPhpUpdate extends BaseTask implements SimulatedInterface, RollbackInterface {
 
+  /**
+   * The public multisite host.
+   *
+   * @var string
+   */
   private string $host = '';
+
+  /**
+   * The local internal domain.
+   *
+   * @var string
+   */
   private string $local = '';
+
+  /**
+   * The dev internal domain.
+   *
+   * @var string
+   */
   private string $dev = '';
+
+  /**
+   * The test internal domain.
+   *
+   * @var string
+   */
   private string $test = '';
+
+  /**
+   * The prod internal domain.
+   *
+   * @var string
+   */
   private string $prod = '';
+
+  /**
+   * The block appended to sites.php, retained for rollback.
+   *
+   * @var string
+   */
   private string $appendedBlock = '';
 
+  /**
+   * Constructs a SitesPhpUpdate task.
+   *
+   * @param string $filePath
+   *   Absolute path to sites.php.
+   */
   public function __construct(private string $filePath) {}
 
+  /**
+   * Configures the task to add directory aliases for a host.
+   *
+   * @return $this
+   */
   public function add(
     string $host,
     string $local,
@@ -36,6 +82,9 @@ class SitesPhpUpdate extends BaseTask implements SimulatedInterface, RollbackInt
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function run(): Result {
     $this->appendedBlock = <<<EOD
 
@@ -53,10 +102,16 @@ EOD;
     return Result::success($this);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function simulate($context): void {
     $this->printTaskInfo("Would append <info>{$this->host}</info> directory aliases to {$this->filePath}.");
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function rollback(): void {
     if (!$this->appendedBlock || !file_exists($this->filePath)) {
       return;

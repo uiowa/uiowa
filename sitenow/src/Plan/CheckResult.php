@@ -16,14 +16,23 @@ class CheckResult {
     public readonly array $context = [],
   ) {}
 
+  /**
+   * Creates a passing result.
+   */
   public static function pass(array $context = []): static {
     return new static(CheckStatus::Pass, '', $context);
   }
 
+  /**
+   * Creates a warning result with a message.
+   */
   public static function warn(string $message, array $context = []): static {
     return new static(CheckStatus::Warn, $message, $context);
   }
 
+  /**
+   * Creates a failing result with a message.
+   */
   public static function fail(string $message, array $context = []): static {
     return new static(CheckStatus::Fail, $message, $context);
   }

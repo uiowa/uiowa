@@ -22,6 +22,9 @@ class CloudDbCreate extends AcquiaApiTask implements SimulatedInterface, Rollbac
     parent::__construct($client);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function run(): Result {
     $databases = new Databases($this->client);
     try {
@@ -39,10 +42,16 @@ class CloudDbCreate extends AcquiaApiTask implements SimulatedInterface, Rollbac
     return Result::error($this, "Failed to create database {$this->dbName}: {$response->message}");
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function simulate($context): void {
     $this->printTaskInfo("Would create database <info>{$this->dbName}</info> on <info>{$this->appName}</info>.");
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function rollback(): void {
     try {
       $databases = new Databases($this->client);

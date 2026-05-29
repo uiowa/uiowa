@@ -13,17 +13,42 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ManifestUpdate extends BaseTask implements SimulatedInterface, RollbackInterface {
 
+  /**
+   * The target application name.
+   *
+   * @var string
+   */
   private string $app = '';
+
+  /**
+   * The multisite host to add.
+   *
+   * @var string
+   */
   private string $host = '';
 
+  /**
+   * Constructs a ManifestUpdate task.
+   *
+   * @param string $manifestPath
+   *   Absolute path to blt/manifest.yml.
+   */
   public function __construct(private string $manifestPath) {}
 
+  /**
+   * Configures the task to add a host under an application.
+   *
+   * @return $this
+   */
   public function add(string $app, string $host): static {
     $this->app = $app;
     $this->host = $host;
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function run(): Result {
     $manifest = Yaml::parseFile($this->manifestPath) ?? [];
     if (!isset($manifest[$this->app])) {
@@ -35,10 +60,16 @@ class ManifestUpdate extends BaseTask implements SimulatedInterface, RollbackInt
     return Result::success($this);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function simulate($context): void {
     $this->printTaskInfo("Would add <info>{$this->host}</info> to <info>{$this->app}</info> in {$this->manifestPath}.");
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function rollback(): void {
     if (!file_exists($this->manifestPath) || !$this->host) {
       return;
@@ -58,6 +89,12 @@ class ManifestUpdate extends BaseTask implements SimulatedInterface, RollbackInt
     $this->printTaskInfo("Rolled back: removed {$this->host} from {$this->app} in manifest.");
   }
 
+  /**
+   * Sorts the manifest by application and host, then writes it.
+   *
+   * @param array $manifest
+   *   The manifest data to write.
+   */
   private function sortAndWrite(array $manifest): void {
     ksort($manifest);
     foreach ($manifest as &$app) {

@@ -12,6 +12,8 @@ namespace SiteNow\Plan;
 class Check {
 
   /**
+   * Constructs a Check.
+   *
    * @param string $name
    *   Machine name recorded in the validation results.
    * @param \Closure $run

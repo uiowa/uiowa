@@ -81,7 +81,7 @@ class MultisiteCreateTest extends UnitTestCase {
    * A harness exposing the protected PlanTrait aggregation helpers.
    */
   private function planHarness(): object {
-    return new class {
+    return new class() {
 
       use PlanTrait;
 
@@ -424,7 +424,8 @@ class MultisiteCreateTest extends UnitTestCase {
    * Hosts that normalize to the same identifier are flagged as conflicts.
    */
   public function testIdentifierConflictDetectsNormalizedCollision() {
-    // www is stripped, so www.foo.uiowa.edu and foo.uiowa.edu share an id.
+    // The www prefix is stripped, so www.foo.uiowa.edu and foo.uiowa.edu
+    // share an id.
     $this->assertTrue(
       $this->command()->pubHasIdentifierConflict('www.foo.uiowa.edu', ['foo.uiowa.edu'])
     );

@@ -3,8 +3,7 @@
 namespace SiteNow\Plan;
 
 /**
- * Shared loop for Robo commands that render a plan, prompt for confirmation,
- * and then apply it.
+ * Shared loop for Robo commands that render, confirm, and apply a plan.
  *
  * A command using this trait supplies its own `decide()` (returning a Plan)
  * and `buildSteps()` (returning the steps), and calls `executePlan()` to
@@ -174,8 +173,9 @@ trait PlanTrait {
   }
 
   /**
-   * Run each declared check and return the per-check results with an overall
-   * worst-case status.
+   * Run each declared check into per-check results with an overall status.
+   *
+   * The overall status is the worst of the individual check statuses.
    *
    * @param \SiteNow\Plan\Check[] $checks
    *   Checks evaluated in declared order.
@@ -194,7 +194,7 @@ trait PlanTrait {
         'context' => $outcome->context,
       ];
 
-      if ($outcome->status->rank() > $result['overall']->rank()) {
+      if ($this->statusRank($outcome->status) > $this->statusRank($result['overall'])) {
         $result['overall'] = $outcome->status;
       }
     }
@@ -203,8 +203,9 @@ trait PlanTrait {
   }
 
   /**
-   * Merge a second set of validation results into a base, keeping the worst
-   * overall status.
+   * Merge a second set of validation results into a base.
+   *
+   * The merged overall status is the worse of the two.
    *
    * @param array $base
    *   The base validation results.
@@ -216,10 +217,27 @@ trait PlanTrait {
    */
   protected function mergeValidation(array $base, array $extra): array {
     $base['checks'] = array_merge($base['checks'], $extra['checks']);
-    if ($extra['overall']->rank() > $base['overall']->rank()) {
+    if ($this->statusRank($extra['overall']) > $this->statusRank($base['overall'])) {
       $base['overall'] = $extra['overall'];
     }
     return $base;
+  }
+
+  /**
+   * Severity rank for a status. Higher is worse.
+   *
+   * @param \SiteNow\Plan\CheckStatus $status
+   *   The status to rank.
+   *
+   * @return int
+   *   0 for Pass, 1 for Warn, 2 for Fail.
+   */
+  private function statusRank(CheckStatus $status): int {
+    return match ($status) {
+      CheckStatus::Pass => 0,
+      CheckStatus::Warn => 1,
+      CheckStatus::Fail => 2,
+    };
   }
 
 }

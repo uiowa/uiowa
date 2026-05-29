@@ -10,6 +10,8 @@ namespace SiteNow\Plan;
 class Plan {
 
   /**
+   * Constructs a Plan.
+   *
    * @param string $title
    *   Header line for the rendered plan.
    * @param array $input

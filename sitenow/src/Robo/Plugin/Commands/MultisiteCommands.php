@@ -36,6 +36,8 @@ class MultisiteCommands extends Tasks {
    *
    * @param string $host
    *   The multisite URI host (e.g. newsite.uiowa.edu).
+   * @param array $options
+   *   Keyed command options, as declared by the @option tags.
    *
    * @option no-commit Do not create a git commit.
    * @option no-db Do not create a cloud database.
@@ -208,9 +210,10 @@ class MultisiteCommands extends Tasks {
   protected function selectApp(array $candidates, array $options): array {
     if (!empty($options['app'])) {
       if (!isset($candidates[$options['app']])) {
-        return [NULL, '', new Check('app_exists', fn() => CheckResult::fail(
+        $check = new Check('app_exists', fn() => CheckResult::fail(
           "Specified application '{$options['app']}' is not in the SiteNow application registry."
-        ))];
+        ));
+        return [NULL, '', $check];
       }
       return [$candidates[$options['app']], 'Explicitly specified via --app.', NULL];
     }

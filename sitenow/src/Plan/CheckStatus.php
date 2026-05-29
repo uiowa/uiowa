@@ -11,18 +11,4 @@ enum CheckStatus: string {
   case Warn = 'WARN';
   case Fail = 'FAIL';
 
-  /**
-   * Severity rank for comparing statuses. Higher is worse.
-   *
-   * @return int
-   *   0 for Pass, 1 for Warn, 2 for Fail.
-   */
-  public function rank(): int {
-    return match ($this) {
-      self::Pass => 0,
-      self::Warn => 1,
-      self::Fail => 2,
-    };
-  }
-
 }
