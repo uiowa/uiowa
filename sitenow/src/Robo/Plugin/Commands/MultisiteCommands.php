@@ -74,15 +74,12 @@ class MultisiteCommands extends Tasks {
       'app' => InputOption::VALUE_REQUIRED,
     ],
   ): void {
-    $plan = $this->decide($host, $options);
-    $this->executePlan($plan, $options, fn() => $this->buildCreateSteps($host, $options, $plan));
+    $plan = $this->createPlan($host, $options);
+    $this->executePlan($plan, $options);
   }
 
   /**
-   * Build the Plan for a multisite create: gather facts and evaluate checks.
-   *
-   * Read-only. Local checks (no Acquia API) run first; a failure among them
-   * returns before any API call.
+   * Produce the complete Plan for a multisite create.
    *
    * @param string $host
    *   The multisite host.
@@ -90,9 +87,10 @@ class MultisiteCommands extends Tasks {
    *   Command options.
    *
    * @return \SiteNow\Plan\Plan
-   *   The decided plan, ready to render and execute.
+   *   The plan: the decision always, plus the steps and next-steps when
+   *   validation passes (a failed plan carries neither).
    */
-  private function decide(string $host, array $options): Plan {
+  private function createPlan(string $host, array $options): Plan {
     $root = getcwd();
     $title = "uiowa:multisite:create {$host}";
 
@@ -193,13 +191,19 @@ class MultisiteCommands extends Tasks {
       $app['reasoning'] = $reasoning;
     }
 
-    return new Plan(
-      $title,
-      $input,
-      $validation,
-      $this->planSummary($app, $input),
-      ['app' => $app, 'app_candidates' => $candidates],
-    );
+    $context = ['app' => $app, 'app_candidates' => $candidates];
+    $summary = $this->planSummary($app, $input);
+
+    // A failed plan carries the decision only; skip building the steps that
+    // would never run.
+    if ($validation['overall'] === CheckStatus::Fail) {
+      return new Plan($title, $input, $validation, $summary, $context);
+    }
+
+    $steps = $this->buildCreateSteps($host, $options, $app, $input);
+    $next_steps = $this->createNextSteps($options);
+
+    return new Plan($title, $input, $validation, $summary, $context, $steps, $next_steps);
   }
 
   /**
@@ -374,17 +378,18 @@ class MultisiteCommands extends Tasks {
    *   The multisite host.
    * @param array $options
    *   Command options.
-   * @param \SiteNow\Plan\Plan $plan
-   *   The decided plan, with a resolved app.
+   * @param array $app
+   *   The selected application (name + uuid).
+   * @param array $input
+   *   Normalized command input (id, db).
    *
    * @return array
    *   Ordered array of ['label' => string, 'task' => \Robo\Contract\TaskInterface].
    */
-  private function buildCreateSteps(string $host, array $options, Plan $plan): array {
+  private function buildCreateSteps(string $host, array $options, array $app, array $input): array {
     $root = getcwd();
-    $app = $plan->context['app'];
-    $id = $plan->input['id'];
-    $db = $plan->input['db'];
+    $id = $input['id'];
+    $db = $input['db'];
 
     $domains = Multisite::getInternalDomains($id);
     $local = $domains['local'];
@@ -563,34 +568,31 @@ EOD;
   }
 
   /**
-   * Print domain-specific follow-up guidance after a successful apply.
+   * Build the post-apply guidance lines for a create.
    *
-   * @param array $steps
-   *   The steps that were executed.
+   * @param array $options
+   *   Command options.
+   *
+   * @return string[]
+   *   Guidance lines shown after a successful run.
    */
-  protected function afterApply(array $steps): void {
-    $committed = (bool) array_filter($steps, fn($s) => str_starts_with($s['label'], 'Commit'));
-
-    if ($committed) {
+  private function createNextSteps(array $options): array {
+    // Whether the run will land its own commit decides the first instruction:
+    // push the commit, or commit the generated files by hand.
+    if (empty($options['no-commit'])) {
       $branch = trim((string) shell_exec('git rev-parse --abbrev-ref HEAD 2>/dev/null'));
-      $items = [
-        "Push and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>",
-        'Coordinate a new release and deploy to test and prod environments.',
-        'Once deployed, run <comment>uiowa:multisite:install</comment> on the appropriate application(s).',
-        'Add multisite domains to Acquia environments as needed.',
-      ];
+      $first = "Push and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>";
     }
     else {
-      $items = [
-        'Commit the generated files when ready.',
-        'Deploy a release to production as per usual.',
-        'Once deployed, run <comment>uiowa:multisite:install</comment> on the appropriate application(s).',
-        'Add multisite domains to Acquia environments as needed.',
-      ];
+      $first = 'Commit the generated files when ready.';
     }
 
-    $this->say('Next steps:');
-    $this->io()->listing($items);
+    return [
+      $first,
+      'Coordinate a new release and deploy to test and prod environments.',
+      'Once deployed, run <comment>uiowa:multisite:install</comment> on the appropriate application(s).',
+      'Add multisite domains to Acquia environments as needed.',
+    ];
   }
 
 }

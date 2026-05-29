@@ -12,6 +12,10 @@ class Plan {
   /**
    * Constructs a Plan.
    *
+   * The first fields are the decision (durable, what a future paper trail
+   * would record). The last two are execution detail, populated only when
+   * validation passes and left empty on a failed plan.
+   *
    * @param string $title
    *   Header line for the rendered plan.
    * @param array $input
@@ -21,7 +25,11 @@ class Plan {
    * @param array $summary
    *   Display rows: [['label' => string, 'value' => string], ...].
    * @param array $context
-   *   Command-specific decisions carried for the step builder.
+   *   Command-specific decisions (e.g. the selected application).
+   * @param array $steps
+   *   Ordered actions to run: [['label' => string, 'task' => TaskInterface], ...].
+   * @param array $nextSteps
+   *   Post-apply guidance lines shown after a successful run.
    */
   public function __construct(
     public readonly string $title,
@@ -29,6 +37,8 @@ class Plan {
     public array $validation,
     public array $summary = [],
     public array $context = [],
+    public array $steps = [],
+    public array $nextSteps = [],
   ) {}
 
   /**

@@ -78,25 +78,22 @@ trait PlanTrait {
   /**
    * Dispatch a decided plan: render it, then exit or apply based on mode.
    *
+   * Reads everything it needs from the Plan, so any number of plan-driven
+   * commands can share this method without per-command hooks.
+   *
    * @param \SiteNow\Plan\Plan $plan
    *   The decided plan.
    * @param array $options
    *   Command options. Reads 'dry-run' and 'yes'.
-   * @param callable $build_steps
-   *   Returns the ordered steps when invoked:
-   *   function (): array of ['label' => string, 'task' => TaskInterface].
    */
-  protected function executePlan(Plan $plan, array $options, callable $build_steps): void {
+  protected function executePlan(Plan $plan, array $options): void {
     // Validation failed: show the failing checks and stop before any work.
     if ($plan->failed()) {
       $this->renderPlan($plan->title, [], $plan->validation);
       return;
     }
 
-    // Build the executable steps now that validation has passed.
-    $steps = $build_steps();
-
-    $this->renderPlan($plan->title, $plan->summary, $plan->validation, $steps);
+    $this->renderPlan($plan->title, $plan->summary, $plan->validation, $plan->steps);
 
     // Dry run: the plan was previewed; make no changes.
     if (!empty($options['dry-run'])) {
@@ -115,18 +112,20 @@ trait PlanTrait {
       return;
     }
 
-    $this->applyPlan($steps);
+    $this->applyPlan($plan);
   }
 
   /**
-   * Run plan steps in a Robo collection with rollback on failure.
+   * Run a plan's steps in a Robo collection with rollback on failure.
    *
-   * @param array $steps
-   *   Ordered steps: [['label' => string, 'task' => TaskInterface], ...].
+   * @param \SiteNow\Plan\Plan $plan
+   *   The plan whose steps to run.
    */
-  protected function applyPlan(array $steps): void {
+  protected function applyPlan(Plan $plan): void {
+    // Load each step's task into one collection so a mid-run failure rolls
+    // back the tasks that already ran.
     $collection = $this->collectionBuilder();
-    foreach ($steps as $step) {
+    foreach ($plan->steps as $step) {
       $collection->addTask($step['task']);
     }
 
@@ -138,18 +137,12 @@ trait PlanTrait {
     }
 
     $this->say('<info>Done.</info>');
-    $this->afterApply($steps);
-  }
 
-  /**
-   * Hook invoked after a successful apply.
-   *
-   * Commands override this to print domain-specific follow-up guidance.
-   *
-   * @param array $steps
-   *   The steps that were executed.
-   */
-  protected function afterApply(array $steps): void {}
+    if ($plan->nextSteps) {
+      $this->say('Next steps:');
+      $this->io()->listing($plan->nextSteps);
+    }
+  }
 
   /**
    * Prompt for apply/abort. Returns 'y' or 'n'.
