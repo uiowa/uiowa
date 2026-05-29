@@ -1,0 +1,271 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for uiowa_jobs module.
+ */
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
+use Drupal\uiowa_core\HeadlineHelper;
+
+/**
+ * Implements hook_form_alter().
+ */
+function uiowa_jobs_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add validation to the feed URL field on uiowa_jobs block forms.
+  if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof ConfigureBlockFormBase) {
+      $component = $form_object->getCurrentComponent();
+      $block = $component->getPlugin();
+
+      // Check if this is a uiowa_jobs block.
+      if ($block->getPluginId() === 'inline_block:uiowa_jobs') {
+        // Add form-level validation.
+        $form['#validate'][] = 'uiowa_jobs_validate_block_form';
+      }
+    }
+  }
+
+  // Also handle non-layout-builder forms.
+  if (str_starts_with($form_id, 'block_content_uiowa_jobs_')) {
+    // Add form-level validation.
+    $form['#validate'][] = 'uiowa_jobs_validate_block_form';
+  }
+}
+
+/**
+ * Form validation callback for uiowa_jobs block forms.
+ */
+function uiowa_jobs_validate_block_form(array &$form, FormStateInterface $form_state) {
+  // Get feed URL from form state.
+  $feed_url = NULL;
+
+  // Check layout builder form structure.
+  if ($form_state->hasValue(['settings', 'block_form', 'field_uiowa_jobs_feed_url'])) {
+    $feed_url_value = $form_state->getValue(['settings', 'block_form', 'field_uiowa_jobs_feed_url']);
+    $feed_url = $feed_url_value[0]['value'] ?? NULL;
+  }
+  // Check regular block form structure.
+  elseif ($form_state->hasValue('field_uiowa_jobs_feed_url')) {
+    $feed_url_value = $form_state->getValue('field_uiowa_jobs_feed_url');
+    $feed_url = $feed_url_value[0]['value'] ?? NULL;
+  }
+
+  if (empty($feed_url)) {
+    // Empty is okay if field is not required.
+    return;
+  }
+
+  // Use the parser service to validate.
+  /** @var \Drupal\uiowa_jobs\RssFeedParser $parser */
+  $parser = \Drupal::service('uiowa_jobs.rss_parser');
+
+  if (!$parser->validateFeedUrl($feed_url)) {
+    $form_state->setErrorByName('field_uiowa_jobs_feed_url', t('Feed URL must be from hris.uiowa.edu and use the OTAC RSS format (https://hris.uiowa.edu/otac-rss/...). Example: https://hris.uiowa.edu/otac-rss/faculty.php?dept-code=17-3255'));
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_jobs_preprocess_block__inline_block__uiowa_jobs(&$variables) {
+  /** @var \Drupal\block_content\BlockContentInterface $block */
+  $block = $variables['elements']['content']['#block_content'];
+
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+
+  $variables['attributes']['class'][] = 'list-container';
+
+  // Get block configuration.
+  $feed_url = $block->get('field_uiowa_jobs_feed_url')->getString();
+  $per_page = (int) $block->get('field_uiowa_jobs_count')->getString() ?: 10;
+  $show_pager = (bool) $block->get('field_uiowa_jobs_pager')->getString();
+  $include_date = (bool) $block->get('field_uiowa_jobs_show_date')->getString();
+  $include_description = (bool) $block->get('field_uiowa_jobs_show_desc')->getString();
+  $no_results_text = t('No job postings are currently available.');
+
+  if (empty($feed_url)) {
+    $variables['content']['no_results'] = [
+      '#markup' => '<p>' . t('Feed URL is not configured.') . '</p>',
+    ];
+    return;
+  }
+
+  try {
+    // Fetch and parse RSS feed.
+    /** @var \Drupal\uiowa_jobs\RssFeedParser $parser */
+    $parser = \Drupal::service('uiowa_jobs.rss_parser');
+    $jobs = $parser->parse($feed_url);
+
+    // Sort by publication date descending (most recent first).
+    if (!empty($jobs)) {
+      usort($jobs, function ($a, $b) {
+        return $b->pubDate <=> $a->pubDate;
+      });
+    }
+
+    if (empty($jobs)) {
+      $variables['content']['no_results'] = [
+        '#markup' => $no_results_text,
+        '#prefix' => '<div class="uiowa-jobs-no-results">',
+        '#suffix' => '</div>',
+      ];
+      return;
+    }
+
+    // Create container for jobs.
+    $variables['content']['jobs'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'jobs-wrapper',
+          'uiowa-jobs',
+          'list-container__inner',
+        ],
+      ],
+    ];
+
+    // Determine heading size for child items.
+    $heading_size = 'h3';
+    $headline = $block->get('field_uiowa_headline')
+      ?->first()
+      ?->getValue();
+
+    // Get the appropriate heading size.
+    if (!is_null($headline)) {
+      if (empty($headline['headline'])) {
+        $heading_size = $headline['child_heading_size'];
+      }
+      else {
+        $heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
+      }
+    }
+
+    // If output is paged, paginate the jobs.
+    if ($show_pager) {
+      $count = count($jobs);
+      static $element = 0;
+      $element++;
+      /** @var \Drupal\Core\Pager\PagerManager $pager */
+      $pager = \Drupal::service('pager.manager');
+      $chunks = array_chunk($jobs, $per_page);
+      $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
+      $jobs = $chunks[$current] ?? [];
+    }
+    else {
+      // Limit to first N jobs.
+      $jobs = array_slice($jobs, 0, $per_page);
+    }
+
+    // Build cards for each job.
+    $variables['content']['jobs']['items'] = [];
+    foreach ($jobs as $index => $job) {
+      $override_styles = $variables['elements']['#override_styles'] ?? [];
+      $variables['content']['jobs']['items'][$index] = uiowa_jobs_build_job_card(
+        $job,
+        $heading_size,
+        $include_date,
+        $include_description,
+        $override_styles,
+      );
+    }
+
+    // Add pager if enabled.
+    if ($show_pager) {
+      $variables['content']['pager'] = [
+        '#type' => 'pager',
+        '#element' => $element,
+        '#quantity' => 3,
+      ];
+    }
+
+    // Add cache tags.
+    $variables['#cache']['tags'] = Cache::mergeTags(
+      $variables['#cache']['tags'] ?? [],
+      ['uiowa_jobs:feed', 'time:hourly']
+    );
+
+    // Add cache context for pager.
+    if ($show_pager) {
+      $variables['#cache']['contexts'][] = 'url.query_args.pagers';
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('uiowa_jobs')->error('Failed to display jobs: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+    $variables['content']['error'] = [
+      '#markup' => '<p>' . t('Unable to load job postings. Please try again later.') . '</p>',
+    ];
+  }
+}
+
+/**
+ * Build a job card render array.
+ *
+ * @param \stdClass $job
+ *   The job object from RSS parser.
+ * @param string $heading_size
+ *   The heading size for the card title.
+ * @param bool $include_date
+ *   Whether to include the job posting date.
+ * @param bool $include_description
+ *   Whether to include the job posting summary.
+ * @param array $override_styles
+ *   Optional style overrides from layout builder.
+ *
+ * @return array
+ *   Render array for the job card.
+ */
+function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', bool $include_date = TRUE, bool $include_description = FALSE, array $override_styles = []): array {
+  $build = [
+    '#type' => 'card',
+    '#prefix' => '<div class="column-container">',
+    '#suffix' => '</div>',
+  ];
+
+  // Attach libraries.
+  $build['#attached']['library'][] = 'uids_base/card';
+
+  // Set the title.
+  $build['#title'] = html_entity_decode($job->title);
+  $build['#title_heading_size'] = $heading_size;
+
+  // Set the URL (links to HRIS).
+  $build['#url'] = $job->link;
+
+  // Set subtitle with formatted date and a simple label.
+  if ($include_date && !empty($job->pubDate)) {
+    $formatted_date = \Drupal::service('date.formatter')->format($job->pubDate, 'medium');
+    $build['#subtitle']['posted_date'] = [
+      '#markup' => t('Posted @date', ['@date' => $formatted_date]),
+    ];
+  }
+
+  // Set content with cleaned description.
+  if ($include_description && !empty($job->description)) {
+    $build['#content'] = [
+      '#markup' => $job->description,
+    ];
+  }
+
+  // Apply card styles.
+  $style_map = [
+    'card_headline_style' => 'headline--serif',
+    'card_media_position' => 'card--layout-right',
+    'media_format' => 'media--widescreen',
+    'media_size' => 'media--small',
+    'border' => 'borderless',
+    ...$override_styles,
+    'uiowa_jobs_item' => 'uiowa-jobs-item',
+  ];
+
+  $build['#attributes']['class'] = array_values($style_map);
+
+  return $build;
+}

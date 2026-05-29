@@ -1,0 +1,38 @@
+uuid: 011509d8-a0b1-4f41-910d-a4c7dbd011b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_jobs
+    - field.field.block_content.uiowa_jobs.field_uiowa_headline
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_count
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_feed_url
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_pager
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_show_date
+    - field.field.block_content.uiowa_jobs.field_uiowa_jobs_show_desc
+  module:
+    - layout_builder_custom
+_core:
+  default_config_hash: Ao26HYSLCfptDCuHHQS4N_LRnhYGd_xCw6UheVHuct4
+id: block_content.uiowa_jobs.default
+targetEntityType: block_content
+bundle: uiowa_jobs
+mode: default
+content:
+  field_uiowa_headline:
+    type: uiowa_headline_formatter
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_uiowa_jobs_count: true
+  field_uiowa_jobs_feed_url: true
+  field_uiowa_jobs_pager: true
+  field_uiowa_jobs_show_date: true
+  field_uiowa_jobs_show_desc: true
+  search_api_excerpt: true
