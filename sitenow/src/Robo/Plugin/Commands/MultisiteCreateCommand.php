@@ -194,17 +194,18 @@ class MultisiteCreateCommand extends Tasks {
 
     $context = ['app' => $app, 'app_candidates' => $candidates];
     $summary = $this->summary($app, $input);
+    $plan = new Plan($title, $input, $validation, $summary, $context);
 
     // A failed plan carries the decision only; skip building the steps that
     // would never run.
-    if ($validation['overall'] === CheckStatus::Fail) {
-      return new Plan($title, $input, $validation, $summary, $context);
+    if ($plan->failed()) {
+      return $plan;
     }
 
-    $steps = $this->buildSteps($host, $options, $app, $input);
-    $next_steps = $this->nextSteps($options);
+    $this->buildSteps($plan, $host, $options, $app, $input);
+    $plan->nextSteps = $this->nextSteps($options);
 
-    return new Plan($title, $input, $validation, $summary, $context, $steps, $next_steps);
+    return $plan;
   }
 
   /**
@@ -396,9 +397,11 @@ class MultisiteCreateCommand extends Tasks {
   /**
    * Build the ordered steps that create the multisite.
    *
-   * Each step carries a display label and the Robo task that performs the
-   * action. The same list drives both the plan display and the collection.
+   * Each addStep() call pairs a display label with the Robo task that performs
+   * the action. The same steps drive both the plan preview and the collection.
    *
+   * @param \SiteNow\Plan\Plan $plan
+   *   The plan to add the steps to.
    * @param string $host
    *   The multisite host.
    * @param array $options
@@ -407,11 +410,8 @@ class MultisiteCreateCommand extends Tasks {
    *   The selected application (name + uuid).
    * @param array $input
    *   Normalized command input (id, db).
-   *
-   * @return array
-   *   Ordered array of ['label' => string, 'task' => \Robo\Contract\TaskInterface].
    */
-  private function buildSteps(string $host, array $options, array $app, array $input): array {
+  private function buildSteps(Plan $plan, string $host, array $options, array $app, array $input): void {
     $root = getcwd();
     $id = $input['id'];
     $db = $input['db'];
@@ -452,68 +452,66 @@ EOD;
 
     // Steps run in order; the commit comes last so it captures every
     // generated file.
-    $steps = [];
-
     if (empty($options['no-db'])) {
       $creds = $this->getAcquiaCredentials();
-      $steps[] = [
-        'label' => "Create cloud DB <info>{$db}</info> on <info>{$app['name']}</info>",
-        'task' => $this->taskCloudDbCreate(
+      $plan->addStep(
+        "Create cloud DB <info>{$db}</info> on <info>{$app['name']}</info>",
+        $this->taskCloudDbCreate(
           $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']),
           $app['uuid'],
           $app['name'],
           $db
-        ),
-      ];
+        )
+      );
     }
 
-    $steps[] = [
-      'label' => "Copy <info>docroot/sites/default</info> → <info>docroot/sites/{$host}</info>",
-      'task' => $this->taskCopyDir(["{$root}/docroot/sites/default" => "{$root}/docroot/sites/{$host}"])
-        ->exclude(['local.settings.php', 'files', 'default.services.yml', 'services.yml']),
-    ];
+    $plan->addStep(
+      "Copy <info>docroot/sites/default</info> → <info>docroot/sites/{$host}</info>",
+      $this->taskCopyDir(["{$root}/docroot/sites/default" => "{$root}/docroot/sites/{$host}"])
+        ->exclude(['local.settings.php', 'files', 'default.services.yml', 'services.yml'])
+    );
 
-    $steps[] = [
-      'label' => "Patch <info>settings.php</info> with Acquia DB include for <info>{$db}</info>",
-      'task' => $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
+    $plan->addStep(
+      "Patch <info>settings.php</info> with Acquia DB include for <info>{$db}</info>",
+      $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
         ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
-        ->to($acquia_block . "\n"),
-    ];
+        ->to($acquia_block . "\n")
+    );
 
-    $steps[] = [
-      'label' => "Write <info>drush/sites/{$id}.site.yml</info>",
-      'task' => $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
-        ->text(Yaml::dump($drush_alias, 10, 2)),
-    ];
+    $plan->addStep(
+      "Write <info>drush/sites/{$id}.site.yml</info>",
+      $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
+        ->text(Yaml::dump($drush_alias, 10, 2))
+    );
 
-    $steps[] = [
-      'label' => "Write <info>docroot/sites/{$host}/blt.yml</info>",
-      'task' => $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
-        ->text(Yaml::dump($blt, 10, 2)),
-    ];
+    $plan->addStep(
+      "Write <info>docroot/sites/{$host}/blt.yml</info>",
+      $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
+        ->text(Yaml::dump($blt, 10, 2))
+    );
 
-    $steps[] = [
-      'label' => "Append <info>sites.php</info> directory aliases for <info>{$host}</info>",
-      'task' => $this->taskSitesPhpUpdate("{$root}/docroot/sites/sites.php")
-        ->add($host, $local, $dev, $test, $prod_domain),
-    ];
+    $plan->addStep(
+      "Append <info>sites.php</info> directory aliases for <info>{$host}</info>",
+      $this->taskSitesPhpUpdate("{$root}/docroot/sites/sites.php")
+        ->add($host, $local, $dev, $test, $prod_domain)
+    );
 
-    $steps[] = [
-      'label' => "Update <info>blt/manifest.yml</info> (app: <info>{$app['name']}</info>)",
-      'task' => $this->taskManifestUpdate("{$root}/blt/manifest.yml")
-        ->add($app['name'], $host),
-    ];
+    $plan->addStep(
+      "Update <info>blt/manifest.yml</info> (app: <info>{$app['name']}</info>)",
+      $this->taskManifestUpdate("{$root}/blt/manifest.yml")
+        ->add($app['name'], $host)
+    );
 
-    $steps[] = [
-      'label' => 'Run <info>blt:init:settings</info> to generate local settings files',
-      'task' => $this->taskExec('./vendor/bin/blt blt:init:settings')
-        ->option('site', $host, '='),
-    ];
+    $plan->addStep(
+      'Run <info>blt:init:settings</info> to generate local settings files',
+      $this->taskExec('./vendor/bin/blt blt:init:settings')
+        ->option('site', $host, '=')
+    );
 
     if (empty($options['no-commit'])) {
-      $steps[] = [
-        'label' => "Commit \"Initialize {$host} multisite on {$app['name']}\"",
-        'task' => $this->taskGitStack()
+      $plan->addStep(
+        "Commit \"Initialize {$host} multisite on {$app['name']}\"",
+        $this->taskGitStack()
           ->dir($root)
           ->add('docroot/sites/sites.php')
           ->add('blt/manifest.yml')
@@ -522,11 +520,9 @@ EOD;
           ->commit("Initialize {$host} multisite on {$app['name']}")
           ->interactive(FALSE)
           ->printOutput(FALSE)
-          ->printMetadata(FALSE),
-      ];
+          ->printMetadata(FALSE)
+      );
     }
-
-    return $steps;
   }
 
   /**

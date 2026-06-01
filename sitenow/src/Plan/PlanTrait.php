@@ -94,7 +94,7 @@ trait PlanTrait {
       return;
     }
 
-    $this->renderPlan($plan->title, $plan->summary, $plan->validation, $plan->steps);
+    $this->renderPlan($plan->title, $plan->summary, $plan->validation, $plan->steps());
 
     // Dry run: the plan was previewed; make no changes.
     if (!empty($options['dry-run'])) {
@@ -126,7 +126,7 @@ trait PlanTrait {
     // Load each step's task into one collection so a mid-run failure rolls
     // back the tasks that already ran.
     $collection = $this->collectionBuilder();
-    foreach ($plan->steps as $step) {
+    foreach ($plan->steps() as $step) {
       $collection->addTask($step['task']);
     }
 
