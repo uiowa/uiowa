@@ -21,9 +21,9 @@ use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
 /**
- * Robo commands for SiteNow multisite management.
+ * Creates a new SiteNow multisite.
  */
-class MultisiteCommands extends Tasks {
+class MultisiteCreateCommand extends Tasks {
 
   use SiteNowCommandsTrait;
   use AcquiaTasks;
@@ -74,12 +74,12 @@ class MultisiteCommands extends Tasks {
       'app' => InputOption::VALUE_REQUIRED,
     ],
   ): void {
-    $plan = $this->createPlan($host, $options);
+    $plan = $this->decide($host, $options);
     $this->executePlan($plan, $options);
   }
 
   /**
-   * Produce the complete Plan for a multisite create.
+   * Produce the complete Plan: the decision, and on pass the steps to run.
    *
    * @param string $host
    *   The multisite host.
@@ -90,7 +90,7 @@ class MultisiteCommands extends Tasks {
    *   The plan: the decision always, plus the steps and next-steps when
    *   validation passes (a failed plan carries neither).
    */
-  private function createPlan(string $host, array $options): Plan {
+  private function decide(string $host, array $options): Plan {
     $root = getcwd();
     $title = "uiowa:multisite:create {$host}";
 
@@ -192,7 +192,7 @@ class MultisiteCommands extends Tasks {
     }
 
     $context = ['app' => $app, 'app_candidates' => $candidates];
-    $summary = $this->createSummary($app, $input);
+    $summary = $this->summary($app, $input);
 
     // A failed plan carries the decision only; skip building the steps that
     // would never run.
@@ -200,8 +200,8 @@ class MultisiteCommands extends Tasks {
       return new Plan($title, $input, $validation, $summary, $context);
     }
 
-    $steps = $this->createSteps($host, $options, $app, $input);
-    $next_steps = $this->createNextSteps($options);
+    $steps = $this->buildSteps($host, $options, $app, $input);
+    $next_steps = $this->nextSteps($options);
 
     return new Plan($title, $input, $validation, $summary, $context, $steps, $next_steps);
   }
@@ -388,7 +388,7 @@ class MultisiteCommands extends Tasks {
    * @return array
    *   Ordered array of ['label' => string, 'task' => \Robo\Contract\TaskInterface].
    */
-  private function createSteps(string $host, array $options, array $app, array $input): array {
+  private function buildSteps(string $host, array $options, array $app, array $input): array {
     $root = getcwd();
     $id = $input['id'];
     $db = $input['db'];
@@ -564,7 +564,7 @@ EOD;
    * @return array
    *   Array of ['label' => string, 'value' => string] rows.
    */
-  private function createSummary(?array $app, array $input): array {
+  private function summary(?array $app, array $input): array {
     if (!$app) {
       return [];
     }
@@ -584,7 +584,7 @@ EOD;
    * @return string[]
    *   Guidance lines shown after a successful run.
    */
-  private function createNextSteps(array $options): array {
+  private function nextSteps(array $options): array {
     // Whether the run will land its own commit decides the first instruction:
     // push the commit, or commit the generated files by hand.
     if (empty($options['no-commit'])) {
