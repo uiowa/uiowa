@@ -192,7 +192,7 @@ class MultisiteCommands extends Tasks {
     }
 
     $context = ['app' => $app, 'app_candidates' => $candidates];
-    $summary = $this->planSummary($app, $input);
+    $summary = $this->createSummary($app, $input);
 
     // A failed plan carries the decision only; skip building the steps that
     // would never run.
@@ -200,7 +200,7 @@ class MultisiteCommands extends Tasks {
       return new Plan($title, $input, $validation, $summary, $context);
     }
 
-    $steps = $this->buildCreateSteps($host, $options, $app, $input);
+    $steps = $this->createSteps($host, $options, $app, $input);
     $next_steps = $this->createNextSteps($options);
 
     return new Plan($title, $input, $validation, $summary, $context, $steps, $next_steps);
@@ -388,7 +388,7 @@ class MultisiteCommands extends Tasks {
    * @return array
    *   Ordered array of ['label' => string, 'task' => \Robo\Contract\TaskInterface].
    */
-  private function buildCreateSteps(string $host, array $options, array $app, array $input): array {
+  private function createSteps(string $host, array $options, array $app, array $input): array {
     $root = getcwd();
     $id = $input['id'];
     $db = $input['db'];
@@ -564,7 +564,7 @@ EOD;
    * @return array
    *   Array of ['label' => string, 'value' => string] rows.
    */
-  private function planSummary(?array $app, array $input): array {
+  private function createSummary(?array $app, array $input): array {
     if (!$app) {
       return [];
     }

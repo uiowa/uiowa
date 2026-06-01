@@ -28,11 +28,14 @@ trait PlanTrait {
     array $validation,
     array $steps = [],
   ): void {
-    $this->output()->writeln('');
-    $this->output()->writeln('<options=bold>─────────────────────────────────────────────────────────────────</>');
-    $this->output()->writeln("<options=bold>  {$title}</>");
-    $this->output()->writeln('<options=bold>─────────────────────────────────────────────────────────────────</>');
-    $this->output()->writeln('');
+    $rule = str_repeat('─', 65);
+    $this->output()->writeln(<<<HEADER
+
+      <options=bold>{$rule}
+        {$title}
+      {$rule}</>
+
+      HEADER);
 
     foreach ($summary as $row) {
       $label = str_pad($row['label'] . ':', 14);

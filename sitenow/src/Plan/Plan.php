@@ -12,9 +12,8 @@ class Plan {
   /**
    * Constructs a Plan.
    *
-   * The first fields are the decision (durable, what a future paper trail
-   * would record). The last two are execution detail, populated only when
-   * validation passes and left empty on a failed plan.
+   * The first fields are the decision. The last two are execution detail,
+   * populated only when validation passes and left empty on a failed plan.
    *
    * @param string $title
    *   Header line for the rendered plan.
