@@ -237,6 +237,7 @@ class MultisiteCommands extends Tasks {
       return [NULL, '', NULL];
     }
 
+    // Fewest sites wins; application name is the stable tie-break.
     $sorted = array_values($eligible);
     usort($sorted, fn($a, $b) => $a['sites'] <=> $b['sites'] ?: strnatcmp($a['name'], $b['name']));
     $winner = $sorted[0];
@@ -333,6 +334,7 @@ class MultisiteCommands extends Tasks {
 
     $bar = NULL;
     $coverage = $this->getSslCoverage($client, $apps, $ssl_parts, function (string $name, int $total) use (&$bar, $out) {
+      // Create the bar on the first callback, when the total becomes known.
       if ($bar === NULL) {
         $bar = new ProgressBar($out, $total);
         $bar->setFormat(' %current%/%max% [%bar%] %message%');
@@ -397,6 +399,8 @@ class MultisiteCommands extends Tasks {
     $test = $domains['test'];
     $prod_domain = $domains['prod'];
 
+    // Start from the target app's drush alias and retarget every environment
+    // at the new site's domains and files path.
     $drush_alias = Yaml::parseFile("{$root}/drush/sites/{$app['name']}.site.yml");
     $files_path = "sites/{$host}/files";
     $drush_alias['local']['uri'] = $local;
@@ -410,6 +414,9 @@ class MultisiteCommands extends Tasks {
 
     $blt = $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
 
+    // settings.php include: on Acquia, load the per-environment DB credentials,
+    // then BLT's settings. Replaces the bare BLT require the copied file ships
+    // with (see the patch step below).
     $acquia_block = <<<EOD
 \$ah_group = getenv('AH_SITE_GROUP');
 
@@ -420,6 +427,8 @@ if (file_exists('/var/www/site-php')) {
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 EOD;
 
+    // Steps run in order; the commit comes last so it captures every
+    // generated file.
     $steps = [];
 
     if (empty($options['no-db'])) {
@@ -500,9 +509,6 @@ EOD;
   /**
    * Assemble the per-site blt.yml configuration array.
    *
-   * A single split is stored as a scalar and multiple splits as an array,
-   * matching the shape the BLT install hook reads.
-   *
    * @param string $host
    *   The multisite host.
    * @param string $id
@@ -535,6 +541,8 @@ EOD;
       $blt['uiowa']['requester'] = $options['requester'];
     }
     if (!empty($options['split'])) {
+      // One split is stored as a scalar, multiple as a list, matching the
+      // shape the BLT install hook reads.
       $splits = array_map('trim', explode(',', $options['split']));
       $blt['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
     }
