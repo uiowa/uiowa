@@ -3,7 +3,7 @@
 namespace SiteNow\Plan;
 
 /**
- * Reusable check builders shared by commands that use `PlanTrait`.
+ * Reusable checks shared by commands that use `PlanTrait`.
  *
  * A command picks the builders it needs and includes them in the list it
  * passes to `runChecks()`.
