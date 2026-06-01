@@ -2,6 +2,10 @@ services:
   logger.channel.uiowa_core:
     parent: logger.channel_base
     arguments: [ 'uiowa_core' ]
+  uiowa_core.new_relic_exception_subscriber:
+    class: Drupal\uiowa_core\EventSubscriber\NewRelicExceptionSubscriber
+    tags:
+      - { name: event_subscriber }
   uiowa_core.route_subscriber:
     class: 'Drupal\uiowa_core\Routing\UiowaCoreRouteSubscriber'
     tags:
