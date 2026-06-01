@@ -13,7 +13,7 @@ trait PlanTrait {
    * Render a plan to the console.
    *
    * @param string $title
-   *   Short header line, e.g. "uiowa:multisite:create newsite.uiowa.edu".
+   *   Short header line, e.g. "sitenow:multisite:create newsite.uiowa.edu".
    * @param array $summary
    *   Optional key/value rows shown before validation, assembled by the
    *   calling command. Each entry: ['label' => string, 'value' => string].

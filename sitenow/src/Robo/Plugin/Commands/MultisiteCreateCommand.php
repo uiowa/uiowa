@@ -56,7 +56,7 @@ class MultisiteCreateCommand extends Tasks {
    * @option yes Apply without prompting. Blocked by any WARN.
    * @option app Override the target Acquia application.
    *
-   * @command uiowa:multisite:create
+   * @command sitenow:multisite:create
    * @aliases umc
    *
    * @throws \Exception
@@ -92,7 +92,7 @@ class MultisiteCreateCommand extends Tasks {
    */
   private function decide(string $host, array $options): Plan {
     $root = getcwd();
-    $title = "uiowa:multisite:create {$host}";
+    $title = "sitenow:multisite:create {$host}";
 
     $umc_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'app'];
     $flags = array_filter(
