@@ -207,6 +207,106 @@ class MultisiteCreateCommand extends Tasks {
   }
 
   /**
+   * Determine whether a host collides with an existing site's identifier.
+   *
+   * The drush alias filename and the sites.php internal-domain entries derive
+   * from Multisite::getIdentifier(), so two different hosts that normalize to
+   * the same identifier collide globally even though their directories differ.
+   *
+   * @param string $host
+   *   The candidate host.
+   * @param array $existing_sites
+   *   Existing site hosts, e.g. from Multisite::getAllSites().
+   *
+   * @return bool
+   *   TRUE if the candidate's identifier matches an existing site's.
+   */
+  protected function hasIdentifierConflict(string $host, array $existing_sites): bool {
+    $id = Multisite::getIdentifier("https://{$host}");
+    foreach ($existing_sites as $site) {
+      if (Multisite::getIdentifier("https://{$site}") === $id) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Count multisites per application from the manifest.
+   *
+   * The manifest (app => [hosts]) is the repo-local proxy for relative load
+   * used to rank applications.
+   *
+   * @param string $root
+   *   The repository root.
+   *
+   * @return array
+   *   Site counts keyed by application name.
+   */
+  private function siteCountsByApp(string $root): array {
+    $path = "{$root}/blt/manifest.yml";
+    $manifest = file_exists($path) ? (Yaml::parseFile($path) ?? []) : [];
+    return array_map(fn($sites) => is_array($sites) ? count($sites) : 0, $manifest);
+  }
+
+  /**
+   * Gather SSL coverage for the candidate applications, with progress feedback.
+   *
+   * Progress writes to stderr so it never corrupts stdout plan output.
+   *
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   The Acquia Cloud API client.
+   * @param array $apps
+   *   Application UUIDs keyed by application name.
+   * @param array $ssl_parts
+   *   Output of Multisite::getSslParts().
+   *
+   * @return array
+   *   SSL coverage keyed by application name.
+   */
+  private function gatherSslCoverage(Client $client, array $apps, array $ssl_parts): array {
+    $out = $this->acquiaProgress();
+    $out->writeln('<comment>Checking SSL coverage across Acquia Cloud applications...</comment>');
+
+    $bar = NULL;
+    $coverage = $this->getSslCoverage($client, $apps, $ssl_parts, function (string $name, int $total) use (&$bar, $out) {
+      // Create the bar on the first callback, when the total becomes known.
+      if ($bar === NULL) {
+        $bar = new ProgressBar($out, $total);
+        $bar->setFormat(' %current%/%max% [%bar%] %message%');
+        $bar->setMessage($name);
+        $bar->start();
+      }
+      $bar->setMessage($name);
+      $bar->advance();
+    });
+
+    if ($bar !== NULL) {
+      $bar->setMessage('done');
+      $bar->finish();
+    }
+    $out->writeln('');
+
+    return $coverage;
+  }
+
+  /**
+   * Resolve the output stream for query progress.
+   *
+   * Progress feedback writes to stderr so it stays out of stdout when the
+   * rendered plan is piped or redirected.
+   *
+   * @return \Symfony\Component\Console\Output\OutputInterface
+   *   The error output when available, otherwise the standard output.
+   */
+  private function acquiaProgress() {
+    $output = $this->output();
+    return $output instanceof ConsoleOutputInterface
+      ? $output->getErrorOutput()
+      : $output;
+  }
+
+  /**
    * Pick the target application from the candidates.
    *
    * Honors an explicit --app (validated against the registry), otherwise
@@ -271,103 +371,25 @@ class MultisiteCreateCommand extends Tasks {
   }
 
   /**
-   * Count multisites per application from the manifest.
+   * Assembles the application and database rows for the plan header.
    *
-   * The manifest (app => [hosts]) is the repo-local proxy for relative load
-   * used to rank applications.
-   *
-   * @param string $root
-   *   The repository root.
-   *
-   * @return array
-   *   Site counts keyed by application name.
-   */
-  private function siteCountsByApp(string $root): array {
-    $path = "{$root}/blt/manifest.yml";
-    $manifest = file_exists($path) ? (Yaml::parseFile($path) ?? []) : [];
-    return array_map(fn($sites) => is_array($sites) ? count($sites) : 0, $manifest);
-  }
-
-  /**
-   * Determine whether a host collides with an existing site's identifier.
-   *
-   * The drush alias filename and the sites.php internal-domain entries derive
-   * from Multisite::getIdentifier(), so two different hosts that normalize to
-   * the same identifier collide globally even though their directories differ.
-   *
-   * @param string $host
-   *   The candidate host.
-   * @param array $existing_sites
-   *   Existing site hosts, e.g. from Multisite::getAllSites().
-   *
-   * @return bool
-   *   TRUE if the candidate's identifier matches an existing site's.
-   */
-  protected function hasIdentifierConflict(string $host, array $existing_sites): bool {
-    $id = Multisite::getIdentifier("https://{$host}");
-    foreach ($existing_sites as $site) {
-      if (Multisite::getIdentifier("https://{$site}") === $id) {
-        return TRUE;
-      }
-    }
-    return FALSE;
-  }
-
-  /**
-   * Gather SSL coverage for the candidate applications, with progress feedback.
-   *
-   * Progress writes to stderr so it never corrupts stdout plan output.
-   *
-   * @param \AcquiaCloudApi\Connector\Client $client
-   *   The Acquia Cloud API client.
-   * @param array $apps
-   *   Application UUIDs keyed by application name.
-   * @param array $ssl_parts
-   *   Output of Multisite::getSslParts().
+   * @param array|null $app
+   *   The selected application facts, or NULL when unresolved.
+   * @param array $input
+   *   Normalized command input.
    *
    * @return array
-   *   SSL coverage keyed by application name.
+   *   Array of ['label' => string, 'value' => string] rows.
    */
-  private function gatherSslCoverage(Client $client, array $apps, array $ssl_parts): array {
-    $out = $this->acquiaProgress();
-    $out->writeln('<comment>Checking SSL coverage across Acquia Cloud applications...</comment>');
-
-    $bar = NULL;
-    $coverage = $this->getSslCoverage($client, $apps, $ssl_parts, function (string $name, int $total) use (&$bar, $out) {
-      // Create the bar on the first callback, when the total becomes known.
-      if ($bar === NULL) {
-        $bar = new ProgressBar($out, $total);
-        $bar->setFormat(' %current%/%max% [%bar%] %message%');
-        $bar->setMessage($name);
-        $bar->start();
-      }
-      $bar->setMessage($name);
-      $bar->advance();
-    });
-
-    if ($bar !== NULL) {
-      $bar->setMessage('done');
-      $bar->finish();
+  private function summary(?array $app, array $input): array {
+    if (!$app) {
+      return [];
     }
-    $out->writeln('');
-
-    return $coverage;
-  }
-
-  /**
-   * Resolve the output stream for query progress.
-   *
-   * Progress feedback writes to stderr so it stays out of stdout when the
-   * rendered plan is piped or redirected.
-   *
-   * @return \Symfony\Component\Console\Output\OutputInterface
-   *   The error output when available, otherwise the standard output.
-   */
-  private function acquiaProgress() {
-    $output = $this->output();
-    return $output instanceof ConsoleOutputInterface
-      ? $output->getErrorOutput()
-      : $output;
+    return [
+      ['label' => 'Application', 'value' => $app['name']],
+      ['label' => 'Database', 'value' => $input['db'] ?? 'n/a'],
+      ['label' => 'Reason', 'value' => $app['reasoning'] ?? ''],
+    ];
   }
 
   /**
@@ -551,28 +573,6 @@ EOD;
     }
 
     return $blt;
-  }
-
-  /**
-   * Assembles the application and database rows for the plan header.
-   *
-   * @param array|null $app
-   *   The selected application facts, or NULL when unresolved.
-   * @param array $input
-   *   Normalized command input.
-   *
-   * @return array
-   *   Array of ['label' => string, 'value' => string] rows.
-   */
-  private function summary(?array $app, array $input): array {
-    if (!$app) {
-      return [];
-    }
-    return [
-      ['label' => 'Application', 'value' => $app['name']],
-      ['label' => 'Database', 'value' => $input['db'] ?? 'n/a'],
-      ['label' => 'Reason', 'value' => $app['reasoning'] ?? ''],
-    ];
   }
 
   /**
