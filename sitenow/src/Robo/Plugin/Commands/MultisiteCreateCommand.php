@@ -57,8 +57,7 @@ class MultisiteCreateCommand extends Tasks {
    * @option app Override the target Acquia application.
    *
    * @command sitenow:multisite:create
-   * @aliases smc
-   * @aliases umc
+   * @aliases smc,umc
    *
    * @throws \Exception
    */
