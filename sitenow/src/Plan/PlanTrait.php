@@ -2,6 +2,8 @@
 
 namespace SiteNow\Plan;
 
+use Robo\Config\Config;
+
 /**
  * Shared plan execution for Robo commands: render, confirm, apply.
  *
@@ -101,19 +103,30 @@ trait PlanTrait {
       return;
     }
 
-    // --yes applies without prompting, but never past a warning.
-    if (!empty($options['yes'])) {
-      if ($plan->warned()) {
-        $this->io()->error('Aborting: --yes was passed but validation has a WARN. Resolve the warning or run interactively.');
+    // Under --simulate the collection runs without side effects, so there's
+    // nothing to confirm; go straight to the simulated walk.
+    if (!$this->isSimulating()) {
+      // --yes applies without prompting, but never past a warning.
+      if (!empty($options['yes'])) {
+        if ($plan->warned()) {
+          $this->io()->error('Aborting: --yes was passed but validation has a WARN. Resolve the warning or run interactively.');
+          return;
+        }
+      }
+      elseif ($this->promptApply() === 'n') {
+        $this->say('Aborted.');
         return;
       }
     }
-    elseif ($this->promptApply() === 'n') {
-      $this->say('Aborted.');
-      return;
-    }
 
     $this->applyPlan($plan);
+  }
+
+  /**
+   * Whether Robo is running in simulated mode (--simulate).
+   */
+  protected function isSimulating(): bool {
+    return (bool) $this->getConfig()->get(Config::SIMULATE);
   }
 
   /**
@@ -134,6 +147,12 @@ trait PlanTrait {
 
     if (!$result->wasSuccessful()) {
       $this->io()->error('Plan execution failed. Rolled back where possible.');
+      return;
+    }
+
+    // Under --simulate nothing actually ran, so skip the done/next-steps
+    // messaging that would otherwise read as if it had.
+    if ($this->isSimulating()) {
       return;
     }
 
