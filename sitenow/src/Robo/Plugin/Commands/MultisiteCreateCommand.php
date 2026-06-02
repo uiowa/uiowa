@@ -107,6 +107,10 @@ class MultisiteCreateCommand extends Tasks {
       'flags' => $flags,
     ];
 
+    // The registry is a local file; load it now so --app can be validated
+    // before any API call.
+    $registry = new Applications("{$root}/sitenow/applications.yml");
+
     // Checks that need no Acquia API: environment, input, and local
     // filesystem. Run these first so a FAIL returns before any API call.
     $local_checks = [
@@ -129,6 +133,16 @@ class MultisiteCreateCommand extends Tasks {
       }),
     ];
 
+    // --app names a registry entry; validate against the local file here
+    // rather than after the API query.
+    if (!empty($options['app'])) {
+      $local_checks[] = new Check(self::CHECK_APP_EXISTS, function () use ($registry, $options): CheckResult {
+        return $registry->uuid($options['app']) !== NULL
+          ? CheckResult::pass()
+          : CheckResult::fail("Specified application '{$options['app']}' is not in the SiteNow application registry.");
+      });
+    }
+
     $validation = $this->runChecks($local_checks);
 
     // Gate the API work: if a local check already failed, return the plan
@@ -139,7 +153,6 @@ class MultisiteCreateCommand extends Tasks {
 
     // Candidates come from the SiteNow registry (identity + reserved flag) and
     // the manifest (relative load by site count).
-    $registry = new Applications("{$root}/sitenow/applications.yml");
     $site_counts = $this->siteCountsByApp($root);
     $candidates = [];
     foreach ($registry->all() as $name => $entry) {
@@ -177,12 +190,9 @@ class MultisiteCreateCommand extends Tasks {
 
     $validation = $this->mergeValidation($validation, $this->runChecks($checks));
 
-    // App selection.
-    [$app, $reasoning, $app_check] = $this->selectApp($candidates, $options);
-    if ($app_check) {
-      $validation = $this->mergeValidation($validation, $this->runChecks([$app_check]));
-    }
-    elseif (!$app) {
+    // App selection (--app already validated against the registry above).
+    [$app, $reasoning] = $this->selectApp($candidates, $options);
+    if (!$app) {
       $validation = $this->mergeValidation($validation, $this->runChecks([
         new Check(self::CHECK_APP_SELECTION, fn() => CheckResult::fail('No eligible Acquia application found in the registry.')),
       ]));
@@ -310,9 +320,9 @@ class MultisiteCreateCommand extends Tasks {
   /**
    * Pick the target application from the candidates.
    *
-   * Honors an explicit --app (validated against the registry), otherwise
-   * auto-picks the eligible application with the fewest sites, breaking ties
-   * by application name (natural sort).
+   * Honors an explicit --app (already validated against the registry in the
+   * local checks), otherwise auto-picks the eligible application with the
+   * fewest sites, breaking ties by application name (natural sort).
    *
    * @param array $candidates
    *   Application candidates keyed by name.
@@ -320,22 +330,17 @@ class MultisiteCreateCommand extends Tasks {
    *   Command options.
    *
    * @return array
-   *   [?array $app, string $reasoning, ?\SiteNow\Plan\Check $check].
+   *   [?array $app, string $reasoning]. The app is NULL only when no eligible
+   *   application exists for auto-selection.
    */
   protected function selectApp(array $candidates, array $options): array {
     if (!empty($options['app'])) {
-      if (!isset($candidates[$options['app']])) {
-        $check = new Check(self::CHECK_APP_EXISTS, fn() => CheckResult::fail(
-          "Specified application '{$options['app']}' is not in the SiteNow application registry."
-        ));
-        return [NULL, '', $check];
-      }
-      return [$candidates[$options['app']], 'Explicitly specified via --app.', NULL];
+      return [$candidates[$options['app']], 'Explicitly specified via --app.'];
     }
 
     $eligible = $this->eligibleApps($candidates);
     if (empty($eligible)) {
-      return [NULL, '', NULL];
+      return [NULL, ''];
     }
 
     // Fewest sites wins; application name is the stable tie-break.
@@ -343,7 +348,7 @@ class MultisiteCreateCommand extends Tasks {
     usort($sorted, fn($a, $b) => $a['sites'] <=> $b['sites'] ?: strnatcmp($a['name'], $b['name']));
     $winner = $sorted[0];
 
-    return [$winner, "Fewest sites ({$winner['sites']}) among eligible apps.", NULL];
+    return [$winner, "Fewest sites ({$winner['sites']}) among eligible apps."];
   }
 
   /**

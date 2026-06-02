@@ -108,11 +108,10 @@ class MultisiteCreateTest extends UnitTestCase {
       'uiowa03' => $this->app('uiowa03', 12, TRUE),
     ];
 
-    [$app, $reasoning, $check] = $this->command()->pubSelectApp($candidates, []);
+    [$app, $reasoning] = $this->command()->pubSelectApp($candidates, []);
 
     $this->assertSame('uiowa03', $app['name']);
     $this->assertStringContainsString('12', $reasoning);
-    $this->assertNull($check);
   }
 
   /**
@@ -124,10 +123,9 @@ class MultisiteCreateTest extends UnitTestCase {
       'uiowa03' => $this->app('uiowa03', 12, TRUE),
     ];
 
-    [$app, , $check] = $this->command()->pubSelectApp($candidates, []);
+    [$app] = $this->command()->pubSelectApp($candidates, []);
 
     $this->assertSame('uiowa03', $app['name']);
-    $this->assertNull($check);
   }
 
   /**
@@ -140,10 +138,9 @@ class MultisiteCreateTest extends UnitTestCase {
       'uiowa06' => $this->app('uiowa06', 5, FALSE, TRUE),
     ];
 
-    [$app, , $check] = $this->command()->pubSelectApp($candidates, []);
+    [$app] = $this->command()->pubSelectApp($candidates, []);
 
     $this->assertSame('uiowa04', $app['name']);
-    $this->assertNull($check);
   }
 
   /**
@@ -155,11 +152,10 @@ class MultisiteCreateTest extends UnitTestCase {
       'uiowa02' => $this->app('uiowa02', 12, TRUE),
     ];
 
-    [$app, $reasoning, $check] = $this->command()->pubSelectApp($candidates, []);
+    [$app, $reasoning] = $this->command()->pubSelectApp($candidates, []);
 
     $this->assertSame('uiowa02', $app['name']);
     $this->assertStringContainsString('12', $reasoning);
-    $this->assertNull($check);
   }
 
   /**
@@ -171,11 +167,10 @@ class MultisiteCreateTest extends UnitTestCase {
       'uiowa03' => $this->app('uiowa03', 12, TRUE),
     ];
 
-    [$app, $reasoning, $check] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa']);
+    [$app, $reasoning] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa']);
 
     $this->assertSame('uiowa', $app['name']);
     $this->assertStringContainsString('--app', $reasoning);
-    $this->assertNull($check);
   }
 
   /**
@@ -187,26 +182,9 @@ class MultisiteCreateTest extends UnitTestCase {
       'uiowa03' => $this->app('uiowa03', 12, TRUE),
     ];
 
-    [$app, , $check] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa06']);
+    [$app] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa06']);
 
     $this->assertSame('uiowa06', $app['name']);
-    $this->assertNull($check);
-  }
-
-  /**
-   * An unknown --app yields no app and a failing app_exists check.
-   */
-  public function testExplicitUnknownAppReturnsFailCheck() {
-    $candidates = [
-      'uiowa03' => $this->app('uiowa03', 12, TRUE),
-    ];
-
-    [$app, , $check] = $this->command()->pubSelectApp($candidates, ['app' => 'uiowa99']);
-
-    $this->assertNull($app);
-    $this->assertInstanceOf(Check::class, $check);
-    $this->assertSame(CheckStatus::Fail, $check->evaluate()->status);
-    $this->assertSame(MultisiteCreateCommand::CHECK_APP_EXISTS, $check->name);
   }
 
   /**
