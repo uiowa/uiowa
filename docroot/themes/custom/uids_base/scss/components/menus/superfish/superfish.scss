@@ -309,8 +309,8 @@ ul.sf-menu.sf-horizontal > li.sfHover > a:after {
 
 ul.sf-menu.sf-horizontal > li > .nolink:focus:after,
 ul.sf-menu.sf-horizontal > li > a:focus:after,
-ul.sf-menu.sf-horizontal > li:hover > .nolink:after,
-ul.sf-menu.sf-horizontal > li:hover > a:after {
+ul.sf-menu.sf-horizontal > li:hover:not(:has(ul li:hover)) > .nolink:after,
+ul.sf-menu.sf-horizontal > li:hover:not(:has(ul li:hover)) > a:after {
   background: variables.$primary;
 }
 
