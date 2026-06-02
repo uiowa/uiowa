@@ -300,6 +300,17 @@ ul.sf-menu.sf-horizontal > li:hover > a:after {
   left: 0;
   width: 100%;
   height: 5px;
+}
+
+ul.sf-menu.sf-horizontal > li.sfHover > .nolink:after,
+ul.sf-menu.sf-horizontal > li.sfHover > a:after {
+  background: variables.$secondary;
+}
+
+ul.sf-menu.sf-horizontal > li > .nolink:focus:after,
+ul.sf-menu.sf-horizontal > li > a:focus:after,
+ul.sf-menu.sf-horizontal > li:hover > .nolink:after,
+ul.sf-menu.sf-horizontal > li:hover > a:after {
   background: variables.$primary;
 }
 
