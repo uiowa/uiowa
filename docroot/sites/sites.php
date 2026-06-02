@@ -7858,3 +7858,9 @@ $sites['labirish.uiowa.ddev.site'] = 'irish.lab.uiowa.edu';
 $sites['labirish.dev.drupal.uiowa.edu'] = 'irish.lab.uiowa.edu';
 $sites['labirish.stage.drupal.uiowa.edu'] = 'irish.lab.uiowa.edu';
 $sites['labirish.prod.drupal.uiowa.edu'] = 'irish.lab.uiowa.edu';
+
+// Directory aliases for rd.medicine.uiowa.edu.
+$sites['medicinerd.uiowa.ddev.site'] = 'rd.medicine.uiowa.edu';
+$sites['medicinerd.dev.drupal.uiowa.edu'] = 'rd.medicine.uiowa.edu';
+$sites['medicinerd.stage.drupal.uiowa.edu'] = 'rd.medicine.uiowa.edu';
+$sites['medicinerd.prod.drupal.uiowa.edu'] = 'rd.medicine.uiowa.edu';
