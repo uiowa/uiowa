@@ -111,7 +111,7 @@ trait PlanTrait {
           return;
         }
       }
-      elseif ($this->promptApply() === 'n') {
+      elseif (!$this->confirm('Apply?')) {
         $this->say('Aborted.');
         return;
       }
@@ -159,23 +159,6 @@ trait PlanTrait {
     if ($plan->nextSteps) {
       $this->say('Next steps:');
       $this->io()->listing($plan->nextSteps);
-    }
-  }
-
-  /**
-   * Prompt for apply/abort. Returns 'y' or 'n'.
-   */
-  protected function promptApply(): string {
-    while (TRUE) {
-      $answer = $this->ask('Apply? [<options=bold>y</>]es / [<options=bold>n</>]o: ');
-      $answer = strtolower(trim($answer ?? ''));
-      if (in_array($answer, ['y', 'yes', ''])) {
-        return 'y';
-      }
-      if (in_array($answer, ['n', 'no'])) {
-        return 'n';
-      }
-      $this->say('Please enter y or n.');
     }
   }
 
