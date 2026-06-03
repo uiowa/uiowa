@@ -2,8 +2,6 @@
 
 namespace SiteNow\Plan;
 
-use Robo\Config\Config;
-
 /**
  * Shared plan execution for Robo commands: render, confirm, apply.
  *
@@ -126,7 +124,7 @@ trait PlanTrait {
    * Whether Robo is running in simulated mode (--simulate).
    */
   protected function isSimulating(): bool {
-    return (bool) $this->getConfig()->get(Config::SIMULATE);
+    return $this->collectionBuilder()->isSimulated();
   }
 
   /**
