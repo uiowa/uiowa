@@ -7870,3 +7870,9 @@ $sites['conferenceiasj.uiowa.ddev.site'] = 'iasj.conference.uiowa.edu';
 $sites['conferenceiasj.dev.drupal.uiowa.edu'] = 'iasj.conference.uiowa.edu';
 $sites['conferenceiasj.stage.drupal.uiowa.edu'] = 'iasj.conference.uiowa.edu';
 $sites['conferenceiasj.prod.drupal.uiowa.edu'] = 'iasj.conference.uiowa.edu';
+
+// Directory aliases for hawkeyemakerhub.sites.uiowa.edu.
+$sites['siteshawkeyemakerhub.uiowa.ddev.site'] = 'hawkeyemakerhub.sites.uiowa.edu';
+$sites['siteshawkeyemakerhub.dev.drupal.uiowa.edu'] = 'hawkeyemakerhub.sites.uiowa.edu';
+$sites['siteshawkeyemakerhub.stage.drupal.uiowa.edu'] = 'hawkeyemakerhub.sites.uiowa.edu';
+$sites['siteshawkeyemakerhub.prod.drupal.uiowa.edu'] = 'hawkeyemakerhub.sites.uiowa.edu';
