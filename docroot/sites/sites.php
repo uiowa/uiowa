@@ -7870,3 +7870,9 @@ $sites['medicinempuconsortium.uiowa.ddev.site'] = 'mpuconsortium.medicine.uiowa.
 $sites['medicinempuconsortium.dev.drupal.uiowa.edu'] = 'mpuconsortium.medicine.uiowa.edu';
 $sites['medicinempuconsortium.stage.drupal.uiowa.edu'] = 'mpuconsortium.medicine.uiowa.edu';
 $sites['medicinempuconsortium.prod.drupal.uiowa.edu'] = 'mpuconsortium.medicine.uiowa.edu';
+
+// Directory aliases for iasj.conference.uiowa.edu.
+$sites['conferenceiasj.uiowa.ddev.site'] = 'iasj.conference.uiowa.edu';
+$sites['conferenceiasj.dev.drupal.uiowa.edu'] = 'iasj.conference.uiowa.edu';
+$sites['conferenceiasj.stage.drupal.uiowa.edu'] = 'iasj.conference.uiowa.edu';
+$sites['conferenceiasj.prod.drupal.uiowa.edu'] = 'iasj.conference.uiowa.edu';
