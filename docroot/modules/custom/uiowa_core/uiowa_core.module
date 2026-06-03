@@ -821,7 +821,8 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   }
 
   // Add early validation for scheduler/moderation conflicts.
-  // This prevents form validation errors from scheduler_content_moderation_integration
+  // This prevents form validation errors
+  // from scheduler_content_moderation_integration
   // by adjusting values before entity validation runs.
   if (\Drupal::moduleHandler()->moduleExists('scheduler') && \Drupal::moduleHandler()->moduleExists('scheduler_content_moderation_integration')) {
     $scheduler_manager = \Drupal::service('scheduler.manager');
@@ -1203,7 +1204,8 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
   $publish_on = $form_state->getValue('publish_on');
   $unpublish_on = $form_state->getValue('unpublish_on');
 
-  // Check for conflict: trying to set to "published" with a future publish date.
+  // Check for conflict: trying to set to "published"
+  // with a future publish date.
   if ($set_state === 'published' && !empty($publish_on[0]['value'])) {
     $publish_timestamp = strtotime($publish_on[0]['value']);
     $request_time = \Drupal::time()->getRequestTime();
@@ -1230,7 +1232,8 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
     }
   }
 
-  // Check for conflict: trying to set to "archived" with a future unpublish date.
+  // Check for conflict: trying to set to "archived"
+  // with a future unpublish date.
   if ($set_state === 'archived' && !empty($unpublish_on[0]['value'])) {
     $unpublish_timestamp = strtotime($unpublish_on[0]['value']);
     $request_time = \Drupal::time()->getRequestTime();
