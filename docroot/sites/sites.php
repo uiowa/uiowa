@@ -1031,12 +1031,6 @@ $sites['sitesdwllcdishesanddips.dev.drupal.uiowa.edu'] = 'dwllcdishesanddips.sit
 $sites['sitesdwllcdishesanddips.stage.drupal.uiowa.edu'] = 'dwllcdishesanddips.sites.uiowa.edu';
 $sites['sitesdwllcdishesanddips.prod.drupal.uiowa.edu'] = 'dwllcdishesanddips.sites.uiowa.edu';
 
-// Directory aliases for michaelewright.lab.uiowa.edu.
-$sites['labmichaelewright.uiowa.ddev.site'] = 'michaelewright.lab.uiowa.edu';
-$sites['labmichaelewright.dev.drupal.uiowa.edu'] = 'michaelewright.lab.uiowa.edu';
-$sites['labmichaelewright.stage.drupal.uiowa.edu'] = 'michaelewright.lab.uiowa.edu';
-$sites['labmichaelewright.prod.drupal.uiowa.edu'] = 'michaelewright.lab.uiowa.edu';
-
 // Directory aliases for roman.lab.uiowa.edu.
 $sites['labroman.uiowa.ddev.site'] = 'roman.lab.uiowa.edu';
 $sites['labroman.dev.drupal.uiowa.edu'] = 'roman.lab.uiowa.edu';
