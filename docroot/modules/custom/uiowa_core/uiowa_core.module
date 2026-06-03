@@ -1216,7 +1216,7 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
         $fallback_state = 'draft';
       }
       else {
-        $fallback_state = $entity->original->moderation_state->value ?? 'draft';
+        $fallback_state = $entity->moderation_state->value ?? 'draft';
       }
 
       // Update form state to use fallback instead of published.
@@ -1239,7 +1239,7 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
     $request_time = \Drupal::time()->getRequestTime();
 
     if ($unpublish_timestamp > $request_time) {
-      $fallback_state = $entity->original->moderation_state->value ?? 'draft';
+      $fallback_state = $entity->moderation_state->value ?? 'draft';
 
       // Update form state to use original state.
       $form_state->setValue(['moderation_state', 0, 'value'], $fallback_state);
