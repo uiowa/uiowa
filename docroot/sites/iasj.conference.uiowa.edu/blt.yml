@@ -1,0 +1,18 @@
+project:
+  machine_name: conferenceiasj
+  human_name: iasj.conference.uiowa.edu
+  local:
+    hostname: conferenceiasj.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: conferenceiasj.prod
+drupal:
+  db:
+    database: iasj_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferenceiasj.prod.drupal.uiowa.edu'
+  requester: dcphillips
+  site-name: '2027 IASJ Jazz Meeting Registration'

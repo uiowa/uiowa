@@ -1,0 +1,18 @@
+project:
+  machine_name: siteshawkeyemakerhub
+  human_name: hawkeyemakerhub.sites.uiowa.edu
+  local:
+    hostname: siteshawkeyemakerhub.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: siteshawkeyemakerhub.prod
+drupal:
+  db:
+    database: hawkeyemakerhub_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshawkeyemakerhub.prod.drupal.uiowa.edu'
+  requester: zhanghwang
+  site-name: 'Hawkeye Maker Hub'
