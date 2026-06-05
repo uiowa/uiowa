@@ -267,6 +267,17 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
   // Node saves are handled instead by
   // uiowa_core_scheduler_moderation_validate.
   if ($entity instanceof NodeInterface) {
+    // If we don't have moderation on this entity,
+    // exit early.
+    $moderation_info = \Drupal::service('content_moderation.moderation_information');
+    $is_moderated = $moderation_info->shouldModerateEntitiesOfBundle(
+      $entity->getEntityType(),
+      $entity->bundle()
+    );
+    if (!$is_moderated) {
+      return;
+    }
+
     if ($set_state = $entity->moderation_state?->value) {
       if ($set_state == 'published' && !$entity->isPublished()) {
         if ($entity->isNew()) {
