@@ -524,21 +524,19 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
   padding: 0.9rem 0;
 }
 
-.menu.sf-accordion > li > a {
-  display: inline-block;
-}
-
-.menu.sf-accordion > li > .nolink::after,
-.menu.sf-accordion > li > a::after,
-.menu.sf-accordion > li > span::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
+.menu.sf-accordion > li > .nolink,
+.menu.sf-accordion > li > a,
+.menu.sf-accordion > li > span {
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    transition: 0s;
+  }
 }
 
 .block-superfish .menu.sf-accordion > li > .sf-depth-1.menuparent {
