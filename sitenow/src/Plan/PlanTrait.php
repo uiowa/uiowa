@@ -2,18 +2,25 @@
 
 namespace SiteNow\Plan;
 
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
 /**
- * Shared plan execution for Robo commands: render, confirm, apply.
+ * Shared plan execution for commands: render, confirm, apply.
  *
- * A using command produces a Plan and passes it to `executePlan()`.
+ * A using command produces a Plan and passes it to `executePlan()` along with
+ * its SymfonyStyle. The validation aggregation helpers (`runChecks()`,
+ * `mergeValidation()`) are pure and framework-independent.
  */
 trait PlanTrait {
 
   /**
    * Render a plan to the console.
    *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style.
    * @param string $title
-   *   Short header line, e.g. "sitenow:multisite:create newsite.uiowa.edu".
+   *   Short header line, e.g. "multisite:create newsite.uiowa.edu".
    * @param array $summary
    *   Optional key/value rows shown before validation, assembled by the
    *   calling command. Each entry: ['label' => string, 'value' => string].
@@ -23,13 +30,14 @@ trait PlanTrait {
    *   Each entry has a 'label' key. Empty array renders no Actions block.
    */
   protected function renderPlan(
+    SymfonyStyle $io,
     string $title,
     array $summary,
     array $validation,
     array $steps = [],
   ): void {
     $rule = str_repeat('─', 65);
-    $this->output()->writeln(<<<HEADER
+    $io->writeln(<<<HEADER
 
       <options=bold>{$rule}
         {$title}
@@ -39,11 +47,11 @@ trait PlanTrait {
 
     foreach ($summary as $row) {
       $label = str_pad($row['label'] . ':', 14);
-      $this->output()->writeln("  <options=bold>{$label}</> {$row['value']}");
+      $io->writeln("  <options=bold>{$label}</> {$row['value']}");
     }
 
     if ($summary) {
-      $this->output()->writeln('');
+      $io->writeln('');
     }
 
     $overall = $validation['overall'];
@@ -53,27 +61,27 @@ trait PlanTrait {
       default => 'green',
     };
 
-    $this->output()->writeln("  <options=bold>Validation:</> <fg={$color}>{$overall->value}</>");
+    $io->writeln("  <options=bold>Validation:</> <fg={$color}>{$overall->value}</>");
 
     $non_pass = array_filter($validation['checks'], fn($c) => $c['status'] !== CheckStatus::Pass);
     foreach ($non_pass as $check) {
       $icon = $check['status'] === CheckStatus::Fail ? '<fg=red>✗</>' : '<fg=yellow>!</>';
-      $this->output()->writeln("    {$icon} [{$check['status']->value}] {$check['message']}");
+      $io->writeln("    {$icon} [{$check['status']->value}] {$check['message']}");
     }
 
     if ($overall === CheckStatus::Fail) {
-      $this->output()->writeln('');
+      $io->writeln('');
       return;
     }
 
-    $this->output()->writeln('');
+    $io->writeln('');
 
     if ($steps) {
-      $this->output()->writeln('  <options=bold>Actions:</>');
+      $io->writeln('  <options=bold>Actions:</>');
       foreach ($steps as $step) {
-        $this->output()->writeln("    · {$step['label']}");
+        $io->writeln("    · {$step['label']}");
       }
-      $this->output()->writeln('');
+      $io->writeln('');
     }
   }
 
@@ -82,84 +90,81 @@ trait PlanTrait {
    *
    * All command-specific data comes from the Plan.
    *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style.
    * @param \SiteNow\Plan\Plan $plan
    *   The decided plan.
    * @param array $options
    *   Command options. Reads 'dry-run' and 'yes'.
+   *
+   * @return int
+   *   A console exit code.
    */
-  protected function executePlan(Plan $plan, array $options): void {
+  protected function executePlan(SymfonyStyle $io, Plan $plan, array $options): int {
     // Validation failed: show the failing checks and stop before any work.
     if ($plan->failed()) {
-      $this->renderPlan($plan->title, [], $plan->validation);
-      return;
+      $this->renderPlan($io, $plan->title, [], $plan->validation);
+      return Command::FAILURE;
     }
 
-    $this->renderPlan($plan->title, $plan->summary, $plan->validation, $plan->steps());
+    $this->renderPlan($io, $plan->title, $plan->summary, $plan->validation, $plan->steps());
 
     // Dry run: the plan was previewed; make no changes.
     if (!empty($options['dry-run'])) {
-      return;
+      return Command::SUCCESS;
     }
 
-    // Under --simulate the collection runs without side effects, so there's
-    // nothing to confirm; go straight to the simulated walk.
-    if (!$this->isSimulating()) {
-      // --yes applies without prompting, but never past a warning.
-      if (!empty($options['yes'])) {
-        if ($plan->warned()) {
-          $this->io()->error('Aborting: --yes was passed but validation has a WARN. Resolve the warning or run interactively.');
-          return;
-        }
-      }
-      elseif (!$this->confirm('Apply?')) {
-        $this->say('Aborted.');
-        return;
+    // --yes applies without prompting, but never past a warning.
+    if (!empty($options['yes'])) {
+      if ($plan->warned()) {
+        $io->error('Aborting: --yes was passed but validation has a WARN. Resolve the warning or run interactively.');
+        return Command::FAILURE;
       }
     }
+    elseif (!$io->confirm('Apply?', FALSE)) {
+      $io->writeln('Aborted.');
+      return Command::SUCCESS;
+    }
 
-    $this->applyPlan($plan);
+    return $this->applyPlan($io, $plan);
   }
 
   /**
-   * Whether Robo is running in simulated mode (--simulate).
-   */
-  protected function isSimulating(): bool {
-    return $this->collectionBuilder()->isSimulated();
-  }
-
-  /**
-   * Run a plan's steps in a Robo collection with rollback on failure.
+   * Run a plan's steps in order, failing loud with no rollback.
    *
+   * A step that throws stops the run. Steps that already ran stay applied;
+   * recover the working tree with git. The cloud database create is the only
+   * non-git side effect, called out on abort.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style.
    * @param \SiteNow\Plan\Plan $plan
    *   The plan whose steps to run.
+   *
+   * @return int
+   *   A console exit code.
    */
-  protected function applyPlan(Plan $plan): void {
-    // Load each step's task into one collection so a mid-run failure rolls
-    // back the tasks that already ran.
-    $collection = $this->collectionBuilder();
+  protected function applyPlan(SymfonyStyle $io, Plan $plan): int {
     foreach ($plan->steps() as $step) {
-      $collection->addTask($step['task']);
+      try {
+        ($step['run'])($io);
+      }
+      catch (\Throwable $e) {
+        $io->error("Step failed: {$step['label']}");
+        $io->writeln($e->getMessage());
+        $io->warning('No rollback was performed. Generated files remain in the working tree; recover with git. If the cloud database step had already run, the database may exist on Acquia.');
+        return Command::FAILURE;
+      }
     }
 
-    $result = $collection->run();
-
-    if (!$result->wasSuccessful()) {
-      $this->io()->error('Plan execution failed. Rolled back where possible.');
-      return;
-    }
-
-    // Under --simulate nothing actually ran, so skip the done/next-steps
-    // messaging that would otherwise read as if it had.
-    if ($this->isSimulating()) {
-      return;
-    }
-
-    $this->say('<info>Done.</info>');
+    $io->success('Done.');
 
     if ($plan->nextSteps) {
-      $this->say('Next steps:');
-      $this->io()->listing($plan->nextSteps);
+      $io->writeln('Next steps:');
+      $io->listing($plan->nextSteps);
     }
+
+    return Command::SUCCESS;
   }
 
   /**

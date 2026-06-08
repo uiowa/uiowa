@@ -2,8 +2,6 @@
 
 namespace SiteNow\Plan;
 
-use Robo\Contract\TaskInterface;
-
 /**
  * A snapshot of what a command would do if executed.
  *
@@ -52,18 +50,20 @@ class Plan {
    *
    * @param string $label
    *   Human-readable description shown in the plan preview.
-   * @param \Robo\Contract\TaskInterface $task
-   *   The task that performs the action.
+   * @param \Closure $run
+   *   The operation that performs the action: function
+   *   (\Symfony\Component\Console\Style\SymfonyStyle $io): void. Throws on
+   *   failure; there is no rollback.
    */
-  public function addStep(string $label, TaskInterface $task): void {
-    $this->steps[] = ['label' => $label, 'task' => $task];
+  public function addStep(string $label, \Closure $run): void {
+    $this->steps[] = ['label' => $label, 'run' => $run];
   }
 
   /**
    * The ordered steps.
    *
    * @return array
-   *   Each entry: ['label' => string, 'task' => TaskInterface].
+   *   Each entry: ['label' => string, 'run' => \Closure].
    */
   public function steps(): array {
     return $this->steps;

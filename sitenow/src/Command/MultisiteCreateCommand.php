@@ -1,33 +1,44 @@
 <?php
 
-namespace SiteNow\Robo\Plugin\Commands;
+namespace SiteNow\Command;
 
 use AcquiaCloudApi\Connector\Client;
-use Robo\Tasks;
 use SiteNow\Config\Applications;
+use SiteNow\Operation\CloudDbCreate;
+use SiteNow\Operation\ManifestUpdate;
+use SiteNow\Operation\SitesPhpUpdate;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CheckResult;
 use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
-use SiteNow\Task\Acquia\Tasks as AcquiaTasks;
-use SiteNow\Task\Multisite\Tasks as MultisiteTasks;
 use SiteNow\Traits\SiteNowCommandsTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
 /**
  * Creates a new SiteNow multisite.
  */
-class MultisiteCreateCommand extends Tasks {
+#[AsCommand(
+  name: 'multisite:create',
+  description: 'Create a new SiteNow multisite.',
+  aliases: ['mc', 'umc'],
+)]
+class MultisiteCreateCommand extends Command {
 
   use SiteNowCommandsTrait;
-  use AcquiaTasks;
-  use MultisiteTasks;
   use PlanTrait;
   use CommonChecks;
 
@@ -40,47 +51,61 @@ class MultisiteCreateCommand extends Tasks {
   const CHECK_APP_EXISTS = 'app_exists';
 
   /**
-   * Create a new SiteNow multisite.
+   * Constructs the command.
    *
-   * @param string $host
-   *   The multisite URI host (e.g. newsite.uiowa.edu).
-   * @param array $options
-   *   Keyed command options, as declared by the @option tags.
-   *
-   * @option no-commit Do not create a git commit.
-   * @option no-db Do not create a cloud database.
-   * @option requester The HawkID of the original requester.
-   * @option split Config split(s) to activate. Comma-separate multiple values.
-   * @option site-name The desired site name.
-   * @option dry-run Show plan and exit; no side effects.
-   * @option yes Apply without prompting. Blocked by any WARN.
-   * @option app Override the target Acquia application.
-   *
-   * @command sitenow:multisite:create
-   * @aliases smc,umc
-   *
-   * @throws \Exception
+   * @param string $repoRoot
+   *   Absolute path to the repository root. The command runs on the host shell
+   *   and operates on the working tree relative to this root.
    */
-  public function create(
-    string $host,
-    array $options = [
-      'no-commit' => FALSE,
-      'no-db' => FALSE,
-      'requester' => InputOption::VALUE_REQUIRED,
-      'split' => InputOption::VALUE_REQUIRED,
-      'site-name' => InputOption::VALUE_REQUIRED,
-      'dry-run' => FALSE,
-      'yes' => FALSE,
-      'app' => InputOption::VALUE_REQUIRED,
-    ],
-  ): void {
-    $plan = $this->decide($host, $options);
-    $this->executePlan($plan, $options);
+  public function __construct(
+    private string $repoRoot = '',
+  ) {
+    parent::__construct();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function configure(): void {
+    $this
+      ->addArgument('host', InputArgument::REQUIRED, 'The multisite URI host (e.g. newsite.uiowa.edu).')
+      ->addOption('no-commit', NULL, InputOption::VALUE_NONE, 'Do not create a git commit.')
+      ->addOption('no-db', NULL, InputOption::VALUE_NONE, 'Do not create a cloud database.')
+      ->addOption('requester', NULL, InputOption::VALUE_REQUIRED, 'The HawkID of the original requester.')
+      ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Config split(s) to activate. Comma-separate multiple values.')
+      ->addOption('site-name', NULL, InputOption::VALUE_REQUIRED, 'The desired site name.')
+      ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Show plan and exit; no side effects.')
+      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Apply without prompting. Blocked by any WARN.')
+      ->addOption('app', NULL, InputOption::VALUE_REQUIRED, 'Override the target Acquia application.');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function execute(InputInterface $input, OutputInterface $output): int {
+    $io = new SymfonyStyle($input, $output);
+
+    $host = $input->getArgument('host');
+    $options = [
+      'no-commit' => $input->getOption('no-commit'),
+      'no-db' => $input->getOption('no-db'),
+      'requester' => $input->getOption('requester'),
+      'split' => $input->getOption('split'),
+      'site-name' => $input->getOption('site-name'),
+      'dry-run' => $input->getOption('dry-run'),
+      'yes' => $input->getOption('yes'),
+      'app' => $input->getOption('app'),
+    ];
+
+    $plan = $this->decide($io, $host, $options);
+    return $this->executePlan($io, $plan, $options);
   }
 
   /**
    * Produce the complete Plan: the decision, and on pass the steps to run.
    *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style, used for SSL-coverage query progress.
    * @param string $host
    *   The multisite host.
    * @param array $options
@@ -90,14 +115,14 @@ class MultisiteCreateCommand extends Tasks {
    *   The plan: the decision always, plus the steps and next-steps when
    *   validation passes (a failed plan carries neither).
    */
-  private function decide(string $host, array $options): Plan {
-    $root = getcwd();
-    $title = "sitenow:multisite:create {$host}";
+  private function decide(SymfonyStyle $io, string $host, array $options): Plan {
+    $root = $this->repoRoot;
+    $title = "multisite:create {$host}";
 
     $umc_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'app'];
     $flags = array_filter(
       array_intersect_key($options, array_flip($umc_keys)),
-      fn($v) => $v !== NULL && $v !== FALSE && $v !== '' && $v !== InputOption::VALUE_REQUIRED
+      fn($v) => $v !== NULL && $v !== FALSE && $v !== ''
     );
 
     $input = [
@@ -168,7 +193,7 @@ class MultisiteCreateCommand extends Tasks {
     $creds = $this->getAcquiaCredentials();
     $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
     $ssl_parts = Multisite::getSslParts($host);
-    $coverage = $this->gatherSslCoverage($client, array_column($candidates, 'uuid', 'name'), $ssl_parts);
+    $coverage = $this->gatherSslCoverage($io, $client, array_column($candidates, 'uuid', 'name'), $ssl_parts);
     foreach ($coverage as $name => $ssl) {
       $candidates[$name] += $ssl;
     }
@@ -265,6 +290,8 @@ class MultisiteCreateCommand extends Tasks {
    *
    * Progress writes to stderr so it never corrupts stdout plan output.
    *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style; progress is written to its error stream.
    * @param \AcquiaCloudApi\Connector\Client $client
    *   The Acquia Cloud API client.
    * @param array $apps
@@ -275,15 +302,15 @@ class MultisiteCreateCommand extends Tasks {
    * @return array
    *   SSL coverage keyed by application name.
    */
-  private function gatherSslCoverage(Client $client, array $apps, array $ssl_parts): array {
-    $out = $this->acquiaProgress();
-    $out->writeln('<comment>Checking SSL coverage across Acquia Cloud applications...</comment>');
+  private function gatherSslCoverage(SymfonyStyle $io, Client $client, array $apps, array $ssl_parts): array {
+    $err = $io->getErrorStyle();
+    $err->writeln('<comment>Checking SSL coverage across Acquia Cloud applications...</comment>');
 
     $bar = NULL;
-    $coverage = $this->getSslCoverage($client, $apps, $ssl_parts, function (string $name, int $total) use (&$bar, $out) {
+    $coverage = $this->getSslCoverage($client, $apps, $ssl_parts, function (string $name, int $total) use (&$bar, $err) {
       // Create the bar on the first callback, when the total becomes known.
       if ($bar === NULL) {
-        $bar = new ProgressBar($out, $total);
+        $bar = new ProgressBar($err, $total);
         $bar->setFormat(' %current%/%max% [%bar%] %message%');
         $bar->setMessage($name);
         $bar->start();
@@ -296,25 +323,9 @@ class MultisiteCreateCommand extends Tasks {
       $bar->setMessage('done');
       $bar->finish();
     }
-    $out->writeln('');
+    $err->writeln('');
 
     return $coverage;
-  }
-
-  /**
-   * Resolve the output stream for query progress.
-   *
-   * Progress feedback writes to stderr so it stays out of stdout when the
-   * rendered plan is piped or redirected.
-   *
-   * @return \Symfony\Component\Console\Output\OutputInterface
-   *   The error output when available, otherwise the standard output.
-   */
-  private function acquiaProgress() {
-    $output = $this->output();
-    return $output instanceof ConsoleOutputInterface
-      ? $output->getErrorOutput()
-      : $output;
   }
 
   /**
@@ -401,8 +412,8 @@ class MultisiteCreateCommand extends Tasks {
   /**
    * Build the ordered steps that create the multisite.
    *
-   * Each addStep() call pairs a display label with the Robo task that performs
-   * the action. The same steps drive both the plan preview and the collection.
+   * Each addStep() call pairs a display label with a closure that performs the
+   * action when the plan is applied. The same steps drive the plan preview.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The plan to add the steps to.
@@ -416,9 +427,10 @@ class MultisiteCreateCommand extends Tasks {
    *   Normalized command input (id, db).
    */
   private function buildSteps(Plan $plan, string $host, array $options, array $app, array $input): void {
-    $root = getcwd();
+    $root = $this->repoRoot;
     $id = $input['id'];
     $db = $input['db'];
+    $fs = new Filesystem();
 
     $domains = Multisite::getInternalDomains($id);
     $local = $domains['local'];
@@ -458,73 +470,117 @@ EOD;
     // generated file.
     if (empty($options['no-db'])) {
       $creds = $this->getAcquiaCredentials();
+      $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+      $uuid = $app['uuid'];
+      $app_name = $app['name'];
       $plan->addStep(
-        "Create cloud DB <info>{$db}</info> on <info>{$app['name']}</info>",
-        $this->taskCloudDbCreate(
-          $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']),
-          $app['uuid'],
-          $app['name'],
-          $db
-        )
+        "Create cloud DB <info>{$db}</info> on <info>{$app_name}</info>",
+        function (SymfonyStyle $io) use ($client, $uuid, $app_name, $db) {
+          (new CloudDbCreate($client, $uuid, $app_name, $db))->run();
+          $io->writeln("  Database <info>{$db}</info> is being created on <info>{$app_name}</info>.");
+        }
       );
     }
 
+    $src = "{$root}/docroot/sites/default";
+    $dest = "{$root}/docroot/sites/{$host}";
     $plan->addStep(
       "Copy <info>docroot/sites/default</info> → <info>docroot/sites/{$host}</info>",
-      $this->taskCopyDir(["{$root}/docroot/sites/default" => "{$root}/docroot/sites/{$host}"])
-        ->exclude(['local.settings.php', 'files', 'default.services.yml', 'services.yml'])
+      function () use ($fs, $src, $dest) {
+        // Mirror the default site, omitting local-only and generated files.
+        $finder = (new Finder())
+          ->files()
+          ->ignoreDotFiles(FALSE)
+          ->in($src)
+          ->exclude(['files'])
+          ->notName(['local.settings.php', 'default.services.yml', 'services.yml']);
+        $fs->mirror($src, $dest, $finder);
+      }
     );
 
+    $settings_path = "{$dest}/settings.php";
     $plan->addStep(
       "Patch <info>settings.php</info> with Acquia DB include for <info>{$db}</info>",
-      $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
-        ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
-        ->to($acquia_block . "\n")
+      function () use ($fs, $settings_path, $acquia_block) {
+        $from = 'require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n";
+        $to = $acquia_block . "\n";
+        $contents = (string) file_get_contents($settings_path);
+        if (!str_contains($contents, $from)) {
+          throw new \RuntimeException("Expected BLT require line not found in {$settings_path}.");
+        }
+        $fs->dumpFile($settings_path, str_replace($from, $to, $contents));
+      }
     );
 
+    $alias_path = "{$root}/drush/sites/{$id}.site.yml";
     $plan->addStep(
       "Write <info>drush/sites/{$id}.site.yml</info>",
-      $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
-        ->text(Yaml::dump($drush_alias, 10, 2))
+      function () use ($fs, $alias_path, $drush_alias) {
+        $fs->dumpFile($alias_path, Yaml::dump($drush_alias, 10, 2));
+      }
     );
 
+    $blt_path = "{$dest}/blt.yml";
     $plan->addStep(
       "Write <info>docroot/sites/{$host}/blt.yml</info>",
-      $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
-        ->text(Yaml::dump($blt, 10, 2))
+      function () use ($fs, $blt_path, $blt) {
+        $fs->dumpFile($blt_path, Yaml::dump($blt, 10, 2));
+      }
     );
 
+    $sites_php = "{$root}/docroot/sites/sites.php";
     $plan->addStep(
       "Append <info>sites.php</info> directory aliases for <info>{$host}</info>",
-      $this->taskSitesPhpUpdate("{$root}/docroot/sites/sites.php")
-        ->add($host, $local, $dev, $test, $prod_domain)
+      function () use ($sites_php, $host, $local, $dev, $test, $prod_domain) {
+        (new SitesPhpUpdate($sites_php, $host, $local, $dev, $test, $prod_domain))->run();
+      }
     );
 
+    $manifest_path = "{$root}/blt/manifest.yml";
+    $app_name = $app['name'];
     $plan->addStep(
-      "Update <info>blt/manifest.yml</info> (app: <info>{$app['name']}</info>)",
-      $this->taskManifestUpdate("{$root}/blt/manifest.yml")
-        ->add($app['name'], $host)
+      "Update <info>blt/manifest.yml</info> (app: <info>{$app_name}</info>)",
+      function () use ($manifest_path, $app_name, $host) {
+        (new ManifestUpdate($manifest_path, $app_name, $host))->run();
+      }
     );
 
     $plan->addStep(
       'Run <info>blt:init:settings</info> to generate local settings files',
-      $this->taskExec('./vendor/bin/blt blt:init:settings')
-        ->option('site', $host, '=')
+      function (SymfonyStyle $io) use ($root, $host) {
+        $process = new Process(['./vendor/bin/blt', 'blt:init:settings', "--site={$host}"], $root);
+        $process->setTimeout(NULL);
+        $process->run(function ($type, $buffer) use ($io) {
+          $io->write($buffer);
+        });
+        if (!$process->isSuccessful()) {
+          throw new \RuntimeException('blt:init:settings failed.');
+        }
+      }
     );
 
     if (empty($options['no-commit'])) {
+      $message = "Initialize {$host} multisite on {$app_name}";
+      $commit_paths = [
+        'docroot/sites/sites.php',
+        'blt/manifest.yml',
+        "docroot/sites/{$host}",
+        "drush/sites/{$id}.site.yml",
+      ];
       $plan->addStep(
-        "Commit \"Initialize {$host} multisite on {$app['name']}\"",
-        $this->taskGitStack()
-          ->dir($root)
-          ->add('docroot/sites/sites.php')
-          ->add('blt/manifest.yml')
-          ->add("docroot/sites/{$host}")
-          ->add("drush/sites/{$id}.site.yml")
-          ->commit("Initialize {$host} multisite on {$app['name']}")
-          ->interactive(FALSE)
-          ->printOutput(FALSE)
-          ->printMetadata(FALSE)
+        "Commit \"{$message}\"",
+        function () use ($root, $commit_paths, $message) {
+          $add = new Process(array_merge(['git', 'add', '--'], $commit_paths), $root);
+          $add->run();
+          if (!$add->isSuccessful()) {
+            throw new \RuntimeException('git add failed: ' . $add->getErrorOutput());
+          }
+          $commit = new Process(['git', 'commit', '-m', $message], $root);
+          $commit->run();
+          if (!$commit->isSuccessful()) {
+            throw new \RuntimeException('git commit failed: ' . $commit->getErrorOutput());
+          }
+        }
       );
     }
   }

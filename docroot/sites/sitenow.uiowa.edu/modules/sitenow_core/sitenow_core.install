@@ -37,14 +37,14 @@ function sitenow_core_update_8002() {
 }
 
 /**
- * Update the request form command to use the new Robo umc.
+ * Update the request form command to use the sitenow/bin/sitenow CLI.
  */
 function sitenow_core_update_10001() {
   $config = \Drupal::configFactory()->getEditable('webform.webform.request_a_site');
   $elements = $config->get('elements');
 
   $yaml = Yaml::decode($elements);
-  $yaml['markup']['#markup'] = './vendor/bin/robo sitenow:multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --split=sitenow_v2';
+  $yaml['markup']['#markup'] = './sitenow/bin/sitenow multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --split=sitenow_v2';
   $elements = Yaml::encode($yaml);
 
   $config

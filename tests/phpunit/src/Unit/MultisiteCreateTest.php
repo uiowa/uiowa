@@ -8,7 +8,7 @@ use SiteNow\Plan\CheckResult;
 use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
-use SiteNow\Robo\Plugin\Commands\MultisiteCreateCommand;
+use SiteNow\Command\MultisiteCreateCommand;
 use Uiowa\Multisite;
 
 /**
@@ -42,7 +42,7 @@ class MultisiteCreateTest extends UnitTestCase {
    * A command instance exposing the protected selection methods.
    */
   private function command(): MultisiteCreateCommand {
-    return new class extends MultisiteCreateCommand {
+    return new class('') extends MultisiteCreateCommand {
 
       public function pubSelectApp(array $candidates, array $options): array {
         return $this->selectApp($candidates, $options);
