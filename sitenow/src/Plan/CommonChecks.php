@@ -71,7 +71,8 @@ trait CommonChecks {
       }),
       new Check(self::CHECK_UP_TO_DATE_WITH_ORIGIN, function () use ($branch): CheckResult {
         shell_exec('git fetch origin --quiet 2>/dev/null');
-        $rev = trim((string) shell_exec("git rev-list --left-right --count origin/{$branch}...HEAD 2>/dev/null"));
+        $range = escapeshellarg("origin/{$branch}...HEAD");
+        $rev = trim((string) shell_exec("git rev-list --left-right --count {$range} 2>/dev/null"));
         $parts = explode("\t", $rev);
         $behind = (int) ($parts[0] ?? 0);
         return $behind > 0

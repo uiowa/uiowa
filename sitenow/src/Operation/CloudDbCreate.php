@@ -23,21 +23,21 @@ class CloudDbCreate {
   /**
    * Create the database.
    *
+   * The Acquia SDK throws ApiErrorException (carrying the API's error message)
+   * when a request fails; a successful return means the create was accepted
+   * (HTTP 202), so the response body needs no further inspection.
+   *
    * @throws \RuntimeException
-   *   If the API call fails or the database is not created.
+   *   If the API rejects the request.
    */
   public function run(): void {
     $databases = new Databases($this->client);
 
     try {
-      $response = $databases->create($this->appUuid, $this->dbName);
+      $databases->create($this->appUuid, $this->dbName);
     }
     catch (\Exception $e) {
-      throw new \RuntimeException('Acquia API error: ' . $e->getMessage(), 0, $e);
-    }
-
-    if (stripos($response->message, 'created') === FALSE) {
-      throw new \RuntimeException("Failed to create database {$this->dbName} on {$this->appName}: {$response->message}");
+      throw new \RuntimeException("Failed to create database {$this->dbName} on {$this->appName}: {$e->getMessage()}", 0, $e);
     }
   }
 
