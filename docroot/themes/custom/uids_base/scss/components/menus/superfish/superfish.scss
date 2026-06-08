@@ -468,6 +468,13 @@ ul.sf-accordion ul:focus-within {
   }
 }
 
+// Add a dotted outline on focus for level 1 nolink menu items.
+.block-superfish .menu li.sf-depth-1 > .nolink {
+  &:focus {
+    outline: 1px dotted;
+  }
+}
+
 .block-superfish .menu li li .nolink:focus {
   font-weight: bold;
 }
@@ -483,6 +490,13 @@ ul.sf-accordion ul:focus-within {
 .block-superfish .menu.sf-accordion li .nolink,
 .block-superfish .menu.sf-accordion li a {
   line-height: 1.3;
+}
+
+// Add a dotted outline on focus for nolink menu items in the mobile accordion.
+.block-superfish .menu.sf-accordion li > .nolink {
+  &:focus {
+    outline: 1px dotted;
+  }
 }
 
 .menu.sf-accordion ul li a.is-active {
