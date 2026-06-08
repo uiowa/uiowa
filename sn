@@ -3,7 +3,7 @@
 
 /**
  * @file
- * SiteNow host-side CLI.
+ * SiteNow host-side CLI (sn).
  *
  * Standalone Symfony Console entry point for repository commands that touch the
  * git working tree and run before any Drupal bootstrap, so they cannot live
@@ -11,20 +11,20 @@
  * hand-wired here; there is no DI container by design.
  *
  * Run from the repository root, e.g.:
- *   ./sitenow/bin/sitenow multisite:create newsite.uiowa.edu --dry-run
+ *   ./sn multisite:create newsite.uiowa.edu --dry-run
  */
 
 use SiteNow\Command\MultisiteCreateCommand;
 use Symfony\Component\Console\Application;
 
-// This file lives at <root>/sitenow/bin/sitenow.
-$root = dirname(__DIR__, 2);
+// This file lives at the repository root.
+$root = __DIR__;
 
 require "{$root}/vendor/autoload.php";
 
 // Repo-touching commands assume the working directory is the repository root.
 chdir($root);
 
-$application = new Application('sitenow');
+$application = new Application('sn');
 $application->add(new MultisiteCreateCommand($root));
 $application->run();

@@ -27,7 +27,7 @@ trait CommonChecks {
     return new Check(self::CHECK_HOST_SHELL, function (): CheckResult {
       return $this->isHostShell()
         ? CheckResult::pass()
-        : CheckResult::fail('Must run on the host shell, not inside DDEV or Acquia Cloud. Use: ./sitenow/bin/sitenow');
+        : CheckResult::fail('Must run on the host shell, not inside DDEV or Acquia Cloud. Use: ./sn');
     });
   }
 
