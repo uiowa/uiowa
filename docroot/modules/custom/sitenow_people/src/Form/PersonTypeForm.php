@@ -95,7 +95,7 @@ class PersonTypeForm extends EntityForm {
 
     $form['allow_former'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Allow displaying an alternate version of this type, such as "Former."'),
+      '#title' => $this->t('Allow former designation'),
       '#default_value' => $this->entity->getAllowFormer(),
     ];
 
