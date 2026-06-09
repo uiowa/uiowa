@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinempuconsortium.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinempuconsortium
+  human_name: mpuconsortium.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinempuconsortium.prod
+drupal:
+  db:
+    database: mpuconsortium_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinempuconsortium.prod.drupal.uiowa.edu'
+  requester: mnfreund
+  site-name: 'Medical Psychiatry Unit Consortium'

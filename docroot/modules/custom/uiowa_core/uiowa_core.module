@@ -263,7 +263,21 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
   // For entities with moderation and scheduler.
   // Catching an odd situation after scheduler where it changes the node
   // status to unpublished but doesn't change the moderation state.
+  // This is needed for programmatic saves such as bulk operations.
+  // Node saves are handled instead by
+  // uiowa_core_scheduler_moderation_validate.
   if ($entity instanceof NodeInterface) {
+    // If we don't have moderation on this entity,
+    // exit early.
+    $moderation_info = \Drupal::service('content_moderation.moderation_information');
+    $is_moderated = $moderation_info->shouldModerateEntitiesOfBundle(
+      $entity->getEntityType(),
+      $entity->bundle()
+    );
+    if (!$is_moderated) {
+      return;
+    }
+
     if ($set_state = $entity->moderation_state?->value) {
       if ($set_state == 'published' && !$entity->isPublished()) {
         if ($entity->isNew()) {
@@ -866,6 +880,19 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     uiowa_core_scheduler_help_text($form);
   }
 
+  // Add early validation for scheduler/moderation conflicts.
+  // This prevents form validation errors
+  // from scheduler_content_moderation_integration
+  // by adjusting values before entity validation runs.
+  $module_handler = \Drupal::moduleHandler();
+  if ($module_handler->moduleExists('scheduler') && $module_handler->moduleExists('scheduler_content_moderation_integration')) {
+    $scheduler_manager = \Drupal::service('scheduler.manager');
+    if (in_array($form_id, $scheduler_manager->getEntityFormIds())) {
+      // Prepend our validation handler so it runs before entity validation.
+      array_unshift($form['#validate'], 'uiowa_core_scheduler_moderation_validate');
+    }
+  }
+
   switch ($form_id) {
     case 'fragment_region_item_add_form':
     case 'fragment_region_item_edit_form':
@@ -1198,6 +1225,93 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   if (str_starts_with($form_id, 'node_') && str_ends_with($form_id, '_form')) {
     if (isset($form['body']['widget'][0]['summary'])) {
       $form['body']['widget'][0]['summary']['#description'] = t('The summary is used for list displays on this site and in the content\'s <a href="https://sitenow.uiowa.edu/documentation/search-engine-optimization#summary" target="_blank">meta description</a>. If left blank, a trimmed value of the full text will be used for the meta description, but not for list displays.');
+    }
+  }
+}
+
+/**
+ * Custom validation handler to reconcile scheduler and moderation conflicts.
+ *
+ * This runs before entity validation to prevent form errors from
+ * scheduler_content_moderation_integration constraints. It automatically
+ * adjusts the moderation state when there's a conflict with scheduled
+ * publish/unpublish dates, allowing the save to proceed.
+ * This is similar to the process in uiowa_core_entity_presave.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $form_object->getEntity();
+
+  // Only process nodes with moderation.
+  if (!($entity instanceof NodeInterface) || !$entity->hasField('moderation_state')) {
+    return;
+  }
+
+  $moderation_state = $form_state->getValue('moderation_state');
+  if (!$moderation_state || empty($moderation_state[0]['value'])) {
+    return;
+  }
+
+  $set_state = $moderation_state[0]['value'];
+  $publish_on = $form_state->getValue('publish_on');
+  $unpublish_on = $form_state->getValue('unpublish_on');
+
+  // Check for conflict: trying to set to "published"
+  // with a future publish date.
+  if ($set_state === 'published' && !empty($publish_on[0]['value'])) {
+    $publish_timestamp = strtotime($publish_on[0]['value']);
+    $request_time = \Drupal::time()->getRequestTime();
+
+    if ($publish_timestamp > $request_time) {
+      // Determine fallback state.
+      if ($entity->isNew()) {
+        $fallback_state = 'draft';
+      }
+      else {
+        $fallback_state = $entity->moderation_state->value ?? 'draft';
+      }
+
+      // Update form state to use fallback instead of published.
+      $form_state->setValue(['moderation_state', 0, 'value'], $fallback_state);
+
+      // Add warning message.
+      $warning_text = t('Content criteria for <em>"@label"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+        '@label' => $entity->label() ?: t('this content'),
+        '@set_state' => $set_state,
+        '@fallback_state' => $fallback_state,
+      ]);
+      \Drupal::messenger()->addWarning($warning_text);
+    }
+  }
+
+  // Check for conflict: trying to set to "archived"
+  // with a future unpublish date.
+  if ($set_state === 'archived' && !empty($unpublish_on[0]['value'])) {
+    $unpublish_timestamp = strtotime($unpublish_on[0]['value']);
+    $request_time = \Drupal::time()->getRequestTime();
+
+    if ($unpublish_timestamp > $request_time) {
+      $fallback_state = $entity->moderation_state->value ?? 'draft';
+
+      // Update form state to use original state.
+      $form_state->setValue(['moderation_state', 0, 'value'], $fallback_state);
+
+      // Add warning message.
+      $warning_text = t('Content scheduling criteria for <em>"@label"</em> conflicts with the set "unpublished" moderation state. Switching back to "@fallback_state."', [
+        '@label' => $entity->label() ?: t('this content'),
+        '@fallback_state' => $fallback_state,
+      ]);
+      \Drupal::messenger()->addWarning($warning_text);
     }
   }
 }
