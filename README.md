@@ -67,6 +67,8 @@ uiowa:
 The `blt frontend` command will install and compile frontend assets.
 
 ## Multisite Management
+SiteNow provides host-side multisite commands through the `sn` CLI, including `multisite:create`. See [sitenow/README.md](sitenow/README.md).
+
 There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
 
 Because the `.git` directory is not synced to the web container, some commands need to be run on your host machine instead. You can run `./vendor/bin/blt` from the project root or install the [BLT Launcher](https://github.com/acquia/blt-launcher) to just run `blt`.
