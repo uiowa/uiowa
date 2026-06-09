@@ -85,6 +85,9 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         }
         $allowed_types = \Drupal::entityTypeManager()
           ->getStorage('person_type')->loadByProperties(['status' => TRUE]);
+        if (empty($allowed_types)) {
+          $form['field_person_types']['#access'] = FALSE;
+        }
         // Loop through fields.
         foreach (Element::children($form) as $field_name) {
           $conditions = [];
