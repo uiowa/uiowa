@@ -34,6 +34,12 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Configure Composer authentication
+        run: |
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
 
@@ -62,6 +68,12 @@ jobs:
           path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+
+      - name: Configure Composer authentication
+        run: |
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
@@ -101,6 +113,12 @@ jobs:
           path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+
+      - name: Configure Composer authentication
+        run: |
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
@@ -181,6 +199,12 @@ jobs:
           path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+
+      - name: Configure Composer authentication
+        run: |
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
