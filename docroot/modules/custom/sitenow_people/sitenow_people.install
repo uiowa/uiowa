@@ -390,3 +390,16 @@ function sitenow_people_update_10001() {
   $view->save();
 
 }
+
+/**
+ * Mark all existing person types as protected.
+ */
+function sitenow_people_update_10002() {
+  $person_types = \Drupal::entityTypeManager()
+    ->getStorage('person_type')
+    ->loadMultiple();
+
+  foreach ($person_types as $person_type) {
+    $person_type->set('protected', TRUE)->save();
+  }
+}
