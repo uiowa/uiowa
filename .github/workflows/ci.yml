@@ -34,14 +34,33 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Configure Composer authentication
+      - name: Configure Git and Composer authentication
         run: |
+          # Configure git to rewrite SSH URLs to HTTPS
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer to use GitHub token and prefer HTTPS
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
+
+          # Show what we configured (for debugging)
+          echo "Git config:"
+          git config --global --get-regexp url
+          echo "Composer auth configured for github.com"
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist
+        run: |
+          composer install --no-interaction --prefer-dist --verbose
+
+          # Verify phpcs was installed
+          if [ ! -f vendor/bin/phpcs ]; then
+            echo "ERROR: phpcs not installed!"
+            echo "Checking vendor directory:"
+            ls -la vendor/ || echo "vendor directory not found"
+            exit 1
+          fi
+          echo "✓ Composer dependencies installed successfully"
 
       - name: Run PHPCS
         run: scripts/ci/lint.sh
