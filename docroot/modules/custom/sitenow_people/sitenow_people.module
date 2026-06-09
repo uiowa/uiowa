@@ -961,3 +961,16 @@ function _sitenow_people_path_token_value() {
 
   return '';
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_people_form_person_type_delete_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $person_type = $form_state->getFormObject()->getEntity();
+  if ($person_type->isProtected()) {
+    $form['actions']['submit']['#disabled'] = TRUE;
+    \Drupal::messenger()->addWarning(t('The person type %label is protected and cannot be deleted.', [
+      '%label' => $person_type->label(),
+    ]));
+  }
+}
