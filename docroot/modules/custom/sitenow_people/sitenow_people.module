@@ -242,6 +242,18 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         break;
       }
 
+      // If no enabled types exist, hide the filter for all users.
+      $enabled_types = \Drupal::entityTypeManager()
+        ->getStorage('person_type')
+        ->loadByProperties(['status' => TRUE]);
+      if (empty($enabled_types)) {
+        $element['filter-field_person_types_target_id']['#access'] = FALSE;
+        if (isset($element['filter-' . PersonTypeInterface::STATUS_FILTER])) {
+          $element['filter-' . PersonTypeInterface::STATUS_FILTER]['#access'] = FALSE;
+        }
+        break;
+      }
+
       // Only continue if person type status filter exists.
       if (!isset($element['filter-' . PersonTypeInterface::STATUS_FILTER])) {
         break;
@@ -272,6 +284,15 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       ];
 
       $person_type_options = $element['filter-field_person_types_target_id']['field_person_types_target_id']['#options'];
+
+      // Strip disabled types from the filter dropdown.
+      foreach (array_keys($person_type_options) as $key) {
+        if ($key !== 'All' && !isset($enabled_types[$key])) {
+          unset($person_type_options[$key]);
+        }
+      }
+      $element['filter-field_person_types_target_id']['field_person_types_target_id']['#options'] = $person_type_options;
+
       $person_type_status_options = $element['filter-' . PersonTypeInterface::STATUS_FILTER][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER]['#options'];
 
       foreach ($person_type_options as $key => $option) {
