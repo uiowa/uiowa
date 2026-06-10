@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
+# Grant workflow token read access to repository contents
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   # Linting job - fast feedback
   lint:
@@ -36,18 +41,17 @@ jobs:
 
       - name: Configure Git and Composer authentication
         run: |
-          # Configure git to rewrite SSH URLs to HTTPS
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
-          git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+          # Configure git to rewrite SSH URLs to HTTPS (must be done first)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
 
-          # Configure Composer to use GitHub token and prefer HTTPS
+          # Also configure Composer auth as backup
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
-          # Show what we configured (for debugging)
-          echo "Git config:"
-          git config --global --get-regexp url
-          echo "Composer auth configured for github.com"
+          # Verify the configuration
+          echo "Git URL rewrites configured with token authentication"
+          git config --global --get-regexp url || true
 
       - name: Install Composer dependencies
         run: |
@@ -88,11 +92,15 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Configure Composer authentication
+      - name: Configure Git and Composer authentication
         run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Also configure Composer auth as backup
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
@@ -133,11 +141,15 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Configure Composer authentication
+      - name: Configure Git and Composer authentication
         run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Also configure Composer auth as backup
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
@@ -219,11 +231,15 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Configure Composer authentication
+      - name: Configure Git and Composer authentication
         run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Also configure Composer auth as backup
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
-          git config --global url."https://github.com/".insteadOf "git@github.com:"
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
