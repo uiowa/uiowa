@@ -392,14 +392,56 @@ function sitenow_people_update_10001() {
 }
 
 /**
- * Mark all existing person types as protected.
+ * Add additional person types on existing and mark person types as protected.
  */
 function sitenow_people_update_10002() {
-  $person_types = \Drupal::entityTypeManager()
-    ->getStorage('person_type')
-    ->loadMultiple();
+  $storage = \Drupal::entityTypeManager()->getStorage('person_type');
 
-  foreach ($person_types as $person_type) {
+  // Add types from additional_person_types to existing sites
+  // if not already present, but keep them disabled by default.
+  // Sites that already have these types keep their existing config unchanged.
+  $additional_types = [
+    'adjunct_faculty' => [
+      'uuid' => 'c8e88592-d8ce-4fa9-a321-7dea83a8262a',
+      'label' => 'Adjunct Faculty',
+      'status' => FALSE,
+      'allow_former' => TRUE,
+    ],
+    'alumni' => [
+      'uuid' => '41f4418c-3fd1-4241-b2fe-7a498630a3a6',
+      'label' => 'Alumni',
+      'status' => FALSE,
+      'allow_former' => FALSE,
+    ],
+    'postdoc' => [
+      'uuid' => 'e1a5e642-fb52-4a1c-b043-9cc78f8f39f4',
+      'label' => 'Postdoctoral Researcher',
+      'status' => FALSE,
+      'allow_former' => TRUE,
+    ],
+    'visiting_faculty' => [
+      'uuid' => 'ee0e6fc5-e63e-48be-8c41-bf0084b6b4c5',
+      'label' => 'Visiting Faculty',
+      'status' => FALSE,
+      'allow_former' => TRUE,
+    ],
+  ];
+
+  foreach ($additional_types as $id => $data) {
+    if (!$storage->load($id)) {
+      $storage->create([
+        'id' => $id,
+        'uuid' => $data['uuid'],
+        'label' => $data['label'],
+        'status' => $data['status'],
+        'allow_former' => $data['allow_former'],
+        'allowed_fields' => [],
+      ])->save();
+    }
+  }
+
+  // Mark all existing person types as protected.
+  foreach ($storage->loadMultiple() as $person_type) {
     $person_type->set('protected', TRUE)->save();
   }
 }
