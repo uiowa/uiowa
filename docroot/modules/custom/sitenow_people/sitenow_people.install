@@ -392,56 +392,32 @@ function sitenow_people_update_10001() {
 }
 
 /**
- * Add additional person types on existing and mark person types as protected.
+ * Add additional person types on existing and mark person types as locked.
  */
 function sitenow_people_update_10002() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
   $storage = \Drupal::entityTypeManager()->getStorage('person_type');
 
-  // Add types from additional_person_types to existing sites
-  // if not already present, but keep them disabled by default.
-  // Sites that already have these types keep their existing config unchanged.
-  $additional_types = [
-    'adjunct_faculty' => [
-      'uuid' => 'c8e88592-d8ce-4fa9-a321-7dea83a8262a',
-      'label' => 'Adjunct Faculty',
-      'status' => FALSE,
-      'allow_former' => TRUE,
-    ],
-    'alumni' => [
-      'uuid' => '41f4418c-3fd1-4241-b2fe-7a498630a3a6',
-      'label' => 'Alumni',
-      'status' => FALSE,
-      'allow_former' => FALSE,
-    ],
-    'postdoc' => [
-      'uuid' => 'e1a5e642-fb52-4a1c-b043-9cc78f8f39f4',
-      'label' => 'Postdoctoral Researcher',
-      'status' => FALSE,
-      'allow_former' => TRUE,
-    ],
-    'visiting_faculty' => [
-      'uuid' => 'ee0e6fc5-e63e-48be-8c41-bf0084b6b4c5',
-      'label' => 'Visiting Faculty',
-      'status' => FALSE,
-      'allow_former' => TRUE,
-    ],
+  // Import new additional person types from config/default, preserving
+  // canonical UUIDs. Use entity API to check existence so sites that already
+  // have these types (e.g. via the old additional_person_types feature split)
+  // keep their existing config unchanged.
+  $person_type_config_names = [
+    'sitenow_people.person_type.adjunct_faculty',
+    'sitenow_people.person_type.alumni',
+    'sitenow_people.person_type.postdoc',
+    'sitenow_people.person_type.visiting_faculty',
   ];
-
-  foreach ($additional_types as $id => $data) {
-    if (!$storage->load($id)) {
-      $storage->create([
-        'id' => $id,
-        'uuid' => $data['uuid'],
-        'label' => $data['label'],
-        'status' => $data['status'],
-        'allow_former' => $data['allow_former'],
-        'allowed_fields' => [],
-      ])->save();
+  foreach ($person_type_config_names as $config_name) {
+    $values = $source->read($config_name);
+    if ($values && !$storage->load($values['id'])) {
+      $storage->create($values)->save();
     }
   }
 
-  // Mark all existing person types as protected.
+  // Mark all existing person types as locked.
   foreach ($storage->loadMultiple() as $person_type) {
-    $person_type->set('protected', TRUE)->save();
+    $person_type->set('locked', TRUE)->save();
   }
 }

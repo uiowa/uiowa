@@ -77,7 +77,7 @@ class PersonTypeForm extends EntityForm {
       '#machine_name' => [
         'exists' => '\Drupal\sitenow_people\Entity\PersonType::load',
       ],
-      '#disabled' => !$this->entity->isNew() || $this->entity->isProtected(),
+      '#disabled' => !$this->entity->isNew() || $this->entity->isLocked(),
     ];
 
     $form['status'] = [
@@ -100,11 +100,11 @@ class PersonTypeForm extends EntityForm {
     ];
 
     if ($this->uiowaAccess->access()->isAllowed()) {
-      $form['protected'] = [
+      $form['locked'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('Protected'),
+        '#title' => $this->t('Locked'),
         '#description' => $this->t('Prevent this person type from being deleted.'),
-        '#default_value' => $this->entity->isProtected(),
+        '#default_value' => $this->entity->isLocked(),
       ];
     }
 
@@ -173,7 +173,7 @@ class PersonTypeForm extends EntityForm {
    */
   public function actionsElement(array $form, FormStateInterface $form_state) {
     $actions = parent::actionsElement($form, $form_state);
-    if ($this->entity->isProtected()) {
+    if ($this->entity->isLocked()) {
       unset($actions['delete']);
     }
     return $actions;

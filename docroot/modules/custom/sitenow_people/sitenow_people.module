@@ -243,9 +243,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       }
 
       // If no enabled types exist, hide the filter for all users.
-      $enabled_types = \Drupal::entityTypeManager()
-        ->getStorage('person_type')
-        ->loadByProperties(['status' => TRUE]);
+      static $enabled_types;
+      if (!isset($enabled_types)) {
+        $enabled_types = \Drupal::entityTypeManager()
+          ->getStorage('person_type')
+          ->loadByProperties(['status' => TRUE]);
+      }
       if (empty($enabled_types)) {
         $element['filter-field_person_types_target_id']['#access'] = FALSE;
         if (isset($element['filter-' . PersonTypeInterface::STATUS_FILTER])) {
@@ -810,9 +813,21 @@ function sitenow_people_views_pre_build(ViewExecutable $view) {
       'type' => 'field_person_types_target_id',
       'research' => 'field_person_research_areas_target_id',
     ];
+    static $enabled_types_for_view;
+    if (!isset($enabled_types_for_view)) {
+      $enabled_types_for_view = \Drupal::entityTypeManager()
+        ->getStorage('person_type')
+        ->loadByProperties(['status' => TRUE]);
+    }
+
     $uses_exposed = FALSE;
     foreach ($filters_to_toggle as $filter_type => $filter_label) {
-      if ($config->get("filter_display.{$filter_type}")) {
+      $is_enabled = (bool) $config->get("filter_display.{$filter_type}");
+      // Treat the person type filter as disabled when no enabled types exist.
+      if ($filter_type === 'type' && empty($enabled_types_for_view)) {
+        $is_enabled = FALSE;
+      }
+      if ($is_enabled) {
         $uses_exposed = TRUE;
       }
       else {
@@ -848,6 +863,26 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       // Change the research areas label.
       if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
+      }
+      // Strip disabled person types from the exposed filter dropdown.
+      // The entity_reference filter handler does not respect entity status.
+      if (isset($form['type'])) {
+        static $enabled_types_for_exposed;
+        if (!isset($enabled_types_for_exposed)) {
+          $enabled_types_for_exposed = \Drupal::entityTypeManager()
+            ->getStorage('person_type')
+            ->loadByProperties(['status' => TRUE]);
+        }
+        if (empty($enabled_types_for_exposed)) {
+          $form['type']['#access'] = FALSE;
+        }
+        else {
+          foreach (array_keys($form['type']['#options']) as $key) {
+            if ($key !== 'All' && !isset($enabled_types_for_exposed[$key])) {
+              unset($form['type']['#options'][$key]);
+            }
+          }
+        }
       }
       break;
 
@@ -991,9 +1026,9 @@ function _sitenow_people_path_token_value() {
  */
 function sitenow_people_form_person_type_delete_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $person_type = $form_state->getFormObject()->getEntity();
-  if ($person_type->isProtected()) {
+  if ($person_type->isLocked()) {
     $form['actions']['submit']['#disabled'] = TRUE;
-    \Drupal::messenger()->addWarning(t('The person type %label is protected and cannot be deleted.', [
+    \Drupal::messenger()->addWarning(t('The person type %label is locked and cannot be deleted.', [
       '%label' => $person_type->label(),
     ]));
   }
