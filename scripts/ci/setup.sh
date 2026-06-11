@@ -56,8 +56,16 @@ if [ "$ENV" = "local" ]; then
   mysql -h db -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
   mysql -h db -u root -proot -e "CREATE DATABASE drupal_test;"
   DB_URL="mysql://db:db@db/drupal_test"
+elif [ "$ENV" = "github" ]; then
+  # GitHub Actions database setup (uses root password)
+  mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
+  mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE drupal_test;"
+  mysql -h 127.0.0.1 -u root -proot -e "CREATE USER IF NOT EXISTS 'drupal'@'%' IDENTIFIED BY 'drupal';"
+  mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL ON drupal_test.* TO 'drupal'@'%';"
+  mysql -h 127.0.0.1 -u root -proot -e "FLUSH PRIVILEGES;"
+  DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
 else
-  # CI database setup (works for Travis, GitHub Actions, etc.)
+  # Travis CI and other CI database setup (no root password)
   mysql -u root -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
   mysql -u root -e "CREATE DATABASE drupal_test;"
   mysql -u root -e "CREATE USER IF NOT EXISTS 'drupal'@'localhost' IDENTIFIED BY 'drupal';"
@@ -98,11 +106,11 @@ fi
 
 # Create phpunit.xml symlink in docroot if it doesn't exist
 # This is needed for functional tests to find the configuration
-if [ "$ENV" = "local" ] && [ ! -e "${TRAVIS_BUILD_DIR:-/var/www/html}/docroot/phpunit.xml" ]; then
+if [ "$ENV" = "local" ] && [ ! -e "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot/phpunit.xml" ]; then
   echo -e "\n${YELLOW}Creating phpunit.xml symlink in docroot...${NC}"
-  cd "${TRAVIS_BUILD_DIR:-/var/www/html}/docroot"
+  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
   ln -sf ../phpunit.xml.dist phpunit.xml
-  cd "${TRAVIS_BUILD_DIR:-/var/www/html}"
+  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 fi
 
 echo -e "\n${GREEN}✓ Setup complete${NC}"
