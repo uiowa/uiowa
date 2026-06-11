@@ -4,7 +4,6 @@ namespace Drupal\sitenow_people;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\sitenow_people\PersonTypeInterface;
 
 /**
  * Provides a listing of person types.
