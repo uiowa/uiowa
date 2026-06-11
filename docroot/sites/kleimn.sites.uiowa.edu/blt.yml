@@ -1,0 +1,18 @@
+project:
+  machine_name: siteskleimn
+  human_name: kleimn.sites.uiowa.edu
+  local:
+    hostname: siteskleimn.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: siteskleimn.prod
+drupal:
+  db:
+    database: kleimn_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteskleimn.prod.drupal.uiowa.edu'
+  requester: kleimn
+  site-name: 'Elizabeth Kleiman'
