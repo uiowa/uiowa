@@ -34,7 +34,7 @@ jobs:
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
 
-          # Also configure Composer auth as backup
+          # Configure Composer authentication using multiple methods for reliability
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
@@ -54,6 +54,8 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
           composer install --no-interaction --prefer-dist --verbose
 
@@ -91,7 +93,7 @@ jobs:
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
 
-          # Also configure Composer auth as backup
+          # Configure Composer authentication
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
@@ -103,6 +105,8 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: composer install --no-interaction --prefer-dist
 
       - name: Run PHPStan
@@ -140,7 +144,7 @@ jobs:
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
 
-          # Also configure Composer auth as backup
+          # Configure Composer authentication
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
@@ -152,6 +156,8 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: composer install --no-interaction --prefer-dist
 
       - name: Setup test environment
@@ -230,7 +236,7 @@ jobs:
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
 
-          # Also configure Composer auth as backup
+          # Configure Composer authentication
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
@@ -242,6 +248,8 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: composer install --no-interaction --prefer-dist
 
       - name: Setup test environment
