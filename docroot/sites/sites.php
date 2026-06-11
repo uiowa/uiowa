@@ -7876,3 +7876,9 @@ $sites['siteshawkeyemakerhub.uiowa.ddev.site'] = 'hawkeyemakerhub.sites.uiowa.ed
 $sites['siteshawkeyemakerhub.dev.drupal.uiowa.edu'] = 'hawkeyemakerhub.sites.uiowa.edu';
 $sites['siteshawkeyemakerhub.stage.drupal.uiowa.edu'] = 'hawkeyemakerhub.sites.uiowa.edu';
 $sites['siteshawkeyemakerhub.prod.drupal.uiowa.edu'] = 'hawkeyemakerhub.sites.uiowa.edu';
+
+// Directory aliases for kleimn.sites.uiowa.edu.
+$sites['siteskleimn.uiowa.ddev.site'] = 'kleimn.sites.uiowa.edu';
+$sites['siteskleimn.dev.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
+$sites['siteskleimn.stage.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
+$sites['siteskleimn.prod.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
