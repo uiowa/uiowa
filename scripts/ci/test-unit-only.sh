@@ -18,7 +18,7 @@ echo -e "${GREEN}=== Running Unit and Kernel Tests ===${NC}\n"
 echo -e "${YELLOW}Note: Skipping Functional and FunctionalJavascript tests${NC}\n"
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-/var/www/html}"
+cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 
 # Run tests with path filters to only include Unit and Kernel tests
 vendor/bin/phpunit \

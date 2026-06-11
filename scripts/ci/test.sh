@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}=== Running PHPUnit Tests ===${NC}\n"
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-/var/www/html}"
+cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 
 # Check if phpunit exists
 if [ ! -f "vendor/bin/phpunit" ]; then
