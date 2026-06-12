@@ -113,33 +113,50 @@ if [ "$ENV" = "local" ] && [ ! -e "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/
   cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 fi
 
-# Start PHP built-in web server for functional tests (optional)
+# Start web server for functional tests using Drush (optional)
 # Only needed if running Functional or FunctionalJavascript tests
 if [ "${RUN_SERVER:-false}" = "true" ]; then
-  echo -e "\n${YELLOW}Starting PHP built-in web server for functional tests...${NC}"
+  echo -e "\n${YELLOW}Starting web server for functional tests...${NC}"
 
-  # Determine server port from SIMPLETEST_BASE_URL
-  SERVER_PORT=$(echo "$SIMPLETEST_BASE_URL" | sed -n 's/.*:\([0-9]*\).*/\1/p')
-  if [ -z "$SERVER_PORT" ]; then
-    SERVER_PORT=8080
-  fi
+  PROJECT_ROOT="${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 
-  # Start server in background
-  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
-  php -S 127.0.0.1:$SERVER_PORT .ht.router.php &
+  # Create tmp directory for logs
+  mkdir -p "$PROJECT_ROOT/tmp"
+
+  # Kill any existing runserver processes
+  pkill -f "drush runserver" || true
+  pkill -f "php -S.*8080" || true
+
+  # Start Drush runserver in background
+  echo "Starting Drush runserver at $SIMPLETEST_BASE_URL"
+  cd "$PROJECT_ROOT/docroot"
+  ../vendor/bin/drush runserver "$SIMPLETEST_BASE_URL" > "$PROJECT_ROOT/tmp/runserver.log" 2>&1 &
   SERVER_PID=$!
+  echo "$SERVER_PID" > "$PROJECT_ROOT/tmp/php-server.pid"
 
   # Wait for server to be ready
-  for i in {1..10}; do
-    if curl -s "http://127.0.0.1:$SERVER_PORT" > /dev/null; then
-      echo "✓ Web server started on port $SERVER_PORT (PID: $SERVER_PID)"
-      echo "$SERVER_PID" > /tmp/php-server.pid
+  echo "Waiting for server to respond..."
+  SERVER_STARTED=false
+  for i in {1..30}; do
+    if curl -f -s -o /dev/null "$SIMPLETEST_BASE_URL"; then
+      echo -e "${GREEN}✓ Web server started at $SIMPLETEST_BASE_URL (PID: $SERVER_PID)${NC}"
+      SERVER_STARTED=true
       break
     fi
+    echo -n "."
     sleep 1
   done
 
-  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+  if [ "$SERVER_STARTED" = false ]; then
+    echo -e "\n${RED}✗ Web server failed to start after 30 seconds${NC}"
+    echo "Server log:"
+    cat "$PROJECT_ROOT/tmp/runserver.log" 2>/dev/null || echo "Log file not found"
+    echo "Checking if process is running:"
+    ps aux | grep -E "drush|runserver|$SERVER_PID" | grep -v grep
+    exit 1
+  fi
+
+  cd "$PROJECT_ROOT"
 fi
 
 echo -e "\n${GREEN}✓ Setup complete${NC}"
