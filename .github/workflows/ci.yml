@@ -1,0 +1,239 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+# Grant workflow token read access to repository contents
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  # Linting job - fast feedback
+  lint:
+    name: Code Standards (PHPCS)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS (must be done BEFORE cache)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication using multiple methods for reliability
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+          # Verify the configuration
+          echo "Git URL rewrites configured with token authentication"
+          git config --global --get-regexp url || true
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist --verbose
+
+          # Verify phpcs was installed
+          if [ ! -f vendor/bin/phpcs ]; then
+            echo "ERROR: phpcs not installed!"
+            echo "Checking vendor directory:"
+            ls -la vendor/ || echo "vendor directory not found"
+            exit 1
+          fi
+          echo "✓ Composer dependencies installed successfully"
+
+      - name: Run PHPCS
+        run: scripts/ci/lint.sh
+
+  # Static analysis job
+  static-analysis:
+    name: Static Analysis (PHPStan)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token (must be BEFORE cache)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPStan
+        run: scripts/ci/static-analysis.sh
+
+  # PHPUnit tests job - all test types
+  test:
+    name: PHPUnit Tests
+    runs-on: ubuntu-22.04
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: drupal_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql, memcache
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token (must be BEFORE cache)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      - name: Setup test environment and web server
+        run: scripts/ci/setup.sh
+        env:
+          CI: true
+          INSTALL_DRUPAL: true
+          RUN_SERVER: true
+
+      - name: Run PHPUnit tests
+        run: scripts/ci/test.sh
+        env:
+          CI: true
+          SIMPLETEST_DB: mysql://drupal:drupal@127.0.0.1/drupal_test
+          SIMPLETEST_BASE_URL: http://localhost:8080
+
+  # Build frontend assets
+  frontend:
+    name: Frontend Build
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --production --ignore-optional --frozen-lockfile --non-interactive
+
+      - name: Build frontend assets
+        run: yarn workspaces run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-assets
+          path: |
+            docroot/themes/*/dist/
+            docroot/modules/*/dist/
+          retention-days: 7

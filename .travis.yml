@@ -2,16 +2,21 @@ language: php
 os: linux
 dist: focal
 php: '8.3'
+
 env:
   global:
   - COMPOSER_BIN=$TRAVIS_BUILD_DIR/vendor/bin
   - BLT_TRAVIS_DIR=$TRAVIS_BUILD_DIR/vendor/acquia/blt-travis
   - PERCY_POSTINSTALL_BROWSER=true
+
 cache:
   directories:
   - "$TRAVIS_BUILD_DIR/node_modules/"
+  - "$HOME/.composer/cache"
+
 services:
 - mysql
+
 addons:
   chrome: stable
   ssh_known_hosts:
@@ -19,24 +24,55 @@ addons:
   - svn-29892.prod.hosting.acquia.com
   - svn-37631.prod.hosting.acquia.com
   - svn-45062.prod.hosting.acquia.com
+
 before_install:
-- openssl aes-256-cbc -K $encrypted_189e52c2c347_key -iv $encrypted_189e52c2c347_iv
-  -in deploy_key.enc -out deploy_key -d
-- mv deploy_key $HOME/.ssh/id_rsa
-- chmod 600 $HOME/.ssh/id_rsa
-- phpenv config-rm xdebug.ini
+  # Setup SSH keys for deployment
+  - openssl aes-256-cbc -K $encrypted_189e52c2c347_key -iv $encrypted_189e52c2c347_iv
+    -in deploy_key.enc -out deploy_key -d
+  - mv deploy_key $HOME/.ssh/id_rsa
+  - chmod 600 $HOME/.ssh/id_rsa
+
+  # PHP configuration
+  - phpenv config-rm xdebug.ini
+  - echo 'max_execution_time = 120' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo 'memory_limit=512M' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+  # Git configuration
+  - git config --global user.name "Travis-CI"
+  - git config --global user.email "noreply@travis-ci.com"
+
 install:
-- nvm install
-- nvm use
-- yarn --version
-- composer install
-- source ${BLT_TRAVIS_DIR}/scripts/exit_early
-- source ${BLT_TRAVIS_DIR}/scripts/setup_environment
-- source ${BLT_TRAVIS_DIR}/scripts/setup_project
+  # Node.js and frontend dependencies
+  - nvm install
+  - nvm use
+  - yarn --version
+
+  # PHP dependencies
+  - composer install
+
+  # Frontend build (still using BLT command hook for now)
+  - yarn install --production --ignore-optional --frozen-lockfile --non-interactive
+  - yarn workspaces run build
+
 script:
-- blt blt:telemetry:disable --no-interaction
-- source ${BLT_TRAVIS_DIR}/scripts/run_tests
-- rm LICENSE.chromedriver
+  # Run CI checks using new scripts
+  - chmod +x scripts/ci/*.sh
+
+  # Run linting and static analysis first (fast feedback)
+  - scripts/ci/lint.sh
+  - scripts/ci/static-analysis.sh
+
+  # Setup environment with Drupal installation and web server for functional tests
+  - INSTALL_DRUPAL=true RUN_SERVER=true scripts/ci/setup.sh
+
+  # Run all tests (including functional tests)
+  - scripts/ci/test.sh
+
+  # Cleanup (chromedriver license file)
+  - rm -f LICENSE.chromedriver
+
+# Deployment configuration (unchanged - still uses BLT for now)
 deploy:
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
