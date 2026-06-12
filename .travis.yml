@@ -58,9 +58,15 @@ install:
 script:
   # Run CI checks using new scripts
   - chmod +x scripts/ci/*.sh
-  - scripts/ci/setup.sh
+
+  # Run linting and static analysis first (fast feedback)
   - scripts/ci/lint.sh
   - scripts/ci/static-analysis.sh
+
+  # Setup environment with Drupal installation and web server for functional tests
+  - INSTALL_DRUPAL=true RUN_SERVER=true scripts/ci/setup.sh
+
+  # Run all tests (including functional tests)
   - scripts/ci/test.sh
 
   # Cleanup (chromedriver license file)

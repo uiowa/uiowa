@@ -113,6 +113,35 @@ if [ "$ENV" = "local" ] && [ ! -e "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/
   cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 fi
 
+# Start PHP built-in web server for functional tests (optional)
+# Only needed if running Functional or FunctionalJavascript tests
+if [ "${RUN_SERVER:-false}" = "true" ]; then
+  echo -e "\n${YELLOW}Starting PHP built-in web server for functional tests...${NC}"
+
+  # Determine server port from SIMPLETEST_BASE_URL
+  SERVER_PORT=$(echo "$SIMPLETEST_BASE_URL" | sed -n 's/.*:\([0-9]*\).*/\1/p')
+  if [ -z "$SERVER_PORT" ]; then
+    SERVER_PORT=8080
+  fi
+
+  # Start server in background
+  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
+  php -S 127.0.0.1:$SERVER_PORT .ht.router.php &
+  SERVER_PID=$!
+
+  # Wait for server to be ready
+  for i in {1..10}; do
+    if curl -s "http://127.0.0.1:$SERVER_PORT" > /dev/null; then
+      echo "✓ Web server started on port $SERVER_PORT (PID: $SERVER_PID)"
+      echo "$SERVER_PID" > /tmp/php-server.pid
+      break
+    fi
+    sleep 1
+  done
+
+  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+fi
+
 echo -e "\n${GREEN}✓ Setup complete${NC}"
 echo "Environment variables set:"
 echo "  SIMPLETEST_DB=$SIMPLETEST_DB"

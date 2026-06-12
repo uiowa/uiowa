@@ -133,9 +133,9 @@ jobs:
       - name: Run PHPStan
         run: scripts/ci/static-analysis.sh
 
-  # Unit tests job - fastest tests
-  test-unit:
-    name: Unit Tests
+  # PHPUnit tests job - all test types
+  test:
+    name: PHPUnit Tests
     runs-on: ubuntu-22.04
 
     services:
@@ -194,13 +194,15 @@ jobs:
 
           composer install --no-interaction --prefer-dist
 
-      - name: Setup test environment
+      - name: Setup test environment and web server
         run: scripts/ci/setup.sh
         env:
           CI: true
+          INSTALL_DRUPAL: true
+          RUN_SERVER: true
 
-      - name: Run Unit tests
-        run: scripts/ci/test.sh --filter=Unit
+      - name: Run PHPUnit tests
+        run: scripts/ci/test.sh
         env:
           CI: true
           SIMPLETEST_DB: mysql://drupal:drupal@127.0.0.1/drupal_test
@@ -235,79 +237,3 @@ jobs:
             docroot/themes/*/dist/
             docroot/modules/*/dist/
           retention-days: 7
-
-  # Full test suite (optional - only on main/develop)
-  test-full:
-    name: Full Test Suite
-    runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-    needs: [lint, test-unit]  # Only run if fast tests pass
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: drupal_test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: gd, pdo_mysql, memcache
-          coverage: none
-
-      - name: Configure Git and Composer authentication
-        run: |
-          # Configure git to rewrite SSH URLs to HTTPS with token (must be BEFORE cache)
-          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
-          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
-
-          # Configure Composer authentication
-          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-          composer config -g github-protocols https
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            vendor
-            docroot/core
-            docroot/modules/contrib
-            docroot/themes/contrib
-            docroot/profiles/contrib
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install Composer dependencies
-        env:
-          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
-        run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
-            echo "Clearing vendor to force fresh install..."
-            rm -rf vendor
-          fi
-
-          composer install --no-interaction --prefer-dist
-
-      - name: Setup test environment
-        run: scripts/ci/setup.sh
-        env:
-          CI: true
-          INSTALL_DRUPAL: true
-
-      - name: Run all tests
-        run: scripts/ci/test.sh
-        env:
-          CI: true
-          SIMPLETEST_DB: mysql://drupal:drupal@127.0.0.1/drupal_test
-          SIMPLETEST_BASE_URL: http://localhost:8080
