@@ -179,4 +179,25 @@ class Multisite {
     ];
   }
 
+  /**
+   * Determine whether a string is a valid multisite host.
+   *
+   * Accepts a lowercase, dot-separated domain of two or more labels. Each
+   * label starts and ends with an alphanumeric character and may contain
+   * hyphens internally. Rejects uppercase, underscores, and leading or
+   * trailing dots or hyphens.
+   *
+   * @param string $host
+   *   The candidate host, i.e. the URI without the scheme.
+   *
+   * @return bool
+   *   TRUE if the host is well-formed.
+   */
+  public static function isValidHost($host) {
+    return (bool) preg_match(
+      '/^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$/',
+      $host
+    );
+  }
+
 }
