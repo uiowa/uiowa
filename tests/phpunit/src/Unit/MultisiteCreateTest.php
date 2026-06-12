@@ -174,8 +174,9 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
-   * An explicit --app not among the candidates resolves to no app, which
-   * decide() surfaces upstream as an app-selection failure.
+   * An explicit --app not among the candidates resolves to no app.
+   *
+   * Function decide() surfaces upstream as an app-selection failure.
    */
   public function testExplicitAppNotInCandidatesYieldsNoApp() {
     $candidates = [
