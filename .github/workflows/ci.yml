@@ -42,12 +42,13 @@ jobs:
           echo "Git URL rewrites configured with token authentication"
           git config --global --get-regexp url || true
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+      # Temporarily disable cache to diagnose bootstrap.inc issue
+      # - name: Cache Composer dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: vendor
+      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      #     restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
@@ -99,12 +100,13 @@ jobs:
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+      # Temporarily disable cache to diagnose bootstrap.inc issue
+      # - name: Cache Composer dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: vendor
+      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      #     restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
@@ -157,12 +159,13 @@ jobs:
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+      # Temporarily disable cache to diagnose bootstrap.inc issue
+      # - name: Cache Composer dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: vendor
+      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      #     restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
@@ -256,12 +259,13 @@ jobs:
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+      # Temporarily disable cache to diagnose bootstrap.inc issue
+      # - name: Cache Composer dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: vendor
+      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      #     restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
