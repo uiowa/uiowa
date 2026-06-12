@@ -33,6 +33,12 @@ class SitesPhpUpdate {
 
 EOD;
 
+    // Idempotent: a retry after a partial run must not duplicate the aliases.
+    $existing = (string) file_get_contents($this->filePath);
+    if (str_contains($existing, "// Directory aliases for {$this->host}.")) {
+      return;
+    }
+
     if (file_put_contents($this->filePath, $block, FILE_APPEND) === FALSE) {
       throw new \RuntimeException("Failed to write to {$this->filePath}.");
     }

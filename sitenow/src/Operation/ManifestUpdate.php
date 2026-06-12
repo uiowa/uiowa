@@ -23,7 +23,10 @@ class ManifestUpdate {
     if (!isset($manifest[$this->app])) {
       $manifest[$this->app] = [];
     }
-    $manifest[$this->app][] = $this->host;
+    // Idempotent: a retry after a partial run must not duplicate the entry.
+    if (!in_array($this->host, $manifest[$this->app], TRUE)) {
+      $manifest[$this->app][] = $this->host;
+    }
 
     ksort($manifest);
     foreach ($manifest as &$sites) {

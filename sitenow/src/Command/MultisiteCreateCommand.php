@@ -49,6 +49,7 @@ class MultisiteCreateCommand extends Command {
   const CHECK_SSL_COVERAGE = 'has_ssl_coverage';
   const CHECK_APP_SELECTION = 'app_selection';
   const CHECK_APP_EXISTS = 'app_exists';
+  const CHECK_DRUSH_ALIAS_EXISTS = 'drush_alias_exists';
 
   /**
    * Constructs the command.
@@ -209,8 +210,10 @@ class MultisiteCreateCommand extends Command {
     ];
 
     if (empty($options['no-commit'])) {
-      $branch = trim((string) shell_exec('git rev-parse --abbrev-ref HEAD 2>/dev/null'));
-      $checks = array_merge($checks, $this->gitChecks($branch));
+      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
+      $branch_process->run();
+      $branch = trim($branch_process->getOutput());
+      $checks = array_merge($checks, $this->gitChecks($branch, !empty($options['dry-run'])));
     }
 
     $validation = $this->mergeValidation($validation, $this->runChecks($checks));
@@ -234,6 +237,18 @@ class MultisiteCreateCommand extends Command {
     // would never run.
     if ($plan->failed()) {
       return $plan;
+    }
+
+    // buildSteps() parses the selected app's drush alias template; a missing
+    // file (e.g. a newly registered app whose alias isn't committed yet) would
+    // otherwise throw mid-build. Surface it as a clean validation failure.
+    if (!file_exists("{$root}/drush/sites/{$app['name']}.site.yml")) {
+      $validation = $this->mergeValidation($validation, $this->runChecks([
+        new Check(self::CHECK_DRUSH_ALIAS_EXISTS, fn() => CheckResult::fail(
+          "Drush alias file drush/sites/{$app['name']}.site.yml not found. Commit this application's alias file before provisioning."
+        )),
+      ]));
+      return new Plan($title, $input, $validation, $summary, $context);
     }
 
     $this->buildSteps($plan, $host, $options, $app, $input);
@@ -341,12 +356,13 @@ class MultisiteCreateCommand extends Command {
    *   Command options.
    *
    * @return array
-   *   [?array $app, string $reasoning]. The app is NULL only when no eligible
-   *   application exists for auto-selection.
+   *   [?array $app, string $reasoning]. The app is NULL when no eligible
+   *   application exists for auto-selection, or when an explicit --app is not
+   *   among the candidates.
    */
   protected function selectApp(array $candidates, array $options): array {
     if (!empty($options['app'])) {
-      return [$candidates[$options['app']], 'Explicitly specified via --app.'];
+      return [$candidates[$options['app']] ?? NULL, 'Explicitly specified via --app.'];
     }
 
     $eligible = $this->eligibleApps($candidates);
@@ -645,7 +661,9 @@ EOD;
     // Whether the run will land its own commit decides the first instruction:
     // push the commit, or commit the generated files by hand.
     if (empty($options['no-commit'])) {
-      $branch = trim((string) shell_exec('git rev-parse --abbrev-ref HEAD 2>/dev/null'));
+      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
+      $branch_process->run();
+      $branch = trim($branch_process->getOutput());
       $first = "Push and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>";
     }
     else {

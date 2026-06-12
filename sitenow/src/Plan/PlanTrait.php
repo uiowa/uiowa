@@ -101,9 +101,10 @@ trait PlanTrait {
    *   A console exit code.
    */
   protected function executePlan(SymfonyStyle $io, Plan $plan, array $options): int {
-    // Validation failed: show the failing checks and stop before any work.
+    // Validation failed: show the failing checks (with any resolved summary,
+    // e.g. the picked app) and stop before any work.
     if ($plan->failed()) {
-      $this->renderPlan($io, $plan->title, [], $plan->validation);
+      $this->renderPlan($io, $plan->title, $plan->summary, $plan->validation);
       return Command::FAILURE;
     }
 

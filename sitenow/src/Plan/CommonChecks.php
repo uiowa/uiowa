@@ -2,6 +2,8 @@
 
 namespace SiteNow\Plan;
 
+use Symfony\Component\Process\Process;
+
 /**
  * Reusable checks shared by commands that use `PlanTrait`.
  *
@@ -48,11 +50,13 @@ trait CommonChecks {
    *
    * @param string $branch
    *   The current branch name.
+   * @param bool $dry_run
+   *   When TRUE, skips the network fetch so a preview has no side effects.
    *
    * @return \SiteNow\Plan\Check[]
    *   Checks for branch, working tree cleanliness, and origin sync.
    */
-  protected function gitChecks(string $branch): array {
+  protected function gitChecks(string $branch, bool $dry_run = FALSE): array {
     $protected = ['main', 'master', 'develop'];
 
     return [
@@ -64,16 +68,21 @@ trait CommonChecks {
       new Check(self::CHECK_CLEAN_WORKING_TREE, function (): CheckResult {
         // Ignore untracked files: the command stages only its own generated
         // paths, so untracked local files cannot pollute its commit.
-        $dirty = trim((string) shell_exec('git status --porcelain --untracked-files=no 2>/dev/null'));
-        return $dirty
+        $process = new Process(['git', 'status', '--porcelain', '--untracked-files=no']);
+        $process->run();
+        return trim($process->getOutput())
           ? CheckResult::fail('Working tree has uncommitted changes to tracked files.')
           : CheckResult::pass();
       }),
-      new Check(self::CHECK_UP_TO_DATE_WITH_ORIGIN, function () use ($branch): CheckResult {
-        shell_exec('git fetch origin --quiet 2>/dev/null');
-        $range = escapeshellarg("origin/{$branch}...HEAD");
-        $rev = trim((string) shell_exec("git rev-list --left-right --count {$range} 2>/dev/null"));
-        $parts = explode("\t", $rev);
+      new Check(self::CHECK_UP_TO_DATE_WITH_ORIGIN, function () use ($branch, $dry_run): CheckResult {
+        // Skip the network fetch during a dry run so a preview has no side
+        // effects; the comparison then uses the already-fetched origin ref.
+        if (!$dry_run) {
+          (new Process(['git', 'fetch', 'origin', '--quiet']))->run();
+        }
+        $process = new Process(['git', 'rev-list', '--left-right', '--count', "origin/{$branch}...HEAD"]);
+        $process->run();
+        $parts = explode("\t", trim($process->getOutput()));
         $behind = (int) ($parts[0] ?? 0);
         return $behind > 0
           ? CheckResult::fail("Branch is {$behind} commit(s) behind origin/{$branch}.")

@@ -174,6 +174,20 @@ class MultisiteCreateTest extends UnitTestCase {
   }
 
   /**
+   * An explicit --app not among the candidates resolves to no app, which
+   * decide() surfaces upstream as an app-selection failure.
+   */
+  public function testExplicitAppNotInCandidatesYieldsNoApp() {
+    $candidates = [
+      'uiowa' => $this->app('uiowa', 87, TRUE),
+    ];
+
+    [$app] = $this->command()->pubSelectApp($candidates, ['app' => 'nonexistent']);
+
+    $this->assertNull($app);
+  }
+
+  /**
    * A reserved application is accepted when named explicitly.
    */
   public function testExplicitReservedAppAccepted() {
