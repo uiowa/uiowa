@@ -42,21 +42,26 @@ jobs:
           echo "Git URL rewrites configured with token authentication"
           git config --global --get-regexp url || true
 
-      # Temporarily disable cache to diagnose bootstrap.inc issue
-      # - name: Cache Composer dependencies
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: vendor
-      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-      #     restore-keys: ${{ runner.os }}-composer-
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Clear any incomplete vendor directory to avoid conflicts
-          if [ -d "vendor" ] && [ ! -f "vendor/autoload.php" ]; then
-            echo "Incomplete vendor directory detected, clearing..."
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
 
@@ -100,21 +105,26 @@ jobs:
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
-      # Temporarily disable cache to diagnose bootstrap.inc issue
-      # - name: Cache Composer dependencies
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: vendor
-      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-      #     restore-keys: ${{ runner.os }}-composer-
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Clear any incomplete vendor directory to avoid conflicts
-          if [ -d "vendor" ] && [ ! -f "vendor/autoload.php" ]; then
-            echo "Incomplete vendor directory detected, clearing..."
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
 
@@ -159,21 +169,26 @@ jobs:
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
-      # Temporarily disable cache to diagnose bootstrap.inc issue
-      # - name: Cache Composer dependencies
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: vendor
-      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-      #     restore-keys: ${{ runner.os }}-composer-
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Clear any incomplete vendor directory to avoid conflicts
-          if [ -d "vendor" ] && [ ! -f "vendor/autoload.php" ]; then
-            echo "Incomplete vendor directory detected, clearing..."
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
 
@@ -259,21 +274,26 @@ jobs:
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer config -g github-protocols https
 
-      # Temporarily disable cache to diagnose bootstrap.inc issue
-      # - name: Cache Composer dependencies
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: vendor
-      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-      #     restore-keys: ${{ runner.os }}-composer-
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Clear any incomplete vendor directory to avoid conflicts
-          if [ -d "vendor" ] && [ ! -f "vendor/autoload.php" ]; then
-            echo "Incomplete vendor directory detected, clearing..."
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
 
