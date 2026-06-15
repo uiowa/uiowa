@@ -19,6 +19,7 @@
 
 use SiteNow\Command\MultisiteCreateCommand;
 use SiteNow\Command\ReportDomainsCommand;
+use SiteNow\Command\ReportSplitsCommand;
 use Symfony\Component\Console\Application;
 
 // This file lives at the repository root.
@@ -32,4 +33,5 @@ chdir($root);
 $application = new Application('sn');
 $application->add(new MultisiteCreateCommand($root));
 $application->add(new ReportDomainsCommand($root));
+$application->add(new ReportSplitsCommand($root));
 $application->run();
