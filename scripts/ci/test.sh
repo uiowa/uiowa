@@ -19,6 +19,13 @@ echo -e "${GREEN}=== Running PHPUnit Tests ===${NC}\n"
 # Ensure we're in the project root
 cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 
+# Source environment variables from setup.sh if available
+ENV_FILE="./tmp/ci-env.sh"
+if [ -f "$ENV_FILE" ]; then
+  echo "Loading environment variables from $ENV_FILE"
+  source "$ENV_FILE"
+fi
+
 # Check if phpunit exists
 if [ ! -f "vendor/bin/phpunit" ]; then
   echo -e "${RED}Error: vendor/bin/phpunit not found. Run 'composer install' first.${NC}"

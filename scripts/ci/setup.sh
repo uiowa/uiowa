@@ -100,8 +100,23 @@ chmod 777 "$BROWSERTEST_OUTPUT_DIRECTORY" 2>/dev/null || true
 # For unit tests and kernel tests, this step is not required
 if [ "${INSTALL_DRUPAL:-false}" = "true" ]; then
   echo -e "\n${YELLOW}Installing Drupal for functional tests...${NC}"
-  vendor/bin/drush site:install sitenow --yes --db-url="$DB_URL" --account-name=admin --account-pass=admin
-  echo "Drupal installed"
+  echo "Using database URL: $DB_URL"
+
+  # Run drush from docroot directory and ensure db-url is used
+  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
+
+  # Site install with explicit database URL
+  ../vendor/bin/drush site:install sitenow \
+    --yes \
+    --db-url="$DB_URL" \
+    --site-name="Test Site" \
+    --account-name=admin \
+    --account-pass=admin \
+    --verbose
+
+  echo "✓ Drupal installed successfully"
+
+  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 fi
 
 # Create phpunit.xml symlink in docroot if it doesn't exist
@@ -178,8 +193,19 @@ if [ "${RUN_SERVER:-false}" = "true" ]; then
   cd "$PROJECT_ROOT"
 fi
 
+# Export environment variables to a file for other scripts to source
+# This is necessary because in CI, each script runs in a separate shell
+ENV_FILE="${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/tmp/ci-env.sh"
+mkdir -p "$(dirname "$ENV_FILE")"
+cat > "$ENV_FILE" <<EOF
+export SIMPLETEST_DB="$SIMPLETEST_DB"
+export SIMPLETEST_BASE_URL="$SIMPLETEST_BASE_URL"
+export BROWSERTEST_OUTPUT_DIRECTORY="$BROWSERTEST_OUTPUT_DIRECTORY"
+export SYMFONY_DEPRECATIONS_HELPER="$SYMFONY_DEPRECATIONS_HELPER"
+EOF
+
 echo -e "\n${GREEN}✓ Setup complete${NC}"
-echo "Environment variables set:"
+echo "Environment variables exported to: $ENV_FILE"
 echo "  SIMPLETEST_DB=$SIMPLETEST_DB"
 echo "  SIMPLETEST_BASE_URL=$SIMPLETEST_BASE_URL"
 echo "  BROWSERTEST_OUTPUT_DIRECTORY=$BROWSERTEST_OUTPUT_DIRECTORY"
