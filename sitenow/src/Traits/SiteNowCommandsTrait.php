@@ -256,7 +256,6 @@ trait SiteNowCommandsTrait {
     if (file_exists($filepath)) {
       unlink($filepath);
     }
-    $this->say("Created export file $filepath");
     $fp = fopen($filepath, 'w+');
     fputcsv($fp, $headers, ',', '"', '\\');
     fclose($fp);
