@@ -124,22 +124,39 @@ if [ "${RUN_SERVER:-false}" = "true" ]; then
   mkdir -p "$PROJECT_ROOT/tmp"
 
   # Kill any existing runserver processes
+  echo "Killing any existing web server processes..."
   pkill -f "drush runserver" || true
   pkill -f "php -S.*8080" || true
+  sleep 2
+
+  # Extract port from SIMPLETEST_BASE_URL
+  SERVER_PORT=$(echo "$SIMPLETEST_BASE_URL" | sed -n 's/.*:\([0-9]*\).*/\1/p')
+  if [ -z "$SERVER_PORT" ]; then
+    SERVER_PORT=8080
+  fi
 
   # Start Drush runserver in background
-  echo "Starting Drush runserver at $SIMPLETEST_BASE_URL"
+  # Use 0.0.0.0:port to listen on all interfaces, --no-browser to avoid opening browser
+  echo "Starting Drush runserver on 0.0.0.0:$SERVER_PORT"
   cd "$PROJECT_ROOT/docroot"
-  ../vendor/bin/drush runserver "$SIMPLETEST_BASE_URL" > "$PROJECT_ROOT/tmp/runserver.log" 2>&1 &
+  ../vendor/bin/drush runserver "0.0.0.0:$SERVER_PORT" --no-browser > "$PROJECT_ROOT/tmp/runserver.log" 2>&1 &
   SERVER_PID=$!
   echo "$SERVER_PID" > "$PROJECT_ROOT/tmp/php-server.pid"
+  echo "Server PID: $SERVER_PID"
 
   # Wait for server to be ready
-  echo "Waiting for server to respond..."
+  echo "Waiting for server to respond at $SIMPLETEST_BASE_URL..."
   SERVER_STARTED=false
-  for i in {1..30}; do
-    if curl -f -s -o /dev/null "$SIMPLETEST_BASE_URL"; then
-      echo -e "${GREEN}✓ Web server started at $SIMPLETEST_BASE_URL (PID: $SERVER_PID)${NC}"
+  for i in {1..60}; do
+    # Check if process is still running
+    if ! kill -0 $SERVER_PID 2>/dev/null; then
+      echo -e "\n${RED}✗ Server process died${NC}"
+      break
+    fi
+
+    # Check if server responds
+    if curl -f -s -o /dev/null "$SIMPLETEST_BASE_URL" 2>/dev/null; then
+      echo -e "\n${GREEN}✓ Web server started at $SIMPLETEST_BASE_URL (PID: $SERVER_PID)${NC}"
       SERVER_STARTED=true
       break
     fi
@@ -148,11 +165,13 @@ if [ "${RUN_SERVER:-false}" = "true" ]; then
   done
 
   if [ "$SERVER_STARTED" = false ]; then
-    echo -e "\n${RED}✗ Web server failed to start after 30 seconds${NC}"
-    echo "Server log:"
-    cat "$PROJECT_ROOT/tmp/runserver.log" 2>/dev/null || echo "Log file not found"
-    echo "Checking if process is running:"
-    ps aux | grep -E "drush|runserver|$SERVER_PID" | grep -v grep
+    echo -e "\n${RED}✗ Web server failed to start after 60 seconds${NC}"
+    echo -e "\nServer log (last 50 lines):"
+    tail -50 "$PROJECT_ROOT/tmp/runserver.log" 2>/dev/null || echo "Log file not found or empty"
+    echo -e "\nChecking if process is running:"
+    ps aux | grep -E "$SERVER_PID" | grep -v grep || echo "Process not found"
+    echo -e "\nChecking port usage:"
+    netstat -tuln 2>/dev/null | grep ":$SERVER_PORT " || lsof -i ":$SERVER_PORT" 2>/dev/null || echo "Port check commands not available"
     exit 1
   fi
 
