@@ -10,6 +10,7 @@ use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Uiowa\Multisite;
 
 /**
@@ -74,6 +75,31 @@ trait SiteNowCommandsTrait {
       'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
       'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
     ];
+  }
+
+  /**
+   * Build an Acquia Cloud API client, or report missing credentials.
+   *
+   * Centralizes the "credentials present?" precondition that command classes
+   * would otherwise each repeat. On success returns a ready client; on missing
+   * credentials it prints a clean error and returns NULL so the caller can
+   * exit before any API call fails opaquely.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report a missing-credentials error.
+   *
+   * @return \AcquiaCloudApi\Connector\Client|null
+   *   An authenticated client, or NULL when credentials are not configured.
+   */
+  protected function requireAcquiaClient(SymfonyStyle $io): ?Client {
+    $creds = $this->getAcquiaCredentials();
+
+    if (empty($creds['key']) || empty($creds['secret'])) {
+      $io->error('Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
+      return NULL;
+    }
+
+    return $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
   }
 
   /**

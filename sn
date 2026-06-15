@@ -3,18 +3,22 @@
 
 /**
  * @file
- * SiteNow host-side CLI (sn).
+ * SiteNow CLI (sn).
  *
- * Standalone Symfony Console entry point for repository commands that touch the
- * git working tree and run before any Drupal bootstrap, so they cannot live
- * in-container (where .git is not mounted) or under Drush. Commands are
- * hand-wired here; there is no DI container by design.
+ * Standalone Symfony Console entry point for SiteNow repository commands.
+ * Commands are hand-wired here; there is no DI container by design. Each
+ * command documents where it must run: some touch the git working tree and run
+ * on the host shell (e.g. multisite:create), while others need the DDEV
+ * container's drush aliases and SSH agent (e.g. the report:* commands, run via
+ * `ddev exec ./sn ...`).
  *
  * Run from the repository root, e.g.:
  *   ./sn multisite:create newsite.uiowa.edu --dry-run
+ *   ddev exec ./sn report:domains
  */
 
 use SiteNow\Command\MultisiteCreateCommand;
+use SiteNow\Command\ReportDomainsCommand;
 use Symfony\Component\Console\Application;
 
 // This file lives at the repository root.
@@ -27,4 +31,5 @@ chdir($root);
 
 $application = new Application('sn');
 $application->add(new MultisiteCreateCommand($root));
+$application->add(new ReportDomainsCommand($root));
 $application->run();
