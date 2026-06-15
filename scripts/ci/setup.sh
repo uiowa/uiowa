@@ -58,20 +58,42 @@ if [ "$ENV" = "local" ]; then
   DB_URL="mysql://db:db@db/drupal_test"
 elif [ "$ENV" = "github" ]; then
   # GitHub Actions database setup (uses root password)
+  echo "Setting up databases for GitHub Actions..."
+
+  # Drop and create databases
   mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
+  mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS drupal;" 2>/dev/null || true
   mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE drupal_test;"
+  mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE drupal;"
+
+  # Create user and grant ALL PRIVILEGES (allows creating databases, etc.)
   mysql -h 127.0.0.1 -u root -proot -e "CREATE USER IF NOT EXISTS 'drupal'@'%' IDENTIFIED BY 'drupal';"
-  mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL ON drupal_test.* TO 'drupal'@'%';"
+  mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'drupal'@'%' WITH GRANT OPTION;"
   mysql -h 127.0.0.1 -u root -proot -e "FLUSH PRIVILEGES;"
+
   DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
+
+  echo "✓ Databases created: drupal_test, drupal"
+  echo "✓ User 'drupal' granted all privileges"
 else
   # Travis CI and other CI database setup (no root password)
+  echo "Setting up databases for Travis CI..."
+
+  # Drop and create databases
   mysql -u root -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
+  mysql -u root -e "DROP DATABASE IF EXISTS drupal;" 2>/dev/null || true
   mysql -u root -e "CREATE DATABASE drupal_test;"
+  mysql -u root -e "CREATE DATABASE drupal;"
+
+  # Create user and grant ALL PRIVILEGES (allows creating databases, etc.)
   mysql -u root -e "CREATE USER IF NOT EXISTS 'drupal'@'localhost' IDENTIFIED BY 'drupal';"
-  mysql -u root -e "GRANT ALL ON drupal_test.* TO 'drupal'@'localhost';"
+  mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'drupal'@'localhost' WITH GRANT OPTION;"
   mysql -u root -e "FLUSH PRIVILEGES;"
+
   DB_URL="mysql://drupal:drupal@localhost/drupal_test"
+
+  echo "✓ Databases created: drupal_test, drupal"
+  echo "✓ User 'drupal' granted all privileges"
 fi
 
 echo "Test database created"
