@@ -37,6 +37,7 @@ PATHS=(
   "docroot/modules/custom/"
   "docroot/themes/custom/"
   "docroot/sites/"
+  "sitenow/src/"
 )
 
 echo "Analyzing code for potential bugs and errors..."

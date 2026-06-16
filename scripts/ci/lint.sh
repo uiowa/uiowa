@@ -42,16 +42,28 @@ PHP_LINT_FAILED=0
 PHP_COUNT=0
 
 if [ -n "$PHP_FILES" ]; then
+  TOTAL_PHP=$(echo "$PHP_FILES" | wc -l | tr -d ' ')
+  CURRENT=0
+
   while IFS= read -r file; do
     if [ -f "$file" ]; then
+      CURRENT=$((CURRENT + 1))
       PHP_COUNT=$((PHP_COUNT + 1))
+
+      # Show progress every 50 files or on first/last file
+      if [ $((CURRENT % 50)) -eq 0 ] || [ $CURRENT -eq 1 ] || [ $CURRENT -eq $TOTAL_PHP ]; then
+        echo -ne "  Processing PHP files: $CURRENT / $TOTAL_PHP\r"
+      fi
+
       if ! php -l "$file" > /dev/null 2>&1; then
-        echo -e "${RED}✗ Syntax error in: $file${NC}"
+        echo -e "\n${RED}✗ Syntax error in: $file${NC}"
         php -l "$file"
         PHP_LINT_FAILED=1
       fi
     fi
   done <<< "$PHP_FILES"
+
+  echo "" # New line after progress
 
   if [ $PHP_LINT_FAILED -eq 0 ]; then
     echo -e "${GREEN}✓ PHP linting passed ($PHP_COUNT files)${NC}\n"
@@ -68,16 +80,28 @@ YAML_FAILED=0
 YAML_COUNT=0
 
 if [ -n "$YAML_FILES" ] && [ -f "vendor/autoload.php" ]; then
+  TOTAL_YAML=$(echo "$YAML_FILES" | wc -l | tr -d ' ')
+  CURRENT=0
+
   while IFS= read -r file; do
     if [ -f "$file" ]; then
+      CURRENT=$((CURRENT + 1))
       YAML_COUNT=$((YAML_COUNT + 1))
+
+      # Show progress every 20 files or on first/last file
+      if [ $((CURRENT % 20)) -eq 0 ] || [ $CURRENT -eq 1 ] || [ $CURRENT -eq $TOTAL_YAML ]; then
+        echo -ne "  Validating YAML files: $CURRENT / $TOTAL_YAML\r"
+      fi
+
       # Use Symfony YAML component to validate
       if ! php -r "require 'vendor/autoload.php'; use Symfony\Component\Yaml\Yaml; try { Yaml::parseFile('$file'); } catch (\Exception \$e) { fwrite(STDERR, \$e->getMessage() . PHP_EOL); exit(1); }" 2>&1; then
-        echo -e "${RED}✗ YAML error in: $file${NC}"
+        echo -e "\n${RED}✗ YAML error in: $file${NC}"
         YAML_FAILED=1
       fi
     fi
   done <<< "$YAML_FILES"
+
+  echo "" # New line after progress
 
   if [ $YAML_FAILED -eq 0 ]; then
     echo -e "${GREEN}✓ YAML validation passed ($YAML_COUNT files)${NC}\n"
@@ -94,16 +118,28 @@ TWIG_FAILED=0
 TWIG_COUNT=0
 
 if [ -n "$TWIG_FILES" ]; then
+  TOTAL_TWIG=$(echo "$TWIG_FILES" | wc -l | tr -d ' ')
+  CURRENT=0
+
   while IFS= read -r file; do
     if [ -f "$file" ]; then
+      CURRENT=$((CURRENT + 1))
       TWIG_COUNT=$((TWIG_COUNT + 1))
+
+      # Show progress every 20 files or on first/last file
+      if [ $((CURRENT % 20)) -eq 0 ] || [ $CURRENT -eq 1 ] || [ $CURRENT -eq $TOTAL_TWIG ]; then
+        echo -ne "  Validating Twig files: $CURRENT / $TOTAL_TWIG\r"
+      fi
+
       # Basic check for nested delimiters (common Twig syntax error)
       if grep -qE '\{\{[^}]*\{\{|\}\}[^{]*\}\}|\{%[^%]*\{%|\%\}[^{]*\%\}' "$file" 2>/dev/null; then
-        echo -e "${RED}✗ Possible nested delimiters in: $file${NC}"
+        echo -e "\n${RED}✗ Possible nested delimiters in: $file${NC}"
         TWIG_FAILED=1
       fi
     fi
   done <<< "$TWIG_FILES"
+
+  echo "" # New line after progress
 
   if [ $TWIG_FAILED -eq 0 ]; then
     echo -e "${GREEN}✓ Twig validation passed ($TWIG_COUNT files)${NC}\n"
