@@ -32,7 +32,9 @@ elif [ "${CI:-false}" = "true" ]; then
 else
   ENV="local"
   CI_ENV="local"
-  echo "Running in local DDEV environment"
+  echo "Running in local DDEV environment (CI mode)"
+  # Export CI=true so that Drupal loads ci.settings.php instead of BLT settings
+  export CI="true"
 fi
 
 # Ensure we're in the project root
@@ -53,9 +55,23 @@ echo -e "\n${YELLOW}Setting up test database...${NC}"
 
 if [ "$ENV" = "local" ]; then
   # Local DDEV database setup
+  echo "Setting up databases for DDEV..."
+
+  # Drop and create databases
   mysql -h db -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
+  mysql -h db -u root -proot -e "DROP DATABASE IF EXISTS drupal;" 2>/dev/null || true
   mysql -h db -u root -proot -e "CREATE DATABASE drupal_test;"
+  mysql -h db -u root -proot -e "CREATE DATABASE drupal;"
+
+  # Grant permissions to db user for test databases
+  mysql -h db -u root -proot -e "GRANT ALL PRIVILEGES ON drupal_test.* TO 'db'@'%';"
+  mysql -h db -u root -proot -e "GRANT ALL PRIVILEGES ON drupal.* TO 'db'@'%';"
+  mysql -h db -u root -proot -e "FLUSH PRIVILEGES;"
+
   DB_URL="mysql://db:db@db/drupal_test"
+
+  echo "✓ Databases created: drupal_test, drupal"
+  echo "✓ User 'db' granted privileges"
 elif [ "$ENV" = "github" ]; then
   # GitHub Actions database setup (uses root password)
   echo "Setting up databases for GitHub Actions..."

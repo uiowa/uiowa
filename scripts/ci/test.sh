@@ -19,6 +19,13 @@ echo -e "${GREEN}=== Running PHPUnit Tests ===${NC}\n"
 # Ensure we're in the project root
 cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 
+# Export CI=true to ensure Drupal loads ci.settings.php instead of BLT
+# This allows local `ddev ci` testing to work without BLT dependencies
+if [ "${CI:-false}" = "false" ] && [ "${TRAVIS:-false}" = "false" ] && [ "${GITHUB_ACTIONS:-false}" = "false" ]; then
+  echo "Setting CI=true for local testing"
+  export CI="true"
+fi
+
 # Source environment variables from setup.sh if available
 ENV_FILE="./tmp/ci-env.sh"
 if [ -f "$ENV_FILE" ]; then
