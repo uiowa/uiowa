@@ -5,6 +5,7 @@ namespace SiteNow\Command;
 use SiteNow\Report\CsvWriter;
 use SiteNow\Report\DrushRunner;
 use SiteNow\Report\FleetDomains;
+use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,6 +25,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ReportInactiveCommand extends Command {
 
   use SiteNowCommandsTrait;
+  use ParsesListOptions;
 
   /**
    * Constructs the command.
@@ -257,22 +259,6 @@ class ReportInactiveCommand extends Command {
     }
 
     return FALSE;
-  }
-
-  /**
-   * Split a comma-separated option value into a trimmed list.
-   *
-   * @param string $value
-   *   The raw option value.
-   *
-   * @return array
-   *   Trimmed, non-empty parts; empty array when the value is empty.
-   */
-  private function parseList(string $value): array {
-    if ($value === '') {
-      return [];
-    }
-    return array_values(array_filter(array_map('trim', explode(',', $value)), fn($v) => $v !== ''));
   }
 
 }

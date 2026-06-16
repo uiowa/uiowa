@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Uiowa\Multisite;
 
 /**
- * Helpers for running Robo commands in SiteNow.
+ * Acquia Cloud, drush, and environment helpers for SiteNow console commands.
  */
 trait SiteNowCommandsTrait {
 
