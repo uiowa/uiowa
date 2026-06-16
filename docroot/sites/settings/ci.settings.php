@@ -65,11 +65,6 @@ $settings['skip_permissions_hardening'] = TRUE;
 $config['system.performance']['css']['preprocess'] = FALSE;
 $config['system.performance']['js']['preprocess'] = FALSE;
 
-// Disable caching for test consistency.
-$settings['cache']['bins']['render'] = 'cache.backend.null';
-$settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
-$settings['cache']['bins']['page'] = 'cache.backend.null';
-
 // Set hash salt for consistent testing.
 $settings['hash_salt'] = 'ci-testing-hash-salt-do-not-use-in-production';
 
