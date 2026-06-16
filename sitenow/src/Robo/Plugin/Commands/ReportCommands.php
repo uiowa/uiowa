@@ -2,7 +2,7 @@
 
 namespace SiteNow\Robo\Plugin\Commands;
 
-use SiteNow\Robo\Traits\SiteNowCommandsTrait;
+use SiteNow\Traits\SiteNowCommandsTrait;
 use AcquiaCloudApi\Endpoints\Environments;
 use Robo\ResultData;
 use Robo\Tasks;
