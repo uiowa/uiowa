@@ -57,8 +57,7 @@ class ReportDomainsCommand extends Command {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
 
-    if (!$this->isDdev()) {
-      $io->error('This command must be run inside the DDEV container. Use: ddev exec ./sn report:domains');
+    if (!$this->requireDdev($io, $this->getName())) {
       return Command::FAILURE;
     }
 

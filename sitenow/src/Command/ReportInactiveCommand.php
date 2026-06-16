@@ -56,12 +56,10 @@ class ReportInactiveCommand extends Command {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
 
-    if (!$this->isDdev()) {
-      $io->error('This command must be run inside the DDEV container. Use: ddev exec ./sn report:inactive');
+    if (!$this->requireDdev($io, $this->getName())) {
       return Command::FAILURE;
     }
-    if (!$this->hasSshAgent()) {
-      $io->error("No SSH keys loaded. Please 'ddev auth ssh' before running this command.");
+    if (!$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 

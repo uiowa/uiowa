@@ -147,6 +147,30 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Require the command to run inside the DDEV container.
+   *
+   * On failure, prints an error naming the exact invocation to use and returns
+   * FALSE so the caller can exit. The command name is passed in (rather than
+   * read via getName()) so this trait makes no assumption about being mixed
+   * into a Symfony Command.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   * @param string $command_name
+   *   The command's name, for the suggested `ddev exec ./sn <name>` invocation.
+   *
+   * @return bool
+   *   TRUE when running in DDEV; FALSE (after printing an error) otherwise.
+   */
+  protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
+    if (!$this->isDdev()) {
+      $io->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
    * Determine if the command is running on a developer host shell.
    *
    * @return bool
@@ -234,6 +258,27 @@ trait SiteNowCommandsTrait {
   protected function hasSshAgent(): bool {
     exec('ssh-add -l >/dev/null', $output, $exit_code);
     return $exit_code === 0;
+  }
+
+  /**
+   * Require SSH agent keys to be loaded.
+   *
+   * Commands that reach prod sites over drush/SSH need forwarded agent keys.
+   * On failure, prints an error and returns FALSE so the caller can exit.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   *
+   * @return bool
+   *   TRUE when the SSH agent has keys; FALSE (after printing an error)
+   *   otherwise.
+   */
+  protected function requireSshAgent(SymfonyStyle $io): bool {
+    if (!$this->hasSshAgent()) {
+      $io->error("No SSH keys loaded. Run 'ddev auth ssh' before running this command.");
+      return FALSE;
+    }
+    return TRUE;
   }
 
   /**
