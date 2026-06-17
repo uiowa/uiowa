@@ -13,11 +13,8 @@
 set -e  # Exit on error
 set -u  # Exit on undefined variable
 
-# Color output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+# Load shared color codes
+source "$(dirname "$0")/colors.sh"
 
 echo -e "${GREEN}=== Running Linting & Validation ===${NC}\n"
 

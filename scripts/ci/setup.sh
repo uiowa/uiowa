@@ -8,11 +8,8 @@
 set -e  # Exit on error
 set -u  # Exit on undefined variable
 
-# Color output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+# Load shared color codes
+source "$(dirname "$0")/colors.sh"
 
 echo -e "${GREEN}=== CI Setup ===${NC}"
 
@@ -46,62 +43,58 @@ command -v mysql >/dev/null 2>&1 || { echo -e "${RED}MySQL client not found${NC}
 echo "PHP version: $(php --version | head -n1)"
 echo "Composer version: $(composer --version --no-ansi)"
 
+# Database setup function
+# Creates test database and grants permissions based on environment
+setup_database() {
+  local db_host=$1
+  local root_user=$2
+  local root_pass=$3
+  local app_user=$4
+  local app_pass=$5
+  local app_host=$6
+  local env_name=$7
+
+  echo "Setting up database for $env_name..."
+
+  # Build MySQL command prefix
+  local MYSQL_CMD="mysql -h $db_host -u $root_user"
+  [ -n "$root_pass" ] && MYSQL_CMD="$MYSQL_CMD -p$root_pass"
+
+  # Drop and create test database
+  $MYSQL_CMD -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
+  $MYSQL_CMD -e "CREATE DATABASE drupal_test;"
+
+  # Create user and grant privileges if app user differs from root
+  if [ "$app_user" != "$root_user" ]; then
+    $MYSQL_CMD -e "CREATE USER IF NOT EXISTS '$app_user'@'$app_host' IDENTIFIED BY '$app_pass';"
+    $MYSQL_CMD -e "GRANT ALL PRIVILEGES ON *.* TO '$app_user'@'$app_host' WITH GRANT OPTION;"
+    $MYSQL_CMD -e "FLUSH PRIVILEGES;"
+    echo "✓ Database created: drupal_test"
+    echo "✓ User '$app_user' granted all privileges"
+  else
+    $MYSQL_CMD -e "FLUSH PRIVILEGES;"
+    echo "✓ Database created: drupal_test"
+  fi
+}
+
 # Setup test database
 echo -e "\n${YELLOW}Setting up test database...${NC}"
 
 if [ "$ENV" = "local" ]; then
-  # Local DDEV database setup
-  echo "Setting up database for DDEV..."
-
-  # Drop and create test database
-  mysql -h db -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
-  mysql -h db -u root -proot -e "CREATE DATABASE drupal_test;"
-
-  # Grant permissions to db user
-  mysql -h db -u root -proot -e "GRANT ALL PRIVILEGES ON drupal_test.* TO 'db'@'%';"
-  mysql -h db -u root -proot -e "FLUSH PRIVILEGES;"
-
+  # DDEV: host=db, root password=root, app user=db
+  setup_database "db" "root" "root" "db" "db" "%" "DDEV"
   DB_URL="mysql://db:db@db/drupal_test"
-
-  echo "✓ Database created: drupal_test"
-  echo "✓ User 'db' granted privileges"
 elif [ "$ENV" = "github" ]; then
-  # GitHub Actions database setup (uses root password)
-  echo "Setting up database for GitHub Actions..."
-
-  # Drop and create test database
-  mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
-  mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE drupal_test;"
-
-  # Create user and grant ALL PRIVILEGES (allows creating databases, etc.)
-  mysql -h 127.0.0.1 -u root -proot -e "CREATE USER IF NOT EXISTS 'drupal'@'%' IDENTIFIED BY 'drupal';"
-  mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'drupal'@'%' WITH GRANT OPTION;"
-  mysql -h 127.0.0.1 -u root -proot -e "FLUSH PRIVILEGES;"
-
+  # GitHub Actions: host=127.0.0.1, root password=root, app user=drupal
+  setup_database "127.0.0.1" "root" "root" "drupal" "drupal" "%" "GitHub Actions"
   DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
-
-  echo "✓ Database created: drupal_test"
-  echo "✓ User 'drupal' granted all privileges"
 else
-  # Travis CI and other CI database setup (no root password)
-  echo "Setting up database for Travis CI..."
-
-  # Drop and create test database
-  mysql -u root -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
-  mysql -u root -e "CREATE DATABASE drupal_test;"
-
-  # Create user and grant ALL PRIVILEGES (allows creating databases, etc.)
-  mysql -u root -e "CREATE USER IF NOT EXISTS 'drupal'@'localhost' IDENTIFIED BY 'drupal';"
-  mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'drupal'@'localhost' WITH GRANT OPTION;"
-  mysql -u root -e "FLUSH PRIVILEGES;"
-
+  # Travis CI: host=localhost, no root password, app user=drupal
+  setup_database "localhost" "root" "" "drupal" "drupal" "localhost" "Travis CI"
   DB_URL="mysql://drupal:drupal@localhost/drupal_test"
-
-  echo "✓ Database created: drupal_test"
-  echo "✓ User 'drupal' granted all privileges"
 fi
 
-echo "Test database created"
+echo "Test database ready"
 
 # Export environment variables for PHPUnit
 export SIMPLETEST_DB="$DB_URL"
