@@ -139,15 +139,6 @@ if [ "${INSTALL_DRUPAL:-false}" = "true" ]; then
   cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 fi
 
-# Create phpunit.xml symlink in docroot if it doesn't exist
-# This is needed for functional tests to find the configuration
-if [ "$ENV" = "local" ] && [ ! -e "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot/phpunit.xml" ]; then
-  echo -e "\n${YELLOW}Creating phpunit.xml symlink in docroot...${NC}"
-  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
-  ln -sf ../phpunit.xml.dist phpunit.xml
-  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
-fi
-
 # Start web server for functional tests using Drush (optional)
 # Only needed if running Functional or FunctionalJavascript tests
 if [ "${RUN_SERVER:-false}" = "true" ]; then
