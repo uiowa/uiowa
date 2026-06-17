@@ -29,6 +29,10 @@ class ReportSplitsCommand extends Command {
 
   const HEADERS = ['Application', 'Domain', 'Split'];
 
+  // Config name prefix shared by every config_split entity. Stripped to leave
+  // the bare split id (e.g. 'config_split.config_split.event' -> 'event').
+  const SPLIT_CONFIG_PREFIX = 'config_split.config_split.';
+
   // Environmental splits (ci/dev/local/prod/stage) are a proxy for which
   // environment a site is in — not useful in this report.
   const ENV_SPLITS = ['ci', 'dev', 'local', 'prod', 'stage'];
@@ -76,7 +80,7 @@ class ReportSplitsCommand extends Command {
 
     $manifest_path = "{$this->repoRoot}/blt/manifest.yml";
     if (!file_exists($manifest_path)) {
-      $io->error("Manifest file not found at {$manifest_path}");
+      $err->error("Manifest file not found at {$manifest_path}");
       return Command::FAILURE;
     }
     $manifest = Yaml::parseFile($manifest_path);
@@ -192,7 +196,11 @@ class ReportSplitsCommand extends Command {
    */
   protected function getSplitStatuses(DrushRunner $runner, string $multisite, ?string &$error = NULL): array|false {
     $alias = $this->getDrushAlias($multisite) . '.prod';
-    $php = 'foreach (\\Drupal::configFactory()->listAll("config_split.config_split.") as $n) { echo substr($n, 26) . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
+    // Built by concatenation so the prefix and its length stay in sync; the
+    // single-quoted segments keep $n literal for evaluation on the remote site.
+    $prefix = self::SPLIT_CONFIG_PREFIX;
+    $offset = strlen($prefix);
+    $php = 'foreach (\\Drupal::configFactory()->listAll("' . $prefix . '") as $n) { echo substr($n, ' . $offset . ') . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
     $result = $runner->run($alias, ['php:eval', $php, '--no-interaction']);
 
     return $this->parseSplitStatuses($result['output'], $result['exit'], $error, $result['error']);

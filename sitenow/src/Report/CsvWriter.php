@@ -3,11 +3,7 @@
 namespace SiteNow\Report;
 
 /**
- * Appends rows to a timestamped CSV export file at the repository root.
- *
- * Replaces SiteNowCommandsTrait::initializeCsvExport(), which depended on
- * Robo's say() for its announcement and resolved the repository root from
- * config that is rarely set.
+ * Writes report rows to a timestamped CSV file at the repository root.
  */
 class CsvWriter {
 
@@ -15,6 +11,13 @@ class CsvWriter {
    * Absolute path to the export file.
    */
   private string $filepath;
+
+  /**
+   * The open file handle, held for the writer's lifetime.
+   *
+   * @var resource
+   */
+  private $handle;
 
   /**
    * Creates the export file and writes the header row.
@@ -30,13 +33,10 @@ class CsvWriter {
     $now = date('Ymd-His');
     $this->filepath = "{$repo_root}/{$filename_prefix}-{$now}.csv";
 
-    if (file_exists($this->filepath)) {
-      unlink($this->filepath);
-    }
-
-    $fp = fopen($this->filepath, 'w+');
-    fputcsv($fp, $headers, ',', '"', '\\');
-    fclose($fp);
+    // Mode 'w' truncates any existing file. The handle stays open for the
+    // writer's lifetime and is closed in the destructor.
+    $this->handle = fopen($this->filepath, 'w');
+    fputcsv($this->handle, $headers, ',', '"', '\\');
   }
 
   /**
@@ -46,9 +46,9 @@ class CsvWriter {
    *   The row values, in header order.
    */
   public function writeRow(array $row): void {
-    $fp = fopen($this->filepath, 'a');
-    fputcsv($fp, $row, ',', '"', '\\');
-    fclose($fp);
+    fputcsv($this->handle, $row, ',', '"', '\\');
+    // Flush each row so a long run's output is on disk as it goes.
+    fflush($this->handle);
   }
 
   /**
@@ -59,6 +59,15 @@ class CsvWriter {
    */
   public function getPath(): string {
     return $this->filepath;
+  }
+
+  /**
+   * Closes the file handle.
+   */
+  public function __destruct() {
+    if (is_resource($this->handle)) {
+      fclose($this->handle);
+    }
   }
 
 }

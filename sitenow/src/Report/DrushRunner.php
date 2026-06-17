@@ -2,15 +2,16 @@
 
 namespace SiteNow\Report;
 
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
+use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 
 /**
  * Runs drush against a site alias and returns its raw result.
  *
- * Uses Symfony Process with array arguments (no shell interpolation) instead
- * of the report commands' former exec()/shell_exec() shell strings. stdout and
- * stderr are kept separate so callers parse command output without Acquia
- * connection chatter mixed in.
+ * Uses Symfony Process with array arguments — no shell interpolation — and
+ * keeps stdout and stderr separate so callers parse command output without
+ * Acquia connection chatter mixed in.
  */
 class DrushRunner {
 
@@ -39,7 +40,19 @@ class DrushRunner {
   public function run(string $alias, array $args): array {
     $process = new Process(array_merge(['drush', "@{$alias}"], $args));
     $process->setTimeout($this->timeout);
-    $process->run();
+
+    // A timeout or a launch failure throws rather than returning a non-zero
+    // exit. Convert both to the non-zero-exit result callers already handle
+    // gracefully, so one unresponsive site can't crash the whole run.
+    try {
+      $process->run();
+    }
+    catch (ProcessTimedOutException) {
+      return ['exit' => 1, 'output' => '', 'error' => "drush timed out after {$this->timeout}s"];
+    }
+    catch (RuntimeException $e) {
+      return ['exit' => 1, 'output' => '', 'error' => 'drush failed to start: ' . $e->getMessage()];
+    }
 
     return [
       'exit' => (int) $process->getExitCode(),

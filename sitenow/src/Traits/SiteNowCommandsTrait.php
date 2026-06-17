@@ -95,7 +95,7 @@ trait SiteNowCommandsTrait {
     $creds = $this->getAcquiaCredentials();
 
     if (empty($creds['key']) || empty($creds['secret'])) {
-      $io->error('Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
+      $io->getErrorStyle()->error('Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
       return NULL;
     }
 
@@ -164,7 +164,7 @@ trait SiteNowCommandsTrait {
    */
   protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
     if (!$this->isDdev()) {
-      $io->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
+      $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
       return FALSE;
     }
     return TRUE;
@@ -275,7 +275,7 @@ trait SiteNowCommandsTrait {
    */
   protected function requireSshAgent(SymfonyStyle $io): bool {
     if (!$this->hasSshAgent()) {
-      $io->error("No SSH keys loaded. Run 'ddev auth ssh' before running this command.");
+      $io->getErrorStyle()->error("No SSH keys loaded. Run 'ddev auth ssh' before running this command.");
       return FALSE;
     }
     return TRUE;

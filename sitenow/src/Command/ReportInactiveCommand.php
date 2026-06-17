@@ -70,7 +70,7 @@ class ReportInactiveCommand extends Command {
     $threshold = trim($input->getOption('threshold'));
     $cutoff = strtotime("-{$threshold}", $now);
     if ($cutoff === FALSE) {
-      $io->error("Could not parse threshold '{$threshold}'.");
+      $err->error("Could not parse threshold '{$threshold}'.");
       return Command::FAILURE;
     }
 
