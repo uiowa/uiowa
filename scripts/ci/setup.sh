@@ -19,19 +19,15 @@ echo -e "${GREEN}=== CI Setup ===${NC}"
 # Detect environment
 if [ "${TRAVIS:-false}" = "true" ]; then
   ENV="travis"
-  CI_ENV="travis"
   echo "Running in Travis CI"
 elif [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
   ENV="github"
-  CI_ENV="github"
   echo "Running in GitHub Actions"
 elif [ "${CI:-false}" = "true" ]; then
   ENV="ci"
-  CI_ENV="generic"
   echo "Running in CI environment"
 else
   ENV="local"
-  CI_ENV="local"
   echo "Running in local DDEV environment (CI mode)"
   # Export CI=true so that Drupal loads ci.settings.php instead of BLT settings
   export CI="true"
@@ -55,32 +51,27 @@ echo -e "\n${YELLOW}Setting up test database...${NC}"
 
 if [ "$ENV" = "local" ]; then
   # Local DDEV database setup
-  echo "Setting up databases for DDEV..."
+  echo "Setting up database for DDEV..."
 
-  # Drop and create databases
+  # Drop and create test database
   mysql -h db -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
-  mysql -h db -u root -proot -e "DROP DATABASE IF EXISTS drupal;" 2>/dev/null || true
   mysql -h db -u root -proot -e "CREATE DATABASE drupal_test;"
-  mysql -h db -u root -proot -e "CREATE DATABASE drupal;"
 
-  # Grant permissions to db user for test databases
+  # Grant permissions to db user
   mysql -h db -u root -proot -e "GRANT ALL PRIVILEGES ON drupal_test.* TO 'db'@'%';"
-  mysql -h db -u root -proot -e "GRANT ALL PRIVILEGES ON drupal.* TO 'db'@'%';"
   mysql -h db -u root -proot -e "FLUSH PRIVILEGES;"
 
   DB_URL="mysql://db:db@db/drupal_test"
 
-  echo "✓ Databases created: drupal_test, drupal"
+  echo "✓ Database created: drupal_test"
   echo "✓ User 'db' granted privileges"
 elif [ "$ENV" = "github" ]; then
   # GitHub Actions database setup (uses root password)
-  echo "Setting up databases for GitHub Actions..."
+  echo "Setting up database for GitHub Actions..."
 
-  # Drop and create databases
+  # Drop and create test database
   mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
-  mysql -h 127.0.0.1 -u root -proot -e "DROP DATABASE IF EXISTS drupal;" 2>/dev/null || true
   mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE drupal_test;"
-  mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE drupal;"
 
   # Create user and grant ALL PRIVILEGES (allows creating databases, etc.)
   mysql -h 127.0.0.1 -u root -proot -e "CREATE USER IF NOT EXISTS 'drupal'@'%' IDENTIFIED BY 'drupal';"
@@ -89,17 +80,15 @@ elif [ "$ENV" = "github" ]; then
 
   DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
 
-  echo "✓ Databases created: drupal_test, drupal"
+  echo "✓ Database created: drupal_test"
   echo "✓ User 'drupal' granted all privileges"
 else
   # Travis CI and other CI database setup (no root password)
-  echo "Setting up databases for Travis CI..."
+  echo "Setting up database for Travis CI..."
 
-  # Drop and create databases
+  # Drop and create test database
   mysql -u root -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
-  mysql -u root -e "DROP DATABASE IF EXISTS drupal;" 2>/dev/null || true
   mysql -u root -e "CREATE DATABASE drupal_test;"
-  mysql -u root -e "CREATE DATABASE drupal;"
 
   # Create user and grant ALL PRIVILEGES (allows creating databases, etc.)
   mysql -u root -e "CREATE USER IF NOT EXISTS 'drupal'@'localhost' IDENTIFIED BY 'drupal';"
@@ -108,7 +97,7 @@ else
 
   DB_URL="mysql://drupal:drupal@localhost/drupal_test"
 
-  echo "✓ Databases created: drupal_test, drupal"
+  echo "✓ Database created: drupal_test"
   echo "✓ User 'drupal' granted all privileges"
 fi
 
