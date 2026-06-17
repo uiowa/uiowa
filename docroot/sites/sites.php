@@ -1265,12 +1265,6 @@ $sites['engagement.dev.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
 $sites['engagement.stage.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
 $sites['engagement.prod.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
 
-// Directory aliases for gwsstellmagazine.sites.uiowa.edu.
-$sites['sitesgwsstellmagazine.uiowa.ddev.site'] = 'gwsstellmagazine.sites.uiowa.edu';
-$sites['sitesgwsstellmagazine.dev.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
-$sites['sitesgwsstellmagazine.stage.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
-$sites['sitesgwsstellmagazine.prod.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
-
 // Directory aliases for hhpatuiowa.org.uiowa.edu.
 $sites['orghhpatuiowa.uiowa.ddev.site'] = 'hhpatuiowa.org.uiowa.edu';
 $sites['orghhpatuiowa.dev.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
