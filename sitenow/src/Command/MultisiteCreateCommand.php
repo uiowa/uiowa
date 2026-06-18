@@ -36,7 +36,7 @@ use Uiowa\Multisite;
   description: 'Create a new SiteNow multisite.',
   aliases: ['mc', 'umc'],
 )]
-class MultisiteCreateCommand extends Command implements EnvironmentAwareInterface {
+class MultisiteCreateCommand extends Command {
 
   use SiteNowCommandsTrait;
   use PlanTrait;
@@ -62,13 +62,6 @@ class MultisiteCreateCommand extends Command implements EnvironmentAwareInterfac
     private string $repoRoot = '',
   ) {
     parent::__construct();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function environment(): string {
-    return 'host';
   }
 
   /**
