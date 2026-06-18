@@ -17,6 +17,7 @@
  *   ddev exec ./sn report:domains
  */
 
+use SiteNow\Command\ListCommand;
 use SiteNow\Command\MultisiteCreateCommand;
 use SiteNow\Command\ReportDomainsCommand;
 use SiteNow\Command\ReportInactiveCommand;
@@ -33,6 +34,7 @@ require "{$root}/vendor/autoload.php";
 chdir($root);
 
 $application = new Application('sn');
+$application->add(new ListCommand());
 $application->add(new MultisiteCreateCommand($root));
 $application->add(new ReportDomainsCommand($root));
 $application->add(new ReportSplitsCommand($root));

@@ -22,7 +22,7 @@ use Symfony\Component\Yaml\Yaml;
   description: 'Report which sites have which config splits enabled.',
   aliases: ['splits'],
 )]
-class ReportSplitsCommand extends Command {
+class ReportSplitsCommand extends Command implements EnvironmentAwareInterface {
 
   use SiteNowCommandsTrait;
   use ParsesListOptions;
@@ -48,6 +48,13 @@ class ReportSplitsCommand extends Command {
     private string $repoRoot = '',
   ) {
     parent::__construct();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function environment(): string {
+    return 'DDEV + SSH';
   }
 
   /**

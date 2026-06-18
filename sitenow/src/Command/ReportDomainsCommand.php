@@ -21,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
   description: 'List domains on prod (default) or specified environments.',
   aliases: ['domains'],
 )]
-class ReportDomainsCommand extends Command {
+class ReportDomainsCommand extends Command implements EnvironmentAwareInterface {
 
   use SiteNowCommandsTrait;
   use ParsesListOptions;
@@ -38,6 +38,13 @@ class ReportDomainsCommand extends Command {
     private string $repoRoot = '',
   ) {
     parent::__construct();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function environment(): string {
+    return 'DDEV';
   }
 
   /**

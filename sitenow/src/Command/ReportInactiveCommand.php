@@ -22,7 +22,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
   description: 'Report inactive SiteNow sites (no recent login or revision).',
   aliases: ['inactive'],
 )]
-class ReportInactiveCommand extends Command {
+class ReportInactiveCommand extends Command implements EnvironmentAwareInterface {
 
   use SiteNowCommandsTrait;
   use ParsesListOptions;
@@ -37,6 +37,13 @@ class ReportInactiveCommand extends Command {
     private string $repoRoot = '',
   ) {
     parent::__construct();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function environment(): string {
+    return 'DDEV + SSH';
   }
 
   /**

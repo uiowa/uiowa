@@ -19,7 +19,7 @@ use Symfony\Component\Yaml\Yaml;
   name: 'routes:custom',
   description: 'List routes declared by custom modules.',
 )]
-class RoutesCustomCommand extends Command {
+class RoutesCustomCommand extends Command implements EnvironmentAwareInterface {
 
   const HEADERS = ['Search Path', 'Module', 'Route', 'URL'];
 
@@ -41,6 +41,13 @@ class RoutesCustomCommand extends Command {
     private string $repoRoot = '',
   ) {
     parent::__construct();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function environment(): string {
+    return 'host or DDEV';
   }
 
   /**
