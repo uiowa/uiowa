@@ -31,7 +31,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
-    - smart_date
+    - date_ap_style
     - system
     - text
     - user
@@ -578,15 +578,22 @@ content:
     weight: 3
     region: content
   field_event_when:
-    type: smartdate_default
+    type: daterange_ap_style
     label: visually_hidden
     settings:
-      timezone_override: ''
-      format_type: medium
-      format: default
-      force_chronological: true
-      add_classes: false
-      time_wrapper: true
+      always_display_year: 1
+      use_today: 0
+      cap_today: 1
+      display_day: 1
+      month_only: 0
+      display_time: 1
+      hide_date: 0
+      time_before_date: 0
+      display_noon_and_midnight: 0
+      capitalize_noon_and_midnight: 0
+      use_all_day: 0
+      timezone: America/Chicago
+      separator: endash
     third_party_settings: {  }
     weight: 20
     region: content

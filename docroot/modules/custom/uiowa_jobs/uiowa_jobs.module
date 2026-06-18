@@ -241,7 +241,7 @@ function uiowa_jobs_build_job_card(\stdClass $job, string $heading_size = 'h3', 
 
   // Set subtitle with formatted date and a simple label.
   if ($include_date && !empty($job->pubDate)) {
-    $formatted_date = \Drupal::service('date.formatter')->format($job->pubDate, 'medium');
+    $formatted_date = \Drupal::service('date_ap_style.formatter')->formatTimestamp($job->pubDate);
     $build['#subtitle']['posted_date'] = [
       '#markup' => t('Posted @date', ['@date' => $formatted_date]),
     ];
