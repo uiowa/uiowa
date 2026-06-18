@@ -73,7 +73,7 @@ else
 fi
 
 # Run static analysis
-echo -e "${YELLOW}▶ Step 3/4: Static Analysis (PHPStan)${NC}\n"
+echo -e "${YELLOW}▶ Step 3/5: Static Analysis (PHPStan)${NC}\n"
 if "$SCRIPT_DIR/static-analysis.sh"; then
   echo -e "${GREEN}✓ PHPStan passed${NC}\n"
 else
@@ -85,8 +85,21 @@ else
   echo -e "${RED}✗ PHPStan failed (continuing...)${NC}\n"
 fi
 
+# Run security checks
+echo -e "${YELLOW}▶ Step 4/5: Security Checks (Composer Audit)${NC}\n"
+if "$SCRIPT_DIR/security.sh"; then
+  echo -e "${GREEN}✓ Security checks passed${NC}\n"
+else
+  FAILED_CHECKS+=("Security")
+  if [ "$FAST_FAIL" = true ]; then
+    echo -e "${RED}✗ Failing fast due to --fast-fail flag${NC}"
+    exit 1
+  fi
+  echo -e "${RED}✗ Security vulnerabilities found (continuing...)${NC}\n"
+fi
+
 # Run tests
-echo -e "${YELLOW}▶ Step 4/4: Unit Tests (PHPUnit)${NC}\n"
+echo -e "${YELLOW}▶ Step 5/5: Unit Tests (PHPUnit)${NC}\n"
 if "$SCRIPT_DIR/test.sh"; then
   echo -e "${GREEN}✓ PHPUnit passed${NC}\n"
 else

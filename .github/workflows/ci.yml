@@ -133,6 +133,60 @@ jobs:
       - name: Run PHPStan
         run: scripts/ci/static-analysis.sh
 
+  # Security audit job
+  security:
+    name: Security Audit (Composer)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token (must be BEFORE cache)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
+          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Security Audit
+        run: scripts/ci/security.sh
+
   # PHPUnit tests job - all test types
   test:
     name: PHPUnit Tests

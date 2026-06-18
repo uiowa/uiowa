@@ -63,6 +63,9 @@ script:
   - scripts/ci/lint.sh
   - scripts/ci/static-analysis.sh
 
+  # Check for security vulnerabilities
+  - scripts/ci/security.sh
+
   # Setup environment with Drupal installation and web server for functional tests
   - INSTALL_DRUPAL=true RUN_SERVER=true scripts/ci/setup.sh
 
