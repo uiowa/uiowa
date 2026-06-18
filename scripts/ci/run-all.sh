@@ -12,7 +12,7 @@ set -u  # Exit on undefined variable
 source "$(dirname "$0")/colors.sh"
 
 echo -e "${BLUE}╔════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║   Running Full CI Pipeline Locally        ║${NC}"
+echo -e "${BLUE}║   Running Full CI Pipeline Locally         ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════╝${NC}\n"
 
 # Track failures
