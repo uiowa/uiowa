@@ -11,6 +11,13 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\registrar_core\SessionOptionsTrait;
 
 /**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function registrar_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'registrar_core.final_exam_schedule';
+}
+
+/**
  * Define a class to use the SessionOptionsTrait.
  */
 class RegistrarCoreSessionOptions {

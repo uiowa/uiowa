@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studioorgan.uiowa.ddev.site
+    protocol: https
+  machine_name: studioorgan
+  human_name: organ.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studioorgan.prod
+drupal:
+  db:
+    database: organ_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studioorgan.prod.drupal.uiowa.edu'
+  requester: ghand
+  site-name: 'Iowa Organ Harmony Trainer'

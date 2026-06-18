@@ -406,7 +406,7 @@ display:
         type: full
         options:
           offset: 0
-          pagination_heading_level: h4
+          pagination_heading_level: h2
           items_per_page: 25
           total_pages: null
           id: 0
@@ -722,13 +722,28 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            node_bulk_form: node_bulk_form
+            nid: nid
             title: title
-            type: type
+            field_v3_conversion_revision_id__revision_id: field_v3_conversion_revision_id__revision_id
             name: name
             moderation_state: moderation_state
             changed: changed
+            operations: operations
           default: changed
           info:
+            node_bulk_form:
+              align: ''
+              separator: ''
+              empty_column: true
+              responsive: ''
+            nid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             title:
               sortable: true
               default_sort_order: asc
@@ -736,8 +751,8 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            type:
-              sortable: true
+            field_v3_conversion_revision_id__revision_id:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -760,6 +775,11 @@ display:
             changed:
               sortable: true
               default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
               align: ''
               separator: ''
               empty_column: false

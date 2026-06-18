@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiehawkeyeventures.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiehawkeyeventures
+  human_name: hawkeyeventures.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiehawkeyeventures.prod
+drupal:
+  db:
+    database: hawkeyeventures_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiehawkeyeventures.prod.drupal.uiowa.edu'
+  requester: ddmiller
+  site-name: 'Hawkeye Ventures'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: ai.uiowa.ddev.site
+    protocol: https
+  machine_name: ai
+  human_name: ai.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: ai.prod
+drupal:
+  db:
+    database: ai_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://ai.prod.drupal.uiowa.edu'
+  requester: kjcarter
+  site-name: 'AI at Iowa'

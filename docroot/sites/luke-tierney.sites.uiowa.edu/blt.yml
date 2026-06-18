@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesluke-tierney.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesluke-tierney
+  human_name: luke-tierney.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesluke-tierney.prod
+drupal:
+  db:
+    database: luke_tierney_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesluke-tierney.prod.drupal.uiowa.edu'
+  requester: luke
+  site-name: 'Luke Tierney'

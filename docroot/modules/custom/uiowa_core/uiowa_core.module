@@ -30,6 +30,7 @@ use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\LinkAnalyticsHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Drupal\webform\Element\WebformRoles;
@@ -262,7 +263,21 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
   // For entities with moderation and scheduler.
   // Catching an odd situation after scheduler where it changes the node
   // status to unpublished but doesn't change the moderation state.
+  // This is needed for programmatic saves such as bulk operations.
+  // Node saves are handled instead by
+  // uiowa_core_scheduler_moderation_validate.
   if ($entity instanceof NodeInterface) {
+    // If we don't have moderation on this entity,
+    // exit early.
+    $moderation_info = \Drupal::service('content_moderation.moderation_information');
+    $is_moderated = $moderation_info->shouldModerateEntitiesOfBundle(
+      $entity->getEntityType(),
+      $entity->bundle()
+    );
+    if (!$is_moderated) {
+      return;
+    }
+
     if ($set_state = $entity->moderation_state?->value) {
       if ($set_state == 'published' && !$entity->isPublished()) {
         if ($entity->isNew()) {
@@ -553,6 +568,18 @@ function template_preprocess_card(&$variables) {
     ...$element['#button_attributes']['class'],
     ...$button_classes,
   ];
+
+  // Apply link tracking attributes to the appropriate link element.
+  if (!empty($element['#link_attributes'])) {
+    if ($element['#linked_element'] === 'title') {
+      $element['#headline']['headline_url_attributes'] = $element['#link_attributes'];
+    }
+    elseif ($element['#linked_element'] === 'button') {
+      foreach ($element['#link_attributes'] as $attr => $value) {
+        $element['#button_attributes'][$attr] = $value;
+      }
+    }
+  }
 
   // Transfer properties and slots from the render element to variables for
   // processing in the template.
@@ -851,6 +878,19 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 
   if ($route_name === 'entity.node.edit_form' || $route_name === 'node.add') {
     uiowa_core_scheduler_help_text($form);
+  }
+
+  // Add early validation for scheduler/moderation conflicts.
+  // This prevents form validation errors
+  // from scheduler_content_moderation_integration
+  // by adjusting values before entity validation runs.
+  $module_handler = \Drupal::moduleHandler();
+  if ($module_handler->moduleExists('scheduler') && $module_handler->moduleExists('scheduler_content_moderation_integration')) {
+    $scheduler_manager = \Drupal::service('scheduler.manager');
+    if (in_array($form_id, $scheduler_manager->getEntityFormIds())) {
+      // Prepend our validation handler so it runs before entity validation.
+      array_unshift($form['#validate'], 'uiowa_core_scheduler_moderation_validate');
+    }
   }
 
   switch ($form_id) {
@@ -1190,33 +1230,97 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 }
 
 /**
- * Validation handler to clean up analytics attributes.
+ * Custom validation handler to reconcile scheduler and moderation conflicts.
+ *
+ * This runs before entity validation to prevent form errors from
+ * scheduler_content_moderation_integration constraints. It automatically
+ * adjusts the moderation state when there's a conflict with scheduled
+ * publish/unpublish dates, allowing the save to proceed.
+ * This is similar to the process in uiowa_core_entity_presave.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
  */
-function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form_state) {
-  $attributes = $form_state->getValue(['link', 0, 'options', 'attributes']) ?? [];
-  $event_name = trim($attributes['data-sn-event'] ?? '');
-
-  // If event name is empty, clear all analytics attributes.
-  if (empty($event_name)) {
-    unset($attributes['data-sn-event']);
-    unset($attributes['data-sn-event-type']);
-    unset($attributes['data-sn-event-component']);
-    unset($attributes['data-sn-event-label']);
+function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
   }
-  else {
-    // Sanitize event name: lowercase and underscores.
-    $event_name = strtolower(Html::cleanCssIdentifier($event_name));
-    $attributes['data-sn-event'] = str_replace('-', '_', $event_name);
-    // Use menu link title as label if label is empty.
-    if (empty(trim($attributes['data-sn-event-label'] ?? ''))) {
-      $menu_link_title = trim($form_state->getValue(['title', 0, 'value']) ?? '');
-      if (!empty($menu_link_title)) {
-        $attributes['data-sn-event-label'] = $menu_link_title;
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $form_object->getEntity();
+
+  // Only process nodes with moderation.
+  if (!($entity instanceof NodeInterface) || !$entity->hasField('moderation_state')) {
+    return;
+  }
+
+  $moderation_state = $form_state->getValue('moderation_state');
+  if (!$moderation_state || empty($moderation_state[0]['value'])) {
+    return;
+  }
+
+  $set_state = $moderation_state[0]['value'];
+  $publish_on = $form_state->getValue('publish_on');
+  $unpublish_on = $form_state->getValue('unpublish_on');
+
+  // Check for conflict: trying to set to "published"
+  // with a future publish date.
+  if ($set_state === 'published' && !empty($publish_on[0]['value'])) {
+    $publish_timestamp = strtotime($publish_on[0]['value']);
+    $request_time = \Drupal::time()->getRequestTime();
+
+    if ($publish_timestamp > $request_time) {
+      // Determine fallback state.
+      if ($entity->isNew()) {
+        $fallback_state = 'draft';
       }
+      else {
+        $fallback_state = $entity->moderation_state->value ?? 'draft';
+      }
+
+      // Update form state to use fallback instead of published.
+      $form_state->setValue(['moderation_state', 0, 'value'], $fallback_state);
+
+      // Add warning message.
+      $warning_text = t('Content criteria for <em>"@label"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+        '@label' => $entity->label() ?: t('this content'),
+        '@set_state' => $set_state,
+        '@fallback_state' => $fallback_state,
+      ]);
+      \Drupal::messenger()->addWarning($warning_text);
     }
   }
 
-  $form_state->setValue(['link', 0, 'options', 'attributes'], $attributes);
+  // Check for conflict: trying to set to "archived"
+  // with a future unpublish date.
+  if ($set_state === 'archived' && !empty($unpublish_on[0]['value'])) {
+    $unpublish_timestamp = strtotime($unpublish_on[0]['value']);
+    $request_time = \Drupal::time()->getRequestTime();
+
+    if ($unpublish_timestamp > $request_time) {
+      $fallback_state = $entity->moderation_state->value ?? 'draft';
+
+      // Update form state to use original state.
+      $form_state->setValue(['moderation_state', 0, 'value'], $fallback_state);
+
+      // Add warning message.
+      $warning_text = t('Content scheduling criteria for <em>"@label"</em> conflicts with the set "unpublished" moderation state. Switching back to "@fallback_state."', [
+        '@label' => $entity->label() ?: t('this content'),
+        '@fallback_state' => $fallback_state,
+      ]);
+      \Drupal::messenger()->addWarning($warning_text);
+    }
+  }
+}
+
+/**
+ * Validation handler to clean up analytics attributes.
+ */
+function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form_state) {
+  LinkAnalyticsHelper::sanitizeMenuLinkAnalyticsAttributes($form_state, 'link');
 }
 
 /**
@@ -1907,10 +2011,8 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
  *   The Font Awesome class for the field icon.
  * @param string $icon_bg_classes
  *   The Font Awesome class for the background of the field icon.
- * @param string $icon_title
- *   The title attribute value for the field icon.
  */
-function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '', string $icon_title = '') : void {
+function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
   if (!isset($variables['field_icon'])) {
     $variables['field_icon'] = '';
   }
@@ -1921,9 +2023,6 @@ function uiowa_core_set_field_icon(array &$variables, string $icon_classes, stri
     ]);
   if (!empty($icon_bg_classes)) {
     $variables['field_icon_bg'] = $icon_bg_classes;
-  }
-  if (!empty($icon_title)) {
-    $variables['field_icon_title'] = $icon_title;
   }
 }
 

@@ -1,0 +1,186 @@
+uuid: bde027f9-da69-493b-8b7d-27a6303b7312
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.full__no_crop
+    - core.entity_view_mode.media.full__square
+    - core.entity_view_mode.media.full__ultrawide
+    - core.entity_view_mode.media.full__widescreen
+    - core.entity_view_mode.media.large
+    - core.entity_view_mode.media.large__no_crop
+    - core.entity_view_mode.media.large__square
+    - core.entity_view_mode.media.large__ultrawide
+    - core.entity_view_mode.media.large__widescreen
+    - core.entity_view_mode.media.medium
+    - core.entity_view_mode.media.medium__no_crop
+    - core.entity_view_mode.media.medium__square
+    - core.entity_view_mode.media.medium__ultrawide
+    - core.entity_view_mode.media.medium__widescreen
+    - core.entity_view_mode.media.small
+    - core.entity_view_mode.media.small__no_crop
+    - core.entity_view_mode.media.small__square
+    - core.entity_view_mode.media.small__ultrawide
+    - core.entity_view_mode.media.small__widescreen
+    - core.entity_view_mode.media.vertical
+  module:
+    - editor
+    - iframe_title_filter
+    - linkit
+    - mathjax
+    - media
+    - responsive_table_filter
+    - table_header_scope_attribute
+    - uiowa_core
+name: 'Filtered HTML + Math'
+format: filtered_html_math
+weight: -9
+filters:
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: true
+    weight: -44
+    settings: {  }
+  filter_align:
+    id: filter_align
+    provider: filter
+    status: true
+    weight: -48
+    settings: {  }
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: false
+    weight: -37
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: true
+    weight: -47
+    settings: {  }
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -49
+    settings:
+      allowed_html: '<br> <p class> <h2 class id> <h3 class id> <h4 class id> <h5 class id> <h6 class id> <div class> <a class href hreflang title id target aria-label rel data-*> <cite> <dl> <dt> <dd> <mark class> <pre class> <span class role data-fa-transform> <small class> <iframe src width height allowfullscreen title loading seamless sandbox="allow-same-origin allow-scripts allow-popups"> <blockquote cite class> <ul class type> <ol class type reversed start> <hr class> <table border summary id role="presentation grid" aria-label aria-labelledby class> <caption id> <tbody class> <thead class> <tfoot class> <th id align valign colspan rowspan scope class> <td align valign colspan rowspan headers class> <tr align valign class> <drupal-media title data-entity-type data-entity-uuid alt data-view-mode data-caption data-align> <strong> <em> <code class="language-*"> <s> <sub> <sup> <li> <i class data-fa-transform>'
+      filter_html_help: true
+      filter_html_nofollow: false
+  filter_html_escape:
+    id: filter_html_escape
+    provider: filter
+    status: false
+    weight: -38
+    settings: {  }
+  filter_html_image_secure:
+    id: filter_html_image_secure
+    provider: filter
+    status: false
+    weight: -35
+    settings: {  }
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: -45
+    settings: {  }
+  filter_icon:
+    id: filter_icon
+    provider: uiowa_core
+    status: true
+    weight: -42
+    settings: {  }
+  filter_iframe:
+    id: filter_iframe
+    provider: uiowa_core
+    status: true
+    weight: -43
+    settings:
+      allowed_sources: "https://www.candidcareer.com/embed.php\r\nhttps://www.google.com/maps/embed"
+  filter_iframe_title:
+    id: filter_iframe_title
+    provider: iframe_title_filter
+    status: true
+    weight: -39
+    settings: {  }
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: -43
+    settings: {  }
+  filter_mathjax:
+    id: filter_mathjax
+    provider: mathjax
+    status: true
+    weight: -60
+    settings: {  }
+  filter_responsive_table:
+    id: filter_responsive_table
+    provider: responsive_table_filter
+    status: true
+    weight: -41
+    settings:
+      wrapper_element: div
+      wrapper_classes: table-responsive
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: false
+    weight: -36
+    settings:
+      filter_url_length: 72
+  linkit:
+    id: linkit
+    provider: linkit
+    status: true
+    weight: -50
+    settings:
+      title: true
+      media_substitution: media
+  media_embed:
+    id: media_embed
+    provider: media
+    status: true
+    weight: -40
+    settings:
+      default_view_mode: default
+      allowed_view_modes:
+        default: default
+        full__no_crop: full__no_crop
+        full__square: full__square
+        full__ultrawide: full__ultrawide
+        full__widescreen: full__widescreen
+        large: large
+        large__no_crop: large__no_crop
+        large__square: large__square
+        large__ultrawide: large__ultrawide
+        large__widescreen: large__widescreen
+        medium: medium
+        medium__no_crop: medium__no_crop
+        medium__square: medium__square
+        medium__ultrawide: medium__ultrawide
+        medium__widescreen: medium__widescreen
+        small: small
+        small__no_crop: small__no_crop
+        small__square: small__square
+        small__ultrawide: small__ultrawide
+        small__widescreen: small__widescreen
+        vertical: vertical
+      allowed_media_types:
+        audio: audio
+        facebook: facebook
+        image: image
+        panopto: panopto
+        remote_video: remote_video
+        static_map: static_map
+        twitter: twitter
+  table_header_scope_attribute:
+    id: table_header_scope_attribute
+    provider: table_header_scope_attribute
+    status: true
+    weight: 0
+    settings: {  }

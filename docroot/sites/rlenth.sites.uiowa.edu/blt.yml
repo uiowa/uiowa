@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesrlenth.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesrlenth
+  human_name: rlenth.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesrlenth.prod
+drupal:
+  db:
+    database: rlenth_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesrlenth.prod.drupal.uiowa.edu'
+  requester: rlenth
+  site-name: 'Russ Lenth'

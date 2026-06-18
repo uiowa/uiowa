@@ -1096,13 +1096,12 @@ EOD;
 
       // Activate and import any config splits.
       if ($split = $this->getConfigValue('uiowa.config.split')) {
-        $this->taskDrush()
-          ->stopOnFail(FALSE)
-          ->drush('config:set')
-          ->args("config_split.config_split.{$split}", 'status', TRUE)
-          ->drush('cache:rebuild')
-          ->drush('config:import')
-          ->run();
+        $splits = is_array($split) ? $split : [$split];
+        $task = $this->taskDrush()->stopOnFail(FALSE);
+        foreach ($splits as $split_name) {
+          $task->drush('config:set')->args("config_split.config_split.{$split_name}", 'status', TRUE);
+        }
+        $task->drush('cache:rebuild')->drush('config:import')->run();
       }
     }
   }
@@ -1188,6 +1187,7 @@ EOD;
    *   The application UUID.
    *
    * @throws \Robo\Exception\TaskException
+   * @throws \Exception
    */
   protected function deleteRemoteMultisiteFiles(string $id, string $app, string $env, string $site, Client $client, string $uuid): void {
     if ($site == '.' || $site == '*') {
@@ -1198,13 +1198,18 @@ EOD;
     $env_name = $env;
     if ($env === 'test') {
       // Check if the application has a 'stage' environment instead of 'test'.
-      $environments = new Environments($client);
-      $envs = $environments->getAll($uuid);
-      foreach ($envs as $environment) {
-        if ($environment->name === 'stage') {
-          $env_name = 'stage';
-          break;
+      try {
+        $environments = new Environments($client);
+        $envs = $environments->getAll($uuid);
+        foreach ($envs as $environment) {
+          if ($environment->name === 'stage') {
+            $env_name = 'stage';
+            break;
+          }
         }
+      }
+      catch (\Exception $e) {
+        throw new \Exception("Unable to fetch environments for $app to determine stage/test naming. Error: " . $e->getMessage());
       }
     }
 
@@ -1224,8 +1229,7 @@ EOD;
         ->run();
 
       if (!$result->wasSuccessful()) {
-        // Log the error but don't fail the entire operation.
-        $this->logger->warning("Unable to delete multisite $directory for $site on $app_env. Please delete manually.");
+        throw new \Exception("Unable to delete multisite $directory for $site on $app_env.");
       }
     }
   }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicinerd.uiowa.ddev.site
+    protocol: https
+  machine_name: medicinerd
+  human_name: rd.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinerd.prod
+drupal:
+  db:
+    database: rd_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicinerd.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'University of Iowa Master of Clinical Nutrition Program'

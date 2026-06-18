@@ -1,0 +1,23 @@
+uuid: 2c897719-fcee-4cd9-953b-b8de0253aca3
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_jobs
+    - field.storage.block_content.field_uiowa_jobs_show_date
+id: block_content.uiowa_jobs.field_uiowa_jobs_show_date
+field_name: field_uiowa_jobs_show_date
+entity_type: block_content
+bundle: uiowa_jobs
+label: 'Include posting date'
+description: 'Display the date on which the job opening was posted.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1045,12 +1045,26 @@ function uids_base_preprocess_block(&$variables) {
       $links = [];
       foreach (Element::children($variables['elements']['content']['field_uiowa_button_link']) as $delta) {
         $link = $variables['elements']['content']['field_uiowa_button_link'][$delta];
+        $url = $link['#url'] ?? NULL;
+        $link_attributes = $url?->getOptions()['attributes'] ?? [];
         $links[] = [
           'link_url' => $link['#url']->toString(),
           'link_text' => $link['#title'],
+          'link_attributes' => $link_attributes,
         ];
       }
       $variables['links'] = $links;
+    }
+  }
+
+  if ($variables['derivative_plugin_id'] === 'uiowa_cta') {
+    $variables['cta_link_attributes'] = [];
+    if (isset($variables['elements']['content']['field_uiowa_cta_link'])) {
+      foreach (Element::children($variables['elements']['content']['field_uiowa_cta_link']) as $delta) {
+        $url = $variables['elements']['content']['field_uiowa_cta_link'][$delta]['#url'] ?? NULL;
+        $variables['cta_link_attributes'] = $url?->getOptions()['attributes'] ?? [];
+        break;
+      }
     }
   }
 
