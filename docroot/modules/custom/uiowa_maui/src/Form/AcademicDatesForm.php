@@ -167,8 +167,8 @@ class AcademicDatesForm extends FormBase {
             '#headline' => [
               'headline_level' => $child_heading_size,
               'headline_text' => $this->t('@start@end', [
-                '@start' => date('F j, Y', $start),
-                '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
+                '@start' => \Drupal::service('date_ap_style.formatter')->formatTimestamp($start, ['always_display_year' => 1, 'display_time' => 0]),
+                '@end' => $end === $start ? '' : ' - ' . \Drupal::service('date_ap_style.formatter')->formatTimestamp($end, ['always_display_year' => 1, 'display_time' => 0]),
               ]),
               'headline_class' => 'headline headline--serif',
             ],
