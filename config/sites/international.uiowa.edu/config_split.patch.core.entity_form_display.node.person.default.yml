@@ -1,0 +1,49 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_person_ighn_college
+      - field.field.node.person.field_person_ighn_department
+      - field.field.node.person.field_person_ighn_global_regions
+      - field.field.node.person.field_person_ighn_languages
+  content:
+    field_person_ighn_college:
+      type: entity_reference_autocomplete
+      weight: 103
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_ighn_department:
+      type: entity_reference_autocomplete
+      weight: 102
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_ighn_global_regions:
+      type: entity_reference_autocomplete
+      weight: 104
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_ighn_languages:
+      type: entity_reference_autocomplete
+      weight: 105
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+removing: {  }
