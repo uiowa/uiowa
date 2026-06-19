@@ -10,10 +10,11 @@ use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Uiowa\Multisite;
 
 /**
- * Helpers for running Robo commands in SiteNow.
+ * Acquia Cloud, drush, and environment helpers for SiteNow console commands.
  */
 trait SiteNowCommandsTrait {
 
@@ -77,6 +78,31 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Build an Acquia Cloud API client, or report missing credentials.
+   *
+   * Centralizes the "credentials present?" precondition that command classes
+   * would otherwise each repeat. On success returns a ready client; on missing
+   * credentials it prints a clean error and returns NULL so the caller can
+   * exit before any API call fails opaquely.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report a missing-credentials error.
+   *
+   * @return \AcquiaCloudApi\Connector\Client|null
+   *   An authenticated client, or NULL when credentials are not configured.
+   */
+  protected function requireAcquiaClient(SymfonyStyle $io): ?Client {
+    $creds = $this->getAcquiaCredentials();
+
+    if (empty($creds['key']) || empty($creds['secret'])) {
+      $io->getErrorStyle()->error('Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
+      return NULL;
+    }
+
+    return $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+  }
+
+  /**
    * Get Acquia Cloud applications sorted by name (natural sort).
    *
    * @param \AcquiaCloudApi\Connector\Client $client
@@ -118,6 +144,30 @@ trait SiteNowCommandsTrait {
    */
   protected function isDdev(): bool {
     return (bool) getenv('IS_DDEV_PROJECT');
+  }
+
+  /**
+   * Require the command to run inside the DDEV container.
+   *
+   * On failure, prints an error naming the exact invocation to use and returns
+   * FALSE so the caller can exit. The command name is passed in (rather than
+   * read via getName()) so this trait makes no assumption about being mixed
+   * into a Symfony Command.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   * @param string $command_name
+   *   The command's name, for the suggested `ddev exec ./sn <name>` invocation.
+   *
+   * @return bool
+   *   TRUE when running in DDEV; FALSE (after printing an error) otherwise.
+   */
+  protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
+    if (!$this->isDdev()) {
+      $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
+      return FALSE;
+    }
+    return TRUE;
   }
 
   /**
@@ -211,31 +261,24 @@ trait SiteNowCommandsTrait {
   }
 
   /**
-   * Initialize a CSV export file with headers.
+   * Require SSH agent keys to be loaded.
    *
-   * @param string $filename_prefix
-   *   Prefix for the CSV filename (e.g., 'SiteNow-Domains-Report').
-   * @param array $headers
-   *   Array of header column names.
+   * Commands that reach prod sites over drush/SSH need forwarded agent keys.
+   * On failure, prints an error and returns FALSE so the caller can exit.
    *
-   * @return string
-   *   The filepath where the CSV file was created.
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   *
+   * @return bool
+   *   TRUE when the SSH agent has keys; FALSE (after printing an error)
+   *   otherwise.
    */
-  protected function initializeCsvExport(string $filename_prefix, array $headers): string {
-    $now = date('Ymd-His');
-    $filename = "{$filename_prefix}-{$now}.csv";
-    $root = $this->getConfigValue('repo.root') ?: getcwd();
-    $filepath = "$root/$filename";
-
-    if (file_exists($filepath)) {
-      unlink($filepath);
+  protected function requireSshAgent(SymfonyStyle $io): bool {
+    if (!$this->hasSshAgent()) {
+      $io->getErrorStyle()->error("No SSH keys loaded. Run 'ddev auth ssh' before running this command.");
+      return FALSE;
     }
-    $this->say("Created export file $filepath");
-    $fp = fopen($filepath, 'w+');
-    fputcsv($fp, $headers, ',', '"', '\\');
-    fclose($fp);
-
-    return $filepath;
+    return TRUE;
   }
 
 }
