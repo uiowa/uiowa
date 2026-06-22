@@ -55,5 +55,11 @@ function international_core_form_alter(&$form, FormStateInterface $form_state, $
         }
       }
       break;
+
+    case 'person_type_edit_form':
+    case 'person_type_add_form':
+      // @todo Remove the option of the ighn_member fields
+      //   on other person type creation/edit.
+      break;
   }
 }
