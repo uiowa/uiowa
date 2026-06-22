@@ -10,60 +10,13 @@ adding:
       sections:
         -
           components:
-            config_split_sequence_r1qg4m5k7gee58f9:
-              uuid: 78c349f0-6220-4654-8ece-a4fbabf84f1f
-              region: content
-              configuration:
-                id: 'field_block:node:person:field_person_ighn_department'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: entity_reference_label
-                  label: above
-                  settings:
-                    link: true
-                  third_party_settings: {  }
-              weight: 2
-              additional: {  }
-              third_party_settings: {  }
-            config_split_sequence_ra6j3os4r4v69vv4:
-              uuid: 9ceba469-b5c2-4cc5-ae0d-f3abeb605735
-              region: content
-              configuration:
-                id: 'field_block:node:person:field_person_ighn_college'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: entity_reference_label
-                  label: above
-                  settings:
-                    link: true
-                  third_party_settings: {  }
-              weight: 3
-              additional: {  }
-              third_party_settings: {  }
-            config_split_sequence_p83c5bnkp2iv4658:
-              uuid: c6a6e3fd-87d7-41c4-a91a-f34af67640cb
-              region: content
-              configuration:
-                id: 'field_block:node:person:field_person_ighn_global_regions'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: entity_reference_label
-                  label: above
-                  settings:
-                    link: true
-                  third_party_settings: {  }
-              weight: 4
-              additional: {  }
-              third_party_settings: {  }
+            config_split_sequence_5o5ediqcop7kgjj:
+              weight: -1
+            config_split_sequence_mh2jcunktnqjnmaf:
+              weight: -2
             config_split_sequence_sdfdubcfp676eada:
               uuid: df7582fc-abd8-4a52-b677-6ee9ae28a294
-              region: content
+              region: main
               configuration:
                 id: 'field_block:node:person:field_person_ighn_languages'
                 label_display: '0'
@@ -75,7 +28,58 @@ adding:
                   settings:
                     link: true
                   third_party_settings: {  }
-              weight: 5
+              weight: 1
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_r1qg4m5k7gee58f9:
+              uuid: 78c349f0-6220-4654-8ece-a4fbabf84f1f
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_ighn_department'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: true
+                  third_party_settings: {  }
+              weight: -4
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_ra6j3os4r4v69vv4:
+              uuid: 9ceba469-b5c2-4cc5-ae0d-f3abeb605735
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_ighn_college'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: true
+                  third_party_settings: {  }
+              weight: -3
+              additional: {  }
+              third_party_settings: {  }
+            config_split_sequence_p83c5bnkp2iv4658:
+              uuid: c6a6e3fd-87d7-41c4-a91a-f34af67640cb
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_ighn_global_regions'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: true
+                  third_party_settings: {  }
+              weight: 0
               additional: {  }
               third_party_settings: {  }
   content:
@@ -111,4 +115,13 @@ adding:
       third_party_settings: {  }
       weight: 19
       region: content
-removing: {  }
+removing:
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_5o5ediqcop7kgjj:
+              weight: 1
+            config_split_sequence_mh2jcunktnqjnmaf:
+              weight: 0
