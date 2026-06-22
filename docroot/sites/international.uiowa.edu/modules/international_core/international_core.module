@@ -63,3 +63,27 @@ function international_core_form_alter(&$form, FormStateInterface $form_state, $
       break;
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function international_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_person_ighn_college__person__default' => [
+      'template' => 'field--node--field-person-ighn-college--person--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_ighn_department__person__default' => [
+      'template' => 'field--node--field-person-ighn-department--person--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_ighn_global_region__person__default' => [
+      'template' => 'field--node--field-person-ighn-global-region--person--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_ighn_languages__person__default' => [
+      'template' => 'field--node--field-person-ighn-languages--person--default',
+      'base hook' => 'field',
+    ],
+  ];
+}
