@@ -7870,3 +7870,9 @@ $sites['siteskleimn.uiowa.ddev.site'] = 'kleimn.sites.uiowa.edu';
 $sites['siteskleimn.dev.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
 $sites['siteskleimn.stage.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
 $sites['siteskleimn.prod.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
+
+// Directory aliases for neuroinnovation.lab.uiowa.edu.
+$sites['labneuroinnovation.uiowa.ddev.site'] = 'neuroinnovation.lab.uiowa.edu';
+$sites['labneuroinnovation.dev.drupal.uiowa.edu'] = 'neuroinnovation.lab.uiowa.edu';
+$sites['labneuroinnovation.stage.drupal.uiowa.edu'] = 'neuroinnovation.lab.uiowa.edu';
+$sites['labneuroinnovation.prod.drupal.uiowa.edu'] = 'neuroinnovation.lab.uiowa.edu';
