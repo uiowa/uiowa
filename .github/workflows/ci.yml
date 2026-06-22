@@ -30,7 +30,10 @@ jobs:
 
       - name: Configure Git and Composer authentication
         run: |
-          # Configure git to rewrite SSH URLs to HTTPS (must be done BEFORE cache)
+          # Configure git to rewrite SSH URLs to HTTPS (must be done BEFORE cache).
+          # Needed for a few packages that use SSH source for fallback.
+          # Not used in the normal --prefer-dist path; this only guards the rare dist-download fallback
+          # to `git clone` so CI doesn't fail on a missing SSH key for an unrelated dependency.
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
           git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
 
