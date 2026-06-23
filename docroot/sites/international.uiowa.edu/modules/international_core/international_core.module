@@ -34,8 +34,8 @@ function international_core_entity_view_alter(array &$build, \Drupal\Core\Entity
 
       // Move IGHN fields from their default position to #meta.
       $ighn_meta_fields = [
-        'field_person_ighn_department',
         'field_person_ighn_college',
+        'field_person_ighn_department',
       ];
 
       foreach ($ighn_meta_fields as $field_name) {
