@@ -6,6 +6,17 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\international_core\Entity\IghnPerson;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function international_core_entity_bundle_info_alter(array &$bundles) {
+  // Use our custom Person class for person nodes.
+  if (isset($bundles['node']['person'])) {
+    $bundles['node']['person']['class'] = IghnPerson::class;
+  }
+}
 
 /**
  * Implements hook_form_alter().
@@ -61,6 +72,43 @@ function international_core_form_alter(&$form, FormStateInterface $form_state, $
       // @todo Remove the option of the ighn_member fields
       //   on other person type creation/edit.
       break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function international_core_preprocess_node(&$variables) {
+  $node = $variables['node'];
+
+  // Only process person nodes in teaser view mode.
+  if ($node->bundle() === 'person' && $variables['view_mode'] === 'teaser') {
+    // Check if this person has the ighn_member type.
+    $is_ighn_member = FALSE;
+    if ($node->hasField('field_person_types') && !$node->get('field_person_types')->isEmpty()) {
+      foreach ($node->get('field_person_types')->referencedEntities() as $type) {
+        if ($type->id() === 'ighn_member') {
+          $is_ighn_member = TRUE;
+          break;
+        }
+      }
+    }
+
+    // Hide IGHN fields if not an IGHN member.
+    if (!$is_ighn_member) {
+      $ighn_fields = [
+        'field_person_ighn_college',
+        'field_person_ighn_department',
+        'field_person_ighn_global_regions',
+        'field_person_ighn_languages',
+      ];
+
+      foreach ($ighn_fields as $field_name) {
+        if (isset($variables['content'][$field_name])) {
+          unset($variables['content'][$field_name]);
+        }
+      }
+    }
   }
 }
 

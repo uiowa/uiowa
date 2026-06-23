@@ -1,1 +1,3 @@
-{% include '@uids_base/field/field--unordered-list.html.twig' %}
+{% for item in items %}
+  <p><em>{{ item.content }}</em></p>
+{% endfor %}

@@ -11,80 +11,13 @@ adding:
         -
           components:
             config_split_sequence_5o5ediqcop7kgjj:
-              weight: -1
+              weight: 3
+            config_split_sequence_8a8h4ptgg2f74i4f:
+              weight: 6
             config_split_sequence_mh2jcunktnqjnmaf:
-              weight: -2
-            config_split_sequence_sdfdubcfp676eada:
-              uuid: df7582fc-abd8-4a52-b677-6ee9ae28a294
-              region: main
-              configuration:
-                id: 'field_block:node:person:field_person_ighn_languages'
-                label: null
-                label_display: null
-                provider: layout_builder
-                context_mapping:
-                  entity: layout_builder.entity
-                  view_mode: view_mode
-                formatter:
-                  type: entity_reference_label
-                  label: above
-                  settings:
-                    link: false
-                  third_party_settings:
-                    field_delimiter:
-                      delimiter: ''
-              weight: 1
-              additional:
-                layout_builder_styles_style: {  }
-              third_party_settings: {  }
-            config_split_sequence_r1qg4m5k7gee58f9:
-              uuid: 78c349f0-6220-4654-8ece-a4fbabf84f1f
-              region: main
-              configuration:
-                id: 'field_block:node:person:field_person_ighn_department'
-                label: null
-                label_display: null
-                provider: layout_builder
-                context_mapping:
-                  entity: layout_builder.entity
-                  view_mode: view_mode
-                formatter:
-                  type: entity_reference_label
-                  label: above
-                  settings:
-                    link: false
-                  third_party_settings:
-                    field_delimiter:
-                      delimiter: ''
-              weight: -4
-              additional:
-                layout_builder_styles_style: {  }
-              third_party_settings: {  }
-            config_split_sequence_ra6j3os4r4v69vv4:
-              uuid: 9ceba469-b5c2-4cc5-ae0d-f3abeb605735
-              region: main
-              configuration:
-                id: 'field_block:node:person:field_person_ighn_college'
-                label: null
-                label_display: null
-                provider: layout_builder
-                context_mapping:
-                  entity: layout_builder.entity
-                  view_mode: view_mode
-                formatter:
-                  type: entity_reference_label
-                  label: above
-                  settings:
-                    link: false
-                  third_party_settings:
-                    field_delimiter:
-                      delimiter: ''
-              weight: -3
-              additional:
-                layout_builder_styles_style: {  }
-              third_party_settings: {  }
-            config_split_sequence_p83c5bnkp2iv4658:
-              uuid: c6a6e3fd-87d7-41c4-a91a-f34af67640cb
+              weight: 2
+            config_split_sequence_4eq0pov6hr1goq0g:
+              uuid: a3d92f9a-226d-49d1-8ab0-bac6a4000f74
               region: main
               configuration:
                 id: 'field_block:node:person:field_person_ighn_global_regions'
@@ -102,43 +35,86 @@ adding:
                   third_party_settings:
                     field_delimiter:
                       delimiter: ''
-              weight: 0
+              weight: 5
               additional:
                 layout_builder_styles_style: {  }
               third_party_settings: {  }
-  content:
-    field_person_ighn_college:
-      type: entity_reference_label
-      label: above
-      settings:
-        link: true
-      third_party_settings: {  }
-      weight: 17
-      region: content
-    field_person_ighn_department:
-      type: entity_reference_label
-      label: above
-      settings:
-        link: true
-      third_party_settings: {  }
-      weight: 16
-      region: content
-    field_person_ighn_global_regions:
-      type: entity_reference_label
-      label: above
-      settings:
-        link: true
-      third_party_settings: {  }
-      weight: 18
-      region: content
-    field_person_ighn_languages:
-      type: entity_reference_label
-      label: above
-      settings:
-        link: true
-      third_party_settings: {  }
-      weight: 19
-      region: content
+            config_split_sequence_41jv7f1jhl694dgl:
+              uuid: 1908918b-2678-41a8-bf0f-991c9a3e1ef7
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_ighn_languages'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: false
+                  third_party_settings:
+                    field_delimiter:
+                      delimiter: ''
+              weight: 4
+              additional:
+                layout_builder_styles_style: {  }
+              third_party_settings: {  }
+            config_split_sequence_7l0n7a67s1eroubn:
+              uuid: 4f0aaeea-47fb-4020-9b57-c75486e49913
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_ighn_department'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: entity_reference_label
+                  label: hidden
+                  settings:
+                    link: false
+                  third_party_settings:
+                    field_delimiter:
+                      delimiter: ', '
+              weight: 0
+              additional:
+                layout_builder_styles_style:
+                  block_margin_default_removed: block_margin_default_removed
+              third_party_settings: {  }
+            config_split_sequence_vdbgeaod1v3rnuv5:
+              uuid: 7de465ca-f2ed-408b-a124-ba1cd03a66af
+              region: main
+              configuration:
+                id: 'field_block:node:person:field_person_ighn_college'
+                label: null
+                label_display: null
+                provider: layout_builder
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+                formatter:
+                  type: entity_reference_label
+                  label: hidden
+                  settings:
+                    link: false
+                  third_party_settings:
+                    field_delimiter:
+                      delimiter: ', '
+              weight: 1
+              additional:
+                layout_builder_styles_style:
+                  block_margin_default_removed: block_margin_default_removed
+              third_party_settings: {  }
+  hidden:
+    field_person_ighn_college: true
+    field_person_ighn_department: true
+    field_person_ighn_global_regions: true
+    field_person_ighn_languages: true
 removing:
   third_party_settings:
     layout_builder:
@@ -147,5 +123,7 @@ removing:
           components:
             config_split_sequence_5o5ediqcop7kgjj:
               weight: 1
+            config_split_sequence_8a8h4ptgg2f74i4f:
+              weight: 2
             config_split_sequence_mh2jcunktnqjnmaf:
               weight: 0
