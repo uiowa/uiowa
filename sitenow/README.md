@@ -1,18 +1,14 @@
 # SiteNow CLI (`sn`)
 
-`sn` runs SiteNow repository commands on the host shell, outside the DDEV
-container. Commands that touch the git working tree run on the host because the
-`.git` directory is not mounted into the container.
+`sn` runs SiteNow repository commands. Each command documents where it must
+run: some touch the git working tree and run on the **host shell** (the `.git`
+directory is not mounted into the container), while others need the **DDEV
+container**'s drush aliases and SSH agent and are run via `ddev exec`.
 
 Run it from the repository root:
 
 ```
-./sn                    # list available commands
-./sn <command> --help   # arguments and options for a command
+./sn                          # list available commands
+./sn <command> --help         # arguments and options for a command
+ddev exec ./sn <command>      # for commands that run inside the container
 ```
-
-## Structure
-
-- `sn` (repository root): entry point; registers commands.
-- `sitenow/src/Command/`: command classes.
-- `sitenow/src/Plan/`, `sitenow/src/Operation/`, `sitenow/src/Config/`: validation, file and API operations, and the application registry the commands use.
