@@ -52,63 +52,6 @@ function international_core_entity_view_alter(array &$build, EntityInterface $en
 }
 
 /**
- * Implements hook_form_alter().
- */
-function international_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) {
-    case 'node_person_edit_form':
-    case 'node_person_form':
-      // Add visibility conditions for IGHN-specific fields.
-      // These fields should only be visible when the ighn_member person type
-      // is selected.
-      $ighn_fields = [
-        'field_person_ighn_college',
-        'field_person_ighn_department',
-        'field_person_ighn_global_regions',
-        'field_person_ighn_languages',
-      ];
-      $hide_all = FALSE;
-      if (!isset($form['field_person_types']['widget']['#options']['ighn_member'])) {
-        // If we don't have the ighn_member person type available,
-        // just hide the fields, otherwise adding visibility states
-        // will make them always visible.
-        $hide_all = TRUE;
-      }
-
-      foreach ($ighn_fields as $field_name) {
-        if (isset($form[$field_name])) {
-          if ($hide_all) {
-            $form[$field_name]['#access'] = FALSE;
-            continue;
-          }
-          // Initialize states if not already set.
-          if (!isset($form[$field_name]['#states'])) {
-            $form[$field_name]['#states'] = [];
-          }
-          if (!isset($form[$field_name]['#states']['visible'])) {
-            $form[$field_name]['#states']['visible'] = [];
-          }
-
-          // Add visibility state for ighn_member person type.
-          // This ensures the field is visible when ighn_member is selected.
-          $form[$field_name]['#states']['visible'][] = [
-            ':input[name="field_person_types[ighn_member]"]' => [
-              'checked' => TRUE,
-            ],
-          ];
-        }
-      }
-      break;
-
-    case 'person_type_edit_form':
-    case 'person_type_add_form':
-      // @todo Remove the option of the ighn_member fields
-      //   on other person type creation/edit.
-      break;
-  }
-}
-
-/**
  * Implements hook_preprocess_node().
  */
 function international_core_preprocess_node(&$variables) {
