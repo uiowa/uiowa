@@ -6,6 +6,12 @@ adding:
       - field.field.node.person.field_person_ighn_global_regions
       - field.field.node.person.field_person_ighn_languages
   content:
+    body:
+      weight: 6
+    field_image:
+      weight: 8
+    field_person_email:
+      weight: 4
     field_person_ighn_college:
       type: entity_reference_label
       label: hidden
@@ -14,7 +20,7 @@ adding:
       third_party_settings:
         field_delimiter:
           delimiter: ''
-      weight: 9
+      weight: 2
       region: content
     field_person_ighn_department:
       type: entity_reference_label
@@ -24,7 +30,7 @@ adding:
       third_party_settings:
         field_delimiter:
           delimiter: ''
-      weight: 8
+      weight: 3
       region: content
     field_person_ighn_global_regions:
       type: entity_reference_label
@@ -42,4 +48,23 @@ adding:
       third_party_settings: {  }
       weight: 11
       region: content
-removing: {  }
+    field_person_phone:
+      weight: 5
+    field_person_website:
+      weight: 9
+    links:
+      weight: 7
+removing:
+  content:
+    body:
+      weight: 4
+    field_image:
+      weight: 6
+    field_person_email:
+      weight: 2
+    field_person_phone:
+      weight: 3
+    field_person_website:
+      weight: 7
+    links:
+      weight: 5
