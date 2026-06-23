@@ -9,12 +9,44 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\international_core\Entity\IghnPerson;
 
 /**
- * Implements hook_entity_bundle_info_alter().
+ * Implements hook_entity_view_alter().
  */
-function international_core_entity_bundle_info_alter(array &$bundles) {
-  // Use our custom Person class for person nodes.
-  if (isset($bundles['node']['person'])) {
-    $bundles['node']['person']['class'] = IghnPerson::class;
+function international_core_entity_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  // Only process person nodes in teaser view mode.
+  if ($entity->bundle() === 'person' && $build['#view_mode'] === 'teaser') {
+    // Check if this person has the ighn_member type.
+    $is_ighn_member = FALSE;
+    if ($entity->hasField('field_person_types') && !$entity->get('field_person_types')->isEmpty()) {
+      foreach ($entity->get('field_person_types')->referencedEntities() as $type) {
+        if ($type->id() === 'ighn_member') {
+          $is_ighn_member = TRUE;
+          break;
+        }
+      }
+    }
+
+    // If this is an IGHN member, move IGHN fields to the #meta section.
+    if ($is_ighn_member && isset($build['#type']) && $build['#type'] === 'card') {
+      // Initialize #meta if it doesn't exist.
+      if (!isset($build['#meta'])) {
+        $build['#meta'] = [];
+      }
+
+      // Move IGHN fields from their default position to #meta.
+      $ighn_meta_fields = [
+        'field_person_ighn_department',
+        'field_person_ighn_college',
+      ];
+
+      foreach ($ighn_meta_fields as $field_name) {
+        if (isset($build[$field_name])) {
+          // Move the field to #meta.
+          $build['#meta'][$field_name] = $build[$field_name];
+          // Remove from default position.
+          unset($build[$field_name]);
+        }
+      }
+    }
   }
 }
 
