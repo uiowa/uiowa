@@ -7894,3 +7894,9 @@ $sites['educationinternal.uiowa.ddev.site'] = 'internal.education.uiowa.edu';
 $sites['educationinternal.dev.drupal.uiowa.edu'] = 'internal.education.uiowa.edu';
 $sites['educationinternal.stage.drupal.uiowa.edu'] = 'internal.education.uiowa.edu';
 $sites['educationinternal.prod.drupal.uiowa.edu'] = 'internal.education.uiowa.edu';
+
+// Directory aliases for halekas.sites.uiowa.edu.
+$sites['siteshalekas.uiowa.ddev.site'] = 'halekas.sites.uiowa.edu';
+$sites['siteshalekas.dev.drupal.uiowa.edu'] = 'halekas.sites.uiowa.edu';
+$sites['siteshalekas.stage.drupal.uiowa.edu'] = 'halekas.sites.uiowa.edu';
+$sites['siteshalekas.prod.drupal.uiowa.edu'] = 'halekas.sites.uiowa.edu';
