@@ -50,6 +50,7 @@ install:
 
   # PHP dependencies
   - composer install
+  - export PATH="$COMPOSER_BIN:$PATH"
 
   # Frontend build (still using BLT command hook for now)
   - yarn install --production --ignore-optional --frozen-lockfile --non-interactive
