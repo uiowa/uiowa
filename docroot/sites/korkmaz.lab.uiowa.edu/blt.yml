@@ -1,0 +1,18 @@
+project:
+  machine_name: labkorkmaz
+  human_name: korkmaz.lab.uiowa.edu
+  local:
+    hostname: labkorkmaz.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labkorkmaz.prod
+drupal:
+  db:
+    database: korkmaz_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labkorkmaz.prod.drupal.uiowa.edu'
+  requester: dgatica
+  site-name: 'Korkmaz Lab'

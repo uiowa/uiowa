@@ -1,0 +1,18 @@
+project:
+  machine_name: orgccpb
+  human_name: ccpb.org.uiowa.edu
+  local:
+    hostname: orgccpb.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: orgccpb.prod
+drupal:
+  db:
+    database: ccpb_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgccpb.prod.drupal.uiowa.edu'
+  requester: sgerlock
+  site-name: 'Cultural Centers Programming Board'
