@@ -1,0 +1,18 @@
+project:
+  machine_name: labneuroinnovation
+  human_name: neuroinnovation.lab.uiowa.edu
+  local:
+    hostname: labneuroinnovation.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labneuroinnovation.prod
+drupal:
+  db:
+    database: neuroinnovation_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labneuroinnovation.prod.drupal.uiowa.edu'
+  requester: arashok
+  site-name: 'Neurovascular Innovation Lab'

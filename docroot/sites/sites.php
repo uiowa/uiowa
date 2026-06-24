@@ -7870,3 +7870,21 @@ $sites['siteskleimn.uiowa.ddev.site'] = 'kleimn.sites.uiowa.edu';
 $sites['siteskleimn.dev.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
 $sites['siteskleimn.stage.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
 $sites['siteskleimn.prod.drupal.uiowa.edu'] = 'kleimn.sites.uiowa.edu';
+
+// Directory aliases for neuroinnovation.lab.uiowa.edu.
+$sites['labneuroinnovation.uiowa.ddev.site'] = 'neuroinnovation.lab.uiowa.edu';
+$sites['labneuroinnovation.dev.drupal.uiowa.edu'] = 'neuroinnovation.lab.uiowa.edu';
+$sites['labneuroinnovation.stage.drupal.uiowa.edu'] = 'neuroinnovation.lab.uiowa.edu';
+$sites['labneuroinnovation.prod.drupal.uiowa.edu'] = 'neuroinnovation.lab.uiowa.edu';
+
+// Directory aliases for ccpb.org.uiowa.edu.
+$sites['orgccpb.uiowa.ddev.site'] = 'ccpb.org.uiowa.edu';
+$sites['orgccpb.dev.drupal.uiowa.edu'] = 'ccpb.org.uiowa.edu';
+$sites['orgccpb.stage.drupal.uiowa.edu'] = 'ccpb.org.uiowa.edu';
+$sites['orgccpb.prod.drupal.uiowa.edu'] = 'ccpb.org.uiowa.edu';
+
+// Directory aliases for korkmaz.lab.uiowa.edu.
+$sites['labkorkmaz.uiowa.ddev.site'] = 'korkmaz.lab.uiowa.edu';
+$sites['labkorkmaz.dev.drupal.uiowa.edu'] = 'korkmaz.lab.uiowa.edu';
+$sites['labkorkmaz.stage.drupal.uiowa.edu'] = 'korkmaz.lab.uiowa.edu';
+$sites['labkorkmaz.prod.drupal.uiowa.edu'] = 'korkmaz.lab.uiowa.edu';
