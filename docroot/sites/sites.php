@@ -7888,3 +7888,9 @@ $sites['labkorkmaz.uiowa.ddev.site'] = 'korkmaz.lab.uiowa.edu';
 $sites['labkorkmaz.dev.drupal.uiowa.edu'] = 'korkmaz.lab.uiowa.edu';
 $sites['labkorkmaz.stage.drupal.uiowa.edu'] = 'korkmaz.lab.uiowa.edu';
 $sites['labkorkmaz.prod.drupal.uiowa.edu'] = 'korkmaz.lab.uiowa.edu';
+
+// Directory aliases for internal.education.uiowa.edu.
+$sites['educationinternal.uiowa.ddev.site'] = 'internal.education.uiowa.edu';
+$sites['educationinternal.dev.drupal.uiowa.edu'] = 'internal.education.uiowa.edu';
+$sites['educationinternal.stage.drupal.uiowa.edu'] = 'internal.education.uiowa.edu';
+$sites['educationinternal.prod.drupal.uiowa.edu'] = 'internal.education.uiowa.edu';
