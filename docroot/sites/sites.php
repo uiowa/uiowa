@@ -1037,12 +1037,6 @@ $sites['labroman.dev.drupal.uiowa.edu'] = 'roman.lab.uiowa.edu';
 $sites['labroman.stage.drupal.uiowa.edu'] = 'roman.lab.uiowa.edu';
 $sites['labroman.prod.drupal.uiowa.edu'] = 'roman.lab.uiowa.edu';
 
-// Directory aliases for policy.clas.uiowa.edu.
-$sites['claspolicy.uiowa.ddev.site'] = 'policy.clas.uiowa.edu';
-$sites['claspolicy.dev.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
-$sites['claspolicy.stage.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
-$sites['claspolicy.prod.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
-
 // Directory aliases for advisingcenter.uiowa.edu.
 $sites['advisingcenter.uiowa.ddev.site'] = 'advisingcenter.uiowa.edu';
 $sites['advisingcenter.dev.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
