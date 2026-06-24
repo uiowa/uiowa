@@ -9,7 +9,7 @@ dependencies:
   module:
     - better_exposed_filters
     - node
-    - smart_date
+    - date_ap_style
     - user
 id: thesis_defenses
 label: 'Thesis Defenses'
@@ -395,22 +395,21 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: smartdate_default
+          type: daterange_ap_style
           settings:
-            timezone_override: ''
-            format: default
-            force_chronological: false
-            add_classes: false
-            time_wrapper: true
-            localize: false
-            parts:
-              start: start
-              end: end
-              duration: '0'
-            duration:
-              separator: ' | '
-              unit: ''
-              decimals: 2
+            always_display_year: 1
+            use_today: 0
+            cap_today: 1
+            display_day: 1
+            month_only: 0
+            display_time: 1
+            hide_date: 0
+            time_before_date: 0
+            display_noon_and_midnight: 0
+            capitalize_noon_and_midnight: 0
+            use_all_day: 0
+            timezone: America/Chicago
+            separator: endash
               suffix: h
           group_column: value
           group_columns: {  }

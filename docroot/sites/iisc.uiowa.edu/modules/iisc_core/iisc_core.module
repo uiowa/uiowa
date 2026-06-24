@@ -49,7 +49,7 @@ function iisc_core_entity_extra_field_info() {
 function iisc_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->getType() === 'project' && $display->getComponent('project_created_date')) {
     $created = $entity->get('created')->value;
-    $date = \Drupal::service('date.formatter')->format($created, 'medium');
+    $date = \Drupal::service('date_ap_style.formatter')->formatTimestamp($created);
     $build['project_created_date'] = [
       '#type' => 'container',
       '#attributes' => [

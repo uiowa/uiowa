@@ -1,6 +1,6 @@
 services:
   brand_core.commands:
     class: \Drupal\brand_core\Commands\BrandCoreCommands
-    arguments: ['@account_switcher', '@date.formatter', '@email_factory']
+    arguments: ['@account_switcher', '@date_ap_style.formatter', '@email_factory']
     tags:
       - { name: drush.command }
