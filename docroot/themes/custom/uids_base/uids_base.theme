@@ -1487,4 +1487,9 @@ function uids_base_theme_suggestions_page_title_alter(array &$suggestions, array
 function uids_base_photoswipe_js_options_alter(array &$settings) {
   // Disable's photoswipe's share links (twitter, fb, pintrest).
   $settings['shareEl'] = FALSE;
+  // Cross-fade the lightbox open/close instead of zooming from the thumbnail.
+  // Gallery thumbnails are focal-point square crops while the lightbox opens
+  // the full image, so a zoom animation can't line up with the crop; a fade
+  // avoids the mismatch entirely.
+  $settings['showHideAnimationType'] = 'fade';
 }
