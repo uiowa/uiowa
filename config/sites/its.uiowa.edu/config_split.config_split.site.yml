@@ -11,8 +11,11 @@ no_patching: false
 storage: folder
 folder: ../config/sites/its.uiowa.edu
 module:
+  csv_serialization: 0
   fullcalendar: 0
   rh_taxonomy: 0
+  serialization: 0
+  views_data_export: 0
   its_core: 10
 theme: {  }
 complete_list:
@@ -51,6 +54,7 @@ complete_list:
   - taxonomy.vocabulary.service_category
   - taxonomy.vocabulary.support_article_categories
   - user.role.help_desk
+  - views.view.alerts_export
   - views.view.alert_categories
   - views.view.services
   - views.view.services_related_alerts
