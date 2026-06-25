@@ -3,10 +3,12 @@ parameters:
   customRulesetUsed: true
   ignoreErrors:
     - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
+    - '#Class __TwigTemplate_.* extends @internal class#'
   reportUnmatchedIgnoredErrors: false
   excludePaths:
     - */sites/simpletest/*
     - */sites/default/files/*
+    - */sites/*/files/*
     - */tests/Drupal/Tests/Listeners/Legacy/*
     - */tests/fixtures/*.php
     - */settings*.php

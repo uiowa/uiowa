@@ -1,0 +1,46 @@
+#!/bin/bash
+
+## Description: Run CI checks locally (simulates Travis pipeline)
+## Usage: ci [--skip-setup] [--fast-fail] [--exclude-functional] [lint|test|static-analysis|security]
+## Example: "ddev ci" runs all checks
+## Example: "ddev ci lint" runs only PHPCS
+## Example: "ddev ci security" runs security audit
+## Example: "ddev ci --fast-fail" stops at first failure
+## Example: "ddev ci test --exclude-functional" skips functional tests
+## Example: "ddev ci --skip-setup test" skips setup, runs only tests
+
+# Pass all arguments to the run-all script
+if [ $# -eq 0 ] || [[ "$1" == --* ]]; then
+  # No specific check specified, run all
+  /var/www/html/scripts/ci/run-all.sh "$@"
+else
+  # Specific check requested
+  case "$1" in
+    lint|linting|phpcs)
+      /var/www/html/scripts/ci/lint.sh
+      ;;
+    test|tests|phpunit)
+      shift  # Remove 'test' from args
+      /var/www/html/scripts/ci/setup.sh
+      /var/www/html/scripts/ci/test.sh "$@"
+      ;;
+    static-analysis|static|phpstan)
+      /var/www/html/scripts/ci/static-analysis.sh
+      ;;
+    security|audit)
+      /var/www/html/scripts/ci/security.sh
+      ;;
+    setup)
+      /var/www/html/scripts/ci/setup.sh
+      ;;
+    all)
+      shift  # Remove 'all' from args
+      /var/www/html/scripts/ci/run-all.sh "$@"
+      ;;
+    *)
+      echo "Unknown check: $1"
+      echo "Valid options: lint, test, static-analysis, security, setup, all"
+      exit 1
+      ;;
+  esac
+fi

@@ -491,6 +491,13 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
 
+  // Check if uiowa_core module is installed (may not be during installation).
+  // Using moduleHandler instead of container->has() because the service
+  // definition may exist before the module is actually enabled.
+  if (!\Drupal::moduleHandler()->moduleExists('uiowa_core')) {
+    return;
+  }
+
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 

@@ -206,7 +206,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['sitenow_people_filter']['filter_type'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Person Type'),
-      '#description' => $this->t('Allow filtering by person type'),
+      '#description' => $this->t('Allow filtering by person type. Only shown if person types are enabled.'),
       '#default_value' => $config->get('filter_display.type'),
       '#size' => 60,
     ];

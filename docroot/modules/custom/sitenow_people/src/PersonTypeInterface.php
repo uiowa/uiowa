@@ -27,4 +27,12 @@ interface PersonTypeInterface extends ConfigEntityInterface {
    */
   public function getAllowedFields();
 
+  /**
+   * Returns whether this person type is locked.
+   *
+   * @return bool
+   *   TRUE if the type cannot be deleted.
+   */
+  public function isLocked();
+
 }
