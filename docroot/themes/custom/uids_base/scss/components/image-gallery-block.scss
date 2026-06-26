@@ -109,7 +109,9 @@
   to { opacity: 1; }
 }
 
-.pswp__img:not(.pswp__img--placeholder) {
-  // Fade each full image in as it appears so its not jarring on slideshow load.
-  animation: pswp-img-fade-in var(--pswp-transition-duration, 0.3s) ease-in-out;
+@media (prefers-reduced-motion: no-preference) {
+  .pswp__img:not(.pswp__img--placeholder) {
+    // Fade each full image in as it appears so its not jarring on slideshow load.
+    animation: pswp-img-fade-in var(--pswp-transition-duration, 0.3s) ease-in-out;
+  }
 }
