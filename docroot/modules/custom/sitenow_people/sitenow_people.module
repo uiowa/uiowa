@@ -884,6 +884,8 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
           }
         }
       }
+      // Filter research areas to only show those with results.
+      _sitenow_people_filter_research_areas($form, $view);
       break;
 
     case 'people_list_block':
@@ -891,7 +893,113 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
       }
+      // Filter research areas to only show those with results.
+      _sitenow_people_filter_research_areas($form, $view);
       break;
+  }
+}
+
+/**
+ * Helper function to filter research areas to only show those with results.
+ *
+ * @param array $form
+ *   The exposed form array.
+ * @param \Drupal\views\ViewExecutable $view
+ *   The view object.
+ */
+function _sitenow_people_filter_research_areas(array &$form, $view) {
+  // Check if research areas filter exists in the form.
+  $research_areas_key = NULL;
+  if (isset($form['people_research_areas'])) {
+    $research_areas_key = 'people_research_areas';
+  }
+  elseif (isset($form['field_person_research_areas_target_id'])) {
+    $research_areas_key = 'field_person_research_areas_target_id';
+  }
+
+  if (!$research_areas_key) {
+    return;
+  }
+
+  // Get current exposed input to check for other filters.
+  $exposed_input = $view->getExposedInput();
+  $person_type = NULL;
+
+  // Check for person type filter in various possible keys.
+  if (!empty($exposed_input['type'])) {
+    $person_type = $exposed_input['type'];
+  }
+  elseif (!empty($exposed_input['field_person_types_target_id'])) {
+    $person_type = $exposed_input['field_person_types_target_id'];
+  }
+
+  // Build a query to find research areas actually used by persons.
+  $query = \Drupal::database()->select('node_field_data', 'n');
+  $query->join('node__field_person_research_areas', 'ra', 'n.nid = ra.entity_id');
+  $query->fields('ra', ['field_person_research_areas_target_id']);
+  $query->condition('n.type', 'person');
+  $query->condition('n.status', 1);
+  $query->distinct();
+
+  // Apply person type filter if set.
+  if (!empty($person_type) && $person_type !== 'All') {
+    $query->join('node__field_person_types', 'pt', 'n.nid = pt.entity_id');
+    $query->condition('pt.field_person_types_target_id', $person_type);
+  }
+
+  // Apply field_person_hide filter (exclude hidden persons).
+  $query->leftJoin('node__field_person_hide', 'ph', 'n.nid = ph.entity_id');
+  $or = $query->orConditionGroup()
+    ->condition('ph.field_person_hide_value', 1, '!=')
+    ->isNull('ph.field_person_hide_value');
+  $query->condition($or);
+
+  $result = $query->execute()->fetchCol();
+
+  // If no results, nothing to filter.
+  if (empty($result)) {
+    // For autocomplete, we can't easily restrict it, so just leave it
+    // as is and exit.
+    if (isset($form[$research_areas_key]['#type']) &&
+        $form[$research_areas_key]['#type'] === 'entity_autocomplete') {
+      return;
+    }
+    // For select/checkboxes, there are no options,
+    // so just unset the whole thing and then exit.
+    unset($form[$research_areas_key]);
+    return;
+  }
+
+  // Filter the options based on the query results.
+  if (isset($form[$research_areas_key]['#type'])) {
+    $type = $form[$research_areas_key]['#type'];
+
+    // For select/checkboxes, filter the options.
+    // For autocomplete, we would need to create a custom autocomplete callback.
+    // This is more complex and may be addressed separately if needed,
+    // but for now we just won't touch it in that scenario.
+    if (($type === 'select' || $type === 'checkboxes') && isset($form[$research_areas_key]['#options'])) {
+      $original_options = $form[$research_areas_key]['#options'];
+      $filtered_options = [];
+
+      // Keep the 'All' option if it exists.
+      if (isset($original_options['All'])) {
+        $filtered_options['All'] = $original_options['All'];
+      }
+
+      // Only include terms that have results.
+      foreach ($original_options as $tid => $label) {
+        // This one was handled already.
+        if ($tid === 'All') {
+          continue;
+        }
+        if (in_array($tid, $result)) {
+          $filtered_options[$tid] = $label;
+        }
+      }
+
+      $form[$research_areas_key]['#options'] = $filtered_options;
+    }
   }
 }
 
