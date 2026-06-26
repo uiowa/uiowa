@@ -166,9 +166,6 @@ class LayoutBuilderStylesHelper {
         foreach (Element::children($build) as $delta) {
           if (isset($build[$delta]['#display_settings']['photoswipe_thumbnail_style'])) {
             $build[$delta]['#display_settings']['photoswipe_thumbnail_style'] = $style;
-            // Drop any per-item cache keys so the swapped style is not shared
-            // with other instances of the same image.
-            unset($build[$delta]['#cache']['keys']);
           }
         }
         break;
