@@ -1,0 +1,113 @@
+<?php
+
+/**
+ * @file
+ * Contains international_core.module.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function international_core_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  // Only process person nodes in teaser view mode.
+  if ($entity->bundle() === 'person' && $build['#view_mode'] === 'teaser') {
+    // Check if this person has the ighn_member type.
+    $is_ighn_member = FALSE;
+    if ($entity->hasField('field_person_types') && !$entity->get('field_person_types')->isEmpty()) {
+      foreach ($entity->get('field_person_types')->referencedEntities() as $type) {
+        if ($type->id() === 'ighn_member') {
+          $is_ighn_member = TRUE;
+          break;
+        }
+      }
+    }
+
+    // If this is an IGHN member, move IGHN fields to the #meta section.
+    if ($is_ighn_member && isset($build['#type']) && $build['#type'] === 'card') {
+      // Initialize #meta if it doesn't exist.
+      if (!isset($build['#meta'])) {
+        $build['#meta'] = [];
+      }
+
+      // Move IGHN fields from their default position to #meta.
+      $ighn_meta_fields = [
+        'field_person_ighn_college',
+        'field_person_ighn_department',
+      ];
+
+      foreach ($ighn_meta_fields as $field_name) {
+        if (isset($build[$field_name])) {
+          // Move the field to #meta.
+          $build['#meta'][$field_name] = $build[$field_name];
+          // Remove from default position.
+          unset($build[$field_name]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function international_core_preprocess_node(&$variables) {
+  $node = $variables['node'];
+
+  // Only process person nodes in teaser view mode.
+  if ($node->bundle() === 'person' && $variables['view_mode'] === 'teaser') {
+    // Check if this person has the ighn_member type.
+    $is_ighn_member = FALSE;
+    if ($node->hasField('field_person_types') && !$node->get('field_person_types')->isEmpty()) {
+      foreach ($node->get('field_person_types')->referencedEntities() as $type) {
+        if ($type->id() === 'ighn_member') {
+          $is_ighn_member = TRUE;
+          break;
+        }
+      }
+    }
+
+    // Hide IGHN fields if not an IGHN member.
+    if (!$is_ighn_member) {
+      $ighn_fields = [
+        'field_person_ighn_college',
+        'field_person_ighn_department',
+        'field_person_ighn_global_regions',
+        'field_person_ighn_languages',
+      ];
+
+      foreach ($ighn_fields as $field_name) {
+        if (isset($variables['content'][$field_name])) {
+          unset($variables['content'][$field_name]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function international_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_person_ighn_college__person__default' => [
+      'template' => 'field--node--field-person-ighn-college--person--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_ighn_department__person__default' => [
+      'template' => 'field--node--field-person-ighn-department--person--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_ighn_global_regions__person__default' => [
+      'template' => 'field--node--field-person-ighn-global-regions--person--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_ighn_languages__person__default' => [
+      'template' => 'field--node--field-person-ighn-languages--person--default',
+      'base hook' => 'field',
+    ],
+  ];
+}

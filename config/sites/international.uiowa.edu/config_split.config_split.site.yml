@@ -1,0 +1,30 @@
+uuid: cb48c8ff-6071-41b2-8183-4e7b9329ea45
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The international.uiowa.edu site split.'
+weight: 70
+stackable: true
+no_patching: false
+storage: folder
+folder: ../config/sites/international.uiowa.edu
+module:
+  international_core: 100
+  rh_taxonomy: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_view_display.node.person.default
+  - taxonomy.vocabulary.department
+  - taxonomy.vocabulary.languages
+  - taxonomy.vocabulary.primary_college
+  - taxonomy.vocabulary.regions_of_focus
+  - 'rabbit_hole.behavior_settings.taxonomy_vocabulary_*'
+  - 'field.storage.node.field_person_ighn_*'
+  - 'field.field.node.person.field_person_ighn_*'
+partial_list:
+  - rabbit_hole.settings
+  - 'core.entity_form_display.node.person.*'
+  - 'core.entity_view_display.node.person.*'
