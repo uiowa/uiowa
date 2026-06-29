@@ -27,10 +27,6 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         },
-        "blt-drupal-test": {
-            "type": "path",
-            "url": "./packages/blt-drupal-test"
-        },
         "drupal": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
@@ -67,10 +63,8 @@
         "audit": {
             "abandoned": "ignore",
             "ignore": {
-                "CVE-2025-67746": "Temporarily ignore.",
-                "CVE-2026-40261": "Temporarily ignore.",
-                "CVE-2026-40176": "Temporarily ignore.",
-                "PKSA-pwvr-3754-v57r": "Temporarily ignore."
+                "CVE-2026-13240": "paragraphs_library which is not in-use.",
+                "CVE-2026-13241": "paragraphs_library which is not in-use."
             }
         },
         "sort-packages": true,
@@ -97,7 +91,6 @@
         "guzzlehttp/promises": "2.5.0 as 2.2.0",
         "guzzlehttp/psr7": "2.12.1 as 2.10.4",
         "acquia/blt": "^13.7.4",
-        "acquia/blt-drupal-test": "*",
         "acquia/blt-multisite": "dev-master",
         "acquia/blt-travis": "^1.1.0",
         "acquia/memcache-settings": "^1.1",
@@ -255,6 +248,7 @@
     "require-dev": {
         "acquia/blt-phpcs": "^1.0",
         "acquia/coding-standards": "^3.0",
+        "drupal/core-dev": "^9.0 || ^10",
         "mglaman/phpstan-drupal": "^1.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.4",
