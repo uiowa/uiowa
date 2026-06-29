@@ -17,6 +17,7 @@
  *   ddev exec ./sn report:domains
  */
 
+use SiteNow\Command\DeployVersionStampCommand;
 use SiteNow\Command\MultisiteCreateCommand;
 use SiteNow\Command\ReportDomainsCommand;
 use SiteNow\Command\ReportInactiveCommand;
@@ -34,6 +35,7 @@ chdir($root);
 
 $application = new Application('sn');
 $application->add(new MultisiteCreateCommand($root));
+$application->add(new DeployVersionStampCommand($root));
 $application->add(new ReportDomainsCommand($root));
 $application->add(new ReportSplitsCommand($root));
 $application->add(new ReportInactiveCommand($root));

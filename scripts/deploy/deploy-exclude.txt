@@ -1,0 +1,32 @@
+# Supplemental exclude list for the deploy artifact.
+#
+# scripts/deploy/assemble.sh feeds this to rsync as --exclude-from AND has rsync
+# honor .gitignore (--filter ':- .gitignore'). .gitignore is the source of truth
+# for everything not in version control: secrets, local config, and the
+# composer/yarn-managed trees (vendor, docroot/core, contrib, node_modules,
+# compiled assets) that the build regenerates. This file only covers the gaps:
+# tracked files we don't want at runtime, plus git metadata.
+#
+# rsync pattern semantics (not gitignore): a leading slash anchors to the build
+# root; a pattern without a slash matches at any depth.
+
+# --- Tracked secrets (.gitignore covers the decrypted deploy_key, not this) ---
+/deploy_key.enc
+
+# --- Tracked, but not needed in the runtime artifact ---
+/.github
+/.ddev
+/tests
+/box
+/README.md
+/.travis.yml
+/Vagrantfile
+/acquia-pipelines.yaml
+/blt.sh
+
+# --- Git metadata ---
+# Exclude .git so the build dir is a clean tree, and exclude every .gitignore so
+# the normally-ignored built dependencies (vendor, core, contrib, node_modules)
+# are committable into the artifact rather than re-ignored.
+.git
+.gitignore
