@@ -292,24 +292,6 @@ function facilities_core_preprocess_field(&$variables) {
       }
       break;
 
-    case 'field_building_lactation_rooms':
-    case 'field_building_rr_single_neutral':
-    case 'field_building_rr_single_men':
-    case 'field_building_rr_single_women':
-    case 'field_building_rr_multi_men':
-    case 'field_building_rr_multi_women':
-      // Set up the details element.
-      $variables['label_display'] = 'visually_hidden';
-      $details = [
-        '#type' => 'details',
-        '#title' => $variables['label'],
-      ];
-
-      // Wrap the field output in the details element.
-      $details['#children'] = $variables['items'][0]['content'];
-      $variables['items'][0]['content'] = $details;
-      break;
-
     case 'field_building_address':
       $node = \Drupal::routeMatch()->getParameter('node');
       if ($node instanceof NodeInterface) {
@@ -355,14 +337,6 @@ function facilities_core_preprocess_field(&$variables) {
 
       // Append the details element to the field content.
       $variables['items'][0]['content']['#suffix'] = '<br />' . \Drupal::service('renderer')->render($details);
-
-      $variables['label_tag'] = 'h2';
-      uiowa_core_set_title_attributes($variables, [
-        'headline',
-        'headline--serif',
-        'headline--underline',
-        'h5',
-      ]);
       break;
 
     case 'field_artwork_building':
@@ -511,24 +485,6 @@ function facilities_core_preprocess_layout(&$variables) {
  */
 function facilities_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'services_headline_block':
-      // Load the node entity.
-      $node = \Drupal::routeMatch()->getParameter('node');
-
-      // Check if all the specified fields are empty.
-      $hide_block = empty($node->field_building_lactation_rooms->value) &&
-        empty($node->field_building_rr_single_neutral->value) &&
-        empty($node->field_building_rr_single_men->value) &&
-        empty($node->field_building_rr_single_women->value) &&
-        empty($node->field_building_rr_multi_men->value) &&
-        empty($node->field_building_rr_multi_women->value);
-      // Hide the block if all the specified fields are empty.
-      if ($hide_block) {
-        $variables['content'] = [];
-      }
-
-      break;
-
     case 'views_block:named_building_details-block_honoree':
       uiowa_core_set_attributes($variables, [
         'bg--gray',
