@@ -1,0 +1,95 @@
+uuid: 93ed8292-cbde-4d6b-a81b-1f81d0646530
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.service_resource.field_sr_access_info
+    - field.field.paragraph.service_resource.field_sr_contact_address
+    - field.field.paragraph.service_resource.field_sr_contact_email
+    - field.field.paragraph.service_resource.field_sr_contact_name
+    - field.field.paragraph.service_resource.field_sr_contact_phone
+    - field.field.paragraph.service_resource.field_sr_equipment
+    - field.field.paragraph.service_resource.field_sr_floor
+    - field.field.paragraph.service_resource.field_sr_location_guide
+    - field.field.paragraph.service_resource.field_sr_room
+    - paragraphs.paragraphs_type.service_resource
+id: paragraph.service_resource.default
+targetEntityType: paragraph
+bundle: service_resource
+mode: default
+content:
+  field_sr_access_info:
+    type: string_textarea
+    weight: 8
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_contact_address:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_contact_email:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_contact_name:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_contact_phone:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_equipment:
+    type: string_textarea
+    weight: 6
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_floor:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_location_guide:
+    type: string_textarea
+    weight: 7
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_sr_room:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
