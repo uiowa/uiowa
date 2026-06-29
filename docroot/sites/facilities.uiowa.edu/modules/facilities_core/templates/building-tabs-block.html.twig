@@ -5,7 +5,7 @@
  *
  * Available variables:
  * - node: The building node entity.
- * - tabs: Keyed array of tab data. Each entry has label and content keys.
+ * - tabs: Keyed array of tab data. Each entry has label, icon, and content keys.
  */
 #}
 <div class="tabs-collection collection--tabs" id="building-tabs--{{ node.id }}">
@@ -17,7 +17,7 @@
               aria-controls="building-tabs--{{ node.id }}__panel--{{ key }}"
               id="building-tabs--{{ node.id }}__tab--{{ key }}"
               {{ not loop.first ? 'tabindex="-1"' }}
-      >{{ tab.label }}</button>
+      >{% if tab.icon %}<i class="{{ tab.icon }}" aria-hidden="true"></i> {% endif %}{{ tab.label }}</button>
     {% endfor %}
   </div>
 

@@ -32,6 +32,7 @@ class BuildingTabsBlock extends BlockBase {
     if (!$hours_items->isEmpty()) {
       $tabs['hours'] = [
         'label' => $this->t('Hours'),
+        'icon' => 'fa-regular fa-calendar-days',
         'content' => $hours_items->view(['type' => 'text_default', 'label' => 'visually_hidden']),
       ];
     }
@@ -54,6 +55,7 @@ class BuildingTabsBlock extends BlockBase {
     if (!empty($restroom_content)) {
       $tabs['restrooms'] = [
         'label' => $this->t('Restrooms'),
+        'icon' => 'fa-solid fa-restroom',
         'content' => $restroom_content,
       ];
     }
@@ -62,18 +64,22 @@ class BuildingTabsBlock extends BlockBase {
     $service_tabs = [
       'lactation_rooms' => [
         'label' => $this->t('Lactation rooms'),
+        'icon' => 'fa-solid fa-person-breastfeeding',
         'field' => 'field_building_lactation_rooms',
       ],
       'aed' => [
         'label' => $this->t('AED'),
+        'icon' => 'fa-solid fa-heart-circle-bolt',
         'field' => 'field_building_aed',
       ],
       'stop_the_bleed' => [
         'label' => $this->t('Stop the Bleed'),
+        'icon' => 'fa-solid fa-kit-medical',
         'field' => 'field_building_stop_the_bleed',
       ],
       'evac_chairs' => [
         'label' => $this->t('EVAC Chairs'),
+        'icon' => 'fa-solid fa-wheelchair',
         'field' => 'field_building_evac_chairs',
       ],
     ];
@@ -87,6 +93,7 @@ class BuildingTabsBlock extends BlockBase {
         }
         $tabs[$key] = [
           'label' => $config['label'],
+          'icon' => $config['icon'],
           'content' => [
             '#type' => 'container',
             '#attributes' => ['class' => ['grid--threecol--33-34-33']],
@@ -164,7 +171,7 @@ class BuildingTabsBlock extends BlockBase {
         $address_parts[] = '<a href="mailto:' . $contact_email . '">' . $contact_email . '</a>';
       }
       $content[] = [
-        '#markup' => '<address>' . implode('<br>', $address_parts) . '</address>',
+        '#markup' => '<div class="visually-hidden">' . $this->t('Resource contact') . '</div><address>' . implode('<br>', $address_parts) . '</address>',
       ];
     }
 
