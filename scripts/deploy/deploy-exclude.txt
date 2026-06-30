@@ -23,6 +23,11 @@
 /Vagrantfile
 /acquia-pipelines.yaml
 /blt.sh
+# AI/model-harness guidance: no harness runs on production, so keep these out
+# of the artifact even once they are tracked. (.claude/, CLAUDE.local.md, and
+# the other agent dotfiles are already gitignored.)
+/AGENTS.md
+/CLAUDE.md
 
 # --- Git metadata ---
 # Exclude .git so the build dir is a clean tree, and exclude every .gitignore so
