@@ -66,6 +66,14 @@ composer install \
   --no-interaction \
   --working-dir="${BUILD_DIR}"
 
+# Strip VCS metadata left by packages Composer installs from source (e.g.
+# uiowa_auth, a VCS repo with no dist). A nested .git would be committed as an
+# empty gitlink instead of the package's files; a nested .gitignore would make
+# the artifact commit skip package files.
+echo "build: stripping nested VCS metadata from the artifact"
+find "${BUILD_DIR}" -name '.git' -type d -prune -exec rm -rf {} +
+find "${BUILD_DIR}" -name '.gitignore' -type f -delete
+
 # Stamp the Git version into custom .info.yml files (logic step: discovers the
 # files and edits YAML, so it lives in sn rather than shell).
 echo "build: stamping version into custom .info.yml files"
