@@ -18,12 +18,14 @@
  */
 
 use SiteNow\Command\DeployDistributeCommand;
+use SiteNow\Command\DeployUpdateCommand;
 use SiteNow\Command\DeployVersionStampCommand;
 use SiteNow\Command\MultisiteCreateCommand;
 use SiteNow\Command\ReportDomainsCommand;
 use SiteNow\Command\ReportInactiveCommand;
 use SiteNow\Command\ReportSplitsCommand;
 use SiteNow\Command\RoutesCustomCommand;
+use SiteNow\Command\SiteUpdateCommand;
 use Symfony\Component\Console\Application;
 
 // This file lives at the repository root.
@@ -38,6 +40,8 @@ $application = new Application('sn');
 $application->add(new MultisiteCreateCommand($root));
 $application->add(new DeployVersionStampCommand($root));
 $application->add(new DeployDistributeCommand($root));
+$application->add(new DeployUpdateCommand($root));
+$application->add(new SiteUpdateCommand($root));
 $application->add(new ReportDomainsCommand($root));
 $application->add(new ReportSplitsCommand($root));
 $application->add(new ReportInactiveCommand($root));
