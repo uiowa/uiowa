@@ -96,8 +96,10 @@ class SiteUpdateCommand extends Command {
     // deploy does not reconcile it. A genuine mismatch surfaces as a config
     // import failure, which is the right signal rather than one to mask.
     //
-    // Runs updatedb, config:import, cache:rebuild, and deploy:hook.
-    $deploy = $this->drush($site, ['deploy'], TRUE);
+    // Runs updatedb, config:import, cache:rebuild, and deploy:hook. --yes
+    // answers the update and config-import confirmations explicitly rather
+    // than relying on the non-interactive default.
+    $deploy = $this->drush($site, ['deploy', '--yes'], TRUE);
     if (!$deploy->isSuccessful()) {
       $io->error("Failed deploying updates to {$site}.");
       return Command::FAILURE;
