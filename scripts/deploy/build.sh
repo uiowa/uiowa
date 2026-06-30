@@ -52,6 +52,11 @@ echo "build: installing front-end dependencies and compiling assets"
   yarn workspaces run build
 )
 
+# node_modules is build-time only; the artifact ships the compiled assets, not
+# the dependencies that produced them.
+echo "build: pruning build-time node_modules from the artifact"
+find "${BUILD_DIR}" -type d -name node_modules -prune -exec rm -rf {} +
+
 # Install production PHP dependencies. This places Drupal core and contrib via
 # the composer scaffold/installer plugins, so the artifact carries them.
 echo "build: installing production composer dependencies"
