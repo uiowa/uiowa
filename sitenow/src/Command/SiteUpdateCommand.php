@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Runs database and configuration updates for a single multisite.
@@ -92,18 +91,11 @@ class SiteUpdateCommand extends Command {
       $this->drush($site, ['php:script', $twig_script]);
     }
 
-    // Reconcile the active site UUID with the exported config before importing,
-    // otherwise config:import (run inside drush deploy) refuses on a mismatch.
-    // @see https://www.drupal.org/project/drupal/issues/1613424
-    $uuid = $this->exportedSiteUuid();
-    if ($uuid) {
-      $set = $this->drush($site, ['config:set', 'system.site', 'uuid', $uuid, '--yes']);
-      if (!$set->isSuccessful()) {
-        $io->error("Failed to set site UUID for {$site}: " . trim($set->getErrorOutput()));
-        return Command::FAILURE;
-      }
-    }
-
+    // The site UUID that config:import requires is established once at install
+    // (drush site:install --existing-config adopts the exported UUID), so the
+    // deploy does not reconcile it. A genuine mismatch surfaces as a config
+    // import failure, which is the right signal rather than one to mask.
+    //
     // Runs updatedb, config:import, cache:rebuild, and deploy:hook.
     $deploy = $this->drush($site, ['deploy'], TRUE);
     if (!$deploy->isSuccessful()) {
@@ -149,20 +141,6 @@ class SiteUpdateCommand extends Command {
       $process->run();
     }
     return $process;
-  }
-
-  /**
-   * The site UUID stored in exported configuration.
-   *
-   * @return string|null
-   *   The exported uuid, or NULL if it cannot be read.
-   */
-  private function exportedSiteUuid(): ?string {
-    $file = "{$this->repoRoot}/config/default/system.site.yml";
-    if (!is_file($file)) {
-      return NULL;
-    }
-    return Yaml::parseFile($file)['uuid'] ?? NULL;
   }
 
 }
