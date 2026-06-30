@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
  * Distributes a built artifact to the Acquia Cloud git remotes.
  *
  * Commits the artifact produced by scripts/deploy/build.sh and pushes it to
- * each application's git remote. Two paths, mirroring the old BLT deploy:
+ * each application's git remote. Two paths:
  *   --branch  dev/test: force-push the disposable {branch}-build branch.
  *   --tag     release:  push the {tag}-build tag.
  *

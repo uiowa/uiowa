@@ -29,8 +29,8 @@ class DeployVersionStampCommand extends Command {
   /**
    * Custom code locations to stamp, relative to the build dir's docroot.
    *
-   * Matches the directories BLT stamped. Scanned one level deep, so an
-   * extension's top-level .info.yml is found but nested ones are left alone.
+   * Scanned one level deep, so an extension's top-level .info.yml is found
+   * but nested ones are left alone.
    */
   const CUSTOM_DIRS = [
     'profiles/custom',
@@ -71,7 +71,7 @@ class DeployVersionStampCommand extends Command {
 
     $version = $this->gitVersion();
     if ($version === NULL) {
-      // Match BLT: a missing version is a warning, not a failed build.
+      // A missing version is a warning, not a failed build.
       $io->warning('Unable to determine Git version; skipping .info.yml stamping.');
       return Command::SUCCESS;
     }

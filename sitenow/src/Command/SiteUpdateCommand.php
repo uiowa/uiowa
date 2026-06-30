@@ -15,7 +15,6 @@ use Symfony\Component\Process\Process;
  *
  * The per-site half of the post-deploy update, invoked once per site by
  * deploy:update (in parallel) and runnable on its own for a targeted update.
- * Ports BLT's uiowa:site:update / updateSite.
  *
  * Drupal resolves a multisite from the --uri host (the site directory name is
  * the canonical host), so each site is targeted with --uri=<site>. On Acquia,
@@ -91,11 +90,6 @@ class SiteUpdateCommand extends Command {
       $this->drush($site, ['php:script', $twig_script]);
     }
 
-    // The site UUID that config:import requires is established once at install
-    // (drush site:install --existing-config adopts the exported UUID), so the
-    // deploy does not reconcile it. A genuine mismatch surfaces as a config
-    // import failure, which is the right signal rather than one to mask.
-    //
     // Runs updatedb, config:import, cache:rebuild, and deploy:hook. --yes
     // answers the update and config-import confirmations explicitly rather
     // than relying on the non-interactive default.

@@ -14,11 +14,11 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Runs post-deploy updates across an application's multisites.
  *
- * The fleet half of the post-deploy update, invoked by the Acquia
- * post-code-deploy cloud hook. Builds the site list for the current
- * application, orders run_first sites ahead of the rest, and fans the per-site
- * site:update out with GNU parallel (sequential fallback off Acquia). Ports
- * BLT's replaceDrupalUpdateAll.
+ * The fleet half of the post-deploy update, invoked by the Acquia cloud hooks
+ * after code lands on an environment (post-code-update on a push to the tracked
+ * branch, post-code-deploy on a release switch). Builds the site list for the
+ * current application, orders run_first sites ahead of the rest, and fans the
+ * per-site site:update out with GNU parallel (sequential fallback off Acquia).
  *
  * The site list comes from blt/manifest.yml on Acquia (keyed by AH_SITE_GROUP)
  * and from blt/local.blt.yml locally.
