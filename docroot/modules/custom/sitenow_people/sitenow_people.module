@@ -632,6 +632,11 @@ function sitenow_people_preprocess_views_view(&$variables) {
       }
       break;
 
+    case 'people_list_block':
+        // Attach the library using the #attached property.
+        $variables['#attached']['library'][] = 'uids_base/view-bef';
+      break;
+
   }
 }
 
@@ -890,6 +895,38 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       // Change the research areas label.
       if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
+      }
+
+      // Hide/show filters based on block configuration.
+      $block_config = $view->display_handler->getOption('block_config');
+      if (!empty($block_config['exposed'])) {
+        // Get filter handlers to map machine names to exposed identifiers.
+        $filters = $view->display_handler->getHandlers('filter');
+
+        foreach ($block_config['exposed'] as $filter_key => $filter_config) {
+          // Extract the filter machine name from the key.
+          // (e.g., 'filter-field_person_research_areas_target_id' => 'field_person_research_areas_target_id').
+          $filter_machine_name = str_replace('filter-', '', $filter_key);
+
+          // If exposed is set to 0, hide the filter from the exposed form.
+          if (isset($filter_config['exposed']) && $filter_config['exposed'] === 0) {
+            // Look up the actual exposed identifier for this filter.
+            if (isset($filters[$filter_machine_name]) && !empty($filters[$filter_machine_name]->options['expose']['identifier'])) {
+              $exposed_id = $filters[$filter_machine_name]->options['expose']['identifier'];
+
+              // Hide the filter element.
+              if (isset($form[$exposed_id])) {
+                $form[$exposed_id]['#access'] = FALSE;
+              }
+
+              // Also hide BEF collapsible wrapper if it exists.
+              $collapsible_id = $exposed_id . '_collapsible';
+              if (isset($form[$collapsible_id])) {
+                $form[$collapsible_id]['#access'] = FALSE;
+              }
+            }
+          }
+        }
       }
       break;
   }
