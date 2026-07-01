@@ -653,12 +653,6 @@ $sites['orgaudit.dev.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.stage.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.prod.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 
-// Directory aliases for museumstudies.sites.uiowa.edu.
-$sites['sitesmuseumstudies.uiowa.ddev.site'] = 'museumstudies.sites.uiowa.edu';
-$sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
-$sites['sitesmuseumstudies.stage.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
-$sites['sitesmuseumstudies.prod.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
-
 // Directory aliases for computational-symposium.psychiatry.uiowa.edu.
 $sites['psychiatrycomputational-symposium.uiowa.ddev.site'] = 'computational-symposium.psychiatry.uiowa.edu';
 $sites['psychiatrycomputational-symposium.dev.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
