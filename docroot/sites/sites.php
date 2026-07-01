@@ -1295,12 +1295,6 @@ $sites['cinematicarts.dev.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
 $sites['cinematicarts.stage.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
 $sites['cinematicarts.prod.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
 
-// Directory aliases for classics.uiowa.edu.
-$sites['classics.uiowa.ddev.site'] = 'classics.uiowa.edu';
-$sites['classics.dev.drupal.uiowa.edu'] = 'classics.uiowa.edu';
-$sites['classics.stage.drupal.uiowa.edu'] = 'classics.uiowa.edu';
-$sites['classics.prod.drupal.uiowa.edu'] = 'classics.uiowa.edu';
-
 // Directory aliases for biomonitoring.shl.uiowa.edu.
 $sites['shlbiomonitoring.uiowa.ddev.site'] = 'biomonitoring.shl.uiowa.edu';
 $sites['shlbiomonitoring.dev.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
