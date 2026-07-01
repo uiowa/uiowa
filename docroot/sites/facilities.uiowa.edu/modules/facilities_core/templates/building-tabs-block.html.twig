@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Template for the building information tabs block.
+ *
+ * Available variables:
+ * - node: The building node entity.
+ * - tabs: Keyed array of tab data. Each entry has label, icon, and content keys.
+ */
+#}
+<div class="tabs-collection collection--tabs" id="building-tabs--{{ node.id }}">
+  <div role="tablist" aria-label="{{ 'Additional building information'|t }}">
+    {% for key, tab in tabs %}
+      <button class="tab__button"
+              role="tab"
+              aria-selected="{{ loop.first ? 'true' : 'false' }}"
+              aria-controls="building-tabs--{{ node.id }}__panel--{{ key }}"
+              id="building-tabs--{{ node.id }}__tab--{{ key }}"
+              {{ not loop.first ? 'tabindex="-1"' }}
+      >{% if tab.icon %}<i class="{{ tab.icon }}" aria-hidden="true"></i> {% endif %}{{ tab.label }}</button>
+    {% endfor %}
+  </div>
+
+  {% for key, tab in tabs %}
+    <div role="tabpanel"
+         tabindex="0"
+         id="building-tabs--{{ node.id }}__panel--{{ key }}"
+         aria-labelledby="building-tabs--{{ node.id }}__tab--{{ key }}"
+         {{ not loop.first ? 'hidden' }}
+    >
+      {{ tab.content }}
+    </div>
+  {% endfor %}
+</div>
