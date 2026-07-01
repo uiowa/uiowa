@@ -5735,12 +5735,6 @@ $sites['orgcelp.dev.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
 $sites['orgcelp.stage.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
 $sites['orgcelp.prod.drupal.uiowa.edu'] = 'celp.org.uiowa.edu';
 
-// Directory aliases for religiousstudies.uiowa.edu.
-$sites['religiousstudies.uiowa.ddev.site'] = 'religiousstudies.uiowa.edu';
-$sites['religiousstudies.dev.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
-$sites['religiousstudies.stage.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
-$sites['religiousstudies.prod.drupal.uiowa.edu'] = 'religiousstudies.uiowa.edu';
-
 // Directory aliases for policy.uiowa.edu.
 $sites['policy.uiowa.ddev.site'] = 'policy.uiowa.edu';
 $sites['policy.dev.drupal.uiowa.edu'] = 'policy.uiowa.edu';
