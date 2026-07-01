@@ -1,0 +1,17 @@
+project:
+  machine_name: siteshalekas
+  human_name: halekas.sites.uiowa.edu
+  local:
+    hostname: siteshalekas.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: siteshalekas.prod
+drupal:
+  db:
+    database: halekas_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshalekas.prod.drupal.uiowa.edu'
+  requester: colangfitt
