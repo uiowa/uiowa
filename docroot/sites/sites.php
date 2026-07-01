@@ -3845,12 +3845,6 @@ $sites['politicalscience.dev.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
 $sites['politicalscience.stage.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
 $sites['politicalscience.prod.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
 
-// Directory aliases for rhetoric.uiowa.edu.
-$sites['rhetoric.uiowa.ddev.site'] = 'rhetoric.uiowa.edu';
-$sites['rhetoric.dev.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
-$sites['rhetoric.stage.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
-$sites['rhetoric.prod.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
-
 // Directory aliases for clas.uiowa.edu.
 $sites['clas.uiowa.ddev.site'] = 'clas.uiowa.edu';
 $sites['clas.dev.drupal.uiowa.edu'] = 'clas.uiowa.edu';
