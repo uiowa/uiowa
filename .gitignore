@@ -8,6 +8,7 @@ box/local.config.yml
 *.local
 local.blt.yml
 sites.local.php
+secrets.php
 deploy_key
 .ddev/config.web_environment.yaml
 docroot/sites/development.services.yml
@@ -135,6 +136,11 @@ nbproject/*
 *.gz
 *.sql
 *.zip
+
+# Report exports written to the repo root by `./sn report:* --export`.
+# Interim: keep them out of git and the deploy artifact. Where these should
+# live is an open question for the team (top-level vs a dedicated directory).
+/SiteNow-*-Report-*.csv
 
 # PHPStorm
 atlassian-ide-plugin.xml

@@ -65,6 +65,20 @@ class Applications {
   }
 
   /**
+   * The git remote URL for a named application.
+   *
+   * @param string $name
+   *   The application name.
+   *
+   * @return string|null
+   *   The git remote URL, or NULL if the application is not registered or has
+   *   no remote configured.
+   */
+  public function remote(string $name): ?string {
+    return $this->applications[$name]['remote'] ?? NULL;
+  }
+
+  /**
    * Whether an application is reserved (excluded from automatic selection).
    *
    * @param string $name

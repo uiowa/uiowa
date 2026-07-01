@@ -25,9 +25,11 @@ class ApplicationRegistryTest extends UnitTestCase {
 applications:
   appone:
     uuid: uuid-one
+    remote: 'appone@example.com:appone.git'
   apptwo:
     uuid: uuid-two
     reserved: true
+    remote: 'apptwo@example.com:apptwo.git'
 YAML;
     $path = tempnam(sys_get_temp_dir(), 'sitenow_apps_');
     file_put_contents($path, $yaml);
@@ -50,6 +52,15 @@ YAML;
     $reader = $this->fixtureReader();
     $this->assertSame('uuid-one', $reader->uuid('appone'));
     $this->assertNull($reader->uuid('nope'));
+  }
+
+  /**
+   * Git remote lookup resolves registered applications and NULL otherwise.
+   */
+  public function testRemoteLookup() {
+    $reader = $this->fixtureReader();
+    $this->assertSame('appone@example.com:appone.git', $reader->remote('appone'));
+    $this->assertNull($reader->remote('nope'));
   }
 
   /**
@@ -90,6 +101,29 @@ YAML;
       $legacy,
       $new_map,
       'sitenow/applications.yml must match blt.yml uiowa.applications until the legacy registry is removed at Step 6.'
+    );
+  }
+
+  /**
+   * The registry's git remotes stay in sync with the legacy blt.yml remotes.
+   *
+   * The deploy:distribute command pushes to the registry remotes; BLT's
+   * GitCommands still read blt.yml git.remotes. Both must cover the same set
+   * until the legacy consumers migrate and blt.yml git.remotes is removed.
+   */
+  public function testRegistryRemotesMatchLegacyBltRemotes() {
+    $repo = $this->root . '/..';
+    $new = Yaml::parseFile("{$repo}/sitenow/applications.yml")['applications'] ?? [];
+    $legacy = Yaml::parseFile("{$repo}/blt/blt.yml")['git']['remotes'] ?? [];
+
+    $new_remotes = array_values(array_filter(array_map(fn($e) => $e['remote'] ?? NULL, $new)));
+    sort($new_remotes);
+    sort($legacy);
+
+    $this->assertSame(
+      $legacy,
+      $new_remotes,
+      'sitenow/applications.yml remotes must match blt.yml git.remotes until the legacy remotes are removed.'
     );
   }
 
