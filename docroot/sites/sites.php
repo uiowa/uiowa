@@ -1109,12 +1109,6 @@ $sites['itcommunities.dev.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
 $sites['itcommunities.stage.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
 $sites['itcommunities.prod.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
 
-// Directory aliases for africanamericanstudies.uiowa.edu.
-$sites['africanamericanstudies.uiowa.ddev.site'] = 'africanamericanstudies.uiowa.edu';
-$sites['africanamericanstudies.dev.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
-$sites['africanamericanstudies.stage.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
-$sites['africanamericanstudies.prod.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
-
 // Directory aliases for americanstudies.uiowa.edu.
 $sites['americanstudies.uiowa.ddev.site'] = 'americanstudies.uiowa.edu';
 $sites['americanstudies.dev.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
