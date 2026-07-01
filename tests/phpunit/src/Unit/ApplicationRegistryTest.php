@@ -107,9 +107,9 @@ YAML;
   /**
    * The registry's git remotes stay in sync with the legacy blt.yml remotes.
    *
-   * deploy:distribute pushes to the registry remotes; BLT's GitCommands still
-   * read blt.yml git.remotes. Both must cover the same set until the legacy
-   * consumers migrate and blt.yml git.remotes is removed.
+   * The deploy:distribute command pushes to the registry remotes; BLT's
+   * GitCommands still read blt.yml git.remotes. Both must cover the same set
+   * until the legacy consumers migrate and blt.yml git.remotes is removed.
    */
   public function testRegistryRemotesMatchLegacyBltRemotes() {
     $repo = $this->root . '/..';
