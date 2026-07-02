@@ -7852,3 +7852,9 @@ $sites['siteshalekas.uiowa.ddev.site'] = 'halekas.sites.uiowa.edu';
 $sites['siteshalekas.dev.drupal.uiowa.edu'] = 'halekas.sites.uiowa.edu';
 $sites['siteshalekas.stage.drupal.uiowa.edu'] = 'halekas.sites.uiowa.edu';
 $sites['siteshalekas.prod.drupal.uiowa.edu'] = 'halekas.sites.uiowa.edu';
+
+// Directory aliases for shawnyu.lab.uiowa.edu.
+$sites['labshawnyu.uiowa.ddev.site'] = 'shawnyu.lab.uiowa.edu';
+$sites['labshawnyu.dev.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
+$sites['labshawnyu.stage.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
+$sites['labshawnyu.prod.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
