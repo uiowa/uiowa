@@ -208,6 +208,25 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             if (isset($form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title']) && $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] !== '') {
               $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] = sitenow_people_get_research_title();
             }
+
+            // Add checkbox to filter research areas to only show options with results.
+            $config = $block->getConfiguration();
+
+
+            $form['settings']['filter_research_areas'] = [
+              '#type' => 'checkbox',
+              '#title' => t('Filter @title to only show options with results', [
+                '@title' => sitenow_people_get_research_title(),
+              ]),
+              '#description' => t('When enabled, only @title terms that have matching person nodes will be shown in the filter.', [
+                '@title' => strtolower(sitenow_people_get_research_title()),
+              ]),
+              '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas'),
+              '#weight' => 90,
+            ];
+
+            // Append submit handler for processing our custom checkbox field.
+            array_unshift($form['#submit'],'_sitenow_people_save_filter_checkbox');
             break;
         }
       }
@@ -846,6 +865,46 @@ function sitenow_people_views_pre_build(ViewExecutable $view) {
       $view->display_handler->has_exposed = FALSE;
     }
   }
+
+  // Apply filter values directly for people_list_block.
+  if ($view->id() === 'people_list_block') {
+    $block_config = $view->display_handler->getOption('block_config');
+    $exposed_input = $view->getExposedInput();
+
+    // If exposed input exists, apply values directly to filters.
+    if (!empty($exposed_input) && !empty($block_config['exposed'])) {
+      foreach ($exposed_input as $identifier => $value) {
+        // Find the filter by its exposed identifier.
+        foreach ($view->filter as $filter_id => $filter) {
+          if (isset($filter->options['expose']['identifier']) &&
+              $filter->options['expose']['identifier'] === $identifier) {
+
+            // Check if this filter should be hidden (exposed: 0 in block config).
+            $filter_key = 'filter-' . $filter_id;
+            $should_hide = isset($block_config['exposed'][$filter_key]['exposed']) &&
+                          $block_config['exposed'][$filter_key]['exposed'] === 0;
+
+            // Skip "All" values - they mean no filter should be applied.
+            if ($value === 'All' || (is_array($value) && in_array('All', $value))) {
+              continue;
+            }
+
+            if ($should_hide && !empty($value)) {
+              // Mark filter as not exposed so it uses the programmatic value.
+              $filter->options['exposed'] = FALSE;
+              // Ensure value is an array for ManyToOne filters.
+              $filter->value = is_array($value) ? $value : [$value];
+            }
+            elseif (empty($filter->value) && !empty($value)) {
+              // For exposed filters, just set the value.
+              // Ensure value is an array for ManyToOne filters.
+              $filter->value = is_array($value) ? $value : [$value];
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -928,6 +987,11 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
           }
         }
       }
+
+      // Filter research areas to only show options with results if enabled.
+      if (!empty($block_config['filter_research_areas'])) {
+        _sitenow_people_filter_research_areas($form, $view);
+      }
       break;
   }
 }
@@ -954,6 +1018,16 @@ function sitenow_people_field_widget_single_element_paragraphs_form_alter(&$elem
 }
 
 /**
+ * Submit handler to save the filter_research_areas checkbox value.
+ */
+function _sitenow_people_save_filter_checkbox(array &$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  $component = $form_object->getCurrentComponent();
+  $filter_research_areas = $form_state->getValue(['settings', 'filter_research_areas']);
+  $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $filter_research_areas);
+}
+
+/**
  * Custom submit handler for person forms.
  */
 function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
@@ -964,6 +1038,110 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
     ],
   ];
   uiowa_core_clean_address_fields($form, $form_state, $field_config);
+}
+
+/**
+ * Helper function to filter research areas to only show those with results.
+ *
+ * @param array $form
+ *   The exposed form array.
+ * @param \Drupal\views\ViewExecutable $view
+ *   The view object.
+ */
+function _sitenow_people_filter_research_areas(array &$form, $view) {
+  // Check if research areas filter exists in the form.
+  $research_areas_key = NULL;
+  if (isset($form['people_research_areas'])) {
+    $research_areas_key = 'people_research_areas';
+  }
+  elseif (isset($form['field_person_research_areas_target_id'])) {
+    $research_areas_key = 'field_person_research_areas_target_id';
+  }
+
+  if (!$research_areas_key) {
+    return;
+  }
+
+  // Get current exposed input to check for other filters.
+  $exposed_input = $view->getExposedInput();
+  $person_type = NULL;
+
+  // Check for person type filter in various possible keys.
+  if (!empty($exposed_input['type'])) {
+    $person_type = $exposed_input['type'];
+  }
+  elseif (!empty($exposed_input['field_person_types_target_id'])) {
+    $person_type = $exposed_input['field_person_types_target_id'];
+  }
+
+  // Build a query to find research areas actually used by persons.
+  $query = \Drupal::database()->select('node_field_data', 'n');
+  $query->join('node__field_person_research_areas', 'ra', 'n.nid = ra.entity_id');
+  $query->fields('ra', ['field_person_research_areas_target_id']);
+  $query->condition('n.type', 'person');
+  $query->condition('n.status', 1);
+  $query->distinct();
+
+  // Apply person type filter if set.
+  if (!empty($person_type) && $person_type !== 'All') {
+    $query->join('node__field_person_types', 'pt', 'n.nid = pt.entity_id');
+    $query->condition('pt.field_person_types_target_id', $person_type);
+  }
+
+  // Apply field_person_hide filter (exclude hidden persons).
+  $query->leftJoin('node__field_person_hide', 'ph', 'n.nid = ph.entity_id');
+  $or = $query->orConditionGroup()
+    ->condition('ph.field_person_hide_value', 1, '!=')
+    ->isNull('ph.field_person_hide_value');
+  $query->condition($or);
+
+  $result = $query->execute()->fetchCol();
+
+  // If no results, nothing to filter.
+  if (empty($result)) {
+    // For autocomplete, we can't easily restrict it, so just leave it
+    // as is and exit.
+    if (isset($form[$research_areas_key]['#type']) &&
+      $form[$research_areas_key]['#type'] === 'entity_autocomplete') {
+      return;
+    }
+    // For select/checkboxes, there are no options,
+    // so just unset the whole thing and then exit.
+    unset($form[$research_areas_key]);
+    return;
+  }
+
+  // Filter the options based on the query results.
+  if (isset($form[$research_areas_key]['#type'])) {
+    $type = $form[$research_areas_key]['#type'];
+
+    // For select/checkboxes, filter the options.
+    // For autocomplete, we would need to create a custom autocomplete callback.
+    // This is more complex and may be addressed separately if needed,
+    // but for now we just won't touch it in that scenario.
+    if (($type === 'select' || $type === 'checkboxes') && isset($form[$research_areas_key]['#options'])) {
+      $original_options = $form[$research_areas_key]['#options'];
+      $filtered_options = [];
+
+      // Keep the 'All' option if it exists.
+      if (isset($original_options['All'])) {
+        $filtered_options['All'] = $original_options['All'];
+      }
+
+      // Only include terms that have results.
+      foreach ($original_options as $tid => $label) {
+        // This one was handled already.
+        if ($tid === 'All') {
+          continue;
+        }
+        if (in_array($tid, $result)) {
+          $filtered_options[$tid] = $label;
+        }
+      }
+
+      $form[$research_areas_key]['#options'] = $filtered_options;
+    }
+  }
 }
 
 /**
