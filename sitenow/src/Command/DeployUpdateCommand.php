@@ -94,12 +94,7 @@ class DeployUpdateCommand extends Command {
     }
 
     $manifest = Yaml::parseFile("{$this->repoRoot}/blt/manifest.yml") ?: [];
-    $sites = $manifest[$app] ?? [];
-    // The default site lives on the uiowa application and must be updated too.
-    if ($app === 'uiowa') {
-      array_unshift($sites, 'default');
-    }
-    return $sites;
+    return $manifest[$app] ?? [];
   }
 
   /**

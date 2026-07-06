@@ -57,17 +57,26 @@ class SiteUpdateCommand extends Command {
     $app = getenv('AH_SITE_GROUP') ?: 'local';
     $is_acquia = (bool) getenv('AH_SITE_ENVIRONMENT');
 
+    // Resolve the site directory the way Drupal does, via sites.php. For most
+    // sites the directory is the host itself; an aliased host (notably the
+    // default site, addressed as demo.sitenow.uiowa.edu but living in the
+    // default directory) resolves to a different directory, which in turn
+    // drives the settings-include name below.
+    $dir = $this->siteDirectory($site);
+
     // Skip unless the site directory exists. Without this, an unresolved --uri
     // falls back to Drupal's default site, so a stale or mistyped site name
     // would silently run updates against default instead of being skipped.
-    if (!is_dir("{$this->repoRoot}/docroot/sites/{$site}")) {
+    if (!is_dir("{$this->repoRoot}/docroot/sites/{$dir}")) {
       $io->writeln("Skipping {$site}: no site directory.");
       return Command::SUCCESS;
     }
 
     // On Acquia, skip sites whose database is not present on this application.
     if ($is_acquia) {
-      $db = str_replace(['.', '-'], '_', $site);
+      // Acquia names the settings include after the site directory, except the
+      // default site, which uses the application-named include and database.
+      $db = $dir === 'default' ? $app : str_replace(['.', '-'], '_', $dir);
       if (!is_file("/var/www/site-php/{$app}/{$db}-settings.inc")) {
         $io->writeln("Skipping {$site}: database not present on {$app}.");
         return Command::SUCCESS;
@@ -101,6 +110,30 @@ class SiteUpdateCommand extends Command {
 
     $io->writeln("Finished deploying updates to {$site}.");
     return Command::SUCCESS;
+  }
+
+  /**
+   * Resolve a host to its multisite directory via sites.php.
+   *
+   * Mirrors Drupal's own aliasing: sites.php maps alias hosts to a directory,
+   * and a host with no entry uses a same-named directory. This is what lets the
+   * default site be addressed by its real domain (demo.sitenow.uiowa.edu) while
+   * resolving to the default directory.
+   *
+   * @param string $host
+   *   The site host / canonical domain.
+   *
+   * @return string
+   *   The multisite directory name.
+   */
+  private function siteDirectory(string $host): string {
+    $sites = [];
+    $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
+    if (is_file($sites_file)) {
+      // sites.php populates $sites with host => directory aliases.
+      include $sites_file;
+    }
+    return $sites[$host] ?? $host;
   }
 
   /**
