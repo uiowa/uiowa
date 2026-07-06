@@ -208,25 +208,6 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             if (isset($form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title']) && $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] !== '') {
               $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] = sitenow_people_get_research_title();
             }
-
-            // Add checkbox to filter research areas to only show options with results.
-            $config = $block->getConfiguration();
-
-
-            $form['settings']['filter_research_areas'] = [
-              '#type' => 'checkbox',
-              '#title' => t('Filter @title to only show options with results', [
-                '@title' => sitenow_people_get_research_title(),
-              ]),
-              '#description' => t('When enabled, only @title terms that have matching person nodes will be shown in the filter.', [
-                '@title' => strtolower(sitenow_people_get_research_title()),
-              ]),
-              '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas'),
-              '#weight' => 90,
-            ];
-
-            // Append submit handler for processing our custom checkbox field.
-            array_unshift($form['#submit'],'_sitenow_people_save_filter_checkbox');
             break;
         }
       }
@@ -652,8 +633,8 @@ function sitenow_people_preprocess_views_view(&$variables) {
       break;
 
     case 'people_list_block':
-        // Attach the library using the #attached property.
-        $variables['#attached']['library'][] = 'uids_base/view-bef';
+      // Attach the library using the #attached property.
+      $variables['#attached']['library'][] = 'uids_base/view-bef';
       break;
 
   }
@@ -865,46 +846,6 @@ function sitenow_people_views_pre_build(ViewExecutable $view) {
       $view->display_handler->has_exposed = FALSE;
     }
   }
-
-  // Apply filter values directly for people_list_block.
-  if ($view->id() === 'people_list_block') {
-    $block_config = $view->display_handler->getOption('block_config');
-    $exposed_input = $view->getExposedInput();
-
-    // If exposed input exists, apply values directly to filters.
-    if (!empty($exposed_input) && !empty($block_config['exposed'])) {
-      foreach ($exposed_input as $identifier => $value) {
-        // Find the filter by its exposed identifier.
-        foreach ($view->filter as $filter_id => $filter) {
-          if (isset($filter->options['expose']['identifier']) &&
-              $filter->options['expose']['identifier'] === $identifier) {
-
-            // Check if this filter should be hidden (exposed: 0 in block config).
-            $filter_key = 'filter-' . $filter_id;
-            $should_hide = isset($block_config['exposed'][$filter_key]['exposed']) &&
-                          $block_config['exposed'][$filter_key]['exposed'] === 0;
-
-            // Skip "All" values - they mean no filter should be applied.
-            if ($value === 'All' || (is_array($value) && in_array('All', $value))) {
-              continue;
-            }
-
-            if ($should_hide && !empty($value)) {
-              // Mark filter as not exposed so it uses the programmatic value.
-              $filter->options['exposed'] = FALSE;
-              // Ensure value is an array for ManyToOne filters.
-              $filter->value = is_array($value) ? $value : [$value];
-            }
-            elseif (empty($filter->value) && !empty($value)) {
-              // For exposed filters, just set the value.
-              // Ensure value is an array for ManyToOne filters.
-              $filter->value = is_array($value) ? $value : [$value];
-            }
-          }
-        }
-      }
-    }
-  }
 }
 
 /**
@@ -948,6 +889,8 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
           }
         }
       }
+      // Filter research areas to only show those with results.
+      _sitenow_people_filter_research_areas($form, $view);
       break;
 
     case 'people_list_block':
@@ -956,88 +899,51 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
       }
 
-      // Hide/show filters based on block configuration.
+      // Hide Research Areas filter specifically when it's not exposed.
+      // BEF renders it even when exposed: 0, unlike other filters.
       $block_config = $view->display_handler->getOption('block_config');
-      if (!empty($block_config['exposed'])) {
-        // Get filter handlers to map machine names to exposed identifiers.
-        $filters = $view->display_handler->getHandlers('filter');
-
-        foreach ($block_config['exposed'] as $filter_key => $filter_config) {
-          // Extract the filter machine name from the key.
-          // (e.g., 'filter-field_person_research_areas_target_id' => 'field_person_research_areas_target_id').
-          $filter_machine_name = str_replace('filter-', '', $filter_key);
-
-          // If exposed is set to 0, hide the filter from the exposed form.
-          if (isset($filter_config['exposed']) && $filter_config['exposed'] === 0) {
-            // Look up the actual exposed identifier for this filter.
-            if (isset($filters[$filter_machine_name]) && !empty($filters[$filter_machine_name]->options['expose']['identifier'])) {
-              $exposed_id = $filters[$filter_machine_name]->options['expose']['identifier'];
-
-              // Hide the filter element.
-              if (isset($form[$exposed_id])) {
-                $form[$exposed_id]['#access'] = FALSE;
-              }
-
-              // Also hide BEF collapsible wrapper if it exists.
-              $collapsible_id = $exposed_id . '_collapsible';
-              if (isset($form[$collapsible_id])) {
-                $form[$collapsible_id]['#access'] = FALSE;
-              }
-            }
-          }
+      // Check for both 0 and empty string.
+      if (isset($block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'])
+          && ($block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'] === 0
+              || $block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'] === '')) {
+        // Hide the research areas filter element visually while keeping it functional.
+        // Note: The form key is 'people_research_areas', not the field machine name
+        $research_areas_id = 'people_research_areas';
+        if (isset($form[$research_areas_id])) {
+          $form[$research_areas_id]['#attributes']['style'] = 'display: none;';
+        }
+        // Also hide BEF collapsible wrapper.
+        if (isset($form[$research_areas_id . '_collapsible'])) {
+          $form[$research_areas_id . '_collapsible']['#attributes']['style'] = 'display: none;';
         }
       }
 
-      // Filter research areas to only show options with results if enabled.
-      if (!empty($block_config['filter_research_areas'])) {
-        _sitenow_people_filter_research_areas($form, $view);
+      // Hide Apply/Reset buttons if no filters are actually exposed to users.
+      if (!empty($block_config['exposed'])) {
+        $has_visible_filters = FALSE;
+        foreach ($block_config['exposed'] as $filter_key => $filter_config) {
+          // If any filter has exposed set to something other than 0 or empty, it's visible.
+          // Check for both explicit 0 and empty string (which means not exposed).
+          if (!isset($filter_config['exposed']) || ($filter_config['exposed'] !== 0 && $filter_config['exposed'] !== '')) {
+            $has_visible_filters = TRUE;
+            break;
+          }
+        }
+
+        if (!$has_visible_filters) {
+          // Hide the form actions (Apply/Reset buttons) visually.
+          if (isset($form['actions'])) {
+            $form['actions']['#attributes']['style'] = 'display: none;';
+          }
+          // Also hide the exposed form wrapper itself to remove the CSS box.
+          $form['#attributes']['style'] = 'display: none;';
+        }
       }
+
+      // Filter research areas to only show those with results.
+      _sitenow_people_filter_research_areas($form, $view);
       break;
   }
-}
-
-/**
- * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
- */
-function sitenow_people_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element['#paragraph_type'] === 'people') {
-    if (!empty($element['subform']['field_people_more'])) {
-      $parents_array = $element['subform']['#parents'];
-      $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
-      if (!empty($element['subform']['field_people_more_path'])) {
-        $element['subform']['field_people_more_path']['#states'] = [
-          'visible' => [
-            ':input[name="' . $parents . '[field_people_more][value]"]' => [
-              'checked' => TRUE,
-            ],
-          ],
-        ];
-      }
-    }
-  }
-}
-
-/**
- * Submit handler to save the filter_research_areas checkbox value.
- */
-function _sitenow_people_save_filter_checkbox(array &$form, FormStateInterface $form_state) {
-  $form_object = $form_state->getFormObject();
-  $component = $form_object->getCurrentComponent();
-  $filter_research_areas = $form_state->getValue(['settings', 'filter_research_areas']);
-  $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $filter_research_areas);
-}
-
-/**
- * Custom submit handler for person forms.
- */
-function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
-  $field_config = [
-    'field_person_contact_information' => [
-      'type' => 'paragraph',
-      'address_field' => 'field_uiowa_contact_address',
-    ],
-  ];
-  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
@@ -1102,7 +1008,7 @@ function _sitenow_people_filter_research_areas(array &$form, $view) {
     // For autocomplete, we can't easily restrict it, so just leave it
     // as is and exit.
     if (isset($form[$research_areas_key]['#type']) &&
-      $form[$research_areas_key]['#type'] === 'entity_autocomplete') {
+        $form[$research_areas_key]['#type'] === 'entity_autocomplete') {
       return;
     }
     // For select/checkboxes, there are no options,
@@ -1142,6 +1048,40 @@ function _sitenow_people_filter_research_areas(array &$form, $view) {
       $form[$research_areas_key]['#options'] = $filtered_options;
     }
   }
+}
+
+/**
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
+ */
+function sitenow_people_field_widget_single_element_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element['#paragraph_type'] === 'people') {
+    if (!empty($element['subform']['field_people_more'])) {
+      $parents_array = $element['subform']['#parents'];
+      $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
+      if (!empty($element['subform']['field_people_more_path'])) {
+        $element['subform']['field_people_more_path']['#states'] = [
+          'visible' => [
+            ':input[name="' . $parents . '[field_people_more][value]"]' => [
+              'checked' => TRUE,
+            ],
+          ],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Custom submit handler for person forms.
+ */
+function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
+  $field_config = [
+    'field_person_contact_information' => [
+      'type' => 'paragraph',
+      'address_field' => 'field_uiowa_contact_address',
+    ],
+  ];
+  uiowa_core_clean_address_fields($form, $form_state, $field_config);
 }
 
 /**
