@@ -1,0 +1,10 @@
+services:
+  sitessignage_core.route_subscriber:
+    class: 'Drupal\sitessignage_core\Routing\SignageSiteRouteSubscriber'
+    tags:
+      - { name: event_subscriber }
+  theme.negotiator.signage_group:
+    class: Drupal\sitessignage_core\Theme\SignageGroup
+    arguments: ['@config.factory', '@current_user']
+    tags:
+      - { name: theme_negotiator, priority: 10 }

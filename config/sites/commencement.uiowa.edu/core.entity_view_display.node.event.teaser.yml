@@ -19,6 +19,8 @@ dependencies:
     - field.field.node.event.field_event_room
     - field.field.node.event.field_event_session
     - field.field.node.event.field_event_venue
+    - field.field.node.event.field_event_venue_address
+    - field.field.node.event.field_event_venue_name
     - field.field.node.event.field_event_website
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
@@ -31,6 +33,21 @@ targetEntityType: node
 bundle: event
 mode: teaser
 content:
+  field_event_ceremony_info_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_event_livestream_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_event_presidents_seal:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
   field_event_venue:
     type: entity_reference_label
     label: visually_hidden
@@ -38,6 +55,14 @@ content:
       link: false
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_event_venue_name:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
     region: content
   field_event_when:
     type: smartdate_default
@@ -80,6 +105,7 @@ hidden:
   field_event_other_celebrations: true
   field_event_room: true
   field_event_session: true
+  field_event_venue_address: true
   field_event_website: true
   field_meta_tags: true
   links: true

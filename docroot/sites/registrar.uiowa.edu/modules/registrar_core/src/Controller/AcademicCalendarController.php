@@ -163,10 +163,20 @@ class AcademicCalendarController extends ControllerBase {
    *   And greater than 0 if $event1 should be placed after $event2.
    */
   private function eventCompare(object $event1, object $event2): int {
+    // Convert timestamps to simple strings
+    // with day granularity for accurate comparison.
+    $event1Timestamp = strtotime($event1->start);
+    $event2Timestamp = strtotime($event2->start);
+    $event1Date = date('Y-m-d', $event1Timestamp);
+    $event2Date = date('Y-m-d', $event2Timestamp);
 
     // If both events have the same date, we need to do more sorting.
-    // COMMENT HERE.
-    if ($event1->start === $event2->start) {
+    if ($event1Date === $event2Date) {
+      // If an event is a Five Year Date and the other is not,
+      // the Five Year should come first.
+      if ($event1->fiveYearDate !== $event2->fiveYearDate) {
+        return ($event1->fiveYearDate) ? -1 : 1;
+      }
       $sortString1 = $event1->sortString;
       $sortString2 = $event2->sortString;
 
@@ -175,7 +185,7 @@ class AcademicCalendarController extends ControllerBase {
 
     // If they are not the same date, return the comparison.
     else {
-      return ($event1->start < $event2->start) ? -1 : 1;
+      return $event1Timestamp <=> $event2Timestamp;
     }
   }
 
@@ -207,16 +217,20 @@ class AcademicCalendarController extends ControllerBase {
       $includePastSessions = TRUE;
     }
 
-    $sessions = ((int) $steps === 0) ? [$current] : $this->maui->getSessionsRange($current->id, max(1, $steps));
-
-    if ($includePastSessions) {
-      // The getSessionsRange method includes the current session as the
-      // last element. The $steps variable is exclusive of the
-      // current session, so we use $steps + 1 to get the current
-      // number of steps including the current session.
-      // The current session is removed in the next step with array_merge.
-      $pastSessions = array_slice($this->maui->getSessionsRange($current->id, -$steps - 1), -$steps - 1, $steps + 1);
-      $sessions = array_merge($pastSessions, $sessions);
+    $sessions = [];
+    // Assign sessions by id to avoid duplicates.
+    $sessions[$current->id] = $current;
+    // Include future sessions if more than current session is selected.
+    if ($steps > 0) {
+      foreach ($this->maui->getSessionsRange($current->id, $steps) as $future) {
+        $sessions[$future->id] = $future;
+      }
+    }
+    // Include past if checked and more than current session is selected.
+    if ($includePastSessions && $steps > 0) {
+      foreach ($this->maui->getSessionsRange($current->id, -$steps) as $past) {
+        $sessions[$past->id] = $past;
+      }
     }
 
     $events = [];
@@ -404,6 +418,9 @@ class AcademicCalendarController extends ControllerBase {
     // Add description.
     $event->description = Xss::filterAdmin($date->dateLookup->webDescription ?? '');
 
+    // Include "Is Five Year" boolean.
+    $event->fiveYearDate = $date->fiveYearDate;
+
     // Build card.
     $attributes = [];
     $attributes['class'] = [
@@ -432,17 +449,14 @@ class AcademicCalendarController extends ControllerBase {
           '#markup' => $start,
         ],
       ],
-      '#meta' => [
-        'description' => [
-          '#type' => 'markup',
-          '#markup' => $event->description,
-        ],
-
-      ],
       '#content' => [
         'body' => [
           '#type' => 'markup',
-          '#markup' => '<span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span>',
+          '#markup' => $event->description,
+        ],
+        'badges' => [
+          '#type' => 'markup',
+          '#markup' => '<p><span class="' . implode(' ', $event->className) . '">' . $event->sessionDisplay . '</span></p>',
         ],
       ],
     ];

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencepsaps2026meeting.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencepsaps2026meeting
+  human_name: psaps2026meeting.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencepsaps2026meeting.prod
+drupal:
+  db:
+    database: psaps2026meeting_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencepsaps2026meeting.prod.drupal.uiowa.edu'
+  requester: jdriggs
+  site-name: 'APS Praire Section Meeting at UIowa 2026'

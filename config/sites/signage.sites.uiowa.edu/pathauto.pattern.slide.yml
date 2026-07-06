@@ -1,0 +1,22 @@
+uuid: 5dd7624d-d4c3-47c3-b083-151df19322c5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: slide
+label: Slide
+type: 'canonical_entities:node'
+pattern: 'slide/[node:nid]'
+selection_criteria:
+  bf8a2637-8839-443e-8a02-1eb9cb001428:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: bf8a2637-8839-443e-8a02-1eb9cb001428
+    context_mapping:
+      node: node
+    bundles:
+      slide: slide
+selection_logic: and
+weight: -5
+relationships: {  }

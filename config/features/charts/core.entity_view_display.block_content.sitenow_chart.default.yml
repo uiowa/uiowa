@@ -1,0 +1,26 @@
+uuid: ccdbe22d-41b3-4497-9897-1a0b2b2bd721
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.sitenow_chart
+    - field.field.block_content.sitenow_chart.field_sitenow_chart
+  module:
+    - charts
+id: block_content.sitenow_chart.default
+targetEntityType: block_content
+bundle: sitenow_chart
+mode: default
+content:
+  field_sitenow_chart:
+    type: chart_config_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

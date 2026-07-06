@@ -1,0 +1,17 @@
+project:
+  machine_name: educationinternal
+  human_name: internal.education.uiowa.edu
+  local:
+    hostname: educationinternal.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: educationinternal.prod
+drupal:
+  db:
+    database: internal_education_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://educationinternal.prod.drupal.uiowa.edu'
+  requester: bwalizer

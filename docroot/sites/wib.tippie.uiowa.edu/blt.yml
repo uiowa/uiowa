@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiewib.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiewib
+  human_name: wib.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiewib.prod
+drupal:
+  db:
+    database: wib_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiewib.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'Women in Business'

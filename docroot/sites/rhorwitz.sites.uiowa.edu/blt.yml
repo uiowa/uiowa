@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesrhorwitz.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesrhorwitz
+  human_name: rhorwitz.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesrhorwitz.prod
+drupal:
+  db:
+    database: rhorwitz_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesrhorwitz.prod.drupal.uiowa.edu'
+  requester: rhorwitz
+  site-name: rhorwitz

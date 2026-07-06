@@ -1,0 +1,190 @@
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_variables.scss";
+@use "../../../../../themes/custom/uids_base/uids/scss/abstracts/_utilities.scss";
+
+.block-superfishmain .menu.sf-horiz-menu > li:nth-child(6) > a,
+.block-superfishmain .menu.sf-horiz-menu > li:nth-child(7) > a,
+.block-superfishmain .menu.sf-horiz-menu > li:nth-child(8) > a {
+  color: variables.$brand-cool-gray;
+}
+
+@media (max-width: 980px) {
+  .sf-main.sf-horiz-menu.sf-accordion {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .block-superfishmain .menu.sf-horiz-menu > li:nth-child(6) a,
+  .block-superfishmain .menu.sf-horiz-menu > li:nth-child(7) a,
+  .block-superfishmain .menu.sf-horiz-menu > li:nth-child(8) a {
+    font-size: variables.$base-font-size;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    font-weight: variables.$font-weight-normal;
+    padding: 1.5rem;
+  }
+
+  ul.sf-menu.sf-accordion > li:nth-child(6),
+  ul.sf-menu.sf-accordion > li:nth-child(7),
+  ul.sf-menu.sf-accordion > li:nth-child(8) {
+    width: 33.3%;
+    border: 1px solid variables.$gray-light;
+    text-align: center;
+    float: none;
+    margin: 2rem 0;
+  }
+
+  ul.sf-menu.sf-accordion li:nth-child(7) {
+    border-right: none;
+    border-left: none;
+  }
+}
+
+@include utilities.breakpoint(md) {
+  .search-is-open .search-overlay .uids-search {
+    border: none;
+    background: variables.$white;
+    padding-left: 1rem;
+    width: 95%;
+    position: relative;
+    margin-left: 0;
+    height: 2.8rem;
+  }
+
+  .search-overlay[aria-hidden=false] {
+    display: contents;
+  }
+
+  .search-overlay[aria-hidden=false] .region-search {
+    width: 70%;
+  }
+
+  .search-is-open .search-wrapper {
+    justify-content: unset;
+  }
+
+  .search-overlay .uids-search input[type=text] {
+    padding: 0;
+    height: auto;
+    font-size: 1.2rem;
+  }
+
+  .iowa-bar--full.horizontal .logo--tab + .menu--top {
+    flex: 0 1 70%;
+  }
+
+  ul.menu.sf-horiz-menu li:nth-child(6) {
+    margin-left: auto;
+  }
+
+  .block-superfishmain .menu.sf-horiz-menu li:nth-child(8) a {
+    padding-right: 0;
+  }
+
+  .block-superfishmain .menu.sf-horiz-menu li:nth-child(7):after {
+    right: 0;
+    left: unset;
+  }
+
+  .block-superfishmain nav {
+    width: 100%;
+  }
+}
+
+@include utilities.breakpoint(page-container) {
+  .iowa-bar--full.horizontal .search-button {
+    height: 85px;
+    width: auto;
+    padding-right: 0;
+  }
+
+  .iowa-bar--full .search-overlay .uids-search {
+    margin-top: 25px;
+  }
+
+  .search-is-open .search-overlay .uids-search {
+    height: 2.8rem;
+  }
+
+  .menu--quick-links {
+    top: 1.7rem;
+  }
+}
+
+.klaro.uiowa-privacy-notice {
+  .cookie-notice:not(.cookie-modal-notice) {
+    background: variables.$light;
+    border: 0;
+    border-top: 0.875rem solid variables.$primary;
+    border-radius: 0;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
+
+    .cn-body {
+      padding: 2rem 2rem 1.85rem;
+
+      p {
+        font-size: variables.$base-font-size;
+        line-height: 1.3;
+        margin-bottom: 1rem;
+        margin-top: 0;
+      }
+
+      a {
+        color: variables.$link-color;
+        text-decoration: underline;
+
+        &:hover {
+          color: variables.$link-color;
+          text-decoration: underline;
+        }
+      }
+
+      .cn-buttons {
+        display: block;
+        width: 100%;
+
+        button.cm-btn,
+        button.cm-btn.cm-btn-success {
+          @include utilities.bttn;
+          @include utilities.bttn--primary;
+          border-radius: 0;
+          border: 1px solid variables.$primary;
+          box-shadow: none;
+          display: flex;
+          font-family: variables.$font-family-sans-serif;
+          font-size: variables.$label-font-size;
+          font-weight: variables.$font-weight-normal;
+          letter-spacing: 0.04rem;
+          padding: 1rem 2rem;
+          width: 100%;
+          @include utilities.bttn--focus;
+
+          &::after {
+            background-color: variables.$secondary;
+          }
+
+          &:hover {
+            background: variables.$primary;
+            border: 1px solid variables.$primary;
+            color: variables.$secondary;
+          }
+
+          &:focus,
+          &:focus-visible {
+            outline: 3px solid variables.$secondary;
+            outline-offset: 3px;
+          }
+        }
+      }
+    }
+  }
+
+  @include utilities.breakpoint(md) {
+    .cookie-notice:not(.cookie-modal-notice) {
+      bottom: 1.5rem;
+      border-top: 0;
+      max-width: 465px;
+    }
+  }
+}

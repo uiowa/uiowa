@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiojonwinet.uiowa.ddev.site
+    protocol: https
+  machine_name: studiojonwinet
+  human_name: jonwinet.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiojonwinet.prod
+drupal:
+  db:
+    database: jonwinet_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiojonwinet.prod.drupal.uiowa.edu'
+  requester: jwinet
+  site-name: jon_winet

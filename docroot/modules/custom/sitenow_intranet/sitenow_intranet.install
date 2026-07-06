@@ -5,6 +5,8 @@
  * Install, update and uninstall functions for the Sitenow Intranet module.
  */
 
+use Drupal\search_api\Entity\Index;
+
 /**
  * Implements hook_install().
  */
@@ -35,4 +37,24 @@ function sitenow_intranet_install() {
  */
 function sitenow_intranet_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Rebuild search index for sitenow_intranet sites.
+ */
+function sitenow_intranet_update_10001() {
+  // Load the intranet search index.
+  $index = Index::load('sitenow_intranet_search_index');
+
+  if (!$index) {
+    return t('Intranet search index not found.');
+  }
+
+  // Rebuild the tracker to remove orphaned items.
+  $index->rebuildTracker();
+
+  // Queue all items for reindexing.
+  $index->reindex();
+
+  return t('Rebuilt tracker and queued all items for reindexing on the Intranet Search Index.');
 }

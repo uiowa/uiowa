@@ -1,0 +1,27 @@
+uuid: d4558b58-2e18-447b-903d-3f9ec526c5d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.furnishings.rabbit_hole__settings
+    - taxonomy.vocabulary.furnishings
+  module:
+    - text
+id: taxonomy_term.furnishings.default
+targetEntityType: taxonomy_term
+bundle: furnishings
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true

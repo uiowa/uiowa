@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.support_article.field_support_article_faqs
     - field.field.node.support_article.field_support_article_service
     - field.field.node.support_article.field_support_article_short_desc
+    - field.field.node.support_article.rabbit_hole__settings
     - node.type.support_article
   module:
     - text
@@ -27,6 +28,11 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -41,4 +47,5 @@ hidden:
   field_support_article_faqs: true
   field_support_article_service: true
   field_support_article_short_desc: true
+  rabbit_hole__settings: true
   search_api_excerpt: true

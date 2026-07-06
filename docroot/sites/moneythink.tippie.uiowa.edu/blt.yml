@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiemoneythink.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiemoneythink
+  human_name: moneythink.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiemoneythink.prod
+drupal:
+  db:
+    database: moneythink_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiemoneythink.prod.drupal.uiowa.edu'
+  requester: wstbrook
+  site-name: UIowaMoneyThink

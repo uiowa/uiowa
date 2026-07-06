@@ -88,7 +88,7 @@ class CevalidationsrForm extends FormBase {
 
     $form['result_table'] = [
       '#type' => 'markup',
-      '#markup' => '<div id="divValidationResult" class="block-margin__top block-margin__bottom hidden"><div><p id="successfail_result" ></p><div class="table-responsive"><table id="result_table" class="table--gray-borders"><tbody id="result_tbody"></tbody></table></div></div></div>',
+      '#markup' => '<div id="divValidationResult" class="block-margin__top block-margin__bottom hidden"><div><p id="successfail_result" ></p><div class="table-responsive"><div id="result_table"></div></div></div></div>',
     ];
 
     $aposttext = '<div class="block-padding__top--minimal block-padding__bottom--minimal"><div><h2 class="h4">Apostille:</h2><p>An Apostille may neither be required nor necessary. The CeDiploma has legal standing, is non-repudiating, and can be validated through the Institution&rsquo;s website to provide absolute confidence in the credential&rsquo;s authenticity. Questions should be redirected to <a href="mailto:' . $apostilleemail . '?subject=Apostille Information Request" data-rel="external" target="_blank">' . $apostilleemail . '</a>.</p></div></div>';
@@ -105,7 +105,7 @@ class CevalidationsrForm extends FormBase {
     if ($displayCHEALogo) {
       $form['chea_info'] = [
         '#type' => 'markup',
-        '#markup' => '<div><div><hr class="element--spacer-thin"><p class="block-padding__top--minimal" id="logoCHEA"><a href="https://www.chea.org/search-institutions" data-rel="external" target="_blank" rel="noopener noreferrer" aria-label="CHEA.org Search Institution (in tab)"><img id="CheaImageId" src="https://cedimages.blob.core.windows.net/publicimages/Content/Images/CeDiplomaImages/Logo_CHEA_100x36.png" alt="CHEA Logo"></a></p><p id="pCHEA">You may check institutional accreditation through the Council for Higher Education Accreditation (CHEA):<br><span><i>(CHEA is an independent, non-profit organization, and neither endorses, authorizes, sponsors, nor is affiliated with CeCredential Trust.)</i> <a href="https://www.chea.org/search-institutions" data-rel="external" target="_blank" rel="noopener noreferrer" aria-label="CHEA.org Search Institutions (in tab)">https://www.chea.org/search-institutions</a>.</span></p></div></div>',
+        '#markup' => '<div><div><hr class="element--spacer-thin"><p class="block-padding__top--minimal" id="logoCHEA"><a href="https://www.chea.org/search-institutions" data-rel="external" target="_blank" rel="noopener noreferrer" aria-label="CHEA.org Search Institution (in tab)"><img id="CheaImageId" src="https://cedimages.blob.core.windows.net/publicimages/Content/Images/CeDiplomaImages/Logo_CHEA_100x36.png" alt="CHEA Logo"></a></p><p id="pCHEA">You may check institutional accreditation through the Council for Higher Education Accreditation (CHEA):<br><span><i>(CHEA is an independent, non-profit organization, and neither endorses, authorizes, sponsors, nor is affiliated with CeCredential Trust.)</i> <a href="https://www.chea.org/search-institutions" data-rel="external" target="_blank" rel="noopener noreferrer" aria-label="CHEA.org Search Institutions">CHEA.org Search Institutions</a>.</span></p></div></div>',
       ];
     }
 
@@ -188,7 +188,8 @@ class CevalidationsrForm extends FormBase {
       // Display result with replace.
       $response->addCommand(new InvokeCommand('#divValidationResult', 'removeClass', ['hidden']));
       $response->addCommand(new HtmlCommand('#successfail_result', $successfail));
-      $response->addCommand(new HtmlCommand('#result_table', $result_table));
+      $complete_table = '<table class="table--gray-borders">' . $result_table . '</table>';
+      $response->addCommand(new HtmlCommand('#result_table', $complete_table));
       $response->addCommand(new HtmlCommand('#scholarrecord_result', $scholarrecord_result));
     }
 

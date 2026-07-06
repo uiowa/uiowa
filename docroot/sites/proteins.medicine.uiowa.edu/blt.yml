@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: medicineproteins.uiowa.ddev.site
+    protocol: https
+  machine_name: medicineproteins
+  human_name: proteins.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicineproteins.prod
+drupal:
+  db:
+    database: proteins_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://medicineproteins.prod.drupal.uiowa.edu'
+  requester: dholterh
+  site-name: 'Protein Structure, Analysis, & Design Core'

@@ -1,0 +1,23 @@
+uuid: 72b3a16e-dff5-4b07-8c1a-240cdb71de47
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slide_mazevo_room_column
+    - paragraphs.paragraphs_type.slide_mazevo_events
+id: paragraph.slide_mazevo_events.field_slide_mazevo_room_column
+field_name: field_slide_mazevo_room_column
+entity_type: paragraph
+bundle: slide_mazevo_events
+label: 'Display room column'
+description: 'If you are only displaying events for one room, you could uncheck this and add the room name to the <em>Headline</em> instead.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

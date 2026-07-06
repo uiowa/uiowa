@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpiper.uiowa.ddev.site
+    protocol: https
+  machine_name: labpiper
+  human_name: piper.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpiper.prod
+drupal:
+  db:
+    database: piper_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpiper.prod.drupal.uiowa.edu'
+  requester: ebojohnson
+  site-name: 'Promoters for Iowa Prison Empowerment and Reform Project (PIPER)'

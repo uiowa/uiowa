@@ -73,7 +73,6 @@ class ScholarshipsBlock extends BlockBase {
       '#options' => [
         'first-year' => $this->t('First Year'),
         'transfer' => $this->t('Transfer'),
-        'international' => $this->t('International'),
       ],
       '#default_value' => $config['scholarship_type'] ?? '',
     ];

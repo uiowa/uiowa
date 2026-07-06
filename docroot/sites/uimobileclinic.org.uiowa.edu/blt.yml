@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orguimobileclinic.uiowa.ddev.site
+    protocol: https
+  machine_name: orguimobileclinic
+  human_name: uimobileclinic.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orguimobileclinic.prod
+drupal:
+  db:
+    database: uimobileclinic_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orguimobileclinic.prod.drupal.uiowa.edu'
+  requester: llflom
+  site-name: 'UI Mobile Clinic'

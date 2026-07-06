@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
     - field.field.node.event.field_event_performer
+    - field.field.node.event.rabbit_hole__settings
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_status
@@ -35,6 +36,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - smart_date
     - text
 _core:
@@ -251,6 +253,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

@@ -64,10 +64,12 @@ function uipress_core_preprocess_block(&$variables) {
 function uipress_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_book_related_reads':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h2 headline headline--serif headline--underline';
+      $variables['label_tag'] = 'h2';
+      uiowa_core_set_title_attributes($variables, [
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
 
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = '';

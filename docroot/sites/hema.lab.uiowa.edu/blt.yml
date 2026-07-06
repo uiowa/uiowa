@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhema.uiowa.ddev.site
+    protocol: https
+  machine_name: labhema
+  human_name: hema.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhema.prod
+drupal:
+  db:
+    database: hema_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhema.prod.drupal.uiowa.edu'
+  requester: mlinderm
+  site-name: 'Human Environment Monitoring and Analytics (HEMA) Lab'

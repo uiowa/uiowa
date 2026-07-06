@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiedsp.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiedsp
+  human_name: dsp.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiedsp.prod
+drupal:
+  db:
+    database: dsp_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiedsp.prod.drupal.uiowa.edu'
+  requester: hpls
+  site-name: 'Delta Sigma Pi Epsilon Chapter'

@@ -1,0 +1,21 @@
+uuid: 5fa7fcbf-9029-47a5-88f4-7f71a6d3a359
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slide_mazevo_display_end
+    - paragraphs.paragraphs_type.slide_mazevo_events
+id: paragraph.slide_mazevo_events.field_slide_mazevo_display_end
+field_name: field_slide_mazevo_display_end
+entity_type: paragraph
+bundle: slide_mazevo_events
+label: 'Display end time'
+description: 'Display the end time after the start time. If the end time is a future day, it will display the day as well.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

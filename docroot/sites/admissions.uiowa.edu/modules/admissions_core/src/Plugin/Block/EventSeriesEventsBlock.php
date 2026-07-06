@@ -105,7 +105,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
             $node_when = $node->get('field_event_when')->getValue();
             $date = $this->dateFormat->format($node_when[0]['value'], 'custom', 'D, M j');
             $markup = [
-              '#markup' => '<span class="fa-angle-right text--gold fas"></span>' . $date,
+              '#markup' => '<span role="presentation" class="fa-angle-right text--gold fas"></span>' . $date,
             ];
             $dates[$nid] = $markup;
 
@@ -119,7 +119,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
         $dates[] = $markup;
       }
       $block = [
-        '#prefix' => $this->t('<div class="block-margin__top field__label"><span class="fa-calendar far"></span> &nbsp; Available dates:</div>'),
+        '#prefix' => $this->t('<div class="block-margin__top field__label"><span role="presentation" class="fa-calendar far"></span> &nbsp; Available dates:</div>'),
         $listUl = [
           '#theme' => 'item_list',
           '#list_type' => 'ul',

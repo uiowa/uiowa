@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesachahande.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesachahande
+  human_name: achahande.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesachahande.prod
+drupal:
+  db:
+    database: achahande_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesachahande.prod.drupal.uiowa.edu'
+  requester: achahande
+  site-name: achahande

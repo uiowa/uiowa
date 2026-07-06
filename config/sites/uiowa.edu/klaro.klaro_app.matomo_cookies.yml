@@ -1,0 +1,37 @@
+uuid: 3baf9dd0-0bde-4256-8fa2-777b11bf7f36
+langcode: en
+status: false
+dependencies: {  }
+_core:
+  default_config_hash: DdJBlbMEM6Jt7omKCRqnVanOawB9Whrf0wWpj-CJBv8
+id: matomo_cookies
+label: 'Matomo (block cookies)'
+description: 'Tracks online visits of the website.'
+default: false
+purposes:
+  - analytics
+cookies:
+  -
+    regex: '^_pk_.*$'
+    path: ''
+    domain: ''
+  -
+    regex: piwik_ignore
+    path: ''
+    domain: ''
+  -
+    regex: mtm_cookie_consent
+    path: ''
+    domain: ''
+required: false
+opt_out: false
+only_once: false
+contextual_consent_only: null
+contextual_consent_text: null
+info_url: 'https://matomo.org'
+privacy_policy_url: 'https://matomo.org/privacy-policy'
+javascripts: {  }
+callback_code: "if (typeof _paq !== 'undefined') {\r\n  if (consent == true) {\r\n    _paq.push(['rememberCookieConsentGiven']);\r\n  } else {\r\n    _paq.push(['forgetCookieConsentGiven']);\r\n  }\r\n}"
+wrapper_identifier: {  }
+attachments: {  }
+weight: 3

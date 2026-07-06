@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippieama.uiowa.ddev.site
+    protocol: https
+  machine_name: tippieama
+  human_name: ama.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippieama.prod
+drupal:
+  db:
+    database: ama_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippieama.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'American Marketing Association'

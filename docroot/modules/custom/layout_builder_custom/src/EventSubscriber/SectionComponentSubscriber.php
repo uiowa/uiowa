@@ -203,6 +203,21 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           break;
 
+        case 'inline_block:uiowa_image_gallery':
+          // @phpstan-ignore-next-line
+          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
+          // Convert the style list into a map that can be used for overriding
+          // style defaults later.
+          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
+          // The gallery renders thumbnails through the Photoswipe formatter, so
+          // map the selected media format to the matching responsive image
+          // style instead of swapping a media view mode.
+          if (isset($style_map['media_format']) && isset($build['content']['field_uiowa_gallery_image']) && count(Element::children($build['content']['field_uiowa_gallery_image'])) > 0) {
+            LayoutBuilderStylesHelper::setPhotoswipeThumbnailStyleFromFormat($build['content']['field_uiowa_gallery_image'], 'medium', $style_map['media_format']);
+          }
+
+          break;
+
         case 'menu_block:main':
           // @phpstan-ignore-next-line
           $selectedStyles = $event->getComponent()->get('layout_builder_styles_style');
@@ -215,6 +230,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
         case 'inline_block:uiowa_events':
         case 'inline_block:uiowa_aggregator':
+        case 'inline_block:uiowa_jobs':
           // Get LB styles from the component.
           // @phpstan-ignore-next-line
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbunsawat.uiowa.ddev.site
+    protocol: https
+  machine_name: labbunsawat
+  human_name: bunsawat.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbunsawat.prod
+drupal:
+  db:
+    database: bunsawat_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbunsawat.prod.drupal.uiowa.edu'
+  requester: kbunsawat
+  site-name: 'Neural and Cardiovascular Physiology Laboratory'

@@ -1,0 +1,21 @@
+uuid: 40d34ac1-d92f-4abc-930f-bb7a1c233107
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_slide_events_interests
+field_name: field_slide_events_interests
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: _sitenow_signage_get_filter_field_options
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

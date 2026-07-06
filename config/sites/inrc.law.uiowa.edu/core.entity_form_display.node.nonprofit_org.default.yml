@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.nonprofit_org.field_np_training_location
     - field.field.node.nonprofit_org.field_np_training_notes
     - field.field.node.nonprofit_org.field_np_website
+    - field.field.node.nonprofit_org.rabbit_hole__settings
     - node.type.nonprofit_org
     - workflows.workflow.editorial
   module:
@@ -37,6 +38,7 @@ dependencies:
     - media_library
     - metatag
     - path
+    - rabbit_hole
     - text
 third_party_settings:
   field_group:
@@ -332,6 +334,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 5

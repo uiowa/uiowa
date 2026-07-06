@@ -110,15 +110,18 @@ class SettingsForm extends ConfigFormBase {
     $config = $this->config(static::SETTINGS);
     $form = parent::buildForm($form, $form_state);
 
-    $featured_image_display_default = $config->get('featured_image_display_default');
-
-    $form['global']['featured_image'] = [
+    $form['node'] = [
       '#type' => 'fieldset',
-      '#title' => 'Featured image',
+      '#title' => 'Page node settings',
       '#collapsible' => FALSE,
     ];
 
-    $form['global']['featured_image']['featured_image_display_default'] = [
+    $form['node']['help'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Customize settings for individual page nodes.'),
+    ];
+
+    $form['node']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
@@ -132,20 +135,18 @@ class SettingsForm extends ConfigFormBase {
         'large' => $this
           ->t('Large'),
       ],
-      '#default_value' => $featured_image_display_default ?: 'large',
+      '#default_value' => $config->get('featured_image_display_default') ?: 'large',
     ];
 
-    $form['global']['tags_and_related'] = [
+    $form['node']['tags_and_related'] = [
       '#type' => 'fieldset',
       '#title' => 'Tags and related content',
       '#collapsible' => FALSE,
     ];
 
-    $tag_display = $config->get('tag_display');
-
-    $form['global']['tags_and_related']['tag_display'] = [
+    $form['node']['tags_and_related']['tag_display'] = [
       '#type' => 'select',
-      '#title' => $this->t('Display tags in pages'),
+      '#title' => $this->t('Display tags'),
       '#description' => $this->t("Set the default way to display a page's tags in the page itself."),
       '#options' => [
         'do_not_display' => $this
@@ -153,25 +154,23 @@ class SettingsForm extends ConfigFormBase {
         'tag_buttons' => $this
           ->t('Display tag buttons'),
       ],
-      '#default_value' => $tag_display ?: 'do_not_display',
+      '#default_value' => $config->get('tag_display') ?: 'do_not_display',
     ];
 
-    $related_display = $config->get('related_display');
-
-    $form['global']['tags_and_related']['related_display'] = [
+    $form['node']['tags_and_related']['related_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display related content'),
-      '#description' => $this->t("Set the default way to display a page's related content."),
+      '#description' => $this->t('Which related content should be displayed?.'),
       '#options' => [
         'do_not_display' => $this
-          ->t('Do not display related content'),
+          ->t('None'),
         'headings_lists' => $this
-          ->t('Display related content titles grouped by tag'),
+          ->t('Content with the same tags, grouped by tag'),
       ],
-      '#default_value' => $related_display ?: 'do_not_display',
+      '#default_value' => $config->get('related_display') ?: 'do_not_display',
     ];
 
-    $form['global']['tags_and_related']['related_display_headings_lists_help'] = [
+    $form['node']['tags_and_related']['related_display_headings_lists_help'] = [
       '#type' => 'item',
       '#title' => 'How related content is displayed:',
       '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
@@ -182,28 +181,53 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
+    // Display a checkbox that allows the user to choose whether to customize
+    // the title shown above related content. If checked, the related content
+    // title field will be shown.
+    $form['node']['tags_and_related']['custom_related_title'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Customize title above related content'),
+      '#description' => $this->t('Check this box to set a custom title that appears above related content. If unchecked, the default title <em>Related content</em> will be used.'),
+      '#default_value' => (bool) $config->get('related_title'),
+    ];
+
+    $form['node']['tags_and_related']['related_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Title to display above related content'),
+      '#description' => $this->t('Set the title that appears above related content. If no value is set, this will display as <em>Related content</em>.'),
+      '#default_value' => $config->get('related_title') ?: '',
+      '#attributes' => [
+        'placeholder' => 'Related content',
+      ],
+      '#states' => [
+        'visible' => [
+          ':input[name="custom_related_title"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     // Visual indicators aren't available on SiteNow v2.
     $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
     if (!$is_v2) {
-      $form['global']['teaser'] = [
+      $form['teaser'] = [
         '#type' => 'fieldset',
-        '#title' => 'Teaser display',
+        '#title' => 'Teaser settings',
         '#collapsible' => FALSE,
       ];
-      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
-      $form['global']['teaser']['show_teaser_link_indicator'] = [
+
+      $form['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
-        '#default_value' => $show_teaser_link_indicator ?: FALSE,
+        '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
+        '#default_value' => $config->get('show_teaser_link_indicator') ?: FALSE,
       ];
 
-      $form['global']['block_settings'] = [
+      $form['block_settings'] = [
         '#type' => 'fieldset',
-        '#title' => 'Block Settings',
+        '#title' => 'Layout Builder settings',
         '#collapsible' => FALSE,
       ];
 
-      $form['global']['block_settings']['card_link_indicator_display'] = [
+      $form['block_settings']['card_link_indicator_display'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display card arrow button'),
         '#description' => $this->t('Set the default behavior the card arrow button.'),
@@ -217,38 +241,37 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Unset custom related content title if checkbox is unchecked.
+    if (!$form_state->getValue('custom_related_title')) {
+      $form_state->setValue('related_title', '');
+    }
+
+    parent::validateForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $config_settings = $this->configFactory->getEditable(static::SETTINGS);
 
-    $featured_image_display_default = $form_state->getValue('featured_image_display_default');
-    $tag_display = $form_state->getValue('tag_display');
-    $related_display = $form_state->getValue('related_display');
-    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
-    $card_link_indicator_display = $form_state->getValue('card_link_indicator_display');
+    // List of config updates to make.
+    $config_updates = [
+      'featured_image_display_default',
+      'tag_display',
+      'related_display',
+      'related_title',
+      'show_teaser_link_indicator',
+      'card_link_indicator_display',
+    ];
 
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the featured image display default.
-      ->set('featured_image_display_default', $featured_image_display_default)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('tag_display', $tag_display)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('related_display', $related_display)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
-      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
-      ->save();
-
-    $this->configFactory->getEditable(static::SETTINGS)
-      // Save the default card button selection.
-      ->set('card_link_indicator_display', $card_link_indicator_display)
-      ->save();
+    // Update each config item in the list from the form state.
+    foreach ($config_updates as $config_name) {
+      $config_settings->set($config_name,
+        $form_state->getValue($config_name))
+        ->save();
+    }
 
     parent::submitForm($form, $form_state);
 

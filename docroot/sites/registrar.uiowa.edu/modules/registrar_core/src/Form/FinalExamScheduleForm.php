@@ -3,6 +3,7 @@
 namespace Drupal\registrar_core\Form;
 
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,24 +15,35 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Form for the final exams schedule block.
  */
 class FinalExamScheduleForm extends FormBase {
+
   /**
    * The MAUI API service.
    *
    * @var \Drupal\uiowa_maui\MauiApi
    */
-  protected $maui;
+  protected $mauiApi;
+
+  /**
+   * The cache.uiowa_maui service.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $mauiCache;
 
   /**
    * Constructs the SettingsForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
-   * @param \Drupal\uiowa_maui\MauiApi $maui
+   * @param \Drupal\uiowa_maui\MauiApi $maui_api
    *   The MAUI API service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $maui_cache
+   *   The cache.uiowa_maui service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, MauiApi $maui) {
+  public function __construct(ConfigFactoryInterface $config_factory, MauiApi $maui_api, CacheBackendInterface $maui_cache) {
     $this->configFactory = $config_factory;
-    $this->maui = $maui;
+    $this->mauiApi = $maui_api;
+    $this->mauiCache = $maui_cache;
   }
 
   /**
@@ -41,6 +53,7 @@ class FinalExamScheduleForm extends FormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('uiowa_maui.api'),
+      $container->get('cache.uiowa_maui'),
     );
   }
 
@@ -58,6 +71,7 @@ class FinalExamScheduleForm extends FormBase {
     $wrapper_id = $this->getFormId() . '-wrapper';
     $form['#prefix'] = '<div id="' . $wrapper_id . '" aria-live="polite">';
     $form['#suffix'] = '</div>';
+    $form['#cache']['tags'] = ['time:daily'];
 
     $form['#id'] = 'correspondence-form';
 
@@ -83,13 +97,37 @@ class FinalExamScheduleForm extends FormBase {
       '#markup' => "<p><strong>Session:</strong> {$session_name}</p>",
     ];
 
-    $data = $this->maui->getFinalExamSchedule($session_info['session_id']);
-    if (empty($data) || !isset($data['NewDataSet']['Table'])) {
-      $form['final_exam']['empty'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>No final exams found.</p>',
-      ];
-      return $form;
+    // Check for cached session data.
+    $session_id = $session_info['session_id'];
+    $cid = "uiowa_maui:request:final_exam_schedule:{$session_id}";
+    $cache = $this->mauiCache->get($cid);
+
+    if ($cache && isset($cache->data)) {
+      $data = $cache->data;
+    }
+    else {
+      $data = $this->mauiApi->getFinalExamSchedule($session_id);
+    }
+
+    // Check if $data is an array and if so, if it has the '_status' key. This
+    // is necessary because the value of data can return different values
+    // depending on whether we are accessing the cached version or not.
+    if (is_array($data) && isset($data['_status'])) {
+      switch ($data['_status']) {
+        case 'ok':
+          $data = $data['_data'];
+          break;
+
+        default:
+          // Set a shorter cache time for errors.
+          // Block/Node save will clear cache as a fallback.
+          $form['#cache']['tags'] = ['time:hourly'];
+          $form['final_exam']['empty'] = [
+            '#type' => 'markup',
+            '#markup' => '<p>' . $data['_message'] . '</p>',
+          ];
+          return $form;
+      }
     }
 
     $search = $form_state->getValue('search') ?? '';
@@ -167,7 +205,6 @@ class FinalExamScheduleForm extends FormBase {
       ],
     ];
 
-    $data = $data['NewDataSet']['Table'];
     $allowed_tags = [
       'a',
       'strong',
@@ -226,6 +263,7 @@ class FinalExamScheduleForm extends FormBase {
         'class' => 'element--margin__top--extra',
         'role' => 'region',
         'aria-live' => 'polite',
+        'aria-label' => 'Final exam schedule',
       ],
     ];
 

@@ -41,11 +41,14 @@
     {% endif %}
   {% endset %}
 
+
+  {% set attributes = create_attribute() %}
   {% include '@uids_base/uids/alert.html.twig' with {
     'attributes': attributes,
     'alert_content' : alert_content,
     'alert_dismissible' : true,
     'alert_type': type,
+    'alert_role': (type == 'error' or type == 'warning') ? 'alert' : 'status',
   } only %}
 
 {% endfor %}

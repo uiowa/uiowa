@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteslizhollingworth.uiowa.ddev.site
+    protocol: https
+  machine_name: siteslizhollingworth
+  human_name: lizhollingworth.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteslizhollingworth.prod
+drupal:
+  db:
+    database: lizhollingworth_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteslizhollingworth.prod.drupal.uiowa.edu'
+  requester: hollingw
+  site-name: 'Liz Hollingworth'

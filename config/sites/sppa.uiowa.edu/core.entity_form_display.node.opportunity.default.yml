@@ -11,12 +11,14 @@ dependencies:
     - field.field.node.opportunity.field_opportunity_locations
     - field.field.node.opportunity.field_opportunity_type
     - field.field.node.opportunity.field_opportunity_website
+    - field.field.node.opportunity.rabbit_hole__settings
     - node.type.opportunity
   module:
     - content_moderation
     - link
     - path
     - private_content
+    - rabbit_hole
     - text
 id: node.opportunity.default
 targetEntityType: node
@@ -113,6 +115,13 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
     third_party_settings: {  }
   simple_sitemap:
     weight: 10

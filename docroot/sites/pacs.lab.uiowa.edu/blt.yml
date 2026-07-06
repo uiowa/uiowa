@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpacs.uiowa.ddev.site
+    protocol: https
+  machine_name: labpacs
+  human_name: pacs.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpacs.prod
+drupal:
+  db:
+    database: pacs_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labpacs.prod.drupal.uiowa.edu'
+  requester: jgorzelitz
+  site-name: pacs.lab.uiowa.edu

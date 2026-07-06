@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labadrain.uiowa.ddev.site
+    protocol: https
+  machine_name: labadrain
+  human_name: adrain.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labadrain.prod
+drupal:
+  db:
+    database: adrain_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labadrain.prod.drupal.uiowa.edu'
+  requester: jadrain
+  site-name: AdrainLab

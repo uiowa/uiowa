@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippieshrm.uiowa.ddev.site
+    protocol: https
+  machine_name: tippieshrm
+  human_name: shrm.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippieshrm.prod
+drupal:
+  db:
+    database: shrm_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippieshrm.prod.drupal.uiowa.edu'
+  requester: jkurtzleben
+  site-name: 'Society for Human Resource Management'

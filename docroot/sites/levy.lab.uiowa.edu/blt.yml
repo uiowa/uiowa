@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablevy.uiowa.ddev.site
+    protocol: https
+  machine_name: lablevy
+  human_name: levy.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablevy.prod
+drupal:
+  db:
+    database: levy_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablevy.prod.drupal.uiowa.edu'
+  requester: jmtilley
+  site-name: Levy

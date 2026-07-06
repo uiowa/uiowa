@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: tippiefma.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiefma
+  human_name: fma.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiefma.prod
+drupal:
+  db:
+    database: fma_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://tippiefma.prod.drupal.uiowa.edu'
+  requester: hpls
+  site-name: fma.tippie.uiowa.edu

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsugiyama.uiowa.ddev.site
+    protocol: https
+  machine_name: labsugiyama
+  human_name: sugiyama.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsugiyama.prod
+drupal:
+  db:
+    database: sugiyama_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labsugiyama.prod.drupal.uiowa.edu'
+  requester: vsmarra
+  site-name: 'Sugiyama Lab'

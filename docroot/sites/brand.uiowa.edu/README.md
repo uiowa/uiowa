@@ -38,7 +38,6 @@ Customizations
   - 7 AM email is sent out for any needs review lockup submissions.
     - acquia cron job/drush command.
 - Custom moderation workflow for lockup content type.
-- mailsystem, swiftmailer modules for HTML email.
 - Custom permissions based on all of the above.
 
 Misc Notes

@@ -329,6 +329,7 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_link':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_field_label_icon($variables, 'fa-link');
       uiowa_core_set_title_attributes($variables, [
         'h4',
@@ -361,6 +362,7 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_scholarship':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_field_label_icon($variables, 'fa-link');
       uiowa_core_set_title_attributes($variables, [
         'h4',
@@ -412,6 +414,7 @@ function admissions_core_preprocess_field(&$variables) {
       $name = $term->field_major_community_college->entity->name->value;
       $variables['label'] = t('@name checkpoints', ['@name' => $name]);
 
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'h4',
         'headline',
@@ -421,6 +424,7 @@ function admissions_core_preprocess_field(&$variables) {
 
     case 'field_major_responsibilities':
     case 'field_major_uiowa_checkpoints':
+      $variables['label_tag'] = 'h2';
       uiowa_core_set_title_attributes($variables, [
         'h4',
         'headline',
@@ -525,6 +529,20 @@ function admissions_core_preprocess_field__node__title(&$variables) {
       'headline headline--serif',
       'headline--highlight',
     ]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_form_element().
+ */
+function admissions_core_preprocess_form_element(&$variables) {
+  // This function adds the switch checkbox class for the kiosk page.
+  $element = $variables['element'];
+  if (isset($element['#parents']) && in_array('academic_group', $element['#parents'])) {
+    $current_path = \Drupal::service('path.current')->getPath();
+    if (strpos($current_path, 'kiosk') !== FALSE) {
+      $variables['attributes']['class'][] = 'form__checkbox--switch';
+    }
   }
 }
 
@@ -768,6 +786,13 @@ function admissions_core_views_pre_view(ViewExecutable $view, $display_id, array
         $view->executed = TRUE;
       }
     }
+  }
+
+  // Admissions requested a sidebar for their events view
+  // while staying default for everything else.
+  if ($view->id() === 'events' && $display_id === 'page_upcoming') {
+    // Set css class programmatically instead of splitting config.
+    $view->display_handler->setOption('css_class', 'bef-form bef-form--label-hidden bef-form--sidebar views--twocol--25-75');
   }
 }
 

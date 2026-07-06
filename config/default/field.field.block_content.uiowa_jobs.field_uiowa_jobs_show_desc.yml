@@ -1,0 +1,21 @@
+uuid: 6a515041-5675-4fdd-b040-8293107ede72
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_jobs
+    - field.storage.block_content.field_uiowa_jobs_show_desc
+id: block_content.uiowa_jobs.field_uiowa_jobs_show_desc
+field_name: field_uiowa_jobs_show_desc
+entity_type: block_content
+bundle: uiowa_jobs
+label: 'Include description'
+description: 'Show a trimmed version of the job posting summary information.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -291,10 +291,12 @@ ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1:hover:after {
 
 ul.sf-menu.sf-horizontal > li.sfHover > .nolink:after,
 ul.sf-menu.sf-horizontal > li.sfHover > a:after,
-ul.sf-menu.sf-horizontal > li:focus > .nolink:focus:after,
-ul.sf-menu.sf-horizontal > li:focus > a:focus:after,
 ul.sf-menu.sf-horizontal > li:hover > .nolink:after,
-ul.sf-menu.sf-horizontal > li:hover > a:after {
+ul.sf-menu.sf-horizontal > li:hover > a:after,
+ul.sf-menu.sf-horizontal > li > .nolink:focus:after,
+ul.sf-menu.sf-horizontal > li > a:focus:after,
+ul.sf-menu.sf-horizontal > li:focus-within > .nolink:after,
+ul.sf-menu.sf-horizontal > li:focus-within > a:after {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -355,6 +357,11 @@ ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
 .menu.sf-accordion ul li .nolink,
 .menu.sf-accordion ul li a {
   color: #666;
+}
+
+// Set float to none to avoid toggle menu collapsing width.
+ul.sf-has-clone-parent {
+  float: none !important;
 }
 
 .sf-accordion .sf-clone-parent .nolink,
@@ -444,12 +451,27 @@ ul.sf-accordion ul:focus-within {
   }
 }
 
+// Additional focus indicator for sub-menu items in non-toggle menus.
+.block-superfish .menu:not(.sf-accordion) li .nolink,
+.block-superfish .menu:not(.sf-accordion) li a {
+  &:focus:not(.sf-depth-1) {
+    background: #e1e1e1;
+  }
+}
+
 .block-superfish .menu li .nolink {
   &:hover {
     cursor: default;
   }
   &:focus {
     text-decoration: none;
+  }
+}
+
+// Add a dotted outline on focus for level 1 nolink menu items.
+.block-superfish .menu li.sf-depth-1 > .nolink {
+  &:focus-visible {
+    outline: 1px dotted;
   }
 }
 
@@ -468,6 +490,13 @@ ul.sf-accordion ul:focus-within {
 .block-superfish .menu.sf-accordion li .nolink,
 .block-superfish .menu.sf-accordion li a {
   line-height: 1.3;
+}
+
+// Add a dotted outline on focus for nolink menu items in the mobile accordion.
+.block-superfish .menu.sf-accordion li > .nolink {
+  &:focus-visible {
+    outline: 1px dotted;
+  }
 }
 
 .menu.sf-accordion ul li a.is-active {
@@ -495,21 +524,19 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
   padding: 0.9rem 0;
 }
 
-.menu.sf-accordion > li > a {
-  display: inline-block;
-}
-
-.menu.sf-accordion > li > .nolink::after,
-.menu.sf-accordion > li > a::after,
-.menu.sf-accordion > li > span::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
+.menu.sf-accordion > li > .nolink,
+.menu.sf-accordion > li > a,
+.menu.sf-accordion > li > span {
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    transition: 0s;
+  }
 }
 
 .block-superfish .menu.sf-accordion > li > .sf-depth-1.menuparent {

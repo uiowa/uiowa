@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcraters.uiowa.ddev.site
+    protocol: https
+  machine_name: labcraters
+  human_name: craters.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcraters.prod
+drupal:
+  db:
+    database: craters_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcraters.prod.drupal.uiowa.edu'
+  requester: ebojohnson
+  site-name: 'Creating Responsive Action Through Empowering Resources and Strategies (CRATERS)'

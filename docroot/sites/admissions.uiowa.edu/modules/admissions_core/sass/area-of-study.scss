@@ -4,9 +4,9 @@
 
 .page-node-type-area-of-study {
   .field--name-field-area-of-study-stat {
-    @include utilities.flexbox;
-    @include utilities.flex(0, 1, 100%);
-    @include utilities.flex-wrap(wrap);
+    display: flex;
+    flex: 0 1 100%;
+    flex-wrap: wrap;
 
     .field__item {
       @include utilities.breakpoint(sm) {

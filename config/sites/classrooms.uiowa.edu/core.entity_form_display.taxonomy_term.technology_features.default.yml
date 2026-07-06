@@ -5,10 +5,12 @@ dependencies:
   config:
     - field.field.taxonomy_term.technology_features.field_api_mapping
     - field.field.taxonomy_term.technology_features.field_technology_features_icon
+    - field.field.taxonomy_term.technology_features.rabbit_hole__settings
     - taxonomy.vocabulary.technology_features
   module:
     - fontawesome
     - path
+    - rabbit_hole
     - text
 id: taxonomy_term.technology_features.default
 targetEntityType: taxonomy_term
@@ -51,6 +53,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
+    third_party_settings: {  }
   simple_sitemap:
     weight: 10
     region: content
@@ -65,4 +74,6 @@ content:
     third_party_settings: {  }
 hidden:
   publish_on: true
+  publish_state: true
   unpublish_on: true
+  unpublish_state: true

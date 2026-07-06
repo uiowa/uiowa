@@ -1,29 +1,30 @@
 _core:
   default_config_hash: v7E8C8wJWeAW2BGohMNY1tZSBc4bexM6O62tGxecTfE
+mode: simple
 ignored_config_entities:
   - acquia_connector.settings
   - 'block.block.main_navigation__superfish__horizontal:status'
   - 'block.block.main_navigation__superfish__mega:status'
   - 'block.block.main_navigation__superfish__toggle:status'
   - 'captcha.captcha_point.*'
-  - 'config_split.config_split.additional_person_types:status'
   - 'config_split.config_split.advanced_webform:status'
   - 'config_split.config_split.areas_of_study:status'
   - 'config_split.config_split.articles_narrow:status'
   - 'config_split.config_split.bigmenu:status'
   - 'config_split.config_split.ccom:status'
+  - 'config_split.config_split.charts:status'
   - 'config_split.config_split.collegiate:status'
   - 'config_split.config_split.contact:status'
   - 'config_split.config_split.event:status'
   - 'config_split.config_split.grad_person_extended:status'
   - 'config_split.config_split.p2lb:status'
   - 'config_split.config_split.periodical:status'
+  - 'config_split.config_split.piwikpro:status'
   - 'config_split.config_split.profiles:status'
   - 'config_split.config_split.scholarship:status'
   - 'config_split.config_split.signage:status'
   - 'config_split.config_split.sitenow_alerts:status'
   - 'config_split.config_split.sitenow_intranet:status'
-  - 'config_split.config_split.sitenow_migrate:status'
   - 'config_split.config_split.sitenow_v2:status'
   - 'config_split.config_split.sitenow_webform_ais_rfi:status'
   - 'config_split.config_split.thesis_defense:status'
@@ -31,10 +32,10 @@ ignored_config_entities:
   - 'config_split.config_split.uiowa_graph:status'
   - 'config_split.config_split.uiowa_hours:status'
   - 'config_split.config_split.uiowa_maui:status'
+  - field.formatter.settings.photoswipe_field_formatter
+  - field.formatter.settings.photoswipe_responsive_field_formatter
   - google_analytics.settings
   - 'google_tag.container.*'
-  - migrate_plus.migration_group.default
-  - migrate_plus.migration_group.sitenow_migrate
   - pathauto.pattern.article
   - pathauto.pattern.person
   - piwik_pro.settings
@@ -43,6 +44,7 @@ ignored_config_entities:
   - sitenow_events.settings
   - sitenow_intranet.settings
   - sitenow_pages.settings
+  - 'sitenow_people.person_type.*'
   - sitenow_people.settings
   - 'system.maintenance:message'
   - system.site
@@ -59,5 +61,4 @@ ignored_config_entities:
   - views.view.articles
   - views.view.people
   - 'webform.webform.*'
-mode: simple
-enable_export_filtering: true
+  - 'workbench_email.workbench_email_template.*'

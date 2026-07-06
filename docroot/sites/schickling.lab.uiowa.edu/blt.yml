@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labschickling.uiowa.ddev.site
+    protocol: https
+  machine_name: labschickling
+  human_name: schickling.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labschickling.prod
+drupal:
+  db:
+    database: schickling_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labschickling.prod.drupal.uiowa.edu'
+  requester: bschickl
+  site-name: Schickling

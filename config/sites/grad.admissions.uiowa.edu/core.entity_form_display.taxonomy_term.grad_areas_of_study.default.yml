@@ -3,9 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.grad_areas_of_study.rabbit_hole__settings
     - taxonomy.vocabulary.grad_areas_of_study
   module:
     - path
+    - rabbit_hole
     - text
 id: taxonomy_term.grad_areas_of_study.default
 targetEntityType: taxonomy_term
@@ -34,6 +36,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  rabbit_hole__settings:
+    type: rabbit_hole_default
+    weight: 100
+    region: content
+    settings:
+      advanced: true
+    third_party_settings: {  }
   simple_sitemap:
     weight: 10
     region: content
@@ -53,4 +62,6 @@ content:
     third_party_settings: {  }
 hidden:
   publish_on: true
+  publish_state: true
   unpublish_on: true
+  unpublish_state: true

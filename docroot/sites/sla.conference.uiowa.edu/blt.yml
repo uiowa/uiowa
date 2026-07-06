@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: conferencesla.uiowa.ddev.site
+    protocol: https
+  machine_name: conferencesla
+  human_name: sla.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencesla.prod
+drupal:
+  db:
+    database: sla_conference_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://conferencesla.prod.drupal.uiowa.edu'
+  requester: curto
+  site-name: 'Sport Literature Association Conference, University of Iowa, June 2026'

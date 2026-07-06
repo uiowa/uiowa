@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesmtian.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesmtian
+  human_name: mtian.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmtian.prod
+drupal:
+  db:
+    database: mtian_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesmtian.prod.drupal.uiowa.edu'
+  requester: mtian
+  site-name: ' Min Tian'

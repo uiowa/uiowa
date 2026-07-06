@@ -117,6 +117,7 @@ class DepartmentCodesForm extends FormBase {
           'class' => 'element--margin__top--extra',
           'role' => 'region',
           'aria-live' => 'polite',
+          'aria-label' => 'Department codes',
         ],
       ];
 

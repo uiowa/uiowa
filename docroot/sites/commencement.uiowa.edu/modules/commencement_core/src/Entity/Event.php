@@ -21,6 +21,7 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
       '#meta' => [
         'field_event_when',
         'field_event_venue',
+        'field_event_venue_name',
       ],
     ]);
   }

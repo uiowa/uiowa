@@ -1,0 +1,21 @@
+uuid: 47d1e019-4aaa-4405-ac62-c3b3b770f262
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slide_mazevo_rooms
+    - paragraphs.paragraphs_type.slide_mazevo_events
+  module:
+    - options
+id: paragraph.slide_mazevo_events.field_slide_mazevo_rooms
+field_name: field_slide_mazevo_rooms
+entity_type: paragraph
+bundle: slide_mazevo_events
+label: Rooms
+description: 'Select which rooms you would like to display events for. Leave blank to display events from all rooms.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

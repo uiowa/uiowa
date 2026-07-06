@@ -1,0 +1,19 @@
+uuid: 60a474a4-441c-4af8-8900-b7f30563733d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.slide_image.field_slide_image
+    - paragraphs.paragraphs_type.slide_image
+id: paragraph.slide_image.preview
+targetEntityType: paragraph
+bundle: slide_image
+mode: preview
+content: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_slide_image: true
+  search_api_excerpt: true

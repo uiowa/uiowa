@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Safety Core module.
+ */
+
+/**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function safety_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'safety_core.settings';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function safety_core_theme() {
+  return [
+    'log_table' => [
+      'variables' => [
+        'crimes' => NULL,
+        'fires' => NULL,
+        'log_type' => 'crime',
+        'start_date' => NULL,
+        'end_date' => NULL,
+      ],
+      'template' => 'log-table',
+    ],
+  ];
+}

@@ -1,0 +1,27 @@
+uuid: 1ec67e88-6516-4946-a4c3-2e4aca84148d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.bathroom_type.rabbit_hole__settings
+    - taxonomy.vocabulary.bathroom_type
+  module:
+    - text
+id: taxonomy_term.bathroom_type.default
+targetEntityType: taxonomy_term
+bundle: bathroom_type
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true

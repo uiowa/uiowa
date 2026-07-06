@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labkidacki.uiowa.ddev.site
+    protocol: https
+  machine_name: labkidacki
+  human_name: kidacki.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkidacki.prod
+drupal:
+  db:
+    database: kidacki_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labkidacki.prod.drupal.uiowa.edu'
+  requester: annaellis
+  site-name: 'Kidacki Lab'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitestinelli.uiowa.ddev.site
+    protocol: https
+  machine_name: sitestinelli
+  human_name: tinelli.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitestinelli.prod
+drupal:
+  db:
+    database: tinelli_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitestinelli.prod.drupal.uiowa.edu'
+  requester: tinelli
+  site-name: "Cesare Tinelli's home page"

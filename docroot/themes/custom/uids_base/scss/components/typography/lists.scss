@@ -2,15 +2,6 @@
 @use '../../../uids/scss/abstracts/_utilities.scss';
 @use '../../../uids/scss/base/lists.scss';
 
-// Target text areas that use list items
-.block-inline-blockuiowa-collection,
-.block-inline-blockuiowa-text-area,
-.block--wrapper {
-  ul li {
-    margin-bottom: .5rem;
-  }
-}
-
 .element--list-none {
   .fa-field-item svg[class*="fa-"],
   .fa-field-item span[class*="fa-"] {
@@ -54,4 +45,18 @@
 
 .fa-ul {
   position: relative;
+}
+
+
+// unordered list styles
+ul[type="circle"] {
+  list-style-type: circle;
+}
+
+ul[type="disc"] {
+  list-style-type: disc;
+}
+
+ul[type="square"] {
+  list-style-type: square;
 }

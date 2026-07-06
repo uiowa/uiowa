@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitespulmfibrosis-sarcoidosis.uiowa.ddev.site
+    protocol: https
+  machine_name: sitespulmfibrosis-sarcoidosis
+  human_name: pulmfibrosis-sarcoidosis.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitespulmfibrosis-sarcoidosis.prod
+drupal:
+  db:
+    database: pulmfibrosis_sarcoidosis_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitespulmfibrosis-sarcoidosis.prod.drupal.uiowa.edu'
+  requester: strommerl
+  site-name: 'Pulmonary Fibrosis and Sarcoidosis Research '

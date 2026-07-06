@@ -5,6 +5,15 @@
   border-bottom: 1px solid #e6e5e5;
 }
 
+// Hide horizontal nav overflow before md breakpoint
+// so superfish can calculate small-screen menu behavior.
+.nav--horizontal .block-superfish > nav {
+  overflow: hidden;
+  @include utilities.breakpoint(md) {
+    overflow: visible;
+  }
+}
+
 .block-superfish .sf-menu.sf-horiz-menu ul {
   @include utilities.breakpoint(md) {
     background: #f1f1f1 !important;

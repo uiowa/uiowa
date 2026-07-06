@@ -190,6 +190,7 @@ class CorrespondenceForm extends FormBase {
         'class' => 'element--margin__top--extra',
         'role' => 'region',
         'aria-live' => 'polite',
+        'aria-label' => 'Correspondence archives',
       ],
     ];
 

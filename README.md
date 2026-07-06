@@ -67,6 +67,8 @@ uiowa:
 The `blt frontend` command will install and compile frontend assets.
 
 ## Multisite Management
+SiteNow provides host-side multisite commands through the `sn` CLI, including `multisite:create`. See [sitenow/README.md](sitenow/README.md).
+
 There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
 
 Because the `.git` directory is not synced to the web container, some commands need to be run on your host machine instead. You can run `./vendor/bin/blt` from the project root or install the [BLT Launcher](https://github.com/acquia/blt-launcher) to just run `blt`.
@@ -86,7 +88,7 @@ Before starting updates, make sure your local environment is on a feature branch
 ## Updating core patched files
 
 - Remove the `core_htaccess.patch` line from `post-drupal-scaffold-cmd` in the composer.json file and run `ddev composer install`.
-- Commit this with git but do not push.
+- Commit the .htaccess change only with git but do not push.
 - Re-add the line back to composer and re-run `ddev composer install`.
 - Make edits to the .htaccess file.
 - `git diff docroot/.htaccess > patches/core_htaccess.patch`
@@ -99,8 +101,8 @@ Configuration tracked in the repository will need to be exported before deployme
 
 ## Testing Dependencies
 Testing a uids change in uiowa:
-1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids": "uiowa/uids#[Enter hash here]"
-2. Then run `yarn upgrade @uiowa/uids`
+1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids4": "uiowa/uids4#[Enter hash here]"
+2. Then run `yarn upgrade @uiowa/uids4`
 3. `rm -rf ./node_modules`
 4. `yarn cache clean`
 5. `yarn install`
@@ -119,7 +121,6 @@ The packages below are locked at specific SHAs and will not update using the met
 |------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | uiowa/block_content_template | Forked from a deprecated project.                                                                                            |
 | drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                  |
-| bower-asset/fontawesome | The version we were using abruptly disappeared on 11/02/2023.|
 
 
 

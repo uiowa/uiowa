@@ -5,8 +5,8 @@
  * Profile code.
  */
 
+use Drupal\sitenow\Plugin\WebformHandler\EmailOverrideWebformHandler;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
@@ -16,7 +16,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -63,6 +62,9 @@ function sitenow_toolbar_alter(&$items) {
   if (isset($items['tour'])) {
     $items['tour']['#attached']['library'][] = 'claro/tour-styling';
   }
+
+  // Accessibility tweak for color-contrast issue.
+  $items['administration']['#attached']['library'][] = 'sitenow/toolbar-overrides';
 }
 
 /**
@@ -108,18 +110,6 @@ function sitenow_preprocess_select(&$variables) {
           unset($variables['options'][0]);
         }
       }
-    }
-  }
-}
-
-/**
- * Implements hook_js_alter().
- */
-function sitenow_js_alter(&$javascript, AttachedAssetsInterface $assets, LanguageInterface $language) {
-  // Remove fontawesome js if ckeditor5 is present.
-  if (array_key_exists('core/modules/ckeditor5/js/ckeditor5.js', $javascript) || array_key_exists('core/modules/ckeditor5/js/ckeditor5.dialog.fix.js', $javascript)) {
-    if (array_key_exists('libraries/fontawesome/js/all.min.js', $javascript)) {
-      unset($javascript['libraries/fontawesome/js/all.min.js']);
     }
   }
 }
@@ -175,7 +165,7 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
     if (in_array($theme, ['uids_base'])) {
       $limit = theme_get_setting('header.top_links_limit', 'uids_base');
       if ($limit) {
-        $warning_text = t('Only the top @limit menu items will display.', [
+        $warning_text = t('Only the top @limit menu items will display. Child/submenu items are automatically hidden to maintain a usable header layout.', [
           '@limit' => $limit,
         ]);
         \Drupal::messenger()->addWarning($warning_text);
@@ -501,6 +491,13 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
 
+  // Check if uiowa_core module is installed (may not be during installation).
+  // Using moduleHandler instead of container->has() because the service
+  // definition may exist before the module is actually enabled.
+  if (!\Drupal::moduleHandler()->moduleExists('uiowa_core')) {
+    return;
+  }
+
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 
@@ -521,6 +518,11 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         if ($access->isForbidden()) {
           $form['path']['#access'] = FALSE;
         }
+      }
+
+      // Uncheck replace file overwrite option by default.
+      if (isset($form['replace_file']['keep_original_filename'])) {
+        $form['replace_file']['keep_original_filename']['#default_value'] = FALSE;
       }
     }
   }
@@ -565,6 +567,14 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['properties']['markup']['message_close_effect']['#access'] = FALSE;
         $form['properties']['markup']['message_storage']['#access'] = FALSE;
         $form['properties']['markup']['message_id']['#access'] = FALSE;
+      }
+
+      // Add additional help text to the captcha element.
+      if (isset($form['properties']['captcha'])) {
+        $form['properties']['captcha']['captcha_type']['#help'] = t('Currently the Default challenge is the Math challenge type.');
+        $form['properties']['captcha']['captcha_type']['#description'] = t('See our <a href="@link" target="_blank" rel="noopener">SiteNow CAPTCHA documentation</a> for more information.', [
+          '@link' => 'https://sitenow.uiowa.edu/node/646#captcha',
+        ]);
       }
 
       // Custom validation for webform components.
@@ -1013,7 +1023,7 @@ function sitenow_link_alter(&$variables) {
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
-    $variables['text'] = t('<span role="presentation" class="fa @icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
+    $variables['text'] = t('<span role="presentation" class="@icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
       '@icon' => $variables['options']['fa_icon'],
       '@title' => $variables['text'],
     ]);
@@ -1166,4 +1176,14 @@ function featured_image_size_values(FieldStorageDefinitionInterface $definition,
   ];
 
   return $options;
+}
+
+/**
+ * Implements hook_webform_handler_info_alter().
+ */
+function sitenow_webform_handler_info_alter(array &$handlers) {
+  // Replace the default email handler to override what settings are allowed.
+  if (isset($handlers['email'])) {
+    $handlers['email']['class'] = EmailOverrideWebformHandler::class;
+  }
 }

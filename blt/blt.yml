@@ -30,6 +30,9 @@ drush:
   aliases:
     ci: self
   default_alias: self
+disable-targets:
+  tests:
+    security-composer: true
 tests:
   phpunit:
     - config: '${repo.root}'

@@ -1,0 +1,21 @@
+uuid: de704035-8424-4353-81e2-780023b7eb43
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slide_mazevo_event_types
+    - paragraphs.paragraphs_type.slide_mazevo_events
+  module:
+    - options
+id: paragraph.slide_mazevo_events.field_slide_mazevo_event_types
+field_name: field_slide_mazevo_event_types
+entity_type: paragraph
+bundle: slide_mazevo_events
+label: 'Event types'
+description: 'Select any number of event types to filter results. Only events with one of the selected <em>Event type</em>s will be shown.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
