@@ -70,13 +70,19 @@ class DeployUpdateCommand extends Command {
     $concurrency = (int) $input->getOption('concurrency') ?: 3;
     $log_dir = $is_acquia ? '/shared/logs' : sys_get_temp_dir();
     $joblog = "{$log_dir}/sn_deploy_update.joblog";
+    // Retained, human-readable log of the full per-site output, accumulated
+    // across deploys and bracketed with run markers. The joblog holds only
+    // per-site metadata and is overwritten each run; this preserves the output
+    // itself for after-the-fact debugging. Expected to be managed by logrotate
+    // on the server.
+    $runlog = "{$log_dir}/sn_deploy_update.log";
 
     $io->writeln(sprintf('Updating %d site(s) on %s, %d at a time.', count($sites), $app, $concurrency));
 
     if ($this->hasParallel()) {
-      return $this->runParallel($io, $sites, $concurrency, $joblog);
+      return $this->runParallel($io, $sites, $concurrency, $joblog, $runlog);
     }
-    return $this->runSequential($io, $sites);
+    return $this->runSequential($io, $sites, $runlog);
   }
 
   /**
@@ -126,18 +132,28 @@ class DeployUpdateCommand extends Command {
   /**
    * Fan the site updates out with GNU parallel; aggregate from the exit code.
    */
-  private function runParallel(SymfonyStyle $io, array $sites, int $concurrency, string $joblog): int {
+  private function runParallel(SymfonyStyle $io, array $sites, int $concurrency, string $joblog, string $runlog): int {
     $cmd = [
       'parallel',
       '-j', (string) $concurrency,
       '--joblog', $joblog,
+      // Prefix each output line with its site so the captured log is
+      // attributable per site rather than an interleaved blob.
+      '--tag',
       "{$this->repoRoot}/sn", 'site:update', '{}',
       ':::', ...$sites,
     ];
 
     $process = new Process($cmd, $this->repoRoot);
     $process->setTimeout(NULL);
-    $process->run(fn($type, $buffer) => print $buffer);
+    $log = $this->openRunLog($runlog, count($sites));
+    $process->run(function ($type, $buffer) use ($log) {
+      print $buffer;
+      if ($log) {
+        fwrite($log, $buffer);
+      }
+    });
+    $this->closeRunLog($log);
 
     // GNU parallel exits non-zero when any job failed; the joblog records the
     // per-site outcome regardless.
@@ -154,16 +170,26 @@ class DeployUpdateCommand extends Command {
   /**
    * Run updates one site at a time (off Acquia, where parallel may be absent).
    */
-  private function runSequential(SymfonyStyle $io, array $sites): int {
+  private function runSequential(SymfonyStyle $io, array $sites, string $runlog): int {
     $failed = [];
+    $log = $this->openRunLog($runlog, count($sites));
     foreach ($sites as $site) {
+      if ($log) {
+        fwrite($log, "----- {$site} -----\n");
+      }
       $process = new Process(["{$this->repoRoot}/sn", 'site:update', $site], $this->repoRoot);
       $process->setTimeout(NULL);
-      $process->run(fn($type, $buffer) => print $buffer);
+      $process->run(function ($type, $buffer) use ($log) {
+        print $buffer;
+        if ($log) {
+          fwrite($log, $buffer);
+        }
+      });
       if (!$process->isSuccessful()) {
         $failed[] = $site;
       }
     }
+    $this->closeRunLog($log);
 
     if ($failed) {
       $io->error('Update failed for: ' . implode(', ', $failed));
@@ -171,6 +197,41 @@ class DeployUpdateCommand extends Command {
     }
     $io->success('Updates completed for all sites.');
     return Command::SUCCESS;
+  }
+
+  /**
+   * Open the retained per-site output log and write a run-start marker.
+   *
+   * @param string $runlog
+   *   Path to the retained log (appended to).
+   * @param int $count
+   *   Number of sites in this run, recorded in the start marker.
+   *
+   * @return resource|null
+   *   The open file handle, or NULL if it could not be opened, in which case
+   *   output still streams to stdout and only the retained copy is lost.
+   */
+  private function openRunLog(string $runlog, int $count) {
+    $log = @fopen($runlog, 'a');
+    if ($log === FALSE) {
+      return NULL;
+    }
+    fwrite($log, sprintf("===== START %s: %d site(s) =====\n", date('Y-m-d H:i:s'), $count));
+    return $log;
+  }
+
+  /**
+   * Write the run-end marker and close the retained output log.
+   *
+   * @param resource|null $log
+   *   The handle from openRunLog(), or NULL if it could not be opened.
+   */
+  private function closeRunLog($log): void {
+    if ($log === NULL) {
+      return;
+    }
+    fwrite($log, sprintf("===== END %s =====\n\n", date('Y-m-d H:i:s')));
+    fclose($log);
   }
 
   /**
