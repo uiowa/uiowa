@@ -20,7 +20,6 @@ use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\symfony_mailer\EmailInterface;
@@ -901,7 +900,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['status']['#disabled'] = TRUE;
       break;
 
-    case 'google_tag_container':
+    case 'google_tag_container_form':
       $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
       // Inform on configuration form that the functionality is
       // currently being blocked from being inserted.
@@ -1418,15 +1417,68 @@ function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_s
 }
 
 /**
- * {@inheritdoc}
+ * Determines whether site-specific Google Tag containers may be inserted.
+ *
+ * Replaces the google_tag 1.x hook_google_tag_insert_alter(), which was
+ * removed in 2.x with no equivalent alter hook.
  */
-function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
+function _uiowa_core_google_tag_insert_allowed(): bool {
   $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
   $env = getenv('AH_PRODUCTION');
-  // Determine if site specific Google Tag should be inserted.
-  if ($uiowa_core_gtag === 0 || (int) $env === 0) {
-    $satisfied = FALSE;
+
+  // @todo Remove this sandbox bypass before merging to main. Added only to
+  //   keep data streaming on sandbox.dev.drupal.uiowa.edu while this branch
+  //   is deployed to develop ahead of the tmp_google_override sandbox
+  //   testing branch.
+  $request = \Drupal::request();
+  $host = $request ? $request->getHost() : '';
+  $sandbox_bypass = in_array($host, ['sandbox.dev.drupal.uiowa.edu'], TRUE);
+
+  return $uiowa_core_gtag !== 0 && ((int) $env !== 0 || $sandbox_bypass);
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function uiowa_core_page_attachments_alter(array &$attachments) {
+  if (_uiowa_core_google_tag_insert_allowed()) {
+    return;
   }
+  if (!empty($attachments['#attached']['library'])) {
+    $attachments['#attached']['library'] = array_diff($attachments['#attached']['library'], [
+      'google_tag/gtm',
+      'google_tag/gtag',
+      'google_tag/gtag.ajax',
+    ]);
+  }
+  unset($attachments['#attached']['drupalSettings']['gtm'], $attachments['#attached']['drupalSettings']['gtag']);
+}
+
+/**
+ * Implements hook_entity_prepare_form().
+ *
+ * Pre-populates insertion conditions for new Google Tag containers to match
+ * the exclusions google_tag 1.x applied to every container by default.
+ */
+function uiowa_core_entity_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
+  if ($entity->getEntityTypeId() !== 'google_tag_container' || !$entity->isNew()) {
+    return;
+  }
+  if ($entity->get('conditions')) {
+    return;
+  }
+  $entity->set('conditions', [
+    'request_path' => [
+      'id' => 'request_path',
+      'negate' => TRUE,
+      'pages' => "/admin\n/admin/*\n/batch\n/batch/*\n/node/add*\n/node/*/edit\n/node/*/delete\n/node/*/layout\n/taxonomy/term/*/edit\n/taxonomy/term/*/layout\n/user/*/edit*\n/user/*/cancel*\n/user/*/layout",
+    ],
+    'response_status' => [
+      'id' => 'response_status',
+      'negate' => TRUE,
+      'status_codes' => ['403' => '403'],
+    ],
+  ]);
 }
 
 /**
