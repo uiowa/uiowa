@@ -108,6 +108,16 @@ class SiteUpdateCommand extends Command {
       return Command::FAILURE;
     }
 
+    // Config that cannot be fully imported leaves active config diverged from
+    // disk while drush deploy still exits zero. config:status prints nothing
+    // when they match and lists the differing config otherwise. This is
+    // surfaced loudly because developers must resolve it, but it does not fail
+    // the deploy: one site's config problem should not block the fleet.
+    $status = $this->drush($site, ['config:status']);
+    if ($status->isSuccessful() && trim($status->getOutput()) !== '') {
+      $io->warning("Config drift on {$site}: active configuration does not match disk. Needs developer attention.");
+    }
+
     $io->writeln("Finished deploying updates to {$site}.");
     return Command::SUCCESS;
   }

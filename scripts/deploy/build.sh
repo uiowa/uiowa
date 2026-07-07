@@ -74,6 +74,22 @@ echo "build: stripping nested VCS metadata from the artifact"
 find "${BUILD_DIR}" -name '.git' -type d -prune -exec rm -rf {} +
 find "${BUILD_DIR}" -name '.gitignore' -type f -delete
 
+# Strip documentation from the artifact. Markdown is always docs, so all of it
+# goes (this also removes model/tooling docs some packages ship, e.g. AGENTS.md
+# and CLAUDE.md) except license texts. Plain-text files are removed by
+# documentation name only: some libraries (e.g. HTMLPurifier) read bundled .txt
+# files at runtime, so a blanket .txt removal would break them.
+echo "build: stripping documentation files from the artifact"
+find "${BUILD_DIR}" -type f -iname '*.md' \
+  -not -iname 'LICENSE*' -not -iname 'COPYING*' -delete
+find "${BUILD_DIR}" -type f \( \
+    -iname 'CHANGELOG*.txt' -o -iname 'CHANGES*.txt' -o -iname 'INSTALL*.txt' \
+    -o -iname 'AUTHORS*.txt' -o -iname 'MAINTAINERS*.txt' \
+    -o -iname 'CONTRIBUTING*.txt' -o -iname 'UPGRADE*.txt' \
+    -o -iname 'README*.txt' -o -iname 'HISTORY*.txt' \
+    -o -iname 'CREDITS*.txt' -o -iname 'TODO*.txt' \
+  \) -delete
+
 # Stamp the Git version into custom .info.yml files (logic step: discovers the
 # files and edits YAML, so it lives in sn rather than shell).
 echo "build: stamping version into custom .info.yml files"
