@@ -161,6 +161,26 @@ function uiowa_core_module_implements_alter(&$implementations, $hook) {
     unset($implementations['purge_processor_cron']);
     $implementations['purge_processor_cron'] = $group;
   }
+
+  // Our uiowa_core_page_top() needs to run after google_tag_page_top() so it
+  // can remove the GTM iframe when site-specific Google Tag is disabled.
+  if ($hook === 'page_top' && isset($implementations['uiowa_core'])) {
+    $group = $implementations['uiowa_core'];
+    unset($implementations['uiowa_core']);
+    $implementations['uiowa_core'] = $group;
+  }
+}
+
+/**
+ * Implements hook_page_top().
+ *
+ * Must run after google_tag_page_top(); ordering enforced in
+ * uiowa_core_module_implements_alter().
+ */
+function uiowa_core_page_top(array &$page) {
+  if (!_uiowa_core_google_tag_insert_allowed()) {
+    unset($page['google_tag_gtm_iframe']);
+  }
 }
 
 /**
