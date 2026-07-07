@@ -28,6 +28,14 @@ use Symfony\Component\Process\Process;
 class SiteUpdateCommand extends Command {
 
   /**
+   * Exit code returned when a site is skipped (not updated, not failed).
+   *
+   * Distinct from SUCCESS (updated) and FAILURE (errored) so deploy:update can
+   * report updated / skipped / failed separately from the joblog.
+   */
+  public const SKIPPED = 2;
+
+  /**
    * Constructs the command.
    *
    * @param string $repoRoot
@@ -69,7 +77,7 @@ class SiteUpdateCommand extends Command {
     // would silently run updates against default instead of being skipped.
     if (!is_dir("{$this->repoRoot}/docroot/sites/{$dir}")) {
       $io->writeln("Skipping {$site}: no site directory.");
-      return Command::SUCCESS;
+      return self::SKIPPED;
     }
 
     // On Acquia, skip sites whose database is not present on this application.
@@ -79,14 +87,14 @@ class SiteUpdateCommand extends Command {
       $db = $dir === 'default' ? $app : str_replace(['.', '-'], '_', $dir);
       if (!is_file("/var/www/site-php/{$app}/{$db}-settings.inc")) {
         $io->writeln("Skipping {$site}: database not present on {$app}.");
-        return Command::SUCCESS;
+        return self::SKIPPED;
       }
     }
 
     // Skip sites where Drupal is not installed.
     if (!$this->isInstalled($site)) {
       $io->writeln("Skipping {$site}: Drupal is not installed.");
-      return Command::SUCCESS;
+      return self::SKIPPED;
     }
 
     $io->writeln("Deploying updates to {$site}...");

@@ -155,11 +155,12 @@ class DeployUpdateCommand extends Command {
     });
     $this->closeRunLog($log);
 
-    // GNU parallel exits non-zero when any job failed; the joblog records the
-    // per-site outcome regardless.
-    if ($process->getExitCode() !== 0) {
-      $failed = $this->failedSites($joblog);
-      $io->error('Update failed for: ' . ($failed ? implode(', ', $failed) : 'see ' . $joblog));
+    // Skips exit non-zero (SKIPPED), so parallel's own exit no longer tells
+    // skip from failure; classify each site from the joblog instead.
+    $summary = $this->classifyJoblog($joblog);
+    $this->printSummary($io, $summary);
+    if ($summary['failed']) {
+      $io->error('Update failed for: ' . implode(', ', $summary['failed']));
       return Command::FAILURE;
     }
 
@@ -171,7 +172,7 @@ class DeployUpdateCommand extends Command {
    * Run updates one site at a time (off Acquia, where parallel may be absent).
    */
   private function runSequential(SymfonyStyle $io, array $sites, string $runlog): int {
-    $failed = [];
+    $summary = ['updated' => 0, 'skipped' => 0, 'failed' => []];
     $log = $this->openRunLog($runlog, count($sites));
     foreach ($sites as $site) {
       if ($log) {
@@ -185,14 +186,22 @@ class DeployUpdateCommand extends Command {
           fwrite($log, $buffer);
         }
       });
-      if (!$process->isSuccessful()) {
-        $failed[] = $site;
+      $exit = $process->getExitCode();
+      if ($exit === 0) {
+        $summary['updated']++;
+      }
+      elseif ($exit === SiteUpdateCommand::SKIPPED) {
+        $summary['skipped']++;
+      }
+      else {
+        $summary['failed'][] = $site;
       }
     }
     $this->closeRunLog($log);
 
-    if ($failed) {
-      $io->error('Update failed for: ' . implode(', ', $failed));
+    $this->printSummary($io, $summary);
+    if ($summary['failed']) {
+      $io->error('Update failed for: ' . implode(', ', $summary['failed']));
       return Command::FAILURE;
     }
     $io->success('Updates completed for all sites.');
@@ -235,16 +244,19 @@ class DeployUpdateCommand extends Command {
   }
 
   /**
-   * Read the failed site names from a parallel joblog.
+   * Classify per-site outcomes from a parallel joblog.
    *
-   * @return string[]
-   *   Site names whose job exited non-zero.
+   * A site exits 0 when it was updated and SKIPPED when it was skipped; any
+   * other non-zero code is a failure.
+   *
+   * @return array{updated: int, skipped: int, failed: string[]}
+   *   Updated and skipped counts, and the names of failed sites.
    */
-  private function failedSites(string $joblog): array {
+  private function classifyJoblog(string $joblog): array {
+    $summary = ['updated' => 0, 'skipped' => 0, 'failed' => []];
     if (!is_file($joblog)) {
-      return [];
+      return $summary;
     }
-    $failed = [];
     foreach (file($joblog, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $i => $line) {
       // Skip the header row.
       if ($i === 0) {
@@ -252,12 +264,34 @@ class DeployUpdateCommand extends Command {
       }
       $cols = explode("\t", $line);
       // Columns 6 and 8 are Exitval and Command (the site is the last token).
-      if (isset($cols[6]) && (int) $cols[6] !== 0 && isset($cols[8])) {
+      if (!isset($cols[6], $cols[8])) {
+        continue;
+      }
+      $exit = (int) $cols[6];
+      if ($exit === 0) {
+        $summary['updated']++;
+      }
+      elseif ($exit === SiteUpdateCommand::SKIPPED) {
+        $summary['skipped']++;
+      }
+      else {
         $parts = explode(' ', trim($cols[8]));
-        $failed[] = end($parts);
+        $summary['failed'][] = end($parts);
       }
     }
-    return $failed;
+    return $summary;
+  }
+
+  /**
+   * Print the run summary: updated / skipped / failed counts.
+   */
+  private function printSummary(SymfonyStyle $io, array $summary): void {
+    $io->writeln(sprintf(
+      'Summary: %d updated, %d skipped, %d failed.',
+      $summary['updated'],
+      $summary['skipped'],
+      count($summary['failed'])
+    ));
   }
 
 }
