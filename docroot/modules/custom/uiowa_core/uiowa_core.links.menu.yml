@@ -10,6 +10,13 @@ uiowa_core.region_settings:
   description: 'Manage region settings'
   route_name: uiowa_core.region_settings
 
+# Direct menu link since we restrict access to the default settings route.
+uiowa_core.google_tag_containers:
+  title: 'Google Tag Containers'
+  parent: system.admin_config_services
+  description: 'Manage Google Tag Manager containers for this website'
+  route_name: entity.google_tag_container.collection
+
 # 'Add content' menu item definition
 node.add_page:
   title: 'Add content'

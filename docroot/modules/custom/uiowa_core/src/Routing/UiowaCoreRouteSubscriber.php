@@ -25,8 +25,12 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
       $route->setDefault('_title', 'Content notifications');
     }
     $restricted_routes = [
-      // Google Tag Manager settings.
+      // Google Tag Manager advanced settings.
       'google_tag.settings_form',
+      // Google Tag Manager default/single container. Site owners
+      // manage their own containers via the collection and per-entity
+      // add/edit/delete routes instead.
+      'entity.google_tag_container.single_form',
       // Global theme settings.
       'system.theme_settings',
       'ui_suite.index',
