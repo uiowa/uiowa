@@ -48,7 +48,8 @@ class DeployUpdateCommand extends Command {
   protected function configure(): void {
     $this
       ->addOption('sites', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site list to update instead of the application default (testing / targeted recovery).', '')
-      ->addOption('concurrency', 'j', InputOption::VALUE_REQUIRED, 'Number of sites to update in parallel.', '3');
+      ->addOption('concurrency', 'j', InputOption::VALUE_REQUIRED, 'Number of sites to update in parallel.', '3')
+      ->addOption('ref', NULL, InputOption::VALUE_REQUIRED, 'Deployed branch or tag, recorded in the run-log markers.', '');
   }
 
   /**
@@ -76,13 +77,14 @@ class DeployUpdateCommand extends Command {
     // itself for after-the-fact debugging. Expected to be managed by logrotate
     // on the server.
     $runlog = "{$log_dir}/sn_deploy_update.log";
+    $ref = trim($input->getOption('ref'));
 
     $io->writeln(sprintf('Updating %d site(s) on %s, %d at a time.', count($sites), $app, $concurrency));
 
     if ($this->hasParallel()) {
-      return $this->runParallel($io, $sites, $concurrency, $joblog, $runlog);
+      return $this->runParallel($io, $sites, $concurrency, $joblog, $runlog, $ref);
     }
-    return $this->runSequential($io, $sites, $runlog);
+    return $this->runSequential($io, $sites, $runlog, $ref);
   }
 
   /**
@@ -132,7 +134,7 @@ class DeployUpdateCommand extends Command {
   /**
    * Fan the site updates out with GNU parallel; aggregate from the exit code.
    */
-  private function runParallel(SymfonyStyle $io, array $sites, int $concurrency, string $joblog, string $runlog): int {
+  private function runParallel(SymfonyStyle $io, array $sites, int $concurrency, string $joblog, string $runlog, string $ref): int {
     $cmd = [
       'parallel',
       '-j', (string) $concurrency,
@@ -146,14 +148,14 @@ class DeployUpdateCommand extends Command {
 
     $process = new Process($cmd, $this->repoRoot);
     $process->setTimeout(NULL);
-    $log = $this->openRunLog($runlog, count($sites));
+    $log = $this->openRunLog($runlog, count($sites), $ref);
     $process->run(function ($type, $buffer) use ($log) {
       print $buffer;
       if ($log) {
         fwrite($log, $buffer);
       }
     });
-    $this->closeRunLog($log);
+    $this->closeRunLog($log, $ref);
 
     // Skips exit non-zero (SKIPPED), so parallel's own exit no longer tells
     // skip from failure; classify each site from the joblog instead.
@@ -171,9 +173,9 @@ class DeployUpdateCommand extends Command {
   /**
    * Run updates one site at a time (off Acquia, where parallel may be absent).
    */
-  private function runSequential(SymfonyStyle $io, array $sites, string $runlog): int {
+  private function runSequential(SymfonyStyle $io, array $sites, string $runlog, string $ref): int {
     $summary = ['updated' => 0, 'skipped' => 0, 'failed' => []];
-    $log = $this->openRunLog($runlog, count($sites));
+    $log = $this->openRunLog($runlog, count($sites), $ref);
     foreach ($sites as $site) {
       if ($log) {
         fwrite($log, "----- {$site} -----\n");
@@ -197,7 +199,7 @@ class DeployUpdateCommand extends Command {
         $summary['failed'][] = $site;
       }
     }
-    $this->closeRunLog($log);
+    $this->closeRunLog($log, $ref);
 
     $this->printSummary($io, $summary);
     if ($summary['failed']) {
@@ -215,17 +217,20 @@ class DeployUpdateCommand extends Command {
    *   Path to the retained log (appended to).
    * @param int $count
    *   Number of sites in this run, recorded in the start marker.
+   * @param string $ref
+   *   Deployed branch or tag, recorded in the marker when set.
    *
    * @return resource|null
    *   The open file handle, or NULL if it could not be opened, in which case
    *   output still streams to stdout and only the retained copy is lost.
    */
-  private function openRunLog(string $runlog, int $count) {
+  private function openRunLog(string $runlog, int $count, string $ref) {
     $log = @fopen($runlog, 'a');
     if ($log === FALSE) {
       return NULL;
     }
-    fwrite($log, sprintf("===== START %s: %d site(s) =====\n", date('Y-m-d H:i:s'), $count));
+    $tag = $ref !== '' ? " {$ref}" : '';
+    fwrite($log, sprintf("===== START %s%s: %d site(s) =====\n", date('Y-m-d H:i:s'), $tag, $count));
     return $log;
   }
 
@@ -234,12 +239,15 @@ class DeployUpdateCommand extends Command {
    *
    * @param resource|null $log
    *   The handle from openRunLog(), or NULL if it could not be opened.
+   * @param string $ref
+   *   Deployed branch or tag, recorded in the marker when set.
    */
-  private function closeRunLog($log): void {
+  private function closeRunLog($log, string $ref): void {
     if ($log === NULL) {
       return;
     }
-    fwrite($log, sprintf("===== END %s =====\n\n", date('Y-m-d H:i:s')));
+    $tag = $ref !== '' ? " {$ref}" : '';
+    fwrite($log, sprintf("===== END %s%s =====\n\n", date('Y-m-d H:i:s'), $tag));
     fclose($log);
   }
 
