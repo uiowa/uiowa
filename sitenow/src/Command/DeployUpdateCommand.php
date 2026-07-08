@@ -2,6 +2,7 @@
 
 namespace SiteNow\Command;
 
+use SiteNow\Config\Applications;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -59,6 +60,7 @@ class DeployUpdateCommand extends Command {
     $io = new SymfonyStyle($input, $output);
 
     $app = getenv('AH_SITE_GROUP') ?: 'local';
+    $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
     $is_acquia = (bool) getenv('AH_SITE_ENVIRONMENT');
 
     $sites = $this->siteList($input, $app, $is_acquia);
@@ -81,10 +83,19 @@ class DeployUpdateCommand extends Command {
 
     $io->writeln(sprintf('Updating %d site(s) on %s, %d at a time.', count($sites), $app, $concurrency));
 
-    if ($this->hasParallel()) {
-      return $this->runParallel($io, $sites, $concurrency, $joblog, $runlog, $ref);
+    $summary = $this->hasParallel()
+      ? $this->runParallel($sites, $concurrency, $joblog, $runlog, $ref)
+      : $this->runSequential($sites, $runlog, $ref);
+
+    $this->printSummary($io, $summary);
+    $this->notifySlack($app, $env, $ref, $summary);
+
+    if ($summary['failed']) {
+      $io->error('Update failed for: ' . implode(', ', $summary['failed']));
+      return Command::FAILURE;
     }
-    return $this->runSequential($io, $sites, $runlog, $ref);
+    $io->success('Updates completed for all sites.');
+    return Command::SUCCESS;
   }
 
   /**
@@ -109,8 +120,8 @@ class DeployUpdateCommand extends Command {
    * Move run_first sites to the front, preserving their configured order.
    */
   private function runFirstOrder(array $sites): array {
-    $blt = "{$this->repoRoot}/blt/blt.yml";
-    $run_first = is_file($blt) ? (Yaml::parseFile($blt)['uiowa']['run_first'] ?? []) : [];
+    $registry = new Applications("{$this->repoRoot}/sitenow/applications.yml");
+    $run_first = $registry->runFirst();
 
     foreach (array_reverse($run_first) as $site) {
       $key = array_search($site, $sites, TRUE);
@@ -132,9 +143,12 @@ class DeployUpdateCommand extends Command {
   }
 
   /**
-   * Fan the site updates out with GNU parallel; aggregate from the exit code.
+   * Fan the site updates out with GNU parallel and classify the outcome.
+   *
+   * @return array{updated: int, skipped: int, failed: string[]}
+   *   The per-site outcome summary.
    */
-  private function runParallel(SymfonyStyle $io, array $sites, int $concurrency, string $joblog, string $runlog, string $ref): int {
+  private function runParallel(array $sites, int $concurrency, string $joblog, string $runlog, string $ref): array {
     $cmd = [
       'parallel',
       '-j', (string) $concurrency,
@@ -159,21 +173,16 @@ class DeployUpdateCommand extends Command {
 
     // Skips exit non-zero (SKIPPED), so parallel's own exit no longer tells
     // skip from failure; classify each site from the joblog instead.
-    $summary = $this->classifyJoblog($joblog);
-    $this->printSummary($io, $summary);
-    if ($summary['failed']) {
-      $io->error('Update failed for: ' . implode(', ', $summary['failed']));
-      return Command::FAILURE;
-    }
-
-    $io->success('Updates completed for all sites.');
-    return Command::SUCCESS;
+    return $this->classifyJoblog($joblog);
   }
 
   /**
    * Run updates one site at a time (off Acquia, where parallel may be absent).
+   *
+   * @return array{updated: int, skipped: int, failed: string[]}
+   *   The per-site outcome summary.
    */
-  private function runSequential(SymfonyStyle $io, array $sites, string $runlog, string $ref): int {
+  private function runSequential(array $sites, string $runlog, string $ref): array {
     $summary = ['updated' => 0, 'skipped' => 0, 'failed' => []];
     $log = $this->openRunLog($runlog, count($sites), $ref);
     foreach ($sites as $site) {
@@ -201,13 +210,7 @@ class DeployUpdateCommand extends Command {
     }
     $this->closeRunLog($log, $ref);
 
-    $this->printSummary($io, $summary);
-    if ($summary['failed']) {
-      $io->error('Update failed for: ' . implode(', ', $summary['failed']));
-      return Command::FAILURE;
-    }
-    $io->success('Updates completed for all sites.');
-    return Command::SUCCESS;
+    return $summary;
   }
 
   /**
@@ -300,6 +303,62 @@ class DeployUpdateCommand extends Command {
       $summary['skipped'],
       count($summary['failed'])
     ));
+  }
+
+  /**
+   * Post the deploy outcome to Slack when a webhook is configured.
+   *
+   * Ports BLT's post-code-update Slack notification. The webhook URL comes from
+   * the SLACK_WEBHOOK_URL environment variable; without it this is a no-op, so
+   * local runs stay silent.
+   *
+   * @param string $app
+   *   The application (AH_SITE_GROUP).
+   * @param string $env
+   *   The environment (AH_SITE_ENVIRONMENT).
+   * @param string $ref
+   *   The deployed branch or tag, if known.
+   * @param array $summary
+   *   The updated / skipped / failed outcome summary.
+   */
+  private function notifySlack(string $app, string $env, string $ref, array $summary): void {
+    $webhook = getenv('SLACK_WEBHOOK_URL');
+    if (!$webhook) {
+      return;
+    }
+
+    $where = "*{$app} {$env}*" . ($ref !== '' ? " ({$ref})" : '');
+    $failed = $summary['failed'];
+    if ($failed) {
+      $success = FALSE;
+      $total = $summary['updated'] + $summary['skipped'] + count($failed);
+      $message = sprintf(
+        'Deploy to %s FAILED: %d of %d site(s) failed: %s',
+        $where, count($failed), $total, implode(', ', $failed)
+      );
+    }
+    else {
+      $success = TRUE;
+      $message = sprintf(
+        'Deploy to %s completed: %d updated, %d skipped.',
+        $where, $summary['updated'], $summary['skipped']
+      );
+    }
+
+    $payload = json_encode([
+      'username' => 'SiteNow Deploy',
+      'text' => $message,
+      'icon_emoji' => $success ? ':mostly_sunny:' : ':rain_cloud:',
+    ]);
+    // A notification failure must never fail the deploy; ignore the result and
+    // cap the time spent so a slow webhook cannot stall the hook.
+    $ch = curl_init($webhook);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+    curl_setopt($ch, CURLOPT_POSTFIELDS, 'payload=' . $payload);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_exec($ch);
+    curl_close($ch);
   }
 
 }

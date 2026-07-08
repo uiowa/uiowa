@@ -45,3 +45,28 @@ applications:
   uiowa09:
     uuid: 36a4089a-92c3-479d-bfd5-70c1d20cc6ec
     remote: 'uiowa09@svn-45062.prod.hosting.acquia.com:uiowa09.git'
+
+# Sites updated first during a deploy, in this order, ahead of the rest of the
+# application's list. deploy:update reads this list.
+#
+# DUPLICATED from blt/blt.yml (uiowa.run_first) while the BLT deploy path is
+# retained as a fallback: BLT still reads its copy on prod/test/stage. Keep the
+# two in sync until BLT is removed, then drop the blt.yml copy (follow-up PR).
+run_first:
+  - 'emergency.uiowa.edu'
+  - 'police.uiowa.edu'
+  - 'uiowa.edu'
+  - 'admissions.uiowa.edu'
+  - 'grad.admissions.uiowa.edu'
+  - 'clas.uiowa.edu'
+  - 'dentistry.uiowa.edu'
+  - 'education.uiowa.edu'
+  - 'engineering.uiowa.edu'
+  - 'grad.uiowa.edu'
+  - 'law.uiowa.edu'
+  - 'medicine.uiowa.edu'
+  - 'nursing.uiowa.edu'
+  - 'pharmacy.uiowa.edu'
+  - 'public-health.uiowa.edu'
+  - 'tippie.uiowa.edu'
+  - 'uc.uiowa.edu'

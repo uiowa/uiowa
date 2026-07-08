@@ -21,6 +21,13 @@ class Applications {
   private array $applications;
 
   /**
+   * Sites to update first during a deploy, in order.
+   *
+   * @var string[]
+   */
+  private array $runFirst;
+
+  /**
    * Constructs an Applications registry reader.
    *
    * @param string $path
@@ -29,6 +36,7 @@ class Applications {
   public function __construct(string $path) {
     $data = Yaml::parseFile($path) ?? [];
     $this->applications = $data['applications'] ?? [];
+    $this->runFirst = $data['run_first'] ?? [];
   }
 
   /**
@@ -99,6 +107,16 @@ class Applications {
    */
   public function autoSelectable(): array {
     return array_filter($this->applications, fn($entry) => empty($entry['reserved']));
+  }
+
+  /**
+   * Sites to update first during a deploy, in configured order.
+   *
+   * @return string[]
+   *   The run-first site list (empty if none configured).
+   */
+  public function runFirst(): array {
+    return $this->runFirst;
   }
 
 }
