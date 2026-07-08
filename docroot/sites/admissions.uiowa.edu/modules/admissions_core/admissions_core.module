@@ -358,6 +358,7 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_why':
+      $variables['label_tag'] = 'h2';
       $variables['label'] = t('Why Iowa?');
       break;
 
@@ -370,6 +371,13 @@ function admissions_core_preprocess_field(&$variables) {
         'headline--serif',
         'headline--underline',
       ]);
+      break;
+
+    case 'field_area_of_study_requirement':
+    case 'field_area_of_study_career':
+    case 'field_area_of_study_opportunity':
+    case 'field_area_of_study_course_work':
+      $variables['label_tag'] = 'h2';
       break;
 
     case 'field_cc_contact_info':
