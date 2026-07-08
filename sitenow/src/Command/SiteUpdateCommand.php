@@ -36,6 +36,15 @@ class SiteUpdateCommand extends Command {
   public const SKIPPED = 2;
 
   /**
+   * Exit code returned when a site updated but its config does not match.
+   *
+   * The deploy finished, but config:status reports the active configuration
+   * differs from the exported config. deploy:update surfaces this as its own
+   * "config does not match" tier; it does not fail the deploy.
+   */
+  public const CONFIG_MISMATCH = 3;
+
+  /**
    * Constructs the command.
    *
    * @param string $repoRoot
@@ -116,18 +125,21 @@ class SiteUpdateCommand extends Command {
       return Command::FAILURE;
     }
 
-    // Config that cannot be fully imported leaves active config diverged from
-    // disk while drush deploy still exits zero. config:status prints nothing
-    // when they match and lists the differing config otherwise. This is
-    // surfaced loudly because developers must resolve it, but it does not fail
-    // the deploy: one site's config problem should not block the fleet.
+    // A site can finish drush deploy (exit zero) yet still have active config
+    // that does not match the exported config, e.g. an import that could not
+    // fully apply. config:status prints nothing when they match and lists the
+    // differing items otherwise. Surface it and return a distinct code so
+    // deploy:update can report it as "config does not match" without failing
+    // the deploy: one site's config should not block the fleet.
+    $config_matches = TRUE;
     $status = $this->drush($site, ['config:status']);
     if ($status->isSuccessful() && trim($status->getOutput()) !== '') {
-      $io->warning("Config drift on {$site}: active configuration does not match disk. Needs developer attention.");
+      $config_matches = FALSE;
+      $io->warning("Config does not match on {$site}: active configuration differs from the exported config. Needs developer attention.");
     }
 
     $io->writeln("Finished deploying updates to {$site}.");
-    return Command::SUCCESS;
+    return $config_matches ? Command::SUCCESS : self::CONFIG_MISMATCH;
   }
 
   /**

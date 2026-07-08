@@ -90,6 +90,9 @@ class DeployUpdateCommand extends Command {
     $this->printSummary($io, $summary);
     $this->notifySlack($app, $env, $ref, $summary);
 
+    if ($summary['mismatch']) {
+      $io->warning('Config does not match on: ' . implode(', ', $summary['mismatch']));
+    }
     if ($summary['failed']) {
       $io->error('Update failed for: ' . implode(', ', $summary['failed']));
       return Command::FAILURE;
@@ -145,7 +148,7 @@ class DeployUpdateCommand extends Command {
   /**
    * Fan the site updates out with GNU parallel and classify the outcome.
    *
-   * @return array{updated: int, skipped: int, failed: string[]}
+   * @return array{updated: int, skipped: int, mismatch: string[], failed: string[]}
    *   The per-site outcome summary.
    */
   private function runParallel(array $sites, int $concurrency, string $joblog, string $runlog, string $ref): array {
@@ -179,11 +182,11 @@ class DeployUpdateCommand extends Command {
   /**
    * Run updates one site at a time (off Acquia, where parallel may be absent).
    *
-   * @return array{updated: int, skipped: int, failed: string[]}
+   * @return array{updated: int, skipped: int, mismatch: string[], failed: string[]}
    *   The per-site outcome summary.
    */
   private function runSequential(array $sites, string $runlog, string $ref): array {
-    $summary = ['updated' => 0, 'skipped' => 0, 'failed' => []];
+    $summary = ['updated' => 0, 'skipped' => 0, 'mismatch' => [], 'failed' => []];
     $log = $this->openRunLog($runlog, count($sites), $ref);
     foreach ($sites as $site) {
       if ($log) {
@@ -203,6 +206,9 @@ class DeployUpdateCommand extends Command {
       }
       elseif ($exit === SiteUpdateCommand::SKIPPED) {
         $summary['skipped']++;
+      }
+      elseif ($exit === SiteUpdateCommand::CONFIG_MISMATCH) {
+        $summary['mismatch'][] = $site;
       }
       else {
         $summary['failed'][] = $site;
@@ -257,14 +263,16 @@ class DeployUpdateCommand extends Command {
   /**
    * Classify per-site outcomes from a parallel joblog.
    *
-   * A site exits 0 when it was updated and SKIPPED when it was skipped; any
-   * other non-zero code is a failure.
+   * A site exits 0 when updated, SKIPPED when skipped, and CONFIG_MISMATCH when
+   * it updated but its config does not match; any other non-zero code is a
+   * failure.
    *
-   * @return array{updated: int, skipped: int, failed: string[]}
-   *   Updated and skipped counts, and the names of failed sites.
+   * @return array{updated: int, skipped: int, mismatch: string[], failed: string[]}
+   *   Updated and skipped counts, and the names of config-mismatch and failed
+   *   sites.
    */
   private function classifyJoblog(string $joblog): array {
-    $summary = ['updated' => 0, 'skipped' => 0, 'failed' => []];
+    $summary = ['updated' => 0, 'skipped' => 0, 'mismatch' => [], 'failed' => []];
     if (!is_file($joblog)) {
       return $summary;
     }
@@ -279,15 +287,19 @@ class DeployUpdateCommand extends Command {
         continue;
       }
       $exit = (int) $cols[6];
+      $parts = explode(' ', trim($cols[8]));
+      $site = end($parts);
       if ($exit === 0) {
         $summary['updated']++;
       }
       elseif ($exit === SiteUpdateCommand::SKIPPED) {
         $summary['skipped']++;
       }
+      elseif ($exit === SiteUpdateCommand::CONFIG_MISMATCH) {
+        $summary['mismatch'][] = $site;
+      }
       else {
-        $parts = explode(' ', trim($cols[8]));
-        $summary['failed'][] = end($parts);
+        $summary['failed'][] = $site;
       }
     }
     return $summary;
@@ -298,9 +310,10 @@ class DeployUpdateCommand extends Command {
    */
   private function printSummary(SymfonyStyle $io, array $summary): void {
     $io->writeln(sprintf(
-      'Summary: %d updated, %d skipped, %d failed.',
+      'Summary: %d updated, %d skipped, %d with config not matching, %d failed.',
       $summary['updated'],
       $summary['skipped'],
+      count($summary['mismatch']),
       count($summary['failed'])
     ));
   }
@@ -329,26 +342,40 @@ class DeployUpdateCommand extends Command {
 
     $where = "*{$app} {$env}*" . ($ref !== '' ? " ({$ref})" : '');
     $failed = $summary['failed'];
+    $mismatch = $summary['mismatch'];
     if ($failed) {
-      $success = FALSE;
-      $total = $summary['updated'] + $summary['skipped'] + count($failed);
+      $emoji = ':rain_cloud:';
       $message = sprintf(
-        'Deploy to %s FAILED: %d of %d site(s) failed: %s',
-        $where, count($failed), $total, implode(', ', $failed)
+        'Deploy to %s FAILED: %d site(s) failed: %s.',
+        $where, count($failed), implode(', ', $failed)
+      );
+    }
+    elseif ($mismatch) {
+      $emoji = ':warning:';
+      $message = sprintf(
+        'Deploy to %s completed, but config does not match on %d site(s): %s.',
+        $where, count($mismatch), implode(', ', $mismatch)
       );
     }
     else {
-      $success = TRUE;
+      $emoji = ':mostly_sunny:';
       $message = sprintf(
         'Deploy to %s completed: %d updated, %d skipped.',
         $where, $summary['updated'], $summary['skipped']
+      );
+    }
+    // When a run both failed and left config not matching, note the latter too.
+    if ($failed && $mismatch) {
+      $message .= sprintf(
+        ' Config also does not match on %d site(s): %s.',
+        count($mismatch), implode(', ', $mismatch)
       );
     }
 
     $payload = json_encode([
       'username' => 'SiteNow Deploy',
       'text' => $message,
-      'icon_emoji' => $success ? ':mostly_sunny:' : ':rain_cloud:',
+      'icon_emoji' => $emoji,
     ]);
     // A notification failure must never fail the deploy; ignore the result and
     // cap the time spent so a slow webhook cannot stall the hook.
