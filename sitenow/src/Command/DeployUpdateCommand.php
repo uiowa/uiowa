@@ -340,36 +340,25 @@ class DeployUpdateCommand extends Command {
       return;
     }
 
+    // Compose one message from the outcome: a baseline count plus a clause for
+    // each problem tier that applies, so no per-combination wording is needed.
     $where = "*{$app} {$env}*" . ($ref !== '' ? " ({$ref})" : '');
-    $failed = $summary['failed'];
-    $mismatch = $summary['mismatch'];
-    if ($failed) {
-      $emoji = ':rain_cloud:';
-      $message = sprintf(
-        'Deploy to %s FAILED: %d site(s) failed: %s.',
-        $where, count($failed), implode(', ', $failed)
-      );
+    $parts = [sprintf('%d updated, %d skipped', $summary['updated'], $summary['skipped'])];
+    if ($summary['mismatch']) {
+      $parts[] = sprintf('config does not match on %d: %s', count($summary['mismatch']), implode(', ', $summary['mismatch']));
     }
-    elseif ($mismatch) {
+    if ($summary['failed']) {
+      $parts[] = sprintf('FAILED on %d: %s', count($summary['failed']), implode(', ', $summary['failed']));
+    }
+    $message = sprintf('Deploy to %s: %s.', $where, implode('; ', $parts));
+
+    // Emoji reflects the worst tier present.
+    $emoji = ':mostly_sunny:';
+    if ($summary['mismatch']) {
       $emoji = ':warning:';
-      $message = sprintf(
-        'Deploy to %s completed, but config does not match on %d site(s): %s.',
-        $where, count($mismatch), implode(', ', $mismatch)
-      );
     }
-    else {
-      $emoji = ':mostly_sunny:';
-      $message = sprintf(
-        'Deploy to %s completed: %d updated, %d skipped.',
-        $where, $summary['updated'], $summary['skipped']
-      );
-    }
-    // When a run both failed and left config not matching, note the latter too.
-    if ($failed && $mismatch) {
-      $message .= sprintf(
-        ' Config also does not match on %d site(s): %s.',
-        count($mismatch), implode(', ', $mismatch)
-      );
+    if ($summary['failed']) {
+      $emoji = ':rain_cloud:';
     }
 
     $payload = json_encode([
