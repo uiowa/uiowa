@@ -208,11 +208,59 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             if (isset($form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title']) && $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] !== '') {
               $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] = sitenow_people_get_research_title();
             }
+
+            $form['settings']['sitenow_people'] = [
+              '#type' => 'container',
+              '#weight' => 90,
+            ];
+
+            $configuration = $component->getConfiguration();
+            // Add checkbox to filter research areas to only show options with results.
+            $form['settings']['sitenow_people']['filter_research_areas'] = [
+              '#type' => 'checkbox',
+              '#title' => t('Filter @title to only show options with results', [
+                '@title' => sitenow_people_get_research_title(),
+              ]),
+              '#description' => t('When enabled, only @title terms that have matching person nodes will be shown in the filter.', [
+                '@title' => strtolower(sitenow_people_get_research_title()),
+              ]),
+//              '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas'),
+              '#default_value' => $configuration['sitenow_people']['filter_research_areas'] ?? '',
+              '#weight' => 90,
+            ];
+
+            // Add submit handler for processing our custom checkbox field.
+//            array_unshift($form['#submit'], '_sitenow_people_save_filter_checkbox');
+          $form['#submit'][] = '_sitenow_people_save_filter_checkbox';
             break;
         }
       }
       break;
   }
+  return $form;
+}
+
+/**
+ * Submit handler to save the filter_research_areas checkbox value.
+ */
+function _sitenow_people_save_filter_checkbox(array &$form, FormStateInterface $form_state) {
+//  $form_object = $form_state->getFormObject();
+//  $component = $form_object->getCurrentComponent();
+//  $configuration = $component->get('configuration');
+//  $filter_research_areas = $form_state->getValue(['settings', 'filter_research_areas']);
+//  $configuration['filter_research_areas'] = $filter_research_areas;
+//  $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $filter_research_areas);
+//  $component->set('configuration', $configuration);
+  $form_object = $form_state->getFormObject();
+  $component = $form_object->getCurrentComponent();
+  $configuration = $component->get('configuration');
+
+  // Extract values directly from the submitted form state
+  $value = $form_state->getValue(['settings', 'sitenow_people', 'filter_research_areas']);
+
+  // Directly append the configuration directly to the Layout Builder block definition array
+  $configuration['sitenow_people']['filter_research_areas'] = $value;
+  $component->set('configuration', $configuration);
 }
 
 /**
@@ -940,8 +988,34 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
         }
       }
 
-      // Filter research areas to only show those with results.
-      _sitenow_people_filter_research_areas($form, $view);
+      // Filter research areas to only show those with results if checkbox is enabled.
+      $route_match = \Drupal::routeMatch();
+      $entity = $route_match->getParameter('node') ?? $route_match->getParameter('entity');
+      if ($entity && $entity->hasField('layout_builder__layout')) {
+        // Look through the entity layout sections to locate this specific views block component
+        $sections = $entity->get('layout_builder__layout')->getSections();
+
+        foreach ($sections as $section) {
+          foreach ($section->getComponents() as $component) {
+            $config = $component->get('configuration');
+
+            // Verify we have found the matching Views block instance inside the layout
+            if (isset($config['id']) && $config['id'] === 'views_block:' . $view->id() . '-' . $view->current_display) {
+
+              // Check if our custom unscrubbed module data exists!
+              if (isset($config['sitenow_people']['filter_research_areas'])) {
+                if ($config['sitenow_people']['filter_research_areas']) {
+                  _sitenow_people_filter_research_areas($form, $view);
+                }
+                break 2;
+              }
+            }
+          }
+        }
+      }
+      if (!empty($block_config['sitenow_people']['filter_research_areas'])) {
+        _sitenow_people_filter_research_areas($form, $view);
+      }
       break;
   }
 }
