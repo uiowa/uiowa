@@ -3,9 +3,8 @@
 # Cloud Hook: post-code-update
 #
 # Runs the SiteNow fleet update after new code is pushed to the branch an
-# environment is running (the dev/test path: a push to {branch}-build updates
-# every environment tracking it). The prod path switches to a release tag and
-# fires post-code-deploy instead.
+# environment is running (a push to {branch}-build updates every environment
+# tracking it).
 #
 # Usage: post-code-update site target-env source-branch deployed-tag repo-url
 #                         repo-type

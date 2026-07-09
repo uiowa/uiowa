@@ -21,7 +21,7 @@ use Symfony\Component\Process\Process;
  *
  * The build dir has no .git (the build excludes it), so a fresh repository is
  * initialised here for each run; there is no persistent deploy repository.
- * Pushing uses the deploy SSH key, so no Acquia API credentials are needed.
+ * Pushing uses the deploy SSH key.
  */
 #[AsCommand(
   name: 'deploy:distribute',

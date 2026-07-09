@@ -95,9 +95,7 @@ find "${BUILD_DIR}" -type f \( \
 echo "build: stamping version into custom .info.yml files"
 "${REPO_ROOT}/sn" deploy:version-stamp --build-dir="${BUILD_DIR}"
 
-# Settings-layer steps deferred to #9858 (BLT settings replacement):
-#   - hash-salt generation (salt.txt)
-#   - deployment-identifier generation
-# The deploy pipeline no longer does settings work.
+# TODO(#9858): hash-salt (salt.txt) and deployment-identifier generation
+# move into the build here.
 
 echo "build: artifact ready at ${BUILD_DIR}"

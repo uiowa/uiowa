@@ -178,8 +178,8 @@ class DeployUpdateCommand extends Command {
     });
     $this->closeRunLog($log, $ref);
 
-    // Skips exit non-zero (SKIPPED), so parallel's own exit no longer tells
-    // skip from failure; classify each site from the joblog instead.
+    // Skips exit non-zero (SKIPPED), so parallel's own exit cannot tell skip
+    // from failure; classify each site from the joblog instead.
     return $this->classifyJoblog($joblog);
   }
 
@@ -325,9 +325,8 @@ class DeployUpdateCommand extends Command {
   /**
    * Post the deploy outcome to Slack when a webhook is configured.
    *
-   * Ports BLT's post-code-update Slack notification. The webhook URL comes from
-   * the SLACK_WEBHOOK_URL environment variable; without it this is a no-op, so
-   * local runs stay silent.
+   * The webhook URL comes from the SLACK_WEBHOOK_URL environment variable;
+   * without it this is a no-op, so local runs stay silent.
    *
    * @param string $app
    *   The application (AH_SITE_GROUP).
@@ -345,7 +344,7 @@ class DeployUpdateCommand extends Command {
     }
 
     // Compose one message from the outcome: a baseline count plus a clause for
-    // each problem tier that applies, so no per-combination wording is needed.
+    // each problem tier that applies.
     $where = "*{$app} {$env}*" . ($ref !== '' ? " ({$ref})" : '');
     $parts = [sprintf('%d updated, %d skipped', $summary['updated'], $summary['skipped'])];
     if ($summary['mismatch']) {
