@@ -108,3 +108,10 @@ function uiowa_core_update_10001() {
       ->save();
   }
 }
+
+/**
+ * Force-enable multiple Google Tag containers on every site.
+ */
+function uiowa_core_update_10002() {
+  \Drupal::configFactory()->getEditable('google_tag.settings')->set('use_collection', TRUE)->save();
+}
