@@ -13,33 +13,35 @@ use Symfony\Component\Process\Process;
 /**
  * Runs database and configuration updates for a single multisite.
  *
- * The per-site half of the post-deploy update, invoked once per site by
- * deploy:update (in parallel) and runnable on its own for a targeted update.
+ * The shared per-site update: it runs drush deploy for one site, skipping a
+ * site whose database is absent on the application or where Drupal is not
+ * installed. Runnable on its own for a targeted update, and fanned out across
+ * an application's sites by deploy:update.
  */
 #[AsCommand(
   name: 'site:update',
-  description: 'Run database and config updates (drush deploy) for a single multisite.',
+  description: 'Run database and configuration updates for a single multisite.',
 )]
 class SiteUpdateCommand extends Command {
 
   /**
    * Exit code returned when a site is skipped (not updated, not failed).
    *
-   * Distinct from SUCCESS (updated) and FAILURE (errored) so deploy:update can
-   * report updated / skipped / failed separately from the joblog.
+   * Distinct from SUCCESS (updated) and FAILURE (errored) so a caller can
+   * report updated / skipped / failed separately from the exit code.
    *
    * The value 2 coincides with Symfony's Command::INVALID; that is harmless
    * here because site:update is always invoked with a fixed, valid argument and
-   * never returns INVALID, so a 2 in the joblog can only mean SKIPPED.
+   * never returns INVALID, so a 2 can only mean SKIPPED.
    */
   public const SKIPPED = 2;
 
   /**
    * Exit code returned when a site updated but its config does not match.
    *
-   * The deploy finished, but config:status reports the active configuration
-   * differs from the exported config. deploy:update surfaces this as its own
-   * "config does not match" tier; it does not fail the deploy.
+   * The update finished, but config:status reports the active configuration
+   * differs from the exported config. A caller can surface this as its own
+   * "config does not match" tier without treating the site as failed.
    */
   public const CONFIG_MISMATCH = 3;
 
@@ -105,7 +107,7 @@ class SiteUpdateCommand extends Command {
       return self::SKIPPED;
     }
 
-    $io->writeln("Deploying updates to {$site}...");
+    $io->writeln("Updating {$site}...");
 
     // On Acquia the Twig cache must be invalidated explicitly for multisites;
     // it is handled automatically for the default site only.
@@ -118,9 +120,9 @@ class SiteUpdateCommand extends Command {
     // Runs updatedb, config:import, cache:rebuild, and deploy:hook. --yes
     // answers the update and config-import confirmations explicitly rather
     // than relying on the non-interactive default.
-    $deploy = $this->drush($site, ['deploy', '--yes'], TRUE);
-    if (!$deploy->isSuccessful()) {
-      $io->error("Failed deploying updates to {$site}.");
+    $result = $this->drush($site, ['deploy', '--yes'], TRUE);
+    if (!$result->isSuccessful()) {
+      $io->error("Failed updating {$site}.");
       return Command::FAILURE;
     }
 
@@ -129,9 +131,8 @@ class SiteUpdateCommand extends Command {
     // fully apply. config:status lists differing items on stdout and exits zero
     // whether or not any exist, so a non-zero exit means the check itself could
     // not run. Distinguish three outcomes: matches, does not match, and could
-    // not verify; the latter two return CONFIG_MISMATCH so deploy:update
-    // surfaces them without failing the deploy (one site should not block the
-    // fleet).
+    // not verify; the latter two return CONFIG_MISMATCH so a caller can surface
+    // them without treating the site as failed.
     $status = $this->drush($site, ['config:status']);
     $config_state = Command::SUCCESS;
     if (!$status->isSuccessful()) {
@@ -143,7 +144,7 @@ class SiteUpdateCommand extends Command {
       $io->warning("Config does not match on {$site}: active configuration differs from the exported config. Needs developer attention.");
     }
 
-    $io->writeln("Finished deploying updates to {$site}.");
+    $io->writeln("Finished updating {$site}.");
     return $config_state;
   }
 
@@ -187,7 +188,7 @@ class SiteUpdateCommand extends Command {
    * @param string[] $args
    *   Drush command and arguments.
    * @param bool $stream
-   *   TRUE to stream output live (used for the long-running deploy).
+   *   TRUE to stream output live (used for the long-running update).
    *
    * @return \Symfony\Component\Process\Process
    *   The finished process.
