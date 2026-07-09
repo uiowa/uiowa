@@ -3,6 +3,7 @@
 namespace SiteNow\Command;
 
 use SiteNow\Config\Applications;
+use SiteNow\Traits\ParsesListOptions;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +26,8 @@ use Symfony\Component\Yaml\Yaml;
   description: "Run post-deploy updates across an application's multisites.",
 )]
 class DeployUpdateCommand extends Command {
+
+  use ParsesListOptions;
 
   /**
    * Constructs the command.
@@ -104,9 +107,9 @@ class DeployUpdateCommand extends Command {
    * locally it comes from blt/local.blt.yml. The --sites option overrides both.
    */
   private function siteList(InputInterface $input, string $app, bool $is_acquia): array {
-    $override = array_filter(array_map('trim', explode(',', $input->getOption('sites'))));
+    $override = $this->parseList($input->getOption('sites'));
     if ($override) {
-      return array_values($override);
+      return $override;
     }
 
     if (!$is_acquia) {

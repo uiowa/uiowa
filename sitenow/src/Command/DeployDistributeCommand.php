@@ -3,6 +3,7 @@
 namespace SiteNow\Command;
 
 use SiteNow\Config\Applications;
+use SiteNow\Traits\ParsesListOptions;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +29,8 @@ use Symfony\Component\Process\Process;
   description: 'Commit the built artifact and push it to the Acquia Cloud git remotes.',
 )]
 class DeployDistributeCommand extends Command {
+
+  use ParsesListOptions;
 
   /**
    * Identity recorded on the artifact commit (the artifact repo is throwaway).
@@ -88,7 +91,7 @@ class DeployDistributeCommand extends Command {
     // Resolve target applications and their remotes.
     $registry = new Applications("{$this->repoRoot}/sitenow/applications.yml");
     $names = $registry->names();
-    $requested = array_filter(array_map('trim', explode(',', $input->getOption('apps'))));
+    $requested = $this->parseList($input->getOption('apps'));
     if ($requested) {
       $unknown = array_diff($requested, $names);
       if ($unknown) {
