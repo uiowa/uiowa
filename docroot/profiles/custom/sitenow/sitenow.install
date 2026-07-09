@@ -4719,6 +4719,11 @@ function sitenow_update_10034() {
  * Migrate Google Analytics configuration.
  */
 function sitenow_update_10035(&$sandbox) {
+  // Import config_ignore so that google_tag.settings exists before import.
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  \Drupal::service('config.storage')->write('config_ignore.settings', $source->read('config_ignore.settings'));
+
   $ga_config = \Drupal::config('google_analytics.settings');
   $account = $ga_config->get('account');
 
@@ -4735,6 +4740,12 @@ function sitenow_update_10035(&$sandbox) {
     );
 
     $ga_migrator->migrateGaToGoogleTag();
+
+    // Enable the collection UI for existing sites so site owners
+    // can manage their containers.
+    \Drupal::configFactory()->getEditable('google_tag.settings')
+      ->set('use_collection', TRUE)->save();
+
     return t('Google Analytics accounts migrated to Google Tag container');
 
   }
