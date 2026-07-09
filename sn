@@ -18,6 +18,7 @@
  */
 
 use SiteNow\Command\MultisiteCreateCommand;
+use SiteNow\Command\MultisiteExecuteCommand;
 use SiteNow\Command\ReportDomainsCommand;
 use SiteNow\Command\ReportInactiveCommand;
 use SiteNow\Command\ReportSplitsCommand;
@@ -34,6 +35,7 @@ chdir($root);
 
 $application = new Application('sn');
 $application->add(new MultisiteCreateCommand($root));
+$application->add(new MultisiteExecuteCommand($root));
 $application->add(new ReportDomainsCommand($root));
 $application->add(new ReportSplitsCommand($root));
 $application->add(new ReportInactiveCommand($root));
