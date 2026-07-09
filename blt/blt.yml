@@ -91,7 +91,8 @@ uiowa:
     uiowa08: 74f7607a-0d2a-4d97-bafe-cb59551d4258
     uiowa09: 36a4089a-92c3-479d-bfd5-70c1d20cc6ec
   # Read by the retained BLT deploy path. The new deploy:update reads its own
-  # copy in sitenow/applications.yml; keep the two in sync until BLT is removed.
+  # copy in sitenow/applications.yml; keep the two in sync until BLT is removed
+  # (#9858).
   run_first:
     - 'emergency.uiowa.edu'
     - 'police.uiowa.edu'

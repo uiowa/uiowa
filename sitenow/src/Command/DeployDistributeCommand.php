@@ -21,7 +21,7 @@ use Symfony\Component\Process\Process;
  *   --tag     release:  push the {tag}-build tag.
  *
  * The build dir has no .git (the build excludes it), so a fresh repository is
- * initialised here for each run; there is no persistent deploy repository.
+ * initialized here for each run; there is no persistent deploy repository.
  * Pushing uses the deploy SSH key.
  */
 #[AsCommand(
@@ -159,7 +159,7 @@ class DeployDistributeCommand extends Command {
   }
 
   /**
-   * Initialise a fresh repository in the build dir and commit the artifact.
+   * Initialize a fresh repository in the build dir and commit the artifact.
    *
    * @param string $build_dir
    *   The built artifact directory.
