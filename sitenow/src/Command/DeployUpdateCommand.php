@@ -16,13 +16,9 @@ use Symfony\Component\Yaml\Yaml;
  * Runs post-deploy updates across an application's multisites.
  *
  * The fleet half of the post-deploy update, invoked by the Acquia cloud hooks
- * after code lands on an environment (post-code-update on a push to the tracked
- * branch, post-code-deploy on a release switch). Builds the site list for the
- * current application, orders run_first sites ahead of the rest, and fans the
- * per-site site:update out with GNU parallel (sequential fallback off Acquia).
- *
- * The site list comes from blt/manifest.yml on Acquia (keyed by AH_SITE_GROUP)
- * and from blt/local.blt.yml locally.
+ * after code lands on an environment. Builds the site list for the current
+ * application, orders run_first sites ahead of the rest, and fans the per-site
+ * site:update out with GNU parallel (sequential fallback off Acquia).
  */
 #[AsCommand(
   name: 'deploy:update',
@@ -103,6 +99,9 @@ class DeployUpdateCommand extends Command {
 
   /**
    * Resolve the list of sites to update.
+   *
+   * On Acquia the list comes from blt/manifest.yml keyed by AH_SITE_GROUP;
+   * locally it comes from blt/local.blt.yml. The --sites option overrides both.
    */
   private function siteList(InputInterface $input, string $app, bool $is_acquia): array {
     $override = array_filter(array_map('trim', explode(',', $input->getOption('sites'))));
@@ -265,11 +264,7 @@ class DeployUpdateCommand extends Command {
   }
 
   /**
-   * Classify per-site outcomes from a parallel joblog.
-   *
-   * A site exits 0 when updated, SKIPPED when skipped, and CONFIG_MISMATCH when
-   * it updated but its config does not match; any other non-zero code is a
-   * failure.
+   * Classify per-site outcomes from a parallel joblog by each site's exit code.
    *
    * @return array{updated: int, skipped: int, mismatch: string[], failed: string[]}
    *   Updated and skipped counts, and the names of config-mismatch and failed

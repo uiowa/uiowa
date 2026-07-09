@@ -15,11 +15,6 @@ use Symfony\Component\Process\Process;
  *
  * The per-site half of the post-deploy update, invoked once per site by
  * deploy:update (in parallel) and runnable on its own for a targeted update.
- *
- * Drupal resolves a multisite from the --uri host (the site directory name is
- * the canonical host), so each site is targeted with --uri=<site>. On Acquia,
- * sites whose database is not present on the application are skipped, as are
- * sites where Drupal is not installed.
  */
 #[AsCommand(
   name: 'site:update',
