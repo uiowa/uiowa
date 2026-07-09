@@ -32,6 +32,10 @@ class SiteUpdateCommand extends Command {
    *
    * Distinct from SUCCESS (updated) and FAILURE (errored) so deploy:update can
    * report updated / skipped / failed separately from the joblog.
+   *
+   * The value 2 coincides with Symfony's Command::INVALID; that is harmless
+   * here because site:update is always invoked with a fixed, valid argument and
+   * never returns INVALID, so a 2 in the joblog can only mean SKIPPED.
    */
   public const SKIPPED = 2;
 
@@ -127,19 +131,25 @@ class SiteUpdateCommand extends Command {
 
     // A site can finish drush deploy (exit zero) yet still have active config
     // that does not match the exported config, e.g. an import that could not
-    // fully apply. config:status prints nothing when they match and lists the
-    // differing items otherwise. Surface it and return a distinct code so
-    // deploy:update can report it as "config does not match" without failing
-    // the deploy: one site's config should not block the fleet.
-    $config_matches = TRUE;
+    // fully apply. config:status lists differing items on stdout and exits zero
+    // whether or not any exist, so a non-zero exit means the check itself could
+    // not run. Distinguish three outcomes: matches, does not match, and could
+    // not verify; the latter two return CONFIG_MISMATCH so deploy:update
+    // surfaces them without failing the deploy (one site should not block the
+    // fleet).
     $status = $this->drush($site, ['config:status']);
-    if ($status->isSuccessful() && trim($status->getOutput()) !== '') {
-      $config_matches = FALSE;
+    $config_state = Command::SUCCESS;
+    if (!$status->isSuccessful()) {
+      $config_state = self::CONFIG_MISMATCH;
+      $io->warning("Could not verify config on {$site}: config:status failed. Needs developer attention.");
+    }
+    elseif (trim($status->getOutput()) !== '') {
+      $config_state = self::CONFIG_MISMATCH;
       $io->warning("Config does not match on {$site}: active configuration differs from the exported config. Needs developer attention.");
     }
 
     $io->writeln("Finished deploying updates to {$site}.");
-    return $config_matches ? Command::SUCCESS : self::CONFIG_MISMATCH;
+    return $config_state;
   }
 
   /**

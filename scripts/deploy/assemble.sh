@@ -20,11 +20,25 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 EXCLUDE_FILE="${SCRIPT_DIR}/deploy-exclude.txt"
 
-# Refuse to assemble into the repo root or any path inside it other than the
-# gitignored deploy/ dir; a stray target could wipe the working tree.
+# The build dir is wiped with rm -rf below, so confine it to inside the repo
+# (the default is deploy/). Canonicalize first via the parent, since the dir
+# may not exist yet, then refuse the repo root itself or any path outside the
+# repo. This stops a stray --build-dir (e.g. a home directory or a pasted
+# absolute path) from deleting unintended files.
+build_parent="$(cd "$(dirname "${BUILD_DIR}")" 2>/dev/null && pwd)" || {
+  echo "assemble: build dir parent does not exist: ${BUILD_DIR}" >&2
+  exit 1
+}
+BUILD_DIR="${build_parent}/$(basename "${BUILD_DIR}")"
 case "${BUILD_DIR}" in
-  "${REPO_ROOT}" | "${REPO_ROOT}/")
+  "${REPO_ROOT}")
     echo "assemble: refusing to build into the repository root." >&2
+    exit 1
+    ;;
+  "${REPO_ROOT}"/*)
+    ;;
+  *)
+    echo "assemble: refusing to build outside the repository: ${BUILD_DIR}" >&2
     exit 1
     ;;
 esac

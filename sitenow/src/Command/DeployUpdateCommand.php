@@ -165,6 +165,10 @@ class DeployUpdateCommand extends Command {
 
     $process = new Process($cmd, $this->repoRoot);
     $process->setTimeout(NULL);
+    // Start from a clean joblog so a prior run's rows cannot inflate this run's
+    // classification. GNU parallel overwrites by default, but do not depend on
+    // the installed version's behavior.
+    @unlink($joblog);
     $log = $this->openRunLog($runlog, count($sites), $ref);
     $process->run(function ($type, $buffer) use ($log) {
       print $buffer;
@@ -370,7 +374,8 @@ class DeployUpdateCommand extends Command {
     // cap the time spent so a slow webhook cannot stall the hook.
     $ch = curl_init($webhook);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-    curl_setopt($ch, CURLOPT_POSTFIELDS, 'payload=' . $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
     curl_exec($ch);
