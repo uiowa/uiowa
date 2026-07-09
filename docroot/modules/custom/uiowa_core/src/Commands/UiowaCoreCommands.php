@@ -4,6 +4,7 @@ namespace Drupal\uiowa_core\Commands;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandler;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService;
@@ -66,39 +67,53 @@ class UiowaCoreCommands extends DrushCommands {
   protected $purgeQueue;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Command constructor.
    */
-  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler, InvalidationsService $purgeInvalidations, QueuersService $purgeQueuer, QueueService $purgeQueue) {
+  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler, InvalidationsService $purgeInvalidations, QueuersService $purgeQueuer, QueueService $purgeQueue, EntityTypeManagerInterface $entityTypeManager) {
     $this->logger = $logger;
     $this->configFactory = $configFactory;
     $this->moduleHandler = $moduleHandler;
     $this->purgeInvalidations = $purgeInvalidations;
     $this->purgeQueuer = $purgeQueuer;
     $this->purgeQueue = $purgeQueue;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
-   * Toggles Site-Specific Google Tag inserts.
+   * Toggles a Google Tag container's enabled status.
+   *
+   * This toggles the container entity itself (status), which
+   * TagContainerResolver excludes at the query level before
+   * ever loading a disabled entity. Use this if a broken/rogue container's
+   * conditions or settings are causing render-time errors that block the
+   * admin UI.
+   *
+   * @param string $id
+   *   The google_tag_container ID to toggle.
    *
    * @command uiowa_core:toggle-gtag
-   * @aliases uicore-gtag
+   * * @aliases uicore-gtag
+   *
+   * @usage uiowa_core:toggle-gtag my_container
+   *
+   * @throws \Exception
    */
-  public function toggleGtag() {
-    $config = $this->configFactory->getEditable('uiowa_core.settings');
-    $uiowa_core_gtag = $config->get('uiowa_core.gtag');
+  public function toggleGtag(string $id): void {
+    $container = $this->entityTypeManager->getStorage('google_tag_container')->load($id);
+    if (!$container) {
+      throw new \Exception("No google_tag_container entity found with ID '{$id}'.");
+    }
 
-    if ((int) $uiowa_core_gtag === 1) {
-      $this->getLogger('uiowa_core')->notice('Site-specific Google Tag Manager Disabled');
-      $config
-        ->set('uiowa_core.gtag', '0')
-        ->save();
-    }
-    else {
-      $this->getLogger('uiowa_core')->notice('Site-specific Google Tag Manager Enabled');
-      $config
-        ->set('uiowa_core.gtag', '1')
-        ->save();
-    }
+    $container->set('status', !$container->status())->save();
+    $this->getLogger('uiowa_core')->notice(($container->status() ? 'Enabled' : 'Disabled') . " google_tag_container '{$container->id()}'.");
+
     // Flush site cache.
     drupal_flush_all_caches();
 
