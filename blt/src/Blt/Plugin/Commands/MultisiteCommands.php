@@ -55,62 +55,6 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * Execute a Drush command against all multisites.
-   *
-   * @param string $cmd
-   *   The simple Drush command to execute, e.g. 'cron' or 'cache:rebuild'. No
-   *    support for options or arguments at this time.
-   * @param array $options
-   *   Array of options.
-   *
-   * @option exclude
-   *   Sites to exclude from command execution.
-   *
-   * @command uiowa:multisite:execute
-   *
-   * @aliases ume
-   *
-   * @throws \Exception
-   */
-  public function execute($cmd, array $options = ['exclude' => []]) {
-    if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
-      throw new \Exception('Aborted.');
-    }
-    else {
-      $app = EnvironmentDetector::getAhGroup() ?: 'local';
-      $env = EnvironmentDetector::getAhEnv() ?: 'local';
-
-      foreach ($this->getConfigValue('multisites') as $multisite) {
-        $this->switchSiteContext($multisite);
-        $db = $this->getConfigValue('drupal.db.database');
-
-        // Skip sites whose database do not exist on the application in AH env.
-        if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          $this->logger->info("Skipping {$multisite}. Database {$db} does not exist on this application.");
-          continue;
-        }
-
-        if (!in_array($multisite, $options['exclude'])) {
-          $this->say("<info>Executing on {$multisite}...</info>");
-
-          $result = $this->taskDrush()
-            ->drush($cmd)
-            ->printMetadata(FALSE)
-            ->run();
-
-          if (!$result->wasSuccessful()) {
-            $error = $result->getMessage();
-            $this->sendNotification("*Error* running command `drush {$cmd}` on app $app $env for site $multisite. ```$error```");
-          }
-        }
-        else {
-          $this->logger->info("Skipping excluded site {$multisite}.");
-        }
-      }
-    }
-  }
-
-  /**
    * Invoke the BLT install process on multisites where Drupal is not installed.
    *
    * @param array $options
