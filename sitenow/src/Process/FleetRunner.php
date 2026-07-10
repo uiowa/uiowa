@@ -6,8 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
 /**
- * Runs one drush command across manifest-selected sites and returns
- * structured per-site results.
+ * Runs one drush command across manifest-selected sites.
  *
  * This is the shared layer between fleet commands and the process pool:
  * consumers (multisite:execute, report commands) get back plain arrays of
