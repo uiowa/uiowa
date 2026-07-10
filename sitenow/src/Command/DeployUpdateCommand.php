@@ -124,7 +124,7 @@ class DeployUpdateCommand extends Command {
   /**
    * Move run_first sites to the front, preserving their configured order.
    */
-  private function runFirstOrder(array $sites): array {
+  protected function runFirstOrder(array $sites): array {
     $registry = new Applications("{$this->repoRoot}/sitenow/applications.yml");
     $run_first = $registry->runFirst();
 
@@ -273,7 +273,7 @@ class DeployUpdateCommand extends Command {
    *   Updated and skipped counts, and the names of config-mismatch and failed
    *   sites.
    */
-  private function classifyJoblog(string $joblog): array {
+  protected function classifyJoblog(string $joblog): array {
     $summary = ['updated' => 0, 'skipped' => 0, 'mismatch' => [], 'failed' => []];
     if (!is_file($joblog)) {
       return $summary;

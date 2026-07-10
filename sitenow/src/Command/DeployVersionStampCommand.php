@@ -122,7 +122,7 @@ class DeployVersionStampCommand extends Command {
    * @return string|null
    *   The `git describe --tags` value, or NULL if it cannot be determined.
    */
-  private function gitVersion(): ?string {
+  protected function gitVersion(): ?string {
     $process = new Process(['git', 'describe', '--tags'], $this->repoRoot);
     $process->run();
 

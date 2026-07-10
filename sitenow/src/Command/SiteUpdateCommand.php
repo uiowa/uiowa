@@ -162,7 +162,7 @@ class SiteUpdateCommand extends Command {
    * @return string
    *   The multisite directory name.
    */
-  private function siteDirectory(string $host): string {
+  protected function siteDirectory(string $host): string {
     $sites = [];
     $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
     if (is_file($sites_file)) {

@@ -30,6 +30,25 @@ applications:
     uuid: uuid-two
     reserved: true
     remote: 'apptwo@example.com:apptwo.git'
+run_first:
+  - first.uiowa.edu
+  - second.uiowa.edu
+YAML;
+    $path = tempnam(sys_get_temp_dir(), 'sitenow_apps_');
+    file_put_contents($path, $yaml);
+    $reader = new Applications($path);
+    unlink($path);
+    return $reader;
+  }
+
+  /**
+   * Build a reader over a registry with no run_first block.
+   */
+  private function readerWithoutRunFirst(): Applications {
+    $yaml = <<<YAML
+applications:
+  appone:
+    uuid: uuid-one
 YAML;
     $path = tempnam(sys_get_temp_dir(), 'sitenow_apps_');
     file_put_contents($path, $yaml);
@@ -77,6 +96,23 @@ YAML;
    */
   public function testAutoSelectableExcludesReserved() {
     $this->assertSame(['appone'], array_keys($this->fixtureReader()->autoSelectable()));
+  }
+
+  /**
+   * The run_first list is read in its configured order.
+   */
+  public function testRunFirstReturnsConfiguredOrder() {
+    $this->assertSame(
+      ['first.uiowa.edu', 'second.uiowa.edu'],
+      $this->fixtureReader()->runFirst()
+    );
+  }
+
+  /**
+   * A registry with no run_first block yields an empty list.
+   */
+  public function testRunFirstEmptyWhenAbsent() {
+    $this->assertSame([], $this->readerWithoutRunFirst()->runFirst());
   }
 
   /**

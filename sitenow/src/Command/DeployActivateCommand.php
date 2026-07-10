@@ -181,8 +181,25 @@ class DeployActivateCommand extends Command {
       return NULL;
     }
 
+    return $this->resolveBuildTag($process->getOutput());
+  }
+
+  /**
+   * Resolve the newest build tag from `git ls-remote --tags` output.
+   *
+   * Collects the tag names, orders them by semantic version, and appends the
+   * -build suffix distribute pushes to the Acquia remotes. Kept separate from
+   * the git call so the parse and ordering are testable without a remote.
+   *
+   * @param string $output
+   *   The raw `git ls-remote --tags --refs origin` output.
+   *
+   * @return string|null
+   *   The newest tag with a -build suffix, or NULL if none are found.
+   */
+  protected function resolveBuildTag(string $output): ?string {
     $tags = [];
-    foreach (explode("\n", trim($process->getOutput())) as $line) {
+    foreach (explode("\n", trim($output)) as $line) {
       if (str_contains($line, 'refs/tags/')) {
         $tags[] = explode('refs/tags/', $line)[1];
       }
