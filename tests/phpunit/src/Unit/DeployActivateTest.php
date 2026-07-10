@@ -62,6 +62,26 @@ class DeployActivateTest extends UnitTestCase {
   }
 
   /**
+   * A non-semver tag is skipped rather than aborting the resolution.
+   */
+  public function testSkipsNonSemverTags() {
+    // A legacy or ad-hoc ref alongside real release tags: Semver::rsort would
+    // throw on it, so it must be filtered before the sort.
+    $output = $this->lsRemote(['3.32.40', 'pre-release', '3.32.41', 'nightly']);
+
+    $this->assertSame('3.32.41-build', $this->command()->pubResolveBuildTag($output));
+  }
+
+  /**
+   * Output carrying only non-semver tags resolves to NULL.
+   */
+  public function testAllNonSemverTagsYieldNull() {
+    $output = $this->lsRemote(['pre-release', 'nightly']);
+
+    $this->assertNull($this->command()->pubResolveBuildTag($output));
+  }
+
+  /**
    * Empty output resolves to NULL.
    */
   public function testEmptyOutputYieldsNull() {

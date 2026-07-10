@@ -5,6 +5,7 @@ namespace SiteNow\Command;
 use AcquiaCloudApi\Endpoints\Code;
 use AcquiaCloudApi\Endpoints\Environments;
 use Composer\Semver\Semver;
+use Composer\Semver\VersionParser;
 use SiteNow\Config\Applications;
 use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\CommonChecks;
@@ -198,11 +199,24 @@ class DeployActivateCommand extends Command {
    *   The newest tag with a -build suffix, or NULL if none are found.
    */
   protected function resolveBuildTag(string $output): ?string {
+    $parser = new VersionParser();
     $tags = [];
     foreach (explode("\n", trim($output)) as $line) {
-      if (str_contains($line, 'refs/tags/')) {
-        $tags[] = explode('refs/tags/', $line)[1];
+      if (!str_contains($line, 'refs/tags/')) {
+        continue;
       }
+      $tag = explode('refs/tags/', $line)[1];
+      // Skip anything that is not a valid semantic version, e.g. a legacy or
+      // ad-hoc ref. Semver::rsort normalizes every element and throws on the
+      // first unparseable one, so a single stray tag would otherwise abort the
+      // whole resolution.
+      try {
+        $parser->normalize($tag);
+      }
+      catch (\UnexpectedValueException $e) {
+        continue;
+      }
+      $tags[] = $tag;
     }
     if (!$tags) {
       return NULL;
