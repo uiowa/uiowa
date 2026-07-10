@@ -214,7 +214,8 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
               '#weight' => 90,
             ];
 
-            // Add checkbox to filter research areas to only show options with results.
+            // Add checkbox to filter research areas
+            // to only show options with results.
             // Use third-party settings which are designed for this use case.
             $form['settings']['sitenow_people']['filter_research_areas'] = [
               '#type' => 'checkbox',
@@ -246,10 +247,10 @@ function _sitenow_people_save_filter_checkbox(array &$form, FormStateInterface $
   $form_object = $form_state->getFormObject();
   $component = $form_object->getCurrentComponent();
 
-  // Extract value from the submitted form state
+  // Extract value from the submitted form state.
   $value = $form_state->getValue(['settings', 'sitenow_people', 'filter_research_areas']);
 
-  // Use third-party settings API which is designed for storing custom data
+  // Use third-party settings API which is designed for storing custom data.
   $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $value);
 }
 
@@ -482,11 +483,12 @@ function sitenow_people_entity_prepare_view($entity_type_id, array $entities, ar
     return;
   }
 
-  // Extract third-party settings from Layout Builder components for people_list_block.
+  // Extract third-party settings
+  // from Layout Builder components for people_list_block.
   // This runs early, before the entity is fully rendered, ensuring the static
   // variable is set before the exposed form is built.
-  // Store settings in an ordered array so each view instance can retrieve its specific config.
-
+  // Store settings in an ordered array so each view instance
+  // can retrieve its specific config.
   foreach ($entities as $entity) {
     // Only 'page' content type allows Layout Builder overrides.
     if ($entity->bundle() !== 'page') {
@@ -516,7 +518,8 @@ function sitenow_people_entity_prepare_view($entity_type_id, array $entities, ar
         // Check if this is a people_list_block.
         if (isset($config['id']) && strpos($config['id'], 'views_block:people_list_block') === 0) {
           // Get third-party settings and append to ordered array.
-          // Each block will be matched to its configuration by the order they appear.
+          // Each block will be matched to its configuration
+          // by the order they appear.
           $filter_research_areas = $component->getThirdPartySetting('sitenow_people', 'filter_research_areas');
           $sitenow_people_config = &drupal_static('sitenow_people_block_config', []);
           $sitenow_people_config[] = [
@@ -1017,8 +1020,10 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       if (isset($block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'])
           && ($block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'] === 0
               || $block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'] === '')) {
-        // Hide the research areas filter element visually while keeping it functional.
-        // Note: The form key is 'people_research_areas', not the field machine name
+        // Hide the research areas filter element visually
+        // while keeping it functional.
+        // Note: The form key is 'people_research_areas',
+        // not the field machine name.
         $research_areas_id = 'people_research_areas';
         if (isset($form[$research_areas_id])) {
           $form[$research_areas_id]['#attributes']['style'] = 'display: none;';
@@ -1033,8 +1038,10 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       if (!empty($block_config['exposed'])) {
         $has_visible_filters = FALSE;
         foreach ($block_config['exposed'] as $filter_key => $filter_config) {
-          // If any filter has exposed set to something other than 0 or empty, it's visible.
-          // Check for both explicit 0 and empty string (which means not exposed).
+          // If any filter has exposed set to something
+          // other than 0 or empty, it's visible.
+          // Check for both explicit 0 and empty string
+          // (which means not exposed).
           if (!isset($filter_config['exposed']) || ($filter_config['exposed'] !== 0 && $filter_config['exposed'] !== '')) {
             $has_visible_filters = TRUE;
             break;
@@ -1051,8 +1058,10 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
         }
       }
 
-      // Filter research areas to only show those with results if checkbox is enabled.
-      // Retrieve the custom configuration that was attached to this specific view instance
+      // Filter research areas to only show those
+      // with results if checkbox is enabled.
+      // Retrieve the custom configuration
+      // that was attached to this specific view instance
       // in views_pre_build, ensuring each block has independent filtering.
       if (isset($view->sitenow_people_filter_config) && !empty($view->sitenow_people_filter_config['filter_research_areas'])) {
         _sitenow_people_filter_research_areas($form, $view);
