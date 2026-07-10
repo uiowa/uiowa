@@ -46,7 +46,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Enable Google Tag Manager Functionality'),
       '#default_value' => $config->get('uiowa_core.gtag'),
-      '#description' => $this->t('If checked, and Google Tag Manager containers are configured, container snippets will be inserted and loaded on the website.'),
+      '#description' => $this->t('If checked, and Google Tag Manager containers are configured, container snippets will be inserted and loaded on the website. This also covers analytics tracking previously configured under Google Analytics, which has been migrated into a container here. Note: container snippets are automatically suppressed on non-production environments regardless of this setting, to keep testing activity out of your analytics.'),
       '#size' => 60,
     ];
 
@@ -55,20 +55,6 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Include Campus-Wide GTM Container'),
       '#default_value' => $config->get('uiowa_core.campus_gtm'),
       '#description' => $this->t('If checked, the campus-wide UI GTM container snippet will be inserted and loaded on the website.'),
-      '#size' => 60,
-    ];
-
-    $form['ga'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Google Analytics',
-      '#collapsible' => FALSE,
-    ];
-
-    $form['ga']['uiowa_core_ga'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Include Google Analytics Functionality'),
-      '#default_value' => $config->get('uiowa_core.ga'),
-      '#description' => $this->t('If checked, and if Google Analytics is configured with a tracking ID, Google Analytics tracking code will be inserted and loaded on the website.'),
       '#size' => 60,
     ];
 
@@ -82,7 +68,6 @@ class SettingsForm extends ConfigFormBase {
     $this->config('uiowa_core.settings')
       ->set('uiowa_core.gtag', $form_state->getValue('uiowa_core_gtag'))
       ->set('uiowa_core.campus_gtm', $form_state->getValue('uiowa_core_campus_gtm'))
-      ->set('uiowa_core.ga', $form_state->getValue('uiowa_core_ga'))
       ->save();
     parent::submitForm($form, $form_state);
 
