@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'multisite:execute',
-  description: 'Execute a drush command across manifest-selected sites.',
+  description: '(ddev required) Execute a drush command across manifest-selected sites.',
   aliases: ['me', 'ume'],
 )]
 class MultisiteExecuteCommand extends Command {

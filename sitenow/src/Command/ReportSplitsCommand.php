@@ -19,7 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 #[AsCommand(
   name: 'report:splits',
-  description: 'Report which sites have which config splits enabled.',
+  description: '(ddev required) Report which sites have which config splits enabled.',
   aliases: ['splits'],
 )]
 class ReportSplitsCommand extends Command {
