@@ -4773,3 +4773,23 @@ function sitenow_update_10036() {
 
   return t('No change - uiowa_core.gtag already enabled, or Google Analytics is disabled on this site');
 }
+
+/**
+ * Clear the original Google Analytics account now that it's migrated.
+ *
+ * The account value already lives on a google_tag container as of
+ * sitenow_update_10035. Avoids double tracking and allows clean up to start.
+ */
+function sitenow_update_10037() {
+  if (!\Drupal::moduleHandler()->moduleExists('google_analytics')) {
+    return t('Google Analytics module not installed - nothing to clear');
+  }
+
+  $config = \Drupal::configFactory()->getEditable('google_analytics.settings');
+  if (empty($config->get('account'))) {
+    return t('No Google Analytics account to clear');
+  }
+
+  $config->set('account', '')->save();
+  return t('Cleared migrated Google Analytics account');
+}
