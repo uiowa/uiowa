@@ -10,7 +10,6 @@ services:
       - { name: config.factory.override }
   sitenow.google_analytics_override:
     class: Drupal\sitenow\ConfigOverride\GoogleAnalyticsOverride
-    # @todo Remove '@request_stack' before merging to main.
     arguments: [ '@config.factory', '@request_stack' ]
     tags:
       - { name: config.factory.override }
