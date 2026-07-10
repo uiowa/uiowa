@@ -87,7 +87,7 @@ class DeployUpdateCommand extends Command {
       : $this->runSequential($sites, $runlog, $ref);
 
     $this->printSummary($io, $summary);
-    $this->notifySlack($app, $env, $ref, $summary);
+    $this->notifySlack($app, $env, $ref, $summary, $runlog);
 
     if ($summary['mismatch']) {
       $io->warning('Config does not match on: ' . implode(', ', $summary['mismatch']));
@@ -323,8 +323,9 @@ class DeployUpdateCommand extends Command {
   /**
    * Post the deploy outcome to Slack when a webhook is configured.
    *
-   * The webhook URL comes from the SLACK_WEBHOOK_URL environment variable;
-   * without it this is a no-op, so local runs stay silent.
+   * The webhook URL comes from the SLACK_WEBHOOK_URL environment variable.
+   * A missing webhook or a failed POST is recorded in the run log and never
+   * fails the deploy, so a silent notification is diagnosable after the fact.
    *
    * @param string $app
    *   The application (AH_SITE_GROUP).
@@ -334,10 +335,13 @@ class DeployUpdateCommand extends Command {
    *   The deployed branch or tag, if known.
    * @param array $summary
    *   The updated / skipped / failed outcome summary.
+   * @param string $runlog
+   *   Path to the retained run log, where a skip or failure is recorded.
    */
-  private function notifySlack(string $app, string $env, string $ref, array $summary): void {
+  private function notifySlack(string $app, string $env, string $ref, array $summary, string $runlog): void {
     $webhook = getenv('SLACK_WEBHOOK_URL');
     if (!$webhook) {
+      $this->noteToRunLog($runlog, 'Slack notification skipped: SLACK_WEBHOOK_URL not set.');
       return;
     }
 
@@ -367,16 +371,39 @@ class DeployUpdateCommand extends Command {
       'text' => $message,
       'icon_emoji' => $emoji,
     ]);
-    // A notification failure must never fail the deploy; ignore the result and
-    // cap the time spent so a slow webhook cannot stall the hook.
+    // Cap the time spent so a slow webhook cannot stall the hook.
     $ch = curl_init($webhook);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    curl_exec($ch);
+    $response = curl_exec($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    $error = curl_error($ch);
     curl_close($ch);
+
+    // A notification failure must never fail the deploy; record it and move on.
+    if ($response === FALSE || $status < 200 || $status >= 300) {
+      $detail = $error !== '' ? $error : "HTTP {$status}";
+      $this->noteToRunLog($runlog, "Slack notification failed: {$detail}.");
+    }
+  }
+
+  /**
+   * Append a diagnostic line to the retained run log.
+   *
+   * The run log is closed by the time notifications run, so this reopens it to
+   * record why a notification was skipped or failed. A write failure is
+   * ignored: diagnostics must never fail the deploy.
+   */
+  private function noteToRunLog(string $runlog, string $message): void {
+    $log = @fopen($runlog, 'a');
+    if ($log === FALSE) {
+      return;
+    }
+    fwrite($log, $message . "\n");
+    fclose($log);
   }
 
 }
