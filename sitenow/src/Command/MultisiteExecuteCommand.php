@@ -68,12 +68,20 @@ class MultisiteExecuteCommand extends Command {
       ->setHelp(<<<'HELP'
 Everything after "--" is passed to drush verbatim, one site at a time.
 
+The per-site drush processes run non-interactively — drush can't stop and ask a
+question mid-fleet. Drush commands that normally ask their own confirmation
+(pm:uninstall, config:set, ...) need their own -y inside the passthrough, or
+every site will auto-answer with drush's default (usually cancel).
+
 Examples:
   # Cache rebuild on every site of two apps:
   ddev exec ./sn ume --apps=uiowa02,uiowa03 -y -- cr
 
   # Arguments with spaces/quotes pass through unmodified:
   ddev exec ./sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
+
+  # Two different -y's: ours skips the fleet confirmation, drush's skips its own:
+  ddev exec ./sn ume -y --apps=uiowa09 -- pm:uninstall some_module -y
 
   # Preview what would run, without executing anything:
   ddev exec ./sn ume --dry-run -- cron
