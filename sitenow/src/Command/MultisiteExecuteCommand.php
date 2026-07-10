@@ -24,7 +24,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(
   name: 'multisite:execute',
   description: 'Execute a drush command across manifest-selected sites.',
-  aliases: ['ume'],
+  aliases: ['me', 'ume'],
 )]
 class MultisiteExecuteCommand extends Command {
 
@@ -64,7 +64,20 @@ class MultisiteExecuteCommand extends Command {
       ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Target environment: dev, test, or prod.', 'prod')
       ->addOption('concurrency', NULL, InputOption::VALUE_REQUIRED, 'Maximum simultaneous drush processes. Defaults to 8 per app in scope, capped at 32. At most 8 run per app at once regardless.')
       ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Print the per-site drush invocations without running them.')
-      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.');
+      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.')
+      ->setHelp(<<<'HELP'
+Everything after "--" is passed to drush verbatim, one site at a time.
+
+Examples:
+  # Cache rebuild on every site of two apps:
+  ddev exec ./sn ume --apps=uiowa02,uiowa03 -y -- cr
+
+  # Arguments with spaces/quotes pass through unmodified:
+  ddev exec ./sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
+
+  # Preview what would run, without executing anything:
+  ddev exec ./sn ume --dry-run -- cron
+HELP);
   }
 
   /**
