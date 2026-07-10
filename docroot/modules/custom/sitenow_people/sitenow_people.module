@@ -214,8 +214,8 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
               '#weight' => 90,
             ];
 
-            $configuration = $component->getConfiguration();
             // Add checkbox to filter research areas to only show options with results.
+            // Use third-party settings which are designed for this use case.
             $form['settings']['sitenow_people']['filter_research_areas'] = [
               '#type' => 'checkbox',
               '#title' => t('Filter @title to only show options with results', [
@@ -224,14 +224,13 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
               '#description' => t('When enabled, only @title terms that have matching person nodes will be shown in the filter.', [
                 '@title' => strtolower(sitenow_people_get_research_title()),
               ]),
-//              '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas'),
-              '#default_value' => $configuration['sitenow_people']['filter_research_areas'] ?? '',
+              '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas', 0),
               '#weight' => 90,
             ];
 
             // Add submit handler for processing our custom checkbox field.
-//            array_unshift($form['#submit'], '_sitenow_people_save_filter_checkbox');
-          $form['#submit'][] = '_sitenow_people_save_filter_checkbox';
+            // Use array_unshift to run BEFORE Layout Builder's handler.
+            array_unshift($form['#submit'], '_sitenow_people_save_filter_checkbox');
             break;
         }
       }
@@ -244,23 +243,14 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
  * Submit handler to save the filter_research_areas checkbox value.
  */
 function _sitenow_people_save_filter_checkbox(array &$form, FormStateInterface $form_state) {
-//  $form_object = $form_state->getFormObject();
-//  $component = $form_object->getCurrentComponent();
-//  $configuration = $component->get('configuration');
-//  $filter_research_areas = $form_state->getValue(['settings', 'filter_research_areas']);
-//  $configuration['filter_research_areas'] = $filter_research_areas;
-//  $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $filter_research_areas);
-//  $component->set('configuration', $configuration);
   $form_object = $form_state->getFormObject();
   $component = $form_object->getCurrentComponent();
-  $configuration = $component->get('configuration');
 
-  // Extract values directly from the submitted form state
+  // Extract value from the submitted form state
   $value = $form_state->getValue(['settings', 'sitenow_people', 'filter_research_areas']);
 
-  // Directly append the configuration directly to the Layout Builder block definition array
-  $configuration['sitenow_people']['filter_research_areas'] = $value;
-  $component->set('configuration', $configuration);
+  // Use third-party settings API which is designed for storing custom data
+  $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $value);
 }
 
 /**
@@ -484,9 +474,40 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_entity_prepare_view().
+ */
+function sitenow_people_entity_prepare_view($entity_type_id, array $entities, array $displays, $view_mode) {
+  // Extract third-party settings from Layout Builder components for people_list_block.
+  // This runs early, before the entity is fully rendered, ensuring the static
+  // variable is set before the exposed form is built.
+  // Store settings in an ordered array so each view instance can retrieve its specific config.
+  foreach ($entities as $entity) {
+    if ($entity->hasField('layout_builder__layout')) {
+      $sections = $entity->get('layout_builder__layout')->getSections();
+      foreach ($sections as $section) {
+        foreach ($section->getComponents() as $component) {
+          $config = $component->get('configuration');
+          // Check if this is a people_list_block.
+          if (isset($config['id']) && strpos($config['id'], 'views_block:people_list_block') === 0) {
+            // Get third-party settings and append to ordered array.
+            // Each block will be matched to its configuration by the order they appear.
+            $filter_research_areas = $component->getThirdPartySetting('sitenow_people', 'filter_research_areas');
+            $sitenow_people_config = &drupal_static('sitenow_people_block_config', []);
+            $sitenow_people_config[] = [
+              'filter_research_areas' => $filter_research_areas ?? 0,
+            ];
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_entity_view_alter().
  */
 function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     // @todo Remove this line and just use $entity->bundle() instead.
@@ -894,6 +915,23 @@ function sitenow_people_views_pre_build(ViewExecutable $view) {
       $view->display_handler->has_exposed = FALSE;
     }
   }
+
+  // For people_list_block, match each view instance to its configuration.
+  // We use a counter to assign configurations in order as they were found.
+  if ($view->id() === 'people_list_block') {
+    static $people_list_block_counter = 0;
+
+    // Retrieve the stored configurations for all blocks on this page.
+    $sitenow_people_config = &drupal_static('sitenow_people_block_config', []);
+
+    // Assign this view instance the next configuration in order.
+    if (isset($sitenow_people_config[$people_list_block_counter])) {
+      $view->sitenow_people_filter_config = $sitenow_people_config[$people_list_block_counter];
+    }
+
+    // Increment counter for the next view instance.
+    $people_list_block_counter++;
+  }
 }
 
 /**
@@ -989,31 +1027,9 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       }
 
       // Filter research areas to only show those with results if checkbox is enabled.
-      $route_match = \Drupal::routeMatch();
-      $entity = $route_match->getParameter('node') ?? $route_match->getParameter('entity');
-      if ($entity && $entity->hasField('layout_builder__layout')) {
-        // Look through the entity layout sections to locate this specific views block component
-        $sections = $entity->get('layout_builder__layout')->getSections();
-
-        foreach ($sections as $section) {
-          foreach ($section->getComponents() as $component) {
-            $config = $component->get('configuration');
-
-            // Verify we have found the matching Views block instance inside the layout
-            if (isset($config['id']) && $config['id'] === 'views_block:' . $view->id() . '-' . $view->current_display) {
-
-              // Check if our custom unscrubbed module data exists!
-              if (isset($config['sitenow_people']['filter_research_areas'])) {
-                if ($config['sitenow_people']['filter_research_areas']) {
-                  _sitenow_people_filter_research_areas($form, $view);
-                }
-                break 2;
-              }
-            }
-          }
-        }
-      }
-      if (!empty($block_config['sitenow_people']['filter_research_areas'])) {
+      // Retrieve the custom configuration that was attached to this specific view instance
+      // in views_pre_build, ensuring each block has independent filtering.
+      if (isset($view->sitenow_people_filter_config) && !empty($view->sitenow_people_filter_config['filter_research_areas'])) {
         _sitenow_people_filter_research_areas($form, $view);
       }
       break;
