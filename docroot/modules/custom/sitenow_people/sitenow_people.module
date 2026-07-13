@@ -222,7 +222,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
               '#title' => t('Filter @title to only show options with results', [
                 '@title' => sitenow_people_get_research_title(),
               ]),
-              '#description' => t('When enabled, only @title terms that have matching person nodes will be shown in the filter.', [
+              '#description' => t('When enabled, only @title that have at least one matching person will be shown in the filter.', [
                 '@title' => strtolower(sitenow_people_get_research_title()),
               ]),
               '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas', 0),
