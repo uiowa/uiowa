@@ -1042,7 +1042,7 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
           // other than 0 or empty, it's visible.
           // Check for both explicit 0 and empty string
           // (which means not exposed).
-          if (!isset($filter_config['exposed']) || ($filter_config['exposed'] !== 0 && $filter_config['exposed'] !== '')) {
+          if (!isset($filter_config['exposed']) || !empty($filter_config['exposed'])) {
             $has_visible_filters = TRUE;
             break;
           }
