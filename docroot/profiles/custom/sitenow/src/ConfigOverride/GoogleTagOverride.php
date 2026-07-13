@@ -6,6 +6,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\StorageInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Google Tag configuration override.
@@ -29,13 +30,23 @@ class GoogleTagOverride implements ConfigFactoryOverrideInterface {
   private ConfigFactoryInterface $configFactory;
 
   /**
+   * The request stack service.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack|null
+   */
+  private ?RequestStack $requestStack;
+
+  /**
    * Constructs a new GoogleTagOverride object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack|null $request_stack
+   *   The request stack service, used to identify the sandbox site.
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
+  public function __construct(ConfigFactoryInterface $config_factory, ?RequestStack $request_stack = NULL) {
     $this->configFactory = $config_factory;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -53,17 +64,21 @@ class GoogleTagOverride implements ConfigFactoryOverrideInterface {
       return $overrides;
     }
 
-    // @todo Restore the non-prod check below before merging - commented
-    // out so migration/upgrade hooks see real data while testing, since
-    // they read the same status value this override blanks.
     $gtag_disabled = !(bool) $this->configFactory
       ->get('uiowa_core.settings')
       ->get('uiowa_core.gtag');
 
-    // Disable Google Tag containers on non-prod or when gtag is disabled.
-    // @codingStandardsIgnoreLine
-    // if (getenv('AH_SITE_ENVIRONMENT') !== 'prod' || $gtag_disabled) {
-    if ($gtag_disabled) {
+    // @todo Remove this sandbox carve-out once dev testing of the
+    // migration is complete - it's here only so sandbox.dev can see real
+    // container data while every other non-prod site keeps the normal
+    // suppression below.
+    $host = $this->requestStack?->getCurrentRequest()?->getHost();
+    $is_sandbox = $host === 'sandbox.dev.drupal.uiowa.edu';
+    $is_prod = getenv('AH_SITE_ENVIRONMENT') === 'prod';
+
+    // Disable Google Tag containers on non-prod (except sandbox, for now)
+    // or when gtag is disabled.
+    if ((!$is_prod && !$is_sandbox) || $gtag_disabled) {
       foreach ($container_names as $name) {
         $overrides[$name]['status'] = FALSE;
       }

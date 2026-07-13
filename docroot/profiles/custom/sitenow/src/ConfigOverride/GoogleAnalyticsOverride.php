@@ -19,10 +19,10 @@ class GoogleAnalyticsOverride extends GoogleTagOverride {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory service.
    * @param \Symfony\Component\HttpFoundation\RequestStack|null $request_stack
-   *   Unused; kept for the old service definition's signature.
+   *   The request stack service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, ?RequestStack $request_stack = NULL) {
-    parent::__construct($config_factory);
+    parent::__construct($config_factory, $request_stack);
   }
 
 }
