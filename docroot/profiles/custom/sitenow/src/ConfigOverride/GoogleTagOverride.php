@@ -53,6 +53,11 @@ class GoogleTagOverride implements ConfigFactoryOverrideInterface {
       return $overrides;
     }
 
+    // Do not evaluate during update hooks.
+    if (defined('MAINTENANCE_MODE') && MAINTENANCE_MODE === 'update') {
+      return $overrides;
+    }
+
     $gtag_disabled = !(bool) $this->configFactory
       ->get('uiowa_core.settings')
       ->get('uiowa_core.gtag');
