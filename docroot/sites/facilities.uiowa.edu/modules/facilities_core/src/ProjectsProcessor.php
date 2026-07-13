@@ -75,6 +75,13 @@ class ProjectsProcessor extends EntityProcessorBase {
     // Function to transform dates.
     $transform_date = function ($timestamp) {
       if (!is_null($timestamp)) {
+        // If string, assume Y-m-d format.
+        if (is_string($timestamp)) {
+          $parsed = \DateTime::createFromFormat('Y-m-d', $timestamp);
+          // If it can't be parsed, import as null.
+          return $parsed ? $timestamp : NULL;
+        }
+        // Otherwise, convert from milliseconds to seconds and format.
         $date_formatter = \Drupal::service('date.formatter');
         return $date_formatter->format($timestamp / 1000, 'custom', 'Y-m-d');
       }
