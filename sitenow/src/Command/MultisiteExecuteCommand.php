@@ -122,8 +122,13 @@ HELP);
       return Command::FAILURE;
     }
 
-    $concurrency = $input->getOption('concurrency')
-      ? max(1, (int) $input->getOption('concurrency'))
+    $concurrency_option = $input->getOption('concurrency');
+    if ($concurrency_option !== NULL && (!ctype_digit($concurrency_option) || (int) $concurrency_option < 1)) {
+      $err->error("Invalid --concurrency '{$concurrency_option}'. Must be a positive integer.");
+      return Command::FAILURE;
+    }
+    $concurrency = $concurrency_option !== NULL
+      ? (int) $concurrency_option
       : $runner->defaultConcurrency(count($selection));
 
     // A dry run touches nothing remote, so it can run anywhere.
@@ -183,7 +188,7 @@ HELP);
 
     if (!empty($failed)) {
       $err->writeln('');
-      $err->writeln('<comment>[WARNING] ' . count($failed) . ' site(s) failed (after one retry):</comment>');
+      $err->writeln('<comment>[WARNING] ' . count($failed) . ' site(s) failed:</comment>');
       foreach ($failed as $r) {
         $err->writeln("  {$r['app']}: {$r['site']} — " . $this->failureReason($r));
       }
