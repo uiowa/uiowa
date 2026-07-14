@@ -130,8 +130,10 @@ YAML);
   }
 
   /**
-   * The env suffix lands in the alias, and multi-element drush args stay
-   * separate elements (no shell-style joining).
+   * The env suffix and multi-element drush args pass through intact.
+   *
+   * The env lands in the alias suffix, and each drush arg stays its own
+   * argv element (no shell-style joining).
    */
   public function testBuildJobsEnvAndArgPassthrough(): void {
     $runner = new FleetRunner($this->manifest);

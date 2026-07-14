@@ -146,8 +146,9 @@ class ProcessPoolTest extends UnitTestCase {
   }
 
   /**
-   * A single failing job still gets its retry: "all failed" means nothing
-   * at n=1, and the retry is cheap.
+   * A single failing job still gets its retry.
+   *
+   * "All failed" means nothing at n=1, and the retry is cheap.
    */
   public function testSingleFailedJobStillRetries(): void {
     $counter = $this->scratchFile();
