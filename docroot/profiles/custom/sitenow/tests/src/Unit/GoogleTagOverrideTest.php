@@ -72,7 +72,7 @@ class GoogleTagOverrideTest extends UnitTestCase {
 
     $override = new GoogleTagOverride($this->getConfigFactory(1));
     $overrides = $override->loadOverrides(['google_tag.container.G-TEST.123']);
-    $this->assertSame(FALSE, $overrides['google_tag.container.G-TEST.123']['status']);
+    $this->assertFalse($overrides['google_tag.container.G-TEST.123']['status']);
   }
 
   /**
@@ -82,7 +82,7 @@ class GoogleTagOverrideTest extends UnitTestCase {
     putenv('AH_SITE_ENVIRONMENT=prod');
     $override = new GoogleTagOverride($this->getConfigFactory(0));
     $overrides = $override->loadOverrides(['google_tag.container.G-TEST.123']);
-    $this->assertSame(FALSE, $overrides['google_tag.container.G-TEST.123']['status']);
+    $this->assertFalse($overrides['google_tag.container.G-TEST.123']['status']);
   }
 
   /**
