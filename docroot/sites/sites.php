@@ -7858,3 +7858,9 @@ $sites['labshawnyu.uiowa.ddev.site'] = 'shawnyu.lab.uiowa.edu';
 $sites['labshawnyu.dev.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
 $sites['labshawnyu.stage.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
 $sites['labshawnyu.prod.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
+
+// Directory aliases for araldi.lab.uiowa.edu.
+$sites['labaraldi.uiowa.ddev.site'] = 'araldi.lab.uiowa.edu';
+$sites['labaraldi.dev.drupal.uiowa.edu'] = 'araldi.lab.uiowa.edu';
+$sites['labaraldi.stage.drupal.uiowa.edu'] = 'araldi.lab.uiowa.edu';
+$sites['labaraldi.prod.drupal.uiowa.edu'] = 'araldi.lab.uiowa.edu';
