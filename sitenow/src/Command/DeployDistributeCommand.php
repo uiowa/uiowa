@@ -36,7 +36,7 @@ class DeployDistributeCommand extends Command {
    * Identity recorded on the artifact commit (the artifact repo is throwaway).
    */
   const COMMITTER_NAME = 'SiteNow Deploy';
-  const COMMITTER_EMAIL = 'noreply@uiowa.edu';
+  const COMMITTER_EMAIL = 'sitenow-noreply@uiowa.edu';
 
   /**
    * Constructs the command.
