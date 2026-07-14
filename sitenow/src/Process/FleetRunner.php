@@ -27,6 +27,20 @@ class FleetRunner {
   const PER_APP_CAP = 8;
 
   /**
+   * SSH options enabling connection multiplexing, per fleet invocation only.
+   *
+   * Passed to each drush process via --ssh-options so that only fleet runs
+   * multiplex: everyday drush commands stay on stock SSH with no shared
+   * state. The first connection to an app server authenticates and becomes
+   * the master; the rest of the fleet rides it as sessions (sshd caps these
+   * around 10 — PER_APP_CAP stays under that, and over-cap requests fall
+   * back to a direct connection). The master self-closes 60 seconds after
+   * its last session ends. PasswordAuthentication=no is restated because
+   * this string replaces drush's default ssh.options, not appends to it.
+   */
+  const SSH_OPTIONS = '-o PasswordAuthentication=no -o ControlMaster=auto -o ControlPath=~/.ssh/cm-%C -o ControlPersist=60';
+
+  /**
    * Constructs the runner.
    *
    * @param string $manifestPath
@@ -97,7 +111,7 @@ class FleetRunner {
     foreach ($selection as $app => $domains) {
       foreach ($domains as $domain) {
         $alias = Multisite::getIdentifier('http://' . $domain) . '.' . $env;
-        $jobs[$domain] = array_merge(['drush', "@{$alias}"], $drush_args);
+        $jobs[$domain] = array_merge(['drush', "@{$alias}", '--ssh-options=' . self::SSH_OPTIONS], $drush_args);
         $groups[$domain] = $app;
       }
     }

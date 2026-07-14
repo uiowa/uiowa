@@ -129,9 +129,12 @@ HELP);
     // A dry run touches nothing remote, so it can run anywhere.
     if ($dry_run) {
       ['jobs' => $jobs] = $runner->buildJobs($selection, $cmd, $env);
+      $ssh_option = '--ssh-options=' . FleetRunner::SSH_OPTIONS;
       $io->writeln("Dry run: {$site_count} sites across " . count($selection) . " app(s), concurrency {$concurrency}.");
+      $io->writeln('Each command also gets ' . escapeshellarg($ssh_option) . ' (SSH multiplexing, omitted below).');
       foreach ($jobs as $argv) {
-        $io->writeln(implode(' ', $argv));
+        $argv = array_filter($argv, fn ($a) => $a !== $ssh_option);
+        $io->writeln($this->renderArgv($argv));
       }
       return Command::SUCCESS;
     }
@@ -205,6 +208,26 @@ HELP);
     $tail = $lines ? end($lines) : '';
 
     return "exit {$result['exit']}" . ($tail !== '' ? " ({$tail})" : '');
+  }
+
+  /**
+   * Render an argv array as a copy-pasteable shell command.
+   *
+   * The pool executes argv arrays directly with no shell, but the dry run
+   * prints them for humans to read and paste — so elements the shell would
+   * split or mangle get quoted.
+   *
+   * @param array<int, string> $argv
+   *   The argv array.
+   *
+   * @return string
+   *   The shell-safe command line.
+   */
+  protected function renderArgv(array $argv): string {
+    return implode(' ', array_map(
+      fn ($a) => preg_match('/[\s\'"\\\\$]/', $a) ? escapeshellarg($a) : $a,
+      $argv
+    ));
   }
 
   /**
