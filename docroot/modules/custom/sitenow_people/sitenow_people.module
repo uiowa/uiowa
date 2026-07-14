@@ -204,34 +204,41 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         // Modify the form per block plugin and bundle.
         switch ($block->getPluginId()) {
           case 'views_block:people_list_block-list_card':
+            $research_areas_filter_key = 'filter-field_person_research_areas_target_id';
+
             // Update labels for exposed filters for block configuration form.
-            if (isset($form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title']) && $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] !== '') {
-              $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] = sitenow_people_get_research_title();
+            if (isset($form['settings']['exposed'][$research_areas_filter_key]['#title']) && $form['settings']['exposed'][$research_areas_filter_key]['#title'] !== '') {
+              $form['settings']['exposed'][$research_areas_filter_key]['#title'] = sitenow_people_get_research_title();
             }
 
-            $form['settings']['sitenow_people'] = [
-              '#type' => 'container',
-              '#weight' => 90,
-            ];
-
-            // Add checkbox to filter research areas
-            // to only show options with results.
+            // Add checkbox to filter research areas to only show options
+            // with results. Nested inside the Research Areas filter pane,
+            // below its "Expose filter value to user" checkbox, and only
+            // shown when that checkbox is checked, since this setting is
+            // meaningless when the filter isn't exposed to visitors.
             // Use third-party settings which are designed for this use case.
-            $form['settings']['sitenow_people']['filter_research_areas'] = [
-              '#type' => 'checkbox',
-              '#title' => t('Filter @title to only show options with results', [
-                '@title' => sitenow_people_get_research_title(),
-              ]),
-              '#description' => t('When enabled, only @title that have at least one matching person will be shown in the filter.', [
-                '@title' => strtolower(sitenow_people_get_research_title()),
-              ]),
-              '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas', 0),
-              '#weight' => 90,
-            ];
+            if (isset($form['settings']['exposed'][$research_areas_filter_key])) {
+              $form['settings']['exposed'][$research_areas_filter_key]['filter_research_areas'] = [
+                '#type' => 'checkbox',
+                '#title' => t('Filter @title to only show options with results', [
+                  '@title' => sitenow_people_get_research_title(),
+                ]),
+                '#description' => t('When enabled, only @title that have at least one matching person will be shown in the filter.', [
+                  '@title' => strtolower(sitenow_people_get_research_title()),
+                ]),
+                '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas', 0),
+                '#weight' => 10,
+                '#states' => [
+                  'visible' => [
+                    ':input[name="settings[exposed][' . $research_areas_filter_key . '][exposed]"]' => ['checked' => TRUE],
+                  ],
+                ],
+              ];
 
-            // Add submit handler for processing our custom checkbox field.
-            // Use array_unshift to run BEFORE Layout Builder's handler.
-            array_unshift($form['#submit'], '_sitenow_people_save_filter_checkbox');
+              // Add submit handler for processing our custom checkbox field.
+              // Use array_unshift to run BEFORE Layout Builder's handler.
+              array_unshift($form['#submit'], '_sitenow_people_save_filter_checkbox');
+            }
             break;
         }
       }
@@ -248,7 +255,12 @@ function _sitenow_people_save_filter_checkbox(array &$form, FormStateInterface $
   $component = $form_object->getCurrentComponent();
 
   // Extract value from the submitted form state.
-  $value = $form_state->getValue(['settings', 'sitenow_people', 'filter_research_areas']);
+  $value = $form_state->getValue([
+    'settings',
+    'exposed',
+    'filter-field_person_research_areas_target_id',
+    'filter_research_areas',
+  ]);
 
   // Use third-party settings API which is designed for storing custom data.
   $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $value);
