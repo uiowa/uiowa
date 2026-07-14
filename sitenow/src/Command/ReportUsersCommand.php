@@ -75,6 +75,7 @@ class ReportUsersCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
+    $start = microtime(TRUE);
 
     $target_apps = $this->parseList($input->getOption('apps'));
     $exclude = $this->parseList($input->getOption('exclude'));
@@ -169,7 +170,30 @@ class ReportUsersCommand extends Command {
       }
     }
 
+    $io->writeln('');
+    $io->writeln('Generated in ' . $this->formatDuration(microtime(TRUE) - $start) . '.');
+
     return Command::SUCCESS;
+  }
+
+  /**
+   * Format an elapsed duration for the report footer.
+   *
+   * @param float $seconds
+   *   The elapsed wall-clock seconds.
+   *
+   * @return string
+   *   A human-readable duration: seconds under a minute (e.g. "42.3s"),
+   *   otherwise minutes and seconds (e.g. "6m 12s").
+   */
+  protected function formatDuration(float $seconds): string {
+    if ($seconds < 60) {
+      return round($seconds, 1) . 's';
+    }
+
+    $whole = (int) round($seconds);
+
+    return intdiv($whole, 60) . 'm ' . ($whole % 60) . 's';
   }
 
   /**

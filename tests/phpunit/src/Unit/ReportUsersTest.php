@@ -50,6 +50,13 @@ class ReportUsersTest extends UnitTestCase {
         return $this->isNoUsersError($error);
       }
 
+      /**
+       * {@inheritdoc}
+       */
+      public function duration(float $seconds): string {
+        return $this->formatDuration($seconds);
+      }
+
     };
   }
 
@@ -186,6 +193,17 @@ class ReportUsersTest extends UnitTestCase {
     $this->assertTrue($command->noUsers("In UsersCommands.php line 124:\n\n  No users found.\n"));
     $this->assertFalse($command->noUsers('Host key verification failed.'));
     $this->assertFalse($command->noUsers(''));
+  }
+
+  /**
+   * Durations render as seconds under a minute, minutes and seconds above.
+   */
+  public function testFormatDuration(): void {
+    $command = $this->command();
+    $this->assertSame('42.3s', $command->duration(42.34));
+    $this->assertSame('0.5s', $command->duration(0.5));
+    $this->assertSame('1m 0s', $command->duration(60.0));
+    $this->assertSame('6m 12s', $command->duration(372.0));
   }
 
 }
