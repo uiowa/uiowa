@@ -26,11 +26,6 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route = $collection->get('system.site_maintenance_mode')) {
       $route->setRequirement('_permission', 'administer maintenance mode');
     }
-    // Site owners manage tags via the containers list; the single-container
-    // settings page is redundant and only meant for administrators.
-    if ($route = $collection->get('entity.google_tag_container.single_form')) {
-      $route->setRequirement('_permission', 'administer site configuration');
-    }
   }
 
 }
