@@ -1418,7 +1418,7 @@ function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_s
  * Implements hook_entity_prepare_form().
  *
  * Pre-populates insertion conditions for new Google Tag containers to match
- * the exclusions google_tag 1.x applied to every container by default.
+ * the path exclusions google_tag 1.x applied to every container by default.
  */
 function uiowa_core_entity_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
   if ($entity->getEntityTypeId() !== 'google_tag_container' || !$entity->isNew()) {
@@ -1432,11 +1432,6 @@ function uiowa_core_entity_prepare_form(EntityInterface $entity, $operation, For
       'id' => 'request_path',
       'negate' => TRUE,
       'pages' => "/admin\n/admin/*\n/batch\n/batch/*\n/node/add*\n/node/*/edit\n/node/*/delete\n/node/*/layout\n/taxonomy/term/*/edit\n/taxonomy/term/*/layout\n/user/*/edit*\n/user/*/cancel*\n/user/*/layout",
-    ],
-    'response_status' => [
-      'id' => 'response_status',
-      'negate' => TRUE,
-      'status_codes' => ['403' => '403'],
     ],
   ]);
 }
