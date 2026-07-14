@@ -4716,9 +4716,22 @@ function sitenow_update_10034() {
 }
 
 /**
- * Migrate Google Analytics configuration.
+ * Migrate Google Analytics and prepare existing Google Tag containers.
  */
 function sitenow_update_10035(&$sandbox) {
+  // The update google_tag_update_8201 skips disabled containers so to migrate
+  // them, we need to change their status during the update process.
+  $config_factory = \Drupal::configFactory();
+  $container_storage = \Drupal::entityTypeManager()->getStorage('google_tag_container');
+  $disabled_ids = $container_storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('status', 0)
+    ->execute();
+  \Drupal::state()->set('sitenow_disabled_google_tag_containers', array_values($disabled_ids));
+  foreach ($disabled_ids as $id) {
+    $config_factory->getEditable('google_tag.container.' . $id)->set('status', TRUE)->save();
+  }
+
   // Import config_ignore so that google_tag.settings exists before import.
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
@@ -4777,8 +4790,8 @@ function sitenow_update_10036() {
 /**
  * Clear the original Google Analytics account now that it's migrated.
  *
- * The account value already lives on a google_tag container as of
- * sitenow_update_10035. Avoids double tracking and allows clean up to start.
+ * Avoids double tracking now that the value lives on a google_tag
+ * container, per sitenow_update_10035.
  */
 function sitenow_update_10037() {
   if (!\Drupal::moduleHandler()->moduleExists('google_analytics')) {
@@ -4792,4 +4805,23 @@ function sitenow_update_10037() {
 
   $config->set('account', '')->save();
   return t('Cleared migrated Google Analytics account');
+}
+
+/**
+ * Restore original status for containers temporarily enabled for upgrade.
+ */
+function sitenow_update_10038() {
+  $ids = \Drupal::state()->get('sitenow_disabled_google_tag_containers', []);
+  if (!$ids) {
+    return t('No disabled containers needed restoring.');
+  }
+
+  // Flip status via the raw config object.
+  $config_factory = \Drupal::configFactory();
+  foreach ($ids as $id) {
+    $config_factory->getEditable('google_tag.container.' . $id)->set('status', FALSE)->save();
+  }
+  \Drupal::state()->delete('sitenow_disabled_google_tag_containers');
+
+  return t('Restored disabled status for @count container(s).', ['@count' => count($ids)]);
 }
