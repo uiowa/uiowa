@@ -35,7 +35,8 @@ class ProcessPool {
    * @param int $retries
    *   How many times to re-run failed (non-zero exit) jobs before accepting
    *   the failure. Drupal bootstraps over SSH are occasionally flaky under
-   *   concurrent load; a quieter second attempt usually succeeds.
+   *   concurrent load; a quieter second attempt usually succeeds. A pass
+   *   where every job failed is treated as systematic and never retried.
    */
   public function __construct(
     private int $concurrency,
@@ -70,6 +71,13 @@ class ProcessPool {
     for ($attempt = 0; $attempt < $this->retries; $attempt++) {
       $failed = array_filter($results, fn (array $r) => $r['exit'] !== 0);
       if (empty($failed)) {
+        break;
+      }
+
+      // Every job failing points at the command, not the transport (e.g. a
+      // typo'd drush command); a retry would just repeat the whole fleet.
+      // Transient failures are scattered, never total.
+      if (count($jobs) > 1 && count($failed) === count($jobs)) {
         break;
       }
 
