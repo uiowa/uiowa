@@ -1,0 +1,17 @@
+project:
+  machine_name: labbae
+  human_name: bae.lab.uiowa.edu
+  local:
+    hostname: labbae.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labbae.prod
+drupal:
+  db:
+    database: bae_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbae.prod.drupal.uiowa.edu'
+  requester: strommerl
