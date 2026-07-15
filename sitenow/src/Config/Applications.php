@@ -21,6 +21,13 @@ class Applications {
   private array $applications;
 
   /**
+   * Sites to update first during a deploy, in order.
+   *
+   * @var string[]
+   */
+  private array $runFirst;
+
+  /**
    * Constructs an Applications registry reader.
    *
    * @param string $path
@@ -29,6 +36,7 @@ class Applications {
   public function __construct(string $path) {
     $data = Yaml::parseFile($path) ?? [];
     $this->applications = $data['applications'] ?? [];
+    $this->runFirst = $data['run_first'] ?? [];
   }
 
   /**
@@ -65,6 +73,20 @@ class Applications {
   }
 
   /**
+   * The git remote URL for a named application.
+   *
+   * @param string $name
+   *   The application name.
+   *
+   * @return string|null
+   *   The git remote URL, or NULL if the application is not registered or has
+   *   no remote configured.
+   */
+  public function remote(string $name): ?string {
+    return $this->applications[$name]['remote'] ?? NULL;
+  }
+
+  /**
    * Whether an application is reserved (excluded from automatic selection).
    *
    * @param string $name
@@ -85,6 +107,16 @@ class Applications {
    */
   public function autoSelectable(): array {
     return array_filter($this->applications, fn($entry) => empty($entry['reserved']));
+  }
+
+  /**
+   * Sites to update first during a deploy, in configured order.
+   *
+   * @return string[]
+   *   The run-first site list (empty if none configured).
+   */
+  public function runFirst(): array {
+    return $this->runFirst;
   }
 
 }

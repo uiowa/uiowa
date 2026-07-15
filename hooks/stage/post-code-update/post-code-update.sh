@@ -2,31 +2,27 @@
 #
 # Cloud Hook: post-code-update
 #
-# The post-code-update hook runs in response to code commits. When you
-# push commits to a Git branch, the post-code-update hooks runs for
-# each environment that is currently running that branch.
+# Runs the SiteNow fleet update after new code is pushed to the branch an
+# environment is running (a push to {branch}-build updates every environment
+# tracking it).
 #
-# The arguments for post-code-update are the same as for post-code-deploy,
-# with the source-branch and deployed-tag arguments both set to the name of
-# the environment receiving the new code.
-#
-# post-code-update only runs if your site is using a Git repository. It does
-# not support SVN.
+# Usage: post-code-update site target-env source-branch deployed-tag repo-url
+#                         repo-type
 
 set -ev
 
 site="$1"
 target_env="$2"
-source_branch="$3"
-deployed_tag="$4"
-repo_url="$5"
-repo_type="$6"
+deployed_ref="$4"
 
-# Prep for BLT commands.
+# Run from the application root, where the sn binary and vendor/ live.
 repo_root="/var/www/html/$site.$target_env"
-export PATH=$repo_root/vendor/bin:$PATH
-cd $repo_root
+cd "$repo_root"
 
-blt artifact:ac-hooks:post-code-update $site $target_env $source_branch $deployed_tag $repo_url $repo_type --environment=$target_env --no-interaction -D drush.ansi=false
+# Fleet update: db updates, config import, and deploy hooks across the
+# application's multisites. The application and environment are read from the
+# AH_* environment variables by deploy:update; the deployed ref is recorded in
+# the run log.
+./sn deploy:update --ref="$deployed_ref"
 
 set +v
