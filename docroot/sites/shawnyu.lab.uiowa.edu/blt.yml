@@ -1,0 +1,17 @@
+project:
+  machine_name: labshawnyu
+  human_name: shawnyu.lab.uiowa.edu
+  local:
+    hostname: labshawnyu.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labshawnyu.prod
+drupal:
+  db:
+    database: shawnyu_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labshawnyu.prod.drupal.uiowa.edu'
+  requester: strommerl
