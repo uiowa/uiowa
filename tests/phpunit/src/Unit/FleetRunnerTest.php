@@ -109,6 +109,34 @@ YAML);
   }
 
   /**
+   * A manifest that parses to the wrong shape throws a clean error.
+   *
+   * Malformed YAML already throws (ParseException is a \RuntimeException);
+   * these are the valid-YAML-wrong-shape cases that would otherwise fatal
+   * with a TypeError.
+   *
+   * @dataProvider malformedManifestProvider
+   */
+  public function testSelectMalformedManifestThrows(string $content): void {
+    file_put_contents($this->manifest, $content);
+    $runner = new FleetRunner($this->manifest);
+
+    $this->expectException(\RuntimeException::class);
+    $runner->select();
+  }
+
+  /**
+   * Valid-YAML manifests with the wrong shape.
+   */
+  public static function malformedManifestProvider(): array {
+    return [
+      'scalar' => ['just a string'],
+      'list instead of map' => ["- vote.uiowa.edu\n- tippie.uiowa.edu"],
+      'app with scalar value' => ["uiowa02: vote.uiowa.edu"],
+    ];
+  }
+
+  /**
    * Jobs are argv arrays: drush, alias, ssh options, then the command.
    *
    * The --ssh-options element scopes SSH multiplexing to fleet invocations

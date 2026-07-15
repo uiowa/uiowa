@@ -62,13 +62,26 @@ class FleetRunner {
    *   Map of app name => site domains.
    *
    * @throws \RuntimeException
-   *   When the manifest is missing or an app name is unknown.
+   *   When the manifest is missing or malformed, or an app name is unknown.
    */
   public function select(array $apps = [], array $exclude = []): array {
     if (!file_exists($this->manifestPath)) {
       throw new \RuntimeException("Manifest file not found at {$this->manifestPath}");
     }
+
+    // Yaml::parseFile() throws on malformed YAML (its ParseException is a
+    // \RuntimeException), but a truncated or hand-edited file can parse
+    // cleanly into the wrong shape — reject that here instead of fataling
+    // on a TypeError below.
     $manifest = Yaml::parseFile($this->manifestPath) ?? [];
+    if (!is_array($manifest)) {
+      throw new \RuntimeException("Manifest at {$this->manifestPath} is not a map of app => site domains.");
+    }
+    foreach ($manifest as $app => $domains) {
+      if (!is_array($domains)) {
+        throw new \RuntimeException("Manifest entry '{$app}' is not a list of site domains.");
+      }
+    }
 
     if ($unknown = array_diff($apps, array_keys($manifest))) {
       throw new \RuntimeException('Unknown application(s): ' . implode(', ', $unknown));
