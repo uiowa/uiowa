@@ -87,7 +87,10 @@ class ProcessPool {
         $groups,
         $on_progress
       );
-      $results = array_merge($results, $retry_results);
+
+      // Not array_merge(): that renumbers integer-like job keys instead of
+      // overwriting, corrupting the result map after a retry.
+      $results = array_replace($results, $retry_results);
     }
 
     return $results;

@@ -122,6 +122,29 @@ class ProcessPoolTest extends UnitTestCase {
   }
 
   /**
+   * Retry results overwrite by key, even integer-like job keys.
+   *
+   * array_merge() would renumber integer keys and append the retry result
+   * instead of replacing the failed one.
+   */
+  public function testRetryMergePreservesIntegerKeys(): void {
+    $marker = $this->scratchFile();
+    $flaky = sprintf(
+      'if (file_exists(%1$s)) { exit(0); } touch(%1$s); exit(1);',
+      var_export($marker, TRUE)
+    );
+
+    $pool = new ProcessPool(2);
+    $results = $pool->run([
+      7 => $this->phpJob('exit(0);'),
+      9 => $this->phpJob($flaky),
+    ]);
+
+    $this->assertSame([7, 9], array_keys($results));
+    $this->assertSame(0, $results[9]['exit']);
+  }
+
+  /**
    * When every job fails, the failure is systematic: no retry pass runs.
    */
   public function testAllFailedSkipsRetry(): void {
