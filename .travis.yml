@@ -76,10 +76,12 @@ script:
   # Cleanup (chromedriver license file)
   - rm -f LICENSE.chromedriver
 
-# Deployment configuration (unchanged - still uses BLT for now)
+# Deployment: build the artifact and distribute it to the Acquia remotes.
+# The Acquia cloud hooks then run ./sn deploy:update (post-code-update on a
+# branch push, post-code-deploy on a release switch).
 deploy:
 - provider: script
-  script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
+  script: scripts/deploy/build.sh --ignore-dirty && ./sn deploy:distribute --branch="${TRAVIS_BRANCH}-build" --commit-msg="Automated deploy by Travis for build ${TRAVIS_BUILD_ID}"
   skip_cleanup: true
   edge:
     branch: v2.0.3-beta.4
@@ -87,7 +89,7 @@ deploy:
     branch: develop
     php: 8.3
 - provider: script
-  script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
+  script: scripts/deploy/build.sh --ignore-dirty && ./sn deploy:distribute --branch="${TRAVIS_BRANCH}-build" --commit-msg="Automated deploy by Travis for build ${TRAVIS_BUILD_ID}"
   skip_cleanup: true
   edge:
     branch: v2.0.3-beta.4
@@ -95,7 +97,7 @@ deploy:
     branch: main
     php: 8.3
 - provider: script
-  script: "${BLT_TRAVIS_DIR}/scripts/deploy_tag"
+  script: scripts/deploy/build.sh --ignore-dirty && ./sn deploy:distribute --tag="${TRAVIS_TAG}-build" --commit-msg="Automated deploy by Travis for ${TRAVIS_TAG}"
   skip_cleanup: true
   edge:
     branch: v2.0.3-beta.4
