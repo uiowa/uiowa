@@ -43,7 +43,7 @@ $additionalSettingsFiles = [
 ];
 
 foreach ($additionalSettingsFiles as $settingsFile) {
-  if (file_exists($settingsFile)) {
+  if (null !== $settingsFile && file_exists($settingsFile)) {
     require $settingsFile;
   }
 }
