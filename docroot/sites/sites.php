@@ -2819,12 +2819,6 @@ $sites['sitesshared-governance.dev.drupal.uiowa.edu'] = 'shared-governance.sites
 $sites['sitesshared-governance.stage.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
 $sites['sitesshared-governance.prod.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
 
-// Directory aliases for habelhah.lab.uiowa.edu.
-$sites['labhabelhah.uiowa.ddev.site'] = 'habelhah.lab.uiowa.edu';
-$sites['labhabelhah.dev.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
-$sites['labhabelhah.stage.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
-$sites['labhabelhah.prod.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
-
 // Directory aliases for thiel.lab.uiowa.edu.
 $sites['labthiel.uiowa.ddev.site'] = 'thiel.lab.uiowa.edu';
 $sites['labthiel.dev.drupal.uiowa.edu'] = 'thiel.lab.uiowa.edu';
