@@ -212,6 +212,20 @@ class ProcessPoolTest extends UnitTestCase {
   }
 
   /**
+   * Caps below 1 are floored to 1 instead of deadlocking the scheduler.
+   */
+  public function testSubOneCapsAreFloored(): void {
+    $pool = new ProcessPool(0, 0, 300, 0);
+
+    $results = $pool->run(
+      ['only' => $this->phpJob('exit(0);')],
+      ['only' => 'app']
+    );
+
+    $this->assertSame(0, $results['only']['exit']);
+  }
+
+  /**
    * The progress callback fires once per finished job with its result.
    */
   public function testProgressCallback(): void {

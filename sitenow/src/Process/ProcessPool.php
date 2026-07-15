@@ -43,7 +43,13 @@ class ProcessPool {
     private int $groupCap = 8,
     private int $timeout = 300,
     private int $retries = 1,
-  ) {}
+  ) {
+
+    // A cap below 1 could never start a job, leaving runPass() spinning
+    // forever on a queue it can't drain.
+    $this->concurrency = max(1, $concurrency);
+    $this->groupCap = max(1, $groupCap);
+  }
 
   /**
    * Run all jobs and return per-job results.
