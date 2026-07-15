@@ -2819,12 +2819,6 @@ $sites['sitesshared-governance.dev.drupal.uiowa.edu'] = 'shared-governance.sites
 $sites['sitesshared-governance.stage.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
 $sites['sitesshared-governance.prod.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
 
-// Directory aliases for habelhah.lab.uiowa.edu.
-$sites['labhabelhah.uiowa.ddev.site'] = 'habelhah.lab.uiowa.edu';
-$sites['labhabelhah.dev.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
-$sites['labhabelhah.stage.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
-$sites['labhabelhah.prod.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
-
 // Directory aliases for thiel.lab.uiowa.edu.
 $sites['labthiel.uiowa.ddev.site'] = 'thiel.lab.uiowa.edu';
 $sites['labthiel.dev.drupal.uiowa.edu'] = 'thiel.lab.uiowa.edu';
@@ -7858,3 +7852,21 @@ $sites['labshawnyu.uiowa.ddev.site'] = 'shawnyu.lab.uiowa.edu';
 $sites['labshawnyu.dev.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
 $sites['labshawnyu.stage.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
 $sites['labshawnyu.prod.drupal.uiowa.edu'] = 'shawnyu.lab.uiowa.edu';
+
+// Directory aliases for araldi.lab.uiowa.edu.
+$sites['labaraldi.uiowa.ddev.site'] = 'araldi.lab.uiowa.edu';
+$sites['labaraldi.dev.drupal.uiowa.edu'] = 'araldi.lab.uiowa.edu';
+$sites['labaraldi.stage.drupal.uiowa.edu'] = 'araldi.lab.uiowa.edu';
+$sites['labaraldi.prod.drupal.uiowa.edu'] = 'araldi.lab.uiowa.edu';
+
+// Directory aliases for bae.lab.uiowa.edu.
+$sites['labbae.uiowa.ddev.site'] = 'bae.lab.uiowa.edu';
+$sites['labbae.dev.drupal.uiowa.edu'] = 'bae.lab.uiowa.edu';
+$sites['labbae.stage.drupal.uiowa.edu'] = 'bae.lab.uiowa.edu';
+$sites['labbae.prod.drupal.uiowa.edu'] = 'bae.lab.uiowa.edu';
+
+// Directory aliases for exso.lab.uiowa.edu.
+$sites['labexso.uiowa.ddev.site'] = 'exso.lab.uiowa.edu';
+$sites['labexso.dev.drupal.uiowa.edu'] = 'exso.lab.uiowa.edu';
+$sites['labexso.stage.drupal.uiowa.edu'] = 'exso.lab.uiowa.edu';
+$sites['labexso.prod.drupal.uiowa.edu'] = 'exso.lab.uiowa.edu';
