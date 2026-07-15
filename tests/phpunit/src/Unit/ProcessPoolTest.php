@@ -124,8 +124,8 @@ class ProcessPoolTest extends UnitTestCase {
   /**
    * Retry results overwrite by key, even integer-like job keys.
    *
-   * array_merge() would renumber integer keys and append the retry result
-   * instead of replacing the failed one.
+   * The array_merge() function would renumber integer keys and 
+   * append the retry result instead of replacing the failed one.
    */
   public function testRetryMergePreservesIntegerKeys(): void {
     $marker = $this->scratchFile();
