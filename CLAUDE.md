@@ -5,9 +5,8 @@
 Applies to anything a human will read: issues, PRs, review packets, comments, commit
 messages, and your own responses on screen.
 
-Reading is a chore. Every sentence spends someone else's attention. The reader decides
-what detail they want; your job is to make the ask and the state legible in seconds,
-not to be complete.
+Reading is a chore. Every sentence spends someone else's attention. Make the ask and
+the current state legible in seconds; the reader decides what detail they want beyond that.
 
 Before posting, check the draft against these anti-patterns:
 
