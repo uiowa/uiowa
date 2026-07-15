@@ -35,7 +35,8 @@ class MultisiteExecuteCommand extends Command {
    * Exit code for a run that completed but had per-site failures.
    *
    * Distinct from FAILURE (1, the command itself could not run) so callers
-   * can tell "some sites failed" from "nothing ran".
+   * can tell "some sites failed" from "nothing ran". Declining the
+   * confirmation prompt is also FAILURE: nothing ran.
    */
   const EXITCODE_PARTIAL = 2;
 
