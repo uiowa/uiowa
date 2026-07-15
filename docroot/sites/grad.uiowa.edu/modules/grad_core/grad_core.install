@@ -51,7 +51,7 @@ function grad_core_update_9002() {
 }
 
 /**
- * Remove Area of Study content and disable the areas_of_study split.
+ * Remove Area of Study content ahead of disabling the areas_of_study split.
  */
 function grad_core_update_9003() {
   // Delete any area_of_study nodes first, since disabling the split will
@@ -79,41 +79,4 @@ function grad_core_update_9003() {
   if ($tids) {
     $term_storage->delete($term_storage->loadMultiple($tids));
   }
-
-  // Deactivate the areas_of_study split, which removes the now-unused
-  // content type, taxonomy vocabularies (degree_types, locations), views,
-  // and fields from this site's active config. Mirrors
-  // `drush config-split:deactivate areas_of_study`.
-  $io = new class {
-
-    /**
-     * No-op error handler.
-     */
-    public function error($message) {}
-
-    /**
-     * No-op success handler.
-     */
-    public function success($message) {}
-
-    /**
-     * No-op text handler.
-     */
-    public function text($message) {}
-
-    /**
-     * Always confirm.
-     */
-    public function confirm($message) {
-      return TRUE;
-    }
-
-  };
-  $t = function (string $string, array $args = []) {
-    return strtr($string, $args);
-  };
-
-  /** @var \Drupal\config_split\ConfigSplitCliService $cli */
-  $cli = \Drupal::service('config_split.cli');
-  $cli->ioDeactivate('areas_of_study', $io, $t, TRUE);
 }
