@@ -1,33 +1,72 @@
 # SiteNow application registry.
 #
 # The canonical list of Acquia Cloud applications that are valid SiteNow
-# multisite targets, with their application UUIDs. Adding an application
-# here is the deliberate step that makes it available to sitenow:multisite:create.
+# multisite targets. Each entry carries the application UUID (used by the
+# Acquia Cloud API, e.g. deploy:activate) and the git remote the build
+# artifact is pushed to (deploy:distribute). Adding an application here is the
+# deliberate step that makes it available to sitenow:multisite:create.
 #
 # reserved: true  excludes an application from automatic selection (it can
 # still be chosen explicitly with --app). uiowa06 is reserved for Healthcare.
+# The deploy commands still fan out to reserved applications.
 #
-# Not secret: UUIDs only. Acquia API credentials live elsewhere, never here.
+# Not secret: UUIDs and git remotes only (the remotes are also in blt.yml).
+# Acquia API credentials live elsewhere, never here.
 
 applications:
   uiowa:
     uuid: 6bcc006f-9a0e-425e-aba0-198585dd2b56
+    remote: 'uiowa@svn-14671.prod.hosting.acquia.com:uiowa.git'
   uiowa01:
     uuid: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
+    remote: 'uiowa01@svn-29892.prod.hosting.acquia.com:uiowa01.git'
   uiowa02:
     uuid: a912cf23-b421-4071-99a4-2f6f6edb97e3
+    remote: 'uiowa02@svn-37631.prod.hosting.acquia.com:uiowa02.git'
   uiowa03:
     uuid: 3d87eca7-89d1-47e2-84db-bc7ad52a9363
+    remote: 'uiowa03@svn-37631.prod.hosting.acquia.com:uiowa03.git'
   uiowa04:
     uuid: bf806a95-49a1-4bfe-9eed-6b91a89e694a
+    remote: 'uiowa04@svn-37631.prod.hosting.acquia.com:uiowa04.git'
   uiowa05:
     uuid: c87bbab2-34fe-475b-a30b-6414b83e0c69
+    remote: 'uiowa05@svn-45062.prod.hosting.acquia.com:uiowa05.git'
   uiowa06:
     uuid: efb3347a-e483-48a6-bb6f-c48b72fa86ea
     reserved: true
+    remote: 'uiowa06@svn-45062.prod.hosting.acquia.com:uiowa06.git'
   uiowa07:
     uuid: 25f49632-0a90-4134-bcc3-bb64fd5a0f67
+    remote: 'uiowa07@svn-45062.prod.hosting.acquia.com:uiowa07.git'
   uiowa08:
     uuid: 74f7607a-0d2a-4d97-bafe-cb59551d4258
+    remote: 'uiowa08@svn-45062.prod.hosting.acquia.com:uiowa08.git'
   uiowa09:
     uuid: 36a4089a-92c3-479d-bfd5-70c1d20cc6ec
+    remote: 'uiowa09@svn-45062.prod.hosting.acquia.com:uiowa09.git'
+
+# Sites updated first during a deploy, in this order, ahead of the rest of the
+# application's list. deploy:update reads this list.
+#
+# DUPLICATED from blt/blt.yml (uiowa.run_first) while the BLT deploy path is
+# retained as a fallback: BLT still reads its copy on prod/test/stage. Keep the
+# two in sync until BLT is removed, then drop the blt.yml copy (#9858).
+run_first:
+  - 'emergency.uiowa.edu'
+  - 'police.uiowa.edu'
+  - 'uiowa.edu'
+  - 'admissions.uiowa.edu'
+  - 'grad.admissions.uiowa.edu'
+  - 'clas.uiowa.edu'
+  - 'dentistry.uiowa.edu'
+  - 'education.uiowa.edu'
+  - 'engineering.uiowa.edu'
+  - 'grad.uiowa.edu'
+  - 'law.uiowa.edu'
+  - 'medicine.uiowa.edu'
+  - 'nursing.uiowa.edu'
+  - 'pharmacy.uiowa.edu'
+  - 'public-health.uiowa.edu'
+  - 'tippie.uiowa.edu'
+  - 'uc.uiowa.edu'
