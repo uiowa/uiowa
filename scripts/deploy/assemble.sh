@@ -56,4 +56,13 @@ rsync -a --delete \
   --exclude-from="${EXCLUDE_FILE}" \
   "${REPO_ROOT}/" "${BUILD_DIR}/"
 
+# rsync's .gitignore emulation does not honor git's cross-file negations: the
+# root .gitignore ignores **/assets/js as a build artifact, and uids_base
+# re-includes its committed copy with !assets/js. rsync drops it, so restore the
+# assets/js files git actually tracks. (assets/css is ignored the same way, but
+# gulp regenerates that; assets/js is committed source with nothing to rebuild
+# it.) The pathspec covers any theme that adds the same negation later.
+git -C "${REPO_ROOT}" ls-files -- ':(glob)**/assets/js/**' \
+  | rsync -a --files-from=- "${REPO_ROOT}/" "${BUILD_DIR}/"
+
 echo "assemble: working tree copied to ${BUILD_DIR}"
