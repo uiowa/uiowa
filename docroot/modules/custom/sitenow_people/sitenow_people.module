@@ -1020,6 +1020,15 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       break;
 
     case 'people_list_block':
+      // Core views/views.ajax excludes the reset button from AJAX
+      // submissions, as it breaks some functionality. It targets
+      // 'edit-reset', though, which BEF changes to a unique id.
+      // To persist through, we need to add it in a specific process,
+      // and not just this form alter, otherwise it'll be overwritten.
+      if (isset($form['actions']['reset'])) {
+        $form['actions']['reset']['#process'][] = '_sitenow_people_reset_button_process';
+      }
+
       // Change the research areas label.
       if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
@@ -1080,6 +1089,20 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       }
       break;
   }
+}
+
+/**
+ * Process callback: restores the reset button's default data-drupal-selector.
+ *
+ * @param array $element
+ *   The reset button element.
+ *
+ * @return array
+ *   The processed element.
+ */
+function _sitenow_people_reset_button_process(array $element) {
+  $element['#attributes']['data-drupal-selector'] = 'edit-reset';
+  return $element;
 }
 
 /**
