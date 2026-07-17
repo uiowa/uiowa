@@ -147,7 +147,7 @@ YAML);
     ['jobs' => $jobs, 'groups' => $groups] = $runner->buildJobs($runner->select(), ['cr']);
 
     $this->assertSame(
-      ['drush', '@vote.prod', '--ssh-options=' . FleetRunner::SSH_OPTIONS, 'cr'],
+      ['drush', '@vote.prod', '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS, 'cr'],
       $jobs['vote.uiowa.edu']
     );
     $this->assertSame([
@@ -171,10 +171,62 @@ YAML);
     $this->assertSame([
       'drush',
       '@accessibility.dev',
-      '--ssh-options=' . FleetRunner::SSH_OPTIONS,
+      '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS,
       'sql:query',
       'SELECT COUNT(*) FROM node',
     ], $jobs['accessibility.uiowa.edu']);
+  }
+
+  /**
+   * Fleet ssh options inherit the repo-wide drush.yml ssh.options base.
+   *
+   * Drush's --ssh-options replaces the configured value rather than
+   * appending, so the base (agent forwarding etc.) must be restated or
+   * fleet jobs silently lose it.
+   */
+  public function testSshOptionsInheritDrushConfig(): void {
+    $drush_config = tempnam(sys_get_temp_dir(), 'drush');
+    file_put_contents($drush_config, "ssh:\n  options: '-A -o PasswordAuthentication=no -p 22'\n");
+    $runner = new FleetRunner($this->manifest, $drush_config);
+
+    $this->assertSame(
+      '-A -o PasswordAuthentication=no -p 22 ' . FleetRunner::MUX_OPTIONS,
+      $runner->sshOptions()
+    );
+    unlink($drush_config);
+  }
+
+  /**
+   * With no usable drush config, ssh options fall back to drush's default.
+   *
+   * @dataProvider drushConfigFallbackProvider
+   */
+  public function testSshOptionsFallback(?string $content): void {
+    $drush_config = NULL;
+    if ($content !== NULL) {
+      $drush_config = tempnam(sys_get_temp_dir(), 'drush');
+      file_put_contents($drush_config, $content);
+    }
+    $runner = new FleetRunner($this->manifest, $drush_config);
+
+    $this->assertSame(
+      '-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS,
+      $runner->sshOptions()
+    );
+    if ($drush_config !== NULL) {
+      unlink($drush_config);
+    }
+  }
+
+  /**
+   * Drush configs that provide no usable ssh.options.
+   */
+  public static function drushConfigFallbackProvider(): array {
+    return [
+      'no config path' => [NULL],
+      'no ssh.options key' => ["drush:\n  paths:\n    backup-dir: /tmp\n"],
+      'malformed yaml' => ["ssh:\n  options: 'unclosed\n"],
+    ];
   }
 
   /**

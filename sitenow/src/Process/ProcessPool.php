@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
  *
  * Jobs may carry a group name (e.g. the Acquia application). No more than
  * $groupCap jobs per group run at once: fleet jobs multiplex over one SSH
- * connection per app server (see FleetRunner::SSH_OPTIONS), and sshd drops
+ * connection per app server (see FleetRunner::sshOptions()), and sshd drops
  * mux session requests past MaxSessions — 8 per app is validated safe
  * against Acquia, 16 is not.
  */

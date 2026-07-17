@@ -107,7 +107,7 @@ HELP);
       return Command::FAILURE;
     }
 
-    $runner = new FleetRunner("{$this->repoRoot}/blt/manifest.yml");
+    $runner = new FleetRunner("{$this->repoRoot}/blt/manifest.yml", "{$this->repoRoot}/drush/drush.yml");
 
     try {
       $selection = $runner->select($apps, $exclude);
@@ -135,7 +135,7 @@ HELP);
     // A dry run touches nothing remote, so it can run anywhere.
     if ($dry_run) {
       ['jobs' => $jobs] = $runner->buildJobs($selection, $cmd, $env);
-      $ssh_option = '--ssh-options=' . FleetRunner::SSH_OPTIONS;
+      $ssh_option = '--ssh-options=' . $runner->sshOptions();
       $io->writeln("Dry run: {$site_count} sites across " . count($selection) . " app(s), concurrency {$concurrency}.");
       $io->writeln('Each command also gets ' . escapeshellarg($ssh_option) . ' (SSH multiplexing, omitted below).');
       foreach ($jobs as $argv) {

@@ -29,26 +29,62 @@ class FleetRunner {
   /**
    * SSH options enabling connection multiplexing, per fleet invocation only.
    *
-   * Passed to each drush process via --ssh-options so that only fleet runs
-   * multiplex: everyday drush commands stay on stock SSH with no shared
-   * state. The first connection to an app server authenticates and becomes
-   * the master; the rest of the fleet rides it as sessions (sshd caps these
-   * around 10 — PER_APP_CAP stays under that, and over-cap requests fall
-   * back to a direct connection). The master self-closes 60 seconds after
-   * its last session ends. PasswordAuthentication=no is restated because
-   * this string replaces drush's default ssh.options, not appends to it.
+   * Appended (via sshOptions()) to each drush process's --ssh-options so
+   * that only fleet runs multiplex: everyday drush commands stay on stock
+   * SSH with no shared state. The first connection to an app server
+   * authenticates and becomes the master; the rest of the fleet rides it as
+   * sessions (sshd caps these around 10 — PER_APP_CAP stays under that, and
+   * over-cap requests fall back to a direct connection). The master
+   * self-closes 60 seconds after its last session ends.
    */
-  const SSH_OPTIONS = '-o PasswordAuthentication=no -o ControlMaster=auto -o ControlPath=~/.ssh/cm-%C -o ControlPersist=60';
+  const MUX_OPTIONS = '-o ControlMaster=auto -o ControlPath=~/.ssh/cm-%C -o ControlPersist=60';
 
   /**
    * Constructs the runner.
    *
    * @param string $manifestPath
    *   Absolute path to blt/manifest.yml.
+   * @param string|null $drushConfigPath
+   *   Absolute path to the repo-wide drush.yml, whose ssh.options fleet
+   *   jobs inherit. NULL falls back to drush's own default.
    */
   public function __construct(
     private string $manifestPath,
+    private ?string $drushConfigPath = NULL,
   ) {}
+
+  /**
+   * Compose the ssh options fleet drush processes run with.
+   *
+   * Drush's --ssh-options REPLACES the configured ssh.options rather than
+   * appending to it, so the repo-wide base (drush/drush.yml: agent
+   * forwarding, PasswordAuthentication=no) is read and restated here. Fleet
+   * jobs run with exactly what every other drush command uses, plus the
+   * multiplexing options.
+   *
+   * @return string
+   *   The composed ssh options string.
+   */
+  public function sshOptions(): string {
+
+    // Drush's own default when no ssh.options is configured anywhere.
+    $base = '-o PasswordAuthentication=no';
+
+    if ($this->drushConfigPath !== NULL && file_exists($this->drushConfigPath)) {
+      try {
+        $config = Yaml::parseFile($this->drushConfigPath);
+        if (is_string($config['ssh']['options'] ?? NULL)) {
+          $base = $config['ssh']['options'];
+        }
+      }
+      catch (\Symfony\Component\Yaml\Exception\ParseException) {
+        // A drush.yml that doesn't parse breaks every drush command; the
+        // per-site drush errors will say so better than a crash here.
+      }
+    }
+
+    return $base . ' ' . self::MUX_OPTIONS;
+  }
 
   /**
    * Select sites from the manifest.
@@ -120,11 +156,12 @@ class FleetRunner {
   public function buildJobs(array $selection, array $drush_args, string $env = 'prod'): array {
     $jobs = [];
     $groups = [];
+    $ssh_option = '--ssh-options=' . $this->sshOptions();
 
     foreach ($selection as $app => $domains) {
       foreach ($domains as $domain) {
         $alias = Multisite::getIdentifier('http://' . $domain) . '.' . $env;
-        $jobs[$domain] = array_merge(['drush', "@{$alias}", '--ssh-options=' . self::SSH_OPTIONS], $drush_args);
+        $jobs[$domain] = array_merge(['drush', "@{$alias}", $ssh_option], $drush_args);
         $groups[$domain] = $app;
       }
     }
