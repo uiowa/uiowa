@@ -1,0 +1,17 @@
+project:
+  machine_name: labexso
+  human_name: exso.lab.uiowa.edu
+  local:
+    hostname: labexso.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labexso.prod
+drupal:
+  db:
+    database: exso_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labexso.prod.drupal.uiowa.edu'
+  requester: jeramos
