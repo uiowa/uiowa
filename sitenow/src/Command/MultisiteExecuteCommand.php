@@ -197,7 +197,7 @@ HELP);
         }
       }
       else {
-        $io->writeln("<error>✖</error> [{$done}/{$total}] {$key} (exit {$result['exit']})");
+        $io->writeln("<error>✖</error> [{$done}/{$total}] {$key} failed: " . $this->failureReason($result));
       }
     });
 
@@ -208,49 +208,14 @@ HELP);
     $io->writeln('');
     $io->writeln("Finished in {$elapsed}s: {$ok_count} succeeded, " . count($failed) . ' failed.');
 
-    if (!empty($failed)) {
-      $err->writeln('');
-      $err->writeln('<comment>[WARNING] ' . count($failed) . ' site(s) failed:</comment>');
-      $this->renderFailures($err, $failed);
-      return self::EXITCODE_PARTIAL;
-    }
-
-    return Command::SUCCESS;
-  }
-
-  /**
-   * Render failed sites grouped by failure reason.
-   *
-   * Identical failures share one line, so a fleet-wide failure (e.g. a
-   * command no site has) reads as one reason instead of N copies of it.
-   * Site names only appear when they carry information — which sites
-   * failed, when it wasn't all of them.
-   *
-   * @param \Symfony\Component\Console\Style\SymfonyStyle $err
-   *   The error-stream style to write to.
-   * @param array<string, array{site: string, app: string, exit: int, output: string, error: string}> $failed
-   *   The failed per-site results.
-   */
-  protected function renderFailures(SymfonyStyle $err, array $failed): void {
-    $by_reason = [];
-    foreach ($failed as $r) {
-      $by_reason[$this->failureReason($r)][] = $r;
-    }
-
-    foreach ($by_reason as $reason => $group) {
-      if (count($group) === count($failed) && count($failed) > 1) {
-        $err->writeln("  {$reason} — all " . count($failed) . ' sites');
-        continue;
-      }
-      $err->writeln("  {$reason} — " . count($group) . (count($group) === 1 ? ' site:' : ' sites:'));
-      foreach ($group as $r) {
-        $err->writeln("    {$r['app']}: {$r['site']}");
-      }
-    }
+    return empty($failed) ? Command::SUCCESS : self::EXITCODE_PARTIAL;
   }
 
   /**
    * Summarize why a site failed, from its stderr (or stdout) tail.
+   *
+   * Leads with drush's own error message so the reason reads plainly; the exit
+   * code trails in parentheses as a detail rather than as the headline.
    *
    * @param array{exit: int, output: string, error: string} $result
    *   The per-site result.
@@ -263,7 +228,9 @@ HELP);
     $lines = array_filter(array_map('trim', preg_split('/\R/', $source)), fn ($l) => $l !== '');
     $tail = $lines ? end($lines) : '';
 
-    return "exit {$result['exit']}" . ($tail !== '' ? " ({$tail})" : '');
+    return $tail !== ''
+      ? "{$tail} (exit {$result['exit']})"
+      : "no error output (exit {$result['exit']})";
   }
 
   /**
