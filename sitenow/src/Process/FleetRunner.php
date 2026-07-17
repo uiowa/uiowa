@@ -2,6 +2,7 @@
 
 namespace SiteNow\Process;
 
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -77,7 +78,7 @@ class FleetRunner {
           $base = $config['ssh']['options'];
         }
       }
-      catch (\Symfony\Component\Yaml\Exception\ParseException) {
+      catch (ParseException) {
         // A drush.yml that doesn't parse breaks every drush command; the
         // per-site drush errors will say so better than a crash here.
       }
