@@ -159,17 +159,15 @@ HELP);
     // Catch typos before fanning out: `drush help <cmd>` on one canary site
     // verifies the command is registered without executing anything. It can
     // legitimately fail on a command that only some sites have (site-specific
-    // modules, splits), so failure is a confirmation, not a wall.
+    // modules, splits), so interactively the warning just lands above the
+    // normal confirmation prompt below; under -y there is no prompt to lean
+    // on, so a preflight failure aborts.
     if (!str_starts_with($cmd[0], '-')) {
       $canary = $runner->preflight($selection, $cmd[0], $env);
       if ($canary !== NULL) {
         $err->writeln("<comment>`{$cmd[0]}` failed a preflight check on {$canary['site']} — " . $this->failureReason($canary) . '</comment>');
         if ($input->getOption('yes')) {
           $err->error('Aborting: nothing was run. If the command genuinely exists on only some sites, re-run without -y to confirm interactively.');
-          return Command::FAILURE;
-        }
-        if (!$io->confirm('Run the fleet anyway?', FALSE)) {
-          $io->writeln('Aborted.');
           return Command::FAILURE;
         }
       }
@@ -213,13 +211,42 @@ HELP);
     if (!empty($failed)) {
       $err->writeln('');
       $err->writeln('<comment>[WARNING] ' . count($failed) . ' site(s) failed:</comment>');
-      foreach ($failed as $r) {
-        $err->writeln("  {$r['app']}: {$r['site']} — " . $this->failureReason($r));
-      }
+      $this->renderFailures($err, $failed);
       return self::EXITCODE_PARTIAL;
     }
 
     return Command::SUCCESS;
+  }
+
+  /**
+   * Render failed sites grouped by failure reason.
+   *
+   * Identical failures share one line, so a fleet-wide failure (e.g. a
+   * command no site has) reads as one reason instead of N copies of it.
+   * Site names only appear when they carry information — which sites
+   * failed, when it wasn't all of them.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $err
+   *   The error-stream style to write to.
+   * @param array<string, array{site: string, app: string, exit: int, output: string, error: string}> $failed
+   *   The failed per-site results.
+   */
+  protected function renderFailures(SymfonyStyle $err, array $failed): void {
+    $by_reason = [];
+    foreach ($failed as $r) {
+      $by_reason[$this->failureReason($r)][] = $r;
+    }
+
+    foreach ($by_reason as $reason => $group) {
+      if (count($group) === count($failed) && count($failed) > 1) {
+        $err->writeln("  {$reason} — all " . count($failed) . ' sites');
+        continue;
+      }
+      $err->writeln("  {$reason} — " . count($group) . (count($group) === 1 ? ' site:' : ' sites:'));
+      foreach ($group as $r) {
+        $err->writeln("    {$r['app']}: {$r['site']}");
+      }
+    }
   }
 
   /**
