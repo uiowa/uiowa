@@ -74,6 +74,10 @@ question mid-fleet. Drush commands that normally ask their own confirmation
 (pm:uninstall, config:set, ...) need their own -y inside the passthrough, or
 every site will auto-answer with drush's default (usually cancel).
 
+Before the fleet runs, the drush command is checked on one canary site (via
+`drush help`, which executes nothing). A typo'd command aborts before any site
+runs; a command that only exists on some sites asks for confirmation.
+
 Examples:
   # Cache rebuild on every site of two apps:
   ddev exec ./sn ume --apps=uiowa02,uiowa03 -y -- cr
@@ -150,6 +154,25 @@ HELP);
     }
     if (!$this->requireSshAgent($io)) {
       return Command::FAILURE;
+    }
+
+    // Catch typos before fanning out: `drush help <cmd>` on one canary site
+    // verifies the command is registered without executing anything. It can
+    // legitimately fail on a command that only some sites have (site-specific
+    // modules, splits), so failure is a confirmation, not a wall.
+    if (!str_starts_with($cmd[0], '-')) {
+      $canary = $runner->preflight($selection, $cmd[0], $env);
+      if ($canary !== NULL) {
+        $err->writeln("<comment>`{$cmd[0]}` failed a preflight check on {$canary['site']} — " . $this->failureReason($canary) . '</comment>');
+        if ($input->getOption('yes')) {
+          $err->error('Aborting: nothing was run. If the command genuinely exists on only some sites, re-run without -y to confirm interactively.');
+          return Command::FAILURE;
+        }
+        if (!$io->confirm('Run the fleet anyway?', FALSE)) {
+          $io->writeln('Aborted.');
+          return Command::FAILURE;
+        }
+      }
     }
 
     $cmd_display = implode(' ', $cmd);

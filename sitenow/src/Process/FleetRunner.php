@@ -170,6 +170,57 @@ class FleetRunner {
   }
 
   /**
+   * Check that the drush command is registered before fanning out.
+   *
+   * Runs `drush help <command>` against one canary site — the first site of
+   * the selection — which verifies registration without executing anything.
+   * Command availability can vary per site (site-specific modules, config
+   * splits), so a canary failure is advisory: the command may exist on
+   * other sites, but far more often it's a typo about to fail everywhere.
+   *
+   * @param array<string, array<int, string>> $selection
+   *   Map of app name => site domains, as returned by select().
+   * @param string $command
+   *   The drush command name to check.
+   * @param string $env
+   *   The environment suffix for the site alias (e.g. 'prod').
+   *
+   * @return array{site: string, exit: int, output: string, error: string}|null
+   *   NULL when the canary recognizes the command; otherwise the canary
+   *   site and its drush result.
+   */
+  public function preflight(array $selection, string $command, string $env = 'prod'): ?array {
+    $domains = reset($selection);
+    if (empty($domains)) {
+      return NULL;
+    }
+
+    $site = $domains[0];
+    $alias = Multisite::getIdentifier('http://' . $site) . '.' . $env;
+    $argv = ['drush', "@{$alias}", '--ssh-options=' . $this->sshOptions(), 'help', $command];
+    $result = $this->runCanary($site, $argv);
+
+    return $result['exit'] === 0 ? NULL : ['site' => $site] + $result;
+  }
+
+  /**
+   * Execute the canary job. Split out so tests can fake the drush call.
+   *
+   * @param string $site
+   *   The canary site domain.
+   * @param array<int, string> $argv
+   *   The drush argv to run.
+   *
+   * @return array{exit: int, output: string, error: string}
+   *   The canary result.
+   */
+  protected function runCanary(string $site, array $argv): array {
+    $pool = new ProcessPool(1, 1, 120, 0);
+
+    return $pool->run([$site => $argv])[$site];
+  }
+
+  /**
    * Run a drush command against every site in a selection.
    *
    * @param array<string, array<int, string>> $selection

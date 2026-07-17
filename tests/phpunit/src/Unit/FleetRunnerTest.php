@@ -230,6 +230,74 @@ YAML);
   }
 
   /**
+   * Build a runner whose canary drush call is faked.
+   *
+   * @param array $result
+   *   The canned {exit, output, error} result for the canary.
+   * @param array|null $captured
+   *   By-ref out-param receiving [site, argv] the canary was invoked with.
+   *
+   * @return \SiteNow\Process\FleetRunner
+   *   The runner.
+   */
+  protected function runnerWithCanary(array $result, ?array &$captured = NULL): FleetRunner {
+    return new class($this->manifest, $result, $captured) extends FleetRunner {
+
+      public function __construct(
+        string $manifest,
+        private array $result,
+        private ?array &$captured,
+      ) {
+        parent::__construct($manifest);
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      protected function runCanary(string $site, array $argv): array {
+        $this->captured = [$site, $argv];
+
+        return $this->result;
+      }
+
+    };
+  }
+
+  /**
+   * The preflight checks the first site via `drush help` and passes on 0.
+   */
+  public function testPreflightPasses(): void {
+    $runner = $this->runnerWithCanary(['exit' => 0, 'output' => '', 'error' => ''], $captured);
+
+    $this->assertNull($runner->preflight($runner->select(), 'cr'));
+    [$site, $argv] = $captured;
+    $this->assertSame('vote.uiowa.edu', $site);
+    $this->assertSame('drush', $argv[0]);
+    $this->assertSame('@vote.prod', $argv[1]);
+    $this->assertSame(['help', 'cr'], array_slice($argv, -2));
+  }
+
+  /**
+   * A failing canary reports the site and the drush result.
+   */
+  public function testPreflightFails(): void {
+    $runner = $this->runnerWithCanary(['exit' => 1, 'output' => '', 'error' => 'Command cr was not found.']);
+
+    $result = $runner->preflight($runner->select(), 'cr');
+    $this->assertSame('vote.uiowa.edu', $result['site']);
+    $this->assertSame(1, $result['exit']);
+  }
+
+  /**
+   * An empty selection has no canary to check and passes.
+   */
+  public function testPreflightEmptySelectionPasses(): void {
+    $runner = $this->runnerWithCanary(['exit' => 1, 'output' => '', 'error' => '']);
+
+    $this->assertNull($runner->preflight([], 'cr'));
+  }
+
+  /**
    * Default concurrency scales per app and caps at the ceiling.
    *
    * @dataProvider concurrencyProvider
