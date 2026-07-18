@@ -19,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'report:inactive',
-  description: 'Report inactive SiteNow sites (no recent login or revision).',
+  description: '(ddev required) Report inactive SiteNow sites (no recent login or revision).',
   aliases: ['inactive'],
 )]
 class ReportInactiveCommand extends Command {
