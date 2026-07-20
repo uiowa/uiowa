@@ -1,0 +1,17 @@
+project:
+  machine_name: labaraldi
+  human_name: araldi.lab.uiowa.edu
+  local:
+    hostname: labaraldi.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labaraldi.prod
+drupal:
+  db:
+    database: araldi_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labaraldi.prod.drupal.uiowa.edu'
+  requester: bucknerl
