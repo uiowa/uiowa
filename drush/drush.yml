@@ -6,3 +6,21 @@ drush:
     backup-dir: '/var/www/html/tmp/drush-backups'
 ssh:
   options: '-A -o PasswordAuthentication=no -p 22'
+sql:
+  structure-tables:
+    # Data skipped during sql-sync/sql-dump (schema copied, rows dropped):
+    # transient/rebuildable tables that don't need to travel. Consumed by
+    # --structure-tables-key=lightweight. Wildcards are expanded against the
+    # live DB and non-existent tables are dropped, so this is safe per-site.
+    lightweight:
+      - cache
+      - 'cache_*'
+      - sessions
+      - watchdog
+      - batch
+      - flood
+      - semaphore
+      - key_value_expire
+      - queue
+      - history
+      - 'search_*'

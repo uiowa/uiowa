@@ -27,6 +27,7 @@ use SiteNow\Command\ReportDomainsCommand;
 use SiteNow\Command\ReportInactiveCommand;
 use SiteNow\Command\ReportSplitsCommand;
 use SiteNow\Command\RoutesCustomCommand;
+use SiteNow\Command\SiteSyncCommand;
 use SiteNow\Command\SiteUpdateCommand;
 use Symfony\Component\Console\Application;
 
@@ -49,5 +50,6 @@ $application->add(new ReportDomainsCommand($root));
 $application->add(new ReportInactiveCommand($root));
 $application->add(new ReportSplitsCommand($root));
 $application->add(new RoutesCustomCommand($root));
+$application->add(new SiteSyncCommand($root));
 $application->add(new SiteUpdateCommand($root));
 $application->run();
