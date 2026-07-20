@@ -902,6 +902,14 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   }
 
   switch ($form_id) {
+    case 'google_tag_container_form':
+      // After saving, redirect to the containers collection instead of the
+      // single-container settings page (which is now admin-only).
+      if (isset($form['actions']['submit'])) {
+        $form['actions']['submit']['#submit'][] = 'uiowa_core_google_tag_container_form_submit';
+      }
+      break;
+
     case 'fragment_region_item_add_form':
     case 'fragment_region_item_edit_form':
       // Ensure item is published to prevent rendering issue for anonymous user.
@@ -2323,4 +2331,14 @@ function uiowa_core_configure_fontawesome_icon_field(array &$icon_element, $chec
       }
     }
   }
+}
+
+/**
+ * Submit handler for google_tag_container_form.
+ *
+ * Redirects to the containers collection page after save instead of the
+ * single-container settings page (which is admin-only).
+ */
+function uiowa_core_google_tag_container_form_submit($form, FormStateInterface $form_state) {
+  $form_state->setRedirect('entity.google_tag_container.collection');
 }
