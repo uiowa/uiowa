@@ -29,6 +29,7 @@ use SiteNow\Command\ReportSplitsCommand;
 use SiteNow\Command\RoutesCustomCommand;
 use SiteNow\Command\SiteSyncCommand;
 use SiteNow\Command\SiteUpdateCommand;
+use SiteNow\Command\SyncAllCommand;
 use Symfony\Component\Console\Application;
 
 // This file lives at the repository root.
@@ -52,4 +53,5 @@ $application->add(new ReportSplitsCommand($root));
 $application->add(new RoutesCustomCommand($root));
 $application->add(new SiteSyncCommand($root));
 $application->add(new SiteUpdateCommand($root));
+$application->add(new SyncAllCommand($root));
 $application->run();
