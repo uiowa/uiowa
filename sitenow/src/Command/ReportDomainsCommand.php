@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'report:domains',
-  description: 'List domains on prod (default) or specified environments.',
+  description: '(ddev required) List domains on prod (default) or specified environments.',
   aliases: ['domains'],
 )]
 class ReportDomainsCommand extends Command {
