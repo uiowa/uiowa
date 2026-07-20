@@ -43,6 +43,16 @@ class SiteSyncCommand extends Command {
   const FILE_EXCLUDE_PATHS = 'styles:css:js';
 
   /**
+   * Whether to force drush ANSI color, mirroring this command's own output.
+   *
+   * Drush runs through a pipe here and disables color by default; this
+   * restates the command's own decoration (on at an interactive terminal, off
+   * when piped) so color survives, and it is forwarded to the site:update
+   * child so the config-import table stays colored end to end.
+   */
+  private bool $ansi = FALSE;
+
+  /**
    * Constructs the command.
    *
    * @param string $repoRoot
@@ -87,6 +97,7 @@ HELP);
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
+    $this->ansi = $output->isDecorated();
 
     $site = $input->getArgument('site');
     $env = $input->getOption('env');
@@ -174,7 +185,7 @@ HELP);
     //    command that already owns it. A skip or config-mismatch exit is not a
     //    sync failure; only a genuine update error is.
     if (!$input->getOption('no-update')) {
-      $update = new Process(["{$this->repoRoot}/sn", 'site:update', $site], $this->repoRoot);
+      $update = new Process(["{$this->repoRoot}/sn", 'site:update', $site, $this->ansi ? '--ansi' : '--no-ansi'], $this->repoRoot);
       $update->setTimeout(NULL);
       $update->run(fn ($type, $buffer) => print $buffer);
       $tolerated = [Command::SUCCESS, SiteUpdateCommand::SKIPPED, SiteUpdateCommand::CONFIG_MISMATCH];
@@ -224,7 +235,7 @@ HELP);
    */
   private function drush(array $args, bool $stream = FALSE): Process {
     $process = new Process(
-      ["{$this->repoRoot}/vendor/bin/drush", ...$args],
+      ["{$this->repoRoot}/vendor/bin/drush", $this->ansi ? '--ansi' : '--no-ansi', ...$args],
       $this->repoRoot,
     );
     $process->setTimeout(NULL);

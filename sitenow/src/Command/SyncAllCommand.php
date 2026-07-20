@@ -132,7 +132,7 @@ HELP);
     // Options forwarded verbatim to each per-site site:sync. -y suppresses the
     // child's own prompt: the confirmation above covers the whole run, and the
     // children run non-interactively.
-    $passthrough = ["--env={$env}", '-y'];
+    $passthrough = ["--env={$env}", '-y', $output->isDecorated() ? '--ansi' : '--no-ansi'];
     foreach (['sync-public-files', 'sync-private-files', 'no-update'] as $flag) {
       if ($input->getOption($flag)) {
         $passthrough[] = "--{$flag}";
