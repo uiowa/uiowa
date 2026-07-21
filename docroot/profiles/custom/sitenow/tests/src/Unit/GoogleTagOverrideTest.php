@@ -64,7 +64,6 @@ class GoogleTagOverrideTest extends UnitTestCase {
    * @dataProvider nonProdEnvProvider
    */
   public function testContainersOverriddenInNonProd($env) {
-    $this->markTestSkipped('Non-prod check is temporarily commented out in GoogleTagOverride (@todo) for local/sandbox.dev migration testing.');
 
     if ($env) {
       putenv("AH_SITE_ENVIRONMENT={$env}");

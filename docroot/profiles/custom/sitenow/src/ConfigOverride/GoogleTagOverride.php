@@ -62,11 +62,7 @@ class GoogleTagOverride implements ConfigFactoryOverrideInterface {
       ->get('uiowa_core.settings')
       ->get('uiowa_core.gtag');
 
-    // @todo Restore the non-prod check below before merging - commented
-    // out so migration/upgrade hooks see real data while testing, since
-    // they read the same status value this override blanks.
-    // if (getenv('AH_SITE_ENVIRONMENT') !== 'prod' || $gtag_disabled) {
-    if ($gtag_disabled) {
+    if (getenv('AH_SITE_ENVIRONMENT') !== 'prod' || $gtag_disabled) {
       foreach ($container_names as $name) {
         $overrides[$name]['status'] = FALSE;
       }
