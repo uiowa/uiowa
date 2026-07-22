@@ -141,7 +141,8 @@ HELP);
     // 1. Copy the remote database over the local one. --structure-tables-key
     //    skips transient table data (see sql.structure-tables in
     //    drush/drush.yml); --create-db drops and recreates the local database.
-    $io->writeln("Copying database {$remote} => {$local}...");
+    $io->newLine();
+    $io->section("Copy database ({$remote} => {$local})");
     $sync = $this->drush([
       'sql-sync', $remote, $local,
       '--structure-tables-key=lightweight',
@@ -163,7 +164,8 @@ HELP);
     //    does not persist on the local copy. On by default to match what BLT's
     //    ds did (drush.sanitize: true); --no-sanitize is the deliberate opt-out.
     if (!$input->getOption('no-sanitize')) {
-      $io->writeln('Sanitizing database...');
+      $io->newLine();
+      $io->section('Sanitize database');
       $sanitize = $this->drush([$local, 'sql-sanitize', '--yes'], TRUE);
       if (!$sanitize->isSuccessful()) {
         $err->error("Sanitize failed for {$site}.");
@@ -178,7 +180,8 @@ HELP);
     //    The local destinations match where BLT's dsf/dspf wrote them.
     $dir = $this->siteDirectory($site);
     if ($input->getOption('sync-public-files')) {
-      $io->writeln('Syncing public files...');
+      $io->newLine();
+      $io->section('Public files');
       $files = $this->drush([
         'rsync', "{$remote}:%files/", "{$this->repoRoot}/docroot/sites/{$dir}/files",
         '--exclude-paths=' . self::FILE_EXCLUDE_PATHS,
@@ -190,7 +193,8 @@ HELP);
       }
     }
     if ($input->getOption('sync-private-files')) {
-      $io->writeln('Syncing private files...');
+      $io->newLine();
+      $io->section('Private files');
       $private = $this->drush([
         'rsync', "{$remote}:%private/", "{$this->repoRoot}/files-private/{$dir}",
         '--exclude-paths=' . self::FILE_EXCLUDE_PATHS,
@@ -207,6 +211,8 @@ HELP);
     //    command that already owns it. A skip or config-mismatch exit is not a
     //    sync failure; only a genuine update error is.
     if (!$input->getOption('no-update')) {
+      $io->newLine();
+      $io->section('Reconcile');
       $update = new Process(["{$this->repoRoot}/sn", 'site:update', $site, $this->ansi ? '--ansi' : '--no-ansi'], $this->repoRoot);
       $update->setTimeout(NULL);
       $update->run(fn ($type, $buffer) => print $buffer);
