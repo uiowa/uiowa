@@ -75,12 +75,14 @@ class SiteSyncCommand extends Command {
       ->addOption('sync-public-files', NULL, InputOption::VALUE_NONE, 'Also rsync the public files directory from the remote.')
       ->addOption('sync-private-files', NULL, InputOption::VALUE_NONE, 'Also rsync the private files directory from the remote.')
       ->addOption('no-update', NULL, InputOption::VALUE_NONE, 'Skip the post-sync update (site:update): copy the database only.')
+      ->addOption('no-sanitize', NULL, InputOption::VALUE_NONE, 'Skip sanitization and keep real production data. The copy will contain PII — only use it when you genuinely need production data to reproduce something.')
       ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.')
       ->setHelp(<<<'HELP'
 Copies a remote environment's database over your local one for a single site,
+sanitizes it (scrubs credentials, emails, sessions, and webform submissions),
 then reconciles it (drush deploy) so the local copy is usable.
 
-  # Pull brand.uiowa.edu's prod database to local:
+  # Pull brand.uiowa.edu's prod database to local (sanitized):
   ddev exec ./sn site:sync brand.uiowa.edu
 
   # Pull from dev instead, and bring public files too:
@@ -88,6 +90,9 @@ then reconciles it (drush deploy) so the local copy is usable.
 
   # Database only, no updatedb/config import afterward:
   ddev exec ./sn ds brand.uiowa.edu --no-update
+
+  # Keep real production data (PII) — only when you truly need it:
+  ddev exec ./sn ds brand.uiowa.edu --no-sanitize
 HELP);
   }
 
@@ -152,7 +157,24 @@ HELP);
     // 2. Rebuild caches on the freshly copied local database.
     $this->drush([$local, 'cache:rebuild']);
 
-    // 3. Optional file syncs, mirroring the old `ds --sync-*-files` behavior.
+    // 3. Sanitize the copied database unless explicitly opted out. sql-sanitize
+    //    scrubs user credentials and emails, clears sessions, truncates webform
+    //    submissions, and fires uiowa's own sanitize hooks, so production PII
+    //    does not persist on the local copy. On by default to match what BLT's
+    //    ds did (drush.sanitize: true); --no-sanitize is the deliberate opt-out.
+    if (!$input->getOption('no-sanitize')) {
+      $io->writeln('Sanitizing database...');
+      $sanitize = $this->drush([$local, 'sql-sanitize', '--yes'], TRUE);
+      if (!$sanitize->isSuccessful()) {
+        $err->error("Sanitize failed for {$site}.");
+        return Command::FAILURE;
+      }
+    }
+    else {
+      $io->warning('Skipping sanitize (--no-sanitize): this local copy will contain real production data, including PII.');
+    }
+
+    // 4. Optional file syncs, mirroring the old `ds --sync-*-files` behavior.
     //    The local destinations match where BLT's dsf/dspf wrote them.
     $dir = $this->siteDirectory($site);
     if ($input->getOption('sync-public-files')) {
@@ -180,7 +202,7 @@ HELP);
       }
     }
 
-    // 4. Reconcile the copied database: updatedb, config import, deploy hooks.
+    // 5. Reconcile the copied database: updatedb, config import, deploy hooks.
     //    This is the "drupal:update" half of the old ds, delegated to the
     //    command that already owns it. A skip or config-mismatch exit is not a
     //    sync failure; only a genuine update error is.
