@@ -63,7 +63,7 @@ class DeployPostDbCopyCommand extends Command {
     $db_name = $input->getArgument('db-name');
     $app = getenv('AH_SITE_GROUP') ?: '';
     if ($app === '') {
-      $err->error('AH_SITE_GROUP is not set. This command runs from the Acquia post-db-copy hook.');
+      $err->error('AH_SITE_GROUP is not set. The Acquia post-db-copy hook sets it automatically; to run this command by hand (e.g. testing) set it to the target application first — e.g. AH_SITE_GROUP=uiowa09 ./sn deploy:post-db-copy <db-name>.');
       return Command::FAILURE;
     }
 
