@@ -528,7 +528,7 @@ function sitenow_people_entity_prepare_view($entity_type_id, array $entities, ar
       foreach ($components as $component) {
         $config = $component->get('configuration');
         // Check if this is a people_list_block.
-        if (isset($config['id']) && strpos($config['id'], 'views_block:people_list_block') === 0) {
+        if (isset($config['id']) && str_starts_with($config['id'], 'views_block:people_list_block')) {
           // Get third-party settings and append to ordered array.
           // Each block will be matched to its configuration
           // by the order they appear.
