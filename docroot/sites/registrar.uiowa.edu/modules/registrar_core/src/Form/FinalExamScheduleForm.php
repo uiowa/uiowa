@@ -225,8 +225,9 @@ class FinalExamScheduleForm extends FormBase {
           case 'time':
             $start_time = strtotime($row['start_time']);
             $end_time = strtotime($row['end_time']);
-            $start_formatted = date('D n/j/Y, g:iA', $start_time);
-            $end_formatted = date('g:iA', $end_time);
+            $ap = \Drupal::service('date_ap_style.formatter');
+            $start_formatted = $ap->formatTimestamp($start_time);
+            $end_formatted = $ap->formatTimestamp($end_time, ['hide_date' => TRUE, 'display_time' => TRUE]);
             $new_row[] = "{$start_formatted} - {$end_formatted}";
             break;
 

@@ -370,14 +370,16 @@ class AcademicCalendarController extends ControllerBase {
       $start_timestamp = strtotime($event->start);
     }
 
-    $start = date('D, M j, Y', $start_timestamp);
+    $ap = \Drupal::service('date_ap_style.formatter');
+    $date_only_options = ['always_display_year' => 1, 'display_time' => 0];
+    $start = $ap->formatTimestamp($start_timestamp, $date_only_options);
     $month = date('M', $start_timestamp);
     $day = date('j', $start_timestamp);
 
     // We want to show the original start in the subtitle.
     if ($alt_start_day && $date->endDate !== $date->beginDate) {
-      $formatted_start = date('D, M j, Y', $original_start_timestamp);
-      $end = date('D, M j, Y', strtotime($date->endDate));
+      $formatted_start = $ap->formatTimestamp($original_start_timestamp, $date_only_options);
+      $end = $ap->formatTimestamp(strtotime($date->endDate), $date_only_options);
       $start = "{$formatted_start} - {$end}";
     }
 

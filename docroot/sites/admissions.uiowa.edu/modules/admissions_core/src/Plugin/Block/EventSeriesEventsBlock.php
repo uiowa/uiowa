@@ -3,7 +3,7 @@
 namespace Drupal\admissions_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\date_ap_style\ApStyleDateFormatter;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -43,16 +43,16 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
   protected AliasManagerInterface $aliasManager;
 
   /**
-   * The date.formatter service.
+   * The AP style date formatter service.
    *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   * @var \Drupal\date_ap_style\ApStyleDateFormatter
    */
-  protected DateFormatterInterface $dateFormat;
+  protected ApStyleDateFormatter $dateFormat;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager, RouteMatchInterface $routeMatch, AliasManagerInterface $aliasManager, DateFormatterInterface $dateFormatter) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager, RouteMatchInterface $routeMatch, AliasManagerInterface $aliasManager, ApStyleDateFormatter $dateFormatter) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->routeMatch = $routeMatch;
@@ -71,7 +71,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
       $container->get('entity_type.manager'),
       $container->get('current_route_match'),
       $container->get('path_alias.manager'),
-      $container->get('date.formatter'),
+      $container->get('date_ap_style.formatter'),
 
     );
   }
@@ -103,7 +103,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
             !$node->get('field_event_when')->isEmpty()) {
             $nid = $node->id();
             $node_when = $node->get('field_event_when')->getValue();
-            $date = $this->dateFormat->format($node_when[0]['value'], 'custom', 'D, M j');
+            $date = $this->dateFormat->formatTimestamp($node_when[0]['value']);
             $markup = [
               '#markup' => '<span role="presentation" class="fa-angle-right text--gold fas"></span>' . $date,
             ];
