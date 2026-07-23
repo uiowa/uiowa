@@ -146,14 +146,6 @@ EOD;
       $yaml['cm']['core']['dirs']['sync']['path'] = 'profiles/custom/sitenow/config/sync';
       $yaml['cm']['core']['install_from_config'] = TRUE;
 
-      $yaml['sync']['commands'] = [
-        'blt:init:settings',
-        'drupal:sync:db',
-        'drupal:update',
-        'sitenow:multisite:noop',
-        'sitenow:multisite:noop',
-      ];
-
       if (isset($yaml['project']['requester'])) {
         $requester = $yaml['project']['requester'];
         unset($yaml['project']['requester']);
