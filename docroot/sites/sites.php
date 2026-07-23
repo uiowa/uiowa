@@ -7876,3 +7876,9 @@ $sites['csbadhikari.uiowa.ddev.site'] = 'badhikari.cs.uiowa.edu';
 $sites['csbadhikari.dev.drupal.uiowa.edu'] = 'badhikari.cs.uiowa.edu';
 $sites['csbadhikari.stage.drupal.uiowa.edu'] = 'badhikari.cs.uiowa.edu';
 $sites['csbadhikari.prod.drupal.uiowa.edu'] = 'badhikari.cs.uiowa.edu';
+
+// Directory aliases for faculty.provost.uiowa.edu.
+$sites['provostfaculty.uiowa.ddev.site'] = 'faculty.provost.uiowa.edu';
+$sites['provostfaculty.dev.drupal.uiowa.edu'] = 'faculty.provost.uiowa.edu';
+$sites['provostfaculty.stage.drupal.uiowa.edu'] = 'faculty.provost.uiowa.edu';
+$sites['provostfaculty.prod.drupal.uiowa.edu'] = 'faculty.provost.uiowa.edu';
