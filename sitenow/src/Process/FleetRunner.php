@@ -4,7 +4,7 @@ namespace SiteNow\Process;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Multisite;
+use SiteNow\Utility\Multisite;
 
 /**
  * Runs one drush command across manifest-selected sites.

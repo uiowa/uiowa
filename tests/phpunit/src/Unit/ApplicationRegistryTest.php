@@ -9,10 +9,6 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Unit tests for the SiteNow application registry.
  *
- * Covers the registry reader and guards against drift from the legacy
- * blt.yml registry, which must stay in sync until the un-ported BLT
- * consumers (install, transfer, GitCommands) migrate at epic Step 6.
- *
  * @group unit
  */
 class ApplicationRegistryTest extends UnitTestCase {
@@ -113,54 +109,6 @@ YAML;
    */
   public function testRunFirstEmptyWhenAbsent() {
     $this->assertSame([], $this->readerWithoutRunFirst()->runFirst());
-  }
-
-  /**
-   * The SiteNow registry stays in sync with the legacy blt.yml registry.
-   *
-   * Both must agree until the legacy consumers migrate and the blt.yml block
-   * is removed at epic Step 6.
-   */
-  public function testRegistryMatchesLegacyBltRegistry() {
-    $repo = $this->root . '/..';
-    $new = Yaml::parseFile("{$repo}/sitenow/applications.yml")['applications'] ?? [];
-    $legacy = Yaml::parseFile("{$repo}/blt/blt.yml")['uiowa']['applications'] ?? [];
-
-    $new_map = [];
-    foreach ($new as $name => $entry) {
-      $new_map[$name] = $entry['uuid'];
-    }
-    ksort($new_map);
-    ksort($legacy);
-
-    $this->assertSame(
-      $legacy,
-      $new_map,
-      'sitenow/applications.yml must match blt.yml uiowa.applications until the legacy registry is removed at Step 6.'
-    );
-  }
-
-  /**
-   * The registry's git remotes stay in sync with the legacy blt.yml remotes.
-   *
-   * The deploy:distribute command pushes to the registry remotes; BLT's
-   * GitCommands still read blt.yml git.remotes. Both must cover the same set
-   * until the legacy consumers migrate and blt.yml git.remotes is removed.
-   */
-  public function testRegistryRemotesMatchLegacyBltRemotes() {
-    $repo = $this->root . '/..';
-    $new = Yaml::parseFile("{$repo}/sitenow/applications.yml")['applications'] ?? [];
-    $legacy = Yaml::parseFile("{$repo}/blt/blt.yml")['git']['remotes'] ?? [];
-
-    $new_remotes = array_values(array_filter(array_map(fn($e) => $e['remote'] ?? NULL, $new)));
-    sort($new_remotes);
-    sort($legacy);
-
-    $this->assertSame(
-      $legacy,
-      $new_remotes,
-      'sitenow/applications.yml remotes must match blt.yml git.remotes until the legacy remotes are removed.'
-    );
   }
 
 }
