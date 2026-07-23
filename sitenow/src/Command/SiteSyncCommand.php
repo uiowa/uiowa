@@ -83,16 +83,16 @@ sanitizes it (scrubs credentials, emails, sessions, and webform submissions),
 then reconciles it (drush deploy) so the local copy is usable.
 
   # Pull brand.uiowa.edu's prod database to local (sanitized):
-  ddev exec ./sn site:sync brand.uiowa.edu
+  ddev sn site:sync brand.uiowa.edu
 
   # Pull from dev instead, and bring public files too:
-  ddev exec ./sn ds brand.uiowa.edu --env=dev --sync-public-files
+  ddev sn ds brand.uiowa.edu --env=dev --sync-public-files
 
   # Database only, no updatedb/config import afterward:
-  ddev exec ./sn ds brand.uiowa.edu --no-update
+  ddev sn ds brand.uiowa.edu --no-update
 
   # Keep real production data (PII) — only when you truly need it:
-  ddev exec ./sn ds brand.uiowa.edu --no-sanitize
+  ddev sn ds brand.uiowa.edu --no-sanitize
 HELP);
   }
 
