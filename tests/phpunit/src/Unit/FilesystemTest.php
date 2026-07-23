@@ -6,7 +6,7 @@ use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Multisite;
+use SiteNow\Utility\Multisite;
 
 /**
  * Basic file system tests for application integrity.

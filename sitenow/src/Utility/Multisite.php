@@ -1,6 +1,6 @@
 <?php
 
-namespace Uiowa;
+namespace SiteNow\Utility;
 
 use Symfony\Component\Finder\Finder;
 

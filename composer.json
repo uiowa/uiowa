@@ -78,7 +78,6 @@
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "acquia/blt": true,
-            "acquia/blt-phpcs": true,
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
             "phpstan/extension-installer": true,
@@ -93,8 +92,6 @@
         "guzzlehttp/promises": "2.5.0 as 2.2.0",
         "guzzlehttp/psr7": "2.12.1 as 2.10.4",
         "acquia/blt": "^13.7.4",
-        "acquia/blt-multisite": "dev-master",
-        "acquia/blt-travis": "^1.1.0",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "6.7.2",
@@ -248,7 +245,6 @@
         "uiowa/uiowa_auth": "^2.1"
     },
     "require-dev": {
-        "acquia/blt-phpcs": "^1.0",
         "acquia/coding-standards": "^3.0",
         "drupal/core-dev": "^9.0 || ^10",
         "mglaman/phpstan-drupal": "^1.3",
@@ -408,9 +404,6 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd": [
-            "blt internal:create-project:init-repo"
-        ],
         "post-drupal-scaffold-cmd": [
             "patch -p1 < patches/core_htaccess.patch",
             "patch -p1 < patches/development_services.patch"

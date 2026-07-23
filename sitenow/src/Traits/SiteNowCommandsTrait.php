@@ -11,7 +11,7 @@ use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Uiowa\Multisite;
+use SiteNow\Utility\Multisite;
 
 /**
  * Acquia Cloud, drush, and environment helpers for SiteNow console commands.
