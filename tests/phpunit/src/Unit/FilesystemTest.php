@@ -19,9 +19,9 @@ class FilesystemTest extends UnitTestCase {
    * Each app should have a Drush alias.
    */
   public function testAppDrushAliasesExist() {
-    $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
+    $config = Yaml::parseFile($this->root . '/../sitenow/applications.yml');
 
-    foreach ($config['uiowa']['applications'] as $application => $attrs) {
+    foreach ($config['applications'] as $application => $attrs) {
       $this->assertFileExists($this->root . "/../drush/sites/{$application}.site.yml");
     }
   }
@@ -49,9 +49,9 @@ class FilesystemTest extends UnitTestCase {
    * Test that app aliases do not have a files path set.
    */
   public function testAppAliasesDoNotHaveFilesPath() {
-    $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
+    $config = Yaml::parseFile($this->root . '/../sitenow/applications.yml');
 
-    foreach ($config['uiowa']['applications'] as $app => $attrs) {
+    foreach ($config['applications'] as $app => $attrs) {
       $config = YamlMunge::parseFile($this->root . "/../drush/sites/$app.site.yml");
 
       foreach (['local', 'dev', ' test', 'prod'] as $env) {
