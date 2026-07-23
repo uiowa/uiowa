@@ -204,15 +204,66 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         // Modify the form per block plugin and bundle.
         switch ($block->getPluginId()) {
           case 'views_block:people_list_block-list_card':
+            $research_areas_filter_key = 'filter-field_person_research_areas_target_id';
+
             // Update labels for exposed filters for block configuration form.
-            if (isset($form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title']) && $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] !== '') {
-              $form['settings']['exposed']['filter-field_person_research_areas_target_id']['#title'] = sitenow_people_get_research_title();
+            if (isset($form['settings']['exposed'][$research_areas_filter_key]['#title']) && $form['settings']['exposed'][$research_areas_filter_key]['#title'] !== '') {
+              $form['settings']['exposed'][$research_areas_filter_key]['#title'] = sitenow_people_get_research_title();
+            }
+
+            // Add checkbox to filter research areas to only show options
+            // with results. Nested inside the Research Areas filter pane,
+            // below its "Expose filter value to user" checkbox, and only
+            // shown when that checkbox is checked, since this setting is
+            // meaningless when the filter isn't exposed to visitors.
+            // Use third-party settings which are designed for this use case.
+            if (isset($form['settings']['exposed'][$research_areas_filter_key])) {
+              $form['settings']['exposed'][$research_areas_filter_key]['filter_research_areas'] = [
+                '#type' => 'checkbox',
+                '#title' => t('Filter @title to only show options with results', [
+                  '@title' => sitenow_people_get_research_title(),
+                ]),
+                '#description' => t('When enabled, only @title that have at least one matching person will be shown in the filter.', [
+                  '@title' => strtolower(sitenow_people_get_research_title()),
+                ]),
+                '#default_value' => $component->getThirdPartySetting('sitenow_people', 'filter_research_areas', 0),
+                '#weight' => 10,
+                '#states' => [
+                  'visible' => [
+                    ':input[name="settings[exposed][' . $research_areas_filter_key . '][exposed]"]' => ['checked' => TRUE],
+                  ],
+                ],
+              ];
+
+              // Add submit handler for processing our custom checkbox field.
+              // Use array_unshift to run BEFORE Layout Builder's handler.
+              array_unshift($form['#submit'], '_sitenow_people_save_filter_checkbox');
             }
             break;
         }
       }
       break;
   }
+  return $form;
+}
+
+/**
+ * Submit handler to save the filter_research_areas checkbox value.
+ */
+function _sitenow_people_save_filter_checkbox(array &$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  $component = $form_object->getCurrentComponent();
+
+  // Extract value from the submitted form state.
+  $value = $form_state->getValue([
+    'settings',
+    'exposed',
+    'filter-field_person_research_areas_target_id',
+    'filter_research_areas',
+  ]);
+
+  // Use third-party settings API which is designed for storing custom data.
+  $component->setThirdPartySetting('sitenow_people', 'filter_research_areas', $value);
 }
 
 /**
@@ -436,9 +487,67 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_entity_prepare_view().
+ */
+function sitenow_people_entity_prepare_view($entity_type_id, array $entities, array $displays, $view_mode) {
+  // Only process nodes to avoid unnecessary processing of other entity types.
+  if ($entity_type_id !== 'node') {
+    return;
+  }
+
+  // Extract third-party settings
+  // from Layout Builder components for people_list_block.
+  // This runs early, before the entity is fully rendered, ensuring the static
+  // variable is set before the exposed form is built.
+  // Store settings in an ordered array so each view instance
+  // can retrieve its specific config.
+  foreach ($entities as $entity) {
+    // Only 'page' content type allows Layout Builder overrides.
+    if ($entity->bundle() !== 'page') {
+      continue;
+    }
+
+    // Early exit if this node doesn't use Layout Builder.
+    if (!$entity->hasField('layout_builder__layout')) {
+      continue;
+    }
+
+    $sections = $entity->get('layout_builder__layout')->getSections();
+    // Early exit if no sections exist.
+    if (empty($sections)) {
+      continue;
+    }
+
+    foreach ($sections as $section) {
+      $components = $section->getComponents();
+      // Skip empty sections.
+      if (empty($components)) {
+        continue;
+      }
+
+      foreach ($components as $component) {
+        $config = $component->get('configuration');
+        // Check if this is a people_list_block.
+        if (isset($config['id']) && str_starts_with($config['id'], 'views_block:people_list_block')) {
+          // Get third-party settings and append to ordered array.
+          // Each block will be matched to its configuration
+          // by the order they appear.
+          $filter_research_areas = $component->getThirdPartySetting('sitenow_people', 'filter_research_areas');
+          $sitenow_people_config = &drupal_static('sitenow_people_block_config', []);
+          $sitenow_people_config[] = [
+            'filter_research_areas' => $filter_research_areas ?? 0,
+          ];
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_entity_view_alter().
  */
 function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     // @todo Remove this line and just use $entity->bundle() instead.
@@ -630,6 +739,11 @@ function sitenow_people_preprocess_views_view(&$variables) {
       if (empty($variables['header']['area']['#text'])) {
         unset($variables['header']['area']);
       }
+      break;
+
+    case 'people_list_block':
+      // Attach the library using the #attached property.
+      $variables['#attached']['library'][] = 'uids_base/view-bef';
       break;
 
   }
@@ -841,6 +955,61 @@ function sitenow_people_views_pre_build(ViewExecutable $view) {
       $view->display_handler->has_exposed = FALSE;
     }
   }
+
+  // For people_list_block, match each view instance to its configuration.
+  // We use a counter to assign configurations in order as they were found.
+  if ($view->id() === 'people_list_block') {
+    static $people_list_block_counter = 0;
+
+    // Retrieve the stored configurations for all blocks on this page.
+    $sitenow_people_config = &drupal_static('sitenow_people_block_config', []);
+
+    // Assign this view instance the next configuration in order.
+    if (isset($sitenow_people_config[$people_list_block_counter])) {
+      $view->sitenow_people_filter_config = $sitenow_people_config[$people_list_block_counter];
+    }
+    else {
+      // The match above only works when the whole node gets rendered,
+      // since it depends on hook_entity_prepare_view() having populated
+      // $sitenow_people_config for every people_list_block instance on
+      // the page. An Apply or pager click re-executes this view
+      // directly via \Drupal\views\Controller\ViewAjaxController, which
+      // never triggers hook_entity_prepare_view() at all. This block
+      // instance's own exposed form carries its filter_research_areas
+      // setting forward as a hidden field for exactly this case (see
+      // sitenow_people_form_views_exposed_form_alter()), so recover it
+      // from the request instead.
+      $request = \Drupal::request();
+      $carried_value = $request->request->get('sitenow_people_filter_research_areas_value')
+        ?? $request->query->get('sitenow_people_filter_research_areas_value');
+      if ($carried_value !== NULL) {
+        $view->sitenow_people_filter_config = ['filter_research_areas' => (bool) $carried_value];
+      }
+
+      // Same problem, and same fix, for a block's fixed person-type
+      // restriction: ctools_views\Plugin\Display\Block::preBlockBuild()
+      // is what normally carries a block's non-exposed filter values
+      // (like this one) into the view's exposed input, and it doesn't
+      // run on the AJAX path either. This one matters beyond just
+      // sitenow_people_filter_research_areas()'s own "which research
+      // areas have matching people" query - it's also what keeps the
+      // main query itself restricted to the right people.
+      $carried_person_type = $request->request->get('sitenow_people_person_type_value')
+        ?? $request->query->get('sitenow_people_person_type_value');
+      $handler = $view->display_handler->getHandler('filter', 'field_person_types_target_id');
+      if ($carried_person_type !== NULL && $handler) {
+        $identifier = $handler->options['expose']['identifier'] ?? 'field_person_types_target_id';
+        $exposed_input = $view->getExposedInput();
+        if (!isset($exposed_input[$identifier])) {
+          $exposed_input[$identifier] = $carried_person_type;
+          $view->setExposedInput($exposed_input);
+        }
+      }
+    }
+
+    // Increment counter for the next view instance.
+    $people_list_block_counter++;
+  }
 }
 
 /**
@@ -889,14 +1058,278 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       break;
 
     case 'people_list_block':
+      // Core views/views.ajax excludes the reset button from AJAX
+      // submissions, as it breaks some functionality. It targets
+      // 'edit-reset', though, which BEF changes to a unique id.
+      // To persist through, we need to add it in a specific process,
+      // and not just this form alter, otherwise it'll be overwritten.
+      if (isset($form['actions']['reset'])) {
+        $form['actions']['reset']['#process'][] = '_sitenow_people_reset_button_process';
+      }
+
+      // Unchecking every option in a checkboxes/multi-select exposed
+      // filter submits nothing at all for that identifier - which is
+      // indistinguishable, at the request level, from the page never
+      // having been submitted for that field to begin with. When a block
+      // instance exposes such a filter with a pre-set default value,
+      // FilterPluginBase::acceptExposedInput() falls back to that default
+      // in both cases, so deliberately clearing the filter silently does
+      // nothing. This hidden field always submits regardless of what's
+      // checked, so its presence lets the submit handler below tell "the
+      // form was actually submitted" apart from "fresh page load".
+      $form['sitenow_people_exposed_submitted'] = [
+        '#type' => 'hidden',
+        '#value' => 1,
+      ];
+      $form['#submit'][] = '_sitenow_people_clear_defaulted_exposed_filters';
+
       // Change the research areas label.
       if (isset($form['#info']['filter-field_person_research_areas_target_id']['label']) && $form['#info']['filter-field_person_research_areas_target_id']['label'] !== '') {
         $form['#info']['filter-field_person_research_areas_target_id']['label'] = sitenow_people_get_research_title();
       }
-      // Filter research areas to only show those with results.
-      _sitenow_people_filter_research_areas($form, $view);
+
+      // Hide Research Areas filter specifically when it's not exposed.
+      // BEF renders it even when exposed: 0, unlike other filters.
+      $block_config = $view->display_handler->getOption('block_config');
+
+      // The submit handler below corrects the query, but by the time it
+      // runs the widget's own #default_value has already been set for
+      // rendering (this is an "always process" GET form, which never
+      // rebuilds after a normal Apply submission) - so without this, a
+      // defaulted filter the visitor just cleared would still show its
+      // old value checked, even though the results are now correctly
+      // unfiltered.
+      if (!empty($block_config['exposed'])) {
+        _sitenow_people_clear_defaulted_exposed_widgets($form, $view, $block_config['exposed']);
+      }
+
+      // Check for both 0 and empty string.
+      if (isset($block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'])
+          && ($block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'] === 0
+              || $block_config['exposed']['filter-field_person_research_areas_target_id']['exposed'] === '')) {
+        // Hide the research areas filter element visually
+        // while keeping it functional.
+        // Note: The form key is 'people_research_areas',
+        // not the field machine name.
+        $research_areas_id = 'people_research_areas';
+        if (isset($form[$research_areas_id])) {
+          $form[$research_areas_id]['#attributes']['style'] = 'display: none;';
+        }
+        // Also hide BEF collapsible wrapper.
+        if (isset($form[$research_areas_id . '_collapsible'])) {
+          $form[$research_areas_id . '_collapsible']['#attributes']['style'] = 'display: none;';
+        }
+      }
+
+      // Hide Apply/Reset buttons if no filters are actually exposed to users.
+      if (!empty($block_config['exposed'])) {
+        $has_visible_filters = FALSE;
+        foreach ($block_config['exposed'] as $filter_key => $filter_config) {
+          // If any filter has exposed set to something
+          // other than 0 or empty, it's visible.
+          // Check for both explicit 0 and empty string
+          // (which means not exposed).
+          if (!isset($filter_config['exposed']) || !empty($filter_config['exposed'])) {
+            $has_visible_filters = TRUE;
+            break;
+          }
+        }
+
+        if (!$has_visible_filters) {
+          // Hide the form actions (Apply/Reset buttons) visually.
+          if (isset($form['actions'])) {
+            $form['actions']['#attributes']['style'] = 'display: none;';
+          }
+          // Also hide the exposed form wrapper itself to remove the CSS box.
+          $form['#attributes']['style'] = 'display: none;';
+        }
+      }
+
+      // Filter research areas to only show those
+      // with results if checkbox is enabled.
+      // Retrieve the custom configuration
+      // that was attached to this specific view instance
+      // in views_pre_build, ensuring each block has independent filtering.
+      if (isset($view->sitenow_people_filter_config) && !empty($view->sitenow_people_filter_config['filter_research_areas'])) {
+        _sitenow_people_filter_research_areas($form, $view);
+      }
+
+      // Carry this block instance's own filter_research_areas setting
+      // forward as a hidden field, so an Apply/pager AJAX round trip
+      // (which re-executes this view via
+      // \Drupal\views\Controller\ViewAjaxController, bypassing
+      // hook_entity_prepare_view() and the ordered-position match in
+      // sitenow_people_views_pre_build() entirely, since no entity is
+      // being viewed) can recover it from the request instead. This is
+      // the only per-instance setting that needs this: it's never an
+      // exposed Views filter value, so it isn't covered by fixing a
+      // filter's own default against Reset/AJAX the way the others are.
+      $form['sitenow_people_filter_research_areas_value'] = [
+        '#type' => 'hidden',
+        '#value' => !empty($view->sitenow_people_filter_config['filter_research_areas']) ? 1 : 0,
+      ];
+
+      // Same carry-forward, for the same reason, for a block's fixed
+      // person-type restriction - see the fallback in
+      // sitenow_people_views_pre_build() that reads this back.
+      $person_type_filter = $block_config['exposed']['filter-field_person_types_target_id'] ?? NULL;
+      if ($person_type_filter && empty($person_type_filter['exposed']) && !empty($person_type_filter['value'])) {
+        $form['sitenow_people_person_type_value'] = [
+          '#type' => 'hidden',
+          '#value' => is_array($person_type_filter['value']) ? reset($person_type_filter['value']) : $person_type_filter['value'],
+        ];
+      }
       break;
   }
+}
+
+/**
+ * Process callback: restores the reset button's default data-drupal-selector.
+ *
+ * @param array $element
+ *   The reset button element.
+ *
+ * @return array
+ *   The processed element.
+ */
+function _sitenow_people_reset_button_process(array $element) {
+  $element['#attributes']['data-drupal-selector'] = 'edit-reset';
+  return $element;
+}
+
+/**
+ * Invokes a callback for each defaulted, exposed filter submitted empty.
+ *
+ * Unchecking every option in a checkboxes/multi-select exposed filter
+ * submits nothing at all for that identifier - indistinguishable, at the
+ * request level, from the page never having been submitted for that
+ * field to begin with. When a block instance exposes such a filter with
+ * a pre-set default value, Views falls back to that default in both
+ * cases, so deliberately clearing the filter silently does nothing.
+ *
+ * Shared by the widget and query corrections below, since both need the
+ * same "was this filter submitted empty" detection, just applied to
+ * different targets (and at different points in the request).
+ *
+ * @param array $exposed_config
+ *   The block instance's 'exposed' filter override configuration.
+ * @param \Drupal\views\ViewExecutable $view
+ *   The view object.
+ * @param callable $callback
+ *   Called with the filter's exposed identifier for each match.
+ */
+function _sitenow_people_each_cleared_default(array $exposed_config, $view, callable $callback) {
+  $query = \Drupal::request()->query;
+  if (!$query->has('sitenow_people_exposed_submitted')) {
+    // Not a real submission (e.g. a fresh page load) - the pre-set
+    // default is supposed to apply here, so leave it alone.
+    return;
+  }
+
+  foreach ($exposed_config as $key => $filter_config) {
+    // Only filters exposed to visitors with a
+    // pre-set default value are at risk of this.
+    if (empty($filter_config['exposed']) || empty($filter_config['value'])) {
+      continue;
+    }
+
+    [$handler_type, $handler_name] = explode('-', $key, 2);
+    $handler = $view->display_handler->getHandler($handler_type, $handler_name);
+    if (!$handler || $handler->isAGroup()) {
+      continue;
+    }
+
+    $identifier = $handler->options['expose']['identifier'] ?? NULL;
+    if ($identifier && !$query->has($identifier)) {
+      $callback($identifier);
+    }
+  }
+}
+
+/**
+ * Attaches a process callback to clear a defaulted, emptied filter widget.
+ *
+ * Setting #default_value directly in hook_form_alter() doesn't stick -
+ * the checkboxes element's own value callback re-derives #value (and
+ * each option's own #value/#checked) from the handler afterward, the
+ * same way BEF re-derives data-drupal-selector after hook_form_alter
+ * (see _sitenow_people_reset_button_process()). Attaching our own
+ * #process callback here, instead, lets it run after that.
+ *
+ * This only corrects the widget's own displayed state - the query
+ * itself is corrected separately, in a submit handler, once submission
+ * has happened (see _sitenow_people_clear_defaulted_exposed_filters()).
+ *
+ * @param array $form
+ *   The exposed form array.
+ * @param \Drupal\views\ViewExecutable $view
+ *   The view object.
+ * @param array $exposed_config
+ *   The block instance's 'exposed' filter override configuration.
+ */
+function _sitenow_people_clear_defaulted_exposed_widgets(array &$form, $view, array $exposed_config) {
+  _sitenow_people_each_cleared_default($exposed_config, $view, function ($identifier) use (&$form) {
+    if (isset($form[$identifier])) {
+      $form[$identifier]['#process'][] = '_sitenow_people_clear_widget_default_value';
+    }
+  });
+}
+
+/**
+ * Process callback: forces an exposed filter widget's default to empty.
+ *
+ * #default_value alone isn't enough here: by the time this callback
+ * runs, the checkboxes element's own value callback has already
+ * computed #value from the (stale) default, and each individual
+ * checkbox sub-element (already built by this point) has its own
+ * #value/#checked - all three have to be cleared for none of the
+ * options to render checked.
+ *
+ * @param array $element
+ *   The filter widget element.
+ *
+ * @return array
+ *   The processed element.
+ */
+function _sitenow_people_clear_widget_default_value(array $element) {
+  $element['#default_value'] = [];
+  $element['#value'] = [];
+  if (!empty($element['#options']) && is_array($element['#options'])) {
+    foreach (array_keys($element['#options']) as $option_key) {
+      if (isset($element[$option_key])) {
+        $element[$option_key]['#value'] = 0;
+        $element[$option_key]['#checked'] = FALSE;
+      }
+    }
+  }
+  return $element;
+}
+
+/**
+ * Submit handler: clears exposed filters the user deliberately emptied.
+ *
+ * Runs after ViewsExposedForm::submitForm(), which is what populates
+ * $view->exposed_data from the submitted values in the first place, so
+ * this can correct it before ViewExecutable::_build() reads it again to
+ * build the query.
+ *
+ * @param array $form
+ *   The exposed form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ */
+function _sitenow_people_clear_defaulted_exposed_filters(array &$form, FormStateInterface $form_state) {
+  $view = $form_state->get('view');
+  $block_config = $view->display_handler->getOption('block_config');
+  if (empty($block_config['exposed'])) {
+    return;
+  }
+
+  _sitenow_people_each_cleared_default($block_config['exposed'], $view, function ($identifier) use ($view) {
+    if (isset($view->exposed_data[$identifier])) {
+      $view->exposed_data[$identifier] = [];
+    }
+  });
 }
 
 /**
