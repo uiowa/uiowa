@@ -1,0 +1,17 @@
+project:
+  machine_name: provostfaculty
+  human_name: faculty.provost.uiowa.edu
+  local:
+    hostname: provostfaculty.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: provostfaculty.prod
+drupal:
+  db:
+    database: faculty_provost_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://provostfaculty.prod.drupal.uiowa.edu'
+  requester: kjhughes
