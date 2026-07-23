@@ -69,13 +69,16 @@ command-hooks:
 cm:
   core:
     install_from_config: true
+
+# blt ds/dsa are still BLT-provided until acquia/blt is removed (#9858). Without
+# this trimmed override they fall back to BLT's default sync.commands, which also
+# runs source:build:composer, blt:init:settings (which prompts to wipe every
+# local.settings.php), and source:build:frontend. sn site:sync is the real
+# replacement; this only keeps the interim blt ds lean and non-destructive.
 sync:
   commands:
     - 'drupal:sync:db'
     - 'drupal:update'
-    - 'uiowa:multisite:noop'
-    - 'uiowa:multisite:noop'
-    - 'uiowa:multisite:noop'
 
 # Custom configuration.
 uiowa:
