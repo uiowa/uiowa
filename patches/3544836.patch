@@ -1,0 +1,81 @@
+From 731e4105553c2f6d9d14f9724ec55cf0120c6571 Mon Sep 17 00:00:00 2001
+From: Roman Khimin <khiminrm@gmail.com>
+Date: Thu, 4 Sep 2025 16:12:01 +0300
+Subject: [PATCH 1/2] Remove ajax from the Google Tag ID field.
+
+---
+ src/Form/TagContainerForm.php | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
+
+diff --git a/src/Form/TagContainerForm.php b/src/Form/TagContainerForm.php
+index 46746a2..4cce6a9 100644
+--- a/src/Form/TagContainerForm.php
++++ b/src/Form/TagContainerForm.php
+@@ -99,7 +99,7 @@ class TagContainerForm extends EntityForm {
+       '#type' => 'fieldset',
+       '#title' => $this->t('Google Tag ID(s)'),
+       '#prefix' => '<div id="' . $accounts_wrapper_id . '">',
+-      '#description' => $this->t('This ID is unique to each site you want to track separately, and is in the form of UA-xxxxx-yy, G-xxxxxxxx, AW-xxxxxxxxx, or DC-xxxxxxxx. To get a Web Property ID, <a href=":analytics">register your site with Google Analytics</a>, or if you already have registered your site, go to your Google Analytics Settings page to see the ID next to every site profile. <a href=":webpropertyid">Find more information in the documentation</a>.', [
++      '#description' => $this->t('This ID is unique to each site you want to track separately, and is in the form of GTM-MLJNZ3Q, UA-xxxxx-yy, G-xxxxxxxx, AW-xxxxxxxxx, or DC-xxxxxxxx. To get a Web Property ID, <a href=":analytics">register your site with Google Analytics</a>, or if you already have registered your site, go to your Google Analytics Settings page to see the ID next to every site profile. <a href=":webpropertyid">Find more information in the documentation</a>.<br /><br />Note: After adding and saving GTM ID you will be able to configure additional settings in the Advanced settings section at the bottom of the form.', [
+         ':analytics' => 'https://marketingplatform.google.com/about/analytics/',
+         ':webpropertyid' => Url::fromUri('https://developers.google.com/analytics/resources/concepts/gaConceptsAccounts', ['fragment' => 'webProperty'])->toString(),
+       ]),
+@@ -142,12 +142,6 @@ class TagContainerForm extends EntityForm {
+         '#size' => 20,
+         '#type' => 'textfield',
+         '#pattern' => TagContainer::GOOGLE_TAG_MATCH,
+-        '#ajax' => [
+-          'callback' => [self::class, 'storeGtagAccountsCallback'],
+-          'disable-refocus' => TRUE,
+-          'event' => 'change',
+-          'wrapper' => 'advanced-settings-wrapper',
+-        ],
+         '#attributes' => [
+           'data-disable-refocus' => 'true',
+         ],
+@@ -681,16 +675,6 @@ class TagContainerForm extends EntityForm {
+     $form_state->setRebuild();
+   }
+ 
+-  /**
+-   * Submit handler for the "add-one-more" button.
+-   *
+-   * Increments the max counter and causes a rebuild.
+-   */
+-  public static function storeGtagAccountsCallback(array &$form, FormStateInterface $form_state) {
+-    // Update Advanced Settings Form.
+-    return $form['advanced_settings'];
+-  }
+-
+   /**
+    * Ajax handler for removing dimension metric.
+    *
+-- 
+GitLab
+
+
+From fd0092e9aa77d319718b9b20235cf91cdd1705f5 Mon Sep 17 00:00:00 2001
+From: Roman Khimin <khiminrm@gmail.com>
+Date: Fri, 5 Sep 2025 17:27:57 +0300
+Subject: [PATCH 2/2] Fix description.
+
+---
+ src/Form/TagContainerForm.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Form/TagContainerForm.php b/src/Form/TagContainerForm.php
+index 4cce6a9..9576797 100644
+--- a/src/Form/TagContainerForm.php
++++ b/src/Form/TagContainerForm.php
+@@ -99,7 +99,7 @@ class TagContainerForm extends EntityForm {
+       '#type' => 'fieldset',
+       '#title' => $this->t('Google Tag ID(s)'),
+       '#prefix' => '<div id="' . $accounts_wrapper_id . '">',
+-      '#description' => $this->t('This ID is unique to each site you want to track separately, and is in the form of GTM-MLJNZ3Q, UA-xxxxx-yy, G-xxxxxxxx, AW-xxxxxxxxx, or DC-xxxxxxxx. To get a Web Property ID, <a href=":analytics">register your site with Google Analytics</a>, or if you already have registered your site, go to your Google Analytics Settings page to see the ID next to every site profile. <a href=":webpropertyid">Find more information in the documentation</a>.<br /><br />Note: After adding and saving GTM ID you will be able to configure additional settings in the Advanced settings section at the bottom of the form.', [
++      '#description' => $this->t('This ID is unique to each site you want to track separately, and is in the form of GTM-xxxxxxx, UA-xxxxx-yy, G-xxxxxxxx, AW-xxxxxxxxx, or DC-xxxxxxxx. To get a Web Property ID, <a href=":analytics">register your site with Google Analytics</a>, or if you already have registered your site, go to your Google Analytics Settings page to see the ID next to every site profile. <a href=":webpropertyid">Find more information in the documentation</a>.<br /><br />Note: After adding and saving GTM ID you will be able to configure additional settings in the Advanced settings section at the bottom of the form.', [
+         ':analytics' => 'https://marketingplatform.google.com/about/analytics/',
+         ':webpropertyid' => Url::fromUri('https://developers.google.com/analytics/resources/concepts/gaConceptsAccounts', ['fragment' => 'webProperty'])->toString(),
+       ]),
+-- 
+GitLab
+

@@ -148,14 +148,14 @@
         "drupal/fullcalendar": "^3.0",
         "drupal/geofield": "^10.3",
         "drupal/google_analytics": "^4.0",
-        "drupal/google_tag": "^1.8",
+        "drupal/google_tag": "^2.0",
         "drupal/gpa_calculator": "^2.0",
         "drupal/heading": "^2.0",
         "drupal/honeypot": "2.2.2",
         "drupal/iframe_title_filter": "^3.0",
         "drupal/imagecache_external": "^3.0",
         "drupal/imagemagick": "^4.0",
-        "drupal/inline_entity_form": "^3.0.0-rc19",
+        "drupal/inline_entity_form": "^3.0",
         "drupal/jsonapi_extras": "^3.23",
         "drupal/jsonapi_include": "^1.6",
         "drupal/klaro": "^3.0",
@@ -311,6 +311,11 @@
             "drupal/fullcalendar": {
                 "Expose Calendar instance on DOM element for external JS access": "patches/fullcalendar_expose_calendar_instance.patch",
                 "[3499954] Make height and contentHeight settings functional": "patches/fullcalendar_height_contentheight.patch"
+            },
+            "drupal/google_tag": {
+                "[3376960] Multiple containers don't load": "patches/3376960.patch",
+                "[3469014] Weight is not preserved when saving multiple tags within the same container": "patches/3469014.patch",
+                "[3544836] Can't save Google Tag ID": "patches/3544836.patch"
             },
             "drupal/layout_builder_styles": {
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",

@@ -31,3 +31,11 @@ find_text.search_form:
   parent: system.admin
   route_name: find_text.search_form
   weight: 100
+
+# Point the Google Tag admin menu link straight at the containers list
+# instead of google_tag's default single-container settings page.
+entity.google_tag_container.collection:
+  title: 'Google Tag'
+  description: 'Configure the website integration with Google Tag and Google Tag Manager.'
+  route_name: entity.google_tag_container.collection
+  parent: system.admin_config_services
