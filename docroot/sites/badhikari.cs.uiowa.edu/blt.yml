@@ -1,0 +1,17 @@
+project:
+  machine_name: csbadhikari
+  human_name: badhikari.cs.uiowa.edu
+  local:
+    hostname: csbadhikari.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: csbadhikari.prod
+drupal:
+  db:
+    database: badhikari_cs_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://csbadhikari.prod.drupal.uiowa.edu'
+  requester: badhikari
