@@ -46,6 +46,15 @@ class SiteUpdateCommand extends Command {
   public const CONFIG_MISMATCH = 3;
 
   /**
+   * Whether to force drush ANSI color, mirroring this command's own output.
+   *
+   * The per-site drush runs through a pipe, where drush disables color by
+   * default; this restates the command's own decoration (on at an interactive
+   * terminal, off when piped to a log) so drush color survives the pipe.
+   */
+  private bool $ansi = FALSE;
+
+  /**
    * Constructs the command.
    *
    * @param string $repoRoot
@@ -70,6 +79,7 @@ class SiteUpdateCommand extends Command {
    */
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $io = new SymfonyStyle($input, $output);
+    $this->ansi = $output->isDecorated();
     $site = $input->getArgument('site');
 
     $app = getenv('AH_SITE_GROUP') ?: 'local';
@@ -195,7 +205,7 @@ class SiteUpdateCommand extends Command {
    */
   private function drush(string $site, array $args, bool $stream = FALSE): Process {
     $process = new Process(
-      ["{$this->repoRoot}/vendor/bin/drush", "--uri={$site}", ...$args],
+      ["{$this->repoRoot}/vendor/bin/drush", "--uri={$site}", $this->ansi ? '--ansi' : '--no-ansi', ...$args],
       $this->repoRoot,
     );
     $process->setTimeout(NULL);

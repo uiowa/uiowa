@@ -35,26 +35,6 @@ class MultisiteCommands extends BltTasks {
   use MultisiteTrait;
 
   /**
-   * A no-op command.
-   *
-   * This is called in sync.commands to override the frontend step.
-   *
-   * Compiling frontend assets on a per-site basis is not necessary since we
-   * use Yarn workspaces for that. This allows for faster syncs.
-   *
-   * @see: https://github.com/acquia/blt/issues/3697
-   *
-   * @command uiowa:multisite:noop
-   *
-   * @aliases umn
-   *
-   * @hidden
-   */
-  public function noop() {
-
-  }
-
-  /**
    * Invoke the BLT install process on multisites where Drupal is not installed.
    *
    * @param array $options
