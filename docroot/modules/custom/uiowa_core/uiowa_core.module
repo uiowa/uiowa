@@ -20,7 +20,6 @@ use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\symfony_mailer\EmailInterface;
@@ -801,6 +800,15 @@ function uiowa_core_page_attachments(&$page) {
       }
     }
   }
+
+  // Message explaining containers that show as inactive (overwritten).
+  if (\Drupal::routeMatch()->getRouteName() === 'entity.google_tag_container.collection') {
+    $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
+    if ($uiowa_core_gtag === 0) {
+      \Drupal::messenger()
+        ->addWarning(t('Google Tag Manager containers are currently blocked from being inserted on this website. Containers below may show as inactive (overwritten) as a result. Contact an administrator to remove the site-wide restriction.'));
+    }
+  }
 }
 
 /**
@@ -894,32 +902,19 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   }
 
   switch ($form_id) {
+    case 'google_tag_container_form':
+      // After saving, redirect to the containers collection instead of the
+      // single-container settings page (which is now admin-only).
+      if (isset($form['actions']['submit'])) {
+        $form['actions']['submit']['#submit'][] = 'uiowa_core_google_tag_container_form_submit';
+      }
+      break;
+
     case 'fragment_region_item_add_form':
     case 'fragment_region_item_edit_form':
       // Ensure item is published to prevent rendering issue for anonymous user.
       $form['status']['widget']['value']['#default_value'] = TRUE;
       $form['status']['#disabled'] = TRUE;
-      break;
-
-    case 'google_tag_container':
-      $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
-      // Inform on configuration form that the functionality is
-      // currently being blocked from being inserted.
-      if ($uiowa_core_gtag === 0) {
-        \Drupal::messenger()
-          ->addWarning(t('Local Google Tag Manager container snippets are currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
-      }
-      break;
-
-    case 'google_analytics_admin_settings':
-      $uiowa_core_ga = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.ga');
-      // Inform on configuration form that the functionality is
-      // currently being blocked from being inserted.
-      if ($uiowa_core_ga === 0) {
-        $form["general"]["accounts"]['#disabled'] = TRUE;
-        \Drupal::messenger()
-          ->addWarning(t('Google Analytics is currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
-      }
       break;
 
     // Add delete forms as the types of protected blocks changes.
@@ -1335,6 +1330,16 @@ function uiowa_core_menu_links_discovered_alter(array &$links) {
 }
 
 /**
+ * Implements hook_local_tasks_alter().
+ */
+function uiowa_core_local_tasks_alter(&$local_tasks) {
+  // Shorten the google_tag container list tab title.
+  if (isset($local_tasks['google_tag.container_list_tab'])) {
+    $local_tasks['google_tag.container_list_tab']['title'] = t('Tags');
+  }
+}
+
+/**
  * Implements hook_preprocess_details().
  */
 function uiowa_core_preprocess_details(&$variables) {
@@ -1418,15 +1423,25 @@ function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_s
 }
 
 /**
- * {@inheritdoc}
+ * Implements hook_entity_prepare_form().
+ *
+ * Pre-populates insertion conditions for new Google Tag containers to match
+ * the path exclusions google_tag 1.x applied to every container by default.
  */
-function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
-  $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
-  $env = getenv('AH_PRODUCTION');
-  // Determine if site specific Google Tag should be inserted.
-  if ($uiowa_core_gtag === 0 || (int) $env === 0) {
-    $satisfied = FALSE;
+function uiowa_core_entity_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
+  if ($entity->getEntityTypeId() !== 'google_tag_container' || !$entity->isNew()) {
+    return;
   }
+  if ($entity->get('conditions')) {
+    return;
+  }
+  $entity->set('conditions', [
+    'request_path' => [
+      'id' => 'request_path',
+      'negate' => TRUE,
+      'pages' => "/admin\n/admin/*\n/batch\n/batch/*\n/node/add*\n/node/*/edit\n/node/*/delete\n/node/*/layout\n/taxonomy/term/*/edit\n/taxonomy/term/*/layout\n/user/*/edit*\n/user/*/cancel*\n/user/*/layout",
+    ],
+  ]);
 }
 
 /**
@@ -2316,4 +2331,14 @@ function uiowa_core_configure_fontawesome_icon_field(array &$icon_element, $chec
       }
     }
   }
+}
+
+/**
+ * Submit handler for google_tag_container_form.
+ *
+ * Redirects to the containers collection page after save instead of the
+ * single-container settings page (which is admin-only).
+ */
+function uiowa_core_google_tag_container_form_submit($form, FormStateInterface $form_state) {
+  $form_state->setRedirect('entity.google_tag_container.collection');
 }
