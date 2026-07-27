@@ -78,6 +78,9 @@ Before the fleet runs, the drush command is checked on one canary site (via
 `drush help`, which executes nothing). A typo'd command aborts before any site
 runs; a command that only exists on some sites asks for confirmation.
 
+Use -v (verbose) to see command output from each site. By default, only success/failure
+status is shown.
+
 Examples:
   # Cache rebuild on every site of two apps:
   ddev exec ./sn ume --apps=uiowa02,uiowa03 -y -- cr
@@ -90,6 +93,9 @@ Examples:
 
   # Preview what would run, without executing anything:
   ddev exec ./sn ume --dry-run -- cron
+
+  # See output from each site (e.g., config values):
+  ddev exec ./sn ume -v --apps=uiowa09 -- config:get system.site
 HELP);
   }
 
