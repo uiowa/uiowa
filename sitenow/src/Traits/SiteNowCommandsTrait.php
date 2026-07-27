@@ -14,6 +14,7 @@ use SiteNow\Command\SiteUpdateCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
 /**
@@ -151,6 +152,85 @@ trait SiteNowCommandsTrait {
   protected function getDrushAlias(string $multisite): string {
     // @todo Move out of BLT.
     return Multisite::getIdentifier('http://' . $multisite);
+  }
+
+  /**
+   * Get the multisites enabled on this developer's machine.
+   *
+   * The list is the uncommented "multisites" entries in blt/local.blt.yml, the
+   * same list that drives local site availability. An absent file or key yields
+   * an empty list rather than a fleet-wide fallback, so a command never acts on
+   * every site by accident.
+   *
+   * @return array
+   *   Site hosts, empty when none are enabled.
+   */
+  protected function localMultisites(): array {
+    $local = "{$this->repoRoot}/blt/local.blt.yml";
+
+    return is_file($local) ? (Yaml::parseFile($local)['multisites'] ?? []) : [];
+  }
+
+  /**
+   * Get the path to the site manifest.
+   *
+   * @return string
+   *   Absolute path to blt/manifest.yml, present or not.
+   */
+  protected function manifestPath(): string {
+    return "{$this->repoRoot}/blt/manifest.yml";
+  }
+
+  /**
+   * Require the site manifest to be present.
+   *
+   * A command that reads the manifest cannot do its job without it, and an
+   * absent file would otherwise surface as a raw parser exception. Gate on this
+   * first so the failure names the file plainly. Deliberately not a
+   * fall-back-to-empty: an empty site list reads as "nothing to do", which
+   * would turn a broken checkout or artifact into a silent success.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   *
+   * @return bool
+   *   TRUE when the manifest exists; FALSE (after printing an error) otherwise.
+   */
+  protected function requireManifest(SymfonyStyle $io): bool {
+    if (!is_file($this->manifestPath())) {
+      $io->getErrorStyle()->error('Manifest file not found at ' . $this->manifestPath());
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Get the whole site manifest, keyed by application.
+   *
+   * The manifest, blt/manifest.yml, is keyed by application (AH_SITE_GROUP) and
+   * maintained by every provision, so it is the authority on which sites live
+   * where. Callers that read it are expected to have gated on
+   * requireManifest(); an absent file throws here rather than reading as an
+   * empty fleet.
+   *
+   * @return array
+   *   Site hosts keyed by application name.
+   */
+  protected function manifest(): array {
+    return Yaml::parseFile($this->manifestPath()) ?: [];
+  }
+
+  /**
+   * Get the sites one Acquia application owns, per the manifest.
+   *
+   * @param string $app
+   *   The application name, e.g. 'uiowa09'.
+   *
+   * @return array
+   *   Site hosts, empty when the application is not in the manifest.
+   */
+  protected function manifestSites(string $app): array {
+    return $this->manifest()[$app] ?? [];
   }
 
   /**

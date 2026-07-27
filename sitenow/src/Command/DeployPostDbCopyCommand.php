@@ -10,7 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Reconciles the copied site after an Acquia database copy.
@@ -70,6 +69,13 @@ class DeployPostDbCopyCommand extends Command {
       return Command::FAILURE;
     }
 
+    // Resolving anything but the application's own database needs the manifest,
+    // and a missing one must not read as "no site matches" — that would let the
+    // hook pass without reconciling the copy.
+    if ($db_name !== $app && !$this->requireManifest($io)) {
+      return Command::FAILURE;
+    }
+
     $site = $this->resolveSite($db_name, $app);
     if ($site === NULL) {
       // A copy of a database this application does not own should not fail the
@@ -116,8 +122,7 @@ class DeployPostDbCopyCommand extends Command {
       return 'default';
     }
 
-    $manifest = Yaml::parseFile("{$this->repoRoot}/blt/manifest.yml") ?: [];
-    foreach ($manifest[$app] ?? [] as $domain) {
+    foreach ($this->manifestSites($app) as $domain) {
       if (str_replace(['.', '-'], '_', $domain) === $db_name) {
         return $domain;
       }

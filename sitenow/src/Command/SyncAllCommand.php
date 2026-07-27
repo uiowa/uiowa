@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Syncs every locally-enabled multisite from a remote environment to local.
@@ -166,17 +165,12 @@ HELP);
   /**
    * Resolve the list of sites to sync.
    *
-   * The --sites option overrides the file. Otherwise the list is the
-   * uncommented "multisites" entries in blt/local.blt.yml; an absent or
-   * all-commented key yields an empty list (no fleet-wide fallback).
+   * The --sites option overrides the locally-enabled multisites.
    */
   private function siteList(InputInterface $input): array {
     $override = $this->parseList($input->getOption('sites'));
-    if ($override) {
-      return $override;
-    }
-    $local = "{$this->repoRoot}/blt/local.blt.yml";
-    return is_file($local) ? (Yaml::parseFile($local)['multisites'] ?? []) : [];
+
+    return $override ?: $this->localMultisites();
   }
 
 }
