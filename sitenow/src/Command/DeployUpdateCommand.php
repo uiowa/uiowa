@@ -23,7 +23,7 @@ use Symfony\Component\Process\Process;
  */
 #[AsCommand(
   name: 'deploy:update',
-  description: "Run post-deploy updates across an application's multisites.",
+  description: "Run post-deploy updates (updatedb, config import, deploy hooks) across an application's multisites.",
 )]
 class DeployUpdateCommand extends Command {
 

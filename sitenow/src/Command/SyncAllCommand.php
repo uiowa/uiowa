@@ -15,12 +15,11 @@ use Symfony\Component\Process\Process;
 /**
  * Syncs every locally-enabled multisite from a remote environment to local.
  *
- * The BLT-independent replacement for `dsa` (drupal:sync:all-sites): the bulk
- * wrapper that runs site:sync once per site. The site list comes from the
- * uncommented "multisites" entries in blt/local.blt.yml (the same list
- * deploy:update reads locally), or from --sites. Unlike BLT's dsa, an empty
- * list syncs nothing rather than falling back to the entire fleet — a local
- * bulk sync clobbers every local database, so it must be asked for explicitly.
+ * The bulk wrapper that runs site:sync once per site. The site list comes from
+ * the uncommented "multisites" entries in blt/local.blt.yml (the same list
+ * deploy:update reads locally), or from --sites. An empty list syncs nothing
+ * rather than falling back to the entire fleet — a local bulk sync clobbers
+ * every local database, so it must be asked for explicitly.
  *
  * Runs sequentially: local databases and remote sources should not be hit by
  * many parallel syncs at once.

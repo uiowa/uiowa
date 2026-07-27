@@ -14,15 +14,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Reconciles the copied site after an Acquia database copy.
  *
- * The BLT-independent replacement for the post-db-copy cloud hook. Acquia copies
- * one site's database between environments and fires the hook with the copied
- * database's name; the reconcile must bring that one site's database in line
- * with the target environment's code (updatedb, config import, deploy hooks) so
- * the copy is usable. This resolves the database name back to its site and
- * delegates the reconcile to site:update.
+ * Acquia copies one site's database between environments and fires the hook
+ * with the copied database's name; the reconcile must bring that one site's
+ * database in line with the target environment's code (updatedb, config import,
+ * deploy hooks) so the copy is usable. This resolves the database name back to
+ * its site and delegates the reconcile to site:update.
  *
- * Runs on the Acquia server from the hook, not in DDEV: it operates on the local
- * site there, so it needs neither the container nor a forwarded SSH agent.
+ * Runs on the Acquia server from the hook, not in DDEV: it operates on the
+ * local site there, so it needs neither the container nor a forwarded SSH
+ * agent.
  */
 #[AsCommand(
   name: 'deploy:post-db-copy',

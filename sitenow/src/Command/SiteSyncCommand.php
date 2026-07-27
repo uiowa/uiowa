@@ -15,9 +15,9 @@ use Uiowa\Multisite;
 /**
  * Syncs a single multisite from a remote environment down to local.
  *
- * The BLT-independent replacement for `ds` (drupal:sync:default:site): copy the
- * remote database over the local one, rebuild caches, optionally rsync files,
- * then reconcile the copy via site:update (updatedb, config import, deploy
+ * Copies the remote database over the local one, sanitizes it (removes
+ * sensitive data via your configured sanitization), optionally rsyncs files,
+ * then reconciles the copy via site:update (updatedb, config import, deploy
  * hooks). Runs inside DDEV and reaches the remote over drush aliases + SSH, so
  * it needs a forwarded SSH agent (`ddev auth ssh`).
  */
@@ -34,8 +34,7 @@ class SiteSyncCommand extends Command {
    * File subdirectories skipped during file syncs.
    *
    * Derived assets (image-style derivatives, aggregated css/js) are rebuilt on
-   * demand locally, so copying them wastes transfer. Mirrors the BLT
-   * sync.exclude-paths default that `ds` used.
+   * demand locally, so copying them wastes transfer.
    */
   const FILE_EXCLUDE_PATHS = 'styles:css:js';
 
@@ -62,7 +61,7 @@ class SiteSyncCommand extends Command {
       ->addOption('sync-public-files', NULL, InputOption::VALUE_NONE, 'Also rsync the public files directory from the remote.')
       ->addOption('sync-private-files', NULL, InputOption::VALUE_NONE, 'Also rsync the private files directory from the remote.')
       ->addOption('no-update', NULL, InputOption::VALUE_NONE, 'Skip the post-sync update (site:update): copy the database only.')
-      ->addOption('no-sanitize', NULL, InputOption::VALUE_NONE, 'Skip sanitization and keep real production data. The copy will contain PII — only use it when you genuinely need production data to reproduce something.')
+      ->addOption('no-sanitize', NULL, InputOption::VALUE_NONE, 'Skip sanitization and keep real production data. Use only when you need production user data to reproduce a specific bug or issue locally. Handle with care.')
       ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.')
       ->setHelp(<<<'HELP'
 Copies a remote environment's database over your local one for a single site,
