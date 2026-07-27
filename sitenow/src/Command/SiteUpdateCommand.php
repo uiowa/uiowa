@@ -2,6 +2,7 @@
 
 namespace SiteNow\Command;
 
+use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,6 +24,8 @@ use Symfony\Component\Process\Process;
   description: 'Run database and configuration updates for a single multisite.',
 )]
 class SiteUpdateCommand extends Command {
+
+  use SiteNowCommandsTrait;
 
   /**
    * Exit code returned when a site is skipped (not updated, not failed).
@@ -156,30 +159,6 @@ class SiteUpdateCommand extends Command {
 
     $io->writeln("Finished updating {$site}.");
     return $config_state;
-  }
-
-  /**
-   * Resolve a host to its multisite directory via sites.php.
-   *
-   * Mirrors Drupal's own aliasing: sites.php maps alias hosts to a directory,
-   * and a host with no entry uses a same-named directory. This is what lets the
-   * default site be addressed by its real domain (demo.sitenow.uiowa.edu) while
-   * resolving to the default directory.
-   *
-   * @param string $host
-   *   The site host / canonical domain.
-   *
-   * @return string
-   *   The multisite directory name.
-   */
-  protected function siteDirectory(string $host): string {
-    $sites = [];
-    $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
-    if (is_file($sites_file)) {
-      // sites.php populates $sites with host => directory aliases.
-      include $sites_file;
-    }
-    return $sites[$host] ?? $host;
   }
 
   /**

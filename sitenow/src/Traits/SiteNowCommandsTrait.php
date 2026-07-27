@@ -137,6 +137,34 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Resolve a host to its multisite directory via sites.php.
+   *
+   * Mirrors Drupal's own aliasing: sites.php maps alias hosts to a directory,
+   * and a host with no entry uses a same-named directory. This is what lets the
+   * default site be addressed by its real domain (demo.sitenow.uiowa.edu) while
+   * resolving to the default directory, and it is what keeps file syncs landing
+   * in the right directory.
+   *
+   * Reads the using class's $repoRoot property, as every command in
+   * sitenow/src/Command declares one.
+   *
+   * @param string $host
+   *   The site host / canonical domain.
+   *
+   * @return string
+   *   The multisite directory name.
+   */
+  protected function siteDirectory(string $host): string {
+    $sites = [];
+    $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
+    if (is_file($sites_file)) {
+      // sites.php populates $sites with host => directory aliases.
+      include $sites_file;
+    }
+    return $sites[$host] ?? $host;
+  }
+
+  /**
    * Determine if the command is running inside the DDEV container.
    *
    * @return bool

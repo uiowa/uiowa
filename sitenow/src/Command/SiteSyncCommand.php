@@ -228,29 +228,6 @@ HELP);
   }
 
   /**
-   * Resolve a host to its multisite directory via sites.php.
-   *
-   * Mirrors Drupal's own aliasing so file syncs land in the right directory:
-   * sites.php maps alias hosts to a directory, and a host with no entry uses a
-   * same-named directory.
-   *
-   * @param string $host
-   *   The site host / canonical domain.
-   *
-   * @return string
-   *   The multisite directory name.
-   */
-  protected function siteDirectory(string $host): string {
-    $sites = [];
-    $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
-    if (is_file($sites_file)) {
-      // sites.php populates $sites with host => directory aliases.
-      include $sites_file;
-    }
-    return $sites[$host] ?? $host;
-  }
-
-  /**
    * Run a drush command and return the finished process.
    *
    * @param string[] $args
