@@ -101,12 +101,10 @@ class DeployPostDbCopyCommand extends Command {
   /**
    * Resolve a copied database name back to its site domain.
    *
-   * Acquia names each multisite's database after its directory with dots and
-   * hyphens replaced by underscores; the default site's database is named after
-   * the application. This mirrors the derivation site:update uses, so the two
-   * agree on which database belongs to which site. Only this application's sites
-   * (AH_SITE_GROUP, via the manifest) are considered — a copy targets one of
-   * them.
+   * Inverts databaseName() over this application's sites (AH_SITE_GROUP, via
+   * the manifest) — a copy targets one of them. Sharing that derivation is what
+   * keeps this and site:update agreeing on which database belongs to which
+   * site, including for a host that sites.php aliases to another directory.
    *
    * @param string $db_name
    *   The copied database name from the hook.
@@ -117,13 +115,14 @@ class DeployPostDbCopyCommand extends Command {
    *   The matching site domain (or 'default'), or NULL if none matches.
    */
   private function resolveSite(string $db_name, string $app): ?string {
-    // The default site's database is named after the application.
+    // The application-named database is the default site's, whether or not the
+    // manifest lists a domain for it — most applications do not.
     if ($db_name === $app) {
       return 'default';
     }
 
     foreach ($this->manifestSites($app) as $domain) {
-      if (str_replace(['.', '-'], '_', $domain) === $db_name) {
+      if ($this->databaseName($domain, $app) === $db_name) {
         return $domain;
       }
     }

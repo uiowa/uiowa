@@ -37,6 +37,16 @@ trait SiteNowCommandsTrait {
   protected bool $ansi = FALSE;
 
   /**
+   * The sites.php host => directory aliases, read once per command run.
+   *
+   * Resolving a directory is a per-site lookup that callers make in a loop over
+   * a whole application, and sites.php holds thousands of aliases, so the file
+   * is included once and the map reused. A command that rewrites sites.php mid
+   * run must not rely on this to reflect the write.
+   */
+  private ?array $siteAliases = NULL;
+
+  /**
    * Get a config value by key from blt/local.blt.yml.
    *
    * @param string $key
@@ -252,13 +262,44 @@ trait SiteNowCommandsTrait {
    *   The multisite directory name.
    */
   protected function siteDirectory(string $host): string {
-    $sites = [];
-    $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
-    if (is_file($sites_file)) {
-      // sites.php populates $sites with host => directory aliases.
-      include $sites_file;
+    if ($this->siteAliases === NULL) {
+      $sites = [];
+      $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
+      if (is_file($sites_file)) {
+        // sites.php populates $sites with host => directory aliases.
+        include $sites_file;
+      }
+      $this->siteAliases = $sites;
     }
-    return $sites[$host] ?? $host;
+
+    return $this->siteAliases[$host] ?? $host;
+  }
+
+  /**
+   * Derive the Acquia database name for a site.
+   *
+   * Acquia names each multisite's database after its directory with dots and
+   * hyphens replaced by underscores, except the default site, whose database is
+   * named after the application. The name comes from the sites.php-resolved
+   * directory, not the host, so an aliased host lands on the same database
+   * Acquia actually provisioned.
+   *
+   * Single-sourced deliberately: callers derive this in both directions — a
+   * settings-include check from the site, and a copied database name back to
+   * its site — and the two must agree.
+   *
+   * @param string $host
+   *   The site host / canonical domain.
+   * @param string $app
+   *   The application (AH_SITE_GROUP), used for the default site.
+   *
+   * @return string
+   *   The database name.
+   */
+  protected function databaseName(string $host, string $app): string {
+    $dir = $this->siteDirectory($host);
+
+    return $dir === 'default' ? $app : str_replace(['.', '-'], '_', $dir);
   }
 
   /**

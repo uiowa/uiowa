@@ -95,9 +95,8 @@ class SiteUpdateCommand extends Command {
 
     // On Acquia, skip sites whose database is not present on this application.
     if ($is_acquia) {
-      // Acquia names the settings include after the site directory, except the
-      // default site, which uses the application-named include and database.
-      $db = $dir === 'default' ? $app : str_replace(['.', '-'], '_', $dir);
+      // Acquia names the settings include after the database.
+      $db = $this->databaseName($site, $app);
       if (!is_file("/var/www/site-php/{$app}/{$db}-settings.inc")) {
         $io->writeln("Skipping {$site}: database not present on {$app}.");
         return self::SKIPPED;
