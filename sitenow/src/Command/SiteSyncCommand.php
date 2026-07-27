@@ -43,16 +43,6 @@ class SiteSyncCommand extends Command {
   const FILE_EXCLUDE_PATHS = 'styles:css:js';
 
   /**
-   * Whether to force drush ANSI color, mirroring this command's own output.
-   *
-   * Drush runs through a pipe here and disables color by default; this
-   * restates the command's own decoration (on at an interactive terminal, off
-   * when piped) so color survives, and it is forwarded to the site:update
-   * child so the config-import table stays colored end to end.
-   */
-  private bool $ansi = FALSE;
-
-  /**
    * Constructs the command.
    *
    * @param string $repoRoot
@@ -225,32 +215,6 @@ HELP);
 
     $io->success("Synced {$site} from {$env}.");
     return Command::SUCCESS;
-  }
-
-  /**
-   * Run a drush command and return the finished process.
-   *
-   * @param string[] $args
-   *   Drush command and arguments (aliases included as leading elements).
-   * @param bool $stream
-   *   TRUE to stream output live (used for the long-running sync/rsync).
-   *
-   * @return \Symfony\Component\Process\Process
-   *   The finished process.
-   */
-  private function drush(array $args, bool $stream = FALSE): Process {
-    $process = new Process(
-      ["{$this->repoRoot}/vendor/bin/drush", $this->ansi ? '--ansi' : '--no-ansi', ...$args],
-      $this->repoRoot,
-    );
-    $process->setTimeout(NULL);
-    if ($stream) {
-      $process->run(fn ($type, $buffer) => print $buffer);
-    }
-    else {
-      $process->run();
-    }
-    return $process;
   }
 
 }

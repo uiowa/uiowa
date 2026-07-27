@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 
 /**
  * Runs database and configuration updates for a single multisite.
@@ -47,15 +46,6 @@ class SiteUpdateCommand extends Command {
    * "config does not match" tier without treating the site as failed.
    */
   public const CONFIG_MISMATCH = 3;
-
-  /**
-   * Whether to force drush ANSI color, mirroring this command's own output.
-   *
-   * The per-site drush runs through a pipe, where drush disables color by
-   * default; this restates the command's own decoration (on at an interactive
-   * terminal, off when piped to a log) so drush color survives the pipe.
-   */
-  private bool $ansi = FALSE;
 
   /**
    * Constructs the command.
@@ -127,13 +117,13 @@ class SiteUpdateCommand extends Command {
     // @see https://support.acquia.com/hc/en-us/articles/360005167754
     $twig_script = '/var/www/site-scripts/invalidate-twig-cache.php';
     if ($is_acquia && is_file($twig_script)) {
-      $this->drush($site, ['php:script', $twig_script]);
+      $this->drush(['php:script', $twig_script], uri: $site);
     }
 
     // Runs updatedb, config:import, cache:rebuild, and deploy:hook. --yes
     // answers the update and config-import confirmations explicitly rather
     // than relying on the non-interactive default.
-    $result = $this->drush($site, ['deploy', '--yes'], TRUE);
+    $result = $this->drush(['deploy', '--yes'], stream: TRUE, uri: $site);
     if (!$result->isSuccessful()) {
       $io->error("Failed updating {$site}.");
       return Command::FAILURE;
@@ -146,7 +136,7 @@ class SiteUpdateCommand extends Command {
     // not run. Distinguish three outcomes: matches, does not match, and could
     // not verify; the latter two return CONFIG_MISMATCH so a caller can surface
     // them without treating the site as failed.
-    $status = $this->drush($site, ['config:status']);
+    $status = $this->drush(['config:status'], uri: $site);
     $config_state = Command::SUCCESS;
     if (!$status->isSuccessful()) {
       $config_state = self::CONFIG_MISMATCH;
@@ -165,36 +155,8 @@ class SiteUpdateCommand extends Command {
    * Whether Drupal is installed for a site (the config table exists).
    */
   private function isInstalled(string $site): bool {
-    $result = $this->drush($site, ['sql:query', "SHOW TABLES LIKE 'config'"]);
+    $result = $this->drush(['sql:query', "SHOW TABLES LIKE 'config'"], uri: $site);
     return $result->isSuccessful() && trim($result->getOutput()) === 'config';
-  }
-
-  /**
-   * Run a drush command against a site and return the finished process.
-   *
-   * @param string $site
-   *   The site to target via --uri.
-   * @param string[] $args
-   *   Drush command and arguments.
-   * @param bool $stream
-   *   TRUE to stream output live (used for the long-running update).
-   *
-   * @return \Symfony\Component\Process\Process
-   *   The finished process.
-   */
-  private function drush(string $site, array $args, bool $stream = FALSE): Process {
-    $process = new Process(
-      ["{$this->repoRoot}/vendor/bin/drush", "--uri={$site}", $this->ansi ? '--ansi' : '--no-ansi', ...$args],
-      $this->repoRoot,
-    );
-    $process->setTimeout(NULL);
-    if ($stream) {
-      $process->run(fn($type, $buffer) => print $buffer);
-    }
-    else {
-      $process->run();
-    }
-    return $process;
   }
 
 }

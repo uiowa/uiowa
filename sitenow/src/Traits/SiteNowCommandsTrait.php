@@ -11,12 +11,22 @@ use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Process;
 use Uiowa\Multisite;
 
 /**
  * Acquia Cloud, drush, and environment helpers for SiteNow console commands.
  */
 trait SiteNowCommandsTrait {
+
+  /**
+   * Whether to force drush ANSI color, mirroring the command's own output.
+   *
+   * Drush runs through a pipe here and disables color by default; a command
+   * sets this from its own decoration (on at an interactive terminal, off when
+   * piped) so color survives, and drush() forwards it on every call.
+   */
+  protected bool $ansi = FALSE;
 
   /**
    * Get a config value by key from blt/local.blt.yml.
@@ -162,6 +172,45 @@ trait SiteNowCommandsTrait {
       include $sites_file;
     }
     return $sites[$host] ?? $host;
+  }
+
+  /**
+   * Run the repository's drush and return the finished process.
+   *
+   * Reads the using class's $repoRoot property, as every command in
+   * sitenow/src/Command declares one.
+   *
+   * @param string[] $args
+   *   Drush command and arguments. A caller addressing a site by alias passes
+   *   it as a leading element; a caller addressing one by URI uses $uri.
+   * @param bool $stream
+   *   TRUE to stream output live, for a long-running call whose progress the
+   *   user should see (a sync, an rsync, a deploy).
+   * @param string|null $uri
+   *   Site to run against as --uri, for a multisite call that is not addressed
+   *   by alias. NULL runs without --uri.
+   *
+   * @return \Symfony\Component\Process\Process
+   *   The finished process.
+   */
+  protected function drush(array $args, bool $stream = FALSE, ?string $uri = NULL): Process {
+    $process = new Process(
+      [
+        "{$this->repoRoot}/vendor/bin/drush",
+        ...($uri !== NULL ? ["--uri={$uri}"] : []),
+        $this->ansi ? '--ansi' : '--no-ansi',
+        ...$args,
+      ],
+      $this->repoRoot,
+    );
+    $process->setTimeout(NULL);
+    if ($stream) {
+      $process->run(fn ($type, $buffer) => print $buffer);
+    }
+    else {
+      $process->run();
+    }
+    return $process;
   }
 
   /**
