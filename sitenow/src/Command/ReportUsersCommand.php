@@ -4,6 +4,7 @@ namespace SiteNow\Command;
 
 use SiteNow\Process\FleetRunner;
 use SiteNow\Report\CsvWriter;
+use SiteNow\Traits\DescribesDrushFailures;
 use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -32,6 +33,7 @@ class ReportUsersCommand extends Command {
 
   use SiteNowCommandsTrait;
   use ParsesListOptions;
+  use DescribesDrushFailures;
 
   /**
    * Editorial roles that qualify a user for the report.
@@ -118,14 +120,19 @@ class ReportUsersCommand extends Command {
 
     $err->writeln("<comment>Querying users on {$site_count} sites...</comment>");
 
-    // Print only genuine failures as they complete; a site with no qualifying
+    // Report only genuine failures as they happen; a site with no qualifying
     // users exits non-zero ("No users found") and is expected, not an error.
+    //
+    // The pool retries failures and reports progress per attempt, so a line
+    // here describes one attempt, not the site's outcome: a site that fails
+    // its first attempt and succeeds on retry still appears in the report.
+    // The end-of-run summary is the verdict, being built from final results.
     $results = $runner->run($selection, $drush_args, 'prod', NULL, function (int $done, int $total, ?string $key, ?array $result) use ($err) {
       if ($key === NULL || $result === NULL) {
         return;
       }
       if ($result['exit'] !== 0 && !$this->isNoUsersError($result['error'])) {
-        $err->writeln("<error>✖</error> [{$done}/{$total}] {$key} (exit {$result['exit']})");
+        $err->writeln("<error>✖</error> [{$done}/{$total}] attempt failed: {$key} — " . $this->failureReason($result));
       }
     });
 
@@ -163,7 +170,7 @@ class ReportUsersCommand extends Command {
       $err->writeln('');
       $err->writeln('<comment>[WARNING] ' . count($failed) . ' site(s) could not be queried:</comment>');
       foreach ($failed as $result) {
-        $err->writeln("  {$result['app']}: {$result['site']} (exit {$result['exit']})");
+        $err->writeln("  {$result['app']}: {$result['site']} — " . $this->failureReason($result));
       }
     }
 

@@ -57,6 +57,13 @@ class ReportUsersTest extends UnitTestCase {
         return $this->formatDuration($seconds);
       }
 
+      /**
+       * {@inheritdoc}
+       */
+      public function reason(array $result): string {
+        return $this->failureReason($result);
+      }
+
     };
   }
 
@@ -193,6 +200,29 @@ class ReportUsersTest extends UnitTestCase {
     $this->assertTrue($command->noUsers("In UsersCommands.php line 124:\n\n  No users found.\n"));
     $this->assertFalse($command->noUsers('Host key verification failed.'));
     $this->assertFalse($command->noUsers(''));
+  }
+
+  /**
+   * A failure reports drush's own message, not just the exit code.
+   *
+   * The reason comes from the shared DescribesDrushFailures trait; a bare
+   * "exit 1" leaves no way to tell a broken site from an unreachable one.
+   */
+  public function testFailureReason(): void {
+    $command = $this->command();
+
+    $this->assertSame(
+      'Host key verification failed. (exit 255)',
+      $command->reason([
+        'exit' => 255,
+        'output' => '',
+        'error' => "warming up\nHost key verification failed.\n",
+      ])
+    );
+    $this->assertSame(
+      'no error output (exit 1)',
+      $command->reason(['exit' => 1, 'output' => '', 'error' => ''])
+    );
   }
 
   /**
