@@ -25,7 +25,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'report:users',
-  description: '(ddev required) Report SiteNow users and the sites they have logged into.',
+  description: 'Report SiteNow users and the sites they have logged into.',
   aliases: ['users'],
 )]
 class ReportUsersCommand extends Command {
@@ -88,14 +88,11 @@ class ReportUsersCommand extends Command {
       return Command::FAILURE;
     }
 
-    if (!$this->requireDdev($io, $this->getName())) {
-      return Command::FAILURE;
-    }
     if (!$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 
-    $runner = new FleetRunner("{$this->repoRoot}/blt/manifest.yml", "{$this->repoRoot}/drush/drush.yml");
+    $runner = new FleetRunner($this->repoRoot);
     try {
       $selection = $runner->select($target_apps, $exclude);
     }

@@ -111,7 +111,7 @@ HELP);
       return Command::FAILURE;
     }
 
-    $runner = new FleetRunner("{$this->repoRoot}/blt/manifest.yml", "{$this->repoRoot}/drush/drush.yml");
+    $runner = new FleetRunner($this->repoRoot);
 
     try {
       $selection = $runner->select($apps, $exclude);
