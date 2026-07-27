@@ -10,6 +10,8 @@ use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use SiteNow\Command\SiteUpdateCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 use Uiowa\Multisite;
@@ -216,6 +218,44 @@ trait SiteNowCommandsTrait {
       $process->run();
     }
     return $process;
+  }
+
+  /**
+   * Reconcile one site by delegating to the site:update command.
+   *
+   * Both callers that copy a database — a local sync and the Acquia
+   * post-db-copy hook — must bring the copy in line with the code, and
+   * site:update already owns that. Its output streams so the user sees the
+   * update as it happens.
+   *
+   * A skipped site or a config mismatch is not a failure of the caller's own
+   * job: the update ran (or correctly declined to), and site:update has already
+   * reported why. Only a genuine update error is returned as failure, so this
+   * decides tolerance from site:update's exit codes in one place rather than in
+   * each caller.
+   *
+   * @param string $site
+   *   The site host / canonical domain to update.
+   *
+   * @return bool
+   *   TRUE when site:update succeeded, skipped the site, or reported a config
+   *   mismatch; FALSE when it failed.
+   */
+  protected function updateSite(string $site): bool {
+    $process = new Process(
+      ["{$this->repoRoot}/sn", 'site:update', $site, $this->ansi ? '--ansi' : '--no-ansi'],
+      $this->repoRoot,
+    );
+    $process->setTimeout(NULL);
+    $process->run(fn ($type, $buffer) => print $buffer);
+
+    $tolerated = [
+      Command::SUCCESS,
+      SiteUpdateCommand::SKIPPED,
+      SiteUpdateCommand::CONFIG_MISMATCH,
+    ];
+
+    return in_array($process->getExitCode(), $tolerated, TRUE);
   }
 
   /**

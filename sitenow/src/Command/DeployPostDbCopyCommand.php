@@ -2,6 +2,7 @@
 
 namespace SiteNow\Command;
 
+use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -9,7 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -30,6 +30,8 @@ use Symfony\Component\Yaml\Yaml;
   description: 'Reconcile a single site after its database was copied between Acquia environments.',
 )]
 class DeployPostDbCopyCommand extends Command {
+
+  use SiteNowCommandsTrait;
 
   /**
    * Constructs the command.
@@ -59,6 +61,7 @@ class DeployPostDbCopyCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
+    $this->ansi = $output->isDecorated();
 
     $db_name = $input->getArgument('db-name');
     $app = getenv('AH_SITE_GROUP') ?: '';
@@ -81,17 +84,7 @@ class DeployPostDbCopyCommand extends Command {
     }
 
     $io->writeln("Database '{$db_name}' belongs to {$site}; reconciling...");
-    $update = new Process(
-      ["{$this->repoRoot}/sn", 'site:update', $site, $output->isDecorated() ? '--ansi' : '--no-ansi'],
-      $this->repoRoot,
-    );
-    $update->setTimeout(NULL);
-    $update->run(fn ($type, $buffer) => print $buffer);
-
-    // A skip or config-mismatch exit from site:update is not a hook failure;
-    // only a genuine update error should surface as one.
-    $tolerated = [Command::SUCCESS, SiteUpdateCommand::SKIPPED, SiteUpdateCommand::CONFIG_MISMATCH];
-    if (!in_array($update->getExitCode(), $tolerated, TRUE)) {
+    if (!$this->updateSite($site)) {
       $err->error("Reconcile failed for {$site}.");
       return Command::FAILURE;
     }

@@ -10,7 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 use Uiowa\Multisite;
 
 /**
@@ -195,16 +194,11 @@ HELP);
 
     // 5. Reconcile the copied database: updatedb, config import, deploy hooks.
     //    This is the "drupal:update" half of the old ds, delegated to the
-    //    command that already owns it. A skip or config-mismatch exit is not a
-    //    sync failure; only a genuine update error is.
+    //    command that already owns it.
     if (!$input->getOption('no-update')) {
       $io->newLine();
       $io->section('Reconcile');
-      $update = new Process(["{$this->repoRoot}/sn", 'site:update', $site, $this->ansi ? '--ansi' : '--no-ansi'], $this->repoRoot);
-      $update->setTimeout(NULL);
-      $update->run(fn ($type, $buffer) => print $buffer);
-      $tolerated = [Command::SUCCESS, SiteUpdateCommand::SKIPPED, SiteUpdateCommand::CONFIG_MISMATCH];
-      if (!in_array($update->getExitCode(), $tolerated, TRUE)) {
+      if (!$this->updateSite($site)) {
         $err->error("Post-sync update failed for {$site}.");
         return Command::FAILURE;
       }
