@@ -31,8 +31,6 @@ class SiteSyncCommand extends Command {
 
   use SiteNowCommandsTrait;
 
-  const ENVIRONMENTS = ['dev', 'test', 'prod'];
-
   /**
    * File subdirectories skipped during file syncs.
    *
@@ -97,8 +95,7 @@ HELP);
     $site = $input->getArgument('site');
     $env = $input->getOption('env');
 
-    if (!in_array($env, self::ENVIRONMENTS, TRUE)) {
-      $err->error("Invalid environment '{$env}'. Must be one of: " . implode(', ', self::ENVIRONMENTS));
+    if (!$this->requireEnvironment($io, $env)) {
       return Command::FAILURE;
     }
 

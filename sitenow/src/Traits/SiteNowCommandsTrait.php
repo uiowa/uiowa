@@ -20,6 +20,11 @@ use Uiowa\Multisite;
 trait SiteNowCommandsTrait {
 
   /**
+   * The remote Acquia environments a command's --env option accepts.
+   */
+  const ENVIRONMENTS = ['dev', 'test', 'prod'];
+
+  /**
    * Whether to force drush ANSI color, mirroring the command's own output.
    *
    * Drush runs through a pipe here and disables color by default; a command
@@ -242,6 +247,31 @@ trait SiteNowCommandsTrait {
   protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
     if (!$this->isDdev()) {
       $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Require the --env option to name a real remote environment.
+   *
+   * Symfony does not constrain an option's value, so an unrecognized --env
+   * would otherwise reach drush as a bad alias suffix and fail obscurely. On
+   * failure, prints an error listing the accepted values and returns FALSE so
+   * the caller can exit.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   * @param string $env
+   *   The --env option value.
+   *
+   * @return bool
+   *   TRUE when the environment is valid; FALSE (after printing an error)
+   *   otherwise.
+   */
+  protected function requireEnvironment(SymfonyStyle $io, string $env): bool {
+    if (!in_array($env, self::ENVIRONMENTS, TRUE)) {
+      $io->getErrorStyle()->error("Invalid environment '{$env}'. Must be one of: " . implode(', ', self::ENVIRONMENTS));
       return FALSE;
     }
     return TRUE;

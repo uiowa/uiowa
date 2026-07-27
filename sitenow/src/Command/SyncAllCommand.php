@@ -36,8 +36,6 @@ class SyncAllCommand extends Command {
   use SiteNowCommandsTrait;
   use ParsesListOptions;
 
-  const ENVIRONMENTS = ['dev', 'test', 'prod'];
-
   /**
    * Exit code for a run that completed but had per-site failures.
    *
@@ -99,8 +97,7 @@ HELP);
     $err = $io->getErrorStyle();
 
     $env = $input->getOption('env');
-    if (!in_array($env, self::ENVIRONMENTS, TRUE)) {
-      $err->error("Invalid environment '{$env}'. Must be one of: " . implode(', ', self::ENVIRONMENTS));
+    if (!$this->requireEnvironment($io, $env)) {
       return Command::FAILURE;
     }
 
