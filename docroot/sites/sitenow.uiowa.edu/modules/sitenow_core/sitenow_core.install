@@ -63,7 +63,7 @@ function sitenow_core_update_10002() {
   // Quoted because a site name contains spaces, which would otherwise reach
   // the command as trailing arguments rather than as the option's value.
   $yaml = Yaml::decode($elements);
-  $yaml['markup']['#markup'] = './sn multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --split=sitenow_v2 --site-name="[webform_submission:values:site_name]"';
+  $yaml['markup']['#markup'] = './sn multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --site-name="[webform_submission:values:site_name]"';
   $elements = Yaml::encode($yaml);
 
   $config
