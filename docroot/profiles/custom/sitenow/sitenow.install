@@ -4713,3 +4713,51 @@ function sitenow_update_10034() {
 
   return t('No webform handlers required attachment changes.');
 }
+
+/**
+ * Update people_list_block instances for BEF compatibility.
+ */
+function sitenow_update_10035() {
+  // First, ensure the view configuration is updated to use BEF.
+  // This is critical because the update hook runs before config sync.
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // Import the updated view configuration.
+  $config_name = 'views.view.people_list_block';
+  $config_data = $source->read($config_name);
+
+  if ($config_data) {
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write($config_name, $config_data);
+
+    // Clear the config cache for this specific view.
+    \Drupal::configFactory()->clearStaticCache();
+    // Clear views data cache so the updated view configuration is used.
+    \Drupal::service('cache.discovery')->delete('views_data');
+  }
+
+  // Now update block instances with the BEF-compatible view in place.
+  $block_plugin_id = 'views_block:people_list_block-list_card';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
+    $configuration = $component->get('configuration');
+
+    // The view now uses BEF for exposed forms. The research areas
+    // filter needs a slightly different format. Remove the
+    // 'type' designation completely, and update the values
+    // to be tid-keyed instead of simple indexed.
+    if (isset($configuration['exposed'])) {
+      $filter_key = 'filter-field_person_research_areas_target_id';
+      if (isset($configuration['exposed'][$filter_key]) && is_array($configuration['exposed'][$filter_key])) {
+        unset($configuration['exposed'][$filter_key]['type']);
+        $values = array_values($configuration['exposed'][$filter_key]['value']);
+        unset($configuration['exposed'][$filter_key]['value']);
+        foreach ($values as $value) {
+          $configuration['exposed'][$filter_key]['value'][$value] = $value;
+        }
+      }
+      $component->set('configuration', $configuration);
+    }
+  });
+}
