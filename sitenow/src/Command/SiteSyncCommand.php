@@ -158,7 +158,7 @@ HELP);
       }
     }
     else {
-      $io->warning('Skipping sanitize (--no-sanitize): this local copy will contain real production data, including PII.');
+      $io->warning('Skipping sanitize (--no-sanitize): this local copy will contain all production data.');
     }
 
     // 4. Optional file syncs, mirroring the old `ds --sync-*-files` behavior.
