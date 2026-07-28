@@ -543,7 +543,7 @@ trait SiteNowCommandsTrait {
    */
   protected function requireSshAgent(SymfonyStyle $io): bool {
     if (!$this->hasSshAgent()) {
-      $io->getErrorStyle()->error("No SSH keys loaded. Run 'ddev auth ssh' before running this command.");
+      $io->getErrorStyle()->error("No SSH keys loaded. Run 'ssh-add' on the host, or 'ddev auth ssh' in the container, before running this command.");
       return FALSE;
     }
     return TRUE;

@@ -25,6 +25,24 @@ class FleetRunnerTest extends UnitTestCase {
   protected string $manifest;
 
   /**
+   * Stand-in repository root.
+   *
+   * Only the drush binary path is derived from it, and that path is never
+   * stat'd, so the directory does not need to exist. Named to avoid colliding
+   * with UnitTestCase::$root.
+   *
+   * @var string
+   */
+  protected string $repoRoot = '/repo';
+
+  /**
+   * The drush binary the runner is expected to invoke.
+   *
+   * @var string
+   */
+  protected string $drush = '/repo/vendor/bin/drush';
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -51,7 +69,7 @@ YAML);
    * An empty app filter selects every app in the manifest.
    */
   public function testSelectAll(): void {
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
 
     $this->assertSame([
       'uiowa02' => ['vote.uiowa.edu', 'tippie.uiowa.edu'],
@@ -63,7 +81,7 @@ YAML);
    * Filtering by app returns only that app's sites.
    */
   public function testSelectByApp(): void {
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
 
     $this->assertSame(
       ['uiowa03' => ['accessibility.uiowa.edu']],
@@ -75,7 +93,7 @@ YAML);
    * An unknown app name throws with the name in the message.
    */
   public function testSelectUnknownAppThrows(): void {
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
 
     $this->expectException(\RuntimeException::class);
     $this->expectExceptionMessage('nope');
@@ -86,7 +104,7 @@ YAML);
    * Excluded domains are removed; a fully excluded app drops out entirely.
    */
   public function testSelectExclude(): void {
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
 
     $this->assertSame(
       ['uiowa02' => ['tippie.uiowa.edu'], 'uiowa03' => ['accessibility.uiowa.edu']],
@@ -102,7 +120,7 @@ YAML);
    * A missing manifest file throws instead of selecting nothing.
    */
   public function testSelectMissingManifestThrows(): void {
-    $runner = new FleetRunner('/nonexistent/manifest.yml');
+    $runner = new FleetRunner($this->repoRoot, '/nonexistent/manifest.yml');
 
     $this->expectException(\RuntimeException::class);
     $runner->select();
@@ -119,7 +137,7 @@ YAML);
    */
   public function testSelectMalformedManifestThrows(string $content): void {
     file_put_contents($this->manifest, $content);
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
 
     $this->expectException(\RuntimeException::class);
     $runner->select();
@@ -143,11 +161,11 @@ YAML);
    * only, and must ride every job as a single argv element.
    */
   public function testBuildJobs(): void {
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
     ['jobs' => $jobs, 'groups' => $groups] = $runner->buildJobs($runner->select(), ['cr']);
 
     $this->assertSame(
-      ['drush', '@vote.prod', '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS, 'cr'],
+      [$this->drush, '@vote.prod', '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS, 'cr'],
       $jobs['vote.uiowa.edu']
     );
     $this->assertSame([
@@ -164,12 +182,12 @@ YAML);
    * argv element (no shell-style joining).
    */
   public function testBuildJobsEnvAndArgPassthrough(): void {
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
     $selection = $runner->select(['uiowa03']);
     ['jobs' => $jobs] = $runner->buildJobs($selection, ['sql:query', 'SELECT COUNT(*) FROM node'], 'dev');
 
     $this->assertSame([
-      'drush',
+      $this->drush,
       '@accessibility.dev',
       '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS,
       'sql:query',
@@ -187,7 +205,7 @@ YAML);
   public function testSshOptionsInheritDrushConfig(): void {
     $drush_config = tempnam(sys_get_temp_dir(), 'drush');
     file_put_contents($drush_config, "ssh:\n  options: '-A -o PasswordAuthentication=no -p 22'\n");
-    $runner = new FleetRunner($this->manifest, $drush_config);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, $drush_config);
 
     $this->assertSame(
       '-A -o PasswordAuthentication=no -p 22 ' . FleetRunner::MUX_OPTIONS,
@@ -207,7 +225,7 @@ YAML);
       $drush_config = tempnam(sys_get_temp_dir(), 'drush');
       file_put_contents($drush_config, $content);
     }
-    $runner = new FleetRunner($this->manifest, $drush_config);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, $drush_config);
 
     $this->assertSame(
       '-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS,
@@ -241,14 +259,15 @@ YAML);
    *   The runner.
    */
   protected function runnerWithCanary(array $result, ?array &$captured = NULL): FleetRunner {
-    return new class($this->manifest, $result, $captured) extends FleetRunner {
+    return new class($this->repoRoot, $this->manifest, $result, $captured) extends FleetRunner {
 
       public function __construct(
+        string $root,
         string $manifest,
         private array $result,
         private ?array &$captured,
       ) {
-        parent::__construct($manifest);
+        parent::__construct($root, $manifest);
       }
 
       /**
@@ -272,7 +291,7 @@ YAML);
     $this->assertNull($runner->preflight($runner->select(), 'cr'));
     [$site, $argv] = $captured;
     $this->assertSame('vote.uiowa.edu', $site);
-    $this->assertSame('drush', $argv[0]);
+    $this->assertSame($this->drush, $argv[0]);
     $this->assertSame('@vote.prod', $argv[1]);
     $this->assertSame(['help', 'cr'], array_slice($argv, -2));
   }
@@ -303,7 +322,7 @@ YAML);
    * @dataProvider concurrencyProvider
    */
   public function testDefaultConcurrency(int $app_count, int $expected): void {
-    $runner = new FleetRunner($this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
 
     $this->assertSame($expected, $runner->defaultConcurrency($app_count));
   }

@@ -3,6 +3,7 @@
 namespace SiteNow\Command;
 
 use SiteNow\Process\FleetRunner;
+use SiteNow\Traits\DescribesDrushFailures;
 use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -30,6 +31,7 @@ class MultisiteExecuteCommand extends Command {
 
   use SiteNowCommandsTrait;
   use ParsesListOptions;
+  use DescribesDrushFailures;
 
   /**
    * Exit code for a run that completed but had per-site failures.
@@ -114,7 +116,7 @@ HELP);
       return Command::FAILURE;
     }
 
-    $runner = new FleetRunner("{$this->repoRoot}/blt/manifest.yml", "{$this->repoRoot}/drush/drush.yml");
+    $runner = new FleetRunner($this->repoRoot);
 
     try {
       $selection = $runner->select($apps, $exclude);
@@ -212,28 +214,6 @@ HELP);
     $io->writeln("Finished in {$elapsed}s: {$ok_count} succeeded, " . count($failed) . ' failed.');
 
     return empty($failed) ? Command::SUCCESS : self::EXITCODE_PARTIAL;
-  }
-
-  /**
-   * Summarize why a site failed, from its stderr (or stdout) tail.
-   *
-   * Leads with drush's own error message so the reason reads plainly; the exit
-   * code trails in parentheses as a detail rather than as the headline.
-   *
-   * @param array{exit: int, output: string, error: string} $result
-   *   The per-site result.
-   *
-   * @return string
-   *   A one-line reason.
-   */
-  protected function failureReason(array $result): string {
-    $source = trim($result['error']) !== '' ? $result['error'] : $result['output'];
-    $lines = array_filter(array_map('trim', preg_split('/\R/', $source)), fn ($l) => $l !== '');
-    $tail = $lines ? end($lines) : '';
-
-    return $tail !== ''
-      ? "{$tail} (exit {$result['exit']})"
-      : "no error output (exit {$result['exit']})";
   }
 
   /**
