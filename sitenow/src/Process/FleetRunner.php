@@ -41,18 +41,36 @@ class FleetRunner {
   const MUX_OPTIONS = '-o ControlMaster=auto -o ControlPath=~/.ssh/cm-%C -o ControlPersist=60';
 
   /**
+   * Absolute path to the manifest of applications and their site domains.
+   */
+  private string $manifestPath;
+
+  /**
+   * Absolute path to the repo-wide drush.yml.
+   */
+  private string $drushConfigPath;
+
+  /**
    * Constructs the runner.
    *
-   * @param string $manifestPath
-   *   Absolute path to blt/manifest.yml.
+   * @param string $repoRoot
+   *   Absolute path to the repository root. Locates the drush binary fleet
+   *   jobs run, plus the manifest and drush config unless overridden.
+   * @param string|null $manifestPath
+   *   Manifest location, defaulting to blt/manifest.yml under the repository
+   *   root.
    * @param string|null $drushConfigPath
-   *   Absolute path to the repo-wide drush.yml, whose ssh.options fleet
-   *   jobs inherit. NULL falls back to drush's own default.
+   *   Location of the drush.yml whose ssh.options fleet jobs inherit,
+   *   defaulting to drush/drush.yml under the repository root.
    */
   public function __construct(
-    private string $manifestPath,
-    private ?string $drushConfigPath = NULL,
-  ) {}
+    private string $repoRoot,
+    ?string $manifestPath = NULL,
+    ?string $drushConfigPath = NULL,
+  ) {
+    $this->manifestPath = $manifestPath ?? "{$repoRoot}/blt/manifest.yml";
+    $this->drushConfigPath = $drushConfigPath ?? "{$repoRoot}/drush/drush.yml";
+  }
 
   /**
    * Compose the ssh options fleet drush processes run with.
@@ -71,7 +89,7 @@ class FleetRunner {
     // Drush's own default when no ssh.options is configured anywhere.
     $base = '-o PasswordAuthentication=no';
 
-    if ($this->drushConfigPath !== NULL && file_exists($this->drushConfigPath)) {
+    if (file_exists($this->drushConfigPath)) {
       try {
         $config = Yaml::parseFile($this->drushConfigPath);
         if (is_string($config['ssh']['options'] ?? NULL)) {
@@ -157,17 +175,35 @@ class FleetRunner {
   public function buildJobs(array $selection, array $drush_args, string $env = 'prod'): array {
     $jobs = [];
     $groups = [];
+    $drush = $this->drushBin();
     $ssh_option = '--ssh-options=' . $this->sshOptions();
 
     foreach ($selection as $app => $domains) {
       foreach ($domains as $domain) {
         $alias = Multisite::getIdentifier('http://' . $domain) . '.' . $env;
-        $jobs[$domain] = array_merge(['drush', "@{$alias}", $ssh_option], $drush_args);
+        $jobs[$domain] = array_merge([$drush, "@{$alias}", $ssh_option], $drush_args);
         $groups[$domain] = $app;
       }
     }
 
     return ['jobs' => $jobs, 'groups' => $groups];
+  }
+
+  /**
+   * The drush binary fleet jobs run.
+   *
+   * The project's own drush, rather than whatever `drush` resolves to on
+   * PATH: that varies between machines and is absent from the host shell
+   * entirely, so a bare command name would make the fleet's drush version an
+   * accident of the environment. Running the binary composer installed keeps
+   * fleet jobs on the version the project is tested against, on the host and
+   * inside DDEV alike.
+   *
+   * @return string
+   *   Absolute path to the project's drush binary.
+   */
+  protected function drushBin(): string {
+    return "{$this->repoRoot}/vendor/bin/drush";
   }
 
   /**
@@ -198,7 +234,7 @@ class FleetRunner {
 
     $site = $domains[0];
     $alias = Multisite::getIdentifier('http://' . $site) . '.' . $env;
-    $argv = ['drush', "@{$alias}", '--ssh-options=' . $this->sshOptions(), 'help', $command];
+    $argv = [$this->drushBin(), "@{$alias}", '--ssh-options=' . $this->sshOptions(), 'help', $command];
     $result = $this->runCanary($site, $argv);
 
     return $result['exit'] === 0 ? NULL : ['site' => $site] + $result;
