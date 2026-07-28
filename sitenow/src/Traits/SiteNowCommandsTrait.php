@@ -10,13 +10,41 @@ use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use SiteNow\Command\SiteUpdateCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Yaml;
 use SiteNow\Utility\Multisite;
 
 /**
  * Acquia Cloud, drush, and environment helpers for SiteNow console commands.
  */
 trait SiteNowCommandsTrait {
+
+  /**
+   * The remote Acquia environments a command's --env option accepts.
+   */
+  const ENVIRONMENTS = ['dev', 'test', 'prod'];
+
+  /**
+   * Whether to force drush ANSI color, mirroring the command's own output.
+   *
+   * Drush runs through a pipe here and disables color by default; a command
+   * sets this from its own decoration (on at an interactive terminal, off when
+   * piped) so color survives, and drush() forwards it on every call.
+   */
+  protected bool $ansi = FALSE;
+
+  /**
+   * The sites.php host => directory aliases, read once per command run.
+   *
+   * Resolving a directory is a per-site lookup that callers make in a loop over
+   * a whole application, and sites.php holds thousands of aliases, so the file
+   * is included once and the map reused. A command that rewrites sites.php mid
+   * run must not rely on this to reflect the write.
+   */
+  private ?array $siteAliases = NULL;
 
   /**
    * Get a config value by key from blt/local.blt.yml.
@@ -137,6 +165,221 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Get the multisites enabled on this developer's machine.
+   *
+   * The list is the uncommented "multisites" entries in blt/local.blt.yml, the
+   * same list that drives local site availability. An absent file or key yields
+   * an empty list rather than a fleet-wide fallback, so a command never acts on
+   * every site by accident.
+   *
+   * @return array
+   *   Site hosts, empty when none are enabled.
+   */
+  protected function localMultisites(): array {
+    $local = "{$this->repoRoot}/blt/local.blt.yml";
+
+    return is_file($local) ? (Yaml::parseFile($local)['multisites'] ?? []) : [];
+  }
+
+  /**
+   * Get the path to the site manifest.
+   *
+   * @return string
+   *   Absolute path to blt/manifest.yml, present or not.
+   */
+  protected function manifestPath(): string {
+    return "{$this->repoRoot}/blt/manifest.yml";
+  }
+
+  /**
+   * Require the site manifest to be present.
+   *
+   * A command that reads the manifest cannot do its job without it, and an
+   * absent file would otherwise surface as a raw parser exception. Gate on this
+   * first so the failure names the file plainly. Deliberately not a
+   * fall-back-to-empty: an empty site list reads as "nothing to do", which
+   * would turn a broken checkout or artifact into a silent success.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   *
+   * @return bool
+   *   TRUE when the manifest exists; FALSE (after printing an error) otherwise.
+   */
+  protected function requireManifest(SymfonyStyle $io): bool {
+    if (!is_file($this->manifestPath())) {
+      $io->getErrorStyle()->error('Manifest file not found at ' . $this->manifestPath());
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Get the whole site manifest, keyed by application.
+   *
+   * The manifest, blt/manifest.yml, is keyed by application (AH_SITE_GROUP) and
+   * maintained by every provision, so it is the authority on which sites live
+   * where. Callers that read it are expected to have gated on
+   * requireManifest(); an absent file throws here rather than reading as an
+   * empty fleet.
+   *
+   * @return array
+   *   Site hosts keyed by application name.
+   */
+  protected function manifest(): array {
+    return Yaml::parseFile($this->manifestPath()) ?: [];
+  }
+
+  /**
+   * Get the sites one Acquia application owns, per the manifest.
+   *
+   * @param string $app
+   *   The application name, e.g. 'uiowa09'.
+   *
+   * @return array
+   *   Site hosts, empty when the application is not in the manifest.
+   */
+  protected function manifestSites(string $app): array {
+    return $this->manifest()[$app] ?? [];
+  }
+
+  /**
+   * Resolve a host to its multisite directory via sites.php.
+   *
+   * Mirrors Drupal's own aliasing: sites.php maps alias hosts to a directory,
+   * and a host with no entry uses a same-named directory. This is what lets the
+   * default site be addressed by its real domain (demo.sitenow.uiowa.edu) while
+   * resolving to the default directory, and it is what keeps file syncs landing
+   * in the right directory.
+   *
+   * Reads the using class's $repoRoot property, as every command in
+   * sitenow/src/Command declares one.
+   *
+   * @param string $host
+   *   The site host / canonical domain.
+   *
+   * @return string
+   *   The multisite directory name.
+   */
+  protected function siteDirectory(string $host): string {
+    if ($this->siteAliases === NULL) {
+      $sites = [];
+      $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
+      if (is_file($sites_file)) {
+        // sites.php populates $sites with host => directory aliases.
+        include $sites_file;
+      }
+      $this->siteAliases = $sites;
+    }
+
+    return $this->siteAliases[$host] ?? $host;
+  }
+
+  /**
+   * Derive the Acquia database name for a site.
+   *
+   * Acquia names each multisite's database after its directory with dots and
+   * hyphens replaced by underscores, except the default site, whose database is
+   * named after the application. The name comes from the sites.php-resolved
+   * directory, not the host, so an aliased host lands on the same database
+   * Acquia actually provisioned.
+   *
+   * Single-sourced deliberately: callers derive this in both directions — a
+   * settings-include check from the site, and a copied database name back to
+   * its site — and the two must agree.
+   *
+   * @param string $host
+   *   The site host / canonical domain.
+   * @param string $app
+   *   The application (AH_SITE_GROUP), used for the default site.
+   *
+   * @return string
+   *   The database name.
+   */
+  protected function databaseName(string $host, string $app): string {
+    $dir = $this->siteDirectory($host);
+
+    return $dir === 'default' ? $app : str_replace(['.', '-'], '_', $dir);
+  }
+
+  /**
+   * Run the repository's drush and return the finished process.
+   *
+   * Reads the using class's $repoRoot property, as every command in
+   * sitenow/src/Command declares one.
+   *
+   * @param string[] $args
+   *   Drush command and arguments. A caller addressing a site by alias passes
+   *   it as a leading element; a caller addressing one by URI uses $uri.
+   * @param bool $stream
+   *   TRUE to stream output live, for a long-running call whose progress the
+   *   user should see (a sync, an rsync, a deploy).
+   * @param string|null $uri
+   *   Site to run against as --uri, for a multisite call that is not addressed
+   *   by alias. NULL runs without --uri.
+   *
+   * @return \Symfony\Component\Process\Process
+   *   The finished process.
+   */
+  protected function drush(array $args, bool $stream = FALSE, ?string $uri = NULL): Process {
+    $process = new Process(
+      [
+        "{$this->repoRoot}/vendor/bin/drush",
+        ...($uri !== NULL ? ["--uri={$uri}"] : []),
+        $this->ansi ? '--ansi' : '--no-ansi',
+        ...$args,
+      ],
+      $this->repoRoot,
+    );
+    $process->setTimeout(NULL);
+    if ($stream) {
+      $process->run(fn ($type, $buffer) => print $buffer);
+    }
+    else {
+      $process->run();
+    }
+    return $process;
+  }
+
+  /**
+   * Reconcile one site by delegating to the site:update command.
+   *
+   * Both callers that copy a database — a local sync and the Acquia
+   * post-db-copy hook — must bring the copy in line with the code, and
+   * site:update already owns that. Its output streams so the user sees the
+   * update as it happens.
+   *
+   * A skipped site or a config mismatch is not a failure of the caller's own
+   * job: the update ran (or correctly declined to), and site:update has already
+   * reported why. Only a genuine update error is returned as failure, so this
+   * decides tolerance from site:update's exit codes in one place rather than in
+   * each caller.
+   *
+   * @param string $site
+   *   The site host / canonical domain to update.
+   *
+   * @return bool
+   *   TRUE when site:update succeeded, skipped the site, or reported a config
+   *   mismatch; FALSE when it failed.
+   */
+  protected function updateSite(string $site): bool {
+    $process = new Process(
+      ["{$this->repoRoot}/sn", 'site:update', $site, $this->ansi ? '--ansi' : '--no-ansi'],
+      $this->repoRoot,
+    );
+    $process->setTimeout(NULL);
+    $process->run(fn ($type, $buffer) => print $buffer);
+
+    $tolerated = [
+      Command::SUCCESS,
+      SiteUpdateCommand::SKIPPED,
+      SiteUpdateCommand::CONFIG_MISMATCH,
+    ];
+
+    return in_array($process->getExitCode(), $tolerated, TRUE);
+  }
+
+  /**
    * Determine if the command is running inside the DDEV container.
    *
    * @return bool
@@ -165,6 +408,31 @@ trait SiteNowCommandsTrait {
   protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
     if (!$this->isDdev()) {
       $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Require the --env option to name a real remote environment.
+   *
+   * Symfony does not constrain an option's value, so an unrecognized --env
+   * would otherwise reach drush as a bad alias suffix and fail obscurely. On
+   * failure, prints an error listing the accepted values and returns FALSE so
+   * the caller can exit.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style used to report the error.
+   * @param string $env
+   *   The --env option value.
+   *
+   * @return bool
+   *   TRUE when the environment is valid; FALSE (after printing an error)
+   *   otherwise.
+   */
+  protected function requireEnvironment(SymfonyStyle $io, string $env): bool {
+    if (!in_array($env, self::ENVIRONMENTS, TRUE)) {
+      $io->getErrorStyle()->error("Invalid environment '{$env}'. Must be one of: " . implode(', ', self::ENVIRONMENTS));
       return FALSE;
     }
     return TRUE;
