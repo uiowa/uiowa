@@ -4,6 +4,7 @@ namespace SiteNow\Command;
 
 use SiteNow\Config\Applications;
 use SiteNow\Traits\ParsesListOptions;
+use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,7 +12,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Runs post-deploy updates across an application's multisites.
@@ -23,11 +23,12 @@ use Symfony\Component\Yaml\Yaml;
  */
 #[AsCommand(
   name: 'deploy:update',
-  description: "Run post-deploy updates across an application's multisites.",
+  description: "Run post-deploy updates (updatedb, config import, deploy hooks) across an application's multisites.",
 )]
 class DeployUpdateCommand extends Command {
 
   use ParsesListOptions;
+  use SiteNowCommandsTrait;
 
   /**
    * Constructs the command.
@@ -61,6 +62,14 @@ class DeployUpdateCommand extends Command {
     $app = getenv('AH_SITE_GROUP') ?: 'local';
     $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
     $is_acquia = (bool) getenv('AH_SITE_ENVIRONMENT');
+
+    // The Acquia site list comes from the manifest, so a missing one must fail
+    // the deploy rather than read as an empty fleet. Locally the list comes
+    // from local.blt.yml, and an explicit --sites bypasses both.
+    $needs_manifest = $is_acquia && !$this->parseList($input->getOption('sites'));
+    if ($needs_manifest && !$this->requireManifest($io)) {
+      return Command::FAILURE;
+    }
 
     $sites = $this->siteList($input, $app, $is_acquia);
     if (!$sites) {
@@ -112,13 +121,7 @@ class DeployUpdateCommand extends Command {
       return $override;
     }
 
-    if (!$is_acquia) {
-      $local = "{$this->repoRoot}/blt/local.blt.yml";
-      return is_file($local) ? (Yaml::parseFile($local)['multisites'] ?? []) : [];
-    }
-
-    $manifest = Yaml::parseFile("{$this->repoRoot}/blt/manifest.yml") ?: [];
-    return $manifest[$app] ?? [];
+    return $is_acquia ? $this->manifestSites($app) : $this->localMultisites();
   }
 
   /**
