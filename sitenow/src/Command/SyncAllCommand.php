@@ -66,7 +66,7 @@ class SyncAllCommand extends Command {
       ->addOption('sync-public-files', NULL, InputOption::VALUE_NONE, 'Also rsync each site\'s public files from the remote.')
       ->addOption('sync-private-files', NULL, InputOption::VALUE_NONE, 'Also rsync each site\'s private files from the remote.')
       ->addOption('no-update', NULL, InputOption::VALUE_NONE, 'Skip the post-sync update for each site: copy databases only.')
-      ->addOption('no-sanitize', NULL, InputOption::VALUE_NONE, 'Skip sanitization for every site, keeping real production data (PII). Only when you genuinely need production data.')
+      ->addOption('no-sanitize', NULL, InputOption::VALUE_NONE, 'Skip sanitization for every site, keeping all production data. Only when you genuinely need production data.')
       ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.')
       ->setHelp(<<<'HELP'
 Syncs each locally-enabled site's remote database over its local one, in turn.

@@ -77,7 +77,7 @@ then reconciles it (drush deploy) so the local copy is usable.
   # Database only, no updatedb/config import afterward:
   ddev sn ds brand.uiowa.edu --no-update
 
-  # Keep real production data (PII) — only when you truly need it:
+  # Keep all production data — only when you truly need it:
   ddev sn ds brand.uiowa.edu --no-sanitize
 HELP);
   }
@@ -145,9 +145,10 @@ HELP);
 
     // 3. Sanitize the copied database unless explicitly opted out. sql-sanitize
     //    scrubs user credentials and emails, clears sessions, truncates webform
-    //    submissions, and fires uiowa's own sanitize hooks, so production PII
-    //    does not persist on the local copy. On by default to match what BLT's
-    //    ds did (drush.sanitize: true); --no-sanitize is the deliberate opt-out.
+    //    submissions, and fires uiowa's own sanitize hooks, so sensitive
+    //    production data does not persist on the local copy. On by default to
+    //    match what BLT's ds did (drush.sanitize: true); --no-sanitize
+    //    is the deliberate opt-out.
     if (!$input->getOption('no-sanitize')) {
       $io->newLine();
       $io->section('Sanitize database');
