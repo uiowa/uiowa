@@ -3,7 +3,7 @@
 # Runs drush cron on every site on the current application.
 # Triggered by an Acquia scheduled job.
 # The key in the manifest is AH_SITE_GROUP (e.g. uiowa07),
-# the code path uses AH_SITE_NAME (e.g. uiowa07.prod).
+# the code path uses AH_SITE_NAME (e.g. uiowa07prod).
 
 log="/shared/logs/drush-cron-${AH_SITE_GROUP}.log"
 manifest="/var/www/html/${AH_SITE_NAME}/blt/manifest.yml"
