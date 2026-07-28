@@ -138,7 +138,10 @@ class ReportUsersCommand extends Command {
       }
     });
 
-    $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Users-Report', self::HEADERS) : NULL;
+    $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Users-Report', self::HEADERS, [
+      $target_apps ? implode('+', $target_apps) : 'all-apps',
+      $threshold,
+    ]) : NULL;
     $rows = [];
     $failed = [];
 

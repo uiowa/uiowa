@@ -48,6 +48,58 @@ class CsvWriterTest extends UnitTestCase {
   }
 
   /**
+   * Scope values follow the timestamp, separated by underscores.
+   */
+  public function testFilenameCarriesScope(): void {
+    $dir = sys_get_temp_dir() . '/sn-csv-' . uniqid();
+    mkdir($dir);
+
+    try {
+      $writer = new CsvWriter($dir, 'Test-Report', ['Email'], ['uiowa02+uiowa03', '6 months']);
+      $path = $writer->getPath();
+
+      // Spaces are stripped from '6 months'; the '+' joining apps survives.
+      $this->assertMatchesRegularExpression(
+        '#/Test-Report-\d{4}-\d{2}-\d{2}_\d{2}h\d{2}_uiowa02\+uiowa03_6months\.csv$#',
+        $path,
+      );
+    }
+    finally {
+      if (isset($path) && file_exists($path)) {
+        unlink($path);
+      }
+      rmdir($dir);
+    }
+  }
+
+  /**
+   * Without scope the filename stops after the timestamp.
+   *
+   * The report commands that pass no scope keep a name the repository's
+   * '/SiteNow-*-Report-*.csv' ignore rule still matches.
+   */
+  public function testFilenameOmitsEmptyScope(): void {
+    $dir = sys_get_temp_dir() . '/sn-csv-' . uniqid();
+    mkdir($dir);
+
+    try {
+      $writer = new CsvWriter($dir, 'Test-Report', ['Email'], ['', '  ']);
+      $path = $writer->getPath();
+
+      $this->assertMatchesRegularExpression(
+        '#/Test-Report-\d{4}-\d{2}-\d{2}_\d{2}h\d{2}\.csv$#',
+        $path,
+      );
+    }
+    finally {
+      if (isset($path) && file_exists($path)) {
+        unlink($path);
+      }
+      rmdir($dir);
+    }
+  }
+
+  /**
    * Values containing commas are quoted so columns stay aligned.
    */
   public function testQuotesValuesWithCommas(): void {
