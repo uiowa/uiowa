@@ -42,8 +42,6 @@ class MultisiteExecuteCommand extends Command {
    */
   const EXITCODE_PARTIAL = 2;
 
-  const ENVIRONMENTS = ['dev', 'test', 'prod'];
-
   /**
    * Constructs the command.
    *
@@ -114,8 +112,7 @@ HELP);
     $env = $input->getOption('env');
     $dry_run = (bool) $input->getOption('dry-run');
 
-    if (!in_array($env, self::ENVIRONMENTS, TRUE)) {
-      $err->error("Invalid environment '{$env}'. Must be one of: " . implode(', ', self::ENVIRONMENTS));
+    if (!$this->requireEnvironment($io, $env)) {
       return Command::FAILURE;
     }
 

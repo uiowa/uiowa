@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Reports which sites have which config splits enabled.
@@ -78,12 +77,10 @@ class ReportSplitsCommand extends Command {
     $target_apps = $this->parseList($input->getOption('apps'));
     $export = (bool) $input->getOption('export');
 
-    $manifest_path = "{$this->repoRoot}/blt/manifest.yml";
-    if (!file_exists($manifest_path)) {
-      $err->error("Manifest file not found at {$manifest_path}");
+    if (!$this->requireManifest($io)) {
       return Command::FAILURE;
     }
-    $manifest = Yaml::parseFile($manifest_path);
+    $manifest = $this->manifest();
 
     $runner = new DrushRunner();
     $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Splits-Report', self::HEADERS) : NULL;

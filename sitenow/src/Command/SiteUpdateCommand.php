@@ -2,13 +2,13 @@
 
 namespace SiteNow\Command;
 
+use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 
 /**
  * Runs database and configuration updates for a single multisite.
@@ -23,6 +23,8 @@ use Symfony\Component\Process\Process;
   description: 'Run database and configuration updates for a single multisite.',
 )]
 class SiteUpdateCommand extends Command {
+
+  use SiteNowCommandsTrait;
 
   /**
    * Exit code returned when a site is skipped (not updated, not failed).
@@ -70,6 +72,7 @@ class SiteUpdateCommand extends Command {
    */
   protected function execute(InputInterface $input, OutputInterface $output): int {
     $io = new SymfonyStyle($input, $output);
+    $this->ansi = $output->isDecorated();
     $site = $input->getArgument('site');
 
     $app = getenv('AH_SITE_GROUP') ?: 'local';
@@ -92,9 +95,8 @@ class SiteUpdateCommand extends Command {
 
     // On Acquia, skip sites whose database is not present on this application.
     if ($is_acquia) {
-      // Acquia names the settings include after the site directory, except the
-      // default site, which uses the application-named include and database.
-      $db = $dir === 'default' ? $app : str_replace(['.', '-'], '_', $dir);
+      // Acquia names the settings include after the database.
+      $db = $this->databaseName($site, $app);
       if (!is_file("/var/www/site-php/{$app}/{$db}-settings.inc")) {
         $io->writeln("Skipping {$site}: database not present on {$app}.");
         return self::SKIPPED;
@@ -114,13 +116,13 @@ class SiteUpdateCommand extends Command {
     // @see https://support.acquia.com/hc/en-us/articles/360005167754
     $twig_script = '/var/www/site-scripts/invalidate-twig-cache.php';
     if ($is_acquia && is_file($twig_script)) {
-      $this->drush($site, ['php:script', $twig_script]);
+      $this->drush(['php:script', $twig_script], uri: $site);
     }
 
     // Runs updatedb, config:import, cache:rebuild, and deploy:hook. --yes
     // answers the update and config-import confirmations explicitly rather
     // than relying on the non-interactive default.
-    $result = $this->drush($site, ['deploy', '--yes'], TRUE);
+    $result = $this->drush(['deploy', '--yes'], stream: TRUE, uri: $site);
     if (!$result->isSuccessful()) {
       $io->error("Failed updating {$site}.");
       return Command::FAILURE;
@@ -133,7 +135,7 @@ class SiteUpdateCommand extends Command {
     // not run. Distinguish three outcomes: matches, does not match, and could
     // not verify; the latter two return CONFIG_MISMATCH so a caller can surface
     // them without treating the site as failed.
-    $status = $this->drush($site, ['config:status']);
+    $status = $this->drush(['config:status'], uri: $site);
     $config_state = Command::SUCCESS;
     if (!$status->isSuccessful()) {
       $config_state = self::CONFIG_MISMATCH;
@@ -149,63 +151,11 @@ class SiteUpdateCommand extends Command {
   }
 
   /**
-   * Resolve a host to its multisite directory via sites.php.
-   *
-   * Mirrors Drupal's own aliasing: sites.php maps alias hosts to a directory,
-   * and a host with no entry uses a same-named directory. This is what lets the
-   * default site be addressed by its real domain (demo.sitenow.uiowa.edu) while
-   * resolving to the default directory.
-   *
-   * @param string $host
-   *   The site host / canonical domain.
-   *
-   * @return string
-   *   The multisite directory name.
-   */
-  protected function siteDirectory(string $host): string {
-    $sites = [];
-    $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
-    if (is_file($sites_file)) {
-      // sites.php populates $sites with host => directory aliases.
-      include $sites_file;
-    }
-    return $sites[$host] ?? $host;
-  }
-
-  /**
    * Whether Drupal is installed for a site (the config table exists).
    */
   private function isInstalled(string $site): bool {
-    $result = $this->drush($site, ['sql:query', "SHOW TABLES LIKE 'config'"]);
+    $result = $this->drush(['sql:query', "SHOW TABLES LIKE 'config'"], uri: $site);
     return $result->isSuccessful() && trim($result->getOutput()) === 'config';
-  }
-
-  /**
-   * Run a drush command against a site and return the finished process.
-   *
-   * @param string $site
-   *   The site to target via --uri.
-   * @param string[] $args
-   *   Drush command and arguments.
-   * @param bool $stream
-   *   TRUE to stream output live (used for the long-running update).
-   *
-   * @return \Symfony\Component\Process\Process
-   *   The finished process.
-   */
-  private function drush(string $site, array $args, bool $stream = FALSE): Process {
-    $process = new Process(
-      ["{$this->repoRoot}/vendor/bin/drush", "--uri={$site}", ...$args],
-      $this->repoRoot,
-    );
-    $process->setTimeout(NULL);
-    if ($stream) {
-      $process->run(fn($type, $buffer) => print $buffer);
-    }
-    else {
-      $process->run();
-    }
-    return $process;
   }
 
 }
