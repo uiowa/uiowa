@@ -1,0 +1,375 @@
+--- a/google_tag.module	2026-06-23 14:17:12.696088685 +0200
++++ b/google_tag.module	2026-06-23 14:17:55.333785195 +0200
+@@ -61,21 +61,31 @@
+   $cacheable_metadata = new CacheableMetadata();
+   $cacheable_metadata->addCacheTags($definition->getListCacheTags());
+ 
+-  /** @var \Drupal\google_tag\Entity\TagContainer|null $config */
+-  $config = \Drupal::service('google_tag.tag_container_resolver')->resolve();
+-
+-  if ($config === NULL || $config->getGtmId() === '') {
++  /** @var \Drupal\google_tag\Entity\TagContainer[]|null $config */
++  $configs = \Drupal::service('google_tag.tag_container_resolver')->resolve();
++  if (!$configs) {
+     $cacheable_metadata->applyTo($page);
+     return;
+   }
+ 
+-  $cacheable_metadata->addCacheableDependency($config);
++  $gtm_ids = [];
++  $container_gtm_id_map = [];
++
++  foreach ($configs as $config) {
++    $cacheable_metadata->addCacheableDependency($config);
++    $gtm_ids = array_merge($gtm_ids, $config->getGtmIds());
++
++    // Store a mapping of GTM ID -> Tag Container.
++    foreach ($config->getGtmIds() as $gtm_id) {
++      $container_gtm_id_map[$gtm_id] = $config;
++    }
++  }
++
+   $cacheable_metadata->applyTo($page);
+-  $gtm_ids = $config->getGtmIds();
+ 
+   foreach ($gtm_ids as $gtm_id) {
+-    $adv_settings = $config->getGtmSettings($gtm_id);
+     if ($gtm_id !== '') {
++      $adv_settings = $container_gtm_id_map[$gtm_id]->getGtmSettings($gtm_id);
+       $query_params = [
+         'id' => $gtm_id,
+       ];
+@@ -102,55 +112,84 @@
+   $cacheable_metadata = CacheableMetadata::createFromRenderArray($attachments);
+   $cacheable_metadata->addCacheTags($definition->getListCacheTags());
+ 
+-  /** @var \Drupal\google_tag\Entity\TagContainer|null $config */
+-  $config = \Drupal::service('google_tag.tag_container_resolver')->resolve();
++  /** @var \Drupal\google_tag\Entity\TagContainer[]|null $configs */
++  $configs = \Drupal::service('google_tag.tag_container_resolver')->resolve();
+ 
+-  if ($config === NULL) {
++  if (!$configs) {
+     $cacheable_metadata->applyTo($attachments);
+     return;
+   }
+-  $cacheable_metadata->addCacheableDependency($config);
+   $cacheable_metadata->applyTo($attachments);
++  $metrics_processor = \Drupal::service('google_tag.dimensions_metrics_processor');
++
++  $gtm_ids = [];
++  $default_id = NULL;
++  $additional_ids = [];
++  $additional_config_info = [];
++  $container_gtm_id_map = [];
++  $consent_mode = TRUE;
++
++  foreach ($configs as $config) {
++    $cacheable_metadata->addCacheableDependency($config);
++    $gtm_ids = array_merge($gtm_ids, $config->getGtmIds());
++    $default_id = $config->getDefaultTagId() ?? $default_id;
++
++    // Store a mapping of GTM ID -> Tag Container.
++    foreach ($config->getGtmIds() as $gtm_id) {
++      $container_gtm_id_map[$gtm_id] = $config;
++    }
++
++    $consent_mode = $config->getConsentMode();
++    $additional_ids = array_merge($additional_ids, $config->getAdditionalIds());
++    $additional_config_info = array_merge($additional_config_info, $metrics_processor->getValues($config));
++  }
+ 
+   // @todo Put this data into their own respective methods?
+   // GTM JS embed.
+-  if ($config->getGtmIds() !== []) {
++  if ($gtm_ids !== []) {
+     $attachments['#attached']['library'][] = 'google_tag/gtm';
+-    $gtm = [
+-      'tagIds' => $config->getGtmIds(),
+-    ];
+-    $settings = $config->getGtmSettings();
+-    $gtm['settings'] = $settings;
+-    if (isset($settings['include_classes']) && $settings['include_classes'] === TRUE) {
+-      $gtm['settings']['allowlist_classes'] = explode(PHP_EOL, $settings['allowlist_classes']);
+-      $gtm['settings']['blocklist_classes'] = explode(PHP_EOL, $settings['blocklist_classes']);
++    $gtm = ['tagIds' => $gtm_ids];
++
++    foreach ($gtm_ids as $gtm_id) {
++      if ($gtm_id !== '') {
++        $adv_settings = $container_gtm_id_map[$gtm_id]->getGtmSettings($gtm_id);
++        $gtm['settings'][$gtm_id] = $adv_settings;
++
++        if (isset($adv_settings['include_classes']) && $adv_settings['include_classes'] === TRUE) {
++          $gtm['settings'][$gtm_id]['allowlist_classes'] = explode(PHP_EOL, $adv_settings['allowlist_classes']);
++          $gtm['settings'][$gtm_id]['blocklist_classes'] = explode(PHP_EOL, $adv_settings['blocklist_classes']);
++        }
++      }
+     }
++
+     $attachments['#attached']['drupalSettings']['gtm'] = $gtm;
+   }
+ 
+   // ^ returns the config which is active and the main tag ID.
+   // @todo if no config, only send events to datalayer.
+-  $attachments['#attached']['library'][] = 'google_tag/gtag';
+-  $attachments['#attached']['library'][] = 'google_tag/gtag.ajax';
+-  $attachments['#attached']['drupalSettings']['gtag'] = [
+-    'tagId' => $config->getDefaultTagId(),
+-    'otherIds' => $config->getAdditionalIds(),
+-    'consentMode' => $config->getConsentMode(),
+-    'events' => [],
+-    'additionalConfigInfo' => \Drupal::service('google_tag.dimensions_metrics_processor')->getValues($config),
+-  ];
+-
+-  $collector = \Drupal::getContainer()->get('google_tag.event_collector');
+-  foreach ($collector->getEvents() as $event) {
+-    $attachments['#attached']['drupalSettings']['gtag']['events'][] = [
+-      'name' => $event->getName(),
+-      'data' => $event->getData(),
++  if ($default_id) {
++    $attachments['#attached']['library'][] = 'google_tag/gtag';
++    $attachments['#attached']['library'][] = 'google_tag/gtag.ajax';
++    $attachments['#attached']['drupalSettings']['gtag'] = [
++      'tagId' => $default_id,
++      'otherIds' => $additional_ids,
++      'consentMode' => $consent_mode,
++      'events' => [],
++      'additionalConfigInfo' => $additional_config_info,
+     ];
+-    if ($event instanceof CacheableDependencyInterface) {
+-      $cacheable_metadata->addCacheableDependency($event);
++
++    $collector = \Drupal::getContainer()->get('google_tag.event_collector');
++    foreach ($collector->getEvents() as $event) {
++      $attachments['#attached']['drupalSettings']['gtag']['events'][] = [
++        'name' => $event->getName(),
++        'data' => $event->getData(),
++      ];
++      if ($event instanceof CacheableDependencyInterface) {
++        $cacheable_metadata->addCacheableDependency($event);
++      }
+     }
++    $cacheable_metadata->applyTo($attachments);
+   }
+-  $cacheable_metadata->applyTo($attachments);
+ }
+ 
+ /**
+--- a/js/gtm.js	2026-06-23 14:17:12.697728875 +0200
++++ b/js/gtm.js	2026-06-23 14:18:10.897008926 +0200
+@@ -1,4 +1,4 @@
+-const dl = drupalSettings.gtm ? drupalSettings.gtm.settings.data_layer : 'dataLayer';
++const dl = drupalSettings.gtm && drupalSettings.gtm.settings.data_layer ? drupalSettings.gtm.settings.data_layer : 'dataLayer';
+ window[dl] = window[dl] || [];
+ 
+ (function (drupalSettings) {
+@@ -7,25 +7,41 @@
+ 
+   window[dl].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+   const gtmSettings = config.settings;
+-  if (gtmSettings.include_classes === true) {
+-    window[dl].push({
+-      'gtm.allowlist': gtmSettings.allowlist_classes ?? [],
+-      'gtm.blocklist': gtmSettings.blocklist_classes ?? [],
+-    });
+-  }
++  let allowlist = [];
++  let blocklist = [];
+ 
+-  let gtm_environment = '';
+-  if (gtmSettings.include_environment === true) {
+-    const gtm_auth = gtmSettings.environment_token ?? '';
+-    const gtm_preview = gtmSettings.environment_id ?? '';
+-    gtm_environment = `&gtm_auth=${gtm_auth}&gtm_preview=${gtm_preview}&gtm_cookies_win=x`;
+-  }
+   config.tagIds.forEach(function (tagId) {
++    const settings = gtmSettings[tagId];
++
++    if (settings?.include_classes) {
++      allowlist = allowlist.concat(settings.allowlist_classes ?? []);
++      blocklist = blocklist.concat(settings.blocklist_classes ?? []);
++    }
++
++    let gtm_environment = '';
++    if (settings?.include_environment) {
++      const gtm_auth = settings.environment_token ?? '';
++      const gtm_preview = settings.environment_id ?? '';
++      gtm_environment = `&gtm_auth=${gtm_auth}&gtm_preview=${gtm_preview}&gtm_cookies_win=x`;
++    }
++
+     const script = document.createElement('script');
+     script.async = true;
+-    const dLink = dl != 'dataLayer' ? `&l=${dl}` : '';
++    const dLink = dl !== 'dataLayer' ? `&l=${dl}` : '';
+     script.src = `https://www.googletagmanager.com/gtm.js?id=${tagId}${gtm_environment}${dLink}`;
+     script.type = 'text/javascript';
+     document.getElementsByTagName('head')[0].appendChild(script);
+   });
++
++  if (allowlist.length || blocklist.length) {
++    const pushData = {};
++    if (allowlist.length) {
++      pushData['gtm.allowlist'] = allowlist;
++    }
++    if (blocklist.length) {
++      pushData['gtm.blocklist'] = blocklist;
++    }
++    window[dl].push(pushData);
++  }
++
+ })(drupalSettings);
+--- a/src/Entity/TagContainer.php	2026-06-23 14:18:39.903170609 +0200
++++ b/src/Entity/TagContainer.php	2026-06-23 14:18:58.163688685 +0200
+@@ -200,10 +200,10 @@
+   /**
+    * Return the first tag as the default.
+    *
+-   * @return string
++   * @return string|null
+    *   Default tag id.
+    */
+-  public function getDefaultTagId(): string {
++  public function getDefaultTagId(): ?string {
+     $default_tag = array_slice(
+       array_filter(
+         $this->tag_container_ids,
+@@ -211,7 +211,7 @@
+       0,
+       1
+     );
+-    return current($default_tag) ?: '';
++    return current($default_tag) ?: NULL;
+   }
+ 
+   /**
+--- a/src/EventCollector.php	2026-06-23 14:18:39.904599660 +0200
++++ b/src/EventCollector.php	2026-06-23 14:19:03.737768872 +0200
+@@ -116,20 +116,26 @@
+    * @throws \Drupal\Component\Plugin\Exception\PluginException
+    */
+   private function createEventInstance(string $name, array $contexts = []): ?GoogleTagEventInterface {
+-    $config = $this->tagResolver->resolve();
+-    if ($config === NULL || !$config->hasEvent($name)) {
++    $configs = $this->tagResolver->resolve();
++    if (!$configs) {
+       return NULL;
+     }
+ 
+-    $event = $this->googleTagEventManager->createInstance(
+-      $name,
+-      $config->getEventConfiguration($name),
+-    );
+-    assert($event instanceof GoogleTagEventInterface);
+-    foreach ($contexts as $id => $context) {
+-      $event->setContextValue($id, $context);
++    foreach ($configs as $config) {
++      if (!$config->hasEvent($name)) {
++        continue;
++      }
++      $event = $this->googleTagEventManager->createInstance(
++        $name,
++        $config->getEventConfiguration($name),
++      );
++      assert($event instanceof GoogleTagEventInterface);
++      foreach ($contexts as $id => $context) {
++        $event->setContextValue($id, $context);
++      }
++      return $event;
+     }
+-    return $event;
++    return NULL;
+   }
+ 
+ }
+--- a/src/TagContainerResolver.php	2026-06-23 14:18:39.905985927 +0200
++++ b/src/TagContainerResolver.php	2026-06-23 14:19:16.027945689 +0200
+@@ -81,13 +81,13 @@
+   /**
+    * Resolves google tag config based on request.
+    *
+-   * @return \Drupal\google_tag\Entity\TagContainer|null
++   * @return \Drupal\google_tag\Entity\TagContainer[]|null
+    *   Google tag entity if resolved, otherwise null.
+    *
+    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+    */
+-  public function resolve(): ?TagContainer {
++  public function resolve(): ?array {
+     $request = $this->requestStack->getCurrentRequest();
+     if ($request === NULL) {
+       return NULL;
+@@ -102,14 +102,16 @@
+         ->execute();
+       /** @var array<string, TagContainer> $configs */
+       $configs = $storage->loadMultiple($config_ids);
++      $passed_configs = [];
+       foreach ($configs as $config) {
+         if (!$this->passesConditions($config)) {
+           continue;
+         }
+-        $this->resolved[$request] = $config;
+-        break;
++        $passed_configs[] = $config;
+       }
++      $this->resolved->attach($request, $passed_configs);
+     }
++
+     return $this->resolved[$request] ?? NULL;
+   }
+ 
+--- a/tests/src/Kernel/PageAttachmentsHookTest.php	2026-06-23 14:18:39.907236823 +0200
++++ b/tests/src/Kernel/PageAttachmentsHookTest.php	2026-06-23 14:19:26.937102661 +0200
+@@ -172,9 +172,16 @@
+     self::assertEquals([
+       'tagIds' => ['GTM-XXXXXX', 'GTM-YYYYYY'],
+       'settings' => [
+-        'include_classes' => TRUE,
+-        'allowlist_classes' => explode(PHP_EOL, $allowlist_classes),
+-        'blocklist_classes' => explode(PHP_EOL, $blocklist_classes),
++        'GTM-XXXXXX' => [
++          'include_classes' => TRUE,
++          'allowlist_classes' => explode(PHP_EOL, $allowlist_classes),
++          'blocklist_classes' => explode(PHP_EOL, $blocklist_classes),
++        ],
++        'GTM-YYYYYY' => [
++          'include_classes' => TRUE,
++          'allowlist_classes' => explode(PHP_EOL, $allowlist_classes),
++          'blocklist_classes' => explode(PHP_EOL, $blocklist_classes),
++        ],
+       ],
+     ],
+     $page['#attached']['drupalSettings']['gtm']);
+--- a/tests/src/Kernel/TagContainerResolverTest.php	2026-06-23 14:18:39.908489161 +0200
++++ b/tests/src/Kernel/TagContainerResolverTest.php	2026-06-23 14:19:36.353238165 +0200
+@@ -33,7 +33,7 @@
+     $request1 = Request::create('/');
+     $request2 = Request::create('/');
+     $sut = $this->container->get('google_tag.tag_container_resolver');
+-    self::assertNull($sut->resolve());
++    self::assertEmpty($sut->resolve());
+ 
+     $config1 = TagContainer::create([
+       'id' => 'foo',
+@@ -47,8 +47,8 @@
+     }
+     $this->container->get('request_stack')->push($request1);
+     $resolved = $sut->resolve();
+-    self::assertNotNull($resolved);
+-    self::assertEquals($config1->id(), $resolved->id());
++    self::assertNotEmpty($resolved);
++    self::assertEquals($config1->id(), $resolved[0]->id());
+ 
+     $config2 = TagContainer::create([
+       'id' => 'bar',
+@@ -63,8 +63,8 @@
+     }
+     $this->container->get('request_stack')->push($request2);
+     $resolved = $sut->resolve();
+-    self::assertNotNull($resolved);
+-    self::assertEquals($config2->id(), $resolved->id());
++    self::assertNotEmpty($resolved);
++    self::assertEquals($config2->id(), $resolved[0]->id());
+   }
+ 
+   /**
