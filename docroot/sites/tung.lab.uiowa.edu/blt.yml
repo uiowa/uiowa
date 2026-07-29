@@ -1,0 +1,17 @@
+project:
+  machine_name: labtung
+  human_name: tung.lab.uiowa.edu
+  local:
+    hostname: labtung.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labtung.prod
+drupal:
+  db:
+    database: tung_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtung.prod.drupal.uiowa.edu'
+  requester: motung
