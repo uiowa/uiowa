@@ -7882,3 +7882,9 @@ $sites['provostfaculty.uiowa.ddev.site'] = 'faculty.provost.uiowa.edu';
 $sites['provostfaculty.dev.drupal.uiowa.edu'] = 'faculty.provost.uiowa.edu';
 $sites['provostfaculty.stage.drupal.uiowa.edu'] = 'faculty.provost.uiowa.edu';
 $sites['provostfaculty.prod.drupal.uiowa.edu'] = 'faculty.provost.uiowa.edu';
+
+// Directory aliases for tung.lab.uiowa.edu.
+$sites['labtung.uiowa.ddev.site'] = 'tung.lab.uiowa.edu';
+$sites['labtung.dev.drupal.uiowa.edu'] = 'tung.lab.uiowa.edu';
+$sites['labtung.stage.drupal.uiowa.edu'] = 'tung.lab.uiowa.edu';
+$sites['labtung.prod.drupal.uiowa.edu'] = 'tung.lab.uiowa.edu';
