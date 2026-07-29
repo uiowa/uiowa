@@ -13,7 +13,10 @@ use AcquiaCloudApi\Response\OperationResponse;
 use Consolidation\AnnotatedCommand\CommandData;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
+use SiteNow\Config\Applications;
 use SiteNow\Utility\Multisite;
+use Uiowa\Blt\AcquiaCloudApiTrait;
+use Uiowa\InspectorTrait;
 use Uiowa\MultisiteTrait;
 
 /**
@@ -21,6 +24,8 @@ use Uiowa\MultisiteTrait;
  */
 class MultisiteCommands extends BltTasks {
 
+  use AcquiaCloudApiTrait;
+  use InspectorTrait;
   use MultisiteTrait;
 
   /**
@@ -63,6 +68,12 @@ class MultisiteCommands extends BltTasks {
     }
 
     $multisites = $this->getConfigValue('multisites');
+
+    // Not set by any BLT config since blt/blt.yml was removed; drupal:install
+    // would otherwise fall back to BLT's default 'minimal' profile.
+    if (!$this->getConfigValue('project.profile.name')) {
+      $this->getConfig()->set('project.profile.name', 'sitenow');
+    }
 
     $this->say('Finding uninstalled sites...');
     $progress = $this->io()->createProgressBar();
@@ -212,12 +223,11 @@ class MultisiteCommands extends BltTasks {
           $this->getConfigValue('uiowa.credentials.acquia.secret')
         );
 
-        $uuids = $this->getConfigValue('uiowa.applications');
-        if (!array_key_exists($app, $uuids)) {
+        $registry = new Applications("{$root}/sitenow/applications.yml");
+        $uuid = $registry->uuid($app);
+        if (!$uuid) {
           return;
         }
-
-        $uuid = $uuids[$app];
 
         // Iterate over each environment and delete files.
         foreach (['dev', 'test', 'prod'] as $env) {
