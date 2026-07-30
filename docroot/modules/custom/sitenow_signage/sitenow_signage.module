@@ -306,13 +306,15 @@ function sitenow_signage_preprocess_field(&$variables) {
           }
 
           // Format time range based on settings.
-          $formatted_date = date('g:i a', $start);
+          $ap_formatter = \Drupal::service('date_ap_style.formatter');
+          $time_only = ['hide_date' => TRUE, 'display_time' => TRUE];
+          $formatted_date = $ap_formatter->formatTimestamp($start, $time_only);
           if ($end_time) {
             if ($end >= strtotime('tomorrow')) {
-              $formatted_date = date('M j g:i a', $start) . ' – ' . date('M j g:i a', $end);
+              $formatted_date = $ap_formatter->formatRange(['start' => $start, 'end' => $end]);
             }
             else {
-              $formatted_date .= ' – ' . date('g:i a', $end);
+              $formatted_date .= ' – ' . $ap_formatter->formatTimestamp($end, $time_only);
             }
           }
 
@@ -929,11 +931,13 @@ function sitenow_signage_preprocess_paragraph(&$variables) {
           }
 
           // Format time range based on settings.
-          $formatted_date = date('g:i a', $start);
+          $ap_formatter = \Drupal::service('date_ap_style.formatter');
+          $time_only = ['hide_date' => TRUE, 'display_time' => TRUE];
+          $formatted_date = $ap_formatter->formatTimestamp($start, $time_only);
 
           // Add the end time if user has that option checked.
           if ($configuration['end_time']) {
-            $formatted_date .= ' – ' . date('g:i a', $end);
+            $formatted_date .= ' – ' . $ap_formatter->formatTimestamp($end, $time_only);
           }
 
           // Build row, store start time for sorting.

@@ -17,7 +17,7 @@ class HawkAlert extends NodeBundleBase implements RendersAsCardInterface {
     parent::buildCard($build);
 
     $created = $this->get('created')->value;
-    $date = \Drupal::service('date.formatter')->format($created, 'short');
+    $date = \Drupal::service('date_ap_style.formatter')->formatTimestamp($created);
     $build['#subtitle'] = $date;
   }
 

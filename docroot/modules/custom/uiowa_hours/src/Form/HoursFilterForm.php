@@ -200,8 +200,8 @@ class HoursFilterForm extends FormBase {
         '#attributes' => $attributes,
         '#headline' => [
           'headline_text' => $this->t('@start@end', [
-            '@start' => date('F j, Y', $start),
-            '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
+            '@start' => \Drupal::service('date_ap_style.formatter')->formatTimestamp($start, ['always_display_year' => 1, 'display_time' => 0]),
+            '@end' => $end === $start ? NULL : ' - ' . \Drupal::service('date_ap_style.formatter')->formatTimestamp($end, ['always_display_year' => 1, 'display_time' => 0]),
           ]),
           'headline_level' => $block_config['child_heading_size'],
           'headline_class' => 'headline headline--serif',
@@ -231,8 +231,8 @@ class HoursFilterForm extends FormBase {
           '#attributes' => $attributes,
           '#headline' => [
             'headline_text' => $this->t('@start@end', [
-              '@start' => date('F j, Y', $start),
-              '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
+              '@start' => \Drupal::service('date_ap_style.formatter')->formatTimestamp($start, ['always_display_year' => 1, 'display_time' => 0]),
+              '@end' => $end === $start ? NULL : ' - ' . \Drupal::service('date_ap_style.formatter')->formatTimestamp($end, ['always_display_year' => 1, 'display_time' => 0]),
             ]),
             'headline_level' => $block_config['child_heading_size'],
             'headline_class' => 'headline headline--serif',
@@ -261,8 +261,8 @@ class HoursFilterForm extends FormBase {
           $markup = $this->t('<span class="badge @badge">@status</span> @start - @end', [
             '@badge' => $badge,
             '@status' => $status,
-            '@start' => date('g:ia', strtotime($time['startHour'])),
-            '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
+            '@start' => \Drupal::service('date_ap_style.formatter')->formatTimestamp(strtotime($time['startHour']), ['hide_date' => TRUE, 'display_time' => TRUE]),
+            '@end' => \Drupal::service('date_ap_style.formatter')->formatTimestamp('00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour']), ['hide_date' => TRUE, 'display_time' => TRUE]),
           ]);
 
           // Display time summary alongside hours info if block is set to do so.

@@ -3,7 +3,7 @@
 namespace Drupal\facilities_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\date_ap_style\ApStyleDateFormatter;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\uiowa_facilities\UtilityAlertsApiClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,13 +22,13 @@ class UtilityAlertsController extends ControllerBase {
    *   The utility alerts API client.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
-   *   The date formatter service.
+   * @param \Drupal\date_ap_style\ApStyleDateFormatter $dateFormatter
+   *   The AP style date formatter service.
    */
   public function __construct(
     protected UtilityAlertsApiClientInterface $utilityAlertsApiClient,
     protected RendererInterface $renderer,
-    protected DateFormatterInterface $dateFormatter,
+    protected ApStyleDateFormatter $dateFormatter,
   ) {}
 
   /**
@@ -38,7 +38,7 @@ class UtilityAlertsController extends ControllerBase {
     return new static(
       $container->get('uiowa_facilities.utility_alerts_api_client'),
       $container->get('renderer'),
-      $container->get('date.formatter'),
+      $container->get('date_ap_style.formatter'),
     );
   }
 
@@ -73,7 +73,7 @@ class UtilityAlertsController extends ControllerBase {
         if (!empty($alert->created_date)) {
           $timestamp = strtotime($alert->created_date);
           if ($timestamp !== FALSE) {
-            $date = $this->dateFormatter->format($timestamp, 'long');
+            $date = $this->dateFormatter->formatTimestamp($timestamp);
             $meta['date'] = [
               '#prefix' => '<div class="utility-alert__date fa-field-item">',
               '#markup' => '<span role="presentation" class="far fa-calendar"></span> ' . $date . '',

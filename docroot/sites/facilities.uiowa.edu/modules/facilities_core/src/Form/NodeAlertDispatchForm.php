@@ -3,7 +3,7 @@
 namespace Drupal\facilities_core\Form;
 
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\date_ap_style\ApStyleDateFormatter;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -45,11 +45,11 @@ class NodeAlertDispatchForm extends FormBase {
   protected UserStorageInterface $userStorage;
 
   /**
-   * The date formatter.
+   * The AP style date formatter.
    *
-   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   * @var \Drupal\date_ap_style\ApStyleDateFormatter
    */
-  protected DateFormatterInterface $dateFormatter;
+  protected ApStyleDateFormatter $dateFormatter;
 
   /**
    * The current Request object.
@@ -78,12 +78,12 @@ class NodeAlertDispatchForm extends FormBase {
    *   The current user.
    * @param \Drupal\user\UserStorageInterface $user_storage
    *   The user storage.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
-   *   The date formatter service.
+   * @param \Drupal\date_ap_style\ApStyleDateFormatter $date_formatter
+   *   The AP style date formatter service.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request.
    */
-  public function __construct(protected DispatchApiClientInterface $dispatch, protected RendererInterface $renderer, MessageLogRepository $repository, AccountProxyInterface $current_user, UserStorageInterface $user_storage, DateFormatterInterface $date_formatter, Request $request) {
+  public function __construct(protected DispatchApiClientInterface $dispatch, protected RendererInterface $renderer, MessageLogRepository $repository, AccountProxyInterface $current_user, UserStorageInterface $user_storage, ApStyleDateFormatter $date_formatter, Request $request) {
     $this->repository = $repository;
     $this->currentUser = $current_user;
     $this->userStorage = $user_storage;
@@ -101,7 +101,7 @@ class NodeAlertDispatchForm extends FormBase {
       $container->get('sitenow_dispatch.message_log_repository'),
       $container->get('current_user'),
       $container->get('entity_type.manager')->getStorage('user'),
-      $container->get('date.formatter'),
+      $container->get('date_ap_style.formatter'),
       $container->get('request_stack')->getCurrentRequest()
     );
   }
@@ -229,7 +229,7 @@ class NodeAlertDispatchForm extends FormBase {
             case 'date':
               $d = new FormattableMarkup('<span class="sr-only">@timestamp</span>@date', [
                 '@timestamp' => $d,
-                '@date' => $this->dateFormatter->format($d, 'custom', 'M j, Y - g:i:sa'),
+                '@date' => $this->dateFormatter->formatTimestamp($d),
               ]);
               break;
 

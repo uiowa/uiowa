@@ -2,7 +2,7 @@
 
 namespace Drupal\brand_core\Commands;
 
-use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\date_ap_style\ApStyleDateFormatter;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
@@ -27,12 +27,12 @@ class BrandCoreCommands extends DrushCommands {
    *
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account_switcher service.
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
-   *   The date_formatter service.
+   * @param \Drupal\date_ap_style\ApStyleDateFormatter $dateFormatter
+   *   The AP style date formatter service.
    * @param \Drupal\symfony_mailer\EmailFactoryInterface $emailFactory
    *   The plugin.manager.mail service.
    */
-  public function __construct(protected AccountSwitcherInterface $accountSwitcher, protected DateFormatterInterface $dateFormatter, protected EmailFactoryInterface $emailFactory) {
+  public function __construct(protected AccountSwitcherInterface $accountSwitcher, protected ApStyleDateFormatter $dateFormatter, protected EmailFactoryInterface $emailFactory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->dateFormatter = $dateFormatter;
   }
@@ -59,7 +59,7 @@ class BrandCoreCommands extends DrushCommands {
       foreach ($view as $row) {
         $entity = $row->_entity;
         $timestamp = $entity->get('revision_timestamp');
-        $date = $this->dateFormatter->format($timestamp->value, 'short', NULL, 'America/Chicago');
+        $date = $this->dateFormatter->formatTimestamp($timestamp->value);
         $lockups[] = $entity->getTitle() . ' - Last updated: ' . $date;
       }
 

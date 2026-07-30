@@ -20,7 +20,6 @@ use Drupal\its_core\Entity\Service;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\sitenow_alerts\Entity\ClosableInterface;
-use Drupal\smart_date\Entity\SmartDateFormat;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -198,11 +197,9 @@ function its_core_alert_email_build($entity) {
   $alert_title = $entity->label();
 
   // Construct date for output.
-  $format = SmartDateFormat::load('compact');
-  $settings = $format->getOptions();
   $start = $entity->get('field_alert_date')->value;
   $end = $entity->get('field_alert_date')->end_value;
-  $date = \Drupal::service('smart_date.manager')->formatSmartDate($start, $end, $settings, NULL, 'string');
+  $date = \Drupal::service('date_ap_style.formatter')->formatRange(['start' => $start, 'end' => $end]);
 
   $linked_alert_title = Link::fromTextAndUrl($alert_title,
     Url::fromRoute('entity.node.canonical', ['node' => $entity->id()]))->toString();
