@@ -8,15 +8,21 @@
  * See https://www.drupal.org/node/3305664
  */
 
-.js-off-canvas-dialog-open .dialog-off-canvas-main-canvas {
-  padding-right: calc(var(--off-canvas-width) + 13px) !important;
-}
+/* #9989: width and padding are now set via jQuery UI dialog option
+   (inline style) in layout_builder_custom.overrides.js, not via CSS
+   variable + !important. The !important approach caused CKEditor 5
+   toolbar to squish to 260px. Letting jQuery UI own the inline width
+   means drag works natively and CKEditor reads width directly. Core's
+   bodyPadding handler handles main-content padding. */
+/* .js-off-canvas-dialog-open .dialog-off-canvas-main-canvas { */
+/*   padding-right: calc(var(--off-canvas-width) + 13px) !important; */
+/* } */
 
 #drupal-off-canvas-wrapper {
   overflow: visible;
   padding: 0px;
   margin-right: -1px;
-  width: var(--off-canvas-width, 300) !important;
+  /* #9989: width is set by jQuery UI dialog option, not CSS. */
   top: var(--drupal-displace-offset-top, 0px) !important;
 }
 

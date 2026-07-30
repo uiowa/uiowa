@@ -27,15 +27,25 @@
           let justCreated = true;
 
           if (Drupal.offCanvas.isOffCanvas($element)) {
-            let offCanvasWidth;
+            // #9989: Set default width via jQuery UI dialog option (inline
+            // style) rather than CSS variable + !important. The CSS
+            // !important approach caused CKEditor 5 toolbar to squish to
+            // 260px. Using jQuery UI's dialog('option','width') sets a plain
+            // inline style that CKEditor reads directly, with no CSS variable
+            // indirection or !important timing issues.
+            // Cookie persistence also applied so the user's last width is
+            // restored on subsequent opens.
             const offCanvasCookie = cookies.get('ui_off_canvas_width');
-            if (offCanvasCookie === undefined) {
-              offCanvasWidth = adjustedWidth(500);
-            } else {
-              offCanvasWidth = adjustedWidth(offCanvasCookie);
-            }
-
-            body.style.setProperty('--off-canvas-width', offCanvasWidth + 'px');
+            const offCanvasWidth = (offCanvasCookie !== undefined)
+              ? adjustedWidth(parseFloat(offCanvasCookie))
+              : adjustedWidth(600);
+            $element.parent().dialog('option', 'width', offCanvasWidth);
+            // #9989: also set after a tick, in case core's off-canvas
+            // resetSize (triggered synchronously in afterCreate) overrides
+            // our width back to the 300px default.
+            setTimeout(() => {
+              $element.parent().dialog('option', 'width', offCanvasWidth);
+            }, 100);
 
             let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
             $element.parent().on('dialogContentResize.off-canvas', eventData, function() {
@@ -47,11 +57,6 @@
               justCreated = false;
             });
           }
-          dragHandleBehaviorStopgap(true);
-
-          handle.addEventListener('mousedown', function(event) {
-            dragHandleBehaviorStopgapAwait(event);
-          });
         }
       });
     }
