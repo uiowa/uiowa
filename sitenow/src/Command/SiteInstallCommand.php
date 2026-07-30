@@ -179,7 +179,9 @@ HELP);
     }
 
     if ($state->status === InstallStatus::Partial && $state->hasContent() && !$input->getOption('force')) {
-      $err->error("Refusing to reinstall {$site}: its unfinished install holds {$state->contentSummary()}. Inspect the site, then re-run with --force to reinstall and lose that content.");
+      $err->error($state->contentUnknown
+        ? "Refusing to reinstall {$site}: its content could not be checked, so a reinstall cannot be shown to be safe. Investigate the database, then re-run with --force to reinstall regardless."
+        : "Refusing to reinstall {$site}: its unfinished install holds {$state->contentSummary()}. Inspect the site, then re-run with --force to reinstall and lose that content.");
       return self::BLOCKED;
     }
 
@@ -243,9 +245,30 @@ HELP);
       return FALSE;
     }
 
+    $this->invalidateTwigCache($site);
     $this->setPermissions($io, $dir);
 
     return TRUE;
+  }
+
+  /**
+   * Invalidate the Twig cache, which Acquia does not do for multisites.
+   *
+   * Matters on a reinstall rather than a first install: the site already had a
+   * Twig cache, and Acquia only invalidates it automatically for the default
+   * site. Mirrors what site:update does for the same reason.
+   *
+   * @param string $site
+   *   The site host / canonical domain.
+   *
+   * @see https://support.acquia.com/hc/en-us/articles/360005167754
+   */
+  private function invalidateTwigCache(string $site): void {
+    $script = '/var/www/site-scripts/invalidate-twig-cache.php';
+
+    if (getenv('AH_SITE_ENVIRONMENT') && is_file($script)) {
+      $this->drush(['php:script', $script], uri: $site);
+    }
   }
 
   /**

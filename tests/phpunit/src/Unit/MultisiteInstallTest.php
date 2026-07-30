@@ -118,6 +118,26 @@ class MultisiteInstallTest extends UnitTestCase {
   }
 
   /**
+   * A site whose content could not be checked is held back, not installed.
+   */
+  public function testUncheckedContentIsBlocked() {
+    $states = [
+      'unreachable.uiowa.edu' => new InstallState(
+        InstallStatus::Partial,
+        'install stopped at task \'install_profile_modules\'',
+        contentUnknown: TRUE,
+      ),
+    ];
+
+    $blocked = $this->command()->pubSelectTargets($states, FALSE);
+    $this->assertSame(['unreachable.uiowa.edu'], array_keys($blocked['blocked']));
+    $this->assertSame([], $blocked['targets']);
+
+    $forced = $this->command()->pubSelectTargets($states, TRUE);
+    $this->assertSame(['unreachable.uiowa.edu'], array_keys($forced['targets']));
+  }
+
+  /**
    * The state each target was in is carried through, for reporting.
    */
   public function testTargetsCarryTheirState() {

@@ -333,11 +333,11 @@ HELP);
     }
 
     if ($blocked) {
-      $io->writeln(sprintf('<comment>Needs a look (%d) — an unfinished install holding content is not reinstalled:</comment>', count($blocked)));
+      $io->writeln(sprintf('<comment>Needs a look (%d) — an unfinished install is not reinstalled when it holds content, or when that cannot be checked:</comment>', count($blocked)));
       foreach ($blocked as $site => $state) {
         $io->writeln("  {$site} — {$state->describe()}");
       }
-      $io->writeln('  Re-run with --force to reinstall these and lose that content.');
+      $io->writeln('  Re-run with --force to reinstall these anyway.');
       $io->writeln('');
     }
 

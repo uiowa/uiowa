@@ -28,6 +28,17 @@ trait ClassifiesInstalls {
   const INSTALL_TASK_QUERY = "SELECT value FROM key_value WHERE collection = 'state' AND name = 'install_task'";
 
   /**
+   * Asks which content tables exist, without failing when they do not.
+   *
+   * Counting a table that does not exist is an error, and that error cannot be
+   * told apart from a database that went away mid-check — so existence is
+   * established first, against information_schema, which answers whenever the
+   * database is reachable at all. The table names are fixed literals here, not
+   * input.
+   */
+  const CONTENT_TABLES_QUERY = "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name IN ('node_field_data', 'users_field_data')";
+
+  /**
    * Classify one site's installation.
    *
    * @param string $site
@@ -58,35 +69,42 @@ trait ClassifiesInstalls {
       }
     }
 
-    // A failed query means the database is empty or unreachable. Both read as
-    // "not installed" and both end in an install attempt that either works or
-    // fails loudly, which is what the BLT command did.
-    $config = $this->drush(['sql:query', "SHOW TABLES LIKE 'config'"], uri: $site);
-    if (!$config->isSuccessful() || trim($config->getOutput()) !== 'config') {
-      return new InstallState(InstallStatus::Absent);
-    }
-
+    // Ask the completion question first. Every site that is fine answers it in
+    // one drush call, and a scan covers a whole application, so probing the
+    // config table first would double the cost of the common case to learn
+    // something the state read already implies.
     $task = $this->drush(['sql:query', self::INSTALL_TASK_QUERY], uri: $site);
 
-    // The config table exists but key_value does not, so the install stopped
-    // between creating the two.
-    if (!$task->isSuccessful()) {
+    if ($task->isSuccessful()) {
+      $raw = trim($task->getOutput());
+
+      if ($raw === '') {
+        return $this->partialState($site, 'Drupal never recorded an install task');
+      }
+
+      $value = $this->stateValue($raw);
+      if ($value === 'done') {
+        return new InstallState(InstallStatus::Installed);
+      }
+
+      return $this->partialState($site, $value !== NULL
+        ? "install stopped at task '{$value}'"
+        : 'the install_task state value is unreadable');
+    }
+
+    // The state read failed, which is ambiguous: an empty or unreachable
+    // database reads the same as one whose install stopped before key_value
+    // existed. The config table is among the first things an install writes, so
+    // it separates the two.
+    $config = $this->drush(['sql:query', "SHOW TABLES LIKE 'config'"], uri: $site);
+    if ($config->isSuccessful() && trim($config->getOutput()) === 'config') {
       return $this->partialState($site, 'the key_value table is missing or unreadable');
     }
 
-    $raw = trim($task->getOutput());
-    if ($raw === '') {
-      return $this->partialState($site, 'Drupal never recorded an install task');
-    }
-
-    $value = $this->stateValue($raw);
-    if ($value === 'done') {
-      return new InstallState(InstallStatus::Installed);
-    }
-
-    return $this->partialState($site, $value !== NULL
-      ? "install stopped at task '{$value}'"
-      : 'the install_task state value is unreadable');
+    // Empty or unreachable. Both read as "not installed", and both end in an
+    // install attempt that either works or fails loudly, which is what the BLT
+    // command did.
+    return new InstallState(InstallStatus::Absent);
   }
 
   /**
@@ -101,35 +119,75 @@ trait ClassifiesInstalls {
    *   The partial state, with content counts attached.
    */
   private function partialState(string $site, string $detail): InstallState {
+    $present = $this->contentTables($site);
+
+    // The database could not be asked what it holds, so nothing has been ruled
+    // out. Refusing here is the whole point of the check.
+    if ($present === NULL) {
+      return new InstallState(InstallStatus::Partial, $detail, contentUnknown: TRUE);
+    }
+
+    // A table the install never got far enough to create holds nothing to lose,
+    // so an absent table counts as zero rather than as an unanswered question.
+    //
     // Both counts exclude uid 0 and 1 deliberately. The profile installs six
     // nodes of its own, all authored by the installer's account, so counting
     // every node would flag a site that has only ever been installed as one
     // holding content — and every incomplete install would need --force, which
     // is the opposite of healing itself.
-    return new InstallState(
-      InstallStatus::Partial,
-      $detail,
-      $this->countRows($site, 'SELECT COUNT(*) FROM node_field_data WHERE uid > 1'),
-      $this->countRows($site, 'SELECT COUNT(*) FROM users_field_data WHERE uid > 1'),
-    );
+    $nodes = in_array('node_field_data', $present, TRUE)
+      ? $this->countRows($site, 'SELECT COUNT(*) FROM node_field_data WHERE uid > 1')
+      : 0;
+    $users = in_array('users_field_data', $present, TRUE)
+      ? $this->countRows($site, 'SELECT COUNT(*) FROM users_field_data WHERE uid > 1')
+      : 0;
+
+    if ($nodes === NULL || $users === NULL) {
+      return new InstallState(InstallStatus::Partial, $detail, contentUnknown: TRUE);
+    }
+
+    return new InstallState(InstallStatus::Partial, $detail, $nodes, $users);
   }
 
   /**
-   * Count rows for a content check, treating an unusable table as empty.
+   * Ask which of the content tables exist.
+   *
+   * @param string $site
+   *   The site host / canonical domain.
+   *
+   * @return string[]|null
+   *   The table names present, empty when none are; NULL when the question
+   *   could not be answered, which must not be read as "none".
+   */
+  private function contentTables(string $site): ?array {
+    $result = $this->drush(['sql:query', self::CONTENT_TABLES_QUERY], uri: $site);
+    if (!$result->isSuccessful()) {
+      return NULL;
+    }
+
+    $lines = array_map('trim', preg_split('/\R/', $result->getOutput()) ?: []);
+
+    return array_values(array_filter($lines, fn ($line) => $line !== ''));
+  }
+
+  /**
+   * Count rows for a content check.
+   *
+   * Only called for a table already known to exist, so a failure here means the
+   * check itself broke down rather than that the table is missing.
    *
    * @param string $site
    *   The site host / canonical domain.
    * @param string $query
    *   A query returning a single count.
    *
-   * @return int
-   *   The count, or 0 when the query could not run — a table the install never
-   *   got far enough to create holds nothing to lose.
+   * @return int|null
+   *   The count, or NULL when the query could not run.
    */
-  private function countRows(string $site, string $query): int {
+  private function countRows(string $site, string $query): ?int {
     $result = $this->drush(['sql:query', $query], uri: $site);
 
-    return $result->isSuccessful() ? (int) trim($result->getOutput()) : 0;
+    return $result->isSuccessful() ? (int) trim($result->getOutput()) : NULL;
   }
 
   /**

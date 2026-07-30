@@ -25,12 +25,17 @@ class InstallState {
    * @param int|null $users
    *   Users past uid 1, counted only for a partial install. NULL when not
    *   counted.
+   * @param bool $contentUnknown
+   *   TRUE when the content check could not be completed. Distinct from a zero
+   *   count: nothing was ruled out, so the site counts as holding content and a
+   *   reinstall is refused.
    */
   public function __construct(
     public readonly InstallStatus $status,
     public readonly string $detail = '',
     public readonly ?int $nodes = NULL,
     public readonly ?int $users = NULL,
+    public readonly bool $contentUnknown = FALSE,
   ) {}
 
   /**
@@ -41,11 +46,16 @@ class InstallState {
    * should look before it is wiped. The profile's own default content does not
    * count: it belongs to the install, not to anyone using the site.
    *
+   * A check that could not run counts as content. The question this gates is
+   * whether a reinstall would destroy something, and "we could not find out" is
+   * not an answer that justifies wiping a database.
+   *
    * @return bool
-   *   TRUE when any node or user exists that the installer did not create.
+   *   TRUE when any node or user exists that the installer did not create, or
+   *   when that could not be determined.
    */
   public function hasContent(): bool {
-    return ($this->nodes ?? 0) > 0 || ($this->users ?? 0) > 0;
+    return $this->contentUnknown || ($this->nodes ?? 0) > 0 || ($this->users ?? 0) > 0;
   }
 
   /**
@@ -61,6 +71,9 @@ class InstallState {
     if ($this->detail !== '') {
       $line .= ": {$this->detail}";
     }
+    if ($this->contentUnknown) {
+      return "{$line}, and its content could not be checked";
+    }
     if ($this->hasContent()) {
       $line .= ', but holds ' . $this->contentSummary();
     }
@@ -70,6 +83,9 @@ class InstallState {
 
   /**
    * Summarize the content found in a partial install.
+   *
+   * Only meaningful when the check completed; callers report an unchecked site
+   * from $contentUnknown instead.
    *
    * @return string
    *   A counts phrase, e.g. "43 nodes, 12 users".

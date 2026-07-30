@@ -248,6 +248,24 @@ YAML,
   }
 
   /**
+   * A content check that could not run counts as content, and says so.
+   *
+   * Fails closed on purpose: "we could not find out" must not clear the way for
+   * a reinstall the way a genuine zero does.
+   */
+  public function testUncheckedContentBlocksLikeContent() {
+    $state = new InstallState(
+      InstallStatus::Partial,
+      'install stopped at task \'install_profile_modules\'',
+      contentUnknown: TRUE,
+    );
+
+    $this->assertTrue($state->hasContent());
+    $this->assertStringContainsString('content could not be checked', $state->describe());
+    $this->assertStringNotContainsString('0 nodes', $state->describe());
+  }
+
+  /**
    * A state with nothing counted holds nothing, not an unknown amount.
    */
   public function testUncountedStateHasNoContent() {
