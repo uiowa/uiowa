@@ -4,7 +4,6 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use SiteNow\Config\Applications;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Unit tests for the SiteNow application registry.
