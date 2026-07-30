@@ -8,9 +8,9 @@ services:
     arguments: [ '@request_stack' ]
     tags:
       - { name: config.factory.override }
-  sitenow.google_analytics_override:
-    class: Drupal\sitenow\ConfigOverride\GoogleAnalyticsOverride
-    arguments: [ '@config.factory', '@request_stack' ]
+  sitenow.google_tag_override:
+    class: Drupal\sitenow\ConfigOverride\GoogleTagOverride
+    arguments: [ '@config.factory' ]
     tags:
       - { name: config.factory.override }
   sitenow.robotstxt_override:
