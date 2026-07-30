@@ -18,6 +18,13 @@ use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\Plugin\views\filter\EntityReferenceOverride;
 
 /**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function facilities_core_config_ignore_settings_alter(array &$settings) {
+  $settings[] = 'uiowa_facilities.apis';
+}
+
+/**
  * Set dynamic allowed values bus routes status.
  *
  * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
