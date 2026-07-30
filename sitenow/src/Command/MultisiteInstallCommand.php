@@ -108,6 +108,10 @@ Scans the sites this application owns and sorts them into four states:
 Each site's full output goes to its own log file, named in the summary. Safe to
 run repeatedly: a site that failed is picked up again by the next run.
 
+Installing is limited to local and prod unless --envs says otherwise. A dry run
+only reads, so it is allowed anywhere — use it on dev or test ahead of a release
+to see what an environment would need.
+
 Needs a database connection, so off Acquia it runs inside the container:
   ddev exec ./sn multisite:install
 
@@ -135,8 +139,14 @@ HELP);
     $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
     $is_acquia = (bool) getenv('AH_SITE_ENVIRONMENT');
 
+    $dry_run = (bool) $input->getOption('dry-run');
+
+    // A dry run only reads, so it is allowed on any environment. The gate is
+    // about where a site may be installed, and being able to see what an
+    // environment would need — dev or test ahead of a release — is the point of
+    // having a dry run at all.
     $envs = $this->parseList($input->getOption('envs'));
-    if (!in_array($env, $envs, TRUE)) {
+    if (!$dry_run && !in_array($env, $envs, TRUE)) {
       $err->error("Installation is not allowed on the {$env} environment. Must be one of: " . implode(', ', $envs) . '. Use --envs to override.');
       return Command::FAILURE;
     }
@@ -170,8 +180,15 @@ HELP);
     ['targets' => $targets, 'blocked' => $blocked, 'counts' => $counts] = $this->selectTargets($states, $force);
     $this->reportScan($io, $targets, $blocked, $counts);
 
-    if ($input->getOption('dry-run')) {
+    if ($dry_run) {
       $io->writeln('Dry run: nothing was installed.');
+
+      // Say so when the environment would have refused, so a dry run here is
+      // not mistaken for permission to install here.
+      if (!in_array($env, $envs, TRUE)) {
+        $io->warning("Installing on {$env} is not allowed without --envs={$env}.");
+      }
+
       return Command::SUCCESS;
     }
 
