@@ -7,14 +7,15 @@
  *
  * Standalone Symfony Console entry point for SiteNow repository commands.
  * Commands are hand-wired here; there is no DI container by design. Each
- * command documents where it must run: some touch the git working tree and run
- * on the host shell (e.g. multisite:create), while others need the DDEV
- * container's drush aliases and SSH agent (e.g. the report:* commands, run via
- * `ddev exec ./sn ...`).
+ * command documents where it must run: most run either on the host shell or in
+ * the DDEV container, needing only loaded SSH keys to reach remote sites, while
+ * the sync commands write to the container's local database and so must run
+ * inside it (`ddev exec ./sn ...`).
  *
  * Run from the repository root, e.g.:
  *   ./sn multisite:create newsite.uiowa.edu --dry-run
- *   ddev exec ./sn report:domains
+ *   ./sn report:domains
+ *   ddev exec ./sn sync:all
  */
 
 use SiteNow\Command\DeployActivateCommand;

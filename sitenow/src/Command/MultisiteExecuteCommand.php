@@ -24,7 +24,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'multisite:execute',
-  description: '(ddev required) Execute a drush command across manifest-selected sites.',
+  description: 'Execute a drush command across manifest-selected sites.',
   aliases: ['me', 'ume'],
 )]
 class MultisiteExecuteCommand extends Command {
@@ -83,19 +83,19 @@ status is shown.
 
 Examples:
   # Cache rebuild on every site of two apps:
-  ddev exec ./sn ume --apps=uiowa02,uiowa03 -y -- cr
+  ./sn ume --apps=uiowa02,uiowa03 -y -- cr
 
   # Arguments with spaces/quotes pass through unmodified:
-  ddev exec ./sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
+  ./sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
 
   # Two different -y's: ours skips the fleet confirmation, drush's skips its own:
-  ddev exec ./sn ume -y --apps=uiowa09 -- pm:uninstall some_module -y
+  ./sn ume -y --apps=uiowa09 -- pm:uninstall some_module -y
 
   # Preview what would run, without executing anything:
-  ddev exec ./sn ume --dry-run -- cron
+  ./sn ume --dry-run -- cron
 
   # See output from each site (e.g., config values):
-  ddev exec ./sn ume -v --apps=uiowa09 -- config:get system.site
+  ./sn ume -v --apps=uiowa09 -- config:get system.site
 HELP);
   }
 
@@ -154,9 +154,6 @@ HELP);
       return Command::SUCCESS;
     }
 
-    if (!$this->requireDdev($io, $this->getName())) {
-      return Command::FAILURE;
-    }
     if (!$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
