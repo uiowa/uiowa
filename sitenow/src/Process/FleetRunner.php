@@ -175,13 +175,13 @@ class FleetRunner {
   public function buildJobs(array $selection, array $drush_args, string $env = 'prod'): array {
     $jobs = [];
     $groups = [];
-    $drush = $this->drushBin();
+    $drush = $this->drushCommand();
     $ssh_option = '--ssh-options=' . $this->sshOptions();
 
     foreach ($selection as $app => $domains) {
       foreach ($domains as $domain) {
         $alias = Multisite::getIdentifier('http://' . $domain) . '.' . $env;
-        $jobs[$domain] = array_merge([$drush, "@{$alias}", $ssh_option], $drush_args);
+        $jobs[$domain] = array_merge($drush, ["@{$alias}", $ssh_option], $drush_args);
         $groups[$domain] = $app;
       }
     }
@@ -190,7 +190,7 @@ class FleetRunner {
   }
 
   /**
-   * The drush binary fleet jobs run.
+   * The command prefix that launches drush, before any drush arguments.
    *
    * The project's own drush, rather than whatever `drush` resolves to on
    * PATH: that varies between machines and is absent from the host shell
@@ -199,11 +199,17 @@ class FleetRunner {
    * fleet jobs on the version the project is tested against, on the host and
    * inside DDEV alike.
    *
-   * @return string
-   *   Absolute path to the project's drush binary.
+   * Launched through PHP explicitly so display_errors can be set: a host PHP
+   * newer than the container's emits deprecation notices from the local vendor
+   * tree, and the CLI SAPI writes those to stdout, where they land in the
+   * per-site output consumers parse. Sending them to stderr keeps parsed output
+   * clean without hiding them.
+   *
+   * @return array<int, string>
+   *   The argv prefix: the PHP binary, its ini overrides, then drush.
    */
-  protected function drushBin(): string {
-    return "{$this->repoRoot}/vendor/bin/drush";
+  protected function drushCommand(): array {
+    return [PHP_BINARY, '-d', 'display_errors=stderr', "{$this->repoRoot}/vendor/bin/drush"];
   }
 
   /**
@@ -234,7 +240,7 @@ class FleetRunner {
 
     $site = $domains[0];
     $alias = Multisite::getIdentifier('http://' . $site) . '.' . $env;
-    $argv = [$this->drushBin(), "@{$alias}", '--ssh-options=' . $this->sshOptions(), 'help', $command];
+    $argv = array_merge($this->drushCommand(), ["@{$alias}", '--ssh-options=' . $this->sshOptions(), 'help', $command]);
     $result = $this->runCanary($site, $argv);
 
     return $result['exit'] === 0 ? NULL : ['site' => $site] + $result;

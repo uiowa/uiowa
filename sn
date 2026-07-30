@@ -38,6 +38,13 @@ use Symfony\Component\Console\Application;
 // This file lives at the repository root.
 $root = __DIR__;
 
+// Keep diagnostics off stdout, which carries report tables and CSV-bound rows.
+// A host PHP newer than the container's raises deprecation notices while the
+// vendor tree loads below, and the CLI SAPI displays those on stdout by
+// default. They stay visible, on stderr, where the rest of this CLI's
+// diagnostics already go.
+ini_set('display_errors', 'stderr');
+
 require "{$root}/vendor/autoload.php";
 
 // Repo-touching commands assume the working directory is the repository root.
