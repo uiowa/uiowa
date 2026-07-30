@@ -1,0 +1,33 @@
+From c4eba3bd870fa327ffee0d0aad7ae54e6f9bcff4 Mon Sep 17 00:00:00 2001
+From: Cory Skeers <cory-skeers@uiowa.edu>
+Date: Thu, 30 Jul 2026 08:37:56 -0500
+Subject: [PATCH] Check for array value, and handle accordingly.
+
+Rerolled against the 7.1.1 release tag (the version this project
+depends on) instead of the module's dev branch, so the context lines
+match what's actually installed.
+---
+ src/Plugin/BetterExposedFiltersWidgetBase.php | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/Plugin/BetterExposedFiltersWidgetBase.php b/src/Plugin/BetterExposedFiltersWidgetBase.php
+index da27be1..6d35eb2 100644
+--- a/src/Plugin/BetterExposedFiltersWidgetBase.php
++++ b/src/Plugin/BetterExposedFiltersWidgetBase.php
+@@ -182,6 +182,14 @@ abstract class BetterExposedFiltersWidgetBase extends PluginBase implements Bett
+       // Check if one or more values are set for our current element.
+       $default_value = $form[$element]['#default_value'] ?? key($form[$element]['#options'] ?? []);
+       $has_values_selected = array_reduce($user_input, function (bool $carry, mixed $value) use ($default_value, $form, $element) {
++        // A malformed request (e.g. an extra "[]" nesting level on a query
++        // parameter) can submit an array here instead of the scalar option
++        // key this element expects. Treat that as "no match" rather than
++        // passing it to isset(), which is a TypeError for a non-scalar
++        // offset in PHP 8.
++        if (!is_scalar($value)) {
++          return $carry;
++        }
+         return $carry ||
+           ($form[$element]['#multiple'] ?? FALSE ? ($value === $default_value || isset($form[$element]['#options'][$value])) : !($value === $default_value) && ($value || $default_value === 0));
+       }, FALSE);
+--
+GitLab
