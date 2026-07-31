@@ -16,6 +16,11 @@ use AcquiaCloudApi\Endpoints\Environments;
 class FleetDomains {
 
   /**
+   * Organization whose applications the domain reports leave alone.
+   */
+  const EXCLUDED_ORGANIZATION = 'University of Iowa Healthcare';
+
+  /**
    * Constructs the fleet iterator.
    *
    * @param \AcquiaCloudApi\Connector\Client $client
@@ -24,6 +29,45 @@ class FleetDomains {
   public function __construct(
     private Client $client,
   ) {}
+
+  /**
+   * Determine whether an application is in scope for the domain reports.
+   *
+   * @param object $application
+   *   An ApplicationResponse object.
+   *
+   * @return bool
+   *   FALSE for applications owned by the excluded organization.
+   */
+  public static function isReportable(object $application): bool {
+    return $application->organization->name !== self::EXCLUDED_ORGANIZATION;
+  }
+
+  /**
+   * The short names of every application the reports would consider.
+   *
+   * Lets a caller reject an unknown --apps value up front. Scoped to
+   * reportable applications so that every name this accepts can actually
+   * produce rows: an out-of-scope application would be silently skipped
+   * during iteration, which is the outcome the check exists to prevent.
+   *
+   * @param array $applications
+   *   ApplicationResponse objects (e.g. from getSortedApplications()).
+   *
+   * @return array<int, string>
+   *   Short application names.
+   */
+  public static function reportableAppNames(array $applications): array {
+    $names = [];
+
+    foreach ($applications as $application) {
+      if (self::isReportable($application)) {
+        $names[] = self::appName($application);
+      }
+    }
+
+    return $names;
+  }
 
   /**
    * Get the short application name from an application response.
@@ -92,7 +136,7 @@ class FleetDomains {
     $api_environments = new Environments($this->client);
 
     foreach ($applications as $application) {
-      if ($application->organization->name === 'University of Iowa Healthcare') {
+      if (!self::isReportable($application)) {
         continue;
       }
 

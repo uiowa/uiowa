@@ -2,9 +2,9 @@
 
 namespace SiteNow\Command;
 
+use SiteNow\Process\FleetRunner;
 use SiteNow\Report\CsvWriter;
-use SiteNow\Report\DrushRunner;
-use SiteNow\Report\FleetDomains;
+use SiteNow\Traits\DescribesDrushFailures;
 use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -16,22 +16,29 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Reports SiteNow sites with no recent content revision or user login.
+ *
+ * One row per site in the manifest. Each site answers two questions, so the
+ * fleet runs twice: once for the latest non-admin node revision, once for the
+ * latest non-admin login. A site that fails a query reports N/A for that
+ * column rather than dropping out of the report.
  */
 #[AsCommand(
   name: 'report:inactive',
-  description: '(ddev required) Report inactive SiteNow sites (no recent login or revision).',
+  description: 'Report inactive SiteNow sites (no recent login or revision).',
   aliases: ['inactive'],
 )]
 class ReportInactiveCommand extends Command {
 
   use SiteNowCommandsTrait;
   use ParsesListOptions;
+  use DescribesDrushFailures;
 
   /**
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Used for the CSV export location.
+   *   Absolute path to the repository root. Locates blt/manifest.yml and the
+   *   CSV export location.
    */
   public function __construct(
     private string $repoRoot = '',
@@ -45,6 +52,7 @@ class ReportInactiveCommand extends Command {
   protected function configure(): void {
     $this
       ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa,uiowa03).', '')
+      ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('threshold', NULL, InputOption::VALUE_REQUIRED, 'Inactivity threshold (e.g. "1 year", "6 months").', '1 year')
       ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.');
   }
@@ -56,15 +64,9 @@ class ReportInactiveCommand extends Command {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
 
-    if (!$this->requireDdev($io, $this->getName())) {
-      return Command::FAILURE;
-    }
-    if (!$this->requireSshAgent($io)) {
-      return Command::FAILURE;
-    }
-
     $now = time();
     $target_apps = $this->parseList($input->getOption('apps'));
+    $exclude = $this->parseList($input->getOption('exclude'));
     $export = (bool) $input->getOption('export');
 
     $threshold = trim($input->getOption('threshold'));
@@ -74,59 +76,84 @@ class ReportInactiveCommand extends Command {
       return Command::FAILURE;
     }
 
-    $headers = ['Application', 'URL', 'Days Since Revision', 'Days Since Login', "Login Inactive: {$threshold}"];
-
-    $client = $this->requireAcquiaClient($io);
-    if ($client === NULL) {
+    if (!$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 
-    $err->writeln('<comment>Fetching domains from Acquia Cloud API...</comment>');
+    $runner = new FleetRunner($this->repoRoot);
+    try {
+      $selection = $runner->select($target_apps, $exclude);
+    }
+    catch (\RuntimeException $e) {
+      $err->error($e->getMessage());
+      return Command::FAILURE;
+    }
 
-    $applications = $this->getSortedApplications($client);
-    $fleet = new FleetDomains($client);
-    $runner = new DrushRunner();
+    $site_count = array_sum(array_map('count', $selection));
+    if ($site_count === 0) {
+      $err->error('No sites matched the selection.');
+      return Command::FAILURE;
+    }
 
-    $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Inactive-Report', $headers) : NULL;
+    $headers = ['Application', 'URL', 'Days Since Revision', 'Days Since Login', "Login Inactive: {$threshold}"];
+
+    $err->writeln("<comment>Checking last revision on {$site_count} sites...</comment>");
+    $revisions = $runner->run($selection, [
+      'sqlq',
+      'SELECT MAX(revision_timestamp) FROM node_revision WHERE revision_uid != 1',
+      '--no-interaction',
+    ], 'prod', NULL, $this->progress($err, 'revision'));
+
+    $err->writeln("<comment>Checking last login on {$site_count} sites...</comment>");
+    $logins = $runner->run($selection, [
+      'users:list',
+      '--no-roles=administrator',
+      '--format=json',
+      '--no-interaction',
+    ], 'prod', NULL, $this->progress($err, 'login'));
+
+    $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Inactive-Report', $headers, [
+      $target_apps ? implode('+', $target_apps) : 'all-apps',
+      $threshold,
+    ]) : NULL;
     $rows = [];
 
-    foreach ($fleet->iterate($applications, $target_apps, ['prod'], function (string $app_name) use ($err) {
-      $err->writeln("Processing {$app_name}...");
-    }) as $site) {
-      $domain = $site['domain'];
-      $err->writeln("  Checking {$domain}...");
+    // Walked in manifest order rather than completion order, so the report
+    // reads the same whichever site the pool happens to finish first.
+    foreach ($selection as $app_name => $domains) {
+      foreach ($domains as $domain) {
+        $last_revision = $this->parseLastRevision($revisions[$domain]['output'], $revisions[$domain]['exit']);
+        if ($last_revision === FALSE) {
+          $days_since_revision = 'N/A';
+        }
+        elseif ($last_revision === NULL) {
+          $days_since_revision = 'Never';
+        }
+        else {
+          $days_since_revision = ceil(($now - $last_revision) / 86400);
+        }
 
-      $last_revision = $this->getLastContentRevision($runner, $domain);
-      if ($last_revision === FALSE) {
-        $days_since_revision = 'N/A';
-      }
-      elseif ($last_revision === NULL) {
-        $days_since_revision = 'Never';
-      }
-      else {
-        $days_since_revision = ceil(($now - $last_revision) / 86400);
-      }
+        $last_login = $this->parseLastLogin($logins[$domain]['output'], $logins[$domain]['exit']);
+        if ($last_login === FALSE) {
+          $days_since_login = 'N/A';
+          $status = 'Error';
+        }
+        elseif ($last_login === NULL) {
+          $days_since_login = 'Never';
+          $status = 'Inactive';
+        }
+        else {
+          $days_since_login = ceil(($now - $last_login) / 86400);
+          $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
+        }
 
-      $last_login = $this->getLastUserLogin($runner, $domain);
-      if ($last_login === FALSE) {
-        $days_since_login = 'N/A';
-        $status = 'Error';
-      }
-      elseif ($last_login === NULL) {
-        $days_since_login = 'Never';
-        $status = 'Inactive';
-      }
-      else {
-        $days_since_login = ceil(($now - $last_login) / 86400);
-        $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
-      }
-
-      $row = [$site['app'], $domain, $days_since_revision, $days_since_login, $status];
-      if ($writer) {
-        $writer->writeRow($row);
-      }
-      else {
-        $rows[] = $row;
+        $row = [$app_name, $domain, $days_since_revision, $days_since_login, $status];
+        if ($writer) {
+          $writer->writeRow($row);
+        }
+        else {
+          $rows[] = $row;
+        }
       }
     }
 
@@ -141,21 +168,31 @@ class ReportInactiveCommand extends Command {
   }
 
   /**
-   * Get the last non-admin user login timestamp via drush alias (prod).
+   * Build the per-pass progress callback.
    *
-   * @param \SiteNow\Report\DrushRunner $runner
-   *   The drush runner.
-   * @param string $multisite
-   *   The multisite domain.
+   * The pool retries failures and reports progress per attempt, so a line here
+   * describes one attempt, not the site's outcome: a site that fails its first
+   * attempt and succeeds on retry still gets a real value in the report. The
+   * query name is included because a site is asked two separate questions and
+   * can fail either one.
    *
-   * @return int|null|false
-   *   Unix timestamp if found, NULL if no login data, FALSE on a query error.
+   * @param \Symfony\Component\Console\Output\OutputInterface $err
+   *   The error output failures are reported on.
+   * @param string $query
+   *   The name of the query being run, e.g. 'login'.
+   *
+   * @return callable
+   *   A ProcessPool progress callback.
    */
-  protected function getLastUserLogin(DrushRunner $runner, string $multisite): int|null|false {
-    $alias = $this->getDrushAlias($multisite) . '.prod';
-    $result = $runner->run($alias, ['users:list', '--no-roles=administrator', '--format=json', '--no-interaction']);
-
-    return $this->parseLastLogin($result['output'], $result['exit']);
+  protected function progress(OutputInterface $err, string $query): callable {
+    return function (int $done, int $total, ?string $key, ?array $result) use ($err, $query) {
+      if ($key === NULL || $result === NULL) {
+        return;
+      }
+      if ($result['exit'] !== 0) {
+        $err->writeln("<error>✖</error> [{$done}/{$total}] {$query} attempt failed: {$key} — " . $this->failureReason($result));
+      }
+    };
   }
 
   /**
@@ -207,28 +244,6 @@ class ReportInactiveCommand extends Command {
     }
 
     return $latest_login;
-  }
-
-  /**
-   * Get the timestamp of the last non-admin node revision via drush (prod).
-   *
-   * @param \SiteNow\Report\DrushRunner $runner
-   *   The drush runner.
-   * @param string $multisite
-   *   The multisite domain.
-   *
-   * @return int|null|false
-   *   Unix timestamp if found, NULL if no revisions, FALSE on a query error.
-   */
-  protected function getLastContentRevision(DrushRunner $runner, string $multisite): int|null|false {
-    $alias = $this->getDrushAlias($multisite) . '.prod';
-    $result = $runner->run($alias, [
-      'sqlq',
-      'SELECT MAX(revision_timestamp) FROM node_revision WHERE revision_uid != 1',
-      '--no-interaction',
-    ]);
-
-    return $this->parseLastRevision($result['output'], $result['exit']);
   }
 
   /**
