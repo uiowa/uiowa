@@ -153,12 +153,12 @@ class FileSchemeCommands extends DrushCommands {
       return;
     }
 
-    $this->logger()->warning(dt('@count text field value(s) contain a hard-coded path into the public files directory. These will not follow the move and will break. Review them before continuing.', [
+    $this->logger()->warning(dt('@count hard-coded path(s) into the public files directory found. These will not follow the move and will break. Review them before continuing.', [
       '@count' => count($found),
     ]));
 
     $this->io()->table(
-      ['Table', 'Column', 'Entity ID', 'Revision ID'],
+      ['Source', 'Location', 'Detail'],
       array_map('array_values', $found)
     );
   }

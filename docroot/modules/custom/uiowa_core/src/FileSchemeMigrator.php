@@ -11,6 +11,8 @@ use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\file\FileInterface;
 use Drupal\file\FileRepositoryInterface;
+use Drupal\layout_builder\Section;
+use Drupal\layout_builder\SectionComponent;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -32,16 +34,14 @@ class FileSchemeMigrator {
    * Field types that can hold a hard-coded file path, keyed to their column.
    *
    * The column is the suffix appended to the field name in the field's data
-   * table. Layout builder sections are serialized into a text column, so a
-   * path pasted into a block's configuration is caught there rather than in
-   * any block_content table.
+   * table. Layout builder sections are handled separately because their
+   * configuration is serialized rather than stored as a plain field value.
    */
   const SCANNED_FIELD_TYPES = [
     'text' => 'value',
     'text_long' => 'value',
     'text_with_summary' => 'value',
     'string_long' => 'value',
-    'layout_section' => 'section',
     'link' => 'uri',
   ];
 
@@ -208,19 +208,42 @@ class FileSchemeMigrator {
   }
 
   /**
-   * Finds text fields containing a hard-coded path into the public files dir.
+   * Finds hard-coded paths into the public files directory.
    *
    * Media embeds and entity reference fields resolve through the file entity
-   * and follow a move. A path typed or pasted into a text field does not, and
-   * will break once the file it points at is private. Those need a human
-   * decision, so they are reported rather than rewritten.
+   * and follow a move. A path typed or pasted into content does not, and will
+   * break once the file it points at is private. Those need a human decision,
+   * so they are reported rather than rewritten.
+   *
+   * Three places have to be checked. Configurable text and link fields cover
+   * ordinary content. Layout builder sections hold block configuration in a
+   * serialized blob, so a path there is invisible to a field scan. The layout
+   * builder tempstore holds unsaved edits, including inline blocks that exist
+   * nowhere else yet, and those will break as soon as an editor saves.
    *
    * @return array
-   *   A list of arrays with 'table', 'column', 'entity_id' and 'revision_id'
-   *   keys, one per row containing a hard-coded path.
+   *   A list of arrays with 'source', 'location' and 'detail' keys.
    */
   public function findHardCodedPaths(): array {
-    $needle = '%' . $this->database->escapeLike('/' . PublicStream::basePath() . '/') . '%';
+    $path = '/' . PublicStream::basePath() . '/';
+
+    return array_merge(
+      $this->scanFieldTables($path),
+      $this->scanLayoutSections($path),
+      $this->scanLayoutTempstore($path),
+    );
+  }
+
+  /**
+   * Scans configurable text and link field tables for a path.
+   *
+   * @param string $path
+   *   The public files path to look for.
+   *
+   * @return array
+   *   Findings keyed 'source', 'location' and 'detail'.
+   */
+  protected function scanFieldTables(string $path): array {
     $found = [];
 
     foreach ($this->getScannableTables() as $table => $column) {
@@ -230,19 +253,174 @@ class FileSchemeMigrator {
 
       $query = $this->database->select($table, 't')
         ->fields('t', ['entity_id', 'revision_id'])
-        ->condition('t.' . $column, $needle, 'LIKE');
+        ->condition('t.' . $column, '%' . $this->database->escapeLike($path) . '%', 'LIKE');
 
       foreach ($query->execute() as $row) {
         $found[] = [
-          'table' => $table,
-          'column' => $column,
-          'entity_id' => $row->entity_id,
-          'revision_id' => $row->revision_id,
+          'source' => 'field',
+          'location' => $table . '.' . $column,
+          'detail' => sprintf('entity %s, revision %s', $row->entity_id, $row->revision_id),
         ];
       }
     }
 
     return $found;
+  }
+
+  /**
+   * Scans saved layout builder sections for a path.
+   *
+   * The LIKE narrows the rows worth deserializing; the component walk is what
+   * turns a matching row into something a human can go and fix.
+   *
+   * @param string $path
+   *   The public files path to look for.
+   *
+   * @return array
+   *   Findings keyed 'source', 'location' and 'detail'.
+   */
+  protected function scanLayoutSections(string $path): array {
+    $found = [];
+    $tables = array_keys($this->entityFieldManager->getFieldMapByFieldType('layout_section'));
+
+    foreach ($tables as $entity_type_id) {
+      foreach (["{$entity_type_id}__layout_builder__layout", "{$entity_type_id}_revision__layout_builder__layout"] as $table) {
+        if (!$this->database->schema()->tableExists($table)) {
+          continue;
+        }
+
+        $column = 'layout_builder__layout_section';
+
+        $query = $this->database->select($table, 't')
+          ->fields('t', ['entity_id', 'revision_id', 'delta', $column])
+          ->condition('t.' . $column, '%' . $this->database->escapeLike($path) . '%', 'LIKE');
+
+        foreach ($query->execute() as $row) {
+          $where = sprintf('entity %s, revision %s, section %s', $row->entity_id, $row->revision_id, $row->delta);
+          $section = unserialize($row->{$column}, [
+            'allowed_classes' => [Section::class, SectionComponent::class],
+          ]);
+
+          // The LIKE already proved the path is in this row. If the blob is not
+          // the Section we expect, say so rather than reporting nothing.
+          if (!$section instanceof Section) {
+            $found[] = [
+              'source' => 'layout',
+              'location' => $table,
+              'detail' => $where . ', could not read section, inspect manually',
+            ];
+            continue;
+          }
+
+          foreach ($this->matchingComponents($section, $path) as $description) {
+            $found[] = [
+              'source' => 'layout',
+              'location' => $table,
+              'detail' => $where . ', ' . $description,
+            ];
+          }
+        }
+      }
+    }
+
+    return $found;
+  }
+
+  /**
+   * Scans the layout builder tempstore for a path in unsaved edits.
+   *
+   * @param string $path
+   *   The public files path to look for.
+   *
+   * @return array
+   *   Findings keyed 'source', 'location' and 'detail'.
+   */
+  protected function scanLayoutTempstore(string $path): array {
+    if (!$this->database->schema()->tableExists('key_value_expire')) {
+      return [];
+    }
+
+    $found = [];
+
+    // A tempstore blob wraps an arbitrary object graph, including inline block
+    // entities carried as 'block_serialized'. Restricting allowed classes well
+    // enough to deserialize it safely is not practical, and guessing wrong
+    // would mean silently reporting nothing, so the row itself is the finding.
+    $query = $this->database->select('key_value_expire', 'kve')
+      ->fields('kve', ['name'])
+      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides')
+      ->condition('value', '%' . $this->database->escapeLike($path) . '%', 'LIKE');
+
+    foreach ($query->execute() as $row) {
+      $found[] = [
+        'source' => 'tempstore',
+        'location' => 'key_value_expire',
+        'detail' => sprintf('unsaved layout edit for %s', $row->name),
+      ];
+    }
+
+    return $found;
+  }
+
+  /**
+   * Describes the components of a section whose configuration holds a path.
+   *
+   * @param \Drupal\layout_builder\Section $section
+   *   The section to walk.
+   * @param string $path
+   *   The public files path to look for.
+   *
+   * @return string[]
+   *   An operator-facing description per matching component.
+   */
+  protected function matchingComponents(Section $section, string $path): array {
+    $descriptions = [];
+
+    foreach ($section->getComponents() as $component) {
+      $configuration = $component->toArray()['configuration'] ?? [];
+
+      if (!$this->containsPath($configuration, $path)) {
+        continue;
+      }
+
+      $revision_id = $configuration['block_revision_id'] ?? NULL;
+
+      $descriptions[] = $revision_id
+        ? sprintf('block %s (revision %s)', $component->getPluginId(), $revision_id)
+        : sprintf('block %s (unsaved)', $component->getPluginId());
+    }
+
+    return $descriptions;
+  }
+
+  /**
+   * Checks whether any string nested in a value contains a path.
+   *
+   * Block configuration nests arbitrarily, and an inline block may be carried
+   * as a serialized string, so both need looking through.
+   *
+   * @param mixed $value
+   *   The value to search.
+   * @param string $path
+   *   The public files path to look for.
+   *
+   * @return bool
+   *   TRUE if the path appears anywhere in the value.
+   */
+  protected function containsPath(mixed $value, string $path): bool {
+    if (is_string($value)) {
+      return str_contains($value, $path);
+    }
+
+    if (is_array($value)) {
+      foreach ($value as $item) {
+        if ($this->containsPath($item, $path)) {
+          return TRUE;
+        }
+      }
+    }
+
+    return FALSE;
   }
 
   /**
