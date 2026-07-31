@@ -3,10 +3,8 @@
  */
 (function ($, Drupal, drupalSettings, cookies, once) {
   let handle;
-  let mainContent;
   let offCanvas;
   let body;
-  let interacting = false;
 
   Drupal.behaviors.layoutBuilderCustomOverrides = {
     attach: function (context, settings) {
@@ -26,10 +24,9 @@
 
       $(window).on({
         'dialog:aftercreate': function (event, dialog, $element) {
-          // This gets the proper elements for the drag handle fix.
+          // Elements used for width clamping and cookie persistence.
           body = document.querySelector('body');
           handle = document.querySelector('.ui-resizable-handle.ui-resizable-w');
-          mainContent = document.querySelector('.dialog-off-canvas-main-canvas');
           offCanvas = handle.parentElement;
 
           let justCreated = true;
@@ -104,40 +101,6 @@
         };
       }
     });
-  }
-
-  // Wait for the mouse-up and reset the width of the main content.
-  function dragHandleBehaviorStopgapAwait(event) {
-    if (interacting) {
-      return;
-    }
-    interacting = true;
-    document.addEventListener('mousemove', function(event) {
-      dragHandleBehaviorStopgap();
-    });
-    handle.addEventListener('mouseup', function(event) {
-      dragHandleResetEvents(event);
-    });
-  }
-  function dragHandleBehaviorStopgap(init = false) {
-    if (init) {
-      body.style.setProperty('--off-canvas-width', adjustedWidth(parseFloat(offCanvas.getBoundingClientRect().width)) + 'px');
-      offCanvas.style.width = adjustedWidth(parseFloat(offCanvas.getBoundingClientRect().width)) + 'px';
-    }
-    else {
-      body.style.setProperty('--off-canvas-width', adjustedWidth(parseFloat(offCanvas.style.width)) + 'px');
-    }
-  }
-
-  function dragHandleResetEvents(event) {
-
-    document.removeEventListener('mousemove', function(event) {
-      dragHandleBehaviorStopgap();
-    });
-    handle.removeEventListener('mouseup', function(event) {
-      dragHandleResetEvents(event);
-    });
-    interacting = false;
   }
 
   function minmax(min, val, max) {
