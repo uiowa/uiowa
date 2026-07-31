@@ -53,11 +53,22 @@ trait ClassifiesInstalls {
    */
   protected function classifyInstall(string $site, string $app, bool $isAcquia): InstallState {
     $dir = $this->siteDirectory($site);
+    $path = "{$this->repoRoot}/docroot/sites/{$dir}";
 
     // Without this, an unresolved --uri falls back to Drupal's default site, so
     // a stale manifest entry would classify (and install) default instead.
-    if (!is_dir("{$this->repoRoot}/docroot/sites/{$dir}")) {
+    if (!is_dir($path)) {
       return new InstallState(InstallStatus::Unavailable, 'no site directory');
+    }
+
+    // A directory is not a site until it holds settings.php — the test Drupal
+    // itself applies when resolving a URI. This tree carries many directories
+    // left behind by deleted sites that hold everything but, and for those
+    // Drupal walks up the domain instead: policy.clas.uiowa.edu resolves to
+    // clas.uiowa.edu and its database. Without this the command would classify,
+    // and could install over, a site other than the one it was given.
+    if (!is_file("{$path}/settings.php")) {
+      return new InstallState(InstallStatus::Unavailable, 'no settings.php, so not a site');
     }
 
     // On Acquia a site whose database is not on this application belongs to

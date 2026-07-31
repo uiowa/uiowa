@@ -33,6 +33,7 @@ class ClassifyInstallTest extends UnitTestCase {
    */
   protected function tearDown(): void {
     foreach ($this->cleanup as $root) {
+      @unlink("{$root}/docroot/sites/site.uiowa.edu/settings.php");
       @rmdir("{$root}/docroot/sites/site.uiowa.edu");
       @rmdir("{$root}/docroot/sites");
       @rmdir("{$root}/docroot");
@@ -44,13 +45,20 @@ class ClassifyInstallTest extends UnitTestCase {
   /**
    * Build a repo root containing one site directory.
    *
-   * The directory has to exist or classification stops at Unavailable before it
-   * reaches a query.
+   * The directory has to exist and hold settings.php, or classification stops at
+   * Unavailable before it reaches a query.
+   *
+   * @param bool $settings
+   *   Whether to write a settings.php, making the directory a real site.
    */
-  private function fixtureRepo(): string {
+  private function fixtureRepo(bool $settings = TRUE): string {
     $root = sys_get_temp_dir() . '/sn_classify_' . uniqid();
     mkdir("{$root}/docroot/sites/site.uiowa.edu", 0777, TRUE);
     $this->cleanup[] = $root;
+
+    if ($settings) {
+      file_put_contents("{$root}/docroot/sites/site.uiowa.edu/settings.php", "<?php\n");
+    }
 
     return $root;
   }
@@ -118,6 +126,22 @@ class ClassifyInstallTest extends UnitTestCase {
 
     $this->assertSame(InstallStatus::Unavailable, $state->status);
     $this->assertSame('no site directory', $state->detail);
+    $this->assertSame([], $command->queries);
+  }
+
+  /**
+   * A directory with no settings.php is not a site, and costs no queries.
+   *
+   * The tree carries many such leftovers from deleted sites. Drupal would walk
+   * up the domain and resolve one of these to a different site's database, so
+   * classifying it at all would mean reporting on the wrong site.
+   */
+  public function testDirectoryWithoutSettingsIsUnavailable() {
+    $command = $this->command($this->fixtureRepo(settings: FALSE), []);
+    $state = $command->pubClassify('site.uiowa.edu');
+
+    $this->assertSame(InstallStatus::Unavailable, $state->status);
+    $this->assertSame('no settings.php, so not a site', $state->detail);
     $this->assertSame([], $command->queries);
   }
 
