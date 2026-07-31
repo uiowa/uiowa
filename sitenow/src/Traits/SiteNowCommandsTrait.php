@@ -393,9 +393,11 @@ trait SiteNowCommandsTrait {
    * Require the command to run inside the DDEV container.
    *
    * On failure, prints an error naming the exact invocation to use and returns
-   * FALSE so the caller can exit. The command name is passed in (rather than
-   * read via getName()) so this trait makes no assumption about being mixed
-   * into a Symfony Command.
+   * FALSE so the caller can exit. The error says "locally" because the commands
+   * that also run on Acquia call this behind that check, so it is only ever a
+   * developer on a workstation who reads it. The command name is passed in
+   * (rather than read via getName()) so this trait makes no assumption about
+   * being mixed into a Symfony Command.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style used to report the error.
@@ -407,7 +409,7 @@ trait SiteNowCommandsTrait {
    */
   protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
     if (!$this->isDdev()) {
-      $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev sn {$command_name}");
+      $io->getErrorStyle()->error("Locally, this command must be run inside the DDEV container. Use: ddev sn {$command_name}");
       return FALSE;
     }
     return TRUE;

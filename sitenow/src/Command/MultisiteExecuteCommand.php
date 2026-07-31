@@ -83,19 +83,19 @@ status is shown.
 
 Examples:
   # Cache rebuild on every site of two apps:
-  ddev sn ume --apps=uiowa02,uiowa03 -y -- cr
+  ddev exec ./sn ume --apps=uiowa02,uiowa03 -y -- cr
 
   # Arguments with spaces/quotes pass through unmodified:
-  ddev sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
+  ddev exec ./sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
 
   # Two different -y's: ours skips the fleet confirmation, drush's skips its own:
-  ddev sn ume -y --apps=uiowa09 -- pm:uninstall some_module -y
+  ddev exec ./sn ume -y --apps=uiowa09 -- pm:uninstall some_module -y
 
   # Preview what would run, without executing anything:
-  ddev sn ume --dry-run -- cron
+  ddev exec ./sn ume --dry-run -- cron
 
   # See output from each site (e.g., config values):
-  ddev sn ume -v --apps=uiowa09 -- config:get system.site
+  ddev exec ./sn ume -v --apps=uiowa09 -- config:get system.site
 HELP);
   }
 
