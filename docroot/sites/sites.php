@@ -7894,3 +7894,9 @@ $sites['sitesfoo.uiowa.ddev.site'] = 'foo.sites.uiowa.edu';
 $sites['sitesfoo.dev.drupal.uiowa.edu'] = 'foo.sites.uiowa.edu';
 $sites['sitesfoo.stage.drupal.uiowa.edu'] = 'foo.sites.uiowa.edu';
 $sites['sitesfoo.prod.drupal.uiowa.edu'] = 'foo.sites.uiowa.edu';
+
+// Directory aliases for bar.sites.uiowa.edu.
+$sites['sitesbar.uiowa.ddev.site'] = 'bar.sites.uiowa.edu';
+$sites['sitesbar.dev.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
+$sites['sitesbar.stage.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
+$sites['sitesbar.prod.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
