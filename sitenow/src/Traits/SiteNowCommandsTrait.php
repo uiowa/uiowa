@@ -400,14 +400,14 @@ trait SiteNowCommandsTrait {
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style used to report the error.
    * @param string $command_name
-   *   The command's name, for the suggested `ddev exec ./sn <name>` invocation.
+   *   The command's name, for the suggested `ddev sn <name>` invocation.
    *
    * @return bool
    *   TRUE when running in DDEV; FALSE (after printing an error) otherwise.
    */
   protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
     if (!$this->isDdev()) {
-      $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
+      $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev sn {$command_name}");
       return FALSE;
     }
     return TRUE;
