@@ -2,8 +2,9 @@
 
 namespace SiteNow\Command;
 
+use SiteNow\Process\FleetRunner;
 use SiteNow\Report\CsvWriter;
-use SiteNow\Report\DrushRunner;
+use SiteNow\Traits\DescribesDrushFailures;
 use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -18,13 +19,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'report:splits',
-  description: '(ddev required) Report which sites have which config splits enabled.',
+  description: 'Report which sites have which config splits enabled.',
   aliases: ['splits'],
 )]
 class ReportSplitsCommand extends Command {
 
   use SiteNowCommandsTrait;
   use ParsesListOptions;
+  use DescribesDrushFailures;
 
   const HEADERS = ['Application', 'Domain', 'Split'];
 
@@ -33,7 +35,7 @@ class ReportSplitsCommand extends Command {
   const SPLIT_CONFIG_PREFIX = 'config_split.config_split.';
 
   // Environmental splits (ci/dev/local/prod/stage) are a proxy for which
-  // environment a site is in — not useful in this report.
+  // environment a site is in, not useful in this report.
   const ENV_SPLITS = ['ci', 'dev', 'local', 'prod', 'stage'];
 
   /**
@@ -56,6 +58,7 @@ class ReportSplitsCommand extends Command {
     $this
       ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated split IDs to filter to (e.g. event,thesis_defense).', '')
       ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa02,uiowa03).', '')
+      ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.');
   }
 
@@ -66,54 +69,67 @@ class ReportSplitsCommand extends Command {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
 
-    if (!$this->requireDdev($io, $this->getName())) {
-      return Command::FAILURE;
-    }
+    $target_splits = $this->parseList($input->getOption('split'));
+    $target_apps = $this->parseList($input->getOption('apps'));
+    $exclude = $this->parseList($input->getOption('exclude'));
+    $export = (bool) $input->getOption('export');
+
     if (!$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 
-    $target_splits = $this->parseList($input->getOption('split'));
-    $target_apps = $this->parseList($input->getOption('apps'));
-    $export = (bool) $input->getOption('export');
-
-    if (!$this->requireManifest($io)) {
+    $runner = new FleetRunner($this->repoRoot);
+    try {
+      $selection = $runner->select($target_apps, $exclude);
+    }
+    catch (\RuntimeException $e) {
+      $err->error($e->getMessage());
       return Command::FAILURE;
     }
-    $manifest = $this->manifest();
 
-    $runner = new DrushRunner();
-    $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Splits-Report', self::HEADERS) : NULL;
+    $site_count = array_sum(array_map('count', $selection));
+    if ($site_count === 0) {
+      $err->error('No sites matched the selection.');
+      return Command::FAILURE;
+    }
 
-    // Grouped per-split for table output: $results[split_id][] = [app, domain].
-    $results = [];
+    $err->writeln("<comment>Reading split status on {$site_count} sites...</comment>");
 
-    // Apps whose results were discarded because at least one site failed to
-    // respond. Trustworthy aggregates require every site in an app to answer;
-    // a partial app is worse than no app, so we drop it entirely.
+    // The pool retries failures and reports progress per attempt, so a line
+    // here describes one attempt, not the site's outcome: a site that fails
+    // its first attempt and succeeds on retry still lands in the report. The
+    // end-of-run summary is the verdict, being built from final results.
+    $drush_args = ['php:eval', $this->splitStatusScript(), '--no-interaction'];
+    $results = $runner->run($selection, $drush_args, 'prod', NULL, function (int $done, int $total, ?string $key, ?array $result) use ($err) {
+      if ($key === NULL || $result === NULL) {
+        return;
+      }
+      if ($result['exit'] !== 0) {
+        $err->writeln("<error>✖</error> [{$done}/{$total}] attempt failed: {$key} — " . $this->failureReason($result));
+      }
+    });
+
+    // Buffered per app so a failed site can discard its app's rows wholesale.
+    // Trustworthy aggregates require every site in an app to answer; a partial
+    // app is worse than no app, so we drop it entirely.
+    $app_rows = [];
     $failed_apps = [];
 
-    foreach ($manifest as $app_name => $domains) {
-      if (!empty($target_apps) && !in_array($app_name, $target_apps)) {
-        continue;
-      }
-
-      $err->writeln("Processing {$app_name}...");
-
-      // Buffer this app's rows so we can discard them wholesale if any site
-      // in the app fails to respond.
-      $app_rows = [];
-      $abort_reason = NULL;
-
+    // Walked in manifest order rather than completion order, so the report
+    // reads the same whichever site the pool happens to finish first.
+    foreach ($selection as $app_name => $domains) {
       foreach ($domains as $domain) {
-        $err->writeln("  Checking {$domain}...");
-        $error = NULL;
-        $statuses = $this->getSplitStatuses($runner, $domain, $error);
+        $result = $results[$domain];
 
-        if ($statuses === FALSE) {
-          $abort_reason = "{$domain} — {$error}";
-          $err->writeln("<error>{$app_name} aborted: {$abort_reason}</error>");
-          break;
+        if ($result['exit'] !== 0) {
+          $failed_apps[$app_name] ??= "{$domain} — " . $this->failureReason($result);
+          continue;
+        }
+
+        $statuses = $this->parseSplitStatuses($result['output']);
+        if (empty($statuses)) {
+          $failed_apps[$app_name] ??= "{$domain} — no parseable split status lines in drush output";
+          continue;
         }
 
         foreach ($statuses as $split_id => $is_active) {
@@ -126,23 +142,26 @@ class ReportSplitsCommand extends Command {
           if (!empty($target_splits) && !in_array($split_id, $target_splits)) {
             continue;
           }
-          $app_rows[] = [$app_name, $domain, $split_id];
+          $app_rows[$app_name][] = [$app_name, $domain, $split_id];
         }
       }
+    }
 
-      if ($abort_reason !== NULL) {
-        $failed_apps[$app_name] = $abort_reason;
-        continue;
-      }
+    $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Splits-Report', self::HEADERS, [
+      $target_apps ? implode('+', $target_apps) : 'all-apps',
+      $target_splits ? implode('+', $target_splits) : '',
+    ]) : NULL;
 
-      // Commit this app's rows now that it completed cleanly.
-      foreach ($app_rows as $row) {
+    // Grouped per split for table output: $rows[split_id][] = [app, domain].
+    $rows = [];
+
+    foreach (array_diff_key($app_rows, $failed_apps) as $committed) {
+      foreach ($committed as [$app_name, $domain, $split_id]) {
         if ($writer) {
-          $writer->writeRow($row);
+          $writer->writeRow([$app_name, $domain, $split_id]);
         }
         else {
-          [, $domain, $split_id] = $row;
-          $results[$split_id][] = [$app_name, $domain];
+          $rows[$split_id][] = [$app_name, $domain];
         }
       }
     }
@@ -150,15 +169,15 @@ class ReportSplitsCommand extends Command {
     if ($writer) {
       $io->success("Results exported to {$writer->getPath()}");
     }
-    elseif (empty($results)) {
+    elseif (empty($rows)) {
       $io->writeln('No active splits found matching the filters.');
     }
     else {
-      ksort($results);
-      foreach ($results as $split_id => $rows) {
+      ksort($rows);
+      foreach ($rows as $split_id => $split_rows) {
         $io->writeln('');
         $io->writeln("== {$split_id} ==");
-        $io->table(['Application', 'Domain'], $rows);
+        $io->table(['Application', 'Domain'], $split_rows);
       }
     }
 
@@ -175,32 +194,21 @@ class ReportSplitsCommand extends Command {
   }
 
   /**
-   * Get config_split statuses for a multisite (prod).
+   * The PHP evaluated on each site to list its splits and their status.
    *
-   * One drush call per site returning all splits — avoids the N+1 round
-   * trips that `drush config:get` would require.
+   * One drush call per site returning every split, rather than the N+1 round
+   * trips `drush config:get` would need.
    *
-   * @param \SiteNow\Report\DrushRunner $runner
-   *   The drush runner.
-   * @param string $multisite
-   *   The multisite domain.
-   * @param string|null $error
-   *   Out-param populated with a human-readable reason when FALSE is returned.
-   *
-   * @return array<string, bool>|false
-   *   Map of split_id => active. FALSE if drush exited non-zero or returned
-   *   no parseable output.
+   * @return string
+   *   PHP source echoing one "<split_id>:<0|1>" line per config_split entity.
    */
-  protected function getSplitStatuses(DrushRunner $runner, string $multisite, ?string &$error = NULL): array|false {
-    $alias = $this->getDrushAlias($multisite) . '.prod';
+  protected function splitStatusScript(): string {
     // Built by concatenation so the prefix and its length stay in sync; the
     // single-quoted segments keep $n literal for evaluation on the remote site.
     $prefix = self::SPLIT_CONFIG_PREFIX;
     $offset = strlen($prefix);
-    $php = 'foreach (\\Drupal::configFactory()->listAll("' . $prefix . '") as $n) { echo substr($n, ' . $offset . ') . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
-    $result = $runner->run($alias, ['php:eval', $php, '--no-interaction']);
 
-    return $this->parseSplitStatuses($result['output'], $result['exit'], $error, $result['error']);
+    return 'foreach (\\Drupal::configFactory()->listAll("' . $prefix . '") as $n) { echo substr($n, ' . $offset . ') . ":" . (int) \\Drupal::config($n)->get("status") . PHP_EOL; }';
   }
 
   /**
@@ -208,28 +216,14 @@ class ReportSplitsCommand extends Command {
    *
    * @param string $output
    *   The drush stdout.
-   * @param int $exit_code
-   *   The drush exit code.
-   * @param string|null $error
-   *   Out-param populated with a human-readable reason when FALSE is returned.
-   * @param string $stderr
-   *   The drush stderr, used to build the error message on a non-zero exit.
    *
-   * @return array<string, bool>|false
-   *   Map of split_id => active. FALSE on a non-zero exit or unparseable
-   *   output.
+   * @return array<string, bool>
+   *   Map of split_id => active, empty when the output held no status lines.
    */
-  protected function parseSplitStatuses(string $output, int $exit_code, ?string &$error, string $stderr = ''): array|false {
-    if ($exit_code !== 0) {
-      $source = trim($stderr) !== '' ? $stderr : $output;
-      $lines = array_filter(array_map('trim', preg_split('/\R/', $source)), fn($l) => $l !== '');
-      $tail = $lines ? end($lines) : '';
-      $error = "drush exit {$exit_code}" . ($tail !== '' ? " ({$tail})" : '');
-      return FALSE;
-    }
-
+  protected function parseSplitStatuses(string $output): array {
     // Parse "<split_id>:<0|1>" lines. Any Drupal/Acquia chatter is skipped.
     $statuses = [];
+
     foreach (preg_split('/\R/', $output) as $line) {
       $line = trim($line);
       if ($line === '' || !str_contains($line, ':')) {
@@ -239,11 +233,6 @@ class ReportSplitsCommand extends Command {
       if ($id !== '' && ($val === '0' || $val === '1')) {
         $statuses[$id] = $val === '1';
       }
-    }
-
-    if (empty($statuses)) {
-      $error = 'no parseable split status lines in drush output';
-      return FALSE;
     }
 
     return $statuses;

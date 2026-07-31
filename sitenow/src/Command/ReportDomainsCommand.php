@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'report:domains',
-  description: '(ddev required) List domains on prod (default) or specified environments.',
+  description: 'List domains on prod (default) or specified environments.',
   aliases: ['domains'],
 )]
 class ReportDomainsCommand extends Command {
@@ -57,10 +57,6 @@ class ReportDomainsCommand extends Command {
     $io = new SymfonyStyle($input, $output);
     $err = $io->getErrorStyle();
 
-    if (!$this->requireDdev($io, $this->getName())) {
-      return Command::FAILURE;
-    }
-
     $target_envs = $this->parseList($input->getOption('env')) ?: ['prod'];
     $target_apps = $this->parseList($input->getOption('apps'));
     $export = (bool) $input->getOption('export');
@@ -73,6 +69,14 @@ class ReportDomainsCommand extends Command {
     $err->writeln('<comment>Checking environments across Acquia Cloud applications...</comment>');
 
     $applications = $this->getSortedApplications($client);
+
+    // A name matching nothing would otherwise filter every row out and read as
+    // "these applications have no domains".
+    if ($unknown = array_diff($target_apps, FleetDomains::reportableAppNames($applications))) {
+      $err->error('Unknown application(s): ' . implode(', ', $unknown));
+      return Command::FAILURE;
+    }
+
     $fleet = new FleetDomains($client);
 
     $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Domains-Report', self::HEADERS) : NULL;

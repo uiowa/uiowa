@@ -4873,3 +4873,49 @@ function sitenow_update_10039() {
 
   return t('Restored disabled status for @count container(s).', ['@count' => count($ids)]);
 }
+
+/**
+ * Trim whitespace from google_tag container config names and labels.
+ */
+function sitenow_update_10040() {
+  $config_factory = \Drupal::configFactory();
+  $db = \Drupal::database();
+
+  // Load config entries directly to find any with whitespace in the name.
+  $result = $db->query("SELECT name FROM config WHERE name LIKE 'google_tag.container.%'");
+  $updated = 0;
+
+  foreach ($result as $row) {
+    $config_name = $row->name;
+    // Extract the container ID from the config name.
+    $id = str_replace('google_tag.container.', '', $config_name);
+    $trimmed_id = trim($id);
+
+    // Skip if no trimming needed.
+    if ($id === $trimmed_id) {
+      continue;
+    }
+
+    // Load the old config data.
+    $old_config = $config_factory->get($config_name);
+    $data = $old_config->getRawData();
+
+    // Update the ID and label fields.
+    $data['id'] = $trimmed_id;
+    if (isset($data['label'])) {
+      $data['label'] = trim($data['label']);
+    }
+
+    // Delete the old config entry.
+    $config_factory->getEditable($config_name)->delete();
+
+    // Create the new config entry with trimmed ID.
+    $config_factory->getEditable('google_tag.container.' . $trimmed_id)
+      ->setData($data)
+      ->save();
+
+    $updated++;
+  }
+
+  return t('Trimmed whitespace from @count container(s).', ['@count' => $updated]);
+}
