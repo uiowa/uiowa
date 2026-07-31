@@ -375,11 +375,20 @@ HELP);
       ]));
     }
 
+    // These jobs carry no group, so the per-group cap never applies; it is set
+    // to the same total anyway rather than left looking like a forgotten
+    // argument.
+    //
     // No retries: a retried install would run the installer a second time,
     // against a site whose content was checked before the first attempt. Being
     // safe to re-run is what makes the next invocation of this command the
     // retry.
-    $pool = new ProcessPool($concurrency, $concurrency, self::TIMEOUT, 0);
+    $pool = new ProcessPool(
+      concurrency: $concurrency,
+      groupCap: $concurrency,
+      timeout: self::TIMEOUT,
+      retries: 0,
+    );
 
     return $pool->run($jobs, [], function (int $done, int $total, ?string $site, ?array $result) use ($io, $targets, $logDir) {
       if ($site === NULL) {
@@ -396,6 +405,20 @@ HELP);
 
       if ($result['exit'] === SiteInstallCommand::CONFIG_MISMATCH) {
         $io->writeln("<comment>!</comment> [{$done}/{$total}] {$site} ({$tier} → installed, config does not match)");
+        return;
+      }
+
+      // A site can be reclassified between the scan and its turn to install —
+      // most plausibly a content check that succeeded during the scan and fails
+      // here, which the child answers with BLOCKED. Report what the child
+      // actually decided rather than calling every non-zero exit a failure.
+      if ($result['exit'] === SiteInstallCommand::BLOCKED) {
+        $io->writeln("<comment>!</comment> [{$done}/{$total}] {$site} ({$tier}) needs a look: " . $this->failureReason($result));
+        return;
+      }
+
+      if ($result['exit'] === SiteInstallCommand::SKIPPED) {
+        $io->writeln("<comment>-</comment> [{$done}/{$total}] {$site} ({$tier}) skipped: no longer installable here");
         return;
       }
 
@@ -457,6 +480,62 @@ HELP);
   }
 
   /**
+   * Sort the finished installs into outcome tiers by what each child reported.
+   *
+   * A child reports its own outcome through its exit code, including the two the
+   * scan did not predict: a site reclassified as needing a look (BLOCKED,
+   * most plausibly a content check that succeeded during the scan and failed on
+   * its turn) or as no longer installable here (SKIPPED). Those join the tiers
+   * they belong to, so neither is announced as a failure — the tier decides both
+   * the summary line and whether Slack is told at all.
+   *
+   * @param array<string, \SiteNow\Install\InstallState> $targets
+   *   The sites that were run, keyed by host.
+   * @param array<string, array{exit: int, output: string, error: string}> $results
+   *   Per-site results keyed by host. A site missing from this counts as failed:
+   *   it was run and reported nothing.
+   * @param array<string, \SiteNow\Install\InstallState> $blocked
+   *   Sites the scan already held back, which the results add to.
+   *
+   * @return array{installed: string[], mismatch: string[], failed: string[], skipped: string[], blocked: array<string, \SiteNow\Install\InstallState>}
+   *   The outcome tiers.
+   */
+  protected function classifyResults(array $targets, array $results, array $blocked = []): array {
+    $installed = [];
+    $mismatch = [];
+    $failed = [];
+    $skipped = [];
+
+    foreach ($targets as $site => $state) {
+      $exit = $results[$site]['exit'] ?? Command::FAILURE;
+
+      if ($exit === Command::SUCCESS) {
+        $installed[] = $site;
+      }
+      elseif ($exit === SiteInstallCommand::CONFIG_MISMATCH) {
+        $mismatch[] = $site;
+      }
+      elseif ($exit === SiteInstallCommand::BLOCKED) {
+        $blocked[$site] = $state;
+      }
+      elseif ($exit === SiteInstallCommand::SKIPPED) {
+        $skipped[] = $site;
+      }
+      else {
+        $failed[] = $site;
+      }
+    }
+
+    return [
+      'installed' => $installed,
+      'mismatch' => $mismatch,
+      'failed' => $failed,
+      'skipped' => $skipped,
+      'blocked' => $blocked,
+    ];
+  }
+
+  /**
    * Summarize the run, notify Slack, and decide the exit code.
    *
    * The per-site lines land in completion order, so the failures are collected
@@ -479,23 +558,13 @@ HELP);
    *   SUCCESS, or EXITCODE_PARTIAL when anything failed or needs a look.
    */
   private function report(SymfonyStyle $io, string $where, array $targets, array $blocked, array $results, string $logDir): int {
-    $installed = [];
-    $mismatch = [];
-    $failed = [];
-
-    foreach ($targets as $site => $state) {
-      $exit = $results[$site]['exit'] ?? Command::FAILURE;
-
-      if ($exit === Command::SUCCESS) {
-        $installed[] = $site;
-      }
-      elseif ($exit === SiteInstallCommand::CONFIG_MISMATCH) {
-        $mismatch[] = $site;
-      }
-      else {
-        $failed[] = $site;
-      }
-    }
+    [
+      'installed' => $installed,
+      'mismatch' => $mismatch,
+      'failed' => $failed,
+      'skipped' => $skipped,
+      'blocked' => $blocked,
+    ] = $this->classifyResults($targets, $results, $blocked);
 
     $io->writeln('');
     $io->writeln(sprintf(
@@ -505,6 +574,10 @@ HELP);
       count($failed),
       count($blocked),
     ));
+
+    if ($skipped) {
+      $io->writeln('Skipped, no longer installable here: ' . implode(', ', $skipped));
+    }
 
     if ($failed) {
       $io->writeln('');

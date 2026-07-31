@@ -4,6 +4,7 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use SiteNow\Command\MultisiteInstallCommand;
+use SiteNow\Command\SiteInstallCommand;
 use SiteNow\Install\InstallState;
 use SiteNow\Install\InstallStatus;
 
@@ -27,6 +28,10 @@ class MultisiteInstallTest extends UnitTestCase {
 
       public function pubSelectTargets(array $states, bool $force): array {
         return $this->selectTargets($states, $force);
+      }
+
+      public function pubClassifyResults(array $targets, array $results, array $blocked = []): array {
+        return $this->classifyResults($targets, $results, $blocked);
       }
 
     };
@@ -135,6 +140,61 @@ class MultisiteInstallTest extends UnitTestCase {
 
     $forced = $this->command()->pubSelectTargets($states, TRUE);
     $this->assertSame(['unreachable.uiowa.edu'], array_keys($forced['targets']));
+  }
+
+  /**
+   * Each child's exit code lands in the tier it reported, not in "failed".
+   *
+   * A site can be reclassified between the scan and its turn to install, so a
+   * child can answer BLOCKED or SKIPPED for a site the scan chose to install.
+   * Bucketing either as a failure would raise a failure-tier Slack alert for
+   * something that is not one.
+   */
+  public function testChildExitCodesLandInTheirOwnTiers() {
+    $targets = [
+      'ok.uiowa.edu' => new InstallState(InstallStatus::Absent),
+      'drifted.uiowa.edu' => new InstallState(InstallStatus::Absent),
+      'reclassified.uiowa.edu' => new InstallState(InstallStatus::Partial, 'stopped'),
+      'gone.uiowa.edu' => new InstallState(InstallStatus::Absent),
+      'broke.uiowa.edu' => new InstallState(InstallStatus::Absent),
+    ];
+    $results = [
+      'ok.uiowa.edu' => ['exit' => 0, 'output' => '', 'error' => ''],
+      'drifted.uiowa.edu' => ['exit' => SiteInstallCommand::CONFIG_MISMATCH, 'output' => '', 'error' => ''],
+      'reclassified.uiowa.edu' => ['exit' => SiteInstallCommand::BLOCKED, 'output' => '', 'error' => ''],
+      'gone.uiowa.edu' => ['exit' => SiteInstallCommand::SKIPPED, 'output' => '', 'error' => ''],
+      'broke.uiowa.edu' => ['exit' => 1, 'output' => '', 'error' => 'boom'],
+    ];
+
+    $tiers = $this->command()->pubClassifyResults($targets, $results);
+
+    $this->assertSame(['ok.uiowa.edu'], $tiers['installed']);
+    $this->assertSame(['drifted.uiowa.edu'], $tiers['mismatch']);
+    $this->assertSame(['reclassified.uiowa.edu'], array_keys($tiers['blocked']));
+    $this->assertSame(['gone.uiowa.edu'], $tiers['skipped']);
+    $this->assertSame(['broke.uiowa.edu'], $tiers['failed']);
+  }
+
+  /**
+   * A site the scan held back stays held back after the run.
+   */
+  public function testScanBlockedSitesSurviveClassification() {
+    $already = ['lived-in.uiowa.edu' => new InstallState(InstallStatus::Partial, 'stopped', 43, 12)];
+
+    $tiers = $this->command()->pubClassifyResults([], [], $already);
+
+    $this->assertSame(['lived-in.uiowa.edu'], array_keys($tiers['blocked']));
+  }
+
+  /**
+   * A site that was run but reported nothing counts as failed.
+   */
+  public function testMissingResultCountsAsFailed() {
+    $targets = ['silent.uiowa.edu' => new InstallState(InstallStatus::Absent)];
+
+    $tiers = $this->command()->pubClassifyResults($targets, []);
+
+    $this->assertSame(['silent.uiowa.edu'], $tiers['failed']);
   }
 
   /**

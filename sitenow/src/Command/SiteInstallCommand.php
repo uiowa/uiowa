@@ -24,9 +24,10 @@ use Symfony\Component\Yaml\Yaml;
  *
  * Safe to run repeatedly. What it does depends on what it finds: a site with no
  * Drupal gets installed, an install that never finished gets reinstalled (only
- * when it holds nothing), and a complete install gets its post-install steps
- * reapplied. Each of those steps is individually idempotent, which is what
- * makes a second run a repair rather than a risk.
+ * when it holds nothing), and a complete install gets the declarative post-install
+ * steps reasserted — its site name and config splits, but not a new account.
+ * Each of those steps is individually idempotent, which is what makes a second
+ * run a repair rather than a risk.
  *
  * Runnable on its own for one site, and fanned out across an application by
  * multisite:install.
@@ -126,10 +127,11 @@ Installs Drupal for one multisite and applies the post-install steps that have
 to follow it: the site name from uiowa.site-name, the requester as a webmaster,
 and any config splits from uiowa.config.split.
 
-Run it again on a site that is already installed and it reapplies just those
-post-install steps, reporting anything it had to correct. Run it on a site whose
-install died partway and it reinstalls — unless the site holds content, which it
-refuses to destroy without --force.
+Run it again on a site that is already installed and it reasserts the site name
+and the splits, reporting anything it had to correct. It will not create an
+account there: a requester who is missing from a running site was removed on
+purpose. Run it on a site whose install died partway and it reinstalls — unless
+the site holds content, which it refuses to destroy without --force.
 
 Needs a database connection, so off Acquia it runs inside the container:
   ddev exec ./sn site:install brand.uiowa.edu
@@ -175,7 +177,7 @@ HELP);
     // Already installed: the install itself is done, so only the post-install
     // steps are left to reapply.
     if ($state->status === InstallStatus::Installed) {
-      return $this->reconcile($io, $site);
+      return $this->reconcile($io, $site, FALSE);
     }
 
     if ($state->status === InstallStatus::Partial && $state->hasContent() && !$input->getOption('force')) {
@@ -189,7 +191,7 @@ HELP);
       return Command::FAILURE;
     }
 
-    return $this->reconcile($io, $site);
+    return $this->reconcile($io, $site, TRUE);
   }
 
   /**
@@ -314,25 +316,36 @@ HELP);
   /**
    * Apply the post-install steps and report anything they had to correct.
    *
-   * Every step is idempotent, so this is both the tail of an install and the
-   * repair pass for a site that is already installed.
+   * Runs as the tail of an install and as the repair pass for a site that is
+   * already installed. Not every step belongs to both: the declarative ones —
+   * the site name and the config splits, which the site's blt.yml states as
+   * intent — are safe to reassert at any time, while creating the requester is
+   * provisioning that happens once.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.
    * @param string $site
    *   The site host / canonical domain.
+   * @param bool $afterInstall
+   *   TRUE when an install just ran, which is the only time an account is
+   *   created.
    *
    * @return int
    *   SUCCESS, or CONFIG_MISMATCH when the site's active config does not match
    *   the exported config.
    */
-  private function reconcile(SymfonyStyle $io, string $site): int {
+  private function reconcile(SymfonyStyle $io, string $site, bool $afterInstall): int {
     $config = $this->siteConfig($this->siteDirectory($site));
 
     $this->reconcileSiteName($io, $site, $config['uiowa']['site-name'] ?? $site);
 
-    if (!empty($config['uiowa']['requester'])) {
-      $this->reconcileRequester($io, $site, $config['uiowa']['requester']);
+    // Only ever on a fresh install. On a site that is already running, a
+    // requester who is absent was removed deliberately — often because the
+    // person left — and restoring the account with a privileged role is not a
+    // repair, it is a regression someone would have to notice. The BLT hook this
+    // replaces could not do it: it only ran after drupal:install.
+    if ($afterInstall && !empty($config['uiowa']['requester'])) {
+      $this->createRequester($io, $site, $config['uiowa']['requester']);
     }
 
     if (!empty($config['uiowa']['config']['split'])) {
@@ -393,7 +406,12 @@ HELP);
   }
 
   /**
-   * Ensure the requester exists and holds the webmaster role.
+   * Create the requester's account and grant it the webmaster role.
+   *
+   * Called only after an install, which starts from an empty database, so the
+   * account should never already exist. The existence check is there so that
+   * stays true if a future caller changes: it is the difference between granting
+   * a role and resurrecting a removed account.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.
@@ -402,10 +420,10 @@ HELP);
    * @param string $requester
    *   The requester's username.
    */
-  private function reconcileRequester(SymfonyStyle $io, string $site, string $requester): void {
+  private function createRequester(SymfonyStyle $io, string $site, string $requester): void {
     // user:information exits non-zero when it finds no such user, and
     // user:create exits non-zero when the user already exists, so the existence
-    // check is what keeps this idempotent.
+    // check is what keeps this safe to call twice.
     if (!$this->drush(['user:information', $requester], uri: $site)->isSuccessful()) {
       $io->writeln("Creating user {$requester} on {$site}.");
 
