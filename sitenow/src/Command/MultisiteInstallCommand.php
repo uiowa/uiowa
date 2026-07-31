@@ -113,7 +113,7 @@ only reads, so it is allowed anywhere — use it on dev or test ahead of a relea
 to see what an environment would need.
 
 Needs a database connection, so off Acquia it runs inside the container:
-  ddev exec ./sn multisite:install
+  ddev sn multisite:install
 
 Examples:
   # What does this application need? Changes nothing.

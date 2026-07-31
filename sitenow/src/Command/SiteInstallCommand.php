@@ -2,6 +2,7 @@
 
 namespace SiteNow\Command;
 
+use SiteNow\Install\InstallState;
 use SiteNow\Install\InstallStatus;
 use SiteNow\Traits\ClassifiesInstalls;
 use SiteNow\Traits\SiteNowCommandsTrait;
@@ -24,8 +25,9 @@ use Symfony\Component\Yaml\Yaml;
  *
  * Safe to run repeatedly. What it does depends on what it finds: a site with no
  * Drupal gets installed, an install that never finished gets reinstalled (only
- * when it holds nothing), and a complete install gets the declarative post-install
- * steps reasserted — its site name and config splits, but not a new account.
+ * when it holds nothing), and a complete install gets the declarative
+ * post-install steps reasserted — its site name and config splits, but not a
+ * new account.
  * Each of those steps is individually idempotent, which is what makes a second
  * run a repair rather than a risk.
  *
@@ -121,7 +123,8 @@ class SiteInstallCommand extends Command {
     $this
       ->addArgument('site', InputArgument::REQUIRED, 'The site host / canonical domain, e.g. brand.uiowa.edu.')
       ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Report what the site needs without changing anything.')
-      ->addOption('force', NULL, InputOption::VALUE_NONE, 'Reinstall an incomplete install even though it holds content. Destroys that content.')
+      ->addOption('reinstall', NULL, InputOption::VALUE_NONE, 'Install even if the site is already installed, replacing it. For rebuilding a local site to test the exported config.')
+      ->addOption('force', NULL, InputOption::VALUE_NONE, 'Install over content without asking. Destroys that content, and is the only way through when nothing can be asked.')
       ->setHelp(<<<'HELP'
 Installs Drupal for one multisite and applies the post-install steps that have
 to follow it: the site name from uiowa.site-name, the requester as a webmaster,
@@ -130,18 +133,28 @@ and any config splits from uiowa.config.split.
 Run it again on a site that is already installed and it reasserts the site name
 and the splits, reporting anything it had to correct. It will not create an
 account there: a requester who is missing from a running site was removed on
-purpose. Run it on a site whose install died partway and it reinstalls — unless
-the site holds content, which it refuses to destroy without --force.
+purpose. Run it on a site whose install died partway and it reinstalls.
+
+--reinstall replaces a site that is already installed, which is what you want to
+rebuild a local site and check the exported config produces a working one.
+
+Nothing is dropped without a hearing. Whenever an install would destroy content
+that someone created, you are asked first, defaulting to no. With nothing to ask
+— a fanned-out install, a cron job, a piped script — the site is left alone and
+reported instead, and --force is the way to say yes in advance.
 
 Needs a database connection, so off Acquia it runs inside the container:
-  ddev exec ./sn site:install brand.uiowa.edu
+  ddev sn site:install brand.uiowa.edu
 
 Examples:
   # What does this site need?
-  ddev exec ./sn site:install brand.uiowa.edu --dry-run
+  ddev sn site:install brand.uiowa.edu --dry-run
 
   # Install, or heal, one site.
   ./sn site:install brand.uiowa.edu
+
+  # Rebuild a local site from the exported config, the old `blt di --site=` job.
+  ddev sn site:install default --reinstall
 HELP);
   }
 
@@ -163,28 +176,46 @@ HELP);
       return Command::FAILURE;
     }
 
+    $reinstall = (bool) $input->getOption('reinstall');
     $state = $this->classifyInstall($site, $app, $is_acquia);
     $io->writeln("{$site}: {$state->describe()}");
 
     if ($input->getOption('dry-run')) {
+      if ($reinstall && $state->status !== InstallStatus::Unavailable) {
+        $io->writeln($this->dryRunOutcome($input, $this->contentFor($state, $site)));
+      }
+
       return Command::SUCCESS;
     }
 
+    // Nothing to install into, so --reinstall has nothing to act on either.
     if ($state->status === InstallStatus::Unavailable) {
       return self::SKIPPED;
     }
 
     // Already installed: the install itself is done, so only the post-install
-    // steps are left to reapply.
-    if ($state->status === InstallStatus::Installed) {
+    // steps are left to reapply — unless a replacement was asked for.
+    if ($state->status === InstallStatus::Installed && !$reinstall) {
       return $this->reconcile($io, $site, FALSE);
     }
 
-    if ($state->status === InstallStatus::Partial && $state->hasContent() && !$input->getOption('force')) {
-      $err->error($state->contentUnknown
-        ? "Refusing to reinstall {$site}: its content could not be checked, so a reinstall cannot be shown to be safe. Investigate the database, then re-run with --force to reinstall regardless."
-        : "Refusing to reinstall {$site}: its unfinished install holds {$state->contentSummary()}. Inspect the site, then re-run with --force to reinstall and lose that content.");
-      return self::BLOCKED;
+    $content = $this->contentFor($state, $site);
+
+    if ($content->hasContent() && !$input->getOption('force')) {
+      $unfinished = $state->status === InstallStatus::Partial;
+
+      // A person at a terminal can be asked; anything else cannot. A fanned-out
+      // install, a cron job or a piped script gets the refusal, so the fleet
+      // path stays exactly as safe while a developer rebuilding a site
+      // locally answers one question instead of hunting for a flag.
+      if (!$this->canAsk($input)) {
+        return $this->refuse($err, $site, $content, $unfinished);
+      }
+
+      if (!$this->confirmReplace($io, $site, $content, $unfinished)) {
+        $io->writeln('Aborted.');
+        return self::BLOCKED;
+      }
     }
 
     if (!$this->install($io, $site)) {
@@ -192,6 +223,137 @@ HELP);
     }
 
     return $this->reconcile($io, $site, TRUE);
+  }
+
+  /**
+   * Whether there is a person here who can be asked.
+   *
+   * Symfony reports input as interactive unless --no-interaction was passed; it
+   * does not check whether anything is attached to read an answer from. A
+   * fanned-out install, a cron job, or a piped script would otherwise be
+   * offered a question nobody can answer, so the terminal is tested for
+   * directly. Getting this wrong is not cosmetic: it decides whether a database
+   * gets dropped on a default nobody chose.
+   *
+   * @param \Symfony\Component\Console\Input\InputInterface $input
+   *   The command input.
+   *
+   * @return bool
+   *   TRUE when a question can be put to someone.
+   */
+  private function canAsk(InputInterface $input): bool {
+    return $input->isInteractive() && defined('STDIN') && stream_isatty(STDIN);
+  }
+
+  /**
+   * Describe what a --reinstall run would do about the content it found.
+   *
+   * A dry run is worth nothing if it reports an outcome the real run would not
+   * reach, so this reads the same two inputs the real decision does: whether
+   * there is anything to lose, and whether there is anyone to ask.
+   *
+   * @param \Symfony\Component\Console\Input\InputInterface $input
+   *   The command input, read for --force and interactivity.
+   * @param \SiteNow\Install\InstallState $content
+   *   The measured content, or a state marked contentUnknown.
+   *
+   * @return string
+   *   One line describing the outcome.
+   */
+  private function dryRunOutcome(InputInterface $input, InstallState $content): string {
+    if (!$content->hasContent() || $input->getOption('force')) {
+      return 'Would be replaced by a fresh install.';
+    }
+
+    $what = $content->contentUnknown
+      ? 'its content could not be checked'
+      : "it holds {$content->contentSummary()}";
+
+    return $this->canAsk($input)
+      ? "Would ask before replacing it: {$what}."
+      : "Would be refused: {$what}. Use --force, or run it from a terminal.";
+  }
+
+  /**
+   * Measure what installing over this site would destroy.
+   *
+   * An install drops every table, so the question is the same whichever state
+   * the site is in: is there anything here that a person put in. Classification
+   * has already answered it for an unfinished install; a running site has to be
+   * asked now, because --reinstall is what makes that case reachable at all.
+   * Shared by the dry run and the real one so the two cannot disagree about
+   * what would happen.
+   *
+   * @param \SiteNow\Install\InstallState $state
+   *   The site's classification.
+   * @param string $site
+   *   The site host / canonical domain.
+   *
+   * @return \SiteNow\Install\InstallState
+   *   A state carrying the content counts, or marked contentUnknown.
+   */
+  private function contentFor(InstallState $state, string $site): InstallState {
+    return $state->status === InstallStatus::Partial
+      ? $state
+      : $this->contentState($site, $state->status);
+  }
+
+  /**
+   * Ask whether to replace a site that holds something.
+   *
+   * Defaults to no, so an unconsidered Enter keeps the site.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The output style, which the question is asked through.
+   * @param string $site
+   *   The site host / canonical domain.
+   * @param \SiteNow\Install\InstallState $content
+   *   The measured content, or a state marked contentUnknown.
+   * @param bool $unfinished
+   *   Whether the site's install never completed, which changes the wording.
+   *
+   * @return bool
+   *   TRUE to go ahead and replace the site.
+   */
+  private function confirmReplace(SymfonyStyle $io, string $site, InstallState $content, bool $unfinished): bool {
+    if ($content->contentUnknown) {
+      $io->warning("The content of {$site} could not be checked, so replacing it cannot be shown to be safe.");
+      return $io->confirm("Install over {$site} anyway?", FALSE);
+    }
+
+    $holds = $unfinished ? 'Its unfinished install holds' : 'It holds';
+    $io->warning("{$holds} {$content->contentSummary()}, which a fresh install destroys.");
+
+    return $io->confirm("Replace {$site}?", FALSE);
+  }
+
+  /**
+   * Decline to replace a site that holds something, and say what and why.
+   *
+   * The non-interactive path: nobody can be asked, so the site is left alone.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $err
+   *   The error output style.
+   * @param string $site
+   *   The site host / canonical domain.
+   * @param \SiteNow\Install\InstallState $content
+   *   The measured content, or a state marked contentUnknown.
+   * @param bool $unfinished
+   *   Whether the site's install never completed, which changes the wording.
+   *
+   * @return int
+   *   BLOCKED.
+   */
+  private function refuse(SymfonyStyle $err, string $site, InstallState $content, bool $unfinished): int {
+    if ($content->contentUnknown) {
+      $err->error("Refusing to install over {$site}: its content could not be checked, so this cannot be shown to be safe. Investigate the database, then re-run with --force to install regardless.");
+      return self::BLOCKED;
+    }
+
+    $holds = $unfinished ? 'its unfinished install holds' : 'it holds';
+    $err->error("Refusing to install over {$site}: {$holds} {$content->contentSummary()}. Inspect the site, then re-run with --force to replace it and lose that content.");
+
+    return self::BLOCKED;
   }
 
   /**
@@ -342,8 +504,8 @@ HELP);
     // Only ever on a fresh install. On a site that is already running, a
     // requester who is absent was removed deliberately — often because the
     // person left — and restoring the account with a privileged role is not a
-    // repair, it is a regression someone would have to notice. The BLT hook this
-    // replaces could not do it: it only ran after drupal:install.
+    // repair, it is a regression someone would have to notice. The BLT hook
+    // this replaces could not do it: it only ran after drupal:install.
     if ($afterInstall && !empty($config['uiowa']['requester'])) {
       $this->createRequester($io, $site, $config['uiowa']['requester']);
     }
@@ -410,8 +572,8 @@ HELP);
    *
    * Called only after an install, which starts from an empty database, so the
    * account should never already exist. The existence check is there so that
-   * stays true if a future caller changes: it is the difference between granting
-   * a role and resurrecting a removed account.
+   * stays true if a future caller changes: it is the difference between
+   * granting a role and resurrecting a removed account.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.

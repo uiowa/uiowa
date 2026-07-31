@@ -119,12 +119,35 @@ trait ClassifiesInstalls {
    *   The partial state, with content counts attached.
    */
   private function partialState(string $site, string $detail): InstallState {
+    return $this->contentState($site, InstallStatus::Partial, $detail);
+  }
+
+  /**
+   * Measure what a site holds, whatever state it is in.
+   *
+   * The content question belongs to the decision to drop a database, not to any
+   * one classification: an unfinished install is asked as it is classified, and a
+   * site that is already running is asked when a reinstall is requested for it.
+   * Both ask it here so both get the same answer, including the same treatment of
+   * a check that cannot be completed.
+   *
+   * @param string $site
+   *   The site host / canonical domain.
+   * @param \SiteNow\Install\InstallStatus $status
+   *   The status to record alongside the counts.
+   * @param string $detail
+   *   Detail to record alongside the counts.
+   *
+   * @return \SiteNow\Install\InstallState
+   *   The state, with content counts attached or marked unknown.
+   */
+  protected function contentState(string $site, InstallStatus $status, string $detail = ''): InstallState {
     $present = $this->contentTables($site);
 
     // The database could not be asked what it holds, so nothing has been ruled
     // out. Refusing here is the whole point of the check.
     if ($present === NULL) {
-      return new InstallState(InstallStatus::Partial, $detail, contentUnknown: TRUE);
+      return new InstallState($status, $detail, contentUnknown: TRUE);
     }
 
     // A table the install never got far enough to create holds nothing to lose,
@@ -143,10 +166,10 @@ trait ClassifiesInstalls {
       : 0;
 
     if ($nodes === NULL || $users === NULL) {
-      return new InstallState(InstallStatus::Partial, $detail, contentUnknown: TRUE);
+      return new InstallState($status, $detail, contentUnknown: TRUE);
     }
 
-    return new InstallState(InstallStatus::Partial, $detail, $nodes, $users);
+    return new InstallState($status, $detail, $nodes, $users);
   }
 
   /**
