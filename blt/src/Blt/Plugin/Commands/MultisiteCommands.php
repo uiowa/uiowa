@@ -69,12 +69,6 @@ class MultisiteCommands extends BltTasks {
 
     $multisites = $this->getConfigValue('multisites');
 
-    // Not set by any BLT config since blt/blt.yml was removed; drupal:install
-    // would otherwise fall back to BLT's default 'minimal' profile.
-    if (!$this->getConfigValue('project.profile.name')) {
-      $this->getConfig()->set('project.profile.name', 'sitenow');
-    }
-
     $this->say('Finding uninstalled sites...');
     $progress = $this->io()->createProgressBar();
     $progress->setMaxSteps(count($multisites));
@@ -383,7 +377,7 @@ EOD
     $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
-    if ($webhook_url && $env == 'prod' || $env == 'local') {
+    if ($webhook_url && ($env == 'prod' || $env == 'local')) {
       $data = [
         'username' => 'Acquia Cloud',
         'text' => $message,
