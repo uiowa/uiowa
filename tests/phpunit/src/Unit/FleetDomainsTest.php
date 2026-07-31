@@ -69,4 +69,39 @@ class FleetDomainsTest extends UnitTestCase {
     $this->assertSame('uiowa02', FleetDomains::appName($application));
   }
 
+  /**
+   * Applications owned by the excluded organization are out of scope.
+   */
+  public function testIsReportable(): void {
+    $this->assertTrue(FleetDomains::isReportable($this->application('uiowa02', 'University of Iowa')));
+    $this->assertFalse(FleetDomains::isReportable($this->application('uihc01', FleetDomains::EXCLUDED_ORGANIZATION)));
+  }
+
+  /**
+   * Only reportable applications' names are offered for --apps validation.
+   *
+   * An out-of-scope name must not validate: iteration would skip it and the
+   * report would come back empty rather than saying the name was rejected.
+   */
+  public function testReportableAppNames(): void {
+    $applications = [
+      $this->application('uiowa02', 'University of Iowa'),
+      $this->application('uihc01', FleetDomains::EXCLUDED_ORGANIZATION),
+      $this->application('uiowa09', 'University of Iowa'),
+    ];
+
+    $this->assertSame(['uiowa02', 'uiowa09'], FleetDomains::reportableAppNames($applications));
+    $this->assertSame([], FleetDomains::reportableAppNames([]));
+  }
+
+  /**
+   * An ApplicationResponse-shaped object for the static helpers.
+   */
+  private function application(string $name, string $organization): object {
+    return (object) [
+      'hosting' => (object) ['id' => "prod:{$name}"],
+      'organization' => (object) ['name' => $organization],
+    ];
+  }
+
 }
