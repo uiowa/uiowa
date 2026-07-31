@@ -4,3 +4,8 @@ services:
     arguments: ['@logger.channel.uiowa_core', '@config.factory', '@module_handler']
     tags:
       - { name: drush.command }
+  uiowa_core.file_scheme_commands:
+    class: \Drupal\uiowa_core\Commands\FileSchemeCommands
+    arguments: ['@uiowa_core.file_scheme_migrator', '@entity_type.manager']
+    tags:
+      - { name: drush.command }
