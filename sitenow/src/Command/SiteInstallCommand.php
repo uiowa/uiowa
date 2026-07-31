@@ -130,10 +130,11 @@ Installs Drupal for one multisite and applies the post-install steps that have
 to follow it: the site name from uiowa.site-name, the requester as a webmaster,
 and any config splits from uiowa.config.split.
 
-Run it again on a site that is already installed and it reasserts the site name
-and the splits, reporting anything it had to correct. It will not create an
-account there: a requester who is missing from a running site was removed on
-purpose. Run it on a site whose install died partway and it reinstalls.
+Run it again on a site that is already installed and it reasserts what blt.yml
+declares, reporting anything it had to correct. It will not create an account
+there, and it will not rename a site whose blt.yml names none: both would undo a
+decision someone made after the install. Run it on a site whose install died
+partway and it reinstalls.
 
 --reinstall replaces a site that is already installed, which is what you want to
 rebuild a local site and check the exported config produces a working one.
@@ -479,10 +480,10 @@ HELP);
    * Apply the post-install steps and report anything they had to correct.
    *
    * Runs as the tail of an install and as the repair pass for a site that is
-   * already installed. Not every step belongs to both: the declarative ones —
-   * the site name and the config splits, which the site's blt.yml states as
-   * intent — are safe to reassert at any time, while creating the requester is
-   * provisioning that happens once.
+   * already installed. Not every step belongs to both: what the site's blt.yml
+   * declares is intent and is safe to reassert at any time, while creating the
+   * requester and naming a site blt.yml says nothing about are provisioning
+   * that happens once.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.
@@ -490,7 +491,7 @@ HELP);
    *   The site host / canonical domain.
    * @param bool $afterInstall
    *   TRUE when an install just ran, which is the only time an account is
-   *   created.
+   *   created or an undeclared site name is set.
    *
    * @return int
    *   SUCCESS, or CONFIG_MISMATCH when the site's active config does not match
@@ -499,7 +500,19 @@ HELP);
   private function reconcile(SymfonyStyle $io, string $site, bool $afterInstall): int {
     $config = $this->siteConfig($this->siteDirectory($site));
 
-    $this->reconcileSiteName($io, $site, $config['uiowa']['site-name'] ?? $site);
+    // A declared name is intent and is reasserted at any time. The domain is
+    // not: it is the placeholder an install needs when blt.yml declares
+    // nothing, and 573 of the sites in this tree declare nothing. Asserting it
+    // on a running site would rename whatever its editors had set through the
+    // UI back to the domain, which is a regression, not a repair.
+    $name = $config['uiowa']['site-name'] ?? NULL;
+
+    if ($name !== NULL) {
+      $this->reconcileSiteName($io, $site, $name);
+    }
+    elseif ($afterInstall) {
+      $this->reconcileSiteName($io, $site, $site);
+    }
 
     // Only ever on a fresh install. On a site that is already running, a
     // requester who is absent was removed deliberately — often because the
