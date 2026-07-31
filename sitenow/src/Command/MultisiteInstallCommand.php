@@ -151,6 +151,17 @@ HELP);
       return Command::FAILURE;
     }
 
+    // Checked before anything is scanned. A short option takes its value with
+    // no separator, so `-j=6` arrives as the string '=6', which casts to 0 and
+    // would otherwise fall back to the default — after a scan of the whole
+    // application, with nothing said about why it installs three at a time.
+    $raw = trim((string) $input->getOption('concurrency'));
+    if (!ctype_digit($raw) || (int) $raw < 1) {
+      $err->error("Invalid --concurrency value '{$raw}'. Give a positive integer, as -j 6, -j6 or --concurrency=6.");
+      return Command::FAILURE;
+    }
+    $concurrency = (int) $raw;
+
     // Every site's classification needs a database connection, and off Acquia
     // the database host only resolves inside the container.
     if (!$is_acquia && !$this->requireDdev($io, $this->getName())) {
@@ -170,7 +181,6 @@ HELP);
       return Command::SUCCESS;
     }
 
-    $concurrency = (int) $input->getOption('concurrency') ?: 3;
     $force = (bool) $input->getOption('force');
 
     $where = $this->where($app, $env);
@@ -482,18 +492,18 @@ HELP);
   /**
    * Sort the finished installs into outcome tiers by what each child reported.
    *
-   * A child reports its own outcome through its exit code, including the two the
-   * scan did not predict: a site reclassified as needing a look (BLOCKED,
+   * A child reports its own outcome through its exit code, including the two
+   * the scan did not predict: a site reclassified as needing a look (BLOCKED,
    * most plausibly a content check that succeeded during the scan and failed on
    * its turn) or as no longer installable here (SKIPPED). Those join the tiers
-   * they belong to, so neither is announced as a failure — the tier decides both
-   * the summary line and whether Slack is told at all.
+   * they belong to, so neither is announced as a failure — the tier decides
+   * both the summary line and whether Slack is told at all.
    *
    * @param array<string, \SiteNow\Install\InstallState> $targets
    *   The sites that were run, keyed by host.
    * @param array<string, array{exit: int, output: string, error: string}> $results
-   *   Per-site results keyed by host. A site missing from this counts as failed:
-   *   it was run and reported nothing.
+   *   Per-site results keyed by host. A site missing from this counts as
+   *   failed: it was run and reported nothing.
    * @param array<string, \SiteNow\Install\InstallState> $blocked
    *   Sites the scan already held back, which the results add to.
    *
