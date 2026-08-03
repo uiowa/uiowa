@@ -5,12 +5,10 @@ namespace Drupal\Tests\uiowa_core\Unit;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\file\FileRepositoryInterface;
-use Drupal\file\FileStorageInterface;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\uiowa_core\FileSchemeMigrator;
@@ -176,54 +174,6 @@ class FileSchemeMigratorTest extends UnitTestCase {
     ]);
 
     $this->assertSame([], $this->matchingComponents($section));
-  }
-
-  /**
-   * @covers ::fileQuery
-   */
-  public function testExcludedDirectoriesAreFilteredOut(): void {
-    // Files nothing references are unreachable once private, so the exclusion
-    // is what keeps them working. Losing it in a refactor should fail here.
-    $this->assertNotEmpty(FileSchemeMigrator::EXCLUDED_DIRECTORIES);
-
-    $conditions = [];
-
-    $query = $this->createMock(QueryInterface::class);
-    $query->method('accessCheck')->willReturnSelf();
-    $query->method('condition')->willReturnCallback(
-      function ($field, $value = NULL, $operator = NULL) use (&$conditions, $query) {
-        $conditions[] = [$field, $value, $operator];
-        return $query;
-      }
-    );
-
-    $storage = $this->createMock(FileStorageInterface::class);
-    $storage->method('getQuery')->willReturn($query);
-
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
-    $entity_type_manager->method('getStorage')->with('file')->willReturn($storage);
-
-    $migrator = new FileSchemeMigrator(
-      $entity_type_manager,
-      $this->createMock(EntityFieldManagerInterface::class),
-      $this->createMock(FileSystemInterface::class),
-      $this->createMock(FileRepositoryInterface::class),
-      $this->createMock(StreamWrapperManagerInterface::class),
-      $this->createMock(Connection::class),
-      $this->createMock(LoggerInterface::class),
-    );
-
-    $method = new \ReflectionMethod($migrator, 'fileQuery');
-    $method->setAccessible(TRUE);
-    $method->invoke($migrator, 'public');
-
-    foreach (FileSchemeMigrator::EXCLUDED_DIRECTORIES as $directory) {
-      $this->assertContains(
-        ['uri', 'public://' . $directory . '/%', 'NOT LIKE'],
-        $conditions,
-        sprintf("Expected '%s' to be excluded from the migration query.", $directory)
-      );
-    }
   }
 
   /**

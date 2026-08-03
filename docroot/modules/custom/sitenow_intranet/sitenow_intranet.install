@@ -6,7 +6,6 @@
  */
 
 use Drupal\search_api\Entity\Index;
-use Drupal\uiowa_core\FileSchemeMigrator;
 
 /**
  * Implements hook_install().
@@ -100,13 +99,6 @@ function sitenow_intranet_migrate_public_files() {
   \Drupal::messenger()->addStatus(t('Moved @count file(s) into private storage.', [
     '@count' => count($results['moved']),
   ]));
-
-  if ($excluded = $migrator->countExcluded('public')) {
-    \Drupal::messenger()->addStatus(t('@count file(s) were left public by an exclusion (@dirs).', [
-      '@count' => $excluded,
-      '@dirs' => implode(', ', FileSchemeMigrator::EXCLUDED_DIRECTORIES),
-    ]));
-  }
 
   foreach (['missing' => 'had no file on disk', 'failed' => 'could not be moved'] as $key => $description) {
     if ($results[$key]) {
