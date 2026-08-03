@@ -36,20 +36,28 @@ function sitenow_intranet_install() {
   // place. The values are listed rather than read out of the split folder,
   // whose files are patches rather than whole config objects.
   foreach ([
-    'system.file' => 'default_scheme',
-    'field.storage.media.field_media_audio_file' => 'settings.uri_scheme',
-    'field.storage.media.field_media_file' => 'settings.uri_scheme',
-    'field.storage.media.field_media_image' => 'settings.uri_scheme',
-    'field.storage.media.field_media_video_file' => 'settings.uri_scheme',
-  ] as $name => $key) {
-    $config_factory->getEditable($name)
-      ->set($key, 'private')
-      ->save();
-  }
+    'system.file' => ['default_scheme' => 'private'],
+    'media.settings' => ['icon_base_uri' => 'private://media-icons/generic'],
+    'field.storage.media.field_media_audio_file' => ['settings.uri_scheme' => 'private'],
+    'field.storage.media.field_media_file' => ['settings.uri_scheme' => 'private'],
+    'field.storage.media.field_media_image' => ['settings.uri_scheme' => 'private'],
+    'field.storage.media.field_media_video_file' => ['settings.uri_scheme' => 'private'],
+  ] as $name => $values) {
+    $config = $config_factory->getEditable($name);
 
-  $config_factory->getEditable('media.settings')
-    ->set('icon_base_uri', 'private://media-icons/generic')
-    ->save();
+    // Only adjust config that exists. Setting a key on a missing object would
+    // create it, and a field storage object holding nothing but a settings key
+    // has no type for its settings schema to resolve against.
+    if ($config->isNew()) {
+      continue;
+    }
+
+    foreach ($values as $key => $value) {
+      $config->set($key, $value);
+    }
+
+    $config->save();
+  }
 
   // Writing field storage config directly bypasses the entity API, so the
   // cached field definitions still describe public storage until cleared.
