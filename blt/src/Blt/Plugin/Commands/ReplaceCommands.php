@@ -4,11 +4,34 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Consolidation\AnnotatedCommand\CommandError;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
+
+  /**
+   * Block BLT's single-site sync.
+   *
+   * BLT's sync.commands includes blt:init:settings, which deletes every
+   * multisite's local.settings.php and local.drush.yml via the
+   * source:build:settings hook below.
+   *
+   * @hook validate drupal:sync:default:site
+   */
+  public function validateDrupalSyncDefaultSite() {
+    return new CommandError('This command is no longer supported. Use `ddev sn ds SITE` instead.');
+  }
+
+  /**
+   * Block BLT's all-sites sync.
+   *
+   * @hook validate drupal:sync:all-sites
+   */
+  public function validateDrupalSyncAllSites() {
+    return new CommandError('This command is no longer supported. Use `ddev sn dsa` instead.');
+  }
 
   /**
    * Remove all local settings file beforehand, so they are recreated.
