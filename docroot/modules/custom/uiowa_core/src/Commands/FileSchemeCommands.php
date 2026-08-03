@@ -170,6 +170,10 @@ class FileSchemeCommands extends DrushCommands {
    * source moves, so flushing them is part of the move, not a nicety.
    */
   protected function flushImageStyles(): void {
+    if (!$this->entityTypeManager->hasDefinition('image_style')) {
+      return;
+    }
+
     $styles = $this->entityTypeManager->getStorage('image_style')->loadMultiple();
 
     foreach ($styles as $style) {

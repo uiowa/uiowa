@@ -75,14 +75,16 @@ function sitenow_intranet_migrate_public_files() {
   /** @var \Drupal\uiowa_core\FileSchemeMigrator $migrator */
   $migrator = \Drupal::service('uiowa_core.file_scheme_migrator');
 
+  // A site being built from scratch has nothing to move, so it should not be
+  // told anything about private storage. Only a retrofit gets that far.
+  if ($migrator->countFiles('public') === 0) {
+    return;
+  }
+
   if ($reason = $migrator->checkScheme('private')) {
     \Drupal::messenger()->addError(t('Existing files were not moved to private storage: @reason', [
       '@reason' => $reason,
     ]));
-    return;
-  }
-
-  if ($migrator->countFiles('public') === 0) {
     return;
   }
 
@@ -112,8 +114,10 @@ function sitenow_intranet_migrate_public_files() {
 
   // A derivative built from a public source stays readable by URL after its
   // source moves, so flushing is part of the move.
-  if ($results['moved']) {
-    foreach (\Drupal::entityTypeManager()->getStorage('image_style')->loadMultiple() as $style) {
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  if ($results['moved'] && $entity_type_manager->hasDefinition('image_style')) {
+    foreach ($entity_type_manager->getStorage('image_style')->loadMultiple() as $style) {
       $style->flush();
     }
   }
