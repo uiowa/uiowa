@@ -36,11 +36,11 @@ class FleetRunnerTest extends UnitTestCase {
   protected string $repoRoot = '/repo';
 
   /**
-   * The drush binary the runner is expected to invoke.
+   * The argv prefix the runner is expected to invoke drush through.
    *
-   * @var string
+   * @var array<int, string>
    */
-  protected string $drush = '/repo/vendor/bin/drush';
+  protected array $drush = [PHP_BINARY, '-d', 'display_errors=stderr', '/repo/vendor/bin/drush'];
 
   /**
    * {@inheritdoc}
@@ -165,7 +165,7 @@ YAML);
     ['jobs' => $jobs, 'groups' => $groups] = $runner->buildJobs($runner->select(), ['cr']);
 
     $this->assertSame(
-      [$this->drush, '@vote.prod', '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS, 'cr'],
+      array_merge($this->drush, ['@vote.prod', '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS, 'cr']),
       $jobs['vote.uiowa.edu']
     );
     $this->assertSame([
@@ -186,13 +186,12 @@ YAML);
     $selection = $runner->select(['uiowa03']);
     ['jobs' => $jobs] = $runner->buildJobs($selection, ['sql:query', 'SELECT COUNT(*) FROM node'], 'dev');
 
-    $this->assertSame([
-      $this->drush,
+    $this->assertSame(array_merge($this->drush, [
       '@accessibility.dev',
       '--ssh-options=-o PasswordAuthentication=no ' . FleetRunner::MUX_OPTIONS,
       'sql:query',
       'SELECT COUNT(*) FROM node',
-    ], $jobs['accessibility.uiowa.edu']);
+    ]), $jobs['accessibility.uiowa.edu']);
   }
 
   /**
@@ -291,8 +290,8 @@ YAML);
     $this->assertNull($runner->preflight($runner->select(), 'cr'));
     [$site, $argv] = $captured;
     $this->assertSame('vote.uiowa.edu', $site);
-    $this->assertSame($this->drush, $argv[0]);
-    $this->assertSame('@vote.prod', $argv[1]);
+    $this->assertSame($this->drush, array_slice($argv, 0, count($this->drush)));
+    $this->assertSame('@vote.prod', $argv[count($this->drush)]);
     $this->assertSame(['help', 'cr'], array_slice($argv, -2));
   }
 
