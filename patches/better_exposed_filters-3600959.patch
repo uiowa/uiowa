@@ -5,13 +5,16 @@ Subject: [PATCH] Check for array value, and handle accordingly.
 
 Rerolled against the 7.1.1 release tag (the version this project
 depends on) instead of the module's dev branch, so the context lines
-match what's actually installed.
+match what's actually installed. Adds a unit test that fails with a
+TypeError against the unpatched code and passes with the fix.
 ---
- src/Plugin/BetterExposedFiltersWidgetBase.php | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ src/Plugin/BetterExposedFiltersWidgetBase.php |   8 ++
+ .../Unit/BetterExposedFiltersWidgetBaseTest.php | 130 +++++++++++++++++++++
+ 2 files changed, 138 insertions(+)
+ create mode 100644 tests/src/Unit/BetterExposedFiltersWidgetBaseTest.php
 
 diff --git a/src/Plugin/BetterExposedFiltersWidgetBase.php b/src/Plugin/BetterExposedFiltersWidgetBase.php
-index da27be1..6d35eb2 100644
+index 2704b9e..6d35eb2 100644
 --- a/src/Plugin/BetterExposedFiltersWidgetBase.php
 +++ b/src/Plugin/BetterExposedFiltersWidgetBase.php
 @@ -182,6 +182,14 @@ abstract class BetterExposedFiltersWidgetBase extends PluginBase implements Bett
@@ -29,5 +32,141 @@ index da27be1..6d35eb2 100644
          return $carry ||
            ($form[$element]['#multiple'] ?? FALSE ? ($value === $default_value || isset($form[$element]['#options'][$value])) : !($value === $default_value) && ($value || $default_value === 0));
        }, FALSE);
+diff --git a/tests/src/Unit/BetterExposedFiltersWidgetBaseTest.php b/tests/src/Unit/BetterExposedFiltersWidgetBaseTest.php
+new file mode 100644
+index 0000000..287acd7
+--- /dev/null
++++ b/tests/src/Unit/BetterExposedFiltersWidgetBaseTest.php
+@@ -0,0 +1,130 @@
++<?php
++
++namespace Drupal\Tests\better_exposed_filters\Unit;
++
++use Drupal\Core\Form\FormState;
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Tests\UnitTestCase;
++use Drupal\better_exposed_filters\Plugin\BetterExposedFiltersWidgetBase;
++
++/**
++ * Tests BetterExposedFiltersWidgetBase::addElementToGroup().
++ *
++ * @coversDefaultClass \Drupal\better_exposed_filters\Plugin\BetterExposedFiltersWidgetBase
++ *
++ * @group better_exposed_filters
++ */
++class BetterExposedFiltersWidgetBaseTest extends UnitTestCase {
++
++  /**
++   * Builds a concrete, minimal widget to exercise the protected method.
++   */
++  protected function getWidget() {
++    return new class() extends BetterExposedFiltersWidgetBase {
++
++      public function __construct() {
++        // Deliberately skip the parent constructor: addElementToGroup()
++        // doesn't touch $this->request, $this->configFactory, $this->view,
++        // or $this->handler, so none of them need to be set up.
++      }
++
++      /**
++       * {@inheritdoc}
++       */
++      public static function isApplicable(mixed $handler = NULL, array $options = []): bool {
++        return TRUE;
++      }
++
++      /**
++       * {@inheritdoc}
++       */
++      public function exposedFormAlter(array &$form, FormStateInterface $form_state) {
++        // Not under test.
++      }
++
++      /**
++       * {@inheritdoc}
++       */
++      public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
++        // Not under test.
++        return $form;
++      }
++
++      /**
++       * Exposes the protected method under test.
++       */
++      public function callAddElementToGroup(array &$form, FormStateInterface $form_state, string $element, string $group): void {
++        $this->addElementToGroup($form, $form_state, $element, $group);
++      }
++
++    };
++  }
++
++  /**
++   * Builds the exposed-form fragment addElementToGroup() operates on.
++   */
++  protected function getForm(): array {
++    return [
++      'people_research_areas' => [
++        '#multiple' => TRUE,
++        '#options' => ['12' => 'Term A', '34' => 'Term B'],
++      ],
++      'people_research_areas_collapsible' => [
++        '#open' => FALSE,
++      ],
++    ];
++  }
++
++  /**
++   * A request with an extra "[]" nesting level must not crash the widget.
++   *
++   * Reproduces the production request shape
++   * "people_research_areas[12][]=1" (instead of the expected
++   * "people_research_areas[12]=12"), which submits an array where a
++   * scalar option key is expected. Before the fix, this reached
++   * isset($form[$element]['#options'][$value]) with $value as an array,
++   * which is a fatal TypeError in PHP 8: "Cannot access offset of type
++   * array in isset or empty".
++   *
++   * @covers ::addElementToGroup
++   */
++  public function testNonScalarUserInputDoesNotCrash(): void {
++    $widget = $this->getWidget();
++    $form = $this->getForm();
++
++    $form_state = new FormState();
++    $form_state->setUserInput([
++      'people_research_areas' => ['12' => ['1']],
++    ]);
++
++    // The assertion is simply that this call completes without throwing.
++    $widget->callAddElementToGroup($form, $form_state, 'people_research_areas', 'people_research_areas_collapsible');
++
++    // A submitted array can't match a real option, so it shouldn't be
++    // treated as a selection either.
++    $this->assertFalse($form['people_research_areas_collapsible']['#open']);
++  }
++
++  /**
++   * A normal, scalar selection should still open the collapsible group.
++   *
++   * Guards against the fix above papering over real selections along
++   * with malformed ones.
++   *
++   * @covers ::addElementToGroup
++   */
++  public function testScalarUserInputStillOpensGroup(): void {
++    $widget = $this->getWidget();
++    $form = $this->getForm();
++
++    $form_state = new FormState();
++    $form_state->setUserInput([
++      'people_research_areas' => ['12' => '12'],
++    ]);
++
++    $widget->callAddElementToGroup($form, $form_state, 'people_research_areas', 'people_research_areas_collapsible');
++
++    $this->assertTrue($form['people_research_areas_collapsible']['#open']);
++  }
++
++}
 --
 GitLab
