@@ -155,10 +155,23 @@ trait ClassifiesInstalls {
   protected function contentState(string $site, InstallStatus $status, string $detail = ''): InstallState {
     $present = $this->contentTables($site);
 
-    // The database could not be asked what it holds, so nothing has been ruled
-    // out. Refusing here is the whole point of the check.
     if ($present === NULL) {
-      return new InstallState($status, $detail, contentUnknown: TRUE);
+
+      // A database that answers but cannot be probed is the ambiguous case this
+      // check exists for: something is there, and nothing about it has been
+      // ruled out. Refusing is the point.
+      if ($this->databaseAnswers($site)) {
+        return new InstallState($status, $detail, contentUnknown: TRUE);
+      }
+
+      // A database that does not answer at all has nothing in it to lose. That
+      // is the ordinary state of a site whose database has not been created
+      // yet — the case multisite:create hands to multisite:install — and
+      // treating it as unknown would refuse every new site until someone
+      // passed --force. If the database is instead absent because a server is
+      // down, the install that follows fails against that same server, which
+      // is loud and touches nothing.
+      return new InstallState($status, $detail, 0, 0);
     }
 
     // A table the install never got far enough to create holds nothing to lose,
@@ -181,6 +194,22 @@ trait ClassifiesInstalls {
     }
 
     return new InstallState($status, $detail, $nodes, $users);
+  }
+
+  /**
+   * Whether the site's database answers a query at all.
+   *
+   * Separates "there is a database here that I could not read" from "there is
+   * no database here", which the content probe alone cannot tell apart.
+   *
+   * @param string $site
+   *   The site host / canonical domain.
+   *
+   * @return bool
+   *   TRUE when the database responds.
+   */
+  private function databaseAnswers(string $site): bool {
+    return $this->drush(['sql:query', 'SELECT 1'], uri: $site)->isSuccessful();
   }
 
   /**

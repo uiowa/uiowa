@@ -480,10 +480,10 @@ HELP);
    * Apply the post-install steps and report anything they had to correct.
    *
    * Runs as the tail of an install and as the repair pass for a site that is
-   * already installed. Not every step belongs to both: what the site's blt.yml
-   * declares is intent and is safe to reassert at any time, while creating the
-   * requester and naming a site blt.yml says nothing about are provisioning
-   * that happens once.
+   * already installed. Not every step belongs to both. The splits are declared
+   * intent and safe to reassert at any time. Creating the requester and naming
+   * the site are provisioning: a repair only finishes what an install left
+   * undone, and never overrides a choice made since.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.
@@ -500,18 +500,27 @@ HELP);
   private function reconcile(SymfonyStyle $io, string $site, bool $afterInstall): int {
     $config = $this->siteConfig($this->siteDirectory($site));
 
-    // A declared name is intent and is reasserted at any time. The domain is
-    // not: it is the placeholder an install needs when blt.yml declares
-    // nothing, and 573 of the sites in this tree declare nothing. Asserting it
-    // on a running site would rename whatever its editors had set through the
-    // UI back to the domain, which is a regression, not a repair.
-    $name = $config['uiowa']['site-name'] ?? NULL;
+    // An install always names the site, because importing the exported
+    // configuration leaves it called whatever that configuration says. The
+    // declared name is used when blt.yml has one and the domain when it does
+    // not.
+    //
+    // A repair only names a site still carrying the exported name, which is
+    // provably an install whose naming step never ran. Neither value is current
+    // enough to assert over a running site: blt.yml records the name requested
+    // when the site was created and is never updated, so a site an editor
+    // renamed years later would be renamed back, and the domain was only ever a
+    // placeholder.
+    $name = $config['uiowa']['site-name'] ?? $site;
 
-    if ($name !== NULL) {
+    // Both halves have to be readable to conclude anything. Two NULLs would
+    // otherwise compare equal and rename a site on the strength of a failed
+    // read.
+    $exported = $this->exportedSiteName();
+    $never_named = $exported !== NULL && $this->currentSiteName($site) === $exported;
+
+    if ($afterInstall || $never_named) {
       $this->reconcileSiteName($io, $site, $name);
-    }
-    elseif ($afterInstall) {
-      $this->reconcileSiteName($io, $site, $site);
     }
 
     // Only ever on a fresh install. On a site that is already running, a
@@ -773,6 +782,26 @@ HELP);
     }
 
     return (Yaml::parseFile($path) ?: [])['uuid'] ?? NULL;
+  }
+
+  /**
+   * The site name recorded in the exported configuration.
+   *
+   * Every install imports this configuration, so this is the name a site is
+   * left with until the post-install replaces it — which makes a site still
+   * carrying it one whose naming step never ran. Read rather than hardcoded so
+   * it cannot drift from what an install actually produces.
+   *
+   * @return string|null
+   *   The name, or NULL when there is no exported system.site.
+   */
+  protected function exportedSiteName(): ?string {
+    $path = $this->configDir() . '/system.site.yml';
+    if (!is_file($path)) {
+      return NULL;
+    }
+
+    return (Yaml::parseFile($path) ?: [])['name'] ?? NULL;
   }
 
   /**

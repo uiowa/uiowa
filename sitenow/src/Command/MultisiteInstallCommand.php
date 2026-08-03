@@ -54,13 +54,13 @@ class MultisiteInstallCommand extends Command {
   const EXITCODE_PARTIAL = 2;
 
   /**
-   * Environments installation is allowed on unless --envs says otherwise.
+   * Environments installation is allowed on unless --allow-env says otherwise.
    *
    * Installing is a production activity here: dev and test get their databases
    * from prod, so installing there produces a site that the next database copy
    * overwrites.
    */
-  const DEFAULT_ENVS = 'local,prod';
+  const INSTALL_ENVS = ['local', 'prod'];
 
   /**
    * How long one site's install may take before it is abandoned, in seconds.
@@ -91,7 +91,7 @@ class MultisiteInstallCommand extends Command {
     $this
       ->addOption('sites', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site list to consider instead of the application default (testing / targeted recovery).', '')
       ->addOption('concurrency', 'j', InputOption::VALUE_REQUIRED, 'Number of sites to install in parallel.', '3')
-      ->addOption('envs', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated environments installation is allowed on.', self::DEFAULT_ENVS)
+      ->addOption('allow-env', NULL, InputOption::VALUE_NONE, 'Allow installing on this environment. Needed on dev and test, where installs are refused by default.')
       ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Report what each site needs without installing anything.')
       ->addOption('force', NULL, InputOption::VALUE_NONE, 'Reinstall incomplete installs even when they hold content. Destroys that content.')
       ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.')
@@ -108,9 +108,10 @@ Scans the sites this application owns and sorts them into four states:
 Each site's full output goes to its own log file, named in the summary. Safe to
 run repeatedly: a site that failed is picked up again by the next run.
 
-Installing is limited to local and prod unless --envs says otherwise. A dry run
-only reads, so it is allowed anywhere — use it on dev or test ahead of a release
-to see what an environment would need.
+Installs happen on local and prod. Dev and test take their databases from prod,
+so a site installed there is overwritten by the next copy down — run it there
+only when you mean to, with --allow-env. A dry run only reads and is allowed
+anywhere, which is how you see what an environment would need before a release.
 
 Needs a database connection, so off Acquia it runs inside the container:
   ddev sn multisite:install
@@ -141,13 +142,13 @@ HELP);
 
     $dry_run = (bool) $input->getOption('dry-run');
 
-    // A dry run only reads, so it is allowed on any environment. The gate is
-    // about where a site may be installed, and being able to see what an
-    // environment would need — dev or test ahead of a release — is the point of
-    // having a dry run at all.
-    $envs = $this->parseList($input->getOption('envs'));
-    if (!$dry_run && !in_array($env, $envs, TRUE)) {
-      $err->error("Installation is not allowed on the {$env} environment. Must be one of: " . implode(', ', $envs) . '. Use --envs to override.');
+    // The guard can only ever be asked about one environment — the one this is
+    // running in — so it is a yes or no, not a list. A dry run only reads and
+    // skips it entirely: seeing what dev or test would need ahead of a release
+    // is the point of having a dry run.
+    $allowed = in_array($env, self::INSTALL_ENVS, TRUE) || $input->getOption('allow-env');
+    if (!$dry_run && !$allowed) {
+      $err->error("Installation is not allowed on the {$env} environment. Pass --allow-env to install here anyway.");
       return Command::FAILURE;
     }
 
@@ -193,18 +194,34 @@ HELP);
     if ($dry_run) {
       $io->writeln('Dry run: nothing was installed.');
 
+      // The same finding gets the same verdict whether or not anything was
+      // going to be installed. Surveying an environment ahead of a release is
+      // what a dry run is for, and a held-back site is the thing worth carrying
+      // out of it. The exit code stays 0: the scan is what ran, and it worked.
+      if ($blocked) {
+        $io->warning(sprintf('%d site(s) need a look before anything installs.', count($blocked)));
+      }
+
       // Say so when the environment would have refused, so a dry run here is
       // not mistaken for permission to install here.
-      if (!in_array($env, $envs, TRUE)) {
-        $io->warning("Installing on {$env} is not allowed without --envs={$env}.");
+      if (!$allowed) {
+        $io->warning("Installing on {$env} would be refused. Pass --allow-env to install here.");
       }
 
       return Command::SUCCESS;
     }
 
     if (!$targets) {
+      // Nothing installable is only good news when nothing was held back. A
+      // green banner over a run that exits non-zero with a site waiting on a
+      // human reads as "all clear" to whoever scrolled to the bottom.
+      if ($blocked) {
+        $io->warning(sprintf('Nothing to install. %d site(s) need a look first.', count($blocked)));
+        return self::EXITCODE_PARTIAL;
+      }
+
       $io->success('There are no sites needing installation.');
-      return $blocked ? self::EXITCODE_PARTIAL : Command::SUCCESS;
+      return Command::SUCCESS;
     }
 
     if (!$input->getOption('yes')) {
@@ -216,7 +233,7 @@ HELP);
     }
 
     $log_dir = $this->logDir();
-    $io->writeln(sprintf('Installing %d site(s), %d at a time. Logs: %s', count($targets), $concurrency, $log_dir));
+    $io->writeln(sprintf('Installing %d site(s), %d at a time. Logs: %s', count($targets), $concurrency, $this->displayPath($log_dir)));
     $results = $this->runInstalls($io, $targets, $concurrency, $force, $log_dir);
 
     return $this->report($io, $where, $targets, $blocked, $results, $log_dir);
@@ -434,7 +451,7 @@ HELP);
 
       $io->writeln("<error>✖</error> [{$done}/{$total}] {$site} ({$tier}) failed: " . $this->failureReason($result));
       if ($log !== NULL) {
-        $io->writeln("      log: {$log}");
+        $io->writeln('      log: ' . $this->displayPath($log));
       }
     });
   }
@@ -471,19 +488,46 @@ HELP);
   }
 
   /**
-   * The directory per-site install logs are written to.
+   * Render a log path as something the reader can open.
+   *
+   * Inside the container the repository is /var/www/html, which is not where the
+   * person reading this has it. A path relative to the repository root is the
+   * one string that works from the container shell, the host shell and an
+   * editor, so anything under the root is shown that way and everything else —
+   * /shared/logs on Acquia, the temp directory fallback — is left absolute.
+   *
+   * @param string $path
+   *   An absolute path.
    *
    * @return string
-   *   The log directory, created if it did not exist. Falls back to the log
-   *   directory's parent when it cannot be created, so a log write fails on its
-   *   own rather than taking the run with it.
+   *   The path as it should be printed.
+   */
+  private function displayPath(string $path): string {
+    $root = rtrim($this->repoRoot, '/') . '/';
+
+    return str_starts_with($path, $root) ? substr($path, strlen($root)) : $path;
+  }
+
+  /**
+   * The directory per-site install logs are written to.
+   *
+   * On Acquia this is /shared/logs, where the other logs worth reading already
+   * are. Off Acquia it is a gitignored directory in the repository rather than
+   * the system temp directory: this runs inside the container, whose /tmp is not
+   * the /tmp the person reading the summary can open, while the repository is
+   * mounted and so has the same path on both sides.
+   *
+   * @return string
+   *   The log directory, created if it did not exist. Falls back to the system
+   *   temp directory when it cannot be created, so a log write fails on its own
+   *   rather than taking the run with it.
    */
   private function logDir(): string {
-    $base = getenv('AH_SITE_ENVIRONMENT') ? '/shared/logs' : sys_get_temp_dir();
+    $base = getenv('AH_SITE_ENVIRONMENT') ? '/shared/logs' : "{$this->repoRoot}/tmp";
     $dir = "{$base}/sn_install";
 
     if (!is_dir($dir) && !@mkdir($dir, 0755, TRUE) && !is_dir($dir)) {
-      return $base;
+      return sys_get_temp_dir();
     }
 
     return $dir;
@@ -605,14 +649,18 @@ HELP);
         // best-effort.
         $log = "{$logDir}/{$site}.log";
         if (is_file($log)) {
-          $io->writeln("    log: {$log}");
+          $io->writeln('    log: ' . $this->displayPath($log));
         }
       }
     }
 
-    // Notify only when something needs attention. This is run by hand, so
-    // whoever started it is already watching the output; a clean run announced
-    // in Slack is noise that trains people to ignore the channel.
+    // Notify only when something needs attention, and only from prod. This is
+    // run by hand, so whoever started it is already watching the output; a clean
+    // run announced in Slack is noise that trains people to ignore the channel,
+    // and a run anywhere else is someone testing — on dev or test they are
+    // breaking sites on purpose, and telling a channel about it is worse than
+    // noise. Prod is the one place a bad outcome outlives the person who caused
+    // it.
     $parts = [];
     if ($failed) {
       $parts[] = sprintf('FAILED on %d: %s', count($failed), implode(', ', $failed));
@@ -624,7 +672,7 @@ HELP);
       $parts[] = sprintf('%d needing a look: %s', count($blocked), implode(', ', array_keys($blocked)));
     }
 
-    if ($parts) {
+    if ($parts && getenv('AH_SITE_ENVIRONMENT') === 'prod') {
       $message = sprintf(
         'Install on *%s*: %s. (%d installed.)',
         $where,

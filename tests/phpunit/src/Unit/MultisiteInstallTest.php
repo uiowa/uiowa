@@ -34,6 +34,10 @@ class MultisiteInstallTest extends UnitTestCase {
         return $this->classifyResults($targets, $results, $blocked);
       }
 
+      public function pubFailureReason(array $result): string {
+        return $this->failureReason($result);
+      }
+
     };
   }
 
@@ -205,6 +209,54 @@ class MultisiteInstallTest extends UnitTestCase {
 
     $this->assertSame(InstallStatus::Absent, $result['targets']['new.uiowa.edu']->status);
     $this->assertSame(InstallStatus::Partial, $result['targets']['halfway.uiowa.edu']->status);
+  }
+
+  /**
+   * A child's wrapped error block is quoted as the one sentence it was.
+   *
+   * The child reports through SymfonyStyle, which wraps to the terminal width
+   * and pads the result into a rectangle. Reading the last line alone quoted a
+   * fragment beginning mid-sentence, which is how this was found.
+   */
+  public function testWrappedChildErrorIsRejoined() {
+    $error = <<<'ERR'
+
+ [ERROR] Refusing to install over new.uiowa.edu: its content could not be
+         checked, so this cannot be shown to be safe. Investigate the
+         database, then re-run with --force to install regardless.
+
+
+ERR;
+
+    $reason = $this->command()->pubFailureReason(['exit' => 4, 'output' => '', 'error' => $error]);
+
+    $this->assertSame(
+      'Refusing to install over new.uiowa.edu: its content could not be checked, so this cannot be shown to be safe. Investigate the database, then re-run with --force to install regardless. (exit 4)',
+      $reason,
+    );
+  }
+
+  /**
+   * Drush's own single-line errors keep the tail behaviour they had.
+   *
+   * Only Symfony's uppercase markers are rejoined, so nothing changes for the
+   * other commands sharing this trait.
+   */
+  public function testDrushErrorStillReadsFromTheTail() {
+    $error = "  [warning] Something earlier\n  [error]  The site.uiowa.edu alias is unknown\n";
+
+    $reason = $this->command()->pubFailureReason(['exit' => 1, 'output' => '', 'error' => $error]);
+
+    $this->assertSame('[error]  The site.uiowa.edu alias is unknown (exit 1)', $reason);
+  }
+
+  /**
+   * A child that said nothing still gets a line.
+   */
+  public function testSilentFailureIsDescribed() {
+    $reason = $this->command()->pubFailureReason(['exit' => 1, 'output' => '', 'error' => '']);
+
+    $this->assertSame('no error output (exit 1)', $reason);
   }
 
 }

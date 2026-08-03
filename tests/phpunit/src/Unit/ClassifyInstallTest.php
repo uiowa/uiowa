@@ -274,17 +274,44 @@ class ClassifyInstallTest extends UnitTestCase {
   }
 
   /**
-   * A table probe that fails leaves content unknown, which blocks.
+   * A table probe that fails on a database that answers leaves it unknown.
+   *
+   * Something is there and nothing about it has been ruled out, so this is the
+   * case the check exists to refuse.
    */
-  public function testFailedTableProbeLeavesContentUnknown() {
+  public function testFailedTableProbeOnLiveDatabaseLeavesContentUnknown() {
     $command = $this->command($this->fixtureRepo(), [
       $this->reply(''),
       $this->reply('', FALSE),
+      // The reachability probe, which answers.
+      $this->reply('1'),
     ]);
     $state = $command->pubClassify('site.uiowa.edu');
 
     $this->assertTrue($state->contentUnknown);
     $this->assertTrue($state->hasContent());
+  }
+
+  /**
+   * A database that does not answer at all holds nothing to lose.
+   *
+   * This is a site whose database has not been created yet, which is what
+   * multisite:create hands to multisite:install. Reading it as unknown would
+   * refuse every new site until someone passed --force.
+   */
+  public function testAbsentDatabaseCountsAsEmpty() {
+    $command = $this->command($this->fixtureRepo(), [
+      $this->reply(''),
+      $this->reply('', FALSE),
+      // The reachability probe, which fails too.
+      $this->reply('', FALSE),
+    ]);
+    $state = $command->pubClassify('site.uiowa.edu');
+
+    $this->assertFalse($state->contentUnknown);
+    $this->assertFalse($state->hasContent());
+    $this->assertSame(0, $state->nodes);
+    $this->assertSame(0, $state->users);
   }
 
   /**
