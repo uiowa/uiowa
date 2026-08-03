@@ -80,6 +80,14 @@ function sitenow_intranet_install() {
  * would never run.
  */
 function sitenow_intranet_migrate_public_files() {
+  // uiowa_core is installed on every SiteNow site, but it is not declared as a
+  // dependency: doing so pulls it into installs that do not otherwise have it,
+  // where hooks of its own assume optional modules are present.
+  if (!\Drupal::moduleHandler()->moduleExists('uiowa_core')) {
+    \Drupal::messenger()->addWarning(t('Existing public files were not moved because uiowa_core is not installed. Enable it and run uiowa_core:migrate-files private.'));
+    return;
+  }
+
   /** @var \Drupal\uiowa_core\FileSchemeMigrator $migrator */
   $migrator = \Drupal::service('uiowa_core.file_scheme_migrator');
 
