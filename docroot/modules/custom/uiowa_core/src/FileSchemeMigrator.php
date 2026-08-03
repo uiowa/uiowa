@@ -31,6 +31,21 @@ class FileSchemeMigrator {
   const SUPPORTED_SCHEMES = ['public', 'private'];
 
   /**
+   * Top-level directories left where they are.
+   *
+   * Private files are served through Drupal, which grants access by looking for
+   * a field that references the file. A file nothing references is unreachable
+   * once private, for authenticated users too, so moving it breaks it.
+   *
+   * oEmbed thumbnails are the case in hand: they hang off a media entity's
+   * computed thumbnail rather than a field, and they are cached copies of
+   * thumbnails the provider already serves publicly, so there is nothing to
+   * protect. Note the intranet split points new ones at private storage
+   * regardless, which breaks them on any intranet site and is its own problem.
+   */
+  const EXCLUDED_DIRECTORIES = ['oembed_thumbnails'];
+
+  /**
    * Field types that can hold a hard-coded file path, keyed to their column.
    *
    * The column is the suffix appended to the field name in the field's data
@@ -433,10 +448,42 @@ class FileSchemeMigrator {
    *   The prepared query.
    */
   protected function fileQuery(string $scheme) {
-    return $this->entityTypeManager->getStorage('file')
+    $query = $this->entityTypeManager->getStorage('file')
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('uri', $scheme . '://%', 'LIKE');
+
+    foreach (static::EXCLUDED_DIRECTORIES as $directory) {
+      $query->condition('uri', $scheme . '://' . $directory . '/%', 'NOT LIKE');
+    }
+
+    return $query;
+  }
+
+  /**
+   * Counts managed files on a scheme that are excluded from migration.
+   *
+   * Reported so an excluded file is a visible decision rather than a silent
+   * omission from the count.
+   *
+   * @param string $scheme
+   *   The scheme to count, without the '://' suffix.
+   *
+   * @return int
+   *   The number of managed files skipped by an exclusion.
+   */
+  public function countExcluded(string $scheme): int {
+    $query = $this->entityTypeManager->getStorage('file')
+      ->getQuery()
+      ->accessCheck(FALSE);
+
+    $group = $query->orConditionGroup();
+
+    foreach (static::EXCLUDED_DIRECTORIES as $directory) {
+      $group->condition('uri', $scheme . '://' . $directory . '/%', 'LIKE');
+    }
+
+    return (int) $query->condition($group)->count()->execute();
   }
 
   /**

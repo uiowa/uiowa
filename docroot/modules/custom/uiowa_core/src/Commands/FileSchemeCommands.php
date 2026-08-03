@@ -85,6 +85,14 @@ class FileSchemeCommands extends DrushCommands {
       '@to' => $to,
     ]));
 
+    if ($excluded = $this->migrator->countExcluded($from)) {
+      $this->io()->text(dt('@count file(s) left in @from:// by an exclusion (@dirs).', [
+        '@count' => $excluded,
+        '@from' => $from,
+        '@dirs' => implode(', ', FileSchemeMigrator::EXCLUDED_DIRECTORIES),
+      ]));
+    }
+
     if (!$dry_run && !$this->io()->confirm(dt('Move them?'), FALSE)) {
       return self::EXIT_FAILURE;
     }

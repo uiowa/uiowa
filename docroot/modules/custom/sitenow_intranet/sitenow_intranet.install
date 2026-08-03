@@ -6,6 +6,7 @@
  */
 
 use Drupal\search_api\Entity\Index;
+use Drupal\uiowa_core\FileSchemeMigrator;
 
 /**
  * Implements hook_install().
@@ -29,7 +30,101 @@ function sitenow_intranet_install() {
     ->set('footer.login_link', FALSE)
     ->save();
 
+  // The intranet split points these at private storage, but that only lands at
+  // config import. Setting them here first means enabling this module is
+  // self-contained: the destination is already private when files are moved
+  // below, and an upload made before the next import still lands in the right
+  // place. The values are listed rather than read out of the split folder,
+  // whose files are patches rather than whole config objects.
+  foreach ([
+    'system.file' => 'default_scheme',
+    'field.storage.media.field_media_audio_file' => 'settings.uri_scheme',
+    'field.storage.media.field_media_file' => 'settings.uri_scheme',
+    'field.storage.media.field_media_image' => 'settings.uri_scheme',
+    'field.storage.media.field_media_video_file' => 'settings.uri_scheme',
+  ] as $name => $key) {
+    $config_factory->getEditable($name)
+      ->set($key, 'private')
+      ->save();
+  }
+
+  $config_factory->getEditable('media.settings')
+    ->set('icon_base_uri', 'private://media-icons/generic')
+    ->save();
+
+  // Writing field storage config directly bypasses the entity API, so the
+  // cached field definitions still describe public storage until cleared.
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+
+  sitenow_intranet_migrate_public_files();
+
   \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Moves any existing public files into private storage.
+ *
+ * A site that has been running as a public site keeps serving its existing
+ * files from the public directory even once the fields point at private
+ * storage, because changing uri_scheme only affects new uploads.
+ *
+ * Update hooks cannot do this. Installing a module marks every one of its
+ * existing update hooks complete, so on the retrofit this exists for they
+ * would never run.
+ */
+function sitenow_intranet_migrate_public_files() {
+  /** @var \Drupal\uiowa_core\FileSchemeMigrator $migrator */
+  $migrator = \Drupal::service('uiowa_core.file_scheme_migrator');
+
+  if ($reason = $migrator->checkScheme('private')) {
+    \Drupal::messenger()->addError(t('Existing files were not moved to private storage: @reason', [
+      '@reason' => $reason,
+    ]));
+    return;
+  }
+
+  if ($migrator->countFiles('public') === 0) {
+    return;
+  }
+
+  // Reported rather than rewritten. A path pasted into content does not follow
+  // the file it points at, and deciding what to do with it is a content call.
+  if ($paths = $migrator->findHardCodedPaths()) {
+    \Drupal::messenger()->addWarning(t('@count hard-coded path(s) into the public files directory will break now that files are private. Run uiowa_core:migrate-files with --dry-run to list them.', [
+      '@count' => count($paths),
+    ]));
+  }
+
+  $results = $migrator->migrate('public', 'private');
+
+  \Drupal::messenger()->addStatus(t('Moved @count file(s) into private storage.', [
+    '@count' => count($results['moved']),
+  ]));
+
+  if ($excluded = $migrator->countExcluded('public')) {
+    \Drupal::messenger()->addStatus(t('@count file(s) were left public by an exclusion (@dirs).', [
+      '@count' => $excluded,
+      '@dirs' => implode(', ', FileSchemeMigrator::EXCLUDED_DIRECTORIES),
+    ]));
+  }
+
+  foreach (['missing' => 'had no file on disk', 'failed' => 'could not be moved'] as $key => $description) {
+    if ($results[$key]) {
+      \Drupal::messenger()->addWarning(t('@count file(s) @description: @fids', [
+        '@count' => count($results[$key]),
+        '@description' => $description,
+        '@fids' => implode(', ', array_keys($results[$key])),
+      ]));
+    }
+  }
+
+  // A derivative built from a public source stays readable by URL after its
+  // source moves, so flushing is part of the move.
+  if ($results['moved']) {
+    foreach (\Drupal::entityTypeManager()->getStorage('image_style')->loadMultiple() as $style) {
+      $style->flush();
+    }
+  }
 }
 
 /**
