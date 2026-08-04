@@ -104,15 +104,25 @@ function sitenow_intranet_migrate_public_files() {
     return;
   }
 
-  // Reported rather than rewritten. A path pasted into content does not follow
-  // the file it points at, and deciding what to do with it is a content call.
-  if ($paths = $migrator->findHardCodedPaths()) {
-    \Drupal::messenger()->addWarning(t('@count hard-coded path(s) into the public files directory will break now that files are private. Run uiowa_core:migrate-files with --dry-run to list them.', [
-      '@count' => count($paths),
-    ]));
+  $results = $migrator->migrate('public', 'private');
+
+  // Content that points at a moved file by path does not follow it, so those
+  // references are rewritten too. A path pointing anywhere else is left alone.
+  if ($results['moved']) {
+    $rewritten = $migrator->rewriteReferences($results['moved'], 'public', 'private');
+
+    if (!empty($rewritten['rows'])) {
+      \Drupal::messenger()->addStatus(t('Rewrote @count content reference row(s) to the private file path.', [
+        '@count' => $rewritten['rows'],
+      ]));
+    }
   }
 
-  $results = $migrator->migrate('public', 'private');
+  if ($remaining = $migrator->findHardCodedPaths()) {
+    \Drupal::messenger()->addWarning(t('@count hard-coded path(s) into the public files directory remain and point at files that were not moved. Run uiowa_core:migrate-files private --dry-run --list-paths to see them.', [
+      '@count' => count($remaining),
+    ]));
+  }
 
   \Drupal::messenger()->addStatus(t('Moved @count file(s) into private storage.', [
     '@count' => count($results['moved']),

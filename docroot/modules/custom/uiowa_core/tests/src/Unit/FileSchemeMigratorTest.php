@@ -177,6 +177,105 @@ class FileSchemeMigratorTest extends UnitTestCase {
   }
 
   /**
+   * @covers ::pathVariants
+   */
+  public function testPathVariantsCoverPercentEncoding(): void {
+    // Real content holds the encoded form Drupal generates, so a rewrite that
+    // only matched the raw path would miss it.
+    $variants = $this->invoke('pathVariants', ['2024-07/July 17 [64].pdf']);
+
+    $this->assertContains('2024-07/July 17 [64].pdf', $variants);
+    $this->assertContains('2024-07/July%2017%20%5B64%5D.pdf', $variants);
+  }
+
+  /**
+   * @covers ::pathVariants
+   */
+  public function testPathVariantsDeduplicatesWhenNothingToEncode(): void {
+    $this->assertSame(['2024-07/plain.pdf'], $this->invoke('pathVariants', ['2024-07/plain.pdf']));
+  }
+
+  /**
+   * @covers ::rewriteString
+   */
+  public function testRewritesDerivativePathsAndNotOtherFiles(): void {
+    $context = $this->context();
+
+    // A derivative carries the scheme as its own path segment, so it needs the
+    // segment swapped as well as the prefix.
+    $value = implode(' ', [
+      '<img src="/sites/example.uiowa.edu/files/styles/medium/public/a.jpg">',
+      '<a href="/sites/example.uiowa.edu/files/a.jpg">direct</a>',
+      '<a href="/sites/example.uiowa.edu/files/gone.pdf">not moved</a>',
+    ]);
+
+    $out = $this->invoke('rewriteString', [$value, $context]);
+
+    $this->assertStringContainsString('/system/files/styles/medium/private/a.jpg', $out);
+    $this->assertStringContainsString('/system/files/a.jpg', $out);
+    // Left alone: nothing moved it, so rewriting would only change which URL
+    // returns the 404 it already returns.
+    $this->assertStringContainsString('/sites/example.uiowa.edu/files/gone.pdf', $out);
+  }
+
+  /**
+   * @covers ::rewriteString
+   */
+  public function testRewriteIsReversible(): void {
+    $forward = $this->context();
+    $back = [
+      'map' => array_flip($forward['map']),
+      'from' => 'private',
+      'to' => 'public',
+      'styles_from' => $forward['styles_to'],
+      'styles_to' => $forward['styles_from'],
+    ];
+    $original = '<a href="/sites/example.uiowa.edu/files/a.jpg">x</a>';
+
+    $private = $this->invoke('rewriteString', [$original, $forward]);
+    $public = $this->invoke('rewriteString', [$private, $back]);
+
+    $this->assertSame($original, $public);
+  }
+
+  /**
+   * Builds a public to private rewrite context.
+   *
+   * Hand-built rather than derived from PublicStream, so these stay unit tests
+   * with no container behind them.
+   *
+   * @return array
+   *   A rewrite context.
+   */
+  protected function context(): array {
+    return [
+      'map' => ['/sites/example.uiowa.edu/files/a.jpg' => '/system/files/a.jpg'],
+      'from' => 'public',
+      'to' => 'private',
+      'styles_from' => '/sites/example.uiowa.edu/files/styles/',
+      'styles_to' => '/system/files/styles/',
+    ];
+  }
+
+  /**
+   * Calls a protected method on the migrator.
+   *
+   * @param string $method
+   *   The method name.
+   * @param array $args
+   *   Positional arguments.
+   *
+   * @return mixed
+   *   Whatever the method returns.
+   */
+  protected function invoke(string $method, array $args): mixed {
+    $ref = new \ReflectionMethod($this->migrator, $method);
+    $ref->setAccessible(TRUE);
+
+    return $ref->invokeArgs($this->migrator, $args);
+  }
+
+  /**
    * Calls the protected containsPath() method.
    *
    * @param mixed $value

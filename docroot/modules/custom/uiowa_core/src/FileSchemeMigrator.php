@@ -13,6 +13,7 @@ use Drupal\file\FileInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
+use Drupal\layout_builder\SectionStorageInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -481,6 +482,402 @@ class FileSchemeMigrator {
     if ($progress) {
       $progress($outcome, $fid, $detail);
     }
+  }
+
+  /**
+   * Rewrites content references to files that have moved.
+   *
+   * Only references to files this migration actually moved are rewritten. A
+   * path pointing at something else, typically a file deleted long ago that
+   * already serves a 404, is left exactly as it is: rewriting it would turn one
+   * broken link into a different broken link and hide the real problem.
+   *
+   * @param string[] $destinations
+   *   The destination URIs of the files that moved, as returned in the 'moved'
+   *   key of ::migrate(). Destinations are used rather than file IDs so that a
+   *   dry run, where nothing has actually moved yet, maps the same paths a real
+   *   run would.
+   * @param string $from
+   *   The scheme the files were moved out of.
+   * @param string $to
+   *   The scheme the files were moved into.
+   * @param bool $dry_run
+   *   Count what would change without writing.
+   *
+   * @return array
+   *   Occurrence counts keyed by location, plus a 'rows' total.
+   */
+  public function rewriteReferences(array $destinations, string $from, string $to, bool $dry_run = FALSE): array {
+    $map = [];
+
+    foreach ($destinations as $uri) {
+      $target = $this->streamWrapperManager->getTarget($uri);
+
+      foreach ($this->pathVariants($target) as $variant) {
+        $map[$this->urlPath($from, $variant)] = $this->urlPath($to, $variant);
+      }
+    }
+
+    if (!$map) {
+      return ['rows' => 0];
+    }
+
+    // Everything the rewrite needs, resolved once. Passing it down keeps the
+    // string rewriting free of global state and testable on its own.
+    $context = [
+      'map' => $map,
+      'from' => $from,
+      'to' => $to,
+      'search' => $this->urlPath($from, ''),
+      'styles_from' => $this->urlPath($from, 'styles/'),
+      'styles_to' => $this->urlPath($to, 'styles/'),
+    ];
+
+    $results = ['rows' => 0];
+
+    foreach ([
+      $this->rewriteFieldTables($context, $dry_run),
+      $this->rewriteLayoutSections($context, $dry_run),
+      $this->rewriteTempstore($context, $dry_run),
+    ] as $pass) {
+      foreach ($pass as $location => $count) {
+        $results[$location] = ($results[$location] ?? 0) + $count;
+        $results['rows'] += $count;
+      }
+    }
+
+    return $results;
+  }
+
+  /**
+   * Builds the raw and percent-encoded forms of a file target.
+   *
+   * Content holds whichever form the editor pasted, and Drupal generates the
+   * encoded one, so both have to be matched.
+   *
+   * @param string $target
+   *   The path within the stream wrapper.
+   *
+   * @return string[]
+   *   The distinct variants to match.
+   */
+  protected function pathVariants(string $target): array {
+    $encoded = implode('/', array_map('rawurlencode', explode('/', $target)));
+
+    return $encoded === $target ? [$target] : [$target, $encoded];
+  }
+
+  /**
+   * Builds the URL path a scheme serves a target at.
+   *
+   * @param string $scheme
+   *   Either 'public' or 'private'.
+   * @param string $target
+   *   The path within the stream wrapper.
+   *
+   * @return string
+   *   The URL path, without scheme or host.
+   */
+  protected function urlPath(string $scheme, string $target): string {
+    return $scheme === 'private'
+      ? '/system/files/' . $target
+      : '/' . PublicStream::basePath() . '/' . $target;
+  }
+
+  /**
+   * Rewrites a string, including any image style derivative paths in it.
+   *
+   * @param string $value
+   *   The value to rewrite.
+   * @param array $context
+   *   The rewrite context built by ::rewriteReferences().
+   *
+   * @return string
+   *   The rewritten value.
+   */
+  protected function rewriteString(string $value, array $context): string {
+    // Derivatives carry the source scheme as a path segment of their own, so
+    // they need handling before the direct paths are swapped out from under
+    // them.
+    if (str_contains($value, '/styles/')) {
+      $pattern = '#' . preg_quote($context['styles_from'], '#') . '([^/]+)/' . preg_quote($context['from'], '#') . '/#';
+      $replacement = $context['styles_to'] . '$1/' . $context['to'] . '/';
+      $value = preg_replace($pattern, $replacement, $value);
+    }
+
+    return strtr($value, $context['map']);
+  }
+
+  /**
+   * Rewrites every scannable field table.
+   *
+   * @param array $context
+   *   The rewrite context built by ::rewriteReferences().
+   * @param bool $dry_run
+   *   Count without writing.
+   *
+   * @return array
+   *   Changed row counts keyed by table and column.
+   */
+  protected function rewriteFieldTables(array $context, bool $dry_run): array {
+    $changed = [];
+
+    foreach ($this->getScannableTables() as $table => $column) {
+      if (!$this->database->schema()->tableExists($table)) {
+        continue;
+      }
+
+      $rows = $this->database->select($table, 't')
+        ->fields('t', ['entity_id', 'revision_id', 'langcode', 'delta', $column])
+        ->condition('t.' . $column, '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
+        ->execute();
+
+      foreach ($rows as $row) {
+        $rewritten = $this->rewriteString($row->{$column}, $context);
+
+        if ($rewritten === $row->{$column}) {
+          continue;
+        }
+
+        $changed[$table . '.' . $column] = ($changed[$table . '.' . $column] ?? 0) + 1;
+
+        if (!$dry_run) {
+          $this->database->update($table)
+            ->fields([$column => $rewritten])
+            ->condition('revision_id', $row->revision_id)
+            ->condition('langcode', $row->langcode)
+            ->condition('delta', $row->delta)
+            ->execute();
+        }
+      }
+    }
+
+    return $changed;
+  }
+
+  /**
+   * Rewrites saved layout builder sections.
+   *
+   * @param array $context
+   *   The rewrite context built by ::rewriteReferences().
+   * @param bool $dry_run
+   *   Count without writing.
+   *
+   * @return array
+   *   Changed row counts keyed by table.
+   */
+  protected function rewriteLayoutSections(array $context, bool $dry_run): array {
+    $changed = [];
+    $column = 'layout_builder__layout_section';
+
+    foreach (array_keys($this->entityFieldManager->getFieldMapByFieldType('layout_section')) as $entity_type_id) {
+      foreach (["{$entity_type_id}__layout_builder__layout", "{$entity_type_id}_revision__layout_builder__layout"] as $table) {
+        if (!$this->database->schema()->tableExists($table)) {
+          continue;
+        }
+
+        $rows = $this->database->select($table, 't')
+          ->fields('t', ['revision_id', 'delta', $column])
+          ->condition('t.' . $column, '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
+          ->execute();
+
+        foreach ($rows as $row) {
+          $section = unserialize($row->{$column}, [
+            'allowed_classes' => [Section::class, SectionComponent::class],
+          ]);
+
+          if (!$section instanceof Section) {
+            $this->logger->warning('Skipped a layout section in @table revision @id: the stored value is not a Section.', [
+              '@table' => $table,
+              '@id' => $row->revision_id,
+            ]);
+            continue;
+          }
+
+          if (!$this->rewriteSection($section, $context)) {
+            continue;
+          }
+
+          $changed[$table] = ($changed[$table] ?? 0) + 1;
+
+          if (!$dry_run) {
+            $this->database->update($table)
+              ->fields([$column => serialize($section)])
+              ->condition('revision_id', $row->revision_id)
+              ->condition('delta', $row->delta)
+              ->execute();
+          }
+        }
+      }
+    }
+
+    return $changed;
+  }
+
+  /**
+   * Rewrites unsaved layout edits held in the tempstore.
+   *
+   * The stored graph reaches the host entity, so its classes cannot be listed
+   * up front. They are read out of the serialized string instead and checked
+   * before anything is deserialized, and a lossless round trip is proven on the
+   * untouched value before the rewritten one is written back. Any row failing a
+   * check is reported and left alone.
+   *
+   * @param array $context
+   *   The rewrite context built by ::rewriteReferences().
+   * @param bool $dry_run
+   *   Count without writing.
+   *
+   * @return array
+   *   Changed row counts keyed by location.
+   */
+  protected function rewriteTempstore(array $context, bool $dry_run): array {
+    if (!$this->database->schema()->tableExists('key_value_expire')) {
+      return [];
+    }
+
+    $changed = [];
+
+    $rows = $this->database->select('key_value_expire', 'kve')
+      ->fields('kve', ['collection', 'name', 'value'])
+      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.%', 'LIKE')
+      ->condition('value', '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
+      ->execute();
+
+    foreach ($rows as $row) {
+      $stored = $this->readTempstoreValue($row->value, $row->name);
+
+      if ($stored === NULL) {
+        continue;
+      }
+
+      $storage = $stored->data['section_storage'] ?? NULL;
+
+      if (!$storage instanceof SectionStorageInterface) {
+        $this->logger->warning('Skipped unsaved layout edit @name: no section storage in the stored value.', [
+          '@name' => $row->name,
+        ]);
+        continue;
+      }
+
+      $touched = FALSE;
+
+      foreach ($storage->getSections() as $section) {
+        $touched = $this->rewriteSection($section, $context) || $touched;
+      }
+
+      if (!$touched) {
+        continue;
+      }
+
+      $changed['key_value_expire'] = ($changed['key_value_expire'] ?? 0) + 1;
+
+      if (!$dry_run) {
+        $this->database->update('key_value_expire')
+          ->fields(['value' => serialize($stored)])
+          ->condition('collection', $row->collection)
+          ->condition('name', $row->name)
+          ->execute();
+      }
+    }
+
+    return $changed;
+  }
+
+  /**
+   * Deserializes a tempstore value after checking what it contains.
+   *
+   * @param string $value
+   *   The serialized value.
+   * @param string $name
+   *   The tempstore key, for reporting.
+   *
+   * @return object|null
+   *   The stored object, or NULL if it did not pass a check.
+   */
+  protected function readTempstoreValue(string $value, string $name): ?object {
+    preg_match_all('/O:\d+:"([^"]+)"/', $value, $matches);
+    $classes = array_values(array_unique($matches[1]));
+
+    $unknown = array_filter($classes, fn(string $class) => $class !== 'stdClass' && !class_exists($class));
+
+    if ($unknown) {
+      $this->logger->warning('Skipped unsaved layout edit @name: it names classes that do not exist here (@classes).', [
+        '@name' => $name,
+        '@classes' => implode(', ', $unknown),
+      ]);
+      return NULL;
+    }
+
+    $stored = unserialize($value, ['allowed_classes' => $classes]);
+
+    if (!is_object($stored) || !isset($stored->data)) {
+      $this->logger->warning('Skipped unsaved layout edit @name: unexpected shape.', ['@name' => $name]);
+      return NULL;
+    }
+
+    // If an untouched round trip is not byte for byte identical, writing a
+    // rewritten one back would change more than intended.
+    if (serialize($stored) !== $value) {
+      $this->logger->warning('Skipped unsaved layout edit @name: it does not round trip losslessly.', [
+        '@name' => $name,
+      ]);
+      return NULL;
+    }
+
+    return $stored;
+  }
+
+  /**
+   * Rewrites the component configuration of a section in place.
+   *
+   * @param \Drupal\layout_builder\Section $section
+   *   The section to rewrite.
+   * @param array $context
+   *   The rewrite context built by ::rewriteReferences().
+   *
+   * @return bool
+   *   TRUE if anything changed.
+   */
+  protected function rewriteSection(Section $section, array $context): bool {
+    $touched = FALSE;
+
+    foreach ($section->getComponents() as $component) {
+      $configuration = $component->get('configuration');
+      $rewritten = $this->rewriteRecursive($configuration, $context);
+
+      if ($rewritten !== $configuration) {
+        $component->setConfiguration($rewritten);
+        $touched = TRUE;
+      }
+    }
+
+    return $touched;
+  }
+
+  /**
+   * Rewrites every string nested in a value.
+   *
+   * @param mixed $value
+   *   The value to rewrite.
+   * @param array $context
+   *   The rewrite context built by ::rewriteReferences().
+   *
+   * @return mixed
+   *   The rewritten value.
+   */
+  protected function rewriteRecursive(mixed $value, array $context): mixed {
+    if (is_string($value)) {
+      return $this->rewriteString($value, $context);
+    }
+
+    if (is_array($value)) {
+      foreach ($value as $key => $item) {
+        $value[$key] = $this->rewriteRecursive($item, $context);
+      }
+    }
+
+    return $value;
   }
 
 }

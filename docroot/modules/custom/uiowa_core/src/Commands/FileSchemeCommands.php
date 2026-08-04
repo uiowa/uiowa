@@ -45,15 +45,27 @@ class FileSchemeCommands extends DrushCommands {
    *
    * @option dry-run Report what would move without moving anything.
    * @option skip-flush Leave image style derivatives in place.
+   * @option no-rewrite Leave content references pointing at the old location.
+   * @option list-paths List every hard-coded path instead of counting them.
    *
    * @usage uiowa_core:migrate-files private --dry-run
    *   List the files that would move to private storage.
+   * @usage uiowa_core:migrate-files private --dry-run --list-paths
+   *   Also list every content reference that would be rewritten.
    * @usage uiowa_core:migrate-files private
    *   Move every public file into private storage.
    * @usage uiowa_core:migrate-files public
    *   Move every private file back into public storage.
    */
-  public function migrateFiles(string $to, array $options = ['dry-run' => FALSE, 'skip-flush' => FALSE]) {
+  public function migrateFiles(
+    string $to,
+    array $options = [
+      'dry-run' => FALSE,
+      'skip-flush' => FALSE,
+      'no-rewrite' => FALSE,
+      'list-paths' => FALSE,
+    ],
+  ) {
     if (!isset(static::DIRECTIONS[$to])) {
       $this->logger()->error(dt("Destination must be 'private' or 'public', got '@to'.", ['@to' => $to]));
       return self::EXIT_FAILURE;
@@ -77,7 +89,7 @@ class FileSchemeCommands extends DrushCommands {
       return self::EXIT_SUCCESS;
     }
 
-    $this->warnAboutHardCodedPaths();
+    $this->reportHardCodedPaths((bool) $options['list-paths']);
 
     $this->io()->text(dt('@count file(s) in @from:// will move to @to://.', [
       '@count' => $total,
@@ -90,6 +102,13 @@ class FileSchemeCommands extends DrushCommands {
     }
 
     $results = $this->runMigration($from, $to, $dry_run, $total);
+
+    $rewritten = [];
+
+    if ($results['moved'] && !$options['no-rewrite']) {
+      $rewritten = $this->migrator->rewriteReferences($results['moved'], $from, $to, $dry_run);
+      $this->reportRewrites($rewritten, $dry_run);
+    }
 
     if ($dry_run) {
       $this->logger()->success(dt('Dry run: @count file(s) would move. Nothing was changed.', [
@@ -141,26 +160,78 @@ class FileSchemeCommands extends DrushCommands {
   }
 
   /**
-   * Warns about hard-coded public file paths in text fields.
+   * Reports hard-coded public file paths found in content.
    *
-   * These do not follow a move and will break. Rewriting them is a content
-   * decision, so the command reports and leaves them alone.
+   * Shown before the move so the operator sees the scope up front. Those
+   * pointing at files being moved are rewritten afterwards; the rest are
+   * pre-existing broken links and are left as they are.
+   *
+   * @param bool $list
+   *   List every occurrence instead of counting by location.
    */
-  protected function warnAboutHardCodedPaths(): void {
+  protected function reportHardCodedPaths(bool $list): void {
     $found = $this->migrator->findHardCodedPaths();
 
     if (!$found) {
       return;
     }
 
-    $this->logger()->warning(dt('@count hard-coded path(s) into the public files directory found. These will not follow the move and will break. Review them before continuing.', [
+    $this->logger()->notice(dt('@count hard-coded path(s) into the public files directory found. Those pointing at files being moved are rewritten; any pointing elsewhere are left alone and listed below.', [
       '@count' => count($found),
     ]));
 
+    if ($list) {
+      $this->io()->table(
+        ['Source', 'Location', 'Detail'],
+        array_map('array_values', $found)
+      );
+      return;
+    }
+
+    $counts = [];
+
+    foreach ($found as $item) {
+      $key = $item['source'] . ' | ' . $item['location'];
+      $counts[$key] = ($counts[$key] ?? 0) + 1;
+    }
+
+    arsort($counts);
+
     $this->io()->table(
-      ['Source', 'Location', 'Detail'],
-      array_map('array_values', $found)
+      ['Source and location', 'Rows'],
+      array_map(NULL, array_keys($counts), array_values($counts))
     );
+    $this->io()->text(dt('Run again with --list-paths for the full list.'));
+  }
+
+  /**
+   * Reports what the rewrite changed, grouped by location.
+   *
+   * @param array $rewritten
+   *   The result of the rewrite.
+   * @param bool $dry_run
+   *   Whether this was a dry run.
+   */
+  protected function reportRewrites(array $rewritten, bool $dry_run): void {
+    $rows = $rewritten['rows'] ?? 0;
+
+    if ($rows === 0) {
+      $this->logger()->notice(dt('No content references needed rewriting.'));
+      return;
+    }
+
+    unset($rewritten['rows']);
+    arsort($rewritten);
+
+    $this->io()->table(
+      [$dry_run ? 'Would rewrite' : 'Rewrote', 'Rows'],
+      array_map(NULL, array_keys($rewritten), array_values($rewritten))
+    );
+
+    $this->logger()->success(dt('@verb @count content reference row(s).', [
+      '@verb' => $dry_run ? 'Would rewrite' : 'Rewrote',
+      '@count' => $rows,
+    ]));
   }
 
   /**
