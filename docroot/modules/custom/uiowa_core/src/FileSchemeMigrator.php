@@ -843,7 +843,7 @@ class FileSchemeMigrator {
     $touched = FALSE;
 
     foreach ($section->getComponents() as $component) {
-      $configuration = $component->get('configuration');
+      $configuration = $component->getConfiguration();
       $rewritten = $this->rewriteRecursive($configuration, $context);
 
       if ($rewritten !== $configuration) {
