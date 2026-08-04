@@ -277,12 +277,12 @@ HELP);
    * application running the command; when --env also matches the running
    * environment, every resulting drush alias points right back at this same
    * environment. Drush resolves that locally rather than over SSH — the same
-   * way the Acquia-provisioned drush-cron.sh scheduled job runs `drush
-   * @self.env cron` on every application with no SSH agent available
-   * (confirmed directly on uiowa07.prod: no agent is running there, yet
-   * `drush @uiowa07.prod status` succeeds). A different --env is a genuinely
-   * different environment reached over real SSH, so the agent is still
-   * required there.
+   * way the Acquia-provisioned drush-cron.sh scheduled job runs drush against
+   * its own environment's alias on every application with no SSH agent
+   * available (confirmed directly on uiowa07.prod: no agent is running
+   * there, yet `drush @uiowa07.prod status` succeeds). A different --env is
+   * a genuinely different environment reached over real SSH, so the agent is
+   * still required there.
    *
    * @param string $env
    *   The --env option value.

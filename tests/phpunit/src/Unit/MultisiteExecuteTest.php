@@ -9,16 +9,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**
- * Unit tests for MultisiteExecuteCommand's per-site failure reason and the
- * Acquia Cloud --apps guard.
+ * Unit tests for MultisiteExecuteCommand.
  *
- * The reason leads with drush's own error message (so a developer sees what
- * went wrong without decoding an exit code) and trails the exit code as a
- * detail. The --apps guard pins the fleet selection to the application
- * actually running the command whenever AH_SITE_ENVIRONMENT is set, so a
- * scheduled job or shell on one Acquia application can't reach another's
- * sites now that the ddev gate no longer confines this command to a
- * developer's own machine.
+ * Covers the per-site failure reason — leads with drush's own error message
+ * so a developer sees what went wrong without decoding an exit code, trails
+ * the exit code as a detail — and the Acquia Cloud --apps guard, which pins
+ * the fleet selection to the application actually running the command
+ * whenever AH_SITE_ENVIRONMENT is set, so a scheduled job or shell on one
+ * Acquia application can't reach another's sites now that the ddev gate no
+ * longer confines this command to a developer's own machine.
  *
  * @group unit
  */
@@ -162,10 +161,11 @@ class MultisiteExecuteTest extends UnitTestCase {
   }
 
   /**
-   * On Acquia Cloud, --apps naming several apps including the running one is
-   * still rejected: pinning silently to just the running app would be a
-   * quieter, easier-to-miss version of the same over-broad run this guard
-   * exists to catch.
+   * On Acquia Cloud, --apps naming several matching apps is still rejected.
+   *
+   * Pinning silently to just the running app would be a quieter,
+   * easier-to-miss version of the same over-broad run this guard exists to
+   * catch.
    */
   public function testAcquiaRejectsMultipleAppsEvenIfOneMatches(): void {
     putenv('AH_SITE_ENVIRONMENT=prod');
@@ -219,8 +219,9 @@ class MultisiteExecuteTest extends UnitTestCase {
   }
 
   /**
-   * On Acquia Cloud, --env matching the running environment skips the agent:
-   * the resulting drush alias points at this same environment, which
+   * On Acquia Cloud, --env matching the running environment skips the agent.
+   *
+   * The resulting drush alias points at this same environment, which
    * resolves locally rather than over SSH.
    */
   public function testAcquiaSkipsSshAgentForMatchingEnv(): void {
@@ -230,8 +231,9 @@ class MultisiteExecuteTest extends UnitTestCase {
   }
 
   /**
-   * On Acquia Cloud, --env naming a different environment still requires the
-   * agent: that alias is a genuinely different, remote environment.
+   * On Acquia Cloud, a different --env still requires the SSH agent.
+   *
+   * That alias is a genuinely different, remote environment.
    */
   public function testAcquiaRequiresSshAgentForOtherEnv(): void {
     putenv('AH_SITE_ENVIRONMENT=prod');
