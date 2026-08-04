@@ -449,6 +449,28 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Determine if the command is running on an Acquia Cloud environment.
+   *
+   * @return bool
+   *   TRUE when running on Acquia Cloud (dev, stage, or prod), FALSE
+   *   otherwise (host shell or DDEV).
+   */
+  protected function isAcquia(): bool {
+    return (bool) getenv('AH_SITE_ENVIRONMENT');
+  }
+
+  /**
+   * Get the application this process is running on, per Acquia Cloud.
+   *
+   * @return string|null
+   *   The application name (AH_SITE_GROUP), or NULL when not on Acquia Cloud
+   *   or AH_SITE_GROUP is unset.
+   */
+  protected function currentApp(): ?string {
+    return $this->isAcquia() ? (getenv('AH_SITE_GROUP') ?: NULL) : NULL;
+  }
+
+  /**
    * Gather active prod SSL coverage for a set of Acquia applications.
    *
    * The only live API query in the multisite-create decision: for each given

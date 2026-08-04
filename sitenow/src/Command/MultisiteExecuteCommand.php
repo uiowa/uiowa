@@ -81,6 +81,12 @@ runs; a command that only exists on some sites asks for confirmation.
 Use -v (verbose) to see command output from each site. By default, only success/failure
 status is shown.
 
+On Acquia Cloud (a scheduled job, or an interactive shell on a hosted
+environment) --apps is pinned to the application actually running the
+command — e.g. a scheduled job on uiowa02.prod can only reach uiowa02's own
+sites, regardless of --apps. An --apps naming a different application there
+is rejected rather than silently narrowed or widened.
+
 Examples:
   # Cache rebuild on every site of two apps:
   ./sn ume --apps=uiowa02,uiowa03 -y -- cr
@@ -113,6 +119,11 @@ HELP);
     $dry_run = (bool) $input->getOption('dry-run');
 
     if (!$this->requireEnvironment($io, $env)) {
+      return Command::FAILURE;
+    }
+
+    $apps = $this->restrictToRunningApp($apps, $err);
+    if ($apps === NULL) {
       return Command::FAILURE;
     }
 
@@ -211,6 +222,47 @@ HELP);
     $io->writeln("Finished in {$elapsed}s: {$ok_count} succeeded, " . count($failed) . ' failed.');
 
     return empty($failed) ? Command::SUCCESS : self::EXITCODE_PARTIAL;
+  }
+
+  /**
+   * Pin --apps to the running application when on Acquia Cloud.
+   *
+   * Locally (host shell or DDEV), --apps passes through untouched — fanning a
+   * command out across several apps at once is the point of this command
+   * there. On Acquia Cloud, though, this process's own drush and SSH context
+   * belong to one application's environment (e.g. a scheduled job on
+   * uiowa02.prod), which has no business reaching every other application's
+   * sites just because the ddev gate no longer forces it onto a developer's
+   * machine. So the selection is pinned to the running application there, and
+   * an --apps naming a different one is rejected outright rather than
+   * silently widened or narrowed.
+   *
+   * @param string[] $apps
+   *   The --apps option, already comma-split.
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $err
+   *   The error output style used to report a rejected --apps.
+   *
+   * @return string[]|null
+   *   The (possibly pinned) app list, or NULL (after printing an error) when
+   *   --apps conflicts with the running application.
+   */
+  protected function restrictToRunningApp(array $apps, SymfonyStyle $err): ?array {
+    if (!$this->isAcquia()) {
+      return $apps;
+    }
+
+    $current_app = $this->currentApp();
+    if ($current_app === NULL) {
+      $err->error('On Acquia Cloud but AH_SITE_GROUP is not set; cannot determine which application this is running on.');
+      return NULL;
+    }
+
+    if ($apps && $apps !== [$current_app]) {
+      $err->error("Running on Acquia Cloud ({$current_app}): --apps can only target the application this command is running on. Got: " . implode(', ', $apps));
+      return NULL;
+    }
+
+    return [$current_app];
   }
 
   /**
