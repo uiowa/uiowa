@@ -85,7 +85,12 @@ On Acquia Cloud (a scheduled job, or an interactive shell on a hosted
 environment) --apps is pinned to the application actually running the
 command — e.g. a scheduled job on uiowa02.prod can only reach uiowa02's own
 sites, regardless of --apps. An --apps naming a different application there
-is rejected rather than silently narrowed or widened.
+is rejected rather than silently narrowed or widened. In that same case, with
+--env left at its own running environment, this also skips the SSH agent
+requirement — Acquia Cloud environments have no agent, but a drush alias
+pointed at the environment it's already running on resolves locally rather
+than over SSH. A different --env there is a real remote environment, so the
+agent is still required.
 
 Examples:
   # Cache rebuild on every site of two apps:
@@ -165,7 +170,7 @@ HELP);
       return Command::SUCCESS;
     }
 
-    if (!$this->requireSshAgent($io)) {
+    if (!$this->canSkipSshAgent($env) && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 
@@ -263,6 +268,30 @@ HELP);
     }
 
     return [$current_app];
+  }
+
+  /**
+   * Determine if the SSH agent precondition can be skipped.
+   *
+   * On Acquia Cloud, restrictToRunningApp() already pins the selection to the
+   * application running the command; when --env also matches the running
+   * environment, every resulting drush alias points right back at this same
+   * environment. Drush resolves that locally rather than over SSH — the same
+   * way the Acquia-provisioned drush-cron.sh scheduled job runs `drush
+   * @self.env cron` on every application with no SSH agent available
+   * (confirmed directly on uiowa07.prod: no agent is running there, yet
+   * `drush @uiowa07.prod status` succeeds). A different --env is a genuinely
+   * different environment reached over real SSH, so the agent is still
+   * required there.
+   *
+   * @param string $env
+   *   The --env option value.
+   *
+   * @return bool
+   *   TRUE when the SSH agent precondition can be skipped.
+   */
+  protected function canSkipSshAgent(string $env): bool {
+    return $this->isAcquia() && $env === getenv('AH_SITE_ENVIRONMENT');
   }
 
   /**

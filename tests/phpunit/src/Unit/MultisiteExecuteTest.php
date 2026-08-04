@@ -188,4 +188,55 @@ class MultisiteExecuteTest extends UnitTestCase {
     $this->assertStringContainsString('AH_SITE_GROUP', $output);
   }
 
+  /**
+   * Expose the protected SSH-agent-skip check.
+   *
+   * @param string $env
+   *   The --env option value.
+   *
+   * @return bool
+   *   TRUE when the SSH agent precondition can be skipped.
+   */
+  private function canSkip(string $env): bool {
+    $command = new class extends MultisiteExecuteCommand {
+
+      /**
+       * Calls the protected check.
+       */
+      public function expose(string $env): bool {
+        return $this->canSkipSshAgent($env);
+      }
+
+    };
+    return $command->expose($env);
+  }
+
+  /**
+   * Locally (no AH_SITE_ENVIRONMENT), the SSH agent is always required.
+   */
+  public function testLocalNeverSkipsSshAgent(): void {
+    $this->assertFalse($this->canSkip('prod'));
+  }
+
+  /**
+   * On Acquia Cloud, --env matching the running environment skips the agent:
+   * the resulting drush alias points at this same environment, which
+   * resolves locally rather than over SSH.
+   */
+  public function testAcquiaSkipsSshAgentForMatchingEnv(): void {
+    putenv('AH_SITE_ENVIRONMENT=prod');
+
+    $this->assertTrue($this->canSkip('prod'));
+  }
+
+  /**
+   * On Acquia Cloud, --env naming a different environment still requires the
+   * agent: that alias is a genuinely different, remote environment.
+   */
+  public function testAcquiaRequiresSshAgentForOtherEnv(): void {
+    putenv('AH_SITE_ENVIRONMENT=prod');
+
+    $this->assertFalse($this->canSkip('dev'));
+  }
+
 }
