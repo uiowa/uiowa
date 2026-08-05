@@ -7900,3 +7900,9 @@ $sites['sitesbar.uiowa.ddev.site'] = 'bar.sites.uiowa.edu';
 $sites['sitesbar.dev.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
 $sites['sitesbar.stage.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
 $sites['sitesbar.prod.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
+
+// Directory aliases for badhikari.sites.uiowa.edu.
+$sites['sitesbadhikari.uiowa.ddev.site'] = 'badhikari.sites.uiowa.edu';
+$sites['sitesbadhikari.dev.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
+$sites['sitesbadhikari.stage.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
+$sites['sitesbadhikari.prod.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
