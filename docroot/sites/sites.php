@@ -7906,3 +7906,9 @@ $sites['sitesbadhikari.uiowa.ddev.site'] = 'badhikari.sites.uiowa.edu';
 $sites['sitesbadhikari.dev.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
 $sites['sitesbadhikari.stage.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
 $sites['sitesbadhikari.prod.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
+
+// Directory aliases for potter.lab.uiowa.edu.
+$sites['labpotter.uiowa.ddev.site'] = 'potter.lab.uiowa.edu';
+$sites['labpotter.dev.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
+$sites['labpotter.stage.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
+$sites['labpotter.prod.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
