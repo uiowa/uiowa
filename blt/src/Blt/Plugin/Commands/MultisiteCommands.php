@@ -3,20 +3,14 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
-use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Response\OperationResponse;
-use Consolidation\AnnotatedCommand\CommandData;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
 use SiteNow\Config\Applications;
 use SiteNow\Utility\Multisite;
 use Uiowa\Blt\AcquiaCloudApiTrait;
-use Uiowa\InspectorTrait;
 use Uiowa\MultisiteTrait;
 
 /**
@@ -25,122 +19,7 @@ use Uiowa\MultisiteTrait;
 class MultisiteCommands extends BltTasks {
 
   use AcquiaCloudApiTrait;
-  use InspectorTrait;
   use MultisiteTrait;
-
-  /**
-   * Invoke the BLT install process on multisites where Drupal is not installed.
-   *
-   * @param array $options
-   *   Command options.
-   *
-   * @option envs
-   *   Array of allowed environments for installation to happen on.
-   * @option dry-run
-   *   Report back the uninstalled sites but do not install.
-   *
-   * @command uiowa:multisite:install
-   *
-   * @aliases umi
-   *
-   * @return mixed
-   *   CommandError, list of uninstalled sites or the output from installation.
-   *
-   * @throws \Exception
-   *
-   * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
-   */
-  public function install(
-    array $options = [
-      'envs' => [
-        'local',
-        'prod',
-      ],
-      'dry-run' => FALSE,
-    ],
-  ) {
-    $app = EnvironmentDetector::getAhGroup() ?: 'local';
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
-
-    if (!in_array($env, $options['envs'])) {
-      $allowed = implode(', ', $options['envs']);
-      return new CommandError("Multisite installation not allowed on {$env} environment. Must be one of {$allowed}. Use option to override.");
-    }
-
-    $multisites = $this->getConfigValue('multisites');
-
-    $this->say('Finding uninstalled sites...');
-    $progress = $this->io()->createProgressBar();
-    $progress->setMaxSteps(count($multisites));
-    $progress->start();
-
-    $uninstalled = [];
-
-    foreach ($multisites as $multisite) {
-      $progress->advance();
-      $this->switchSiteContext($multisite);
-      $db = $this->getConfigValue('drupal.db.database');
-
-      // Skip sites whose database do not exist on the application in AH env.
-      if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-        $this->logger->info("Skipping {$multisite}. Database {$db} does not exist.");
-        continue;
-      }
-
-      if (!$this->isDrupalInstalled($multisite)) {
-        $uninstalled[] = $multisite;
-      }
-    }
-
-    $progress->finish();
-
-    if (!empty($uninstalled)) {
-      $this->io()->listing($uninstalled);
-
-      if (!$options['dry-run']) {
-        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
-          $uninstalled_list = implode(', ', $uninstalled);
-          $this->sendNotification("Command `uiowa:multisite:install` *started* for {$uninstalled_list} on {$app} {$env}.");
-
-          foreach ($uninstalled as $multisite) {
-            $this->switchSiteContext($multisite);
-
-            // Clear the cache first to prevent random errors on install.
-            // We use exec here to always return 0 since the command can fail
-            // and cause confusion with the error message output.
-            $this->taskExecStack()
-              ->interactive(FALSE)
-              ->silent(TRUE)
-              ->exec("./vendor/bin/drush -l {$multisite} cache:rebuild || true")
-              ->run();
-
-            // Run this non-interactively so prompts are bypassed. Note that
-            // a file permission exception is thrown on AC so we have to
-            // catch that and proceed with the command.
-            // @see: https://github.com/acquia/blt/issues/4054
-            $this->input()->setInteractive(FALSE);
-
-            try {
-              $this->invokeCommand('drupal:install', [
-                '--site' => $multisite,
-              ]);
-            }
-            catch (BltException $e) {
-              $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
-            }
-          }
-
-          $this->sendNotification("Command `uiowa:multisite:install` *finished* for {$uninstalled_list} on {$app} {$env}.");
-        }
-        else {
-          throw new \Exception('Canceled.');
-        }
-      }
-    }
-    else {
-      $this->say('There are no uninstalled sites.');
-    }
-  }
 
   /**
    * Deletes multisite code, database and domains.
@@ -315,88 +194,6 @@ EOD
     }
 
     $this->say('Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.');
-  }
-
-  /**
-   * Run post-install tasks.
-   *
-   * @throws \Robo\Exception\TaskException
-   *
-   * @hook post-command drupal:install
-   */
-  public function postDrupalInstall($result, CommandData $commandData) {
-    if ($multisite = $this->input->getOption('site')) {
-      $this->switchSiteContext($multisite);
-
-      // The site name option used during drush site:install is
-      // overwritten if installed from existing configuration.
-      $site_name = ($this->getConfigValue('uiowa.site-name') ? $this->getConfigValue('uiowa.site-name') : $multisite);
-      $this->taskDrush()
-        ->stopOnFail(FALSE)
-        ->drush('config:set')
-        ->args([
-          'system.site',
-          'name',
-          $site_name,
-        ])
-        ->run();
-
-      // If a requester was added, add them as a webmaster for the site.
-      if ($requester = $this->getConfigValue('uiowa.requester')) {
-        $this->taskDrush()
-          ->stopOnFail(FALSE)
-          ->drush('user:create')
-          ->args($requester)
-          ->drush('user:role:add')
-          ->args([
-            'webmaster',
-            $requester,
-          ])
-          ->run();
-      }
-
-      // Activate and import any config splits.
-      if ($split = $this->getConfigValue('uiowa.config.split')) {
-        $splits = is_array($split) ? $split : [$split];
-        $task = $this->taskDrush()->stopOnFail(FALSE);
-        foreach ($splits as $split_name) {
-          $task->drush('config:set')->args("config_split.config_split.{$split_name}", 'status', TRUE);
-        }
-        $task->drush('cache:rebuild')->drush('config:import')->run();
-      }
-    }
-  }
-
-  /**
-   * Send a Slack notification if the webhook environment variable exists.
-   *
-   * @param string $message
-   *   The message to send.
-   */
-  protected function sendNotification($message) {
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
-    $webhook_url = getenv('SLACK_WEBHOOK_URL');
-
-    if ($webhook_url && ($env == 'prod' || $env == 'local')) {
-      $data = [
-        'username' => 'Acquia Cloud',
-        'text' => $message,
-      ];
-
-      $client = new GuzzleClient();
-
-      try {
-        $client->post($webhook_url, [
-          'body' => json_encode($data),
-        ]);
-      }
-      catch (ClientException $e) {
-        $this->logger->warning('Error attempting to send Slack notification: ' . $e->getMessage());
-      }
-    }
-    else {
-      $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
-    }
   }
 
   /**

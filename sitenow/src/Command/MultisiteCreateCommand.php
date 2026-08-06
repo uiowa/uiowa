@@ -673,7 +673,7 @@ EOD;
     return [
       $first,
       'Coordinate a new release and deploy to test and prod environments.',
-      'Once deployed, run <comment>uiowa:multisite:install</comment> on the appropriate application(s).',
+      'Once deployed, run <comment>sn multisite:install</comment> on the appropriate application(s).',
       'Add multisite domains to Acquia environments as needed.',
     ];
   }
