@@ -24,7 +24,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
   name: 'multisite:execute',
-  description: '(ddev required) Execute a drush command across manifest-selected sites.',
+  description: 'Execute a drush command across manifest-selected sites.',
   aliases: ['me', 'ume'],
 )]
 class MultisiteExecuteCommand extends Command {
@@ -81,21 +81,32 @@ runs; a command that only exists on some sites asks for confirmation.
 Use -v (verbose) to see command output from each site. By default, only success/failure
 status is shown.
 
+On Acquia Cloud (a scheduled job, or an interactive shell on a hosted
+environment) --apps is pinned to the application actually running the
+command — e.g. a scheduled job on uiowa02.prod can only reach uiowa02's own
+sites, regardless of --apps. An --apps naming a different application there
+is rejected rather than silently narrowed or widened. In that same case, with
+--env left at its own running environment, this also skips the SSH agent
+requirement — Acquia Cloud environments have no agent, but a drush alias
+pointed at the environment it's already running on resolves locally rather
+than over SSH. A different --env there is a real remote environment, so the
+agent is still required.
+
 Examples:
   # Cache rebuild on every site of two apps:
-  ddev exec ./sn ume --apps=uiowa02,uiowa03 -y -- cr
+  ./sn ume --apps=uiowa02,uiowa03 -y -- cr
 
   # Arguments with spaces/quotes pass through unmodified:
-  ddev exec ./sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
+  ./sn ume --apps=uiowa09 -- sql:query "SELECT COUNT(*) FROM node"
 
   # Two different -y's: ours skips the fleet confirmation, drush's skips its own:
-  ddev exec ./sn ume -y --apps=uiowa09 -- pm:uninstall some_module -y
+  ./sn ume -y --apps=uiowa09 -- pm:uninstall some_module -y
 
   # Preview what would run, without executing anything:
-  ddev exec ./sn ume --dry-run -- cron
+  ./sn ume --dry-run -- cron
 
   # See output from each site (e.g., config values):
-  ddev exec ./sn ume -v --apps=uiowa09 -- config:get system.site
+  ./sn ume -v --apps=uiowa09 -- config:get system.site
 HELP);
   }
 
@@ -113,6 +124,11 @@ HELP);
     $dry_run = (bool) $input->getOption('dry-run');
 
     if (!$this->requireEnvironment($io, $env)) {
+      return Command::FAILURE;
+    }
+
+    $apps = $this->restrictToRunningApp($apps, $err);
+    if ($apps === NULL) {
       return Command::FAILURE;
     }
 
@@ -154,10 +170,7 @@ HELP);
       return Command::SUCCESS;
     }
 
-    if (!$this->requireDdev($io, $this->getName())) {
-      return Command::FAILURE;
-    }
-    if (!$this->requireSshAgent($io)) {
+    if (!$this->canSkipSshAgent($env) && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 
@@ -214,6 +227,71 @@ HELP);
     $io->writeln("Finished in {$elapsed}s: {$ok_count} succeeded, " . count($failed) . ' failed.');
 
     return empty($failed) ? Command::SUCCESS : self::EXITCODE_PARTIAL;
+  }
+
+  /**
+   * Pin --apps to the running application when on Acquia Cloud.
+   *
+   * Locally (host shell or DDEV), --apps passes through untouched — fanning a
+   * command out across several apps at once is the point of this command
+   * there. On Acquia Cloud, though, this process's own drush and SSH context
+   * belong to one application's environment (e.g. a scheduled job on
+   * uiowa02.prod), which has no business reaching every other application's
+   * sites just because the ddev gate no longer forces it onto a developer's
+   * machine. So the selection is pinned to the running application there, and
+   * an --apps naming a different one is rejected outright rather than
+   * silently widened or narrowed.
+   *
+   * @param string[] $apps
+   *   The --apps option, already comma-split.
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $err
+   *   The error output style used to report a rejected --apps.
+   *
+   * @return string[]|null
+   *   The (possibly pinned) app list, or NULL (after printing an error) when
+   *   --apps conflicts with the running application.
+   */
+  protected function restrictToRunningApp(array $apps, SymfonyStyle $err): ?array {
+    if (!$this->isAcquia()) {
+      return $apps;
+    }
+
+    $current_app = $this->currentApp();
+    if ($current_app === NULL) {
+      $err->error('On Acquia Cloud but AH_SITE_GROUP is not set; cannot determine which application this is running on.');
+      return NULL;
+    }
+
+    if ($apps && $apps !== [$current_app]) {
+      $err->error("Running on Acquia Cloud ({$current_app}): --apps can only target the application this command is running on. Got: " . implode(', ', $apps));
+      return NULL;
+    }
+
+    return [$current_app];
+  }
+
+  /**
+   * Determine if the SSH agent precondition can be skipped.
+   *
+   * On Acquia Cloud, restrictToRunningApp() already pins the selection to the
+   * application running the command; when --env also matches the running
+   * environment, every resulting drush alias points right back at this same
+   * environment. Drush resolves that locally rather than over SSH — the same
+   * way the Acquia-provisioned drush-cron.sh scheduled job runs drush against
+   * its own environment's alias on every application with no SSH agent
+   * available (confirmed directly on uiowa07.prod: no agent is running
+   * there, yet `drush @uiowa07.prod status` succeeds). A different --env is
+   * a genuinely different environment reached over real SSH, so the agent is
+   * still required there.
+   *
+   * @param string $env
+   *   The --env option value.
+   *
+   * @return bool
+   *   TRUE when the SSH agent precondition can be skipped.
+   */
+  protected function canSkipSshAgent(string $env): bool {
+    return $this->isAcquia() && $env === getenv('AH_SITE_ENVIRONMENT');
   }
 
   /**
