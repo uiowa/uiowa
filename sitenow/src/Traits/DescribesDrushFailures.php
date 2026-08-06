@@ -24,12 +24,62 @@ trait DescribesDrushFailures {
    */
   protected function failureReason(array $result): string {
     $source = trim($result['error']) !== '' ? $result['error'] : $result['output'];
-    $lines = array_filter(array_map('trim', preg_split('/\R/', $source)), fn ($l) => $l !== '');
-    $tail = $lines ? end($lines) : '';
 
-    return $tail !== ''
-      ? "{$tail} (exit {$result['exit']})"
+    $reason = $this->styledBlock($source);
+
+    if ($reason === NULL) {
+      $lines = array_filter(array_map('trim', preg_split('/\R/', $source)), fn ($l) => $l !== '');
+      $reason = $lines ? end($lines) : '';
+    }
+
+    return $reason !== ''
+      ? "{$reason} (exit {$result['exit']})"
       : "no error output (exit {$result['exit']})";
+  }
+
+  /**
+   * Rejoin a Symfony error block into the single sentence it was written as.
+   *
+   * A child that reports through SymfonyStyle wraps its message to the terminal
+   * width, so reading the last line alone quotes a fragment starting mid
+   * sentence. Only uppercase markers are matched, which is what Symfony emits;
+   * drush's own lowercase `[error]` lines are left to the tail behaviour they
+   * have always had.
+   *
+   * @param string $source
+   *   The captured output.
+   *
+   * @return string|null
+   *   The rejoined message, or NULL when there is no block to rejoin.
+   */
+  private function styledBlock(string $source): ?string {
+    $lines = preg_split('/\R/', $source) ?: [];
+    $start = NULL;
+
+    // The last block wins, matching the tail behaviour: when a child reports
+    // more than once, the final word on why it stopped is the useful one.
+    foreach ($lines as $i => $line) {
+      if (preg_match('/^\s*\[[A-Z]+\]\s/', $line) === 1) {
+        $start = $i;
+      }
+    }
+
+    if ($start === NULL) {
+      return NULL;
+    }
+
+    $block = [preg_replace('/^\s*\[[A-Z]+\]\s+/', '', $lines[$start])];
+
+    // A styled block is padded to a rectangle and ends at the first blank line.
+    for ($i = $start + 1; $i < count($lines); $i++) {
+      if (trim($lines[$i]) === '') {
+        break;
+      }
+
+      $block[] = $lines[$i];
+    }
+
+    return trim(preg_replace('/\s+/', ' ', implode(' ', $block)));
   }
 
 }
