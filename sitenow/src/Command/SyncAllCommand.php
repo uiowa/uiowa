@@ -77,13 +77,13 @@ every site). Each site is handed to site:sync, so the same --env and file
 options apply to every site in the run.
 
   # Sync every enabled site's prod database to local:
-  ddev exec ./sn sync:all
+  ddev sn sync:all
 
   # From dev, database only, without editing local.blt.yml:
-  ddev exec ./sn dsa --sites=brand.uiowa.edu,admissions.uiowa.edu --env=dev --no-update
+  ddev sn dsa --sites=brand.uiowa.edu,admissions.uiowa.edu --env=dev --no-update
 
   # Every enabled site except one, with public files:
-  ddev exec ./sn dsa --exclude=huge.uiowa.edu --sync-public-files
+  ddev sn dsa --exclude=huge.uiowa.edu --sync-public-files
 HELP);
   }
 
