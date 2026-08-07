@@ -7912,3 +7912,9 @@ $sites['labpotter.uiowa.ddev.site'] = 'potter.lab.uiowa.edu';
 $sites['labpotter.dev.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
 $sites['labpotter.stage.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
 $sites['labpotter.prod.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
+
+// Directory aliases for aminzare.sites.uiowa.edu.
+$sites['sitesaminzare.uiowa.ddev.site'] = 'aminzare.sites.uiowa.edu';
+$sites['sitesaminzare.dev.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
+$sites['sitesaminzare.stage.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
+$sites['sitesaminzare.prod.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
