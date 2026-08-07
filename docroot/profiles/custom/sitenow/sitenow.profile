@@ -59,10 +59,6 @@ function sitenow_toolbar_alter(&$items) {
     unset($items['acquia_connector']);
   }
 
-  if (isset($items['tour'])) {
-    $items['tour']['#attached']['library'][] = 'claro/tour-styling';
-  }
-
   // Accessibility tweak for color-contrast issue.
   $items['administration']['#attached']['library'][] = 'sitenow/toolbar-overrides';
 }

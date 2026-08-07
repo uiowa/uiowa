@@ -7888,3 +7888,27 @@ $sites['labtung.uiowa.ddev.site'] = 'tung.lab.uiowa.edu';
 $sites['labtung.dev.drupal.uiowa.edu'] = 'tung.lab.uiowa.edu';
 $sites['labtung.stage.drupal.uiowa.edu'] = 'tung.lab.uiowa.edu';
 $sites['labtung.prod.drupal.uiowa.edu'] = 'tung.lab.uiowa.edu';
+
+// Directory aliases for foo.sites.uiowa.edu.
+$sites['sitesfoo.uiowa.ddev.site'] = 'foo.sites.uiowa.edu';
+$sites['sitesfoo.dev.drupal.uiowa.edu'] = 'foo.sites.uiowa.edu';
+$sites['sitesfoo.stage.drupal.uiowa.edu'] = 'foo.sites.uiowa.edu';
+$sites['sitesfoo.prod.drupal.uiowa.edu'] = 'foo.sites.uiowa.edu';
+
+// Directory aliases for bar.sites.uiowa.edu.
+$sites['sitesbar.uiowa.ddev.site'] = 'bar.sites.uiowa.edu';
+$sites['sitesbar.dev.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
+$sites['sitesbar.stage.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
+$sites['sitesbar.prod.drupal.uiowa.edu'] = 'bar.sites.uiowa.edu';
+
+// Directory aliases for badhikari.sites.uiowa.edu.
+$sites['sitesbadhikari.uiowa.ddev.site'] = 'badhikari.sites.uiowa.edu';
+$sites['sitesbadhikari.dev.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
+$sites['sitesbadhikari.stage.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
+$sites['sitesbadhikari.prod.drupal.uiowa.edu'] = 'badhikari.sites.uiowa.edu';
+
+// Directory aliases for potter.lab.uiowa.edu.
+$sites['labpotter.uiowa.ddev.site'] = 'potter.lab.uiowa.edu';
+$sites['labpotter.dev.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
+$sites['labpotter.stage.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
+$sites['labpotter.prod.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
