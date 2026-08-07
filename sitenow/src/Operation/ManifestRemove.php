@@ -5,12 +5,12 @@ namespace SiteNow\Operation;
 use SiteNow\Config\Manifest;
 
 /**
- * Adds a site entry under an application in blt/manifest.yml.
+ * Removes a site entry from an application in blt/manifest.yml.
  *
- * A step-sized wrapper around Manifest::addSite(), so a plan carries one
+ * A step-sized wrapper around Manifest::removeSite(), so a plan carries one
  * operation per side effect and its label can name that effect literally.
  */
-class ManifestUpdate {
+class ManifestRemove {
 
   public function __construct(
     private string $manifestPath,
@@ -19,10 +19,10 @@ class ManifestUpdate {
   ) {}
 
   /**
-   * Add the host under the application.
+   * Remove the host from the application.
    */
   public function run(): void {
-    (new Manifest($this->manifestPath))->addSite($this->app, $this->host);
+    (new Manifest($this->manifestPath))->removeSite($this->app, $this->host);
   }
 
 }
