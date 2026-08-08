@@ -10,8 +10,8 @@
 # still be chosen explicitly with --app). uiowa06 is reserved for Healthcare.
 # The deploy commands still fan out to reserved applications.
 #
-# Not secret: UUIDs and git remotes only (the remotes are also in blt.yml).
-# Acquia API credentials live elsewhere, never here.
+# Not secret: UUIDs and git remotes only. Acquia API credentials live
+# elsewhere, never here.
 
 applications:
   uiowa:
@@ -48,10 +48,6 @@ applications:
 
 # Sites updated first during a deploy, in this order, ahead of the rest of the
 # application's list. deploy:update reads this list.
-#
-# DUPLICATED from blt/blt.yml (uiowa.run_first) while the BLT deploy path is
-# retained as a fallback: BLT still reads its copy on prod/test/stage. Keep the
-# two in sync until BLT is removed, then drop the blt.yml copy (#9858).
 run_first:
   - 'emergency.uiowa.edu'
   - 'police.uiowa.edu'
