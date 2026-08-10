@@ -7924,3 +7924,9 @@ $sites['siteseverydayexamples.uiowa.ddev.site'] = 'everydayexamples.sites.uiowa.
 $sites['siteseverydayexamples.dev.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
 $sites['siteseverydayexamples.stage.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
 $sites['siteseverydayexamples.prod.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
+
+// Directory aliases for colin-kenny.lab.uiowa.edu.
+$sites['labcolin-kenny.uiowa.ddev.site'] = 'colin-kenny.lab.uiowa.edu';
+$sites['labcolin-kenny.dev.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
+$sites['labcolin-kenny.stage.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
+$sites['labcolin-kenny.prod.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
