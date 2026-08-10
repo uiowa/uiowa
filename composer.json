@@ -114,8 +114,8 @@
         "drupal/config_ignore": "^3.3",
         "drupal/config_inspector": "^2.1",
         "drupal/config_split": "^2.0",
-        "drupal/core-composer-scaffold": "~10.5.12",
-        "drupal/core-recommended": "~10.5.12",
+        "drupal/core-composer-scaffold": "~10.6.0",
+        "drupal/core-recommended": "~10.6.0",
         "drupal/crop": "^2.4",
         "drupal/cshs": "^4.0",
         "drupal/ctools": "^4.1",
@@ -264,6 +264,9 @@
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
+            "drupal/better_exposed_filters": {
+                "[3600959] Fatal TypeError in addElementToGroup() when a malformed request submits an array for a collapsible exposed filter's value": "patches/better_exposed_filters-3600959.patch"
+            },
             "drupal/core": {
                 "[2985199] Extensions in Multisite Directories Not Registered When Rebuilding Cache": "https://www.drupal.org/files/issues/2024-08-01/2985199-98.patch",
                 "[2942975] Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2024-12-20/2942975-273_0.patch",
@@ -280,7 +283,8 @@
                 "[2755791] Ajax error ajax.$form.ajaxSubmit() is not a function": "patches/core-2755791.patch",
                 "[3310075] Toolbar js errors when you remove the administration menu": "patches/core-3310075.patch",
                 "[3274635] Use CKEditor 5's native <ol type> and <ul type> UX" : "https://www.drupal.org/files/issues/2025-03-21/3274635-mr5079-94fde602-10.3.x-updated-editorStyleFixCondition--119.patch",
-                "[3498100] Duplicate summary on vertical tabs" : "https://www.drupal.org/files/issues/2025-01-08/3498100-2-core-duplicate-summary-on-vertical-tabs.patch"
+                "[3498100] Duplicate summary on vertical tabs" : "https://www.drupal.org/files/issues/2025-01-08/3498100-2-core-duplicate-summary-on-vertical-tabs.patch",
+                "[3351603] .ck-balloon-panel (link balloon, media balloon …) not visible for CKE5 instances in a Drupal dialog": "patches/3351603.patch"
             },
             "drupal/ckeditor": {
                 "Changing an existing embedded media's alignment or alt data attributes does not get saved with CKEditor": "https://www.drupal.org/files/issues/2023-01-03/3330723-3.patch"
