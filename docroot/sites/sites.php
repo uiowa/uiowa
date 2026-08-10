@@ -7918,3 +7918,9 @@ $sites['sitesaminzare.uiowa.ddev.site'] = 'aminzare.sites.uiowa.edu';
 $sites['sitesaminzare.dev.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
 $sites['sitesaminzare.stage.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
 $sites['sitesaminzare.prod.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
+
+// Directory aliases for everydayexamples.sites.uiowa.edu.
+$sites['siteseverydayexamples.uiowa.ddev.site'] = 'everydayexamples.sites.uiowa.edu';
+$sites['siteseverydayexamples.dev.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
+$sites['siteseverydayexamples.stage.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
+$sites['siteseverydayexamples.prod.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
