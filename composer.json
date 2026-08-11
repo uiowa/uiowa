@@ -78,7 +78,6 @@
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "acquia/blt": true,
-            "acquia/blt-phpcs": true,
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
             "phpstan/extension-installer": true,
@@ -89,12 +88,8 @@
     "require": {
         "ext-json": "*",
         "ext-simplexml": "*",
-        "guzzlehttp/guzzle": "7.15.2 as 7.9.3",
-        "guzzlehttp/promises": "2.5.1 as 2.2.0",
-        "guzzlehttp/psr7": "2.13.0 as 2.10.4",
         "acquia/blt": "^13.7.4",
         "acquia/blt-multisite": "dev-master",
-        "acquia/blt-travis": "^1.1.0",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "6.7.2",
@@ -119,8 +114,8 @@
         "drupal/config_ignore": "^3.3",
         "drupal/config_inspector": "^2.1",
         "drupal/config_split": "^2.0",
-        "drupal/core-composer-scaffold": "~10.5.12",
-        "drupal/core-recommended": "~10.5.12",
+        "drupal/core-composer-scaffold": "~10.6.0",
+        "drupal/core-recommended": "~10.6.0",
         "drupal/crop": "^2.4",
         "drupal/cshs": "^4.0",
         "drupal/ctools": "^4.1",
@@ -233,6 +228,9 @@
         "drupal/workbench_email": "^3.0",
         "drush/drush": "^12.4.4",
         "giggsey/libphonenumber-for-php-lite": "^9.0",
+        "guzzlehttp/guzzle": "7.15.2 as 7.9.3",
+        "guzzlehttp/promises": "2.5.1 as 2.2.0",
+        "guzzlehttp/psr7": "2.13.0 as 2.10.4",
         "iio/libmergepdf": "^4.0",
         "kartsims/easysvg": "2.5",
         "npm-asset/accessible-menu": "4.0.0",
@@ -247,7 +245,6 @@
         "uiowa/uiowa_auth": "^2.1"
     },
     "require-dev": {
-        "acquia/blt-phpcs": "^1.0",
         "acquia/coding-standards": "^3.0",
         "drupal/core-dev": "^9.0 || ^10",
         "mglaman/phpstan-drupal": "^1.3",
@@ -267,6 +264,9 @@
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
+            "drupal/better_exposed_filters": {
+                "[3600959] Fatal TypeError in addElementToGroup() when a malformed request submits an array for a collapsible exposed filter's value": "patches/better_exposed_filters-3600959.patch"
+            },
             "drupal/core": {
                 "[2985199] Extensions in Multisite Directories Not Registered When Rebuilding Cache": "https://www.drupal.org/files/issues/2024-08-01/2985199-98.patch",
                 "[2942975] Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2024-12-20/2942975-273_0.patch",
@@ -283,7 +283,8 @@
                 "[2755791] Ajax error ajax.$form.ajaxSubmit() is not a function": "patches/core-2755791.patch",
                 "[3310075] Toolbar js errors when you remove the administration menu": "patches/core-3310075.patch",
                 "[3274635] Use CKEditor 5's native <ol type> and <ul type> UX" : "https://www.drupal.org/files/issues/2025-03-21/3274635-mr5079-94fde602-10.3.x-updated-editorStyleFixCondition--119.patch",
-                "[3498100] Duplicate summary on vertical tabs" : "https://www.drupal.org/files/issues/2025-01-08/3498100-2-core-duplicate-summary-on-vertical-tabs.patch"
+                "[3498100] Duplicate summary on vertical tabs" : "https://www.drupal.org/files/issues/2025-01-08/3498100-2-core-duplicate-summary-on-vertical-tabs.patch",
+                "[3351603] .ck-balloon-panel (link balloon, media balloon …) not visible for CKE5 instances in a Drupal dialog": "patches/3351603.patch"
             },
             "drupal/ckeditor": {
                 "Changing an existing embedded media's alignment or alt data attributes does not get saved with CKEditor": "https://www.drupal.org/files/issues/2023-01-03/3330723-3.patch"
@@ -412,9 +413,6 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd": [
-            "blt internal:create-project:init-repo"
-        ],
         "post-drupal-scaffold-cmd": [
             "patch -p1 < patches/core_htaccess.patch",
             "patch -p1 < patches/development_services.patch"

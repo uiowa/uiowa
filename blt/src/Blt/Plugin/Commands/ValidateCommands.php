@@ -3,24 +3,12 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
-use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 
 /**
  * This class should contain hooks that are used in other commands.
  */
 class ValidateCommands extends BltTasks {
-
-  /**
-   * Validate that the command is being run on the container.
-   *
-   * @hook validate @requireContainer
-   */
-  public function validateContainer() {
-    if (!$this->isDdev()) {
-      return new CommandError('This command must be run on the web container, i.e. either with ddev ... or after running ddev ssh.');
-    }
-  }
 
   /**
    * Validate that the command is not being run on the container.
@@ -68,27 +56,6 @@ class ValidateCommands extends BltTasks {
     foreach ($credentials as $cred) {
       if (!$this->getConfigValue($cred)) {
         return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
-      }
-    }
-  }
-
-  /**
-   * Validate Git remote access.
-   *
-   * @hook validate @requireRemoteAccess
-   */
-  public function validateRemoteAccess(CommandData $commandData) {
-    $remotes = $this->getConfigValue('git.remotes');
-
-    foreach ($remotes as $remote) {
-      $result = $this->taskExecStack()
-        ->exec("git ls-remote {$remote}")
-        ->stopOnFail()
-        ->silent(TRUE)
-        ->run();
-
-      if (!$result->wasSuccessful()) {
-        return new CommandError("Error connecting to Acquia remote {$remote}. Double check permissions and SSH key.");
       }
     }
   }

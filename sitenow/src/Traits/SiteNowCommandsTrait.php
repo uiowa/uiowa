@@ -15,7 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Multisite;
+use SiteNow\Utility\Multisite;
 
 /**
  * Acquia Cloud, drush, and environment helpers for SiteNow console commands.
@@ -393,21 +393,23 @@ trait SiteNowCommandsTrait {
    * Require the command to run inside the DDEV container.
    *
    * On failure, prints an error naming the exact invocation to use and returns
-   * FALSE so the caller can exit. The command name is passed in (rather than
-   * read via getName()) so this trait makes no assumption about being mixed
-   * into a Symfony Command.
+   * FALSE so the caller can exit. The error says "locally" because the commands
+   * that also run on Acquia call this behind that check, so it is only ever a
+   * developer on a workstation who reads it. The command name is passed in
+   * (rather than read via getName()) so this trait makes no assumption about
+   * being mixed into a Symfony Command.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style used to report the error.
    * @param string $command_name
-   *   The command's name, for the suggested `ddev exec ./sn <name>` invocation.
+   *   The command's name, for the suggested `ddev sn <name>` invocation.
    *
    * @return bool
    *   TRUE when running in DDEV; FALSE (after printing an error) otherwise.
    */
   protected function requireDdev(SymfonyStyle $io, string $command_name): bool {
     if (!$this->isDdev()) {
-      $io->getErrorStyle()->error("This command must be run inside the DDEV container. Use: ddev exec ./sn {$command_name}");
+      $io->getErrorStyle()->error("Locally, this command must be run inside the DDEV container. Use: ddev sn {$command_name}");
       return FALSE;
     }
     return TRUE;
