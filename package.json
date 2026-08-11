@@ -19,6 +19,9 @@
       "docroot/sites/uipress.uiowa.edu/modules/uipress_core"
     ]
   },
+  "scripts": {
+    "frontend:build": "yarn install --production --ignore-optional --frozen-lockfile --non-interactive && yarn workspaces run build"
+  },
   "dependencies": {
     "@percy/cli": "^1.31.14",
     "requirejs": "^2.3.8"
