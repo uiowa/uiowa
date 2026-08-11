@@ -122,6 +122,9 @@ class MultisiteExecuteTest extends UnitTestCase {
 
   /**
    * On Acquia Cloud, an omitted --apps is pinned to the running application.
+   *
+   * The pin is noted on the error output so it's visible in scheduled job
+   * logs, not just inferred from the resulting site list.
    */
   public function testAcquiaPinsEmptyApps(): void {
     putenv('AH_SITE_ENVIRONMENT=prod');
@@ -130,7 +133,7 @@ class MultisiteExecuteTest extends UnitTestCase {
     [$result, $output] = $this->restrict([]);
 
     $this->assertSame(['uiowa02'], $result);
-    $this->assertSame('', $output);
+    $this->assertStringContainsString('uiowa02', $output);
   }
 
   /**

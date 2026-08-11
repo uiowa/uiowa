@@ -245,7 +245,8 @@ HELP);
    * @param string[] $apps
    *   The --apps option, already comma-split.
    * @param \Symfony\Component\Console\Style\SymfonyStyle $err
-   *   The error output style used to report a rejected --apps.
+   *   The error output style used to report a rejected --apps, and to note
+   *   when an omitted --apps was silently pinned.
    *
    * @return string[]|null
    *   The (possibly pinned) app list, or NULL (after printing an error) when
@@ -265,6 +266,10 @@ HELP);
     if ($apps && $apps !== [$current_app]) {
       $err->error("Running on Acquia Cloud ({$current_app}): --apps can only target the application this command is running on. Got: " . implode(', ', $apps));
       return NULL;
+    }
+
+    if (!$apps) {
+      $err->writeln("Running on Acquia Cloud: --apps pinned to {$current_app}.");
     }
 
     return [$current_app];
