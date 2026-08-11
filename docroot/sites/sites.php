@@ -7930,3 +7930,9 @@ $sites['labcolin-kenny.uiowa.ddev.site'] = 'colin-kenny.lab.uiowa.edu';
 $sites['labcolin-kenny.dev.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
 $sites['labcolin-kenny.stage.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
 $sites['labcolin-kenny.prod.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
+
+// Directory aliases for huddl.lab.uiowa.edu.
+$sites['labhuddl.uiowa.ddev.site'] = 'huddl.lab.uiowa.edu';
+$sites['labhuddl.dev.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
+$sites['labhuddl.stage.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
+$sites['labhuddl.prod.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
