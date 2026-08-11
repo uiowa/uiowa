@@ -15,7 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Multisite;
+use SiteNow\Utility\Multisite;
 
 /**
  * Acquia Cloud, drush, and environment helpers for SiteNow console commands.
