@@ -3,193 +3,34 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
-use Acquia\Blt\Robo\Exceptions\BltException;
-use Uiowa\InspectorTrait;
-use Uiowa\MultisiteTrait;
+use Consolidation\AnnotatedCommand\CommandError;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
-  use InspectorTrait;
-  use MultisiteTrait;
 
   /**
-   * Replace the artifact:update:drupal:all-sites BLT command.
+   * Block BLT's single-site sync.
    *
-   * @hook replace-command artifact:update:drupal:all-sites
+   * BLT's sync.commands includes blt:init:settings, which deletes every
+   * multisite's local.settings.php and local.drush.yml via the
+   * source:build:settings hook below.
+   *
+   * @hook validate drupal:sync:default:site
    */
-  public function replaceDrupalUpdateAll() {
-    // Disable alias since we are targeting a specific URI.
-    $this->config->set('drush.alias', '');
-
-    $app = EnvironmentDetector::getAhGroup() ?: 'local';
-    $multisite_exception = FALSE;
-
-    // If this is running locally, pull list of sites from config. Otherwise,
-    // get the list of sites from the manifest.
-    if ($app === 'local') {
-      $multisites = $this->getConfigValue('multisites');
-      $log_dir = '/tmp/';
-    }
-    else {
-      // Load the manifest.
-      $manifest = $this->manifestToArray();
-      // If the manifest is empty, log a warning and continue.
-      if (!isset($manifest[$app])) {
-        $this->logger->warning('No multisites found in manifest for application: ' . $app);
-      }
-
-      $multisites = $manifest[$app] ?: [];
-      $log_dir = '/shared/logs/';
-
-      // Ensure that default is added to uiowa app,
-      // so we update the default site.
-      if ($app === 'uiowa') {
-        $multisites = [...['default'], ...$multisites];
-      }
-    }
-
-    // Unshift sites to the beginning to run first.
-    $run_first = $this->getConfigValue('uiowa.run_first');
-
-    if ($run_first) {
-      // Reverse for foreach so that first listed in config is run first.
-      $run_first = array_reverse($run_first);
-
-      foreach ($run_first as $site) {
-        if ($key = array_search($site, $multisites)) {
-          unset($multisites[$key]);
-          array_unshift($multisites, $site);
-        }
-      }
-    }
-
-    // Capture the start time for logging.
-    $start_time = date('Y-m-d H:i:s');
-
-    $parallel_installed = $this->taskExec('command -v parallel')
-      ->printMetadata(FALSE)
-      ->printOutput(FALSE)
-      ->run();
-
-    // Generate a unique temporary log file name for this deployment.
-    $temp_log_file = $log_dir . 'parallel_deploy_' . uniqid() . '.log';
-
-    // Use a fixed log file name for the final aggregated log.
-    $final_log_file = $log_dir . 'parallel_deploy.log';
-
-    // Check if the parallel command exists.
-    if (trim($parallel_installed->getMessage())) {
-      $this->say('Running multisite updates in parallel.');
-
-      // Run site updates in parallel, logging output to terminal and file.
-      $command = 'parallel -j 3 blt uiowa:site:update ::: ' . implode(
-        ' ', array_map('escapeshellarg', $multisites)
-        ) . " 2>&1 | tee -a $temp_log_file";
-
-      $this->taskExec($command)
-        ->interactive(FALSE)
-        ->run();
-
-      // After running, check the temporary log file for errors using grep.
-      $grep_command = "grep -i 'error' $temp_log_file";
-      $grep_result = $this->taskExec($grep_command)
-        ->printOutput(FALSE)
-        ->run()
-        ->getMessage();
-
-      // Set the exception flag if grep found any error messages.
-      $multisite_exception = !empty($grep_result);
-
-      // Always append the temp log to the final log file with markers.
-      $end_time = date('Y-m-d H:i:s');
-      $this->taskExec("echo 'START $start_time' >> $final_log_file")->run();
-      $this->taskExec("cat $temp_log_file >> $final_log_file")->run();
-      $this->taskExec("echo 'END $end_time' >> $final_log_file")->run();
-
-      // Remove the temporary file.
-      $this->taskExec("rm $temp_log_file")->run();
-    }
-    else {
-      $this->say('Running multisite updates sequentially.');
-      foreach ($multisites as $multisite) {
-        $success = $this->updateSite($multisite, $app);
-        if (!$success) {
-          $multisite_exception = TRUE;
-        }
-      }
-    }
-
-    // If a multisite encountered a handled exception, throw one here so that
-    // we return 1 and mark the job as a failure.
-    if ($multisite_exception) {
-      throw new \Exception('Error deploying updates. Check the log output for more information.');
-    }
+  public function validateDrupalSyncDefaultSite() {
+    return new CommandError('This command is no longer supported. Use `ddev sn ds SITE` instead.');
   }
 
   /**
-   * Roll our own version of blt/drupal-check that scans multisite code.
+   * Block BLT's all-sites sync.
    *
-   * @command tests:deprecated
+   * @hook validate drupal:sync:all-sites
    */
-  public function testsDeprecated() {
-    $this->say('Checking for deprecated code with PHPStan.');
-    $bin = $this->getConfigValue('composer.bin');
-    $root = $this->getConfigValue('repo.root');
-    $docroot = $this->getConfigValue('docroot');
-    $phpstanConfig = "{$root}/phpstan.neon";
-
-    $paths = [
-      "{$root}/tests/",
-      "{$docroot}/profiles/custom/",
-      "{$docroot}/modules/custom/",
-      "{$docroot}/themes/custom/",
-      "{$docroot}/sites/",
-    ];
-
-    foreach ($paths as $path) {
-      $cmd = "$bin/phpstan analyse -c $phpstanConfig $path";
-
-      $result = $this->taskExecStack()
-        ->dir($this->getConfigValue('repo.root'))
-        ->exec($cmd)
-        ->run();
-
-      $exit_code = $result->getExitCode();
-
-      if ($exit_code) {
-        $this->logger->notice('Review deprecation warnings and re-run.');
-        throw new BltException("Drupal Check in {$path} failed.");
-      }
-    }
-  }
-
-  /**
-   * Replace frontend tests command so we can do more than just a oneline exec.
-   *
-   * Note that the frontend-test command hook does not need to be in blt.yml.
-   *
-   * @hook replace-command tests:frontend:run
-   */
-  public function testsFrontend() {
-    if (EnvironmentDetector::isCiEnv()) {
-      // We don't want to snapshot develop because it could be unstable.
-      if (getenv('TRAVIS_BRANCH') != 'develop') {
-        $this->taskExecStack()
-          ->dir($this->getConfigValue('repo.root'))
-          ->exec('npx percy snapshot --base-url http://localhost:8888 snapshots.yml')
-          ->run();
-      }
-      else {
-        $this->logger->notice('Skipping percy snapshot in develop branch.');
-      }
-    }
-    else {
-      $this->logger->notice('Skipping percy snapshot in non-CI environment.');
-    }
+  public function validateDrupalSyncAllSites() {
+    return new CommandError('This command is no longer supported. Use `ddev sn dsa` instead.');
   }
 
   /**
@@ -268,80 +109,6 @@ EOD;
         ->remove($from)
         ->run();
     }
-  }
-
-  /**
-   * Update a single site.
-   *
-   * This is essentially a command wrapper for the updateSite method.
-   *
-   * @param string $site
-   *   The site to update.
-   *
-   * @command uiowa:site:update $site
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  public function updateSingleSite($site) {
-    $app = EnvironmentDetector::getAhGroup() ?: 'local';
-    $this->updateSite($site, $app);
-  }
-
-  /**
-   * Run updates for a single site.
-   *
-   * @param string $site
-   *   The site to update.
-   * @param string $app
-   *   The environment the site is being updated in.
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  protected function updateSite(string $site, string $app = 'local'): bool {
-    $this->switchSiteContext($site);
-    $db = $this->getConfigValue('drupal.db.database');
-
-    // Check for database include on this application.
-    if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-      $this->writeln("Skipping {$site} on AH environment. Database {$db} does not exist.");
-    }
-    else {
-      if ($this->isDrupalInstalled($site)) {
-        $this->say("Deploying updates to <comment>{$site}</comment>...");
-
-        // Invalidate the Twig cache if on AH env. This happens automatically
-        // for the default site but not multisites. We don't need to pass
-        // the multisite URI here since we switch site context above.
-        // @see: https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-8-Twig-cache
-        $script = '/var/www/site-scripts/invalidate-twig-cache.php';
-
-        if (file_exists($script)) {
-          $this->taskDrush()
-            ->drush('php:script')
-            ->arg($script)
-            ->run();
-        }
-
-        try {
-          // Clear the plugin cache for discovery and potential layout issue.
-          // @see: https://github.com/uiowa/uiowa/issues/3585.
-          $this->taskDrush()
-            ->drush('cc plugin')
-            ->run();
-
-          $this->invokeCommand('drupal:update');
-          $this->say("Finished deploying updates to <comment>{$site}</comment>.");
-        }
-        catch (BltException $e) {
-          $this->say("Failed deploying updates to {$site}.");
-          return FALSE;
-        }
-      }
-      else {
-        $this->writeln("Skipping {$site}. Drupal is not installed.");
-      }
-    }
-    return TRUE;
   }
 
 }

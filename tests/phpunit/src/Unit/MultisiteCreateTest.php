@@ -9,7 +9,7 @@ use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
 use SiteNow\Command\MultisiteCreateCommand;
-use Uiowa\Multisite;
+use SiteNow\Utility\Multisite;
 
 /**
  * Unit tests for the multisite create command's plan layer.

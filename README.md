@@ -22,7 +22,7 @@ This project is based on BLT, an open-source project template and tool that enab
 # Local Environment
 [Ddev](https://ddev.readthedocs.io/en/stable/) is used for the local environment. Follow their [docs](https://ddev.readthedocs.io/en/stable/#installation) to get it installed. Once installed, read up on [basic CLI](https://ddev.readthedocs.io/en/stable/users/cli-usage/) usage to understand how to manage the containers.
 
-Once installed and started, you can either `ddev ssh` and run non-ddev CLI commands there, or run them on your host with `ddev CMD`. For example, `ddev blt dsa` or `ddev composer install`.
+Once installed and started, you can either `ddev ssh` and run non-ddev CLI commands there, or run them on your host with `ddev CMD`. For example, `ddev sn sync:all` or `ddev composer install`.
 
 ## Workspaces
 Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the web container with `ddev yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
@@ -64,7 +64,7 @@ uiowa:
     origin: https://sandbox.prod.drupal.uiowa.edu
 ```
 
-The `blt frontend` command will install and compile frontend assets.
+The `ddev yarn frontend:build` command will install and compile frontend assets.
 
 ## Multisite Management
 SiteNow provides host-side multisite commands through the `sn` CLI, including `multisite:create`. See [sitenow/README.md](sitenow/README.md).
@@ -83,7 +83,7 @@ $settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
 ```
 
 # Updating Dependencies
-Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `blt dsa`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
+Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `ddev sn sync:all`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
 
 ## Updating core patched files
 
@@ -97,7 +97,7 @@ Before starting updates, make sure your local environment is on a feature branch
 
 ## Configuration changes
 
-Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
+Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `ddev sn sync:all` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
 
 ## Testing Dependencies
 Testing a uids change in uiowa:

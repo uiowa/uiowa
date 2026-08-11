@@ -20,14 +20,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Installs Drupal on the application's multisites that need it.
  *
- * Replaces the BLT `uiowa:multisite:install` (umi) command: scans the sites
- * this application owns, reports what each one needs, and fans site:install out
- * over the ones that need installing or healing.
+ * Scans the sites this application owns, reports what each one needs, and fans
+ * site:install out over the ones that need installing or healing.
  *
- * Where umi asked only whether a config table existed — which an install that
- * died partway already has — this separates a site that was never installed
- * from one whose install never finished, so an incomplete install gets picked
- * up on the next run instead of being skipped forever.
+ * A site that was never installed is distinguished from one whose install never
+ * finished, rather than asking only whether a config table exists, so an
+ * incomplete install gets picked up on the next run instead of being skipped
+ * forever.
  *
  * Per-site output is captured to its own log file rather than interleaved: an
  * install is verbose, and a dozen of them at once is unreadable as a stream.
