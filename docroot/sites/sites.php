@@ -7948,3 +7948,9 @@ $sites['programsurgical-oncology-research.uiowa.ddev.site'] = 'surgical-oncology
 $sites['programsurgical-oncology-research.dev.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
 $sites['programsurgical-oncology-research.stage.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
 $sites['programsurgical-oncology-research.prod.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
+
+// Directory aliases for bridge.lab.uiowa.edu.
+$sites['labbridge.uiowa.ddev.site'] = 'bridge.lab.uiowa.edu';
+$sites['labbridge.dev.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
+$sites['labbridge.stage.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
+$sites['labbridge.prod.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
