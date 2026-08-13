@@ -7936,3 +7936,9 @@ $sites['labhuddl.uiowa.ddev.site'] = 'huddl.lab.uiowa.edu';
 $sites['labhuddl.dev.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
 $sites['labhuddl.stage.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
 $sites['labhuddl.prod.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
+
+// Directory aliases for ffcd.sites.uiowa.edu.
+$sites['sitesffcd.uiowa.ddev.site'] = 'ffcd.sites.uiowa.edu';
+$sites['sitesffcd.dev.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
+$sites['sitesffcd.stage.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
+$sites['sitesffcd.prod.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';

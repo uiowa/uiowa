@@ -1,0 +1,18 @@
+project:
+  machine_name: sitesffcd
+  human_name: ffcd.sites.uiowa.edu
+  local:
+    hostname: sitesffcd.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: sitesffcd.prod
+drupal:
+  db:
+    database: ffcd_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesffcd.prod.drupal.uiowa.edu'
+  requester: scaglion
+  site-name: 'Farm Families Coping with Dementia'
