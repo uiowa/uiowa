@@ -7942,3 +7942,9 @@ $sites['sitesffcd.uiowa.ddev.site'] = 'ffcd.sites.uiowa.edu';
 $sites['sitesffcd.dev.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
 $sites['sitesffcd.stage.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
 $sites['sitesffcd.prod.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
+
+// Directory aliases for surgical-oncology-research.program.uiowa.edu.
+$sites['programsurgical-oncology-research.uiowa.ddev.site'] = 'surgical-oncology-research.program.uiowa.edu';
+$sites['programsurgical-oncology-research.dev.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
+$sites['programsurgical-oncology-research.stage.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
+$sites['programsurgical-oncology-research.prod.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
