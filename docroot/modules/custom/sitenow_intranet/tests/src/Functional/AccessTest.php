@@ -93,12 +93,12 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
-   * Test robots.txt denies all.
+   * Test robots.txt denies all except the Siteimprove crawler.
    */
   public function testRobotsDeniesAll() {
     $this->drupalGet('robots.txt');
     $content = $this->getSession()->getPage()->getContent();
-    $this->assertEquals("User-agent: *\r\nDisallow: /", $content);
+    $this->assertEquals("User-agent: SiteimproveBot-Crawler\r\nAllow: /\r\n\r\nUser-agent: *\r\nDisallow: /", $content);
   }
 
   /**
