@@ -7954,3 +7954,9 @@ $sites['labbridge.uiowa.ddev.site'] = 'bridge.lab.uiowa.edu';
 $sites['labbridge.dev.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
 $sites['labbridge.stage.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
 $sites['labbridge.prod.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
+
+// Directory aliases for tempo.lab.uiowa.edu.
+$sites['labtempo.uiowa.ddev.site'] = 'tempo.lab.uiowa.edu';
+$sites['labtempo.dev.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
+$sites['labtempo.stage.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
+$sites['labtempo.prod.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
