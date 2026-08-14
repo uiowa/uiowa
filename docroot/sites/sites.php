@@ -7912,3 +7912,27 @@ $sites['labpotter.uiowa.ddev.site'] = 'potter.lab.uiowa.edu';
 $sites['labpotter.dev.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
 $sites['labpotter.stage.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
 $sites['labpotter.prod.drupal.uiowa.edu'] = 'potter.lab.uiowa.edu';
+
+// Directory aliases for aminzare.sites.uiowa.edu.
+$sites['sitesaminzare.uiowa.ddev.site'] = 'aminzare.sites.uiowa.edu';
+$sites['sitesaminzare.dev.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
+$sites['sitesaminzare.stage.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
+$sites['sitesaminzare.prod.drupal.uiowa.edu'] = 'aminzare.sites.uiowa.edu';
+
+// Directory aliases for everydayexamples.sites.uiowa.edu.
+$sites['siteseverydayexamples.uiowa.ddev.site'] = 'everydayexamples.sites.uiowa.edu';
+$sites['siteseverydayexamples.dev.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
+$sites['siteseverydayexamples.stage.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
+$sites['siteseverydayexamples.prod.drupal.uiowa.edu'] = 'everydayexamples.sites.uiowa.edu';
+
+// Directory aliases for colin-kenny.lab.uiowa.edu.
+$sites['labcolin-kenny.uiowa.ddev.site'] = 'colin-kenny.lab.uiowa.edu';
+$sites['labcolin-kenny.dev.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
+$sites['labcolin-kenny.stage.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
+$sites['labcolin-kenny.prod.drupal.uiowa.edu'] = 'colin-kenny.lab.uiowa.edu';
+
+// Directory aliases for huddl.lab.uiowa.edu.
+$sites['labhuddl.uiowa.ddev.site'] = 'huddl.lab.uiowa.edu';
+$sites['labhuddl.dev.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
+$sites['labhuddl.stage.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
+$sites['labhuddl.prod.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
