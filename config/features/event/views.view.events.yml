@@ -154,6 +154,35 @@ display:
             field_identifier: ''
           exposed: false
           granularity: second
+        field_event_when_end_value:
+          id: field_event_when_end_value
+          table: node__field_event_when
+          field: field_event_when_end_value
+          relationship: none
+          group_type: min
+          admin_label: ''
+          plugin_id: date
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments: {  }
       filters:
         status:
