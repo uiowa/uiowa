@@ -88,7 +88,39 @@ class MultisiteDeleteCommand extends Command {
       ->addArgument('host', InputArgument::OPTIONAL, 'The multisite host to delete. Omit to choose from a list.')
       ->addOption('no-commit', NULL, InputOption::VALUE_NONE, 'Do not create a git commit.')
       ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Show plan and exit; no side effects.')
-      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Apply without prompting. Blocked by any WARN.');
+      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Apply without prompting. Blocked by any WARN.')
+      ->setHelp(<<<'HELP'
+Deletes a multisite everywhere it exists: its files, database and domains on
+Acquia, then its directories, drush alias, sites.php aliases and manifest entry
+in the repository.
+
+The cloud comes down first, and every cloud delete is confirmed gone before the
+repository is touched. A run that fails partway is safe to run again.
+
+A resource that is already absent is a WARN, not a failure — the state a
+half-finished delete leaves behind. The run continues, but not under --yes;
+rerun it interactively and read the warnings first.
+
+Files are deleted per environment, the site's whole directory rather than the
+contents of files/.
+
+Domains considered are the three internal *.drupal.uiowa.edu names, the site
+host, and www.<host>. Only the ones an environment actually reports are touched.
+
+Runs on the host shell: it commits to the working tree, and .git is not mounted
+into the container. The files deletion goes out over the site's drush alias, so
+an Acquia SSH key has to be available there too.
+
+Examples:
+  # What would come down? Reads cloud and local state, changes nothing.
+  ./sn multisite:delete foo.sites.uiowa.edu --dry-run
+
+  # Choose the site from the manifest instead of naming it.
+  ./sn multisite:delete
+
+  # Delete everything, but leave the repository removals uncommitted.
+  ./sn multisite:delete foo.sites.uiowa.edu --no-commit
+HELP);
   }
 
   /**
