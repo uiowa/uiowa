@@ -2,12 +2,16 @@
 
 namespace Uiowa\Tests\PHPUnit\Unit;
 
+use AcquiaCloudApi\Connector\Client;
+use AcquiaCloudApi\Connector\Connector;
 use Drupal\Tests\UnitTestCase;
 use SiteNow\Command\MultisiteDeleteCommand;
+use SiteNow\Operation\CloudFilesDelete;
 use SiteNow\Operation\CloudOperationWait;
 use SiteNow\Operation\ManifestRemove;
 use SiteNow\Operation\SitesPhpRemove;
 use SiteNow\Plan\Plan;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -41,12 +45,8 @@ class MultisiteDeleteTest extends UnitTestCase {
    * {@inheritdoc}
    */
   protected function tearDown(): void {
-    foreach (glob($this->dir . '/*') ?: [] as $file) {
-      unlink($file);
-    }
-    if (is_dir($this->dir)) {
-      rmdir($this->dir);
-    }
+    // Recursive: the mount fixtures write a drush/sites tree, not just files.
+    (new Filesystem())->remove($this->dir);
     parent::tearDown();
   }
 
@@ -56,15 +56,78 @@ class MultisiteDeleteTest extends UnitTestCase {
   private function command(): MultisiteDeleteCommand {
     return new class('') extends MultisiteDeleteCommand {
 
+      /**
+       * Exposes sitesByHost().
+       */
       public function pubSitesByHost(array $manifest): array {
         return $this->sitesByHost($manifest);
       }
 
-      public function pubAddCloudSteps(Plan $plan, array $input): void {
-        $this->addCloudSteps($plan, $input);
+      /**
+       * Exposes addCloudSteps().
+       */
+      public function pubAddCloudSteps(Plan $plan, array $input, array $cloud, Client $client): void {
+        $this->addCloudSteps($plan, $input, $cloud, $client);
+      }
+
+      /**
+       * Exposes candidateDomains().
+       */
+      public function pubCandidateDomains(string $host, string $id): array {
+        return $this->candidateDomains($host, $id);
       }
 
     };
+  }
+
+  /**
+   * A command instance rooted at a scratch directory holding a drush alias.
+   */
+  private function commandInDir(): MultisiteDeleteCommand {
+    return new class($this->dir) extends MultisiteDeleteCommand {
+
+      /**
+       * Exposes mountsByEnv().
+       */
+      public function pubMountsByEnv(string $id): array {
+        return $this->mountsByEnv($id);
+      }
+
+    };
+  }
+
+  /**
+   * An unauthenticated client; the steps under test are never applied.
+   *
+   * Constructing a Connector emits a deprecation from the Acquia SDK on PHP
+   * 8.4, which PHPUnit reports as unexpected output; mask it around the one
+   * call rather than letting it mark every test risky.
+   */
+  private function client(): Client {
+    $reporting = error_reporting(error_reporting() & ~E_DEPRECATED);
+
+    try {
+      return Client::factory(new Connector(['key' => 'test', 'secret' => 'test']));
+    }
+    finally {
+      error_reporting($reporting);
+    }
+  }
+
+  /**
+   * Cloud facts as gatherCloud() assembles them, with everything present.
+   */
+  private function cloud(): array {
+    return [
+      'uuid' => 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+      'mounts' => ['dev' => 'uiowa02.dev', 'test' => 'uiowa02.test', 'prod' => 'uiowa02.prod'],
+      'files' => ['dev' => TRUE, 'test' => TRUE, 'prod' => TRUE],
+      'database' => TRUE,
+      'domains' => [
+        ['domain' => 'doomed.prod.drupal.uiowa.edu', 'env' => 'prod', 'env_uuid' => 'env-prod'],
+        ['domain' => 'www.doomed.uiowa.edu', 'env' => 'prod', 'env_uuid' => 'env-prod'],
+      ],
+    ];
   }
 
   /**
@@ -280,42 +343,140 @@ EOD);
   // --- Cloud teardown ---------------------------------------------------------
 
   /**
-   * The cloud steps cover files per environment, the database, and domains.
+   * The cloud steps cover files per environment, the database, and each domain.
+   *
+   * Files first: they are the only resource that cannot be recreated from the
+   * repository, so they come off before anything the run could still retry.
    */
   public function testCloudStepsCoverEveryResource() {
     $plan = new Plan('t', [], []);
-    $this->command()->pubAddCloudSteps($plan, $this->input());
+    $this->command()->pubAddCloudSteps($plan, $this->input(), $this->cloud(), $this->client());
 
     $labels = array_column($plan->steps(), 'label');
 
-    $this->assertCount(5, $labels);
-    $this->assertStringContainsString('uiowa02.dev', $labels[0]);
-    $this->assertStringContainsString('uiowa02.test', $labels[1]);
-    $this->assertStringContainsString('uiowa02.prod', $labels[2]);
+    $this->assertCount(6, $labels);
+    $this->assertStringContainsString('/mnt/gfs/uiowa02.dev/sites/doomed.uiowa.edu', $labels[0]);
+    $this->assertStringContainsString('/mnt/gfs/uiowa02.test/sites/doomed.uiowa.edu', $labels[1]);
+    $this->assertStringContainsString('/mnt/gfs/uiowa02.prod/sites/doomed.uiowa.edu', $labels[2]);
     $this->assertStringContainsString('doomed_uiowa_edu', $labels[3]);
-    $this->assertStringContainsString('doomed.uiowa.edu', $labels[4]);
+    $this->assertStringContainsString('doomed.prod.drupal.uiowa.edu', $labels[4]);
+    $this->assertStringContainsString('www.doomed.uiowa.edu', $labels[5]);
   }
 
   /**
-   * Every cloud step refuses to run while the teardown is unimplemented.
+   * A resource that is already gone produces no step.
    *
-   * The repository steps come after these, so an apply cannot reach them and
-   * strand a site whose cloud resources are still live — the failure mode of
-   * BLT's umd --simulate.
+   * This is the retry case: a run that died partway leaves some resources
+   * deleted, and the plan for the next attempt must show only what is left.
    */
-  public function testCloudStepsRefuseToRun() {
-    $plan = new Plan('t', [], []);
-    $this->command()->pubAddCloudSteps($plan, $this->input());
+  public function testCloudStepsSkipWhatIsAlreadyGone() {
+    $cloud = $this->cloud();
+    $cloud['files'] = ['dev' => FALSE, 'test' => FALSE, 'prod' => TRUE];
+    $cloud['database'] = FALSE;
+    $cloud['domains'] = [];
 
-    foreach ($plan->steps() as $step) {
-      try {
-        ($step['run'])();
-        $this->fail("Step '{$step['label']}' ran instead of refusing.");
-      }
-      catch (\RuntimeException $e) {
-        $this->assertStringContainsString('not implemented', $e->getMessage());
-      }
-    }
+    $plan = new Plan('t', [], []);
+    $this->command()->pubAddCloudSteps($plan, $this->input(), $cloud, $this->client());
+
+    $labels = array_column($plan->steps(), 'label');
+
+    $this->assertCount(1, $labels);
+    $this->assertStringContainsString('/mnt/gfs/uiowa02.prod/sites/doomed.uiowa.edu', $labels[0]);
+  }
+
+  /**
+   * The candidate domains are the site's own, including the www variant.
+   *
+   * The www form is registered for many sites and is not derivable from the
+   * identifier, which is why umd never removed it. The local ddev domain is
+   * excluded: it exists only in sites.php.
+   */
+  public function testCandidateDomainsCoverTheSitesOwnDomains() {
+    $candidates = $this->command()->pubCandidateDomains('doomed.uiowa.edu', 'doomed');
+
+    $this->assertSame([
+      'doomed.dev.drupal.uiowa.edu',
+      'doomed.stage.drupal.uiowa.edu',
+      'doomed.prod.drupal.uiowa.edu',
+      'doomed.uiowa.edu',
+      'www.doomed.uiowa.edu',
+    ], $candidates);
+  }
+
+  /**
+   * The files mount comes from the alias user, not the alias environment name.
+   *
+   * Applications uiowa07-09 name their middle environment 'stage' while the
+   * drush alias still calls it 'test'; the mount path uses the real name.
+   */
+  public function testMountsResolveTheRealEnvironmentName() {
+    mkdir("{$this->dir}/drush/sites", 0777, TRUE);
+    file_put_contents("{$this->dir}/drush/sites/doomed.site.yml", Yaml::dump([
+      'local' => ['uri' => 'doomed.uiowa.ddev.site'],
+      'dev' => ['user' => 'uiowa09.dev'],
+      'test' => ['user' => 'uiowa09.stage'],
+      'prod' => ['user' => 'uiowa09.prod'],
+    ], 4, 2));
+
+    $this->assertSame([
+      'dev' => 'uiowa09.dev',
+      'test' => 'uiowa09.stage',
+      'prod' => 'uiowa09.prod',
+    ], $this->commandInDir()->pubMountsByEnv('doomed'));
+  }
+
+  /**
+   * A missing alias file yields no mounts, which decide() reports as a failure.
+   */
+  public function testMountsAreEmptyWithoutAnAliasFile() {
+    $this->assertSame([], $this->commandInDir()->pubMountsByEnv('doomed'));
+  }
+
+  // --- Cloud files deletion ---------------------------------------------------
+
+  /**
+   * The deleted path is the site's own directory on the environment's mount.
+   */
+  public function testFilesDeleteTargetsTheWholeSiteDirectory() {
+    $files = new CloudFilesDelete('/repo', 'doomed.test', 'uiowa09.stage', 'doomed.uiowa.edu');
+
+    $this->assertSame('/mnt/gfs/uiowa09.stage/sites/doomed.uiowa.edu', $files->path());
+  }
+
+  /**
+   * A directory value that would widen the rm is refused before any command.
+   *
+   * BLT's umd guarded '.' and '*' at call time; refusing in the constructor
+   * means an unsafe value cannot reach a built command at all.
+   *
+   * @dataProvider unsafeDirectories
+   */
+  public function testFilesDeleteRefusesUnsafeDirectories(string $directory) {
+    $this->expectException(\InvalidArgumentException::class);
+    new CloudFilesDelete('/repo', 'doomed.prod', 'uiowa09.prod', $directory);
+  }
+
+  /**
+   * Directory values that must never be interpolated into an rm -rf.
+   */
+  public static function unsafeDirectories(): array {
+    return [
+      'empty' => [''],
+      'current directory' => ['.'],
+      'parent traversal' => ['../doomed.uiowa.edu'],
+      'wildcard' => ['*'],
+      'nested path' => ['doomed.uiowa.edu/files'],
+      'trailing slash' => ['doomed.uiowa.edu/'],
+      'command chain' => ['doomed.uiowa.edu; rm -rf /'],
+    ];
+  }
+
+  /**
+   * A malformed mount is refused for the same reason.
+   */
+  public function testFilesDeleteRefusesUnsafeMounts() {
+    $this->expectException(\InvalidArgumentException::class);
+    new CloudFilesDelete('/repo', 'doomed.prod', '/mnt/gfs', 'doomed.uiowa.edu');
   }
 
   // --- Cloud operation notification links -------------------------------------

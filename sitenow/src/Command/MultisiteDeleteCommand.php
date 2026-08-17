@@ -2,15 +2,22 @@
 
 namespace SiteNow\Command;
 
+use AcquiaCloudApi\Connector\Client;
+use AcquiaCloudApi\Endpoints\Environments;
 use SiteNow\Config\Applications;
+use SiteNow\Operation\CloudDbDelete;
+use SiteNow\Operation\CloudDomainDelete;
+use SiteNow\Operation\CloudFilesDelete;
 use SiteNow\Operation\ManifestRemove;
 use SiteNow\Operation\SitesPhpRemove;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CheckResult;
+use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
 use SiteNow\Traits\SiteNowCommandsTrait;
+use SiteNow\Utility\Multisite;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,7 +29,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Multisite;
 
 /**
  * Deletes a SiteNow multisite.
@@ -50,6 +56,16 @@ class MultisiteDeleteCommand extends Command {
   const CHECK_SITE_DIR_EXISTS = 'site_dir_exists';
   const CHECK_APP_REGISTERED = 'app_registered';
   const CHECK_DATABASE_NAME_MATCHES = 'database_name_matches';
+  const CHECK_DRUSH_ALIAS_MOUNTS = 'drush_alias_mounts';
+  const CHECK_CLOUD_READABLE = 'cloud_readable';
+  const CHECK_CLOUD_FILES = 'cloud_files_present';
+  const CHECK_CLOUD_DATABASE = 'cloud_database_present';
+  const CHECK_CLOUD_DOMAINS = 'cloud_domains_present';
+
+  /**
+   * Environments a multisite exists on, as the drush alias names them.
+   */
+  const ENVIRONMENTS = ['dev', 'test', 'prod'];
 
   /**
    * Constructs the command.
@@ -226,6 +242,8 @@ class MultisiteDeleteCommand extends Command {
       }),
     ];
 
+    $mounts = $this->mountsByEnv($id);
+
     if ($app !== NULL) {
       $registry = new Applications("{$root}/sitenow/applications.yml");
 
@@ -233,6 +251,17 @@ class MultisiteDeleteCommand extends Command {
         return $registry->uuid($app) !== NULL
           ? CheckResult::pass(['uuid' => $registry->uuid($app)])
           : CheckResult::fail("Application '{$app}' is not in sitenow/applications.yml, so its cloud resources cannot be addressed.");
+      });
+
+      $checks[] = new Check(self::CHECK_DRUSH_ALIAS_MOUNTS, function () use ($mounts, $id): CheckResult {
+        // The files live under the environment's *real* name, which the alias
+        // records and the alias name does not: @x.test is uiowa09.stage on
+        // uiowa07-09. Without it the mount path cannot be built at all.
+        $missing = array_diff(self::ENVIRONMENTS, array_keys($mounts));
+
+        return empty($missing)
+          ? CheckResult::pass(['mounts' => $mounts])
+          : CheckResult::fail("drush/sites/{$id}.site.yml is missing a user for: " . implode(', ', $missing) . '. The files mount path cannot be resolved.');
       });
 
       $checks[] = new Check(self::CHECK_DATABASE_NAME_MATCHES, function () use ($root, $dir, $db): CheckResult {
@@ -262,7 +291,34 @@ class MultisiteDeleteCommand extends Command {
 
     $validation = $this->runChecks($checks);
     $summary = $this->summary($input);
-    $plan = new Plan($title, $input, $validation, $summary);
+
+    // Nothing above touches the network. A local failure returns here so a
+    // misidentified site never reaches the cloud reads, let alone a delete.
+    if ($validation['overall'] === CheckStatus::Fail) {
+      return new Plan($title, $input, $validation, $summary);
+    }
+
+    $creds = $this->getAcquiaCredentials();
+    $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+    $uuid = (new Applications("{$root}/sitenow/applications.yml"))->uuid($app);
+
+    // What actually exists on Acquia. Read for every run, including --dry-run:
+    // the steps are built from these facts, so the preview lists the real
+    // resources rather than the ones a site is assumed to have.
+    try {
+      $cloud = $this->gatherCloud($client, $uuid, $input, $mounts);
+    }
+    catch (\Throwable $e) {
+      $validation = $this->mergeValidation($validation, $this->runChecks([
+        new Check(self::CHECK_CLOUD_READABLE, fn() => CheckResult::fail("Cannot read cloud state for {$host}: {$e->getMessage()}")),
+      ]));
+
+      return new Plan($title, $input, $validation, $summary);
+    }
+
+    $validation = $this->mergeValidation($validation, $this->runChecks($this->cloudChecks($cloud, $input)));
+    $summary = array_merge($summary, $this->cloudSummary($cloud));
+    $plan = new Plan($title, $input, $validation, $summary, $cloud);
 
     // A failed plan carries the decision only; skip building the steps that
     // would never run.
@@ -270,10 +326,189 @@ class MultisiteDeleteCommand extends Command {
       return $plan;
     }
 
-    $this->buildSteps($plan, $input, $options);
+    $this->buildSteps($plan, $input, $options, $cloud, $client);
     $plan->nextSteps = $this->nextSteps($options);
 
     return $plan;
+  }
+
+  /**
+   * Resolve each environment's mount name from the site's drush alias.
+   *
+   * The alias records the real environment name in its user (e.g. @x.test has
+   * `user: uiowa09.stage`), which is what the shared filesystem path uses.
+   * Reading it here means the mount never has to be guessed, and no API call is
+   * needed to tell a 'test' application from a 'stage' one.
+   *
+   * @param string $id
+   *   The multisite identifier.
+   *
+   * @return array
+   *   Mount name (app.env) keyed by drush alias environment, omitting any
+   *   environment the alias does not define.
+   */
+  protected function mountsByEnv(string $id): array {
+    $path = "{$this->repoRoot}/drush/sites/{$id}.site.yml";
+
+    if (!is_file($path)) {
+      return [];
+    }
+
+    $alias = Yaml::parseFile($path) ?? [];
+    $mounts = [];
+
+    foreach (self::ENVIRONMENTS as $env) {
+      $user = $alias[$env]['user'] ?? NULL;
+
+      if (is_string($user) && $user !== '') {
+        $mounts[$env] = $user;
+      }
+    }
+
+    return $mounts;
+  }
+
+  /**
+   * The domains a site could own on Acquia.
+   *
+   * Scope is this site's own domains. The four generated at creation are the
+   * obvious ones; `www.<host>` is included because it is registered for many
+   * sites and is not derivable from the identifier, so umd never removed it.
+   * The local ddev domain is left out — it exists only in sites.php.
+   *
+   * Which of these actually exist varies per site, so the caller intersects
+   * this list with the environment rather than assuming all of them.
+   *
+   * @param string $host
+   *   The multisite host.
+   * @param string $id
+   *   The multisite identifier.
+   *
+   * @return string[]
+   *   Candidate domains, deduplicated.
+   */
+  protected function candidateDomains(string $host, string $id): array {
+    $internal = Multisite::getInternalDomains($id);
+
+    return array_values(array_unique([
+      $internal['dev'],
+      $internal['test'],
+      $internal['prod'],
+      $host,
+      "www.{$host}",
+    ]));
+  }
+
+  /**
+   * Read what the site still has on Acquia.
+   *
+   * Read-only. Three SSH probes and two API calls, so it is the slow part of a
+   * run; it happens once and both the checks and the steps use the result.
+   *
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   An authenticated Acquia Cloud API client.
+   * @param string $uuid
+   *   The application UUID.
+   * @param array $input
+   *   Normalized command input.
+   * @param array $mounts
+   *   Mount name keyed by environment, from mountsByEnv().
+   *
+   * @return array
+   *   ['uuid' => string, 'mounts' => array, 'files' => [env => bool],
+   *   'database' => bool, 'domains' => [['domain', 'env', 'env_uuid'], ...]].
+   *
+   * @throws \RuntimeException
+   *   If an environment or the API cannot be reached.
+   */
+  protected function gatherCloud(Client $client, string $uuid, array $input, array $mounts): array {
+    $cloud = [
+      'uuid' => $uuid,
+      'mounts' => $mounts,
+      'files' => [],
+      'database' => FALSE,
+      'domains' => [],
+    ];
+
+    foreach ($mounts as $env => $mount) {
+      $files = new CloudFilesDelete($this->repoRoot, "{$input['id']}.{$env}", $mount, $input['dir']);
+      $cloud['files'][$env] = $files->exists();
+    }
+
+    $cloud['database'] = (new CloudDbDelete($client, $uuid, $input['app'], $input['db']))->exists();
+
+    // Each environment response already carries its domain list, so the
+    // candidates are matched against it rather than queried one at a time.
+    $candidates = $this->candidateDomains($input['host'], $input['id']);
+
+    foreach ((new Environments($client))->getAll($uuid) as $environment) {
+      foreach (array_intersect($candidates, (array) $environment->domains) as $domain) {
+        $cloud['domains'][] = [
+          'domain' => $domain,
+          'env' => $environment->name,
+          'env_uuid' => $environment->uuid,
+        ];
+      }
+    }
+
+    return $cloud;
+  }
+
+  /**
+   * Checks describing what the cloud reads found.
+   *
+   * A resource that is already gone is a WARN, not a failure: that is the state
+   * a partially finished delete leaves behind, and the right response is to
+   * clean up what remains — but not silently, and not under --yes.
+   *
+   * @param array $cloud
+   *   Output of gatherCloud().
+   * @param array $input
+   *   Normalized command input.
+   *
+   * @return \SiteNow\Plan\Check[]
+   *   The cloud presence checks.
+   */
+  protected function cloudChecks(array $cloud, array $input): array {
+    return [
+      new Check(self::CHECK_CLOUD_FILES, function () use ($cloud, $input): CheckResult {
+        $missing = array_keys(array_filter($cloud['files'], fn($present) => !$present));
+
+        return empty($missing)
+          ? CheckResult::pass()
+          : CheckResult::warn("No files directory for {$input['dir']} on: " . implode(', ', $missing) . '. Already deleted, or the site never had files there.');
+      }),
+      new Check(self::CHECK_CLOUD_DATABASE, function () use ($cloud, $input): CheckResult {
+        return $cloud['database']
+          ? CheckResult::pass()
+          : CheckResult::warn("Database {$input['db']} is not on {$input['app']}. Already deleted, or it never existed.");
+      }),
+      new Check(self::CHECK_CLOUD_DOMAINS, function () use ($cloud, $input): CheckResult {
+        return $cloud['domains']
+          ? CheckResult::pass(['count' => count($cloud['domains'])])
+          : CheckResult::warn("No domains for {$input['host']} are registered on {$input['app']}. Already deleted, or the site was served without them.");
+      }),
+    ];
+  }
+
+  /**
+   * Summary rows describing the cloud resources found.
+   *
+   * @param array $cloud
+   *   Output of gatherCloud().
+   *
+   * @return array
+   *   Array of ['label' => string, 'value' => string] rows.
+   */
+  protected function cloudSummary(array $cloud): array {
+    $with_files = array_keys(array_filter($cloud['files']));
+    $domains = array_map(fn($d) => "{$d['domain']} ({$d['env']})", $cloud['domains']);
+
+    return [
+      ['label' => 'Cloud files', 'value' => $with_files ? implode(', ', $with_files) : 'none'],
+      ['label' => 'Cloud DB', 'value' => $cloud['database'] ? 'present' : 'none'],
+      ['label' => 'Cloud domains', 'value' => $domains ? implode(', ', $domains) : 'none'],
+    ];
   }
 
   /**
@@ -311,8 +546,12 @@ class MultisiteDeleteCommand extends Command {
    *   Normalized command input.
    * @param array $options
    *   Command options.
+   * @param array $cloud
+   *   Output of gatherCloud().
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   An authenticated Acquia Cloud API client.
    */
-  private function buildSteps(Plan $plan, array $input, array $options): void {
+  private function buildSteps(Plan $plan, array $input, array $options, array $cloud, Client $client): void {
     $root = $this->repoRoot;
     $host = $input['host'];
     $dir = $input['dir'];
@@ -320,7 +559,7 @@ class MultisiteDeleteCommand extends Command {
     $app = $input['app'];
     $fs = new Filesystem();
 
-    $this->addCloudSteps($plan, $input);
+    $this->addCloudSteps($plan, $input, $cloud, $client);
 
     // Whether the site carries committed configuration decides what the
     // commit stages; read it before the removal makes it unknowable.
@@ -402,50 +641,70 @@ class MultisiteDeleteCommand extends Command {
   /**
    * Add the cloud teardown steps.
    *
-   * Not yet implemented: what these delete is still open in #10011 — whether
-   * the whole site directory comes off gfs or only its contents, and whether
-   * the domains removed are the four derived ones or every domain on the
-   * environment pointing at the site.
+   * One step per resource that gatherCloud() found, so the plan lists what will
+   * actually be deleted and a resource already gone produces no step. Each
+   * operation confirms its own deletion before returning, which is what lets
+   * the repository steps that follow assume the cloud half succeeded.
    *
-   * They are added anyway, ahead of the repository steps, so that --dry-run
-   * previews the real shape of the command and an apply stops here instead of
-   * removing the repository half on its own — the failure mode that made BLT's
-   * --simulate dangerous.
+   * Files come first because they are the only part that cannot be recreated
+   * from the repository; the database and domains are addressed by name, so a
+   * run that fails partway can be retried.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The plan to add the steps to.
    * @param array $input
    *   Normalized command input.
+   * @param array $cloud
+   *   Output of gatherCloud().
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   An authenticated Acquia Cloud API client.
    */
-  protected function addCloudSteps(Plan $plan, array $input): void {
-    $db = $input['db'];
+  protected function addCloudSteps(Plan $plan, array $input, array $cloud, Client $client): void {
+    $root = $this->repoRoot;
     $app = $input['app'];
+    $dir = $input['dir'];
     $id = $input['id'];
-    $domains = Multisite::getInternalDomains($id);
+    $db = $input['db'];
 
-    $pending = function (string $what): \Closure {
-      return function () use ($what) {
-        throw new \RuntimeException("Cloud teardown is not implemented yet: {$what}. See #10011; nothing was deleted.");
-      };
-    };
+    foreach (array_keys(array_filter($cloud['files'])) as $env) {
+      $mount = $cloud['mounts'][$env];
+      $alias = "{$id}.{$env}";
 
-    foreach (['dev', 'test', 'prod'] as $env) {
       $plan->addStep(
-        "Delete files for <info>{$input['dir']}</info> on <info>{$app}.{$env}</info>",
-        $pending("file deletion on {$app}.{$env}")
+        "Delete files <info>/mnt/gfs/{$mount}/sites/{$dir}</info>",
+        function (SymfonyStyle $io) use ($root, $alias, $mount, $dir) {
+          $files = new CloudFilesDelete($root, $alias, $mount, $dir);
+          $files->run();
+          $io->writeln("  Deleted <info>{$files->path()}</info>.");
+        }
       );
     }
 
-    $plan->addStep(
-      "Delete cloud database <info>{$db}</info> on <info>{$app}</info>",
-      $pending("database {$db}")
-    );
+    if (!empty($cloud['database'])) {
+      $uuid = $cloud['uuid'];
 
-    $listed = implode(', ', [$domains['dev'], $domains['test'], $domains['prod'], $input['host']]);
-    $plan->addStep(
-      "Delete domains <info>{$listed}</info> on <info>{$app}</info>",
-      $pending('domain deletion')
-    );
+      $plan->addStep(
+        "Delete cloud database <info>{$db}</info> on <info>{$app}</info>",
+        function (SymfonyStyle $io) use ($client, $uuid, $app, $db) {
+          (new CloudDbDelete($client, $uuid, $app, $db))->run();
+          $io->writeln("  Deleted database <info>{$db}</info> on <info>{$app}</info>.");
+        }
+      );
+    }
+
+    foreach ($cloud['domains'] as $found) {
+      $domain = $found['domain'];
+      $env_uuid = $found['env_uuid'];
+      $env_label = "{$app}.{$found['env']}";
+
+      $plan->addStep(
+        "Delete domain <info>{$domain}</info> on <info>{$env_label}</info>",
+        function (SymfonyStyle $io) use ($client, $env_uuid, $env_label, $domain) {
+          (new CloudDomainDelete($client, $env_uuid, $env_label, $domain))->run();
+          $io->writeln("  Deleted domain <info>{$domain}</info> on <info>{$env_label}</info>.");
+        }
+      );
+    }
   }
 
   /**

@@ -134,8 +134,8 @@ trait PlanTrait {
    * Run a plan's steps in order, failing loud with no rollback.
    *
    * A step that throws stops the run. Steps that already ran stay applied;
-   * recover the working tree with git. The cloud database create is the only
-   * non-git side effect, called out on abort.
+   * recover the working tree with git. Cloud operations are not recoverable
+   * that way, so the abort message calls them out separately.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.
@@ -153,7 +153,7 @@ trait PlanTrait {
       catch (\Throwable $e) {
         $io->error("Step failed: {$step['label']}");
         $io->writeln($e->getMessage());
-        $io->warning('No rollback was performed. Generated files remain in the working tree; recover with git. If the cloud database step had already run, the database may exist on Acquia.');
+        $io->warning('No rollback was performed. Working tree changes remain; recover with git. Any cloud step that already completed stands — a created database still exists, and a deleted database, domain or files directory is not coming back.');
         return Command::FAILURE;
       }
     }
