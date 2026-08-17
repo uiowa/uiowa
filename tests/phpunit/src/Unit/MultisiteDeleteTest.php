@@ -13,6 +13,7 @@ use SiteNow\Operation\SitesPhpRemove;
 use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -110,7 +111,53 @@ class MultisiteDeleteTest extends UnitTestCase {
         return $method->invoke($this, $host, $sites, $options);
       }
 
+      /**
+       * Exposes currentBranch(), from SiteNowCommandsTrait.
+       */
+      public function pubCurrentBranch(): string {
+        return $this->currentBranch();
+      }
+
+      /**
+       * Exposes pushGuidance(), from SiteNowCommandsTrait.
+       */
+      public function pubPushGuidance(): string {
+        return $this->pushGuidance();
+      }
+
     };
+  }
+
+  /**
+   * Turn the scratch directory into a git repository with one commit.
+   *
+   * @param string|null $upstream
+   *   Remote-tracking branch to configure, or NULL to leave the branch with no
+   *   upstream. The remote is a bare repository in the scratch tree, so nothing
+   *   reaches the network.
+   */
+  private function initGitRepo(?string $upstream = NULL): void {
+    $git = function (array $args) {
+      $process = new Process(array_merge(['git'], $args), $this->dir);
+      $process->run();
+
+      return $process;
+    };
+
+    $git(['init', '--initial-branch=feature-branch', '-q']);
+    $git(['config', 'user.email', 'test@example.com']);
+    $git(['config', 'user.name', 'Test']);
+    file_put_contents($this->dir . '/README', "test\n");
+    $git(['add', 'README']);
+    $git(['commit', '-q', '-m', 'initial']);
+
+    if ($upstream !== NULL) {
+      // A bare repository standing in for origin, so push is purely local.
+      $remote = $this->dir . '/remote.git';
+      (new Process(['git', 'init', '--bare', '-q', $remote]))->run();
+      $git(['remote', 'add', 'origin', $remote]);
+      $git(['push', '-q', '--set-upstream', 'origin', $upstream]);
+    }
   }
 
   /**
@@ -682,6 +729,48 @@ EOD);
     $this->expectException(\InvalidArgumentException::class);
 
     new CloudFilesDelete('/repo', 'demo.prod', 'uiowa.prod', 'Default');
+  }
+
+  // --- Push guidance ----------------------------------------------------------
+
+  /**
+   * The branch is read from the repository root, not the working directory.
+   */
+  public function testCurrentBranchReadsTheRepository() {
+    $this->initGitRepo();
+
+    $this->assertSame('feature-branch', $this->commandInDir()->pubCurrentBranch());
+  }
+
+  /**
+   * A branch with no upstream is told to set one.
+   */
+  public function testPushGuidanceSetsUpstreamWhenThereIsNone() {
+    $this->initGitRepo();
+
+    $this->assertStringContainsString(
+      'git push --set-upstream origin feature-branch',
+      $this->commandInDir()->pubPushGuidance()
+    );
+  }
+
+  /**
+   * A branch that already tracks a remote is told to push plainly.
+   */
+  public function testPushGuidanceOmitsUpstreamWhenAlreadyTracking() {
+    $this->initGitRepo('feature-branch');
+
+    $guidance = $this->commandInDir()->pubPushGuidance();
+
+    $this->assertStringContainsString('git push', $guidance);
+    $this->assertStringNotContainsString('--set-upstream', $guidance);
+  }
+
+  /**
+   * Outside a repository the branch is empty rather than a git error string.
+   */
+  public function testCurrentBranchIsEmptyOutsideGitRepository() {
+    $this->assertSame('', $this->commandInDir()->pubCurrentBranch());
   }
 
 }

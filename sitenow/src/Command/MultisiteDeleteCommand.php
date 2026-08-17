@@ -333,10 +333,10 @@ HELP);
     }
 
     if (empty($options['no-commit'])) {
-      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
-      $branch_process->run();
-      $branch = trim($branch_process->getOutput());
-      $checks = array_merge($checks, $this->gitChecks($branch, !empty($options['dry-run'])));
+      $checks = array_merge(
+        $checks,
+        $this->gitChecks($this->currentBranch(), !empty($options['dry-run']))
+      );
     }
 
     $validation = $this->runChecks($checks);
@@ -767,20 +767,9 @@ HELP);
    *   Guidance lines shown after a successful run.
    */
   private function nextSteps(array $options): array {
-    if (empty($options['no-commit'])) {
-      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
-      $branch_process->run();
-      $branch = trim($branch_process->getOutput());
-      $first = "Push and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>";
-    }
-    else {
-      $first = 'Commit the removals when ready.';
-    }
-
-    return [
-      $first,
-      'An immediate production release is not necessary.',
-    ];
+    return !empty($options['no-commit'])
+      ? ['Commit the removals when ready.']
+      : [$this->pushGuidance()];
   }
 
 }

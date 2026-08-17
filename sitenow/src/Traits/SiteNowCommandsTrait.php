@@ -303,6 +303,47 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * The branch currently checked out.
+   *
+   * Runs in the repository root rather than the caller's working directory, so
+   * the answer does not depend on where `./sn` was invoked from.
+   *
+   * @return string
+   *   The branch name, or an empty string when git cannot answer (a detached
+   *   HEAD, or no repository at all).
+   */
+  protected function currentBranch(): string {
+    $process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], $this->repoRoot);
+    $process->run();
+
+    return $process->isSuccessful() ? trim($process->getOutput()) : '';
+  }
+
+  /**
+   * The post-apply instruction for pushing a command's commit.
+   *
+   * A branch that already tracks a remote needs no upstream argument, and being
+   * told to set one it has reads as a correction of the user's setup. Shared by
+   * the commands that commit, so both give the same instruction.
+   *
+   * @return string
+   *   A guidance line naming the push command to run.
+   */
+  protected function pushGuidance(): string {
+    $upstream = new Process(
+      ['git', 'rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}'],
+      $this->repoRoot
+    );
+    $upstream->run();
+
+    $push = $upstream->isSuccessful()
+      ? 'git push'
+      : "git push --set-upstream origin {$this->currentBranch()}";
+
+    return "Push and merge via a pull request: <comment>{$push}</comment>";
+  }
+
+  /**
    * Run the repository's drush and return the finished process.
    *
    * Reads the using class's $repoRoot property, as every command in

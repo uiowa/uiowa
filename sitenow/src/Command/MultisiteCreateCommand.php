@@ -210,10 +210,10 @@ class MultisiteCreateCommand extends Command {
     ];
 
     if (empty($options['no-commit'])) {
-      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
-      $branch_process->run();
-      $branch = trim($branch_process->getOutput());
-      $checks = array_merge($checks, $this->gitChecks($branch, !empty($options['dry-run'])));
+      $checks = array_merge(
+        $checks,
+        $this->gitChecks($this->currentBranch(), !empty($options['dry-run']))
+      );
     }
 
     $validation = $this->mergeValidation($validation, $this->runChecks($checks));
@@ -660,15 +660,9 @@ EOD;
   private function nextSteps(array $options): array {
     // Whether the run will land its own commit decides the first instruction:
     // push the commit, or commit the generated files by hand.
-    if (empty($options['no-commit'])) {
-      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
-      $branch_process->run();
-      $branch = trim($branch_process->getOutput());
-      $first = "Push and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>";
-    }
-    else {
-      $first = 'Commit the generated files when ready.';
-    }
+    $first = empty($options['no-commit'])
+      ? $this->pushGuidance()
+      : 'Commit the generated files when ready.';
 
     return [
       $first,
