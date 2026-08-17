@@ -53,6 +53,7 @@ class MultisiteDeleteCommand extends Command {
 
   // Machine names recorded in validation results.
   const CHECK_SITE_IN_MANIFEST = 'site_in_manifest';
+  const CHECK_NOT_DEFAULT_SITE = 'not_default_site';
   const CHECK_SITE_DIR_EXISTS = 'site_dir_exists';
   const CHECK_APP_REGISTERED = 'app_registered';
   const CHECK_DATABASE_NAME_MATCHES = 'database_name_matches';
@@ -66,6 +67,11 @@ class MultisiteDeleteCommand extends Command {
    * Environments a multisite exists on, as the drush alias names them.
    */
   const ENVIRONMENTS = ['dev', 'test', 'prod'];
+
+  /**
+   * The shared site directory, which no multisite delete may target.
+   */
+  const DEFAULT_SITE_DIRECTORY = 'default';
 
   /**
    * Constructs the command.
@@ -264,6 +270,18 @@ HELP);
         return $app !== NULL
           ? CheckResult::pass(['app' => $app])
           : CheckResult::fail("Site {$host} is not in blt/manifest.yml. Nothing to delete.");
+      }),
+      new Check(self::CHECK_NOT_DEFAULT_SITE, function () use ($dir, $host): CheckResult {
+        // demo.sitenow.uiowa.edu is in the manifest and sites.php maps it to
+        // 'default', so every other check passes for it: the directory exists,
+        // and its derived database is the application's own. Deleting it would
+        // take out docroot/sites/default, the application database, the default
+        // site's files on all three mounts, and the sites.php aliases the whole
+        // application is served on. No multisite is worth that, so the shared
+        // directory is refused by name rather than left to a later check.
+        return $dir !== self::DEFAULT_SITE_DIRECTORY
+          ? CheckResult::pass()
+          : CheckResult::fail("{$host} resolves to the shared docroot/sites/default directory, which this command will not delete. Remove its sites.php alias and manifest entry by hand.");
       }),
       new Check(self::CHECK_SITE_DIR_EXISTS, function () use ($root, $dir, $host): CheckResult {
         // The manifest and the working tree disagreeing is the state a
@@ -583,7 +601,7 @@ HELP);
    * @param \AcquiaCloudApi\Connector\Client $client
    *   An authenticated Acquia Cloud API client.
    */
-  private function buildSteps(Plan $plan, array $input, array $options, array $cloud, Client $client): void {
+  protected function buildSteps(Plan $plan, array $input, array $options, array $cloud, Client $client): void {
     $root = $this->repoRoot;
     $host = $input['host'];
     $dir = $input['dir'];

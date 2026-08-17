@@ -25,6 +25,11 @@ class CloudFilesDelete {
   const MOUNT_ROOT = '/mnt/gfs';
 
   /**
+   * The shared site directory, never a valid delete target.
+   */
+  const SHARED_DIRECTORY = 'default';
+
+  /**
    * Constructs the operation.
    *
    * @param string $repoRoot
@@ -55,6 +60,14 @@ class CloudFilesDelete {
     // would delete every site's files on the environment.
     if (!preg_match('/^[a-z0-9][a-z0-9.-]*[a-z0-9]$/i', $this->directory) || str_contains($this->directory, '..')) {
       throw new \InvalidArgumentException("Refusing to delete files for unsafe site directory '{$this->directory}'.");
+    }
+
+    // 'default' passes the pattern above but is the shared directory every
+    // application serves its own site from, and a manifest host can resolve to
+    // it through sites.php. The command checks for this too; refusing here as
+    // well means no caller can reach the remote rm by another route.
+    if (strtolower($this->directory) === self::SHARED_DIRECTORY) {
+      throw new \InvalidArgumentException("Refusing to delete files for the shared '" . self::SHARED_DIRECTORY . "' site directory.");
     }
 
     if (!preg_match('/^[a-z0-9]+\.[a-z0-9]+$/i', $this->mount)) {

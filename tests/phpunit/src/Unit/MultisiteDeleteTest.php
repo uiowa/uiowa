@@ -10,6 +10,7 @@ use SiteNow\Operation\CloudFilesDelete;
 use SiteNow\Operation\CloudOperationWait;
 use SiteNow\Operation\ManifestRemove;
 use SiteNow\Operation\SitesPhpRemove;
+use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -91,6 +92,22 @@ class MultisiteDeleteTest extends UnitTestCase {
        */
       public function pubMountsByEnv(string $id): array {
         return $this->mountsByEnv($id);
+      }
+
+      /**
+       * Exposes buildSteps().
+       */
+      public function pubBuildSteps(Plan $plan, array $input, array $options, array $cloud, Client $client): void {
+        $this->buildSteps($plan, $input, $options, $cloud, $client);
+      }
+
+      /**
+       * Exposes decide(), which is private but reachable through execute().
+       */
+      public function pubDecide(string $host, array $sites, array $options): Plan {
+        $method = new \ReflectionMethod(MultisiteDeleteCommand::class, 'decide');
+
+        return $method->invoke($this, $host, $sites, $options);
       }
 
     };
@@ -509,6 +526,162 @@ EOD);
     $this->assertNull(CloudOperationWait::notificationUuid(
       $this->links('https://cloud.acquia.com/api/notifications/not-a-uuid')
     ));
+  }
+
+  // --- Step order -------------------------------------------------------------
+
+  /**
+   * Every cloud step precedes every repository step, and the commit is last.
+   *
+   * This is the property the whole command rests on: the repository is only
+   * touched once the cloud teardown has been confirmed, so a cloud failure
+   * leaves the working tree recoverable. The steps run in list order, which
+   * makes their order the guarantee.
+   */
+  public function testCloudStepsAllPrecedeRepositorySteps() {
+    // A site with committed configuration, so the optional step is present.
+    mkdir("{$this->dir}/config/sites/doomed.uiowa.edu", 0777, TRUE);
+
+    $plan = new Plan('t', [], []);
+    $this->commandInDir()->pubBuildSteps(
+      $plan,
+      $this->input(),
+      ['no-commit' => FALSE],
+      $this->cloud(),
+      $this->client()
+    );
+
+    $labels = array_column($plan->steps(), 'label');
+
+    // Six cloud steps: three mounts, the database, and two domains.
+    $cloud_steps = array_slice($labels, 0, 6);
+    foreach ($cloud_steps as $label) {
+      $this->assertMatchesRegularExpression('/^Delete /', $label, "Expected a cloud delete step, got: {$label}");
+    }
+
+    // Nothing after the cloud steps may touch the cloud, and nothing before
+    // them may touch the repository.
+    $repo_steps = array_slice($labels, 6);
+    foreach ($repo_steps as $label) {
+      $this->assertStringStartsNotWith('Delete files', $label);
+      $this->assertStringNotContainsString('cloud database', $label);
+      $this->assertStringNotContainsString('Delete domain', $label);
+    }
+
+    $this->assertSame([
+      'Remove <info>config/sites/doomed.uiowa.edu</info>',
+      'Remove <info>docroot/sites/doomed.uiowa.edu</info>',
+      'Remove <info>drush/sites/doomed.site.yml</info>',
+      'Remove <info>sites.php</info> directory aliases for <info>doomed.uiowa.edu</info>',
+      'Remove <info>doomed.uiowa.edu</info> from <info>blt/manifest.yml</info> (app: <info>uiowa02</info>)',
+      'Commit "Delete doomed.uiowa.edu multisite on uiowa02"',
+    ], $repo_steps);
+  }
+
+  /**
+   * The manifest removal is the last step that can fail before the commit.
+   *
+   * Until it runs the site is still selectable, which is what makes a failed
+   * run retryable against the same site.
+   */
+  public function testManifestRemovalIsTheLastRepositoryStep() {
+    $plan = new Plan('t', [], []);
+    $this->commandInDir()->pubBuildSteps(
+      $plan,
+      $this->input(),
+      ['no-commit' => TRUE],
+      $this->cloud(),
+      $this->client()
+    );
+
+    $labels = array_column($plan->steps(), 'label');
+
+    $this->assertStringContainsString('blt/manifest.yml', end($labels));
+  }
+
+  /**
+   * A site with no committed configuration gets no config removal step.
+   */
+  public function testNoConfigStepWithoutCommittedConfiguration() {
+    $plan = new Plan('t', [], []);
+    $this->commandInDir()->pubBuildSteps(
+      $plan,
+      $this->input(),
+      ['no-commit' => TRUE],
+      $this->cloud(),
+      $this->client()
+    );
+
+    $labels = array_column($plan->steps(), 'label');
+
+    foreach ($labels as $label) {
+      $this->assertStringNotContainsString('config/sites/', $label);
+    }
+  }
+
+  // --- The shared default directory -------------------------------------------
+
+  /**
+   * A host that resolves to 'default' through sites.php is refused.
+   *
+   * The demo.sitenow.uiowa.edu host is one: it is in the manifest, and
+   * sites.php maps it to the shared directory. Every other check passes for
+   * it — the directory exists and its derived database is the application's
+   * own — so without this check the plan would delete docroot/sites/default,
+   * the application database, and the aliases the application is served on.
+   */
+  public function testDefaultDirectoryHostIsRefused() {
+    mkdir("{$this->dir}/docroot/sites/default", 0777, TRUE);
+    file_put_contents(
+      "{$this->dir}/docroot/sites/sites.php",
+      "<?php\n\$sites['demo.sitenow.uiowa.edu'] = 'default';\n"
+    );
+    file_put_contents(
+      "{$this->dir}/docroot/sites/default/blt.yml",
+      Yaml::dump(['drupal' => ['db' => ['database' => 'uiowa']]])
+    );
+
+    // decide() loads the application registry before it runs the checks.
+    mkdir("{$this->dir}/sitenow", 0777, TRUE);
+    file_put_contents(
+      "{$this->dir}/sitenow/applications.yml",
+      Yaml::dump(['applications' => ['uiowa' => ['uuid' => 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee']]])
+    );
+
+    $plan = $this->commandInDir()->pubDecide(
+      'demo.sitenow.uiowa.edu',
+      ['demo.sitenow.uiowa.edu' => 'uiowa'],
+      ['no-commit' => TRUE, 'dry-run' => TRUE]
+    );
+
+    $check = $plan->validation['checks'][MultisiteDeleteCommand::CHECK_NOT_DEFAULT_SITE] ?? NULL;
+
+    $this->assertNotNull($check, 'The default-directory check did not run.');
+    $this->assertSame(CheckStatus::Fail, $check['status']);
+    $this->assertTrue($plan->failed());
+    $this->assertSame([], $plan->steps(), 'A refused plan must carry no steps.');
+  }
+
+  /**
+   * The files operation refuses the shared directory on its own.
+   *
+   * A second layer: the command checks for this, but the operation is what
+   * issues the remote rm, so it does not rely on a caller having checked.
+   */
+  public function testFilesDeleteRefusesTheSharedDirectory() {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage("shared 'default' site directory");
+
+    new CloudFilesDelete('/repo', 'demo.prod', 'uiowa.prod', 'default');
+  }
+
+  /**
+   * The refusal is not case-sensitive.
+   */
+  public function testFilesDeleteRefusesTheSharedDirectoryInAnyCase() {
+    $this->expectException(\InvalidArgumentException::class);
+
+    new CloudFilesDelete('/repo', 'demo.prod', 'uiowa.prod', 'Default');
   }
 
 }
