@@ -2,15 +2,13 @@
 
 namespace SiteNow\Traits;
 
-use Consolidation\Config\Config;
-use Consolidation\Config\Loader\ConfigProcessor;
-use Consolidation\Config\Loader\YamlConfigLoader;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use SiteNow\Command\SiteUpdateCommand;
+use SiteNow\Config\Credentials;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
@@ -47,32 +45,6 @@ trait SiteNowCommandsTrait {
   private ?array $siteAliases = NULL;
 
   /**
-   * Get a config value by key from blt/local.blt.yml.
-   *
-   * @param string $key
-   *   Dot-separated config key, e.g. 'uiowa.credentials.acquia.key'.
-   *
-   * @return mixed
-   *   The config value, or NULL if not found.
-   */
-  protected function getConfigValue(string $key): mixed {
-    // @todo Move out of BLT.
-    $blt_local = getcwd() . '/blt/local.blt.yml';
-
-    if (!file_exists($blt_local)) {
-      return NULL;
-    }
-
-    $config = new Config();
-    $loader = new YamlConfigLoader();
-    $processor = new ConfigProcessor();
-    $processor->extend($loader->load($blt_local));
-    $config->replace($processor->export());
-
-    return $config->get($key);
-  }
-
-  /**
    * Build and return an Acquia Cloud API v2 client.
    *
    * @param string $key
@@ -93,16 +65,26 @@ trait SiteNowCommandsTrait {
   }
 
   /**
-   * Read the Acquia Cloud API credentials from blt/local.blt.yml.
+   * The developer's SiteNow credentials.
    *
-   * @return array
-   *   ['key' => string|null, 'secret' => string|null].
+   * @return \SiteNow\Config\Credentials
+   *   A reader for ~/.sitenow/credentials.yml.
    */
-  protected function getAcquiaCredentials(): array {
-    return [
-      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
-      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
-    ];
+  protected function credentials(): Credentials {
+    return new Credentials(Credentials::defaultPath());
+  }
+
+  /**
+   * The guidance printed when Acquia Cloud API credentials are missing.
+   *
+   * Named here rather than at each precondition so the plan check and the
+   * client builder tell the user the same thing, including the path.
+   *
+   * @return string
+   *   An error message naming the keys to set and the file to set them in.
+   */
+  protected function acquiaCredentialsMissing(): string {
+    return 'Acquia credentials not found. Set acquia.key and acquia.secret in ' . Credentials::defaultPath() . '.';
   }
 
   /**
@@ -120,14 +102,16 @@ trait SiteNowCommandsTrait {
    *   An authenticated client, or NULL when credentials are not configured.
    */
   protected function requireAcquiaClient(SymfonyStyle $io): ?Client {
-    $creds = $this->getAcquiaCredentials();
+    $credentials = $this->credentials();
 
-    if (empty($creds['key']) || empty($creds['secret'])) {
-      $io->getErrorStyle()->error('Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
+    if (!$credentials->hasAcquia()) {
+      $io->getErrorStyle()->error($this->acquiaCredentialsMissing());
       return NULL;
     }
 
-    return $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+    $acquia = $credentials->acquia();
+
+    return $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
   }
 
   /**
@@ -165,20 +149,21 @@ trait SiteNowCommandsTrait {
   }
 
   /**
-   * Get the multisites enabled on this developer's machine.
+   * Get the sites enabled on this developer's machine.
    *
-   * The list is the uncommented "multisites" entries in blt/local.blt.yml, the
-   * same list that drives local site availability. An absent file or key yields
+   * The list is the "sites" entries in local.sites.yml, the local counterpart
+   * to an application's manifest sites. The file is not tracked, so each
+   * developer chooses which sites they work with. An absent file or key yields
    * an empty list rather than a fleet-wide fallback, so a command never acts on
    * every site by accident.
    *
    * @return array
    *   Site hosts, empty when none are enabled.
    */
-  protected function localMultisites(): array {
-    $local = "{$this->repoRoot}/blt/local.blt.yml";
+  protected function localSites(): array {
+    $local = "{$this->repoRoot}/local.sites.yml";
 
-    return is_file($local) ? (Yaml::parseFile($local)['multisites'] ?? []) : [];
+    return is_file($local) ? (Yaml::parseFile($local)['sites'] ?? []) : [];
   }
 
   /**

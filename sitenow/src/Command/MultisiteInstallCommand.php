@@ -175,7 +175,7 @@ HELP);
       return Command::FAILURE;
     }
 
-    $sites = $override ?: ($is_acquia ? $this->manifestSites($app) : $this->localMultisites());
+    $sites = $override ?: ($is_acquia ? $this->manifestSites($app) : $this->localSites());
     if (!$sites) {
       $io->warning("No sites to consider for application '{$app}'.");
       return Command::SUCCESS;

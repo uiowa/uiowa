@@ -49,6 +49,10 @@ class DeployUpdateTest extends UnitTestCase {
         return $this->runFirstOrder($sites);
       }
 
+      public function pubLocalSites(): array {
+        return $this->localSites();
+      }
+
     };
   }
 
@@ -224,6 +228,46 @@ class DeployUpdateTest extends UnitTestCase {
     $ordered = $this->command($repo)->pubRunFirstOrder($sites);
 
     $this->assertSame($sites, $ordered);
+  }
+
+  // --- Locally-enabled site list ----------------------------------------------
+
+  /**
+   * The local site list is the "sites" entries in local.sites.yml.
+   */
+  public function testLocalSitesFromLocalSitesYml() {
+    $repo = $this->fixtureRepo([]);
+    file_put_contents(
+      "{$repo}/local.sites.yml",
+      "sites:\n  - default\n  - foo.uiowa.edu\n"
+    );
+
+    $this->assertSame(
+      ['default', 'foo.uiowa.edu'],
+      $this->command($repo)->pubLocalSites()
+    );
+  }
+
+  /**
+   * An absent local.sites.yml enables no sites.
+   *
+   * A fleet-wide fallback here would have a local deploy:update touch every
+   * site the checkout knows about.
+   */
+  public function testLocalSitesAbsentFileEnablesNothing() {
+    $repo = $this->fixtureRepo([]);
+
+    $this->assertSame([], $this->command($repo)->pubLocalSites());
+  }
+
+  /**
+   * A local.sites.yml with no "sites" key enables no sites.
+   */
+  public function testLocalSitesMissingKeyEnablesNothing() {
+    $repo = $this->fixtureRepo([]);
+    file_put_contents("{$repo}/local.sites.yml", "something: else\n");
+
+    $this->assertSame([], $this->command($repo)->pubLocalSites());
   }
 
 }

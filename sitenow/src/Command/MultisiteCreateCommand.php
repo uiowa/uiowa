@@ -191,8 +191,8 @@ class MultisiteCreateCommand extends Command {
     }
 
     // SSL coverage is the only live API query.
-    $creds = $this->getAcquiaCredentials();
-    $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+    $acquia = $this->credentials()->acquia();
+    $client = $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
     $ssl_parts = Multisite::getSslParts($host);
     $coverage = $this->gatherSslCoverage($io, $client, array_column($candidates, 'uuid', 'name'), $ssl_parts);
     foreach ($coverage as $name => $ssl) {
@@ -485,8 +485,8 @@ EOD;
     // Steps run in order; the commit comes last so it captures every
     // generated file.
     if (empty($options['no-db'])) {
-      $creds = $this->getAcquiaCredentials();
-      $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+      $acquia = $this->credentials()->acquia();
+      $client = $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
       $uuid = $app['uuid'];
       $app_name = $app['name'];
       $plan->addStep(

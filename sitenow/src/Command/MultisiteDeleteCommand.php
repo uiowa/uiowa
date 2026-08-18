@@ -323,8 +323,8 @@ HELP);
       return new Plan($title, $input, $validation, $summary);
     }
 
-    $creds = $this->getAcquiaCredentials();
-    $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+    $acquia = $this->credentials()->acquia();
+    $client = $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
     $uuid = (new Applications("{$root}/sitenow/applications.yml"))->uuid($app);
 
     // Read for every run, including --dry-run: the steps are built from these
