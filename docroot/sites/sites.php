@@ -7960,3 +7960,9 @@ $sites['labtempo.uiowa.ddev.site'] = 'tempo.lab.uiowa.edu';
 $sites['labtempo.dev.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
 $sites['labtempo.stage.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
 $sites['labtempo.prod.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
+
+// Directory aliases for ui-cair.medicine.uiowa.edu.
+$sites['medicineui-cair.uiowa.ddev.site'] = 'ui-cair.medicine.uiowa.edu';
+$sites['medicineui-cair.dev.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
+$sites['medicineui-cair.stage.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
+$sites['medicineui-cair.prod.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
