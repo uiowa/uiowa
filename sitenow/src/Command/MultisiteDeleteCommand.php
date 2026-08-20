@@ -5,11 +5,10 @@ namespace SiteNow\Command;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Endpoints\Environments;
 use SiteNow\Config\Applications;
-use SiteNow\Operation\CloudDbDelete;
-use SiteNow\Operation\CloudDomainDelete;
-use SiteNow\Operation\CloudFilesDelete;
-use SiteNow\Operation\ManifestRemove;
-use SiteNow\Operation\SitesPhpRemove;
+use SiteNow\Acquia\CloudApi;
+use SiteNow\Acquia\Mounts;
+use SiteNow\Config\Manifest;
+use SiteNow\Config\SitesPhp;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CheckResult;
 use SiteNow\Plan\CheckStatus;
@@ -488,12 +487,13 @@ HELP);
       'domains' => [],
     ];
 
+    $filesystem = new Mounts($this->repoRoot);
+
     foreach ($mounts as $env => $mount) {
-      $files = new CloudFilesDelete($this->repoRoot, "{$input['id']}.{$env}", $mount, $input['dir']);
-      $cloud['files'][$env] = $files->exists();
+      $cloud['files'][$env] = $filesystem->siteDirectoryExists("{$input['id']}.{$env}", $mount, $input['dir']);
     }
 
-    $cloud['database'] = (new CloudDbDelete($client, $uuid, $input['app'], $input['db']))->exists();
+    $cloud['database'] = (new CloudApi($client))->databaseExists($uuid, $input['db']);
 
     // Each environment response already carries its domain list, so the
     // candidates are matched against it rather than queried one at a time.
@@ -653,7 +653,7 @@ HELP);
     $plan->addStep(
       "Remove <info>sites.php</info> directory aliases for <info>{$host}</info>",
       function () use ($sites_php, $dir) {
-        (new SitesPhpRemove($sites_php, $dir))->run();
+        (new SitesPhp($sites_php))->removeAliases($dir);
       }
     );
 
@@ -664,7 +664,7 @@ HELP);
     $plan->addStep(
       "Remove <info>{$host}</info> from <info>blt/manifest.yml</info> (app: <info>{$app}</info>)",
       function () use ($manifest_path, $app, $host) {
-        (new ManifestRemove($manifest_path, $app, $host))->run();
+        (new Manifest($manifest_path))->removeSite($app, $host);
       }
     );
 
@@ -727,16 +727,18 @@ HELP);
     $id = $input['id'];
     $db = $input['db'];
 
+    $filesystem = new Mounts($root);
+
     foreach (array_keys(array_filter($cloud['files'])) as $env) {
       $mount = $cloud['mounts'][$env];
       $alias = "{$id}.{$env}";
+      $path = $filesystem->siteDirectory($mount, $dir);
 
       $plan->addStep(
-        "Delete files <info>/mnt/gfs/{$mount}/sites/{$dir}</info>",
-        function (SymfonyStyle $io) use ($root, $alias, $mount, $dir) {
-          $files = new CloudFilesDelete($root, $alias, $mount, $dir);
-          $files->run();
-          $io->writeln("  Deleted <info>{$files->path()}</info>.");
+        "Delete files <info>{$path}</info>",
+        function (SymfonyStyle $io) use ($filesystem, $alias, $mount, $dir, $path) {
+          $filesystem->deleteSiteDirectory($alias, $mount, $dir);
+          $io->writeln("  Deleted <info>{$path}</info>.");
         }
       );
     }
@@ -747,7 +749,7 @@ HELP);
       $plan->addStep(
         "Delete cloud database <info>{$db}</info> on <info>{$app}</info>",
         function (SymfonyStyle $io) use ($client, $uuid, $app, $db) {
-          (new CloudDbDelete($client, $uuid, $app, $db))->run();
+          (new CloudApi($client))->deleteDatabase($uuid, $app, $db);
           $io->writeln("  Deleted database <info>{$db}</info> on <info>{$app}</info>.");
         }
       );
@@ -761,7 +763,7 @@ HELP);
       $plan->addStep(
         "Delete domain <info>{$domain}</info> on <info>{$env_label}</info>",
         function (SymfonyStyle $io) use ($client, $env_uuid, $env_label, $domain) {
-          (new CloudDomainDelete($client, $env_uuid, $env_label, $domain))->run();
+          (new CloudApi($client))->deleteDomain($env_uuid, $env_label, $domain);
           $io->writeln("  Deleted domain <info>{$domain}</info> on <info>{$env_label}</info>.");
         }
       );

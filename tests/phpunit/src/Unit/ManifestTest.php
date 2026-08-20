@@ -88,6 +88,19 @@ class ManifestTest extends UnitTestCase {
   }
 
   /**
+   * Only the named host goes; the application's other sites stay.
+   */
+  public function testRemoveSiteKeepsSiblings() {
+    $manifest = $this->manifest([
+      'uiowa02' => ['a.uiowa.edu', 'b.uiowa.edu'],
+    ]);
+
+    $manifest->removeSite('uiowa02', 'a.uiowa.edu');
+
+    $this->assertSame(['uiowa02' => ['b.uiowa.edu']], $manifest->all());
+  }
+
+  /**
    * Removing an application's last site drops the application entirely.
    */
   public function testRemoveSiteDropsEmptyApplication() {

@@ -5,11 +5,10 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use Drupal\Tests\UnitTestCase;
+use SiteNow\Acquia\CloudApi;
+use SiteNow\Acquia\Mounts;
 use SiteNow\Command\MultisiteDeleteCommand;
-use SiteNow\Operation\CloudFilesDelete;
-use SiteNow\Operation\CloudOperationWait;
-use SiteNow\Operation\ManifestRemove;
-use SiteNow\Operation\SitesPhpRemove;
+use SiteNow\Config\SitesPhp;
 use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
 use Symfony\Component\Filesystem\Filesystem;
@@ -209,15 +208,6 @@ class MultisiteDeleteTest extends UnitTestCase {
   }
 
   /**
-   * Write a manifest fixture and return its path.
-   */
-  private function manifest(array $manifest): string {
-    $path = $this->dir . '/manifest.yml';
-    file_put_contents($path, Yaml::dump($manifest, 8, 2, Yaml::DUMP_OBJECT_AS_MAP));
-    return $path;
-  }
-
-  /**
    * Build a links object shaped like an OperationResponse's.
    */
   private function links(string $href): object {
@@ -259,65 +249,6 @@ class MultisiteDeleteTest extends UnitTestCase {
     $this->assertSame([], $this->command()->pubSitesByHost([]));
   }
 
-  // --- Manifest removal -------------------------------------------------------
-
-  /**
-   * The host is removed and its application's other sites are left alone.
-   */
-  public function testManifestRemoveDropsOnlyTheHost() {
-    $path = $this->manifest([
-      'uiowa02' => ['a.uiowa.edu', 'b.uiowa.edu'],
-    ]);
-
-    (new ManifestRemove($path, 'uiowa02', 'a.uiowa.edu'))->run();
-
-    $this->assertSame(['uiowa02' => ['b.uiowa.edu']], Yaml::parseFile($path));
-  }
-
-  /**
-   * An application left with no sites is dropped entirely.
-   */
-  public function testManifestRemoveDropsEmptyApplication() {
-    $path = $this->manifest([
-      'uiowa02' => ['a.uiowa.edu'],
-      'uiowa07' => ['c.uiowa.edu'],
-    ]);
-
-    (new ManifestRemove($path, 'uiowa02', 'a.uiowa.edu'))->run();
-
-    $this->assertSame(['uiowa07' => ['c.uiowa.edu']], Yaml::parseFile($path));
-  }
-
-  /**
-   * Removing a site that is already gone is a no-op, so a retry is safe.
-   */
-  public function testManifestRemoveIsIdempotent() {
-    $path = $this->manifest([
-      'uiowa02' => ['b.uiowa.edu'],
-    ]);
-
-    (new ManifestRemove($path, 'uiowa02', 'a.uiowa.edu'))->run();
-    (new ManifestRemove($path, 'uiowa02', 'a.uiowa.edu'))->run();
-
-    $this->assertSame(['uiowa02' => ['b.uiowa.edu']], Yaml::parseFile($path));
-  }
-
-  /**
-   * The whole manifest is re-sorted, matching what ManifestUpdate writes.
-   */
-  public function testManifestRemoveSortsWhatItWrites() {
-    $path = $this->manifest([
-      'uiowa07' => ['z.uiowa.edu', 'y.uiowa.edu'],
-      'uiowa02' => ['b.uiowa.edu', 'a.uiowa.edu'],
-    ]);
-
-    (new ManifestRemove($path, 'uiowa02', 'a.uiowa.edu'))->run();
-
-    $parsed = Yaml::parseFile($path);
-    $this->assertSame(['uiowa02', 'uiowa07'], array_keys($parsed));
-    $this->assertSame(['y.uiowa.edu', 'z.uiowa.edu'], $parsed['uiowa07']);
-  }
-
   // --- sites.php removal ------------------------------------------------------
 
   /**
@@ -345,10 +276,10 @@ EOD);
   /**
    * Every alias for the site goes, along with its marker comment.
    */
-  public function testSitesPhpRemoveStripsTheSiteBlock() {
+  public function testRemoveAliasesStripsTheSiteBlock() {
     $path = $this->sitesPhp();
 
-    (new SitesPhpRemove($path, 'doomed.uiowa.edu'))->run();
+    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
 
     $contents = file_get_contents($path);
     $this->assertStringNotContainsString('doomed', $contents);
@@ -357,10 +288,10 @@ EOD);
   /**
    * Other sites' aliases survive untouched.
    */
-  public function testSitesPhpRemoveLeavesOtherSites() {
+  public function testRemoveAliasesLeavesOtherSites() {
     $path = $this->sitesPhp();
 
-    (new SitesPhpRemove($path, 'doomed.uiowa.edu'))->run();
+    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
 
     $contents = file_get_contents($path);
     $this->assertStringContainsString("// Directory aliases for keeper.uiowa.edu.", $contents);
@@ -371,11 +302,11 @@ EOD);
   /**
    * An alias added by hand is removed too, unlike a literal block replacement.
    */
-  public function testSitesPhpRemoveStripsAliasesOutsideTheBlock() {
+  public function testRemoveAliasesStripsAliasesOutsideTheBlock() {
     $path = $this->sitesPhp();
     file_put_contents($path, "\n\$sites['vanity.uiowa.edu'] = 'doomed.uiowa.edu';\n", FILE_APPEND);
 
-    (new SitesPhpRemove($path, 'doomed.uiowa.edu'))->run();
+    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
 
     $this->assertStringNotContainsString('vanity.uiowa.edu', file_get_contents($path));
   }
@@ -383,12 +314,12 @@ EOD);
   /**
    * Running twice leaves the same file, so a retry is safe.
    */
-  public function testSitesPhpRemoveIsIdempotent() {
+  public function testRemoveAliasesIsIdempotent() {
     $path = $this->sitesPhp();
 
-    (new SitesPhpRemove($path, 'doomed.uiowa.edu'))->run();
+    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
     $once = file_get_contents($path);
-    (new SitesPhpRemove($path, 'doomed.uiowa.edu'))->run();
+    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
 
     $this->assertSame($once, file_get_contents($path));
   }
@@ -396,10 +327,10 @@ EOD);
   /**
    * Removal does not leave a widening run of blank lines behind.
    */
-  public function testSitesPhpRemoveCollapsesBlankLines() {
+  public function testRemoveAliasesCollapsesBlankLines() {
     $path = $this->sitesPhp();
 
-    (new SitesPhpRemove($path, 'doomed.uiowa.edu'))->run();
+    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
 
     $this->assertDoesNotMatchRegularExpression("/\n{3,}/", file_get_contents($path));
   }
@@ -502,22 +433,25 @@ EOD);
    * The deleted path is the site's own directory on the environment's mount.
    */
   public function testFilesDeleteTargetsTheWholeSiteDirectory() {
-    $files = new CloudFilesDelete('/repo', 'doomed.test', 'uiowa09.stage', 'doomed.uiowa.edu');
+    $mounts = new Mounts('/repo');
 
-    $this->assertSame('/mnt/gfs/uiowa09.stage/sites/doomed.uiowa.edu', $files->path());
+    $this->assertSame(
+      '/mnt/gfs/uiowa09.stage/sites/doomed.uiowa.edu',
+      $mounts->siteDirectory('uiowa09.stage', 'doomed.uiowa.edu')
+    );
   }
 
   /**
    * A directory value that would widen the rm is refused before any command.
    *
-   * Refusing in the constructor means an unsafe value cannot reach a built
-   * command at all.
+   * The path is refused where it is built, so an unsafe value cannot reach a
+   * remote command by any route.
    *
    * @dataProvider unsafeDirectories
    */
   public function testFilesDeleteRefusesUnsafeDirectories(string $directory) {
     $this->expectException(\InvalidArgumentException::class);
-    new CloudFilesDelete('/repo', 'doomed.prod', 'uiowa09.prod', $directory);
+    (new Mounts('/repo'))->siteDirectory('uiowa09.prod', $directory);
   }
 
   /**
@@ -540,7 +474,7 @@ EOD);
    */
   public function testFilesDeleteRefusesUnsafeMounts() {
     $this->expectException(\InvalidArgumentException::class);
-    new CloudFilesDelete('/repo', 'doomed.prod', '/mnt/gfs', 'doomed.uiowa.edu');
+    (new Mounts('/repo'))->siteDirectory('/mnt/gfs', 'doomed.uiowa.edu');
   }
 
   // --- Cloud operation notification links -------------------------------------
@@ -552,25 +486,25 @@ EOD);
     $uuid = '3d87eca7-89d1-47e2-84db-bc7ad52a9363';
     $links = $this->links("https://cloud.acquia.com/api/notifications/{$uuid}");
 
-    $this->assertSame($uuid, CloudOperationWait::notificationUuid($links));
+    $this->assertSame($uuid, CloudApi::notificationUuid($links));
   }
 
   /**
    * An operation with no links cannot be confirmed.
    */
   public function testNotificationUuidRejectsMissingLinks() {
-    $this->assertNull(CloudOperationWait::notificationUuid(NULL));
-    $this->assertNull(CloudOperationWait::notificationUuid((object) []));
+    $this->assertNull(CloudApi::notificationUuid(NULL));
+    $this->assertNull(CloudApi::notificationUuid((object) []));
   }
 
   /**
    * A link that does not end in a UUID is refused rather than requested.
    */
   public function testNotificationUuidRejectsNonUuidPath() {
-    $this->assertNull(CloudOperationWait::notificationUuid(
+    $this->assertNull(CloudApi::notificationUuid(
       $this->links('https://cloud.acquia.com/api/notifications/')
     ));
-    $this->assertNull(CloudOperationWait::notificationUuid(
+    $this->assertNull(CloudApi::notificationUuid(
       $this->links('https://cloud.acquia.com/api/notifications/not-a-uuid')
     ));
   }
@@ -710,16 +644,16 @@ EOD);
   }
 
   /**
-   * The files operation refuses the shared directory on its own.
+   * The mount operations refuse the shared directory on their own.
    *
-   * A second layer: the command checks for this, but the operation is what
-   * issues the remote rm, so it does not rely on a caller having checked.
+   * A second layer: the command checks for this, but this is what issues the
+   * remote rm, so it does not rely on a caller having checked.
    */
   public function testFilesDeleteRefusesTheSharedDirectory() {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage("shared 'default' site directory");
 
-    new CloudFilesDelete('/repo', 'demo.prod', 'uiowa.prod', 'default');
+    (new Mounts('/repo'))->siteDirectory('uiowa.prod', 'default');
   }
 
   /**
@@ -728,7 +662,7 @@ EOD);
   public function testFilesDeleteRefusesTheSharedDirectoryInAnyCase() {
     $this->expectException(\InvalidArgumentException::class);
 
-    new CloudFilesDelete('/repo', 'demo.prod', 'uiowa.prod', 'Default');
+    (new Mounts('/repo'))->siteDirectory('uiowa.prod', 'Default');
   }
 
   // --- Push guidance ----------------------------------------------------------

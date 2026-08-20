@@ -4,9 +4,9 @@ namespace SiteNow\Command;
 
 use AcquiaCloudApi\Connector\Client;
 use SiteNow\Config\Applications;
-use SiteNow\Operation\CloudDbCreate;
-use SiteNow\Operation\ManifestUpdate;
-use SiteNow\Operation\SitesPhpUpdate;
+use SiteNow\Acquia\CloudApi;
+use SiteNow\Config\Manifest;
+use SiteNow\Config\SitesPhp;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CheckResult;
 use SiteNow\Plan\CheckStatus;
@@ -492,7 +492,7 @@ EOD;
       $plan->addStep(
         "Create cloud DB <info>{$db}</info> on <info>{$app_name}</info>",
         function (SymfonyStyle $io) use ($client, $uuid, $app_name, $db) {
-          (new CloudDbCreate($client, $uuid, $app_name, $db))->run();
+          (new CloudApi($client))->createDatabase($uuid, $app_name, $db);
           $io->writeln("  Database <info>{$db}</info> is being created on <info>{$app_name}</info>.");
         }
       );
@@ -548,7 +548,7 @@ EOD;
     $plan->addStep(
       "Append <info>sites.php</info> directory aliases for <info>{$host}</info>",
       function () use ($sites_php, $host, $local, $dev, $test, $prod_domain) {
-        (new SitesPhpUpdate($sites_php, $host, $local, $dev, $test, $prod_domain))->run();
+        (new SitesPhp($sites_php))->addAliases($host, [$local, $dev, $test, $prod_domain]);
       }
     );
 
@@ -557,7 +557,7 @@ EOD;
     $plan->addStep(
       "Update <info>blt/manifest.yml</info> (app: <info>{$app_name}</info>)",
       function () use ($manifest_path, $app_name, $host) {
-        (new ManifestUpdate($manifest_path, $app_name, $host))->run();
+        (new Manifest($manifest_path))->addSite($app_name, $host);
       }
     );
 
