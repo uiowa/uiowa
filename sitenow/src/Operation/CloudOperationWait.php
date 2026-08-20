@@ -8,15 +8,6 @@ use AcquiaCloudApi\Response\OperationResponse;
 
 /**
  * Blocks until an Acquia Cloud operation finishes, and fails if it did not.
- *
- * Cloud API writes return once the request is *accepted* (HTTP 202), not once
- * the work is done; the response carries a notification link to poll. A caller
- * that skips the poll cannot tell a completed operation from a failed one, so
- * anything that must be confirmed before later work depends on it waits here
- * first.
- *
- * The only class under Operation that makes no change of its own: it confirms
- * a change another operation requested.
  */
 class CloudOperationWait {
 
@@ -55,6 +46,10 @@ class CloudOperationWait {
 
   /**
    * Poll until the operation leaves the in-progress state.
+   *
+   * A Cloud API write returns once the request is accepted (HTTP 202), not once
+   * the work is done, and carries a notification link to poll. Without the poll
+   * a completed operation cannot be told from a failed one.
    *
    * @return string
    *   The terminal status, always self::STATUS_COMPLETED on return.

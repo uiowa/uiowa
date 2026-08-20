@@ -120,9 +120,9 @@ class MultisiteCreateCommand extends Command {
     $root = $this->repoRoot;
     $title = "multisite:create {$host}";
 
-    $umc_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'app'];
+    $flag_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'app'];
     $flags = array_filter(
-      array_intersect_key($options, array_flip($umc_keys)),
+      array_intersect_key($options, array_flip($flag_keys)),
       fn($v) => $v !== NULL && $v !== FALSE && $v !== ''
     );
 
@@ -636,8 +636,8 @@ EOD;
       $blt['uiowa']['requester'] = $options['requester'];
     }
     if (!empty($options['split'])) {
-      // One split is stored as a scalar, multiple as a list, matching the
-      // shape the BLT install hook reads.
+      // One split is stored as a scalar, multiple as a list, matching the shape
+      // SiteInstallCommand reads back.
       $splits = array_map('trim', explode(',', $options['split']));
       $blt['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
     }

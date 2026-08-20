@@ -10,15 +10,6 @@ use Symfony\Component\Yaml\Yaml;
  * The manifest is keyed by Acquia application (AH_SITE_GROUP), each holding
  * the list of multisite hosts that application owns. It is the source of truth
  * for which sites exist and where they are deployed.
- *
- * Every write goes through save(), so the file has one canonical layout no
- * matter which command last touched it: applications sorted, hosts sorted
- * within each application, and a single YAML dump style. Splitting that across
- * callers is what lets an unrelated change arrive as a whole-file diff.
- *
- * Mutations re-read the file rather than working from a copy held since
- * construction, so a sequence of operations in one process cannot write back
- * a stale view.
  */
 class Manifest {
 
@@ -125,7 +116,9 @@ class Manifest {
   /**
    * Sort and write the manifest.
    *
-   * The single place the file's layout is decided.
+   * Applications sorted, hosts sorted within each application, one YAML dump
+   * style. The single place the file's layout is decided, so the file reads the
+   * same no matter which command last wrote it.
    *
    * @param array $manifest
    *   The manifest to write, keyed by application.

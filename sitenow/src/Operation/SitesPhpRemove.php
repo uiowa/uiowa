@@ -5,12 +5,9 @@ namespace SiteNow\Operation;
 /**
  * Removes a site's directory aliases from docroot/sites/sites.php.
  *
- * The inverse of SitesPhpUpdate. Rather than matching the exact block that
- * command appends, this removes the marker comment and every alias line
- * pointing at the site directory, whichever domains they name. A site that
- * gained an alias by hand is still cleaned up, and a block whose formatting
- * drifted is not silently left behind — the failure mode of BLT's umd, which
- * replaced one literal block and did nothing if it had changed.
+ * Removes the marker comment and every alias line pointing at the site
+ * directory, whichever domains they name, so aliases added by hand and blocks
+ * whose formatting has drifted are both cleaned up.
  */
 class SitesPhpRemove {
 

@@ -10,9 +10,6 @@ use AcquiaCloudApi\Endpoints\Databases;
  *
  * The delete is application-scoped: one call removes the database from every
  * environment, so this runs once per site rather than once per environment.
- *
- * Unlike umd, which fired the request and moved on, this returns only once the
- * database is confirmed gone — the repository half of a delete depends on it.
  */
 class CloudDbDelete {
 

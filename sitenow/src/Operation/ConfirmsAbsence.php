@@ -4,18 +4,16 @@ namespace SiteNow\Operation;
 
 /**
  * Confirms that a deleted cloud resource is really gone.
- *
- * Acquia Cloud API writes return once the request is accepted, and the
- * notification link that would let a caller poll for completion is not always
- * present. The authority on whether a delete finished is therefore the resource
- * no longer being listed, which is what this polls for.
- *
- * Used by the delete operations whose success another step depends on.
  */
 trait ConfirmsAbsence {
 
   /**
    * Poll until a resource stops being reported, or fail.
+   *
+   * A Cloud API write returns once the request is accepted, and the
+   * notification link that would let a caller poll for completion is not
+   * always present. The authority on whether a delete finished is therefore
+   * the resource no longer being listed.
    *
    * @param callable $present
    *   Returns TRUE while the resource is still listed.

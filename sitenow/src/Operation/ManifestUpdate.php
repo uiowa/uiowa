@@ -6,9 +6,6 @@ use SiteNow\Config\Manifest;
 
 /**
  * Adds a site entry under an application in blt/manifest.yml.
- *
- * A step-sized wrapper around Manifest::addSite(), so a plan carries one
- * operation per side effect and its label can name that effect literally.
  */
 class ManifestUpdate {
 

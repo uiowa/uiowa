@@ -8,14 +8,10 @@ use Symfony\Component\Process\Process;
  * Deletes a multisite's files directory on one Acquia environment.
  *
  * Removes the site's whole directory from the environment's shared mount, not
- * only its contents. BLT's umd emptied `files/*` and `files-private/*` and left
- * the parent directory in place, which is why hosts deleted long ago still have
- * directories (holding their .htaccess files) on the mounts.
+ * only its contents.
  *
- * The mount is addressed by the environment's real name, which is not always
- * the drush alias name: uiowa07-09 call their middle environment 'stage' while
- * uiowa01-06 call it 'test'. The caller resolves that from the site's drush
- * alias and passes it as $mount.
+ * @todo Deleting the directory here does not keep it deleted; the mounts still
+ *   accumulate directories for sites that no longer exist. See #10076.
  */
 class CloudFilesDelete {
 
@@ -37,7 +33,8 @@ class CloudFilesDelete {
    * @param string $alias
    *   The site's drush alias without the leading '@' (e.g. "sitesfoo.prod").
    * @param string $mount
-   *   Application and real environment name (e.g. "uiowa09.stage").
+   *   Application and Acquia environment name (e.g. "uiowa09.stage"), which is
+   *   not always the drush alias environment name. Resolved by the caller.
    * @param string $directory
    *   The site directory to delete (e.g. "foo.sites.uiowa.edu").
    * @param int $timeout

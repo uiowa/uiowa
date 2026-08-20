@@ -33,12 +33,8 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Deletes a SiteNow multisite.
  *
- * Replaces the BLT `uiowa:multisite:delete` (umd) command.
- *
- * The cloud resources come down before the repository does, for two reasons:
- * a failed cloud teardown then leaves the working tree untouched, and the
- * repository is what makes the site findable — remove it first and a failed
- * run could not be retried against the site it half-deleted.
+ * Removes its files, database and domains on Acquia, and its directory, drush
+ * alias, sites.php aliases and manifest entry here.
  */
 #[AsCommand(
   name: 'multisite:delete',
@@ -309,10 +305,6 @@ HELP);
       });
 
       $checks[] = new Check(self::CHECK_DRUSH_ALIAS_MOUNTS, function () use ($root, $mounts, $id): CheckResult {
-        // The files live under the environment's *real* name, which the alias
-        // records and the alias name does not: @x.test is uiowa09.stage on
-        // uiowa07-09. Without it the mount path cannot be built at all.
-        //
         // An absent alias file and one that defines no users both leave
         // mountsByEnv() with nothing to return, so they are told apart here
         // rather than reported as the same fault.
@@ -330,9 +322,10 @@ HELP);
       });
 
       $checks[] = new Check(self::CHECK_DATABASE_NAME_MATCHES, function () use ($root, $dir, $db): CheckResult {
-        // The database a site actually uses is the one named in its blt.yml,
-        // which can drift from the name derived from the directory. Deleting
-        // the derived name would take out a database this site never used.
+        // The site's blt.yml is authoritative for the database it uses. If that
+        // disagrees with the name derived from the directory, the derived name
+        // belongs to a database this site never used, so refuse rather than
+        // guess which one to delete.
         $blt_path = "{$root}/docroot/sites/{$dir}/blt.yml";
 
         if (!is_file($blt_path)) {
@@ -400,10 +393,11 @@ HELP);
   /**
    * Resolve each environment's mount name from the site's drush alias.
    *
-   * The alias records the real environment name in its user (e.g. @x.test has
-   * `user: uiowa09.stage`), which is what the shared filesystem path uses.
-   * Reading it here means the mount never has to be guessed, and no API call is
-   * needed to tell a 'test' application from a 'stage' one.
+   * Applications disagree with drush on the middle environment's name:
+   * uiowa07-09 call it 'stage' where the alias calls it 'test'. The alias
+   * records the Acquia name in its user (@x.test has `user: uiowa09.stage`),
+   * and that is what the shared filesystem path uses, so it is read here
+   * rather than derived.
    *
    * @param string $id
    *   The multisite identifier.
@@ -436,10 +430,9 @@ HELP);
   /**
    * The domains a site could own on Acquia.
    *
-   * Scope is this site's own domains. The four generated at creation are the
-   * obvious ones; `www.<host>` is included because it is registered for many
-   * sites and is not derivable from the identifier, so umd never removed it.
-   * The local ddev domain is left out — it exists only in sites.php.
+   * Scope is this site's own domains: the three internal names generated at
+   * creation, the host, and `www.<host>`, which many sites register. The local
+   * ddev domain is left out, since it exists only in sites.php.
    *
    * Which of these actually exist varies per site, so the caller intersects
    * this list with the environment rather than assuming all of them.
@@ -601,9 +594,12 @@ HELP);
   /**
    * Build the ordered steps that delete the multisite.
    *
-   * Cloud first, then the repository. Each addStep() call pairs a display
-   * label with a closure that performs the action when the plan is applied;
-   * the same steps drive the plan preview.
+   * Cloud first, then the repository: a failed cloud teardown leaves the
+   * working tree untouched, and the repository is what makes the site
+   * findable, so a run that dies partway can be retried against it.
+   *
+   * Each addStep() call pairs a display label with a closure that performs the
+   * action when the plan is applied; the same steps drive the plan preview.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The plan to add the steps to.

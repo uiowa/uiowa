@@ -8,12 +8,9 @@ use AcquiaCloudApi\Endpoints\Domains;
 /**
  * Deletes one domain from one Acquia Cloud environment.
  *
- * Scope is the domains of the site being deleted, which is why the caller
- * decides the list: an environment also carries other sites' domains, and
- * nothing in the repository can attribute a domain it does not generate.
- *
- * Like the database delete, this returns only once the domain is confirmed
- * gone.
+ * The domain is named by the caller. An environment carries the domains of
+ * every site on it, so which ones belong to the site being deleted is not a
+ * question this class can answer.
  */
 class CloudDomainDelete {
 

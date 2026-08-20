@@ -6,9 +6,6 @@ use SiteNow\Config\Manifest;
 
 /**
  * Removes a site entry from an application in blt/manifest.yml.
- *
- * A step-sized wrapper around Manifest::removeSite(), so a plan carries one
- * operation per side effect and its label can name that effect literally.
  */
 class ManifestRemove {
 

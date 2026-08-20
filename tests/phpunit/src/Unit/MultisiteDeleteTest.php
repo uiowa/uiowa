@@ -452,7 +452,7 @@ EOD);
    * The candidate domains are the site's own, including the www variant.
    *
    * The www form is registered for many sites and is not derivable from the
-   * identifier, which is why umd never removed it. The local ddev domain is
+   * identifier, so it has to be listed explicitly. The local ddev domain is
    * excluded: it exists only in sites.php.
    */
   public function testCandidateDomainsCoverTheSitesOwnDomains() {
@@ -510,8 +510,8 @@ EOD);
   /**
    * A directory value that would widen the rm is refused before any command.
    *
-   * BLT's umd guarded '.' and '*' at call time; refusing in the constructor
-   * means an unsafe value cannot reach a built command at all.
+   * Refusing in the constructor means an unsafe value cannot reach a built
+   * command at all.
    *
    * @dataProvider unsafeDirectories
    */
