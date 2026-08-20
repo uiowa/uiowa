@@ -283,19 +283,24 @@ HELP);
           ? CheckResult::pass()
           : CheckResult::fail("{$host} resolves to the shared docroot/sites/default directory, which this command will not delete. Remove its sites.php alias and manifest entry by hand.");
       }),
-      new Check(self::CHECK_SITE_DIR_EXISTS, function () use ($root, $dir, $host): CheckResult {
+    ];
+
+    $mounts = $this->mountsByEnv($id);
+
+    // The checks below describe a delete only a site with its own manifest
+    // entry and its own directory can have. A host that is absent from the
+    // manifest or resolves to the shared default site has neither, and the
+    // FAIL above already says so; running these anyway contradicts it.
+    if ($app !== NULL && $dir !== self::DEFAULT_SITE_DIRECTORY) {
+      $registry = new Applications("{$root}/sitenow/applications.yml");
+
+      $checks[] = new Check(self::CHECK_SITE_DIR_EXISTS, function () use ($root, $dir, $host): CheckResult {
         // The manifest and the working tree disagreeing is the state a
         // half-finished delete leaves behind; fail rather than guess.
         return is_dir("{$root}/docroot/sites/{$dir}")
           ? CheckResult::pass()
           : CheckResult::fail("Site directory docroot/sites/{$dir} does not exist, but {$host} is in the manifest.");
-      }),
-    ];
-
-    $mounts = $this->mountsByEnv($id);
-
-    if ($app !== NULL) {
-      $registry = new Applications("{$root}/sitenow/applications.yml");
+      });
 
       $checks[] = new Check(self::CHECK_APP_REGISTERED, function () use ($registry, $app): CheckResult {
         return $registry->uuid($app) !== NULL
@@ -303,15 +308,25 @@ HELP);
           : CheckResult::fail("Application '{$app}' is not in sitenow/applications.yml, so its cloud resources cannot be addressed.");
       });
 
-      $checks[] = new Check(self::CHECK_DRUSH_ALIAS_MOUNTS, function () use ($mounts, $id): CheckResult {
+      $checks[] = new Check(self::CHECK_DRUSH_ALIAS_MOUNTS, function () use ($root, $mounts, $id): CheckResult {
         // The files live under the environment's *real* name, which the alias
         // records and the alias name does not: @x.test is uiowa09.stage on
         // uiowa07-09. Without it the mount path cannot be built at all.
+        //
+        // An absent alias file and one that defines no users both leave
+        // mountsByEnv() with nothing to return, so they are told apart here
+        // rather than reported as the same fault.
+        $path = "drush/sites/{$id}.site.yml";
+
+        if (!is_file("{$root}/{$path}")) {
+          return CheckResult::fail("{$path} does not exist. The files mount path cannot be resolved.");
+        }
+
         $missing = array_diff(self::ENVIRONMENTS, array_keys($mounts));
 
         return empty($missing)
           ? CheckResult::pass(['mounts' => $mounts])
-          : CheckResult::fail("drush/sites/{$id}.site.yml is missing a user for: " . implode(', ', $missing) . '. The files mount path cannot be resolved.');
+          : CheckResult::fail("{$path} is missing a user for: " . implode(', ', $missing) . '. The files mount path cannot be resolved.');
       });
 
       $checks[] = new Check(self::CHECK_DATABASE_NAME_MATCHES, function () use ($root, $dir, $db): CheckResult {
