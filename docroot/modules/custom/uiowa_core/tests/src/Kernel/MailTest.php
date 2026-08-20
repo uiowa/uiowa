@@ -15,6 +15,7 @@ class MailTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'file',
     'filter',
     'symfony_mailer',
     'system',
