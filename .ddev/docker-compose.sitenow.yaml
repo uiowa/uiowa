@@ -1,0 +1,7 @@
+# Mounts the developer's SiteNow credentials into the web container, so the
+# credential-reading `sn` commands work through `ddev sn` as well as on the
+# host. Read-only: ~/.sitenow on the host is the only copy ever written.
+services:
+  web:
+    volumes:
+      - "/Users/${DDEV_USER}/.sitenow:/home/${DDEV_USER}/.sitenow:ro"
