@@ -281,7 +281,7 @@ HELP);
         // directory is refused by name rather than left to a later check.
         return $dir !== self::DEFAULT_SITE_DIRECTORY
           ? CheckResult::pass()
-          : CheckResult::fail("{$host} resolves to the shared docroot/sites/default directory, which this command will not delete. Remove its sites.php alias and manifest entry by hand.");
+          : CheckResult::fail("{$host} resolves to the shared docroot/sites/default directory, which this command will not delete.");
       }),
     ];
 
