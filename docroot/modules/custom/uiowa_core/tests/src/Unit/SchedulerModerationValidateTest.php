@@ -7,6 +7,7 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Form\FormState;
+use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Tests\UnitTestCase;
@@ -44,7 +45,7 @@ class SchedulerModerationValidateTest extends UnitTestCase {
     $time->method('getRequestTime')->willReturn(1000);
 
     $language_manager = $this->createMock(LanguageManagerInterface::class);
-    $language_manager->method('getCurrentLanguage')->willReturn(new \Drupal\Core\Language\Language(['id' => 'en']));
+    $language_manager->method('getCurrentLanguage')->willReturn(new Language(['id' => 'en']));
 
     $container = new ContainerBuilder();
     $container->set('datetime.time', $time);
