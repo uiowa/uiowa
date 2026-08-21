@@ -84,8 +84,16 @@ class Mounts {
    * Whether a site's directory is present on an environment's mount.
    *
    * Probing with find rather than test keeps this a single remote command with
-   * no shell operators, and reports absence as empty output instead of relying
-   * on an exit status that also covers connection failures.
+   * no shell operators. Both the mount's sites path and the site's directory
+   * are named, and the answer comes from which of the two find echoes rather
+   * than from its exit status or error text: an absent site directory and an
+   * absent mount are reported identically, and reading the second as the first
+   * would skip the files delete while the database, domains and repository
+   * entry still go, orphaning the files.
+   *
+   * The site's directory is named outright rather than reached by descending
+   * from the mount, because the mount's sites path is a symlink into shared
+   * storage and find does not follow one without -L.
    *
    * @param string $alias
    *   The site's drush alias without the leading '@' (e.g. "sitesfoo.prod").
@@ -98,21 +106,27 @@ class Mounts {
    *   TRUE if the directory exists on the environment.
    *
    * @throws \RuntimeException
-   *   If the environment cannot be reached.
+   *   If the environment cannot be reached, or its mount cannot be read, since
+   *   neither is an answer about the site's files.
    */
   public function siteDirectoryExists(string $alias, string $mount, string $directory): bool {
     $path = $this->siteDirectory($mount, $directory);
-    $process = $this->remote($alias, ['find', $path, '-maxdepth', '0']);
+    $parent = dirname($path);
+    $process = $this->remote($alias, ['find', $parent, $path, '-maxdepth', '0']);
+    $echoed = array_map('trim', explode("\n", $process->getOutput()));
 
-    // A non-zero exit means the path does not exist, which is a legitimate
-    // answer here; only a failure to reach the environment is an error.
-    $error = $process->getErrorOutput();
-
-    if (!$process->isSuccessful() && !str_contains($error, 'No such file or directory')) {
-      throw new \RuntimeException("Cannot check files for {$directory} on {$mount}: {$error}");
+    if (in_array($path, $echoed, TRUE)) {
+      return TRUE;
     }
 
-    return str_contains($process->getOutput(), $path);
+    // The mount echoed on its own is a site that has no files there, which is
+    // a legitimate answer and leaves find exiting non-zero for the directory it
+    // could not stat.
+    if (in_array($parent, $echoed, TRUE)) {
+      return FALSE;
+    }
+
+    throw new \RuntimeException("Cannot check files for {$directory} on {$mount}: " . ($process->getErrorOutput() ?: "{$parent} could not be read."));
   }
 
   /**
