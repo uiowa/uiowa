@@ -9,6 +9,7 @@ use SiteNow\Acquia\CloudApi;
 use SiteNow\Acquia\Mounts;
 use SiteNow\Command\MultisiteDeleteCommand;
 use SiteNow\Config\SitesPhp;
+use SiteNow\Plan\CheckResult;
 use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
 use Symfony\Component\Filesystem\Filesystem;
@@ -90,8 +91,15 @@ class MultisiteDeleteTest extends UnitTestCase {
       /**
        * Exposes mountsByEnv().
        */
-      public function pubMountsByEnv(string $id): array {
-        return $this->mountsByEnv($id);
+      public function pubMountsByEnv(string $app): array {
+        return $this->mountsByEnv($app);
+      }
+
+      /**
+       * Exposes cloudChecks().
+       */
+      public function pubCloudChecks(array $cloud, array $input): array {
+        return $this->cloudChecks($cloud, $input);
       }
 
       /**
@@ -335,6 +343,78 @@ EOD);
     $this->assertDoesNotMatchRegularExpression("/\n{3,}/", file_get_contents($path));
   }
 
+  /**
+   * An added block carries its marker comment and every host given.
+   */
+  public function testAddAliasesAppendsTheBlock() {
+    $path = $this->sitesPhp();
+
+    (new SitesPhp($path))->addAliases('fresh.uiowa.edu', [
+      'fresh.uiowa.ddev.site',
+      'fresh.prod.drupal.uiowa.edu',
+    ]);
+
+    $contents = file_get_contents($path);
+
+    $this->assertStringContainsString('// Directory aliases for fresh.uiowa.edu.', $contents);
+    $this->assertStringContainsString("\$sites['fresh.uiowa.ddev.site'] = 'fresh.uiowa.edu';", $contents);
+    $this->assertStringContainsString("\$sites['fresh.prod.drupal.uiowa.edu'] = 'fresh.uiowa.edu';", $contents);
+  }
+
+  /**
+   * The file ends on one newline, not a blank line.
+   *
+   * A trailing blank line is a phpcs error, and multisite:create commits the
+   * file it just wrote, so a second newline here fails CI on the next create.
+   */
+  public function testAddAliasesEndsWithOneNewline() {
+    $path = $this->sitesPhp();
+
+    (new SitesPhp($path))->addAliases('fresh.uiowa.edu', ['fresh.uiowa.ddev.site']);
+
+    $contents = file_get_contents($path);
+
+    $this->assertStringEndsWith("= 'fresh.uiowa.edu';\n", $contents);
+    $this->assertStringEndsNotWith("\n\n", $contents);
+  }
+
+  /**
+   * A blank line separates the new block from whatever preceded it.
+   */
+  public function testAddAliasesSeparatesBlocks() {
+    $path = $this->sitesPhp();
+    $sites = new SitesPhp($path);
+
+    $sites->addAliases('alpha.uiowa.edu', ['alpha.uiowa.ddev.site']);
+    $sites->addAliases('beta.uiowa.edu', ['beta.uiowa.ddev.site']);
+
+    $contents = file_get_contents($path);
+
+    $this->assertStringContainsString(
+      "\n\n// Directory aliases for alpha.uiowa.edu.",
+      $contents
+    );
+    $this->assertStringContainsString(
+      "\n\n// Directory aliases for beta.uiowa.edu.",
+      $contents
+    );
+    $this->assertStringEndsNotWith("\n\n", $contents);
+  }
+
+  /**
+   * Adding a site that already has a block leaves the file alone.
+   */
+  public function testAddAliasesIsIdempotent() {
+    $path = $this->sitesPhp();
+    $sites = new SitesPhp($path);
+
+    $sites->addAliases('fresh.uiowa.edu', ['fresh.uiowa.ddev.site']);
+    $once = file_get_contents($path);
+    $sites->addAliases('fresh.uiowa.edu', ['fresh.uiowa.ddev.site']);
+
+    $this->assertSame($once, file_get_contents($path));
+  }
+
   // --- Cloud teardown ---------------------------------------------------------
 
   /**
@@ -406,8 +486,8 @@ EOD);
    */
   public function testMountsResolveTheRealEnvironmentName() {
     mkdir("{$this->dir}/drush/sites", 0777, TRUE);
-    file_put_contents("{$this->dir}/drush/sites/doomed.site.yml", Yaml::dump([
-      'local' => ['uri' => 'doomed.uiowa.ddev.site'],
+    file_put_contents("{$this->dir}/drush/sites/uiowa09.site.yml", Yaml::dump([
+      'local' => ['uri' => 'uiowa.ddev.site'],
       'dev' => ['user' => 'uiowa09.dev'],
       'test' => ['user' => 'uiowa09.stage'],
       'prod' => ['user' => 'uiowa09.prod'],
@@ -417,14 +497,184 @@ EOD);
       'dev' => 'uiowa09.dev',
       'test' => 'uiowa09.stage',
       'prod' => 'uiowa09.prod',
-    ], $this->commandInDir()->pubMountsByEnv('doomed'));
+    ], $this->commandInDir()->pubMountsByEnv('uiowa09'));
+  }
+
+  /**
+   * Mounts come from the application's alias, not the site's.
+   *
+   * The site's alias is removed partway through a delete, so reading it would
+   * leave an interrupted run unable to resolve the mounts it still needs.
+   */
+  public function testMountsIgnoreTheSiteAlias() {
+    mkdir("{$this->dir}/drush/sites", 0777, TRUE);
+    file_put_contents("{$this->dir}/drush/sites/doomed.site.yml", Yaml::dump([
+      'dev' => ['user' => 'uiowa09.dev'],
+      'test' => ['user' => 'uiowa09.stage'],
+      'prod' => ['user' => 'uiowa09.prod'],
+    ], 4, 2));
+
+    $this->assertSame([], $this->commandInDir()->pubMountsByEnv('uiowa09'));
   }
 
   /**
    * A missing alias file yields no mounts, which decide() reports as a failure.
    */
   public function testMountsAreEmptyWithoutAnAliasFile() {
-    $this->assertSame([], $this->commandInDir()->pubMountsByEnv('doomed'));
+    $this->assertSame([], $this->commandInDir()->pubMountsByEnv('uiowa09'));
+  }
+
+  /**
+   * Evaluate the database-name check against one cloud state and site.
+   *
+   * @param bool $database
+   *   Whether the application still has the site's database.
+   * @param string|null $configured
+   *   The database blt.yml names, or NULL to leave the site directory absent
+   *   entirely — the state a run interrupted mid-dismantle leaves behind.
+   *
+   * @return \SiteNow\Plan\CheckResult
+   *   The check's result.
+   */
+  private function databaseNameCheck(bool $database, ?string $configured): CheckResult {
+    $dir = 'doomed.uiowa.edu';
+
+    if ($configured !== NULL) {
+      mkdir("{$this->dir}/docroot/sites/{$dir}", 0777, TRUE);
+      file_put_contents(
+        "{$this->dir}/docroot/sites/{$dir}/blt.yml",
+        Yaml::dump(['drupal' => ['db' => ['database' => $configured]]])
+      );
+    }
+
+    $cloud = [
+      'uuid' => 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+      'mounts' => [],
+      'files' => [],
+      'database' => $database,
+      'domains' => [],
+    ];
+    $input = [
+      'host' => $dir,
+      'dir' => $dir,
+      'id' => 'doomed',
+      'db' => 'doomed_uiowa_edu',
+      'app' => 'uiowa09',
+    ];
+
+    foreach ($this->commandInDir()->pubCloudChecks($cloud, $input) as $check) {
+      if ($check->name === MultisiteDeleteCommand::CHECK_DATABASE_NAME_MATCHES) {
+        return $check->evaluate();
+      }
+    }
+
+    $this->fail('The database-name check was not among the cloud checks.');
+  }
+
+  /**
+   * A blt.yml naming the derived database confirms it.
+   */
+  public function testDatabaseNameIsConfirmedByBltYml() {
+    $result = $this->databaseNameCheck(TRUE, 'doomed_uiowa_edu');
+
+    $this->assertSame(CheckStatus::Pass, $result->status);
+  }
+
+  /**
+   * A blt.yml naming a different database refuses the delete.
+   *
+   * The derived name belongs to a database this site never used, so deleting it
+   * would take out one that is still in service.
+   */
+  public function testDatabaseNameMismatchIsRefused() {
+    $result = $this->databaseNameCheck(TRUE, 'someone_elses_database');
+
+    $this->assertSame(CheckStatus::Fail, $result->status);
+    $this->assertStringContainsString('someone_elses_database', $result->message);
+  }
+
+  /**
+   * An unconfirmable name warns when the database is already gone.
+   *
+   * The blt.yml goes with the site directory, so an interrupted run leaves the
+   * name unconfirmable. There is no database left to delete, so nothing is at
+   * risk and the rerun may finish the repository cleanup.
+   */
+  public function testUnconfirmableDatabaseAlreadyGoneOnlyWarns() {
+    $result = $this->databaseNameCheck(FALSE, NULL);
+
+    $this->assertSame(CheckStatus::Warn, $result->status);
+  }
+
+  /**
+   * An unconfirmable name refuses while the database is still there.
+   *
+   * This is the case that must not be guessed: the only evidence of which
+   * database belongs to the site is gone, and one is still standing.
+   */
+  public function testUnconfirmableDatabaseStillPresentIsRefused() {
+    $result = $this->databaseNameCheck(TRUE, NULL);
+
+    $this->assertSame(CheckStatus::Fail, $result->status);
+    $this->assertStringContainsString('git checkout', $result->message);
+  }
+
+  /**
+   * A run interrupted during the repository removals can be run again.
+   *
+   * The state left behind: the site directory and the site's drush alias are
+   * gone, sites.php no longer aliases the host, but the manifest entry that
+   * goes last still names the site. None of that may FAIL, or the cloud
+   * resources the interrupted run had not reached become unreachable.
+   *
+   * The plan still fails here, on the unregistered application, which is what
+   * keeps this test off the network.
+   */
+  public function testInterruptedRepositoryRemovalsAllowRerun() {
+    mkdir("{$this->dir}/docroot/sites", 0777, TRUE);
+
+    // The application's alias survives a delete; the site's does not.
+    mkdir("{$this->dir}/drush/sites", 0777, TRUE);
+    file_put_contents("{$this->dir}/drush/sites/uiowa09.site.yml", Yaml::dump([
+      'dev' => ['user' => 'uiowa09.dev'],
+      'test' => ['user' => 'uiowa09.stage'],
+      'prod' => ['user' => 'uiowa09.prod'],
+    ], 4, 2));
+
+    mkdir("{$this->dir}/sitenow", 0777, TRUE);
+    file_put_contents(
+      "{$this->dir}/sitenow/applications.yml",
+      Yaml::dump(['applications' => ['uiowa' => ['uuid' => 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee']]])
+    );
+
+    $plan = $this->commandInDir()->pubDecide(
+      'doomed.uiowa.edu',
+      ['doomed.uiowa.edu' => 'uiowa09'],
+      ['no-commit' => TRUE, 'dry-run' => TRUE]
+    );
+
+    $checks = $plan->validation['checks'];
+
+    $this->assertSame(
+      CheckStatus::Pass,
+      $checks[MultisiteDeleteCommand::CHECK_SITE_IN_MANIFEST]['status'],
+      'The manifest entry is the anchor and still names the site.'
+    );
+    $this->assertSame(
+      CheckStatus::Warn,
+      $checks[MultisiteDeleteCommand::CHECK_SITE_DIR_EXISTS]['status'],
+      'An already-removed site directory must not stop a rerun.'
+    );
+    $this->assertSame(
+      CheckStatus::Pass,
+      $checks[MultisiteDeleteCommand::CHECK_DRUSH_ALIAS_MOUNTS]['status'],
+      'Mounts come from the application alias, which is still present.'
+    );
+    $this->assertArrayNotHasKey(
+      MultisiteDeleteCommand::CHECK_DATABASE_NAME_MATCHES,
+      $checks,
+      'The database name is confirmed against cloud state, not locally.'
+    );
   }
 
   // --- Cloud files deletion ---------------------------------------------------

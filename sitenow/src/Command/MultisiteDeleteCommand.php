@@ -46,16 +46,26 @@ class MultisiteDeleteCommand extends Command {
   use PlanTrait;
   use CommonChecks;
 
-  // Machine names recorded in validation results.
+  // Machine names recorded in validation results, in evaluation order.
+  //
+  // Local checks are evaluated first by design: a FAIL among them returns
+  // before any Acquia API call, so a misidentified site never reaches the
+  // cloud reads, let alone a delete.
   const CHECK_SITE_IN_MANIFEST = 'site_in_manifest';
   const CHECK_NOT_DEFAULT_SITE = 'not_default_site';
   const CHECK_SITE_DIR_EXISTS = 'site_dir_exists';
   const CHECK_APP_REGISTERED = 'app_registered';
-  const CHECK_DATABASE_NAME_MATCHES = 'database_name_matches';
   const CHECK_DRUSH_ALIAS_MOUNTS = 'drush_alias_mounts';
+
+  // Cloud checks, reached only once every local check has passed.
+  // CHECK_CLOUD_READABLE is the read-failure path rather than a check that
+  // ever passes. CHECK_DATABASE_NAME_MATCHES reads the site's own blt.yml
+  // rather than the cloud, but belongs here because whether an absent one
+  // matters depends on the database still being there.
   const CHECK_CLOUD_READABLE = 'cloud_readable';
   const CHECK_CLOUD_FILES = 'cloud_files_present';
   const CHECK_CLOUD_DATABASE = 'cloud_database_present';
+  const CHECK_DATABASE_NAME_MATCHES = 'database_name_matches';
   const CHECK_CLOUD_DOMAINS = 'cloud_domains_present';
 
   /**
@@ -280,21 +290,23 @@ HELP);
       }),
     ];
 
-    $mounts = $this->mountsByEnv($id);
+    $mounts = $app !== NULL ? $this->mountsByEnv($app) : [];
 
     // The checks below describe a delete only a site with its own manifest
-    // entry and its own directory can have. A host that is absent from the
-    // manifest or resolves to the shared default site has neither, and the
-    // FAIL above already says so; running these anyway contradicts it.
+    // entry can have. A host that is absent from the manifest or resolves to
+    // the shared default site has none, and the FAIL above already says so;
+    // running these anyway contradicts it.
     if ($app !== NULL && $dir !== self::DEFAULT_SITE_DIRECTORY) {
       $registry = new Applications("{$root}/sitenow/applications.yml");
 
       $checks[] = new Check(self::CHECK_SITE_DIR_EXISTS, function () use ($root, $dir, $host): CheckResult {
-        // The manifest and the working tree disagreeing is the state a
-        // half-finished delete leaves behind; fail rather than guess.
+        // The directory is derived from the host rather than read from disk, so
+        // its absence is not a missing input. It is the state a run interrupted
+        // during the repository removals leaves behind, and the manifest entry
+        // that goes last still names the site, so the dismantle can carry on.
         return is_dir("{$root}/docroot/sites/{$dir}")
           ? CheckResult::pass()
-          : CheckResult::fail("Site directory docroot/sites/{$dir} does not exist, but {$host} is in the manifest.");
+          : CheckResult::warn("Site directory docroot/sites/{$dir} does not exist, but {$host} is in the manifest. Already removed by an interrupted run, or never created.");
       });
 
       $checks[] = new Check(self::CHECK_APP_REGISTERED, function () use ($registry, $app): CheckResult {
@@ -303,11 +315,11 @@ HELP);
           : CheckResult::fail("Application '{$app}' is not in sitenow/applications.yml, so its cloud resources cannot be addressed.");
       });
 
-      $checks[] = new Check(self::CHECK_DRUSH_ALIAS_MOUNTS, function () use ($root, $mounts, $id): CheckResult {
+      $checks[] = new Check(self::CHECK_DRUSH_ALIAS_MOUNTS, function () use ($root, $mounts, $app): CheckResult {
         // An absent alias file and one that defines no users both leave
         // mountsByEnv() with nothing to return, so they are told apart here
         // rather than reported as the same fault.
-        $path = "drush/sites/{$id}.site.yml";
+        $path = "drush/sites/{$app}.site.yml";
 
         if (!is_file("{$root}/{$path}")) {
           return CheckResult::fail("{$path} does not exist. The files mount path cannot be resolved.");
@@ -318,24 +330,6 @@ HELP);
         return empty($missing)
           ? CheckResult::pass(['mounts' => $mounts])
           : CheckResult::fail("{$path} is missing a user for: " . implode(', ', $missing) . '. The files mount path cannot be resolved.');
-      });
-
-      $checks[] = new Check(self::CHECK_DATABASE_NAME_MATCHES, function () use ($root, $dir, $db): CheckResult {
-        // The site's blt.yml is authoritative for the database it uses. If that
-        // disagrees with the name derived from the directory, the derived name
-        // belongs to a database this site never used, so refuse rather than
-        // guess which one to delete.
-        $blt_path = "{$root}/docroot/sites/{$dir}/blt.yml";
-
-        if (!is_file($blt_path)) {
-          return CheckResult::fail("No blt.yml found at docroot/sites/{$dir}, so the site's database cannot be confirmed.");
-        }
-
-        $configured = Yaml::parseFile($blt_path)['drupal']['db']['database'] ?? NULL;
-
-        return $configured === $db
-          ? CheckResult::pass()
-          : CheckResult::fail("Database mismatch: docroot/sites/{$dir}/blt.yml names '{$configured}', expected '{$db}'.");
       });
     }
 
@@ -390,7 +384,7 @@ HELP);
   }
 
   /**
-   * Resolve each environment's mount name from the site's drush alias.
+   * Resolve each environment's mount name from the application's drush alias.
    *
    * Applications disagree with drush on the middle environment's name:
    * uiowa07-09 call it 'stage' where the alias calls it 'test'. The alias
@@ -398,15 +392,20 @@ HELP);
    * and that is what the shared filesystem path uses, so it is read here
    * rather than derived.
    *
-   * @param string $id
-   *   The multisite identifier.
+   * The application's alias is read rather than the site's. A mount is shared
+   * by every site in an application, so both carry the same users, and the
+   * application's alias is not one of the files this command removes: a run
+   * interrupted after the site's alias is gone can still resolve its mounts.
+   *
+   * @param string $app
+   *   The application (AH_SITE_GROUP).
    *
    * @return array
    *   Mount name (app.env) keyed by drush alias environment, omitting any
    *   environment the alias does not define.
    */
-  protected function mountsByEnv(string $id): array {
-    $path = "{$this->repoRoot}/drush/sites/{$id}.site.yml";
+  protected function mountsByEnv(string $app): array {
+    $path = "{$this->repoRoot}/drush/sites/{$app}.site.yml";
 
     if (!is_file($path)) {
       return [];
@@ -490,7 +489,7 @@ HELP);
     $filesystem = new Mounts($this->repoRoot);
 
     foreach ($mounts as $env => $mount) {
-      $cloud['files'][$env] = $filesystem->siteDirectoryExists("{$input['id']}.{$env}", $mount, $input['dir']);
+      $cloud['files'][$env] = $filesystem->siteDirectoryExists("{$input['app']}.{$env}", $mount, $input['dir']);
     }
 
     $cloud['database'] = (new CloudApi($client))->databaseExists($uuid, $input['db']);
@@ -519,6 +518,10 @@ HELP);
    * a partially finished delete leaves behind, and the right response is to
    * clean up what remains — but not silently, and not under --yes.
    *
+   * The database name confirmation belongs here rather than with the local
+   * checks: whether an unconfirmable name matters depends on whether the
+   * database is still there, which only the cloud read knows.
+   *
    * @param array $cloud
    *   Output of gatherCloud().
    * @param array $input
@@ -540,6 +543,30 @@ HELP);
         return $cloud['database']
           ? CheckResult::pass()
           : CheckResult::warn("Database {$input['db']} is not on {$input['app']}. Already deleted, or it never existed.");
+      }),
+      new Check(self::CHECK_DATABASE_NAME_MATCHES, function () use ($cloud, $input): CheckResult {
+        // The site's blt.yml is authoritative for the database it uses. If that
+        // disagrees with the name derived from the directory, the derived name
+        // belongs to a database this site never used, so refuse rather than
+        // guess which one to delete.
+        $dir = $input['dir'];
+        $blt_path = "{$this->repoRoot}/docroot/sites/{$dir}/blt.yml";
+
+        if (is_file($blt_path)) {
+          $configured = Yaml::parseFile($blt_path)['drupal']['db']['database'] ?? NULL;
+
+          return $configured === $input['db']
+            ? CheckResult::pass()
+            : CheckResult::fail("Database mismatch: docroot/sites/{$dir}/blt.yml names '{$configured}', expected '{$input['db']}'.");
+        }
+
+        // blt.yml goes with the site directory, so a run interrupted during the
+        // repository removals leaves the derived name unconfirmable. A database
+        // that is already gone needs no confirming; one that is still there is
+        // not a name to guess at, and restoring the directory answers it.
+        return empty($cloud['database'])
+          ? CheckResult::warn("No blt.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is already absent from {$input['app']}.")
+          : CheckResult::fail("No blt.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is still on {$input['app']}. Restore the site directory first: git checkout -- docroot/sites/{$dir}");
       }),
       new Check(self::CHECK_CLOUD_DOMAINS, function () use ($cloud, $input): CheckResult {
         return $cloud['domains']
@@ -724,14 +751,13 @@ HELP);
     $root = $this->repoRoot;
     $app = $input['app'];
     $dir = $input['dir'];
-    $id = $input['id'];
     $db = $input['db'];
 
     $filesystem = new Mounts($root);
 
     foreach (array_keys(array_filter($cloud['files'])) as $env) {
       $mount = $cloud['mounts'][$env];
-      $alias = "{$id}.{$env}";
+      $alias = "{$app}.{$env}";
       $path = $filesystem->siteDirectory($mount, $dir);
 
       $plan->addStep(

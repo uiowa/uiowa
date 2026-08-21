@@ -39,14 +39,16 @@ class SitesPhp {
       return;
     }
 
+    // The leading empty element separates this block from whatever precedes
+    // it. There is no trailing one: the concatenated newline already ends the
+    // last alias line, and a second would leave the file ending on a blank
+    // line, which phpcs rejects in the commit this write is part of.
     $lines = [''];
     $lines[] = $this->marker($directory);
 
     foreach ($hosts as $host) {
       $lines[] = "\$sites['{$host}'] = '{$directory}';";
     }
-
-    $lines[] = '';
 
     if (file_put_contents($this->path, implode("\n", $lines) . "\n", FILE_APPEND) === FALSE) {
       throw new \RuntimeException("Failed to write to {$this->path}.");
