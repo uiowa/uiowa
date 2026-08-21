@@ -8,6 +8,7 @@
 use Drupal\Component\Utility\Html;
 use Drupal\content_moderation\Plugin\WorkflowType\ContentModeration;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
@@ -1261,13 +1262,33 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
   }
 
   $set_state = $moderation_state[0]['value'];
-  $publish_on = $entity->publish_on?->value;
-  $unpublish_on = $entity->unpublish_on?->value;
+  $publish_on = $form_state->getValue('publish_on');
+  $unpublish_on = $form_state->getValue('unpublish_on');
+
+  // Normalize to a string; the widget may return an array or a
+  // DrupalDateTime instead.
+  $publish_on_value = $publish_on[0]['value'] ?? NULL;
+  if ($publish_on_value instanceof DrupalDateTime) {
+    $publish_on_value = $publish_on_value->format('Y-m-d\TH:i:s');
+  }
+  elseif (is_array($publish_on_value)) {
+    $date = $publish_on_value['date'] ?? '';
+    $publish_on_value = empty($date) ? NULL : $date . 'T' . ($publish_on_value['time'] ?? '00:00:00');
+  }
+
+  $unpublish_on_value = $unpublish_on[0]['value'] ?? NULL;
+  if ($unpublish_on_value instanceof DrupalDateTime) {
+    $unpublish_on_value = $unpublish_on_value->format('Y-m-d\TH:i:s');
+  }
+  elseif (is_array($unpublish_on_value)) {
+    $date = $unpublish_on_value['date'] ?? '';
+    $unpublish_on_value = empty($date) ? NULL : $date . 'T' . ($unpublish_on_value['time'] ?? '00:00:00');
+  }
 
   // Check for conflict: trying to set to "published"
   // with a future publish date.
-  if ($set_state === 'published' && !empty($publish_on)) {
-    $publish_timestamp = strtotime($publish_on);
+  if ($set_state === 'published' && !empty($publish_on_value)) {
+    $publish_timestamp = strtotime($publish_on_value);
     $request_time = \Drupal::time()->getRequestTime();
 
     if ($publish_timestamp > $request_time) {
@@ -1294,8 +1315,8 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
 
   // Check for conflict: trying to set to "archived"
   // with a future unpublish date.
-  if ($set_state === 'archived' && !empty($unpublish_on)) {
-    $unpublish_timestamp = strtotime($unpublish_on);
+  if ($set_state === 'archived' && !empty($unpublish_on_value)) {
+    $unpublish_timestamp = strtotime($unpublish_on_value);
     $request_time = \Drupal::time()->getRequestTime();
 
     if ($unpublish_timestamp > $request_time) {
