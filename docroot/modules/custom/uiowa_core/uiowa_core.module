@@ -1248,7 +1248,10 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
   $entity = $form_object->getEntity();
 
   // Only process nodes with moderation.
-  if (!($entity instanceof NodeInterface) || !$entity->hasField('moderation_state')) {
+  if (!$entity instanceof NodeInterface) {
+    return;
+  }
+  if (!$entity->hasField('moderation_state')) {
     return;
   }
 
@@ -1258,13 +1261,13 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
   }
 
   $set_state = $moderation_state[0]['value'];
-  $publish_on = $form_state->getValue('publish_on');
-  $unpublish_on = $form_state->getValue('unpublish_on');
+  $publish_on = $entity->publish_on?->value;
+  $unpublish_on = $entity->unpublish_on?->value;
 
   // Check for conflict: trying to set to "published"
   // with a future publish date.
-  if ($set_state === 'published' && !empty($publish_on[0]['value'])) {
-    $publish_timestamp = strtotime($publish_on[0]['value']);
+  if ($set_state === 'published' && !empty($publish_on)) {
+    $publish_timestamp = strtotime($publish_on);
     $request_time = \Drupal::time()->getRequestTime();
 
     if ($publish_timestamp > $request_time) {
@@ -1291,8 +1294,8 @@ function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterfac
 
   // Check for conflict: trying to set to "archived"
   // with a future unpublish date.
-  if ($set_state === 'archived' && !empty($unpublish_on[0]['value'])) {
-    $unpublish_timestamp = strtotime($unpublish_on[0]['value']);
+  if ($set_state === 'archived' && !empty($unpublish_on)) {
+    $unpublish_timestamp = strtotime($unpublish_on);
     $request_time = \Drupal::time()->getRequestTime();
 
     if ($unpublish_timestamp > $request_time) {
