@@ -7936,3 +7936,33 @@ $sites['labhuddl.uiowa.ddev.site'] = 'huddl.lab.uiowa.edu';
 $sites['labhuddl.dev.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
 $sites['labhuddl.stage.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
 $sites['labhuddl.prod.drupal.uiowa.edu'] = 'huddl.lab.uiowa.edu';
+
+// Directory aliases for ffcd.sites.uiowa.edu.
+$sites['sitesffcd.uiowa.ddev.site'] = 'ffcd.sites.uiowa.edu';
+$sites['sitesffcd.dev.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
+$sites['sitesffcd.stage.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
+$sites['sitesffcd.prod.drupal.uiowa.edu'] = 'ffcd.sites.uiowa.edu';
+
+// Directory aliases for surgical-oncology-research.program.uiowa.edu.
+$sites['programsurgical-oncology-research.uiowa.ddev.site'] = 'surgical-oncology-research.program.uiowa.edu';
+$sites['programsurgical-oncology-research.dev.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
+$sites['programsurgical-oncology-research.stage.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
+$sites['programsurgical-oncology-research.prod.drupal.uiowa.edu'] = 'surgical-oncology-research.program.uiowa.edu';
+
+// Directory aliases for bridge.lab.uiowa.edu.
+$sites['labbridge.uiowa.ddev.site'] = 'bridge.lab.uiowa.edu';
+$sites['labbridge.dev.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
+$sites['labbridge.stage.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
+$sites['labbridge.prod.drupal.uiowa.edu'] = 'bridge.lab.uiowa.edu';
+
+// Directory aliases for tempo.lab.uiowa.edu.
+$sites['labtempo.uiowa.ddev.site'] = 'tempo.lab.uiowa.edu';
+$sites['labtempo.dev.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
+$sites['labtempo.stage.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
+$sites['labtempo.prod.drupal.uiowa.edu'] = 'tempo.lab.uiowa.edu';
+
+// Directory aliases for ui-cair.medicine.uiowa.edu.
+$sites['medicineui-cair.uiowa.ddev.site'] = 'ui-cair.medicine.uiowa.edu';
+$sites['medicineui-cair.dev.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
+$sites['medicineui-cair.stage.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
+$sites['medicineui-cair.prod.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
