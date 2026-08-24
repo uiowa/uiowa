@@ -5,10 +5,7 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use Drupal\Tests\UnitTestCase;
-use SiteNow\Acquia\CloudApi;
-use SiteNow\Acquia\Mounts;
 use SiteNow\Command\MultisiteDeleteCommand;
-use SiteNow\Config\SitesPhp;
 use SiteNow\Plan\CheckResult;
 use SiteNow\Plan\CheckStatus;
 use SiteNow\Plan\Plan;
@@ -17,11 +14,14 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Unit tests for the multisite delete command and its operations.
+ * Unit tests for the multisite delete command.
  *
- * Covers the manifest flattening that drives site selection, the two repo-side
- * removal operations, and the notification-link parsing the cloud waiter uses.
- * No Acquia API or git access.
+ * Covers the manifest flattening that drives site selection, the mount and
+ * database facts the command derives from an application, the order its steps
+ * run in, and the guards on the shared directory and the branch a commit would
+ * land on. The operations the steps call have their own tests.
+ *
+ * No Acquia API access; git runs against scratch repositories only.
  *
  * @group unit
  */
@@ -222,13 +222,6 @@ class MultisiteDeleteTest extends UnitTestCase {
     ];
   }
 
-  /**
-   * Build a links object shaped like an OperationResponse's.
-   */
-  private function links(string $href): object {
-    return (object) ['notification' => (object) ['href' => $href]];
-  }
-
   // --- Site selection ---------------------------------------------------------
 
   /**
@@ -262,164 +255,6 @@ class MultisiteDeleteTest extends UnitTestCase {
    */
   public function testSitesByHostHandlesEmptyManifest() {
     $this->assertSame([], $this->command()->pubSitesByHost([]));
-  }
-
-  // --- sites.php removal ------------------------------------------------------
-
-  /**
-   * Write a sites.php fixture holding alias blocks for two sites.
-   */
-  private function sitesPhp(): string {
-    $path = $this->dir . '/sites.php';
-    file_put_contents($path, <<<'EOD'
-<?php
-
-// Directory aliases for doomed.uiowa.edu.
-$sites['doomed.uiowa.ddev.site'] = 'doomed.uiowa.edu';
-$sites['doomed.dev.drupal.uiowa.edu'] = 'doomed.uiowa.edu';
-$sites['doomed.stage.drupal.uiowa.edu'] = 'doomed.uiowa.edu';
-$sites['doomed.prod.drupal.uiowa.edu'] = 'doomed.uiowa.edu';
-
-// Directory aliases for keeper.uiowa.edu.
-$sites['keeper.uiowa.ddev.site'] = 'keeper.uiowa.edu';
-$sites['keeper.prod.drupal.uiowa.edu'] = 'keeper.uiowa.edu';
-
-EOD);
-    return $path;
-  }
-
-  /**
-   * Every alias for the site goes, along with its marker comment.
-   */
-  public function testRemoveAliasesStripsTheSiteBlock() {
-    $path = $this->sitesPhp();
-
-    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
-
-    $contents = file_get_contents($path);
-    $this->assertStringNotContainsString('doomed', $contents);
-  }
-
-  /**
-   * Other sites' aliases survive untouched.
-   */
-  public function testRemoveAliasesLeavesOtherSites() {
-    $path = $this->sitesPhp();
-
-    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
-
-    $contents = file_get_contents($path);
-    $this->assertStringContainsString("// Directory aliases for keeper.uiowa.edu.", $contents);
-    $this->assertStringContainsString("\$sites['keeper.uiowa.ddev.site'] = 'keeper.uiowa.edu';", $contents);
-    $this->assertStringContainsString("\$sites['keeper.prod.drupal.uiowa.edu'] = 'keeper.uiowa.edu';", $contents);
-  }
-
-  /**
-   * An alias added by hand is removed too, unlike a literal block replacement.
-   */
-  public function testRemoveAliasesStripsAliasesOutsideTheBlock() {
-    $path = $this->sitesPhp();
-    file_put_contents($path, "\n\$sites['vanity.uiowa.edu'] = 'doomed.uiowa.edu';\n", FILE_APPEND);
-
-    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
-
-    $this->assertStringNotContainsString('vanity.uiowa.edu', file_get_contents($path));
-  }
-
-  /**
-   * Running twice leaves the same file, so a retry is safe.
-   */
-  public function testRemoveAliasesIsIdempotent() {
-    $path = $this->sitesPhp();
-
-    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
-    $once = file_get_contents($path);
-    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
-
-    $this->assertSame($once, file_get_contents($path));
-  }
-
-  /**
-   * Removal does not leave a widening run of blank lines behind.
-   */
-  public function testRemoveAliasesCollapsesBlankLines() {
-    $path = $this->sitesPhp();
-
-    (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
-
-    $this->assertDoesNotMatchRegularExpression("/\n{3,}/", file_get_contents($path));
-  }
-
-  /**
-   * An added block carries its marker comment and every host given.
-   */
-  public function testAddAliasesAppendsTheBlock() {
-    $path = $this->sitesPhp();
-
-    (new SitesPhp($path))->addAliases('fresh.uiowa.edu', [
-      'fresh.uiowa.ddev.site',
-      'fresh.prod.drupal.uiowa.edu',
-    ]);
-
-    $contents = file_get_contents($path);
-
-    $this->assertStringContainsString('// Directory aliases for fresh.uiowa.edu.', $contents);
-    $this->assertStringContainsString("\$sites['fresh.uiowa.ddev.site'] = 'fresh.uiowa.edu';", $contents);
-    $this->assertStringContainsString("\$sites['fresh.prod.drupal.uiowa.edu'] = 'fresh.uiowa.edu';", $contents);
-  }
-
-  /**
-   * The file ends on one newline, not a blank line.
-   *
-   * A trailing blank line is a phpcs error, and multisite:create commits the
-   * file it just wrote, so a second newline here fails CI on the next create.
-   */
-  public function testAddAliasesEndsWithOneNewline() {
-    $path = $this->sitesPhp();
-
-    (new SitesPhp($path))->addAliases('fresh.uiowa.edu', ['fresh.uiowa.ddev.site']);
-
-    $contents = file_get_contents($path);
-
-    $this->assertStringEndsWith("= 'fresh.uiowa.edu';\n", $contents);
-    $this->assertStringEndsNotWith("\n\n", $contents);
-  }
-
-  /**
-   * A blank line separates the new block from whatever preceded it.
-   */
-  public function testAddAliasesSeparatesBlocks() {
-    $path = $this->sitesPhp();
-    $sites = new SitesPhp($path);
-
-    $sites->addAliases('alpha.uiowa.edu', ['alpha.uiowa.ddev.site']);
-    $sites->addAliases('beta.uiowa.edu', ['beta.uiowa.ddev.site']);
-
-    $contents = file_get_contents($path);
-
-    $this->assertStringContainsString(
-      "\n\n// Directory aliases for alpha.uiowa.edu.",
-      $contents
-    );
-    $this->assertStringContainsString(
-      "\n\n// Directory aliases for beta.uiowa.edu.",
-      $contents
-    );
-    $this->assertStringEndsNotWith("\n\n", $contents);
-  }
-
-  /**
-   * Adding a site that already has a block leaves the file alone.
-   */
-  public function testAddAliasesIsIdempotent() {
-    $path = $this->sitesPhp();
-    $sites = new SitesPhp($path);
-
-    $sites->addAliases('fresh.uiowa.edu', ['fresh.uiowa.ddev.site']);
-    $once = file_get_contents($path);
-    $sites->addAliases('fresh.uiowa.edu', ['fresh.uiowa.ddev.site']);
-
-    $this->assertSame($once, file_get_contents($path));
   }
 
   // --- Cloud teardown ---------------------------------------------------------
@@ -684,88 +519,6 @@ EOD);
     );
   }
 
-  // --- Cloud files deletion ---------------------------------------------------
-
-  /**
-   * The deleted path is the site's own directory on the environment's mount.
-   */
-  public function testFilesDeleteTargetsTheWholeSiteDirectory() {
-    $mounts = new Mounts('/repo');
-
-    $this->assertSame(
-      '/mnt/gfs/uiowa09.stage/sites/doomed.uiowa.edu',
-      $mounts->siteDirectory('uiowa09.stage', 'doomed.uiowa.edu')
-    );
-  }
-
-  /**
-   * A directory value that would widen the rm is refused before any command.
-   *
-   * The path is refused where it is built, so an unsafe value cannot reach a
-   * remote command by any route.
-   *
-   * @dataProvider unsafeDirectories
-   */
-  public function testFilesDeleteRefusesUnsafeDirectories(string $directory) {
-    $this->expectException(\InvalidArgumentException::class);
-    (new Mounts('/repo'))->siteDirectory('uiowa09.prod', $directory);
-  }
-
-  /**
-   * Directory values that must never be interpolated into an rm -rf.
-   */
-  public static function unsafeDirectories(): array {
-    return [
-      'empty' => [''],
-      'current directory' => ['.'],
-      'parent traversal' => ['../doomed.uiowa.edu'],
-      'wildcard' => ['*'],
-      'nested path' => ['doomed.uiowa.edu/files'],
-      'trailing slash' => ['doomed.uiowa.edu/'],
-      'command chain' => ['doomed.uiowa.edu; rm -rf /'],
-    ];
-  }
-
-  /**
-   * A malformed mount is refused for the same reason.
-   */
-  public function testFilesDeleteRefusesUnsafeMounts() {
-    $this->expectException(\InvalidArgumentException::class);
-    (new Mounts('/repo'))->siteDirectory('/mnt/gfs', 'doomed.uiowa.edu');
-  }
-
-  // --- Cloud operation notification links -------------------------------------
-
-  /**
-   * The notification UUID is read from the operation's link.
-   */
-  public function testNotificationUuidParsesTheLink() {
-    $uuid = '3d87eca7-89d1-47e2-84db-bc7ad52a9363';
-    $links = $this->links("https://cloud.acquia.com/api/notifications/{$uuid}");
-
-    $this->assertSame($uuid, CloudApi::notificationUuid($links));
-  }
-
-  /**
-   * An operation with no links cannot be confirmed.
-   */
-  public function testNotificationUuidRejectsMissingLinks() {
-    $this->assertNull(CloudApi::notificationUuid(NULL));
-    $this->assertNull(CloudApi::notificationUuid((object) []));
-  }
-
-  /**
-   * A link that does not end in a UUID is refused rather than requested.
-   */
-  public function testNotificationUuidRejectsNonUuidPath() {
-    $this->assertNull(CloudApi::notificationUuid(
-      $this->links('https://cloud.acquia.com/api/notifications/')
-    ));
-    $this->assertNull(CloudApi::notificationUuid(
-      $this->links('https://cloud.acquia.com/api/notifications/not-a-uuid')
-    ));
-  }
-
   // --- Step order -------------------------------------------------------------
 
   /**
@@ -898,28 +651,6 @@ EOD);
     $this->assertSame(CheckStatus::Fail, $check['status']);
     $this->assertTrue($plan->failed());
     $this->assertSame([], $plan->steps(), 'A refused plan must carry no steps.');
-  }
-
-  /**
-   * The mount operations refuse the shared directory on their own.
-   *
-   * A second layer: the command checks for this, but this is what issues the
-   * remote rm, so it does not rely on a caller having checked.
-   */
-  public function testFilesDeleteRefusesTheSharedDirectory() {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage("shared 'default' site directory");
-
-    (new Mounts('/repo'))->siteDirectory('uiowa.prod', 'default');
-  }
-
-  /**
-   * The refusal is not case-sensitive.
-   */
-  public function testFilesDeleteRefusesTheSharedDirectoryInAnyCase() {
-    $this->expectException(\InvalidArgumentException::class);
-
-    (new Mounts('/repo'))->siteDirectory('uiowa.prod', 'Default');
   }
 
   // --- Push guidance ----------------------------------------------------------
