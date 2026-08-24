@@ -168,6 +168,10 @@ class Mounts {
   /**
    * Run one command on an environment over drush ssh.
    *
+   * Every remote command this class issues goes through here, so it is
+   * protected rather than private: a test can answer for the environment
+   * without needing one.
+   *
    * @param string $alias
    *   The site's drush alias without the leading '@'.
    * @param string[] $command
@@ -177,7 +181,7 @@ class Mounts {
    * @return \Symfony\Component\Process\Process
    *   The finished process.
    */
-  private function remote(string $alias, array $command): Process {
+  protected function remote(string $alias, array $command): Process {
     $process = new Process(
       [
         "{$this->repoRoot}/vendor/bin/drush",
