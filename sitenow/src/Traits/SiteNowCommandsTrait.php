@@ -308,12 +308,17 @@ trait SiteNowCommandsTrait {
    * Runs in the repository root rather than the caller's working directory, so
    * the answer does not depend on where `./sn` was invoked from.
    *
+   * Asks symbolic-ref rather than `rev-parse --abbrev-ref`: the latter exits
+   * zero and prints the literal string "HEAD" for a detached HEAD, which reads
+   * as a branch named HEAD and passes a check for a protected name.
+   * symbolic-ref exits non-zero exactly when HEAD is not on a branch.
+   *
    * @return string
-   *   The branch name, or an empty string when git cannot answer (a detached
-   *   HEAD, or no repository at all).
+   *   The branch name, or an empty string when HEAD is not on a branch (a
+   *   detached HEAD, or no repository at all).
    */
   protected function currentBranch(): string {
-    $process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], $this->repoRoot);
+    $process = new Process(['git', 'symbolic-ref', '--short', '--quiet', 'HEAD'], $this->repoRoot);
     $process->run();
 
     return $process->isSuccessful() ? trim($process->getOutput()) : '';

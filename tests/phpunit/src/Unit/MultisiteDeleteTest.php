@@ -126,6 +126,13 @@ class MultisiteDeleteTest extends UnitTestCase {
       }
 
       /**
+       * Exposes gitChecks(), from CommonChecks.
+       */
+      public function pubGitChecks(string $branch): array {
+        return $this->gitChecks($branch, TRUE);
+      }
+
+      /**
        * Exposes pushGuidance(), from SiteNowCommandsTrait.
        */
       public function pubPushGuidance(): string {
@@ -955,6 +962,73 @@ EOD);
    */
   public function testCurrentBranchIsEmptyOutsideGitRepository() {
     $this->assertSame('', $this->commandInDir()->pubCurrentBranch());
+  }
+
+  /**
+   * A detached HEAD reports no branch rather than the string "HEAD".
+   *
+   * `git rev-parse --abbrev-ref HEAD` exits zero and prints "HEAD" here, which
+   * reads as a branch by that name and passes the protected-name comparison.
+   */
+  public function testCurrentBranchIsEmptyOnDetachedHead() {
+    $this->initGitRepo();
+    (new Process(['git', 'checkout', '--detach', '--quiet'], $this->dir))->run();
+
+    $this->assertSame('', $this->commandInDir()->pubCurrentBranch());
+  }
+
+  /**
+   * The feature-branch check's result for one branch name.
+   *
+   * @param string $branch
+   *   The branch name, or '' for a HEAD that is not on a branch.
+   *
+   * @return \SiteNow\Plan\CheckResult
+   *   The check's result.
+   */
+  private function featureBranchCheck(string $branch): CheckResult {
+    foreach ($this->commandInDir()->pubGitChecks($branch) as $check) {
+      if ($check->name === MultisiteDeleteCommand::CHECK_ON_FEATURE_BRANCH) {
+        return $check->evaluate();
+      }
+    }
+
+    $this->fail('The feature-branch check was not among the git checks.');
+  }
+
+  /**
+   * A HEAD that is not on a branch is refused.
+   *
+   * The commit would be left on a reference nothing points at, and the push
+   * guidance would have no branch to name.
+   */
+  public function testDetachedHeadFailsTheFeatureBranchCheck() {
+    $result = $this->featureBranchCheck('');
+
+    $this->assertSame(CheckStatus::Fail, $result->status);
+    $this->assertStringContainsString('not on a branch', $result->message);
+  }
+
+  /**
+   * A protected branch is still refused by name.
+   */
+  public function testProtectedBranchFailsTheFeatureBranchCheck() {
+    $this->assertSame(CheckStatus::Fail, $this->featureBranchCheck('main')->status);
+    $this->assertSame(CheckStatus::Fail, $this->featureBranchCheck('master')->status);
+    $this->assertSame(CheckStatus::Fail, $this->featureBranchCheck('develop')->status);
+  }
+
+  /**
+   * An ordinary feature branch passes, and carries its name forward.
+   *
+   * A branch freshly cut for the delete has no commits of its own; that is not
+   * what this check is about.
+   */
+  public function testFeatureBranchPassesTheCheck() {
+    $result = $this->featureBranchCheck('delete-foo-site');
+
+    $this->assertSame(CheckStatus::Pass, $result->status);
+    $this->assertSame('delete-foo-site', $result->context['branch']);
   }
 
 }

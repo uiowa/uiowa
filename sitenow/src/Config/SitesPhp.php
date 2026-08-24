@@ -97,8 +97,10 @@ class SitesPhp {
     }
 
     // Removing a block leaves the blank lines that surrounded it adjacent;
-    // collapse them so repeated deletions do not stretch the file.
-    $result = preg_replace("/\n{3,}/", "\n\n", implode("\n", $kept));
+    // Falls back to the uncollapsed text on NULL. Otherwise we would reach
+    // the write below, which takes it for an empty string and truncates the file.
+    $body = implode("\n", $kept);
+    $result = preg_replace("/\n{3,}/", "\n\n", $body) ?? $body;
 
     if (file_put_contents($this->path, $result) === FALSE) {
       throw new \RuntimeException("Failed to write to {$this->path}.");

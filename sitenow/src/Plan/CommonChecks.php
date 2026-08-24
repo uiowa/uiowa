@@ -61,6 +61,15 @@ trait CommonChecks {
 
     return [
       new Check(self::CHECK_ON_FEATURE_BRANCH, function () use ($branch, $protected): CheckResult {
+        // No branch name means HEAD is not on one: a detached HEAD, or no
+        // repository at all. A commit made there is left on a reference
+        // nothing points at, and the push guidance has no branch to name, so
+        // it is refused ahead of the protected-name comparison, which an
+        // empty string would otherwise pass.
+        if ($branch === '') {
+          return CheckResult::fail('HEAD is not on a branch, so a commit made here would be stranded. Check out the feature branch this delete belongs on.');
+        }
+
         return in_array($branch, $protected)
           ? CheckResult::fail("Cannot commit on protected branch '{$branch}'.")
           : CheckResult::pass(['branch' => $branch]);
