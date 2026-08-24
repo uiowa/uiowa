@@ -32,6 +32,13 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   ];
 
   /**
+   * The messenger mock, kept accessible so tests can assert warnings.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface&\PHPUnit\Framework\MockObject\MockObject
+   */
+  protected $messenger;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -41,15 +48,18 @@ class SchedulerModerationValidateTest extends UnitTestCase {
       require_once __DIR__ . '/../../../uiowa_core.module';
     }
 
+    // request_time = 1000: dates before it are "past", after it "future".
     $time = $this->createMock(TimeInterface::class);
     $time->method('getRequestTime')->willReturn(1000);
 
     $language_manager = $this->createMock(LanguageManagerInterface::class);
     $language_manager->method('getCurrentLanguage')->willReturn(new Language(['id' => 'en']));
 
+    $this->messenger = $this->createMock(MessengerInterface::class);
+
     $container = new ContainerBuilder();
     $container->set('datetime.time', $time);
-    $container->set('messenger', $this->createMock(MessengerInterface::class));
+    $container->set('messenger', $this->messenger);
     $container->set('language_manager', $language_manager);
     \Drupal::setContainer($container);
   }
@@ -75,7 +85,7 @@ class SchedulerModerationValidateTest extends UnitTestCase {
       'null' => NULL,
     };
 
-    $form_state = $this->buildFormState($publish_on_value);
+    $form_state = $this->buildFormState(publish_on_value: $publish_on_value);
     uiowa_core_scheduler_moderation_validate([], $form_state);
     $this->assertTrue(TRUE, 'uiowa_core_scheduler_moderation_validate() did not throw.');
   }
@@ -94,17 +104,90 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
+   * A future publish_on should bump a brand new draft back to "draft".
+   *
+   * Original intent, from #9889: scheduling a future publish date while
+   * saving as "Published" is a conflict; new content falls back to draft.
+   */
+  public function testFuturePublishFallsBackToDraftForNewContent(): void {
+    $form_state = $this->buildFormState(
+      set_state: 'published',
+      publish_on_value: '2999-01-01T00:00:00',
+      is_new: TRUE,
+    );
+
+    $this->messenger->expects($this->once())->method('addWarning');
+    uiowa_core_scheduler_moderation_validate([], $form_state);
+
+    $this->assertSame('draft', $form_state->getValue(['moderation_state', 0, 'value']));
+  }
+
+  /**
+   * A future publish_on should fall back to the content's prior state.
+   */
+  public function testFuturePublishFallsBackToPriorStateForExistingContent(): void {
+    $form_state = $this->buildFormState(
+      set_state: 'published',
+      publish_on_value: '2999-01-01T00:00:00',
+      is_new: FALSE,
+      current_moderation_state: 'in_review',
+    );
+
+    $this->messenger->expects($this->once())->method('addWarning');
+    uiowa_core_scheduler_moderation_validate([], $form_state);
+
+    $this->assertSame('in_review', $form_state->getValue(['moderation_state', 0, 'value']));
+  }
+
+  /**
+   * A publish_on date already in the past isn't a conflict.
+   */
+  public function testPastPublishDateHasNoConflict(): void {
+    $form_state = $this->buildFormState(
+      set_state: 'published',
+      publish_on_value: '1970-01-01T00:00:01',
+    );
+
+    $this->messenger->expects($this->never())->method('addWarning');
+    uiowa_core_scheduler_moderation_validate([], $form_state);
+
+    $this->assertSame('published', $form_state->getValue(['moderation_state', 0, 'value']));
+  }
+
+  /**
+   * A future unpublish_on should fall back to the content's prior state.
+   */
+  public function testFutureUnpublishFallsBackToPriorState(): void {
+    $form_state = $this->buildFormState(
+      set_state: 'archived',
+      unpublish_on_value: '2999-01-01T00:00:00',
+      current_moderation_state: 'published',
+    );
+
+    $this->messenger->expects($this->once())->method('addWarning');
+    uiowa_core_scheduler_moderation_validate([], $form_state);
+
+    $this->assertSame('published', $form_state->getValue(['moderation_state', 0, 'value']));
+  }
+
+  /**
    * Builds a FormState wired up like a submitted node edit form.
    */
-  protected function buildFormState($publish_on_value): FormState {
+  protected function buildFormState(
+    string $set_state = 'published',
+    $publish_on_value = NULL,
+    $unpublish_on_value = NULL,
+    bool $is_new = FALSE,
+    string $current_moderation_state = 'draft',
+  ): FormState {
     $node = $this->createMock(NodeInterface::class);
     $node->method('hasField')->with('moderation_state')->willReturn(TRUE);
-    $node->method('isNew')->willReturn(FALSE);
+    $node->method('isNew')->willReturn($is_new);
     $node->method('label')->willReturn('Test article');
     // Silence the dynamic-property deprecation from setting a magic
     // property on the mock.
     set_error_handler(static fn () => TRUE, E_DEPRECATED);
-    $node->moderation_state = (object) ['value' => 'draft'];
+    $node->moderation_state = (object) ['value' => $current_moderation_state];
     restore_error_handler();
 
     $form_object = $this->createMock(EntityFormInterface::class);
@@ -112,8 +195,9 @@ class SchedulerModerationValidateTest extends UnitTestCase {
 
     $form_state = new FormState();
     $form_state->setFormObject($form_object);
-    $form_state->setValue('moderation_state', [['value' => 'published']]);
+    $form_state->setValue('moderation_state', [['value' => $set_state]]);
     $form_state->setValue('publish_on', [['value' => $publish_on_value]]);
+    $form_state->setValue('unpublish_on', [['value' => $unpublish_on_value]]);
 
     return $form_state;
   }
