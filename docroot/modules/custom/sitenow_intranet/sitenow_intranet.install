@@ -38,6 +38,12 @@ function sitenow_intranet_install() {
   foreach ([
     'system.file' => ['default_scheme' => 'private'],
     'media.settings' => ['icon_base_uri' => 'private://media-icons/generic'],
+    'media.type.remote_video' => [
+      'source_configuration.thumbnails_directory' => 'private://oembed_thumbnails',
+    ],
+    'media_entity_twitter.settings' => [
+      'local_images' => 'private://twitter-thumbnails',
+    ],
     'field.storage.media.field_media_audio_file' => ['settings.uri_scheme' => 'private'],
     'field.storage.media.field_media_file' => ['settings.uri_scheme' => 'private'],
     'field.storage.media.field_media_image' => ['settings.uri_scheme' => 'private'],
