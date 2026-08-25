@@ -101,29 +101,29 @@ class MultisiteDeleteCommand extends Command {
       ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Show plan and exit; no side effects.')
       ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Apply without prompting. Blocked by any WARN.')
       ->setHelp(<<<'HELP'
-Deletes a multisite everywhere it exists: its files, database and domains on
-Acquia, then its directories, drush alias, sites.php aliases and manifest entry
-in the repository.
+Deprovisions a multisite everywhere it exists: its files, database and domains
+on Acquia, then its site directory, drush alias, sites.php aliases and manifest
+entry in the repository.
 
-The cloud comes down first, and every cloud delete is confirmed gone before the
-repository is touched. A run that fails partway is safe to run again.
+Acquia is deprovisioned first. The database and domains are confirmed gone
+before the repository is touched. A run that fails partway is safe to run again.
 
-A resource that is already absent is a WARN, not a failure — the state a
-half-finished delete leaves behind. The run continues, but not under --yes;
-rerun it interactively and read the warnings first.
+An already absent resource is a WARN rather than a failure, since that is what a
+half-finished delete leaves behind. The run continues, but --yes will not apply
+a plan carrying one. Rerun interactively and read the warnings first.
 
-Files are deleted per environment, the site's whole directory rather than the
+Files are deleted per environment. The site's whole directory goes, not just the
 contents of files/.
 
-Domains considered are the three internal *.drupal.uiowa.edu names, the site
-host, and www.<host>. Only the ones an environment actually reports are touched.
+Domains are the three internal *.drupal.uiowa.edu names, the site host, and
+www.<host>. Only the ones an environment actually reports are deleted.
 
-Runs on the host shell: it commits to the working tree, and .git is not mounted
-into the container. The files deletion goes out over the site's drush alias, so
-an Acquia SSH key has to be available there too.
+Runs on the host shell, because it commits to the working tree and .git is not
+mounted into the container. The files deletion goes over the application's drush
+alias, so the host also needs an Acquia SSH key.
 
 Examples:
-  # What would come down? Reads cloud and local state, changes nothing.
+  # Report what would be deprovisioned. Reads state, changes nothing.
   ./sn multisite:delete foo.sites.uiowa.edu --dry-run
 
   # Choose the site from the manifest instead of naming it.
@@ -516,7 +516,7 @@ HELP);
    *
    * A resource that is already gone is a WARN, not a failure: that is the state
    * a partially finished delete leaves behind, and the right response is to
-   * clean up what remains — but not silently, and not under --yes.
+   * clean up what remains, but not silently and not under --yes.
    *
    * The database name confirmation belongs here rather than with the local
    * checks: whether an unconfirmable name matters depends on whether the
@@ -730,13 +730,13 @@ HELP);
    * Add the cloud teardown steps.
    *
    * One step per resource that gatherCloud() found, so the plan lists what will
-   * actually be deleted and a resource already gone produces no step. Each
-   * operation confirms its own deletion before returning, which is what lets
-   * the repository steps that follow assume the cloud half succeeded.
+   * actually be deleted and a resource already gone produces no step. The
+   * database and domain deletes confirm the resource is gone before returning,
+   * which is what lets the repository steps that follow assume the cloud half
+   * succeeded.
    *
-   * Files come first because they are the only part that cannot be recreated
-   * from the repository; the database and domains are addressed by name, so a
-   * run that fails partway can be retried.
+   * Every resource is addressed by name, so a run that fails partway can be
+   * retried.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The plan to add the steps to.

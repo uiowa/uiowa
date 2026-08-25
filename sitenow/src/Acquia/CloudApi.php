@@ -235,19 +235,18 @@ class CloudApi {
    *   If the API cannot be reached, the wait times out, or the operation
    *   reached any terminal status other than completed.
    */
-  private function awaitOperation(OperationResponse $operation, string $label): void {
+  protected function awaitOperation(OperationResponse $operation, string $label): void {
     $uuid = self::notificationUuid($operation->links ?? NULL);
 
     if ($uuid === NULL) {
       return;
     }
 
-    $notifications = new Notifications($this->client);
     $deadline = time() + $this->timeout;
 
     while (TRUE) {
       try {
-        $status = (string) $notifications->get($uuid)->status;
+        $status = $this->notificationStatus($uuid);
       }
       catch (\Exception $e) {
         throw new \RuntimeException("Cannot confirm {$label}: {$e->getMessage()}", 0, $e);
@@ -285,7 +284,7 @@ class CloudApi {
    *   If the resource is still listed when the timeout expires, or if the
    *   listing cannot be read.
    */
-  private function confirmAbsent(callable $present, string $label): void {
+  protected function confirmAbsent(callable $present, string $label): void {
     $deadline = time() + $this->timeout;
 
     while (TRUE) {
@@ -306,6 +305,22 @@ class CloudApi {
 
       sleep($this->interval);
     }
+  }
+
+  /**
+   * The status the API reports for one notification.
+   *
+   * Every notification read goes through here, so it is protected rather than
+   * private: a test can answer for the API without reaching it.
+   *
+   * @param string $uuid
+   *   The notification UUID.
+   *
+   * @return string
+   *   The reported status.
+   */
+  protected function notificationStatus(string $uuid): string {
+    return (string) (new Notifications($this->client))->get($uuid)->status;
   }
 
 }

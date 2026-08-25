@@ -136,6 +136,11 @@ class Mounts {
    * Idempotent: a directory that is already absent is a success, so a retry
    * after a partial run does not fail here.
    *
+   * The rm's exit status is the only signal taken. Looking again afterwards
+   * cannot confirm anything: Acquia reprovisions the directory within about a
+   * minute, so a successful delete and an rm that removed nothing both read as
+   * present. See #10076.
+   *
    * @param string $alias
    *   The application's drush alias without the leading '@'.
    * @param string $mount
@@ -144,8 +149,7 @@ class Mounts {
    *   The site directory to delete.
    *
    * @throws \RuntimeException
-   *   If the remote command fails, or if the directory is still present after
-   *   it reported success.
+   *   If the remote command fails.
    */
   public function deleteSiteDirectory(string $alias, string $mount, string $directory): void {
     if (!$this->siteDirectoryExists($alias, $mount, $directory)) {
@@ -157,12 +161,6 @@ class Mounts {
 
     if (!$process->isSuccessful()) {
       throw new \RuntimeException("Failed to delete files for {$directory} on {$mount}: " . $process->getErrorOutput());
-    }
-
-    // The remote rm reports success for a path it never touched, so the delete
-    // is confirmed by looking again rather than by trusting the exit status.
-    if ($this->siteDirectoryExists($alias, $mount, $directory)) {
-      throw new \RuntimeException("Deleted files for {$directory} on {$mount}, but {$path} is still present.");
     }
   }
 

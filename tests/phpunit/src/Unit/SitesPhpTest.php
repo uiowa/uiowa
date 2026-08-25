@@ -61,14 +61,23 @@ EOD);
 
   /**
    * Every alias for the site goes, along with its marker comment.
+   *
+   * The surviving content is asserted too, so a write that emptied the file
+   * cannot pass this.
    */
   public function testRemoveAliasesStripsTheSiteBlock() {
     $path = $this->sitesPhp();
 
     (new SitesPhp($path))->removeAliases('doomed.uiowa.edu');
 
-    $contents = file_get_contents($path);
-    $this->assertStringNotContainsString('doomed', $contents);
+    $this->assertSame(<<<'EOD'
+<?php
+
+// Directory aliases for keeper.uiowa.edu.
+$sites['keeper.uiowa.ddev.site'] = 'keeper.uiowa.edu';
+$sites['keeper.prod.drupal.uiowa.edu'] = 'keeper.uiowa.edu';
+
+EOD, file_get_contents($path));
   }
 
   /**

@@ -315,37 +315,24 @@ class MountsTest extends UnitTestCase {
   }
 
   /**
-   * The rm targets the site's directory and is confirmed by probing again.
+   * The rm targets the site's directory, and nothing follows it.
+   *
+   * Acquia reprovisions the directory within about a minute, so a probe after
+   * the rm cannot tell a successful delete from one that removed nothing.
    */
-  public function testDeleteIsConfirmedByProbingAgain() {
+  public function testDeleteIssuesTheRemovalAndStops() {
     $mounts = $this->mounts([
       ['out' => self::SITES_PATH . "\n" . self::SITE_PATH . "\n"],
       [],
-      ['out' => self::SITES_PATH . "\n"],
     ]);
 
     $mounts->deleteSiteDirectory(self::ALIAS, self::MOUNT, self::DIRECTORY);
 
-    $this->assertCount(3, $mounts->commands);
+    $this->assertCount(2, $mounts->commands);
     $this->assertSame(
       ['rm', '-rf', self::SITE_PATH],
       $mounts->commands[1]['command']
     );
-  }
-
-  /**
-   * An rm that reports success but leaves the files behind is a failure.
-   *
-   * The remote rm exits zero for a path it never touched, so the exit status
-   * is not what the delete is confirmed by.
-   */
-  public function testDeleteRefusesToReportSuccessWhileFilesRemain() {
-    $present = ['out' => self::SITES_PATH . "\n" . self::SITE_PATH . "\n"];
-    $mounts = $this->mounts([$present, [], $present]);
-
-    $this->expectException(\RuntimeException::class);
-    $this->expectExceptionMessage('is still present');
-    $mounts->deleteSiteDirectory(self::ALIAS, self::MOUNT, self::DIRECTORY);
   }
 
   /**

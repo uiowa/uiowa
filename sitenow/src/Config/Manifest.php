@@ -24,16 +24,6 @@ class Manifest {
   ) {}
 
   /**
-   * The path this instance reads and writes.
-   *
-   * @return string
-   *   The manifest path.
-   */
-  public function path(): string {
-    return $this->path;
-  }
-
-  /**
    * The whole manifest, keyed by application.
    *
    * @return array
