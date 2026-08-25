@@ -205,7 +205,7 @@ HELP);
       $answer = trim((string) $answer);
 
       if (!in_array($answer, $hosts, TRUE)) {
-        throw new \RuntimeException("'{$answer}' is not a site in blt/manifest.yml.");
+        throw new \RuntimeException("'{$answer}' is not a site in sitenow/manifest.yml.");
       }
 
       return $answer;
@@ -260,7 +260,7 @@ HELP);
       new Check(self::CHECK_SITE_IN_MANIFEST, function () use ($app, $host): CheckResult {
         return $app !== NULL
           ? CheckResult::pass(['app' => $app])
-          : CheckResult::fail("Site {$host} is not in blt/manifest.yml. Nothing to delete.");
+          : CheckResult::fail("Site {$host} is not in sitenow/manifest.yml. Nothing to delete.");
       }),
       new Check(self::CHECK_NOT_DEFAULT_SITE, function () use ($dir, $host): CheckResult {
         // demo.sitenow.uiowa.edu is in the manifest and sites.php maps it to
@@ -638,7 +638,7 @@ HELP);
     // retried against the same site.
     $manifest_path = $this->manifestPath();
     $plan->addStep(
-      "Remove <info>{$host}</info> from <info>blt/manifest.yml</info> (app: <info>{$app}</info>)",
+      "Remove <info>{$host}</info> from <info>" . Manifest::RELATIVE_PATH . "</info> (app: <info>{$app}</info>)",
       function () use ($manifest_path, $app, $host) {
         (new Manifest($manifest_path))->removeSite($app, $host);
       }
@@ -648,7 +648,7 @@ HELP);
       $message = "Delete {$host} multisite on {$app}";
       $commit_paths = [
         'docroot/sites/sites.php',
-        'blt/manifest.yml',
+        Manifest::RELATIVE_PATH,
         "docroot/sites/{$dir}",
         "drush/sites/{$id}.site.yml",
       ];

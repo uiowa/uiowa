@@ -9,6 +9,7 @@ use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use SiteNow\Command\SiteUpdateCommand;
 use SiteNow\Config\Credentials;
+use SiteNow\Config\Manifest;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
@@ -170,10 +171,10 @@ trait SiteNowCommandsTrait {
    * Get the path to the site manifest.
    *
    * @return string
-   *   Absolute path to blt/manifest.yml, present or not.
+   *   Absolute path to the manifest, present or not.
    */
   protected function manifestPath(): string {
-    return "{$this->repoRoot}/blt/manifest.yml";
+    return Manifest::defaultPath($this->repoRoot);
   }
 
   /**
@@ -202,7 +203,8 @@ trait SiteNowCommandsTrait {
   /**
    * Get the whole site manifest, keyed by application.
    *
-   * The manifest, blt/manifest.yml, is keyed by application (AH_SITE_GROUP) and
+   * The manifest, sitenow/manifest.yml, is keyed by application (AH_SITE_GROUP)
+   * and
    * maintained by every provision, so it is the authority on which sites live
    * where. Callers that read it are expected to have gated on
    * requireManifest(); an absent file throws here rather than reading as an

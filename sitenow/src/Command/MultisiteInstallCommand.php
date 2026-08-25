@@ -74,7 +74,7 @@ class MultisiteInstallCommand extends Command {
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Locates blt/manifest.yml, the sn
+   *   Absolute path to the repository root. Locates sitenow/manifest.yml, the sn
    *   binary used for each site:install, and each site's blt.yml.
    */
   public function __construct(

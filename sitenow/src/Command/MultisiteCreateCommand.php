@@ -295,7 +295,7 @@ class MultisiteCreateCommand extends Command {
    *   Site counts keyed by application name.
    */
   private function siteCountsByApp(string $root): array {
-    $path = "{$root}/blt/manifest.yml";
+    $path = Manifest::defaultPath($root);
     $manifest = file_exists($path) ? (Yaml::parseFile($path) ?? []) : [];
     return array_map(fn($sites) => is_array($sites) ? count($sites) : 0, $manifest);
   }
@@ -552,10 +552,10 @@ EOD;
       }
     );
 
-    $manifest_path = "{$root}/blt/manifest.yml";
+    $manifest_path = Manifest::defaultPath($root);
     $app_name = $app['name'];
     $plan->addStep(
-      "Update <info>blt/manifest.yml</info> (app: <info>{$app_name}</info>)",
+      "Update <info>" . Manifest::RELATIVE_PATH . "</info> (app: <info>{$app_name}</info>)",
       function () use ($manifest_path, $app_name, $host) {
         (new Manifest($manifest_path))->addSite($app_name, $host);
       }
@@ -579,7 +579,7 @@ EOD;
       $message = "Initialize {$host} multisite on {$app_name}";
       $commit_paths = [
         'docroot/sites/sites.php',
-        'blt/manifest.yml',
+        Manifest::RELATIVE_PATH,
         "docroot/sites/{$host}",
         "drush/sites/{$id}.site.yml",
       ];
