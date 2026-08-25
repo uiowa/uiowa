@@ -17,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * Reports each application's site count, split by sitenow_v2 status.
  *
  * Built for the weekly Acquia Cloud cron job that emails osc-web@uiowa.edu a
- * site count per application. 
+ * site count per application.
  * --totals-only serves applications that never have v2 sites.
  */
 #[AsCommand(
@@ -40,7 +40,7 @@ class ReportSiteCountCommand extends Command {
 
   /**
    * The config_split entity queried for each site's v2/v3 status.
-   * 
+   *
    * Not v2 is equivalent to v3.
    */
   const SPLIT_CONFIG_NAME = 'config_split.config_split.sitenow_v2';
