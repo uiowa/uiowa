@@ -4,9 +4,9 @@ namespace SiteNow\Command;
 
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Endpoints\Environments;
-use SiteNow\Config\Applications;
 use SiteNow\Acquia\CloudApi;
 use SiteNow\Acquia\Mounts;
+use SiteNow\Config\Applications;
 use SiteNow\Config\Manifest;
 use SiteNow\Config\SitesPhp;
 use SiteNow\Plan\Check;
@@ -98,8 +98,8 @@ class MultisiteDeleteCommand extends Command {
     $this
       ->addArgument('host', InputArgument::OPTIONAL, 'The multisite host to delete. Omit to choose from a list.')
       ->addOption('no-commit', NULL, InputOption::VALUE_NONE, 'Do not create a git commit.')
-      ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Show plan and exit; no side effects.')
-      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Apply without prompting. Blocked by any WARN.')
+      ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Report what would be deleted and exit, changing nothing.')
+      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Delete without prompting. Refused if anything came back as a warning.')
       ->setHelp(<<<'HELP'
 Deprovisions a multisite everywhere it exists: its files, database and domains
 on Acquia, then its site directory, drush alias, sites.php aliases and manifest
@@ -108,9 +108,10 @@ entry in the repository.
 Acquia is deprovisioned first. The database and domains are confirmed gone
 before the repository is touched. A run that fails partway is safe to run again.
 
-An already absent resource is a WARN rather than a failure, since that is what a
-half-finished delete leaves behind. The run continues, but --yes will not apply
-a plan carrying one. Rerun interactively and read the warnings first.
+A resource that is already gone is reported as a warning rather than an error,
+since that is what a half-finished delete leaves behind. You are still offered
+the choice to continue. Under --yes there is no prompt to answer, so a run with
+warnings stops instead; rerun without it and read them first.
 
 Files are deleted per environment. The site's whole directory goes, not just the
 contents of files/.
@@ -118,9 +119,8 @@ contents of files/.
 Domains are the three internal *.drupal.uiowa.edu names, the site host, and
 www.<host>. Only the ones an environment actually reports are deleted.
 
-Runs on the host shell, because it commits to the working tree and .git is not
-mounted into the container. The files deletion goes over the application's drush
-alias, so the host also needs an Acquia SSH key.
+Runs on the host shell, not inside DDEV or on Acquia Cloud. The files deletion
+goes over the application's drush alias, so the host needs an Acquia SSH key.
 
 Examples:
   # Report what would be deprovisioned. Reads state, changes nothing.

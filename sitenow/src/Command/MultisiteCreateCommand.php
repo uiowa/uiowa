@@ -3,8 +3,8 @@
 namespace SiteNow\Command;
 
 use AcquiaCloudApi\Connector\Client;
-use SiteNow\Config\Applications;
 use SiteNow\Acquia\CloudApi;
+use SiteNow\Config\Applications;
 use SiteNow\Config\Manifest;
 use SiteNow\Config\SitesPhp;
 use SiteNow\Plan\Check;
@@ -14,6 +14,7 @@ use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
 use SiteNow\Traits\SiteNowCommandsTrait;
+use SiteNow\Utility\Multisite;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -26,7 +27,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
-use SiteNow\Utility\Multisite;
 
 /**
  * Creates a new SiteNow multisite.
@@ -75,8 +75,8 @@ class MultisiteCreateCommand extends Command {
       ->addOption('requester', NULL, InputOption::VALUE_REQUIRED, 'The HawkID of the original requester.')
       ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Config split(s) to activate. Comma-separate multiple values.')
       ->addOption('site-name', NULL, InputOption::VALUE_REQUIRED, 'The desired site name.')
-      ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Show plan and exit; no side effects.')
-      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Apply without prompting. Blocked by any WARN.')
+      ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Report what would be created and exit, changing nothing.')
+      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Create without prompting. Refused if anything came back as a warning.')
       ->addOption('app', NULL, InputOption::VALUE_REQUIRED, 'Override the target Acquia application.');
   }
 
