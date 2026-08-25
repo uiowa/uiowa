@@ -120,7 +120,7 @@ Domains are the three internal *.drupal.uiowa.edu names, the site host, and
 www.<host>. Only the ones an environment actually reports are deleted.
 
 Runs on the host shell, not inside DDEV or on Acquia Cloud. The files deletion
-goes over the application's drush alias, so the host needs an Acquia SSH key.
+uses the application's drush alias, so the host needs an Acquia SSH key.
 
 Examples:
   # Report what would be deprovisioned. Reads state, changes nothing.
