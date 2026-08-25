@@ -45,8 +45,8 @@ class Mounts {
    * The absolute path a site's files occupy on an environment's mount.
    *
    * @param string $mount
-   *   Application and Acquia environment name (e.g. "uiowa09.stage"), which is
-   *   not always the drush alias environment name. Resolved by the caller.
+   *   Application and Acquia environment name (e.g. "uiowa09.stage"), as
+   *   resolved by the caller.
    * @param string $directory
    *   The site directory (e.g. "foo.sites.uiowa.edu").
    *
