@@ -16,8 +16,10 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_form_display.paragraph.service_resource.default
   - core.entity_view_display.node.alert.default
   - core.entity_view_display.node.person.default
+  - core.entity_view_display.paragraph.service_resource.default
   - core.entity_view_mode.node.dispatch
   - field.field.node.alert.field_alert_override_building
   - field.field.node.alert.field_alert_project_number
@@ -31,6 +33,7 @@ complete_list:
   - field.storage.node.field_alert_alternate_route
   - field.storage.node.field_alert_building
   - field.storage.node.field_alert_buildings_locations
+  - field.storage.node.field_alert_contact_info
   - field.storage.node.field_alert_override_building
   - field.storage.node.field_alert_project_number
   - field.storage.node.field_alert_short_work_desc
@@ -47,10 +50,6 @@ complete_list:
   - node.type.named_building
   - node.type.project
   - paragraphs.paragraphs_type.service_resource
-  - core.entity_form_display.paragraph.service_resource.default
-  - core.entity_view_display.paragraph.service_resource.default
-  - 'field.storage.paragraph.field_sr_*'
-  - 'field.field.paragraph.service_resource.*'
   - pathauto.pattern.artwork
   - pathauto.pattern.building
   - pathauto.pattern.named_building
@@ -68,6 +67,8 @@ complete_list:
   - views.view.named_building_details
   - views.view.named_building_list
   - views.view.projects
+  - 'field.storage.paragraph.field_sr_*'
+  - 'field.field.paragraph.service_resource.*'
   - views.view.projects_building_block
   - field.storage.node.field_alert_publish_on
   - 'field.storage.node.field_building_*'
