@@ -6,6 +6,7 @@ adding:
       - field.field.node.alert.field_alert_alternate_route
       - field.field.node.alert.field_alert_building
       - field.field.node.alert.field_alert_buildings_locations
+      - field.field.node.alert.field_alert_contact_info
       - field.field.node.alert.field_alert_override_building
       - field.field.node.alert.field_alert_project_number
       - field.field.node.alert.field_alert_short_work_desc
@@ -13,6 +14,7 @@ adding:
       - field.field.node.alert.field_alert_traffic_control_plan
     module:
       - media_library
+      - uiowa_core
   content:
     body:
       weight: 20
@@ -55,6 +57,14 @@ adding:
     field_alert_category:
       type: options_buttons
       weight: 18
+    field_alert_contact_info:
+      type: text_textarea
+      weight: 27
+      region: content
+      settings:
+        rows: 5
+        placeholder: ''
+      third_party_settings: {  }
     field_alert_date:
       weight: 19
     field_alert_override_building:

@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_buildings_locations
     - field.field.node.alert.field_alert_category
+    - field.field.node.alert.field_alert_contact_info
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_alert_override_building
     - field.field.node.alert.field_alert_project_number
@@ -40,28 +41,33 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 4
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
   field_alert_accessible_route:
     type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   field_alert_affected_bus_routes:
     type: list_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   field_alert_alternate_route:
     type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   field_alert_building:
     type: entity_reference_label
@@ -69,7 +75,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_alert_buildings_locations:
     type: string
@@ -77,7 +83,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   field_alert_category:
     type: entity_reference_label
@@ -87,7 +93,14 @@ content:
     third_party_settings:
       field_delimiter:
         delimiter: ''
-    weight: 0
+    weight: 1
+    region: content
+  field_alert_contact_info:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
     region: content
   field_alert_date:
     type: smartdate_default
@@ -100,8 +113,16 @@ content:
       add_classes: false
       time_wrapper: true
       localize: false
+      parts:
+        - start
+        - end
+      duration:
+        separator: ' | '
+        unit: ''
+        decimals: 2
+        suffix: h
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_alert_project_number:
     type: string
@@ -109,7 +130,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   field_alert_short_work_desc:
     type: string
@@ -117,7 +138,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 10
+    weight: 11
     region: content
   field_alert_traffic_control:
     type: boolean
@@ -127,7 +148,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_alert_traffic_control_plan:
     type: entity_reference_entity_view
@@ -136,7 +157,7 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
 hidden:
   entity_print_view_epub: true
