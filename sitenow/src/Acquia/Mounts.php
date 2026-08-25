@@ -96,7 +96,8 @@ class Mounts {
    * storage and find does not follow one without -L.
    *
    * @param string $alias
-   *   The site's drush alias without the leading '@' (e.g. "sitesfoo.prod").
+   *   The application's drush alias without the leading '@' (e.g.
+   *   "uiowa09.prod").
    * @param string $mount
    *   Application and Acquia environment name.
    * @param string $directory
@@ -136,7 +137,7 @@ class Mounts {
    * after a partial run does not fail here.
    *
    * @param string $alias
-   *   The site's drush alias without the leading '@'.
+   *   The application's drush alias without the leading '@'.
    * @param string $mount
    *   Application and Acquia environment name.
    * @param string $directory
@@ -173,7 +174,7 @@ class Mounts {
    * without needing one.
    *
    * @param string $alias
-   *   The site's drush alias without the leading '@'.
+   *   The application's drush alias without the leading '@'.
    * @param string[] $command
    *   The remote command and its arguments. Passed as a single argument to
    *   drush ssh, so it must contain no shell operators.
