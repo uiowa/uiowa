@@ -149,16 +149,16 @@ trait SiteNowCommandsTrait {
   /**
    * Get the sites enabled on this developer's machine.
    *
-   * The list is the "sites" entries in local.sites.yml, the local counterpart
-   * to an application's manifest sites. An absent file or key yields an empty
-   * list rather than a fleet-wide fallback, so a command never acts on every
-   * site by accident.
+   * The list is the "sites" entries in sitenow/local.sites.yml, the local
+   * counterpart to an application's manifest sites. An absent file or key
+   * yields an empty list rather than a fleet-wide fallback, so a command never
+   * acts on every site by accident.
    *
    * @return array
    *   Site hosts, empty when none are enabled.
    */
   protected function localSites(): array {
-    $local = "{$this->repoRoot}/local.sites.yml";
+    $local = "{$this->repoRoot}/sitenow/local.sites.yml";
 
     return is_file($local) ? (Yaml::parseFile($local)['sites'] ?? []) : [];
   }

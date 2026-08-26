@@ -233,12 +233,12 @@ class DeployUpdateTest extends UnitTestCase {
   // --- Locally-enabled site list ----------------------------------------------
 
   /**
-   * The local site list is the "sites" entries in local.sites.yml.
+   * The local site list is the "sites" entries in sitenow/local.sites.yml.
    */
   public function testLocalSitesFromLocalSitesYml() {
     $repo = $this->fixtureRepo([]);
     file_put_contents(
-      "{$repo}/local.sites.yml",
+      "{$repo}/sitenow/local.sites.yml",
       "sites:\n  - default\n  - foo.uiowa.edu\n"
     );
 
@@ -249,7 +249,7 @@ class DeployUpdateTest extends UnitTestCase {
   }
 
   /**
-   * An absent local.sites.yml enables no sites.
+   * An absent sitenow/local.sites.yml enables no sites.
    */
   public function testLocalSitesAbsentFileEnablesNothing() {
     $repo = $this->fixtureRepo([]);
@@ -258,11 +258,11 @@ class DeployUpdateTest extends UnitTestCase {
   }
 
   /**
-   * A local.sites.yml with no "sites" key enables no sites.
+   * A sitenow/local.sites.yml with no "sites" key enables no sites.
    */
   public function testLocalSitesMissingKeyEnablesNothing() {
     $repo = $this->fixtureRepo([]);
-    file_put_contents("{$repo}/local.sites.yml", "something: else\n");
+    file_put_contents("{$repo}/sitenow/local.sites.yml", "something: else\n");
 
     $this->assertSame([], $this->command($repo)->pubLocalSites());
   }

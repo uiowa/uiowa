@@ -112,7 +112,8 @@ class DeployUpdateCommand extends Command {
    * Resolve the list of sites to update.
    *
    * On Acquia the list comes from sitenow/manifest.yml keyed by AH_SITE_GROUP;
-   * locally it comes from local.sites.yml. The --sites option overrides both.
+   * locally it comes from sitenow/local.sites.yml. The --sites option overrides
+   * both.
    */
   private function siteList(InputInterface $input, string $app, bool $is_acquia): array {
     $override = $this->parseList($input->getOption('sites'));

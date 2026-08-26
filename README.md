@@ -45,7 +45,7 @@ acquia:
 
 `.ddev/docker-compose.sitenow.yaml` mounts this directory read-only into the web container, so `ddev sn` reads the same file the host does.
 
-Set the sites you work with locally in a `local.sites.yml` file at the repository root. This file is ignored by Git. It is the list `ddev sn sync:all` syncs and `ddev sn umi` installs, and it can be overridden per-run with `--sites`.
+Set the sites you work with locally in `sitenow/local.sites.yml`. This file is ignored by Git. It is the list `ddev sn sync:all` syncs and `ddev sn umi` installs, and it can be overridden per-run with `--sites`.
 ```
 sites:
   - default
