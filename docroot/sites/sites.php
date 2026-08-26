@@ -737,12 +737,6 @@ $sites['sitesfric.dev.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
 $sites['sitesfric.stage.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
 $sites['sitesfric.prod.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
 
-// Directory aliases for accel.education.uiowa.edu.
-$sites['educationaccel.uiowa.ddev.site'] = 'accel.education.uiowa.edu';
-$sites['educationaccel.dev.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
-$sites['educationaccel.stage.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
-$sites['educationaccel.prod.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
-
 // Directory aliases for intermediatechinesereader.sites.uiowa.edu.
 $sites['sitesintermediatechinesereader.uiowa.ddev.site'] = 'intermediatechinesereader.sites.uiowa.edu';
 $sites['sitesintermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
