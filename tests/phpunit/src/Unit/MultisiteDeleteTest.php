@@ -147,8 +147,7 @@ class MultisiteDeleteTest extends UnitTestCase {
    *
    * @param string|null $upstream
    *   Remote-tracking branch to configure, or NULL to leave the branch with no
-   *   upstream. The remote is a bare repository in the scratch tree, so nothing
-   *   reaches the network.
+   *   upstream.
    */
   private function initGitRepo(?string $upstream = NULL): void {
     $git = function (array $args) {
@@ -176,12 +175,10 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * An unauthenticated client; the steps under test are never applied.
-   *
-   * Constructing a Connector emits a deprecation from the Acquia SDK on PHP
-   * 8.4, which PHPUnit reports as unexpected output; mask it around the one
-   * call rather than letting it mark every test risky.
    */
   private function client(): Client {
+    // Constructing a Connector emits a deprecation on PHP 8.4, which PHPUnit
+    // reports as unexpected output and marks the test risky.
     $reporting = error_reporting(error_reporting() & ~E_DEPRECATED);
 
     try {
@@ -261,9 +258,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * The cloud steps cover files per environment, the database, and each domain.
-   *
-   * Files first: they are the only resource that cannot be recreated from the
-   * repository, so they come off before anything the run could still retry.
    */
   public function testCloudStepsCoverEveryResource() {
     $plan = new Plan('t', [], []);
@@ -303,10 +297,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * The candidate domains are the site's own, including the www variant.
-   *
-   * The www form is registered for many sites and is not derivable from the
-   * identifier, so it has to be listed explicitly. The local ddev domain is
-   * excluded: it exists only in sites.php.
    */
   public function testCandidateDomainsCoverTheSitesOwnDomains() {
     $candidates = $this->command()->pubCandidateDomains('doomed.uiowa.edu', 'doomed');
@@ -344,9 +334,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * Mounts come from the application's alias, not the site's.
-   *
-   * The site's alias is removed partway through a delete, so reading it would
-   * leave an interrupted run unable to resolve the mounts it still needs.
    */
   public function testMountsIgnoreTheSiteAlias() {
     mkdir("{$this->dir}/drush/sites", 0777, TRUE);
@@ -450,9 +437,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * An unconfirmable name refuses while the database is still there.
-   *
-   * This is the case that must not be guessed: the only evidence of which
-   * database belongs to the site is gone, and one is still standing.
    */
   public function testUnconfirmableDatabaseStillPresentIsRefused() {
     $result = $this->databaseNameCheck(TRUE, NULL);
@@ -468,9 +452,6 @@ class MultisiteDeleteTest extends UnitTestCase {
    * gone, sites.php no longer aliases the host, but the manifest entry that
    * goes last still names the site. None of that may FAIL, or the cloud
    * resources the interrupted run had not reached become unreachable.
-   *
-   * The plan still fails here, on the unregistered application, which is what
-   * keeps this test off the network.
    */
   public function testInterruptedRepositoryRemovalsAllowRerun() {
     mkdir("{$this->dir}/docroot/sites", 0777, TRUE);
@@ -523,11 +504,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * Every cloud step precedes every repository step, and the commit is last.
-   *
-   * This is the property the whole command rests on: the repository is only
-   * touched once the cloud teardown has been confirmed, so a cloud failure
-   * leaves the working tree recoverable. The steps run in list order, which
-   * makes their order the guarantee.
    */
   public function testCloudStepsAllPrecedeRepositorySteps() {
     // A site with committed configuration, so the optional step is present.
@@ -571,9 +547,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * The manifest removal is the last step that can fail before the commit.
-   *
-   * Until it runs the site is still selectable, which is what makes a failed
-   * run retryable against the same site.
    */
   public function testManifestRemovalIsTheLastRepositoryStep() {
     $plan = new Plan('t', [], []);
@@ -697,9 +670,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * A detached HEAD reports no branch rather than the string "HEAD".
-   *
-   * `git rev-parse --abbrev-ref HEAD` exits zero and prints "HEAD" here, which
-   * reads as a branch by that name and passes the protected-name comparison.
    */
   public function testCurrentBranchIsEmptyOnDetachedHead() {
     $this->initGitRepo();
@@ -729,9 +699,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * A HEAD that is not on a branch is refused.
-   *
-   * The commit would be left on a reference nothing points at, and the push
-   * guidance would have no branch to name.
    */
   public function testDetachedHeadFailsTheFeatureBranchCheck() {
     $result = $this->featureBranchCheck('');
@@ -751,9 +718,6 @@ class MultisiteDeleteTest extends UnitTestCase {
 
   /**
    * An ordinary feature branch passes, and carries its name forward.
-   *
-   * A branch freshly cut for the delete has no commits of its own; that is not
-   * what this check is about.
    */
   public function testFeatureBranchPassesTheCheck() {
     $result = $this->featureBranchCheck('delete-foo-site');

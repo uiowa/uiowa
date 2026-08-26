@@ -103,8 +103,6 @@ class Manifest {
   /**
    * Sort and write the manifest.
    *
-   * Applications sorted, hosts sorted within each.
-   *
    * @param array $manifest
    *   The manifest to write, keyed by application.
    *

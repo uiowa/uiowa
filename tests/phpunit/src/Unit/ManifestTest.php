@@ -115,7 +115,7 @@ class ManifestTest extends UnitTestCase {
   }
 
   /**
-   * Removing a host that is already gone is a no-op, so a retry is safe.
+   * Removing a host that is already gone is a no-op.
    */
   public function testRemoveSiteIsIdempotent() {
     $manifest = $this->manifest(['uiowa02' => ['b.uiowa.edu']]);
@@ -143,9 +143,6 @@ class ManifestTest extends UnitTestCase {
 
   /**
    * An add and a matching remove leave the file byte-identical.
-   *
-   * The reason both writers share save(): a provision and a deletion must
-   * agree on layout, or unrelated changes arrive as whole-file diffs.
    */
   public function testAddAndRemoveRoundTripToIdenticalBytes() {
     $manifest = $this->manifest([

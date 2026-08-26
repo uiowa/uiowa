@@ -57,12 +57,10 @@ class CloudApiTest extends UnitTestCase {
 
   /**
    * An unauthenticated client; nothing under test reaches the API.
-   *
-   * Constructing a Connector emits a deprecation from the Acquia SDK on PHP
-   * 8.4, which PHPUnit reports as unexpected output; mask it around the one
-   * call rather than letting it mark every test risky.
    */
   private function client(): Client {
+    // Constructing a Connector emits a deprecation on PHP 8.4, which PHPUnit
+    // reports as unexpected output and marks the test risky.
     $reporting = error_reporting(error_reporting() & ~E_DEPRECATED);
 
     try {

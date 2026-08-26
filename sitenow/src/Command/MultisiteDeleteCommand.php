@@ -47,10 +47,6 @@ class MultisiteDeleteCommand extends Command {
   use CommonChecks;
 
   // Machine names recorded in validation results, in evaluation order.
-  //
-  // Local checks are evaluated first by design: a FAIL among them returns
-  // before any Acquia API call, so a misidentified site never reaches the
-  // cloud reads, let alone a delete.
   const CHECK_SITE_IN_MANIFEST = 'site_in_manifest';
   const CHECK_NOT_DEFAULT_SITE = 'not_default_site';
   const CHECK_SITE_DIR_EXISTS = 'site_dir_exists';
@@ -58,10 +54,6 @@ class MultisiteDeleteCommand extends Command {
   const CHECK_DRUSH_ALIAS_MOUNTS = 'drush_alias_mounts';
 
   // Cloud checks, reached only once every local check has passed.
-  // CHECK_CLOUD_READABLE is the read-failure path rather than a check that
-  // ever passes. CHECK_DATABASE_NAME_MATCHES reads the site's own blt.yml
-  // rather than the cloud, but belongs here because whether an absent one
-  // matters depends on the database still being there.
   const CHECK_CLOUD_READABLE = 'cloud_readable';
   const CHECK_CLOUD_FILES = 'cloud_files_present';
   const CHECK_CLOUD_DATABASE = 'cloud_database_present';
@@ -169,9 +161,6 @@ HELP);
 
   /**
    * Flatten the manifest into a host => application map.
-   *
-   * The manifest is the source of truth for which sites exist and which
-   * application owns each one, so the same read answers both questions.
    *
    * @param array $manifest
    *   The manifest, keyed by application.
@@ -288,18 +277,10 @@ HELP);
 
     $mounts = $app !== NULL ? $this->mountsByEnv($app) : [];
 
-    // The checks below describe a delete only a site with its own manifest
-    // entry can have. A host that is absent from the manifest or resolves to
-    // the shared default site has none, and the FAIL above already says so;
-    // running these anyway contradicts it.
     if ($app !== NULL && $dir !== self::DEFAULT_SITE_DIRECTORY) {
       $registry = new Applications("{$root}/sitenow/applications.yml");
 
       $checks[] = new Check(self::CHECK_SITE_DIR_EXISTS, function () use ($root, $dir, $host): CheckResult {
-        // The directory is derived from the host rather than read from disk, so
-        // its absence is not a missing input. It is the state a run interrupted
-        // during the repository removals leaves behind, and the manifest entry
-        // that goes last still names the site, so the dismantle can carry on.
         return is_dir("{$root}/docroot/sites/{$dir}")
           ? CheckResult::pass()
           : CheckResult::warn("Site directory docroot/sites/{$dir} does not exist, but {$host} is in the manifest. Already removed by an interrupted run, or never created.");
@@ -312,9 +293,6 @@ HELP);
       });
 
       $checks[] = new Check(self::CHECK_DRUSH_ALIAS_MOUNTS, function () use ($root, $mounts, $app): CheckResult {
-        // An absent alias file and one that defines no users both leave
-        // mountsByEnv() with nothing to return, so they are told apart here
-        // rather than reported as the same fault.
         $path = "drush/sites/{$app}.site.yml";
 
         if (!is_file("{$root}/{$path}")) {
@@ -349,9 +327,8 @@ HELP);
     $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
     $uuid = (new Applications("{$root}/sitenow/applications.yml"))->uuid($app);
 
-    // What actually exists on Acquia. Read for every run, including --dry-run:
-    // the steps are built from these facts, so the preview lists the real
-    // resources rather than the ones a site is assumed to have.
+    // Read for every run, including --dry-run: the steps are built from these
+    // facts.
     try {
       $cloud = $this->gatherCloud($client, $uuid, $input, $mounts);
     }
@@ -367,8 +344,6 @@ HELP);
     $summary = array_merge($summary, $this->cloudSummary($cloud));
     $plan = new Plan($title, $input, $validation, $summary, $cloud);
 
-    // A failed plan carries the decision only; skip building the steps that
-    // would never run.
     if ($plan->failed()) {
       return $plan;
     }
@@ -385,13 +360,7 @@ HELP);
    * Applications disagree with drush on the middle environment's name:
    * uiowa07-09 call it 'stage' where the alias calls it 'test'. The alias
    * records the Acquia name in its user (@x.test has `user: uiowa09.stage`),
-   * and that is what the shared filesystem path uses, so it is read here
-   * rather than derived.
-   *
-   * The application's alias is read rather than the site's. A mount is shared
-   * by every site in an application, so both carry the same users, and the
-   * application's alias is not one of the files this command removes: a run
-   * interrupted after the site's alias is gone can still resolve its mounts.
+   * which is what the shared filesystem path uses.
    *
    * @param string $app
    *   The application (AH_SITE_GROUP).
@@ -424,12 +393,8 @@ HELP);
   /**
    * The domains a site could own on Acquia.
    *
-   * Scope is this site's own domains: the three internal names generated at
-   * creation, the host, and `www.<host>`, which many sites register. The local
-   * ddev domain is left out, since it exists only in sites.php.
-   *
-   * Which of these actually exist varies per site, so the caller intersects
-   * this list with the environment rather than assuming all of them.
+   * The three internal names generated at creation, the host, and
+   * `www.<host>`, which many sites register.
    *
    * @param string $host
    *   The multisite host.
@@ -490,8 +455,8 @@ HELP);
 
     $cloud['database'] = (new CloudApi($client))->databaseExists($uuid, $input['db']);
 
-    // Each environment response already carries its domain list, so the
-    // candidates are matched against it rather than queried one at a time.
+    // Which candidates exist varies per site, so they are intersected with what
+    // the environment reports.
     $candidates = $this->candidateDomains($input['host'], $input['id']);
 
     foreach ((new Environments($client))->getAll($uuid) as $environment) {
@@ -510,13 +475,8 @@ HELP);
   /**
    * Checks describing what the cloud reads found.
    *
-   * A resource that is already gone is a WARN, not a failure: that is the state
-   * a partially finished delete leaves behind, and the right response is to
-   * clean up what remains, but not silently and not under --yes.
-   *
-   * The database name confirmation belongs here rather than with the local
-   * checks: whether an unconfirmable name matters depends on whether the
-   * database is still there, which only the cloud read knows.
+   * An already absent resource is a WARN: that is the state a partially
+   * finished delete leaves behind.
    *
    * @param array $cloud
    *   Output of gatherCloud().
@@ -557,9 +517,7 @@ HELP);
         }
 
         // blt.yml goes with the site directory, so a run interrupted during the
-        // repository removals leaves the derived name unconfirmable. A database
-        // that is already gone needs no confirming; one that is still there is
-        // not a name to guess at, and restoring the directory answers it.
+        // repository removals leaves the derived name unconfirmable.
         return empty($cloud['database'])
           ? CheckResult::warn("No blt.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is already absent from {$input['app']}.")
           : CheckResult::fail("No blt.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is still on {$input['app']}. Restore the site directory first: git checkout -- docroot/sites/{$dir}");
@@ -617,12 +575,7 @@ HELP);
   /**
    * Build the ordered steps that delete the multisite.
    *
-   * Cloud first, then the repository: a failed cloud teardown leaves the
-   * working tree untouched, and the repository is what makes the site
-   * findable, so a run that dies partway can be retried against it.
-   *
-   * Each addStep() call pairs a display label with a closure that performs the
-   * action when the plan is applied; the same steps drive the plan preview.
+   * Cloud first, then the repository.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The plan to add the steps to.
@@ -725,14 +678,9 @@ HELP);
   /**
    * Add the cloud teardown steps.
    *
-   * One step per resource that gatherCloud() found, so the plan lists what will
-   * actually be deleted and a resource already gone produces no step. The
-   * database and domain deletes confirm the resource is gone before returning,
-   * which is what lets the repository steps that follow assume the cloud half
-   * succeeded.
-   *
-   * Every resource is addressed by name, so a run that fails partway can be
-   * retried.
+   * One step per resource that gatherCloud() found, so a resource already gone
+   * produces no step. The database and domain deletes confirm the resource is
+   * gone before returning.
    *
    * @param \SiteNow\Plan\Plan $plan
    *   The plan to add the steps to.

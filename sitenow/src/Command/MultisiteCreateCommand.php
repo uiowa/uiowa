@@ -636,8 +636,7 @@ EOD;
       $blt['uiowa']['requester'] = $options['requester'];
     }
     if (!empty($options['split'])) {
-      // One split is stored as a scalar, multiple as a list, matching the shape
-      // SiteInstallCommand reads back.
+      // SiteInstallCommand reads a scalar or a list.
       $splits = array_map('trim', explode(',', $options['split']));
       $blt['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
     }

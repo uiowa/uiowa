@@ -79,9 +79,7 @@ class SitesPhp {
       throw new \RuntimeException("Failed to read {$this->path}.");
     }
 
-    // Every alias line assigns the site *directory*, so that is what is
-    // matched; the marker comment names it too, since a site's directory and
-    // its host agree at creation.
+    // Alias lines and the marker both name the site directory.
     $marker = $this->marker($directory);
     $alias = '/^\$sites\[[^\]]+\]\s*=\s*' . preg_quote("'{$directory}'", '/') . '\s*;$/';
 

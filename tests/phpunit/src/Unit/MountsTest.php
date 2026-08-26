@@ -157,9 +157,6 @@ class MountsTest extends UnitTestCase {
   /**
    * A directory value that would widen the rm is refused before any command.
    *
-   * The path is refused where it is built, so an unsafe value cannot reach a
-   * remote command by any route.
-   *
    * @dataProvider unsafeDirectories
    */
   public function testSiteDirectoryRefusesUnsafeDirectories(string $directory) {
@@ -192,9 +189,6 @@ class MountsTest extends UnitTestCase {
 
   /**
    * The shared default directory is refused on its own.
-   *
-   * A second layer: the delete command checks for this, but this is what
-   * issues the remote rm, so it does not rely on a caller having checked.
    */
   public function testSiteDirectoryRefusesTheSharedDirectory() {
     $this->expectException(\InvalidArgumentException::class);
@@ -214,10 +208,6 @@ class MountsTest extends UnitTestCase {
 
   /**
    * The probe names both paths outright rather than descending the mount.
-   *
-   * The mount's sites path is a symlink into shared storage, which find will
-   * not follow without -L, so a probe that looked inside it would report every
-   * site's files absent and skip every files delete.
    */
   public function testTheProbeNamesBothPathsAtDepthZero() {
     $mounts = $this->mounts([['out' => self::SITES_PATH . "\n"]]);
@@ -253,9 +243,6 @@ class MountsTest extends UnitTestCase {
 
   /**
    * The mount echoed alone is a site with no files there, not a failure.
-   *
-   * The find exits non-zero for the directory it could not stat, so the exit
-   * status cannot distinguish this from a mount it could not read either.
    */
   public function testDirectoryIsAbsentWhenOnlyTheMountEchoes() {
     $mounts = $this->mounts([
@@ -273,11 +260,6 @@ class MountsTest extends UnitTestCase {
 
   /**
    * Neither path echoed is refused rather than read as absent files.
-   *
-   * The bug this guards: taken for "already deleted", the files step is
-   * skipped while the database, domains and repository entry all still go,
-   * leaving the site's production files orphaned with nothing pointing at
-   * them.
    */
   public function testUnreadableMountIsRefusedRatherThanReadAsAbsent() {
     $mounts = $this->mounts([
@@ -316,9 +298,6 @@ class MountsTest extends UnitTestCase {
 
   /**
    * The rm targets the site's directory, and nothing follows it.
-   *
-   * Acquia reprovisions the directory within about a minute, so a probe after
-   * the rm cannot tell a successful delete from one that removed nothing.
    */
   public function testDeleteIssuesTheRemovalAndStops() {
     $mounts = $this->mounts([

@@ -61,9 +61,6 @@ EOD);
 
   /**
    * Every alias for the site goes, along with its marker comment.
-   *
-   * The surviving content is asserted too, so a write that emptied the file
-   * cannot pass this.
    */
   public function testRemoveAliasesStripsTheSiteBlock() {
     $path = $this->sitesPhp();
@@ -150,9 +147,6 @@ EOD, file_get_contents($path));
 
   /**
    * The file ends on one newline, not a blank line.
-   *
-   * A trailing blank line is a phpcs error, and multisite:create commits the
-   * file it just wrote, so a second newline here fails CI on the next create.
    */
   public function testAddAliasesEndsWithOneNewline() {
     $path = $this->sitesPhp();

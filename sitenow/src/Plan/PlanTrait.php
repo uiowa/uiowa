@@ -134,8 +134,7 @@ trait PlanTrait {
    * Run a plan's steps in order, failing loud with no rollback.
    *
    * A step that throws stops the run. Steps that already ran stay applied;
-   * recover the working tree with git. Cloud operations are not recoverable
-   * that way, so the abort message calls them out separately.
+   * recover the working tree with git.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.
