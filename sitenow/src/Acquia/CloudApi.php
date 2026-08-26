@@ -206,10 +206,6 @@ class CloudApi {
   /**
    * Poll an operation's notification until it leaves the in-progress state.
    *
-   * A write returns once the request is accepted (HTTP 202), not once the work
-   * is done, and carries a notification link to poll. Without the poll a
-   * completed operation cannot be told from a failed one.
-   *
    * @param \AcquiaCloudApi\Response\OperationResponse $operation
    *   The response returned by the write that started the operation.
    * @param string $label
@@ -254,10 +250,6 @@ class CloudApi {
 
   /**
    * Poll until a resource stops being reported, or fail.
-   *
-   * The notification link that would let a caller poll for completion is not
-   * always present, so the authority on whether a delete finished is the
-   * resource no longer being listed.
    *
    * @param callable $present
    *   Returns TRUE while the resource is still listed.
