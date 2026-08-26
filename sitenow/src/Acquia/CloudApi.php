@@ -216,6 +216,8 @@ class CloudApi {
    *   reached any terminal status other than completed.
    */
   protected function awaitOperation(OperationResponse $operation, string $label): void {
+    // $operation is the write's own response, returned on acceptance (HTTP 202),
+    // so its status says nothing about whether the work finished.
     $uuid = self::notificationUuid($operation->links ?? NULL);
 
     if ($uuid === NULL) {
