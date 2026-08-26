@@ -7954,3 +7954,9 @@ $sites['medicineui-cair.uiowa.ddev.site'] = 'ui-cair.medicine.uiowa.edu';
 $sites['medicineui-cair.dev.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
 $sites['medicineui-cair.stage.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
 $sites['medicineui-cair.prod.drupal.uiowa.edu'] = 'ui-cair.medicine.uiowa.edu';
+
+// Directory aliases for strings.studio.uiowa.edu.
+$sites['studiostrings.uiowa.ddev.site'] = 'strings.studio.uiowa.edu';
+$sites['studiostrings.dev.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
+$sites['studiostrings.stage.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
+$sites['studiostrings.prod.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
