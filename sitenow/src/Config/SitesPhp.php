@@ -32,10 +32,16 @@ class SitesPhp {
    *   The request hosts to alias to that directory.
    *
    * @throws \RuntimeException
-   *   If the file cannot be written.
+   *   If the file cannot be read or written.
    */
   public function addAliases(string $directory, array $hosts): void {
-    if (str_contains((string) file_get_contents($this->path), $this->marker($directory))) {
+    $contents = file_get_contents($this->path);
+
+    if ($contents === FALSE) {
+      throw new \RuntimeException("Failed to read {$this->path}.");
+    }
+
+    if (str_contains($contents, $this->marker($directory))) {
       return;
     }
 
