@@ -305,9 +305,6 @@ trait SiteNowCommandsTrait {
   /**
    * The branch currently checked out.
    *
-   * Not `rev-parse --abbrev-ref`, which prints the literal "HEAD" on a detached
-   * HEAD and so reads as a branch name.
-   *
    * @return string
    *   The branch name, or an empty string when HEAD is not on a branch.
    */
