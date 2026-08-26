@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 /**
  * Reads and deletes multisite directories on Acquia's shared filesystem.
  *
- * Reached over drush ssh, since the Cloud API exposes no files endpoint.
+ * Reached over drush ssh.
  *
  * @todo Acquia reprovisions a deleted directory from the deployed sites.php
  *   within about a minute, and never prunes one whose host has left sites.php,
@@ -26,7 +26,7 @@ class Mounts {
   const SHARED_DIRECTORY = 'default';
 
   /**
-   * Constructs the mount reader.
+   * Constructs a mount reader/deleter.
    *
    * @param string $repoRoot
    *   Absolute path to the repository root, where the drush binary lives.
@@ -79,14 +79,6 @@ class Mounts {
   /**
    * Whether a site's directory is present on an environment's mount.
    *
-   * One find call names both the mount's sites path and the site's directory,
-   * and the answer is which one it echoes. Exit status and error text cannot
-   * tell an absent directory from an unreachable mount, and reading the second
-   * as the first would orphan the files.
-   *
-   * The site's directory is named outright rather than descended to, since the
-   * mount's sites path is a symlink and find does not follow one without -L.
-   *
    * @param string $alias
    *   The application's drush alias without the leading '@' (e.g.
    *   "uiowa09.prod").
@@ -99,12 +91,17 @@ class Mounts {
    *   TRUE if the directory exists on the environment.
    *
    * @throws \RuntimeException
-   *   If the environment cannot be reached, or its mount cannot be read, since
-   *   neither is an answer about the site's files.
+   *   If the environment cannot be reached, or its mount cannot be read.
    */
   public function siteDirectoryExists(string $alias, string $mount, string $directory): bool {
     $path = $this->siteDirectory($mount, $directory);
     $parent = dirname($path);
+
+    // Both paths are named because which one echoes is the answer: an exit
+    // status cannot tell an absent directory from an unreachable mount, and
+    // reading the second as the first orphans the files. The site's directory
+    // is named outright because the mount's sites path is a symlink, which
+    // find will not follow without -L.
     $process = $this->remote($alias, ['find', $parent, $path, '-maxdepth', '0']);
     $echoed = array_map('trim', explode("\n", $process->getOutput()));
 
@@ -126,9 +123,6 @@ class Mounts {
    * Delete a site's directory from an environment's mount.
    *
    * Idempotent.
-   *
-   * The rm's exit status is the only signal. Probing afterwards cannot confirm
-   * anything, since reprovisioning also reads as present.
    *
    * @param string $alias
    *   The application's drush alias without the leading '@'.
