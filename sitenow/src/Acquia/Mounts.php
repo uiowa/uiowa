@@ -9,11 +9,9 @@ use Symfony\Component\Process\Process;
  *
  * Reached over drush ssh, since the Cloud API exposes no files endpoint.
  *
- * @todo Acquia reprovisions a site's directory from the deployed sites.php
- *   within about a minute of its removal, and never prunes one whose host has
- *   left sites.php. Deleting here clears the site's content but the empty
- *   directory returns until the deprovision merges, and then persists. See
- *   #10076.
+ * @todo Acquia reprovisions a deleted directory from the deployed sites.php
+ *   within about a minute, and never prunes one whose host has left sites.php,
+ *   so the content goes but the empty directory stays. See #10076.
  */
 class Mounts {
 
@@ -65,10 +63,9 @@ class Mounts {
       throw new \InvalidArgumentException("Refusing to delete files for unsafe site directory '{$directory}'.");
     }
 
-    // 'default' passes the pattern above but is the shared directory every
-    // application serves its own site from, and a manifest host can resolve to
-    // it through sites.php. The command checks for this too; refusing here as
-    // well means no caller can reach the remote rm by another route.
+    // 'default' passes the pattern above, and a manifest host can resolve to it
+    // through sites.php. Refused here as well as in the command, so no caller
+    // reaches the remote rm by another route.
     if (strtolower($directory) === self::SHARED_DIRECTORY) {
       throw new \InvalidArgumentException("Refusing to delete files for the shared '" . self::SHARED_DIRECTORY . "' site directory.");
     }
@@ -83,17 +80,13 @@ class Mounts {
   /**
    * Whether a site's directory is present on an environment's mount.
    *
-   * Probing with find rather than test keeps this a single remote command with
-   * no shell operators. Both the mount's sites path and the site's directory
-   * are named, and the answer comes from which of the two find echoes rather
-   * than from its exit status or error text: an absent site directory and an
-   * absent mount are reported identically, and reading the second as the first
-   * would skip the files delete while the database, domains and repository
-   * entry still go, orphaning the files.
+   * One find call names both the mount's sites path and the site's directory,
+   * and the answer is which one it echoes. Exit status and error text cannot
+   * tell an absent directory from an unreachable mount, and reading the second
+   * as the first would orphan the files.
    *
-   * The site's directory is named outright rather than reached by descending
-   * from the mount, because the mount's sites path is a symlink into shared
-   * storage and find does not follow one without -L.
+   * The site's directory is named outright rather than descended to, since the
+   * mount's sites path is a symlink and find does not follow one without -L.
    *
    * @param string $alias
    *   The application's drush alias without the leading '@' (e.g.
@@ -136,10 +129,8 @@ class Mounts {
    * Idempotent: a directory that is already absent is a success, so a retry
    * after a partial run does not fail here.
    *
-   * The rm's exit status is the only signal taken. Looking again afterwards
-   * cannot confirm anything: Acquia reprovisions the directory within about a
-   * minute, so a successful delete and an rm that removed nothing both read as
-   * present. See #10076.
+   * The rm's exit status is the only signal. Probing afterwards cannot confirm
+   * anything, since reprovisioning also reads as present.
    *
    * @param string $alias
    *   The application's drush alias without the leading '@'.
@@ -167,9 +158,7 @@ class Mounts {
   /**
    * Run one command on an environment over drush ssh.
    *
-   * Every remote command this class issues goes through here, so it is
-   * protected rather than private: a test can answer for the environment
-   * without needing one.
+   * Protected rather than private so a test can answer for the environment.
    *
    * @param string $alias
    *   The application's drush alias without the leading '@'.

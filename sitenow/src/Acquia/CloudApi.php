@@ -10,9 +10,6 @@ use AcquiaCloudApi\Response\OperationResponse;
 
 /**
  * Reads and writes the Acquia Cloud resources a multisite owns.
- *
- * Databases are application-scoped and domains are environment-scoped, so the
- * identifier each call needs is a parameter rather than constructor state.
  */
 class CloudApi {
 

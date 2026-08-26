@@ -6,8 +6,8 @@ namespace SiteNow\Config;
  * Reader and writer for the site directory aliases in docroot/sites/sites.php.
  *
  * The file maps request hosts to the directory under docroot/sites that serves
- * them, which is how one site is reached at its canonical domain and at its
- * ddev and internal Acquia names.
+ * them, so one site answers at its canonical domain and at its ddev and
+ * internal Acquia names.
  */
 class SitesPhp {
 

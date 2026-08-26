@@ -305,17 +305,11 @@ trait SiteNowCommandsTrait {
   /**
    * The branch currently checked out.
    *
-   * Runs in the repository root rather than the caller's working directory, so
-   * the answer does not depend on where `./sn` was invoked from.
-   *
-   * Asks symbolic-ref rather than `rev-parse --abbrev-ref`: the latter exits
-   * zero and prints the literal string "HEAD" for a detached HEAD, which reads
-   * as a branch named HEAD and passes a check for a protected name.
-   * symbolic-ref exits non-zero exactly when HEAD is not on a branch.
+   * Not `rev-parse --abbrev-ref`, which prints the literal "HEAD" on a detached
+   * HEAD and so reads as a branch name.
    *
    * @return string
-   *   The branch name, or an empty string when HEAD is not on a branch (a
-   *   detached HEAD, or no repository at all).
+   *   The branch name, or an empty string when HEAD is not on a branch.
    */
   protected function currentBranch(): string {
     $process = new Process(['git', 'symbolic-ref', '--short', '--quiet', 'HEAD'], $this->repoRoot);
@@ -327,12 +321,10 @@ trait SiteNowCommandsTrait {
   /**
    * The post-apply instruction for pushing a command's commit.
    *
-   * A branch that already tracks a remote needs no upstream argument, and being
-   * told to set one it has reads as a correction of the user's setup. Shared by
-   * the commands that commit, so both give the same instruction.
+   * A branch that already tracks a remote is told to push plainly.
    *
    * @return string
-   *   A guidance line naming the push command to run.
+   *   The guidance line.
    */
   protected function pushGuidance(): string {
     $upstream = new Process(

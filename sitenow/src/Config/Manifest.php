@@ -74,9 +74,8 @@ class Manifest {
   /**
    * Remove a host from an application.
    *
-   * An application left with no sites is dropped entirely, matching the shape
-   * the manifest holds: an application key always has at least one site under
-   * it.
+   * An application left with no sites is dropped, since a key in the manifest
+   * always has at least one site under it.
    *
    * Idempotent: removing a host that is already gone is a no-op, so a retry
    * after a partial run is safe.
@@ -106,9 +105,8 @@ class Manifest {
   /**
    * Sort and write the manifest.
    *
-   * Applications sorted, hosts sorted within each application, one YAML dump
-   * style. The single place the file's layout is decided, so the file reads the
-   * same no matter which command last wrote it.
+   * Applications sorted, hosts sorted within each. The one place the layout is
+   * decided, so the file reads the same whichever command last wrote it.
    *
    * @param array $manifest
    *   The manifest to write, keyed by application.
