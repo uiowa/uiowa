@@ -101,7 +101,6 @@ HELP);
     $err = $io->getErrorStyle();
 
     $apps = $this->parseList($input->getOption('apps'));
-    $exclude = $this->parseList($input->getOption('exclude'));
     $env = $input->getOption('env');
 
     if (!$this->requireEnvironment($io, $env)) {
@@ -116,7 +115,7 @@ HELP);
     $runner = new FleetRunner($this->repoRoot);
 
     try {
-      $selection = $runner->select($apps, $exclude);
+      $selection = $runner->select($apps, []);
     }
     catch (\RuntimeException $e) {
       $err->error($e->getMessage());
@@ -164,11 +163,17 @@ HELP);
 
       if ($tally['failed']) {
         $any_failed = TRUE;
-        $io->writeln("{$app_name}: {$tally['reachable']} of {$tally['total']} sites reporting ({$tally['v2']} v2, {$tally['v3']} v3) — unreachable: " . implode(', ', $tally['failed']));
+        $line = "{$app_name}: {$tally['reachable']} of {$tally['total']} sites reporting ({$tally['v2']} v2, {$tally['v3']} v3) — unreachable: " . implode(', ', $tally['failed']);
       }
       else {
-        $io->writeln("{$app_name}: {$tally['total']} sites total ({$tally['v2']} v2, {$tally['v3']} v3)");
+        $line = "{$app_name}: {$tally['total']} sites total ({$tally['v2']} v2, {$tally['v3']} v3)";
       }
+
+      if ($tally['v2_sites']) {
+        $line .= ' — v2: ' . implode(', ', $tally['v2_sites']);
+      }
+
+      $io->writeln($line);
     }
 
     if (!$any_reachable) {
@@ -186,13 +191,14 @@ HELP);
    * @param array<string, array{exit: int, output: string, error: string}> $results
    *   Per-site drush results, keyed by domain.
    *
-   * @return array{total: int, reachable: int, v2: int, v3: int, failed: array<int, string>}
+   * @return array{total: int, reachable: int, v2: int, v3: int, v2_sites: array<int, string>, failed: array<int, string>}
    *   The tally. 'v2' and 'v3' are counted only from sites that answered;
-   *   'failed' names the ones that didn't, so a failure is never silently
-   *   folded into either count.
+   *   'v2_sites' names the ones that came back v2, so they can be listed
+   *   alongside the count. 'failed' names the ones that didn't answer, so a
+   *   failure is never silently folded into either count.
    */
   protected function tally(array $domains, array $results): array {
-    $v2 = 0;
+    $v2_sites = [];
     $failed = [];
 
     foreach ($domains as $domain) {
@@ -204,7 +210,7 @@ HELP);
       }
 
       if (trim($result['output']) === '1') {
-        $v2++;
+        $v2_sites[] = $domain;
       }
     }
 
@@ -214,8 +220,9 @@ HELP);
     return [
       'total' => $total,
       'reachable' => $reachable,
-      'v2' => $v2,
-      'v3' => $reachable - $v2,
+      'v2' => count($v2_sites),
+      'v3' => $reachable - count($v2_sites),
+      'v2_sites' => $v2_sites,
       'failed' => $failed,
     ];
   }

@@ -71,6 +71,7 @@ class ReportSiteCountTest extends UnitTestCase {
       'reachable' => 3,
       'v2' => 1,
       'v3' => 2,
+      'v2_sites' => ['a.example.edu'],
       'failed' => [],
     ], $this->command()->count($domains, $results));
   }
@@ -93,6 +94,7 @@ class ReportSiteCountTest extends UnitTestCase {
       'reachable' => 1,
       'v2' => 1,
       'v3' => 0,
+      'v2_sites' => ['a.example.edu'],
       'failed' => ['b.example.edu'],
     ], $this->command()->count($domains, $results));
   }
@@ -111,6 +113,7 @@ class ReportSiteCountTest extends UnitTestCase {
 
     $this->assertSame(2, $tally['total']);
     $this->assertSame(0, $tally['reachable']);
+    $this->assertSame([], $tally['v2_sites']);
     $this->assertSame(['a.example.edu', 'b.example.edu'], $tally['failed']);
   }
 
