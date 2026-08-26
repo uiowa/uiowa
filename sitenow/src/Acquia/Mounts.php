@@ -64,8 +64,7 @@ class Mounts {
     }
 
     // 'default' passes the pattern above, and a manifest host can resolve to it
-    // through sites.php. Refused here as well as in the command, so no caller
-    // reaches the remote rm by another route.
+    // through sites.php.
     if (strtolower($directory) === self::SHARED_DIRECTORY) {
       throw new \InvalidArgumentException("Refusing to delete files for the shared '" . self::SHARED_DIRECTORY . "' site directory.");
     }
@@ -126,8 +125,7 @@ class Mounts {
   /**
    * Delete a site's directory from an environment's mount.
    *
-   * Idempotent: a directory that is already absent is a success, so a retry
-   * after a partial run does not fail here.
+   * Idempotent.
    *
    * The rm's exit status is the only signal. Probing afterwards cannot confirm
    * anything, since reprovisioning also reads as present.
@@ -157,8 +155,6 @@ class Mounts {
 
   /**
    * Run one command on an environment over drush ssh.
-   *
-   * Protected rather than private so a test can answer for the environment.
    *
    * @param string $alias
    *   The application's drush alias without the leading '@'.

@@ -88,10 +88,9 @@ class CloudApi {
    * Delete a database from an application, then confirm it is gone.
    *
    * The delete is application-scoped: one call removes the database from every
-   * environment, so this runs once per site rather than once per environment.
+   * environment.
    *
-   * Idempotent: a database that is already absent is a success, so a retry
-   * after a partial run does not fail here.
+   * Idempotent.
    *
    * @param string $appUuid
    *   The application UUID.
@@ -146,12 +145,7 @@ class CloudApi {
   /**
    * Delete a domain from an environment, then confirm it is gone.
    *
-   * The domain is named by the caller. An environment carries the domains of
-   * every site on it, so which ones belong to a given site is not a question
-   * answerable here.
-   *
-   * Idempotent: a domain that is already absent is a success, so a retry after
-   * a partial run does not fail here.
+   * Idempotent.
    *
    * @param string $envUuid
    *   The environment UUID the domain is attached to.
@@ -184,10 +178,6 @@ class CloudApi {
 
   /**
    * Extract the notification UUID from an operation's links.
-   *
-   * The href is validated down to a UUID rather than trusted as a path, so a
-   * malformed link fails here instead of producing a request against a
-   * nonsense endpoint.
    *
    * @param object|null $links
    *   The operation's _links object, if any.
@@ -306,9 +296,6 @@ class CloudApi {
 
   /**
    * The status the API reports for one notification.
-   *
-   * Every notification read goes through here, so it is protected rather than
-   * private: a test can answer for the API without reaching it.
    *
    * @param string $uuid
    *   The notification UUID.

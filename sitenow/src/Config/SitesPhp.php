@@ -24,7 +24,7 @@ class SitesPhp {
   /**
    * Append the directory aliases for a host.
    *
-   * Idempotent: a retry after a partial run must not duplicate the aliases.
+   * Idempotent.
    *
    * @param string $directory
    *   The site directory the aliases point at.
@@ -39,10 +39,7 @@ class SitesPhp {
       return;
     }
 
-    // The leading empty element separates this block from whatever precedes
-    // it. There is no trailing one: the concatenated newline already ends the
-    // last alias line, and a second would leave the file ending on a blank
-    // line, which phpcs rejects in the commit this write is part of.
+    // The leading empty element separates this block from what precedes it.
     $lines = [''];
     $lines[] = $this->marker($directory);
 
@@ -59,11 +56,9 @@ class SitesPhp {
    * Strip a site's alias lines and its marker comment.
    *
    * Removes every alias line pointing at the directory, whichever hosts they
-   * name, so aliases added by hand and blocks whose formatting has drifted are
-   * both cleaned up.
+   * name.
    *
-   * Idempotent: a file with no aliases for the site is left unchanged rather
-   * than raising, so a retry after a partial run is safe.
+   * Idempotent.
    *
    * @param string $directory
    *   The site directory whose aliases go.
@@ -96,9 +91,8 @@ class SitesPhp {
       $kept[] = $line;
     }
 
-    // Removing a block leaves the blank lines that surrounded it adjacent;
-    // Falls back to the uncollapsed text on NULL. Otherwise we would reach
-    // the write below, which takes it for an empty string and truncates the file.
+    // preg_replace returns NULL on failure, which the write below would take
+    // for an empty string and truncate the file.
     $body = implode("\n", $kept);
     $result = preg_replace("/\n{3,}/", "\n\n", $body) ?? $body;
 
@@ -109,9 +103,6 @@ class SitesPhp {
 
   /**
    * The comment that heads a site's alias block.
-   *
-   * Written by addAliases() and matched by removeAliases(), so both derive it
-   * from one place.
    *
    * @param string $directory
    *   The site directory.
