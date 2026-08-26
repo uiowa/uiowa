@@ -303,6 +303,41 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * The branch currently checked out.
+   *
+   * @return string
+   *   The branch name, or an empty string when HEAD is not on a branch.
+   */
+  protected function currentBranch(): string {
+    $process = new Process(['git', 'symbolic-ref', '--short', '--quiet', 'HEAD'], $this->repoRoot);
+    $process->run();
+
+    return $process->isSuccessful() ? trim($process->getOutput()) : '';
+  }
+
+  /**
+   * The post-apply instruction for pushing a command's commit.
+   *
+   * A branch that already tracks a remote is told to push plainly.
+   *
+   * @return string
+   *   The guidance line.
+   */
+  protected function pushGuidance(): string {
+    $upstream = new Process(
+      ['git', 'rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}'],
+      $this->repoRoot
+    );
+    $upstream->run();
+
+    $push = $upstream->isSuccessful()
+      ? 'git push'
+      : "git push --set-upstream origin {$this->currentBranch()}";
+
+    return "Push and merge via a pull request: <comment>{$push}</comment>";
+  }
+
+  /**
    * Run the repository's drush and return the finished process.
    *
    * Reads the using class's $repoRoot property, as every command in
@@ -418,11 +453,6 @@ trait SiteNowCommandsTrait {
   /**
    * Require the --env option to name a real remote environment.
    *
-   * Symfony does not constrain an option's value, so an unrecognized --env
-   * would otherwise reach drush as a bad alias suffix and fail obscurely. On
-   * failure, prints an error listing the accepted values and returns FALSE so
-   * the caller can exit.
-   *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style used to report the error.
    * @param string $env
@@ -470,6 +500,75 @@ trait SiteNowCommandsTrait {
    */
   protected function currentApp(): ?string {
     return $this->isAcquia() ? (getenv('AH_SITE_GROUP') ?: NULL) : NULL;
+  }
+
+  /**
+   * Pin --apps to the running application when on Acquia Cloud.
+   *
+   * Locally (host shell or DDEV), --apps passes through untouched — fanning a
+   * command out across several apps at once is the point there. On Acquia
+   * Cloud, though, this process's own drush and SSH context belong to one
+   * application's environment (e.g. a scheduled job on uiowa02.prod), which
+   * has no business reaching every other application's sites. So the
+   * selection is pinned to the running application there, and an --apps
+   * naming a different one is rejected outright rather than silently
+   * widened or narrowed.
+   *
+   * @param string[] $apps
+   *   The --apps option, already comma-split.
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $err
+   *   The error output style used to report a rejected --apps, and to note
+   *   when an omitted --apps was silently pinned.
+   *
+   * @return string[]|null
+   *   The (possibly pinned) app list, or NULL (after printing an error) when
+   *   --apps conflicts with the running application.
+   */
+  protected function restrictToRunningApp(array $apps, SymfonyStyle $err): ?array {
+    if (!$this->isAcquia()) {
+      return $apps;
+    }
+
+    $current_app = $this->currentApp();
+    if ($current_app === NULL) {
+      $err->error('On Acquia Cloud but AH_SITE_GROUP is not set; cannot determine which application this is running on.');
+      return NULL;
+    }
+
+    if ($apps && $apps !== [$current_app]) {
+      $err->error("Running on Acquia Cloud ({$current_app}): --apps can only target the application this command is running on. Got: " . implode(', ', $apps));
+      return NULL;
+    }
+
+    if (!$apps) {
+      $err->writeln("Running on Acquia Cloud: --apps pinned to {$current_app}.");
+    }
+
+    return [$current_app];
+  }
+
+  /**
+   * Determine if the SSH agent precondition can be skipped.
+   *
+   * On Acquia Cloud, restrictToRunningApp() already pins the selection to the
+   * application running the command; when --env also matches the running
+   * environment, every resulting drush alias points right back at this same
+   * environment. Drush resolves that locally rather than over SSH — the same
+   * way the Acquia-provisioned drush-cron.sh scheduled job runs drush against
+   * its own environment's alias on every application with no SSH agent
+   * available (confirmed directly on uiowa07.prod: no agent is running
+   * there, yet `drush @uiowa07.prod status` succeeds). A different --env is
+   * a genuinely different environment reached over real SSH, so the agent is
+   * still required there.
+   *
+   * @param string $env
+   *   The --env option value.
+   *
+   * @return bool
+   *   TRUE when the SSH agent precondition can be skipped.
+   */
+  protected function canSkipSshAgent(string $env): bool {
+    return $this->isAcquia() && $env === getenv('AH_SITE_ENVIRONMENT');
   }
 
   /**

@@ -3,10 +3,10 @@
 namespace SiteNow\Command;
 
 use AcquiaCloudApi\Connector\Client;
+use SiteNow\Acquia\CloudApi;
 use SiteNow\Config\Applications;
-use SiteNow\Operation\CloudDbCreate;
-use SiteNow\Operation\ManifestUpdate;
-use SiteNow\Operation\SitesPhpUpdate;
+use SiteNow\Config\Manifest;
+use SiteNow\Config\SitesPhp;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CheckResult;
 use SiteNow\Plan\CheckStatus;
@@ -14,6 +14,7 @@ use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
 use SiteNow\Traits\SiteNowCommandsTrait;
+use SiteNow\Utility\Multisite;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -26,7 +27,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
-use SiteNow\Utility\Multisite;
 
 /**
  * Creates a new SiteNow multisite.
@@ -75,8 +75,8 @@ class MultisiteCreateCommand extends Command {
       ->addOption('requester', NULL, InputOption::VALUE_REQUIRED, 'The HawkID of the original requester.')
       ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Config split(s) to activate. Comma-separate multiple values.')
       ->addOption('site-name', NULL, InputOption::VALUE_REQUIRED, 'The desired site name.')
-      ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Show plan and exit; no side effects.')
-      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Apply without prompting. Blocked by any WARN.')
+      ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Report what would be created and exit, changing nothing.')
+      ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Create without prompting. Refused if anything came back as a warning.')
       ->addOption('app', NULL, InputOption::VALUE_REQUIRED, 'Override the target Acquia application.');
   }
 
@@ -120,9 +120,9 @@ class MultisiteCreateCommand extends Command {
     $root = $this->repoRoot;
     $title = "multisite:create {$host}";
 
-    $umc_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'app'];
+    $flag_keys = ['no-commit', 'no-db', 'requester', 'split', 'site-name', 'dry-run', 'yes', 'app'];
     $flags = array_filter(
-      array_intersect_key($options, array_flip($umc_keys)),
+      array_intersect_key($options, array_flip($flag_keys)),
       fn($v) => $v !== NULL && $v !== FALSE && $v !== ''
     );
 
@@ -210,10 +210,10 @@ class MultisiteCreateCommand extends Command {
     ];
 
     if (empty($options['no-commit'])) {
-      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
-      $branch_process->run();
-      $branch = trim($branch_process->getOutput());
-      $checks = array_merge($checks, $this->gitChecks($branch, !empty($options['dry-run'])));
+      $checks = array_merge(
+        $checks,
+        $this->gitChecks($this->currentBranch(), !empty($options['dry-run']))
+      );
     }
 
     $validation = $this->mergeValidation($validation, $this->runChecks($checks));
@@ -492,7 +492,7 @@ EOD;
       $plan->addStep(
         "Create cloud DB <info>{$db}</info> on <info>{$app_name}</info>",
         function (SymfonyStyle $io) use ($client, $uuid, $app_name, $db) {
-          (new CloudDbCreate($client, $uuid, $app_name, $db))->run();
+          (new CloudApi($client))->createDatabase($uuid, $app_name, $db);
           $io->writeln("  Database <info>{$db}</info> is being created on <info>{$app_name}</info>.");
         }
       );
@@ -548,7 +548,7 @@ EOD;
     $plan->addStep(
       "Append <info>sites.php</info> directory aliases for <info>{$host}</info>",
       function () use ($sites_php, $host, $local, $dev, $test, $prod_domain) {
-        (new SitesPhpUpdate($sites_php, $host, $local, $dev, $test, $prod_domain))->run();
+        (new SitesPhp($sites_php))->addAliases($host, [$local, $dev, $test, $prod_domain]);
       }
     );
 
@@ -557,7 +557,7 @@ EOD;
     $plan->addStep(
       "Update <info>blt/manifest.yml</info> (app: <info>{$app_name}</info>)",
       function () use ($manifest_path, $app_name, $host) {
-        (new ManifestUpdate($manifest_path, $app_name, $host))->run();
+        (new Manifest($manifest_path))->addSite($app_name, $host);
       }
     );
 
@@ -636,8 +636,7 @@ EOD;
       $blt['uiowa']['requester'] = $options['requester'];
     }
     if (!empty($options['split'])) {
-      // One split is stored as a scalar, multiple as a list, matching the
-      // shape the BLT install hook reads.
+      // SiteInstallCommand reads a scalar or a list.
       $splits = array_map('trim', explode(',', $options['split']));
       $blt['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
     }
@@ -660,15 +659,9 @@ EOD;
   private function nextSteps(array $options): array {
     // Whether the run will land its own commit decides the first instruction:
     // push the commit, or commit the generated files by hand.
-    if (empty($options['no-commit'])) {
-      $branch_process = new Process(['git', 'rev-parse', '--abbrev-ref', 'HEAD']);
-      $branch_process->run();
-      $branch = trim($branch_process->getOutput());
-      $first = "Push and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>";
-    }
-    else {
-      $first = 'Commit the generated files when ready.';
-    }
+    $first = empty($options['no-commit'])
+      ? $this->pushGuidance()
+      : 'Commit the generated files when ready.';
 
     return [
       $first,
