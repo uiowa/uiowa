@@ -3,8 +3,10 @@
 namespace Drupal\uiowa_core;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\Sql\DefaultTableMapping;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Database\Connection;
@@ -657,6 +659,14 @@ class FileSchemeMigrator {
       }
     }
 
+    // These rows are written straight to the database, so no entity save has
+    // invalidated anything. Rendered output still holds the old paths, and the
+    // files they point at have just been moved out from under them, so cached
+    // pages serve broken links until something clears them.
+    if (!$dry_run && $results['rows']) {
+      Cache::invalidateTags(['rendered', 'http_response']);
+    }
+
     return $results;
   }
 
@@ -921,30 +931,10 @@ class FileSchemeMigrator {
    *   The stored object, or NULL if it did not pass a check.
    */
   protected function readTempstoreValue(string $value, string $name): ?object {
-    preg_match_all('/O:\d+:"([^"]+)"/', $value, $matches);
-    $classes = array_values(array_unique($matches[1]));
-
-    $unknown = array_filter($classes, fn(string $class) => $class !== 'stdClass' && !class_exists($class));
-
-    if ($unknown) {
-      $this->logger->warning('Skipped unsaved layout edit @name: it names classes that do not exist here (@classes).', [
-        '@name' => $name,
-        '@classes' => implode(', ', $unknown),
-      ]);
-      return NULL;
-    }
-
-    $stored = unserialize($value, ['allowed_classes' => $classes]);
+    $stored = $this->safeUnserialize($value);
 
     if (!is_object($stored) || !isset($stored->data)) {
-      $this->logger->warning('Skipped unsaved layout edit @name: unexpected shape.', ['@name' => $name]);
-      return NULL;
-    }
-
-    // If an untouched round trip is not byte for byte identical, writing a
-    // rewritten one back would change more than intended.
-    if (serialize($stored) !== $value) {
-      $this->logger->warning('Skipped unsaved layout edit @name: it does not round trip losslessly.', [
+      $this->logger->warning('Skipped unsaved layout edit @name: it names a class that does not exist here, has an unexpected shape, or does not round trip losslessly.', [
         '@name' => $name,
       ]);
       return NULL;
@@ -998,11 +988,91 @@ class FileSchemeMigrator {
 
     if (is_array($value)) {
       foreach ($value as $key => $item) {
-        $value[$key] = $this->rewriteRecursive($item, $context);
+        $value[$key] = ($key === 'block_serialized' && is_string($item))
+          ? $this->rewriteSerializedEntity($item, $context)
+          : $this->rewriteRecursive($item, $context);
       }
     }
 
     return $value;
+  }
+
+  /**
+   * Rewrites the paths inside a serialized entity held in configuration.
+   *
+   * Layout builder keeps an unsaved inline block as a serialized entity in the
+   * component's 'block_serialized' string. Rewriting a path inside that string
+   * as if it were text shortens the data without updating the s:<length>
+   * prefixes describing it, leaving something that cannot be unserialized.
+   * InlineBlock::getEntity() then returns FALSE and the layout fatals the next
+   * time anyone opens it, long after the migration reported success. Decoding
+   * and re-encoding lets PHP recompute the lengths.
+   *
+   * @param string $value
+   *   The serialized entity.
+   * @param array $context
+   *   The rewrite context built by ::rewriteReferences().
+   *
+   * @return string
+   *   The rewritten value, or the original when it cannot be handled safely.
+   */
+  protected function rewriteSerializedEntity(string $value, array $context): string {
+    $entity = $this->safeUnserialize($value);
+
+    if (!$entity instanceof FieldableEntityInterface) {
+      // Anything this does not understand is left exactly as it was. A path
+      // that goes unrewritten is a broken link; a mangled payload is a fatal.
+      return $value;
+    }
+
+    $touched = FALSE;
+
+    foreach ($entity->getFields() as $field) {
+      foreach ($field as $item) {
+        foreach ($item->getValue() as $property => $property_value) {
+          if (!is_string($property_value)) {
+            continue;
+          }
+
+          $rewritten = $this->rewriteString($property_value, $context);
+
+          if ($rewritten !== $property_value) {
+            $item->set($property, $rewritten);
+            $touched = TRUE;
+          }
+        }
+      }
+    }
+
+    return $touched ? serialize($entity) : $value;
+  }
+
+  /**
+   * Unserializes a value only when every class it names exists here.
+   *
+   * @param string $value
+   *   The serialized value.
+   *
+   * @return mixed
+   *   The unserialized value, or NULL when it cannot be read safely.
+   */
+  protected function safeUnserialize(string $value): mixed {
+    preg_match_all('/O:\d+:"([^"]+)"/', $value, $matches);
+    $classes = array_values(array_unique($matches[1]));
+
+    if (array_filter($classes, fn(string $class) => $class !== 'stdClass' && !class_exists($class))) {
+      return NULL;
+    }
+
+    $decoded = @unserialize($value, ['allowed_classes' => $classes]);
+
+    if ($decoded === FALSE) {
+      return NULL;
+    }
+
+    // An untouched round trip that is not byte for byte identical means
+    // re-encoding would change more than the paths.
+    return serialize($decoded) === $value ? $decoded : NULL;
   }
 
 }
