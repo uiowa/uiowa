@@ -256,7 +256,7 @@ function facilities_core_preprocess_field(&$variables) {
 
         if ($file_entity) {
           $file_url = \Drupal::service('file_url_generator')->generateAbsoluteString($file_entity->getFileUri());
-          $link = Link::fromTextAndUrl('Download Traffic Plan', Url::fromUri($file_url));
+          $link = Link::fromTextAndUrl('Download Project Location File', Url::fromUri($file_url));
           $variables['items'][0]['content'] = $link->toString();
         }
       }
