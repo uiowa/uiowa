@@ -66,7 +66,7 @@ trait SiteNowCommandsTrait {
   }
 
   /**
-   * The developer's SiteNow credentials.
+   * Credentials for accessing Acquia Cloud.
    *
    * @return \SiteNow\Config\Credentials
    *   A reader for ~/.sitenow/credentials.yml.
