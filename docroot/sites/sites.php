@@ -467,12 +467,6 @@ $sites['fobusinsvc.dev.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
 $sites['fobusinsvc.stage.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
 $sites['fobusinsvc.prod.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
 
-// Directory aliases for ighn.international.uiowa.edu.
-$sites['internationalighn.uiowa.ddev.site'] = 'ighn.international.uiowa.edu';
-$sites['internationalighn.dev.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
-$sites['internationalighn.stage.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
-$sites['internationalighn.prod.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
-
 // Directory aliases for conflictmanagement.org.uiowa.edu.
 $sites['orgconflictmanagement.uiowa.ddev.site'] = 'conflictmanagement.org.uiowa.edu';
 $sites['orgconflictmanagement.dev.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
