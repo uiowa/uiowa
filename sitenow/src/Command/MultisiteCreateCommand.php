@@ -295,8 +295,7 @@ class MultisiteCreateCommand extends Command {
    *   Site counts keyed by application name.
    */
   private function siteCountsByApp(string $root): array {
-    $path = Manifest::defaultPath($root);
-    $manifest = file_exists($path) ? (Yaml::parseFile($path) ?? []) : [];
+    $manifest = (new Manifest(Manifest::defaultPath($root)))->all();
     return array_map(fn($sites) => is_array($sites) ? count($sites) : 0, $manifest);
   }
 

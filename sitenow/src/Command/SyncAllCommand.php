@@ -16,10 +16,7 @@ use Symfony\Component\Process\Process;
  * Syncs every locally-enabled multisite from a remote environment to local.
  *
  * The bulk wrapper that runs site:sync once per site. The site list comes from
- * the "sites" entries in local.sites.yml (the same list deploy:update reads
- * locally), or from --sites. An empty list syncs nothing rather than falling
- * back to the entire fleet — a local bulk sync clobbers every local database,
- * so it must be asked for explicitly.
+ * local.sites.yml, or from --sites.
  *
  * Runs sequentially: local databases and remote sources should not be hit by
  * many parallel syncs at once.

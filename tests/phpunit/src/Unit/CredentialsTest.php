@@ -72,8 +72,6 @@ class CredentialsTest extends UnitTestCase {
 
   /**
    * An absent file reads as unconfigured rather than throwing.
-   *
-   * The file is optional, and commands report its absence themselves.
    */
   public function testAbsentFileIsUnconfigured(): void {
     $credentials = new Credentials($this->dir . '/does-not-exist.yml');
@@ -94,8 +92,6 @@ class CredentialsTest extends UnitTestCase {
 
   /**
    * Half-configured credentials do not pass as configured.
-   *
-   * A key without a secret would otherwise reach the API and fail opaquely.
    */
   public function testPartialCredentialsAreNotConfigured(): void {
     $this->assertFalse($this->credentials([

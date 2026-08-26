@@ -31,10 +31,6 @@ class Manifest {
   /**
    * The manifest's location within a repository checkout.
    *
-   * The one place the path is spelled, so the callers that build a Manifest
-   * and the ones that only need to report or commit the file cannot drift
-   * apart.
-   *
    * @param string $repoRoot
    *   Absolute path to the repository root.
    *

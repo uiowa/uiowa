@@ -78,9 +78,6 @@ trait SiteNowCommandsTrait {
   /**
    * The guidance printed when Acquia Cloud API credentials are missing.
    *
-   * Named here rather than at each precondition so the plan check and the
-   * client builder tell the user the same thing, including the path.
-   *
    * @return string
    *   An error message naming the keys to set and the file to set them in.
    */
@@ -153,10 +150,9 @@ trait SiteNowCommandsTrait {
    * Get the sites enabled on this developer's machine.
    *
    * The list is the "sites" entries in local.sites.yml, the local counterpart
-   * to an application's manifest sites. The file is not tracked, so each
-   * developer chooses which sites they work with. An absent file or key yields
-   * an empty list rather than a fleet-wide fallback, so a command never acts on
-   * every site by accident.
+   * to an application's manifest sites. An absent file or key yields an empty
+   * list rather than a fleet-wide fallback, so a command never acts on every
+   * site by accident.
    *
    * @return array
    *   Site hosts, empty when none are enabled.
@@ -204,11 +200,9 @@ trait SiteNowCommandsTrait {
    * Get the whole site manifest, keyed by application.
    *
    * The manifest, sitenow/manifest.yml, is keyed by application (AH_SITE_GROUP)
-   * and
-   * maintained by every provision, so it is the authority on which sites live
-   * where. Callers that read it are expected to have gated on
-   * requireManifest(); an absent file throws here rather than reading as an
-   * empty fleet.
+   * and maintained by every provision. Callers that read it are expected to
+   * have gated on requireManifest(); an absent file throws here rather than
+   * reading as an empty fleet.
    *
    * @return array
    *   Site hosts keyed by application name.

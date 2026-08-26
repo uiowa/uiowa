@@ -43,7 +43,7 @@ acquia:
   secret: bar
 ```
 
-`.ddev/docker-compose.sitenow.yaml` mounts this directory read-only into the web container, so `ddev sn` reads the same file the host does. There is nothing to set up per developer, and a credential change takes effect without a restart.
+`.ddev/docker-compose.sitenow.yaml` mounts this directory read-only into the web container, so `ddev sn` reads the same file the host does.
 
 Set the sites you work with locally in a `local.sites.yml` file at the repository root. This file is ignored by Git. It is the list `ddev sn sync:all` syncs and `ddev sn umi` installs, and it can be overridden per-run with `--sites`.
 ```

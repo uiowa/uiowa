@@ -64,8 +64,7 @@ class DeployUpdateCommand extends Command {
     $is_acquia = (bool) getenv('AH_SITE_ENVIRONMENT');
 
     // The Acquia site list comes from the manifest, so a missing one must fail
-    // the deploy rather than read as an empty fleet. Locally the list comes
-    // from local.sites.yml, and an explicit --sites bypasses both.
+    // the deploy rather than read as an empty fleet.
     $needs_manifest = $is_acquia && !$this->parseList($input->getOption('sites'));
     if ($needs_manifest && !$this->requireManifest($io)) {
       return Command::FAILURE;

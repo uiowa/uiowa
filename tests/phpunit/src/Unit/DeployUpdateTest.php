@@ -250,9 +250,6 @@ class DeployUpdateTest extends UnitTestCase {
 
   /**
    * An absent local.sites.yml enables no sites.
-   *
-   * A fleet-wide fallback here would have a local deploy:update touch every
-   * site the checkout knows about.
    */
   public function testLocalSitesAbsentFileEnablesNothing() {
     $repo = $this->fixtureRepo([]);
