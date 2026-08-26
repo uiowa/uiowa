@@ -303,6 +303,41 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * The branch currently checked out.
+   *
+   * @return string
+   *   The branch name, or an empty string when HEAD is not on a branch.
+   */
+  protected function currentBranch(): string {
+    $process = new Process(['git', 'symbolic-ref', '--short', '--quiet', 'HEAD'], $this->repoRoot);
+    $process->run();
+
+    return $process->isSuccessful() ? trim($process->getOutput()) : '';
+  }
+
+  /**
+   * The post-apply instruction for pushing a command's commit.
+   *
+   * A branch that already tracks a remote is told to push plainly.
+   *
+   * @return string
+   *   The guidance line.
+   */
+  protected function pushGuidance(): string {
+    $upstream = new Process(
+      ['git', 'rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{upstream}'],
+      $this->repoRoot
+    );
+    $upstream->run();
+
+    $push = $upstream->isSuccessful()
+      ? 'git push'
+      : "git push --set-upstream origin {$this->currentBranch()}";
+
+    return "Push and merge via a pull request: <comment>{$push}</comment>";
+  }
+
+  /**
    * Run the repository's drush and return the finished process.
    *
    * Reads the using class's $repoRoot property, as every command in
@@ -417,11 +452,6 @@ trait SiteNowCommandsTrait {
 
   /**
    * Require the --env option to name a real remote environment.
-   *
-   * Symfony does not constrain an option's value, so an unrecognized --env
-   * would otherwise reach drush as a bad alias suffix and fail obscurely. On
-   * failure, prints an error listing the accepted values and returns FALSE so
-   * the caller can exit.
    *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style used to report the error.
