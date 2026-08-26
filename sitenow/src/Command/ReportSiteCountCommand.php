@@ -63,7 +63,6 @@ class ReportSiteCountCommand extends Command {
   protected function configure(): void {
     $this
       ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to report on (e.g. uiowa02,uiowa03). Defaults to all apps; pinned to the running application on Acquia Cloud.', '')
-      ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Target environment: dev, test, or prod.', 'prod')
       ->addOption('totals-only', NULL, InputOption::VALUE_NONE, "Report only each application's total site count from the manifest, skipping the sitenow_v2 remote query entirely.")
       ->setHelp(<<<'HELP'
