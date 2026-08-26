@@ -6,6 +6,8 @@ core: 8.x
 core_version_requirement: ^8 || ^9 || ^10
 dependencies:
   - drupal:allowed_formats
+  # hook_file_download() uses file_get_content_headers() and file.repository.
+  - drupal:file
   # Required, not optional: the search server in config/install declares a
   # dependency on search_api_db, and Drupal validates those dependencies
   # before hook_install() runs. Enabling it any later leaves the config

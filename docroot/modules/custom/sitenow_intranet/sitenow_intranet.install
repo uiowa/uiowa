@@ -5,6 +5,7 @@
  * Install, update and uninstall functions for the Sitenow Intranet module.
  */
 
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\search_api\Entity\Index;
 
 /**
@@ -28,6 +29,20 @@ function sitenow_intranet_install() {
   $config_factory->getEditable('uids_base.settings')
     ->set('footer.login_link', FALSE)
     ->save();
+
+  // Everything below points file storage at private://, so the wrapper has to
+  // work before any of it is written. Pointing default_scheme and the media
+  // fields at an unusable wrapper leaves uploads failing with no visible
+  // cause, and the file migration's own check is never reached on a site that
+  // has no files to move.
+  if ($reason = sitenow_intranet_check_private_storage()) {
+    \Drupal::messenger()->addError(t('File settings were left on public storage because @reason. Fix that, then run drush uiowa_core:migrate-files private.', [
+      '@reason' => $reason,
+    ]));
+
+    \Drupal::messenger()->addStatus(__FUNCTION__);
+    return;
+  }
 
   // The intranet split points these at private storage, but that only lands at
   // config import. Setting them here first means enabling this module is
@@ -119,6 +134,26 @@ function sitenow_intranet_index_content() {
 }
 
 /**
+ * Reports why private file storage cannot be used, if it cannot.
+ *
+ * @return string|null
+ *   The reason, or NULL when private storage is usable.
+ */
+function sitenow_intranet_check_private_storage(): ?string {
+  if (!\Drupal::service('stream_wrapper_manager')->isValidScheme('private')) {
+    return 'the private:// stream wrapper is not registered, which usually means file_private_path is not set for this site';
+  }
+
+  $root = 'private://';
+
+  if (!\Drupal::service('file_system')->prepareDirectory($root, FileSystemInterface::CREATE_DIRECTORY)) {
+    return 'the private file directory could not be created or is not writable';
+  }
+
+  return NULL;
+}
+
+/**
  * Moves any existing public files into private storage.
  *
  * A site that has been running as a public site keeps serving its existing
@@ -168,7 +203,7 @@ function sitenow_intranet_migrate_public_files() {
     }
   }
 
-  if ($remaining = $migrator->findHardCodedPaths()) {
+  if ($remaining = $migrator->findHardCodedPaths('public')) {
     \Drupal::messenger()->addWarning(t('@count hard-coded path(s) into the public files directory remain and point at files that were not moved. Run uiowa_core:migrate-files private --dry-run --list-paths to see them.', [
       '@count' => count($remaining),
     ]));

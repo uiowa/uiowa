@@ -5,6 +5,7 @@ namespace Drupal\uiowa_core\Commands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\uiowa_core\FileSchemeMigrator;
 use Drush\Commands\DrushCommands;
+use Drush\Exceptions\UserAbortException;
 
 /**
  * Drush commands for moving managed files between stream wrappers.
@@ -89,7 +90,7 @@ class FileSchemeCommands extends DrushCommands {
       return self::EXIT_SUCCESS;
     }
 
-    $this->reportHardCodedPaths((bool) $options['list-paths']);
+    $this->reportHardCodedPaths((bool) $options['list-paths'], $from);
 
     $this->io()->text(dt('@count file(s) in @from:// will move to @to://.', [
       '@count' => $total,
@@ -97,8 +98,10 @@ class FileSchemeCommands extends DrushCommands {
       '@to' => $to,
     ]));
 
+    // Declining the prompt is a decision, not a failure. Drush core signals
+    // that with UserAbortException rather than an error exit code.
     if (!$dry_run && !$this->io()->confirm(dt('Move them?'), FALSE)) {
-      return self::EXIT_FAILURE;
+      throw new UserAbortException();
     }
 
     $results = $this->runMigration($from, $to, $dry_run, $total);
@@ -160,7 +163,7 @@ class FileSchemeCommands extends DrushCommands {
   }
 
   /**
-   * Reports hard-coded public file paths found in content.
+   * Reports hard-coded source-scheme file paths found in content.
    *
    * Shown before the move so the operator sees the scope up front. Those
    * pointing at files being moved are rewritten afterwards; the rest are
@@ -168,16 +171,19 @@ class FileSchemeCommands extends DrushCommands {
    *
    * @param bool $list
    *   List every occurrence instead of counting by location.
+   * @param string $from
+   *   The scheme files are moving out of, whose paths are the ones at risk.
    */
-  protected function reportHardCodedPaths(bool $list): void {
-    $found = $this->migrator->findHardCodedPaths();
+  protected function reportHardCodedPaths(bool $list, string $from): void {
+    $found = $this->migrator->findHardCodedPaths($from);
 
     if (!$found) {
       return;
     }
 
-    $this->logger()->notice(dt('@count hard-coded path(s) into the public files directory found. Those pointing at files being moved are rewritten; any pointing elsewhere are left alone and listed below.', [
+    $this->logger()->notice(dt('@count hard-coded path(s) into the @from files directory found. Those pointing at files being moved are rewritten; any pointing elsewhere are left alone and listed below.', [
       '@count' => count($found),
+      '@from' => $from,
     ]));
 
     if ($list) {

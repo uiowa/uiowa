@@ -221,10 +221,33 @@ class FileSchemeMigratorTest extends UnitTestCase {
   /**
    * @covers ::rewriteString
    */
+  public function testLeavesDerivativesOfFilesThatDidNotMove(): void {
+    $context = $this->context();
+
+    // gone.pdf is not in the moved set, so neither its direct path nor a
+    // derivative built from it may be rewritten. The derivative still resolves
+    // against the file where it is; repointing it would break a working image.
+    $value = implode(' ', [
+      '<img src="/sites/example.uiowa.edu/files/styles/medium/public/gone.jpg">',
+      '<img src="/sites/example.uiowa.edu/files/styles/medium/public/a.jpg?itok=abc">',
+    ]);
+
+    $out = $this->invoke('rewriteString', [$value, $context]);
+
+    $this->assertStringContainsString('/sites/example.uiowa.edu/files/styles/medium/public/gone.jpg', $out);
+    $this->assertStringNotContainsString('/system/files/styles/medium/private/gone.jpg', $out);
+    // The query string is not part of the path and must survive the rewrite.
+    $this->assertStringContainsString('/system/files/styles/medium/private/a.jpg?itok=abc', $out);
+  }
+
+  /**
+   * @covers ::rewriteString
+   */
   public function testRewriteIsReversible(): void {
     $forward = $this->context();
     $back = [
       'map' => array_flip($forward['map']),
+      'targets' => $forward['targets'],
       'from' => 'private',
       'to' => 'public',
       'styles_from' => $forward['styles_to'],
@@ -250,6 +273,7 @@ class FileSchemeMigratorTest extends UnitTestCase {
   protected function context(): array {
     return [
       'map' => ['/sites/example.uiowa.edu/files/a.jpg' => '/system/files/a.jpg'],
+      'targets' => ['a.jpg' => TRUE],
       'from' => 'public',
       'to' => 'private',
       'styles_from' => '/sites/example.uiowa.edu/files/styles/',

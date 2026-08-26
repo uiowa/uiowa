@@ -2,8 +2,11 @@
 
 namespace Drupal\uiowa_core;
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
@@ -32,18 +35,28 @@ class FileSchemeMigrator {
   const SUPPORTED_SCHEMES = ['public', 'private'];
 
   /**
-   * Field types that can hold a hard-coded file path, keyed to their column.
+   * Matches the tempstore collections holding unsaved layout builder edits.
    *
-   * The column is the suffix appended to the field name in the field's data
-   * table. Layout builder sections are handled separately because their
-   * configuration is serialized rather than stored as a plain field value.
+   * Layout builder keeps one collection per section storage type, currently
+   * 'overrides' and 'defaults'. Matching on the shared prefix keeps both in
+   * scope, and keeps the scan and the rewrite looking at the same rows.
+   */
+  const LAYOUT_TEMPSTORE_PATTERN = 'tempstore.shared.layout_builder.section_storage.%';
+
+  /**
+   * Field types that can hold a hard-coded file path, keyed to their columns.
+   *
+   * Each column is a property of the field, and a type can store a path in
+   * more than one of them: a teaser written by hand goes in the summary rather
+   * than the value. Layout builder sections are handled separately because
+   * their configuration is serialized rather than stored as a plain value.
    */
   const SCANNED_FIELD_TYPES = [
-    'text' => 'value',
-    'text_long' => 'value',
-    'text_with_summary' => 'value',
-    'string_long' => 'value',
-    'link' => 'uri',
+    'text' => ['value'],
+    'text_long' => ['value'],
+    'text_with_summary' => ['value', 'summary'],
+    'string_long' => ['value'],
+    'link' => ['uri'],
   ];
 
   /**
@@ -225,8 +238,8 @@ class FileSchemeMigrator {
    * @return array
    *   A list of arrays with 'source', 'location' and 'detail' keys.
    */
-  public function findHardCodedPaths(): array {
-    $path = '/' . PublicStream::basePath() . '/';
+  public function findHardCodedPaths(string $scheme = 'public'): array {
+    $path = $this->urlPath($scheme, '');
 
     return array_merge(
       $this->scanFieldTables($path),
@@ -247,21 +260,23 @@ class FileSchemeMigrator {
   protected function scanFieldTables(string $path): array {
     $found = [];
 
-    foreach ($this->getScannableTables() as $table => $column) {
+    foreach ($this->getScannableTables() as $table => $columns) {
       if (!$this->database->schema()->tableExists($table)) {
         continue;
       }
 
-      $query = $this->database->select($table, 't')
-        ->fields('t', ['entity_id', 'revision_id'])
-        ->condition('t.' . $column, '%' . $this->database->escapeLike($path) . '%', 'LIKE');
+      foreach ($columns as $column) {
+        $query = $this->database->select($table, 't')
+          ->fields('t', ['entity_id', 'revision_id'])
+          ->condition('t.' . $column, '%' . $this->database->escapeLike($path) . '%', 'LIKE');
 
-      foreach ($query->execute() as $row) {
-        $found[] = [
-          'source' => 'field',
-          'location' => $table . '.' . $column,
-          'detail' => sprintf('entity %s, revision %s', $row->entity_id, $row->revision_id),
-        ];
+        foreach ($query->execute() as $row) {
+          $found[] = [
+            'source' => 'field',
+            'location' => $table . '.' . $column,
+            'detail' => sprintf('entity %s, revision %s', $row->entity_id, $row->revision_id),
+          ];
+        }
       }
     }
 
@@ -282,44 +297,39 @@ class FileSchemeMigrator {
    */
   protected function scanLayoutSections(string $path): array {
     $found = [];
-    $tables = array_keys($this->entityFieldManager->getFieldMapByFieldType('layout_section'));
 
-    foreach ($tables as $entity_type_id) {
-      foreach (["{$entity_type_id}__layout_builder__layout", "{$entity_type_id}_revision__layout_builder__layout"] as $table) {
-        if (!$this->database->schema()->tableExists($table)) {
+    foreach ($this->getLayoutTables() as $table => $column) {
+      if (!$this->database->schema()->tableExists($table)) {
+        continue;
+      }
+
+      $query = $this->database->select($table, 't')
+        ->fields('t', ['entity_id', 'revision_id', 'delta', $column])
+        ->condition('t.' . $column, '%' . $this->database->escapeLike($path) . '%', 'LIKE');
+
+      foreach ($query->execute() as $row) {
+        $where = sprintf('entity %s, revision %s, section %s', $row->entity_id, $row->revision_id, $row->delta);
+        $section = unserialize($row->{$column}, [
+          'allowed_classes' => [Section::class, SectionComponent::class],
+        ]);
+
+        // The LIKE already proved the path is in this row. If the blob is not
+        // the Section we expect, say so rather than reporting nothing.
+        if (!$section instanceof Section) {
+          $found[] = [
+            'source' => 'layout',
+            'location' => $table,
+            'detail' => $where . ', could not read section, inspect manually',
+          ];
           continue;
         }
 
-        $column = 'layout_builder__layout_section';
-
-        $query = $this->database->select($table, 't')
-          ->fields('t', ['entity_id', 'revision_id', 'delta', $column])
-          ->condition('t.' . $column, '%' . $this->database->escapeLike($path) . '%', 'LIKE');
-
-        foreach ($query->execute() as $row) {
-          $where = sprintf('entity %s, revision %s, section %s', $row->entity_id, $row->revision_id, $row->delta);
-          $section = unserialize($row->{$column}, [
-            'allowed_classes' => [Section::class, SectionComponent::class],
-          ]);
-
-          // The LIKE already proved the path is in this row. If the blob is not
-          // the Section we expect, say so rather than reporting nothing.
-          if (!$section instanceof Section) {
-            $found[] = [
-              'source' => 'layout',
-              'location' => $table,
-              'detail' => $where . ', could not read section, inspect manually',
-            ];
-            continue;
-          }
-
-          foreach ($this->matchingComponents($section, $path) as $description) {
-            $found[] = [
-              'source' => 'layout',
-              'location' => $table,
-              'detail' => $where . ', ' . $description,
-            ];
-          }
+        foreach ($this->matchingComponents($section, $path) as $description) {
+          $found[] = [
+            'source' => 'layout',
+            'location' => $table,
+            'detail' => $where . ', ' . $description,
+          ];
         }
       }
     }
@@ -348,15 +358,15 @@ class FileSchemeMigrator {
     // enough to deserialize it safely is not practical, and guessing wrong
     // would mean silently reporting nothing, so the row itself is the finding.
     $query = $this->database->select('key_value_expire', 'kve')
-      ->fields('kve', ['name'])
-      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides')
+      ->fields('kve', ['collection', 'name'])
+      ->condition('collection', static::LAYOUT_TEMPSTORE_PATTERN, 'LIKE')
       ->condition('value', '%' . $this->database->escapeLike($path) . '%', 'LIKE');
 
     foreach ($query->execute() as $row) {
       $found[] = [
         'source' => 'tempstore',
         'location' => 'key_value_expire',
-        'detail' => sprintf('unsaved layout edit for %s', $row->name),
+        'detail' => sprintf('unsaved layout edit for %s in %s', $row->name, $row->collection),
       ];
     }
 
@@ -448,22 +458,120 @@ class FileSchemeMigrator {
    * content ends up.
    *
    * @return array
-   *   Table name keyed to the column holding the field's value.
+   *   Table name keyed to the list of columns holding the field's values.
    */
   protected function getScannableTables(): array {
     $tables = [];
 
-    foreach (static::SCANNED_FIELD_TYPES as $type => $column) {
+    foreach (static::SCANNED_FIELD_TYPES as $type => $columns) {
       foreach ($this->entityFieldManager->getFieldMapByFieldType($type) as $entity_type_id => $fields) {
+        $mapping = $this->getTableMapping($entity_type_id);
+
+        if (!$mapping) {
+          continue;
+        }
+
+        $definitions = $this->entityFieldManager->getFieldStorageDefinitions($entity_type_id);
+
         foreach (array_keys($fields) as $field_name) {
-          foreach (["{$entity_type_id}__{$field_name}", "{$entity_type_id}_revision__{$field_name}"] as $table) {
-            $tables[$table] = $field_name . '_' . $column;
+          if (!isset($definitions[$field_name])) {
+            continue;
           }
+
+          $definition = $definitions[$field_name];
+
+          // Base fields share the entity's own table, which this scan does not
+          // cover.
+          if (!$mapping->requiresDedicatedTableStorage($definition)) {
+            continue;
+          }
+
+          // A field table is not always the entity type and field name joined.
+          // Core truncates anything over 48 characters and substitutes a hash,
+          // so the name has to be asked for rather than reconstructed. The
+          // revision tables are the ones that overflow in practice, and they
+          // are what layout builder renders inline blocks from.
+          $names = array_map(
+            fn (string $column) => $mapping->getFieldColumnName($definition, $column),
+            $columns
+          );
+
+          $tables[$mapping->getDedicatedDataTableName($definition)] = $names;
+          $tables[$mapping->getDedicatedRevisionTableName($definition)] = $names;
         }
       }
     }
 
     return $tables;
+  }
+
+  /**
+   * Maps the layout builder section tables to their column.
+   *
+   * Layout sections are serialized rather than stored as plain values, so they
+   * are scanned and rewritten separately from the other field tables, but the
+   * table names come from the same place.
+   *
+   * @return array
+   *   Table name keyed to the column holding the serialized section.
+   */
+  protected function getLayoutTables(): array {
+    $tables = [];
+
+    foreach ($this->entityFieldManager->getFieldMapByFieldType('layout_section') as $entity_type_id => $fields) {
+      $mapping = $this->getTableMapping($entity_type_id);
+
+      if (!$mapping) {
+        continue;
+      }
+
+      $definitions = $this->entityFieldManager->getFieldStorageDefinitions($entity_type_id);
+
+      foreach (array_keys($fields) as $field_name) {
+        if (!isset($definitions[$field_name])) {
+          continue;
+        }
+
+        $definition = $definitions[$field_name];
+
+        if (!$mapping->requiresDedicatedTableStorage($definition)) {
+          continue;
+        }
+
+        $column = $mapping->getFieldColumnName($definition, 'section');
+
+        $tables[$mapping->getDedicatedDataTableName($definition)] = $column;
+        $tables[$mapping->getDedicatedRevisionTableName($definition)] = $column;
+      }
+    }
+
+    return $tables;
+  }
+
+  /**
+   * Returns the SQL table mapping for an entity type, if it has one.
+   *
+   * @param string $entity_type_id
+   *   The entity type ID.
+   *
+   * @return \Drupal\Core\Entity\Sql\DefaultTableMapping|null
+   *   The mapping, or NULL if the entity type is not stored in SQL tables.
+   */
+  protected function getTableMapping(string $entity_type_id): ?DefaultTableMapping {
+    try {
+      $storage = $this->entityTypeManager->getStorage($entity_type_id);
+    }
+    catch (PluginNotFoundException) {
+      return NULL;
+    }
+
+    if (!$storage instanceof SqlContentEntityStorage) {
+      return NULL;
+    }
+
+    $mapping = $storage->getTableMapping();
+
+    return $mapping instanceof DefaultTableMapping ? $mapping : NULL;
   }
 
   /**
@@ -509,12 +617,14 @@ class FileSchemeMigrator {
    */
   public function rewriteReferences(array $destinations, string $from, string $to, bool $dry_run = FALSE): array {
     $map = [];
+    $targets = [];
 
     foreach ($destinations as $uri) {
       $target = $this->streamWrapperManager->getTarget($uri);
 
       foreach ($this->pathVariants($target) as $variant) {
         $map[$this->urlPath($from, $variant)] = $this->urlPath($to, $variant);
+        $targets[$variant] = TRUE;
       }
     }
 
@@ -526,6 +636,7 @@ class FileSchemeMigrator {
     // string rewriting free of global state and testable on its own.
     $context = [
       'map' => $map,
+      'targets' => $targets,
       'from' => $from,
       'to' => $to,
       'search' => $this->urlPath($from, ''),
@@ -598,11 +709,23 @@ class FileSchemeMigrator {
   protected function rewriteString(string $value, array $context): string {
     // Derivatives carry the source scheme as a path segment of their own, so
     // they need handling before the direct paths are swapped out from under
-    // them.
-    if (str_contains($value, '/styles/')) {
-      $pattern = '#' . preg_quote($context['styles_from'], '#') . '([^/]+)/' . preg_quote($context['from'], '#') . '/#';
-      $replacement = $context['styles_to'] . '$1/' . $context['to'] . '/';
-      $value = preg_replace($pattern, $replacement, $value);
+    // them. Only a derivative whose source actually moved is rewritten: one
+    // built from a file left behind still resolves where it is, and pointing
+    // it at the destination scheme would break an image that works today.
+    if (str_contains($value, $context['styles_from'])) {
+      $pattern = '#'
+        . preg_quote($context['styles_from'], '#')
+        . '([^/]+)/'
+        . preg_quote($context['from'], '#')
+        . '/([^"\'\s<>?]+)#';
+
+      $value = preg_replace_callback($pattern, function (array $matches) use ($context) {
+        if (!isset($context['targets'][$matches[2]])) {
+          return $matches[0];
+        }
+
+        return $context['styles_to'] . $matches[1] . '/' . $context['to'] . '/' . $matches[2];
+      }, $value);
     }
 
     return strtr($value, $context['map']);
@@ -622,32 +745,34 @@ class FileSchemeMigrator {
   protected function rewriteFieldTables(array $context, bool $dry_run): array {
     $changed = [];
 
-    foreach ($this->getScannableTables() as $table => $column) {
+    foreach ($this->getScannableTables() as $table => $columns) {
       if (!$this->database->schema()->tableExists($table)) {
         continue;
       }
 
-      $rows = $this->database->select($table, 't')
-        ->fields('t', ['entity_id', 'revision_id', 'langcode', 'delta', $column])
-        ->condition('t.' . $column, '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
-        ->execute();
+      foreach ($columns as $column) {
+        $rows = $this->database->select($table, 't')
+          ->fields('t', ['entity_id', 'revision_id', 'langcode', 'delta', $column])
+          ->condition('t.' . $column, '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
+          ->execute();
 
-      foreach ($rows as $row) {
-        $rewritten = $this->rewriteString($row->{$column}, $context);
+        foreach ($rows as $row) {
+          $rewritten = $this->rewriteString((string) $row->{$column}, $context);
 
-        if ($rewritten === $row->{$column}) {
-          continue;
-        }
+          if ($rewritten === $row->{$column}) {
+            continue;
+          }
 
-        $changed[$table . '.' . $column] = ($changed[$table . '.' . $column] ?? 0) + 1;
+          $changed[$table . '.' . $column] = ($changed[$table . '.' . $column] ?? 0) + 1;
 
-        if (!$dry_run) {
-          $this->database->update($table)
-            ->fields([$column => $rewritten])
-            ->condition('revision_id', $row->revision_id)
-            ->condition('langcode', $row->langcode)
-            ->condition('delta', $row->delta)
-            ->execute();
+          if (!$dry_run) {
+            $this->database->update($table)
+              ->fields([$column => $rewritten])
+              ->condition('revision_id', $row->revision_id)
+              ->condition('langcode', $row->langcode)
+              ->condition('delta', $row->delta)
+              ->execute();
+          }
         }
       }
     }
@@ -668,45 +793,45 @@ class FileSchemeMigrator {
    */
   protected function rewriteLayoutSections(array $context, bool $dry_run): array {
     $changed = [];
-    $column = 'layout_builder__layout_section';
 
-    foreach (array_keys($this->entityFieldManager->getFieldMapByFieldType('layout_section')) as $entity_type_id) {
-      foreach (["{$entity_type_id}__layout_builder__layout", "{$entity_type_id}_revision__layout_builder__layout"] as $table) {
-        if (!$this->database->schema()->tableExists($table)) {
+    foreach ($this->getLayoutTables() as $table => $column) {
+      if (!$this->database->schema()->tableExists($table)) {
+        continue;
+      }
+
+      $rows = $this->database->select($table, 't')
+        ->fields('t', ['revision_id', 'langcode', 'delta', $column])
+        ->condition('t.' . $column, '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
+        ->execute();
+
+      foreach ($rows as $row) {
+        $section = unserialize($row->{$column}, [
+          'allowed_classes' => [Section::class, SectionComponent::class],
+        ]);
+
+        if (!$section instanceof Section) {
+          $this->logger->warning('Skipped a layout section in @table revision @id: the stored value is not a Section.', [
+            '@table' => $table,
+            '@id' => $row->revision_id,
+          ]);
           continue;
         }
 
-        $rows = $this->database->select($table, 't')
-          ->fields('t', ['revision_id', 'delta', $column])
-          ->condition('t.' . $column, '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
-          ->execute();
+        if (!$this->rewriteSection($section, $context)) {
+          continue;
+        }
 
-        foreach ($rows as $row) {
-          $section = unserialize($row->{$column}, [
-            'allowed_classes' => [Section::class, SectionComponent::class],
-          ]);
+        $changed[$table] = ($changed[$table] ?? 0) + 1;
 
-          if (!$section instanceof Section) {
-            $this->logger->warning('Skipped a layout section in @table revision @id: the stored value is not a Section.', [
-              '@table' => $table,
-              '@id' => $row->revision_id,
-            ]);
-            continue;
-          }
-
-          if (!$this->rewriteSection($section, $context)) {
-            continue;
-          }
-
-          $changed[$table] = ($changed[$table] ?? 0) + 1;
-
-          if (!$dry_run) {
-            $this->database->update($table)
-              ->fields([$column => serialize($section)])
-              ->condition('revision_id', $row->revision_id)
-              ->condition('delta', $row->delta)
-              ->execute();
-          }
+        if (!$dry_run) {
+          // Translations get a row each, so langcode is part of the key.
+          // Without it one language's layout overwrites all of them.
+          $this->database->update($table)
+            ->fields([$column => serialize($section)])
+            ->condition('revision_id', $row->revision_id)
+            ->condition('langcode', $row->langcode)
+            ->condition('delta', $row->delta)
+            ->execute();
         }
       }
     }
@@ -740,7 +865,7 @@ class FileSchemeMigrator {
 
     $rows = $this->database->select('key_value_expire', 'kve')
       ->fields('kve', ['collection', 'name', 'value'])
-      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.%', 'LIKE')
+      ->condition('collection', static::LAYOUT_TEMPSTORE_PATTERN, 'LIKE')
       ->condition('value', '%' . $this->database->escapeLike($context['search']) . '%', 'LIKE')
       ->execute();
 
