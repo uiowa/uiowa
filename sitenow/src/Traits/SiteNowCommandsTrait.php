@@ -453,11 +453,6 @@ trait SiteNowCommandsTrait {
   /**
    * Require the --env option to name a real remote environment.
    *
-   * Symfony does not constrain an option's value, so an unrecognized --env
-   * would otherwise reach drush as a bad alias suffix and fail obscurely. On
-   * failure, prints an error listing the accepted values and returns FALSE so
-   * the caller can exit.
-   *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style used to report the error.
    * @param string $env

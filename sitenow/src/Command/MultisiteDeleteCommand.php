@@ -196,9 +196,6 @@ HELP);
   /**
    * Prompt for the site to delete, with autocompletion.
    *
-   * A plain choice list is unusable at fleet size, so this takes free text and
-   * autocompletes against the manifest, refusing anything not in it.
-   *
    * @param \Symfony\Component\Console\Style\SymfonyStyle $io
    *   The output style.
    * @param array $sites
