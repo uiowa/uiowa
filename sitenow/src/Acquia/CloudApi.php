@@ -63,8 +63,6 @@ class CloudApi {
   /**
    * Create a database on an application.
    *
-   * There is no rollback: a failed run leaves the database in place.
-   *
    * @param string $appUuid
    *   The application UUID.
    * @param string $appName
@@ -210,8 +208,7 @@ class CloudApi {
    *
    * A write returns once the request is accepted (HTTP 202), not once the work
    * is done, and carries a notification link to poll. Without the poll a
-   * completed operation cannot be told from a failed one. An operation that
-   * carries no usable link is skipped, since confirmAbsent() is the fallback.
+   * completed operation cannot be told from a failed one.
    *
    * @param \AcquiaCloudApi\Response\OperationResponse $operation
    *   The response returned by the write that started the operation.

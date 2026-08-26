@@ -278,12 +278,11 @@ HELP);
       }),
       new Check(self::CHECK_NOT_DEFAULT_SITE, function () use ($dir, $host): CheckResult {
         // demo.sitenow.uiowa.edu is in the manifest and sites.php maps it to
-        // 'default', so every other check passes for it: the directory exists,
-        // and its derived database is the application's own. Deleting it would
-        // take out docroot/sites/default, the application database, the default
+        // 'default', so every other check passes for it: the directory exists
+        // and its derived database is the application's own. Deleting it takes
+        // out docroot/sites/default, the application database, the default
         // site's files on all three mounts, and the sites.php aliases the whole
-        // application is served on. No multisite is worth that, so the shared
-        // directory is refused by name rather than left to a later check.
+        // application is served on.
         return $dir !== self::DEFAULT_SITE_DIRECTORY
           ? CheckResult::pass()
           : CheckResult::fail("{$host} resolves to the shared docroot/sites/default directory, which this command will not delete.");
