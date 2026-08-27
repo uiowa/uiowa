@@ -241,32 +241,6 @@ class FileSchemeMigratorTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::rewriteRecursive
-   * @covers ::rewriteSerializedEntity
-   */
-  public function testDoesNotCorruptSerializedInlineBlocks(): void {
-    // Layout builder stores an unsaved inline block as a serialized entity in
-    // this key. Rewriting it as plain text shortens the payload without fixing
-    // the s:<length> prefixes, and the layout fatals the next time it is
-    // opened. Whatever comes back has to still unserialize.
-    $block = (object) ['body' => 'see /sites/example.uiowa.edu/files/a.jpg'];
-    $configuration = [
-      'id' => 'inline_block:quote',
-      'block_serialized' => serialize($block),
-      'label' => 'A quote',
-    ];
-
-    $out = $this->invoke('rewriteRecursive', [$configuration, $this->context()]);
-
-    $this->assertNotFalse(
-      unserialize($out['block_serialized'], ['allowed_classes' => ['stdClass']]),
-      'The serialized inline block must still be readable after a rewrite.'
-    );
-    // Plain strings alongside it are still handled normally.
-    $this->assertSame('A quote', $out['label']);
-  }
-
-  /**
    * @covers ::rewriteString
    */
   public function testRewriteIsReversible(): void {

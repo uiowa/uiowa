@@ -14,6 +14,7 @@ use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\file\FileInterface;
 use Drupal\file\FileRepositoryInterface;
 use Drupal\layout_builder\Section;
@@ -931,16 +932,48 @@ class FileSchemeMigrator {
    *   The stored object, or NULL if it did not pass a check.
    */
   protected function readTempstoreValue(string $value, string $name): ?object {
-    $stored = $this->safeUnserialize($value);
+    $named = $this->classesNamedIn($value);
+    $rejected = array_values(array_filter(
+      $named,
+      fn(string $class) => !$this->isAllowedTempstoreClass($class)
+    ));
+
+    if ($rejected) {
+      $this->logger->warning('Skipped unsaved layout edit @name: it names classes this will not instantiate (@classes).', [
+        '@name' => $name,
+        '@classes' => implode(', ', $rejected),
+      ]);
+      return NULL;
+    }
+
+    $stored = $this->safeUnserialize($value, $named);
 
     if (!is_object($stored) || !isset($stored->data)) {
-      $this->logger->warning('Skipped unsaved layout edit @name: it names a class that does not exist here, has an unexpected shape, or does not round trip losslessly.', [
+      $this->logger->warning('Skipped unsaved layout edit @name: unexpected shape, or it does not round trip losslessly.', [
         '@name' => $name,
       ]);
       return NULL;
     }
 
     return $stored;
+  }
+
+  /**
+   * Whether a class named in a tempstore value may be instantiated.
+   *
+   * A row holds the section storage plugin, its contexts and the whole entity
+   * being edited, so which classes it names varies by content type and cannot
+   * be listed ahead of time. Admitting only Drupal's own classes keeps the
+   * deserialization gadget chains that ship in vendor out of reach.
+   *
+   * @param string $class
+   *   The class name.
+   *
+   * @return bool
+   *   TRUE if a payload naming it may be read.
+   */
+  protected function isAllowedTempstoreClass(string $class): bool {
+    return $class === 'stdClass' || (str_starts_with($class, 'Drupal\\') && class_exists($class));
   }
 
   /**
@@ -1017,7 +1050,10 @@ class FileSchemeMigrator {
    *   The rewritten value, or the original when it cannot be handled safely.
    */
   protected function rewriteSerializedEntity(string $value, array $context): string {
-    $entity = $this->safeUnserialize($value);
+    // Layout builder serializes a block_content entity into this key, and
+    // ContentEntityBase::__sleep() flattens its fields to plain values, so
+    // this is the only class the payload names.
+    $entity = $this->safeUnserialize($value, [BlockContent::class]);
 
     if (!$entity instanceof FieldableEntityInterface) {
       // Anything this does not understand is left exactly as it was. A path
@@ -1048,23 +1084,23 @@ class FileSchemeMigrator {
   }
 
   /**
-   * Unserializes a value only when every class it names exists here.
+   * Unserializes a value that names no class outside a fixed allowlist.
    *
    * @param string $value
    *   The serialized value.
+   * @param array $allowed_classes
+   *   Class names the payload may name. Anything else refuses the whole
+   *   value; the list must never be derived from the value itself.
    *
    * @return mixed
    *   The unserialized value, or NULL when it cannot be read safely.
    */
-  protected function safeUnserialize(string $value): mixed {
-    preg_match_all('/O:\d+:"([^"]+)"/', $value, $matches);
-    $classes = array_values(array_unique($matches[1]));
-
-    if (array_filter($classes, fn(string $class) => $class !== 'stdClass' && !class_exists($class))) {
+  protected function safeUnserialize(string $value, array $allowed_classes): mixed {
+    if (array_diff($this->classesNamedIn($value), $allowed_classes)) {
       return NULL;
     }
 
-    $decoded = @unserialize($value, ['allowed_classes' => $classes]);
+    $decoded = @unserialize($value, ['allowed_classes' => $allowed_classes]);
 
     if ($decoded === FALSE) {
       return NULL;
@@ -1073,6 +1109,20 @@ class FileSchemeMigrator {
     // An untouched round trip that is not byte for byte identical means
     // re-encoding would change more than the paths.
     return serialize($decoded) === $value ? $decoded : NULL;
+  }
+
+  /**
+   * Lists the classes a serialized string names.
+   *
+   * @param string $value
+   *   The serialized value.
+   *
+   * @return string[]
+   *   The class names, deduplicated.
+   */
+  protected function classesNamedIn(string $value): array {
+    preg_match_all('/O:\d+:"([^"]+)"/', $value, $matches);
+    return array_values(array_unique($matches[1]));
   }
 
 }
