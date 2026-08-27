@@ -14,7 +14,7 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\node\NodeInterface;
 
 /**
- * Tests uiowa_core_scheduler_moderation_validate() against issue #9924.
+ * Tests uiowa_core_scheduler_moderation_validate().
  *
  * @group uiowa_core
  */
@@ -65,7 +65,13 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
-   * Confirms this shape is what broke bare strtotime() in production.
+   * Passing the blank widget array shape directly to strtotime() errors.
+   *
+   * Strtotime() only accepts a string. The Scheduler date widget can hand
+   * back an array, DrupalDateTime, or NULL instead, so the validate
+   * function must normalize the value before calling strtotime() on it.
+   * This test documents that assumption by showing what happens if
+   * that normalization is skipped.
    */
   public function testMalformedShapeBreaksBareStrtotime(): void {
     $this->expectException(\TypeError::class);
@@ -74,6 +80,8 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
+   * Tests the validate function on each possible publish_on value shape.
+   *
    * @dataProvider publishOnValueProvider
    */
   public function testNoExceptionForVariousPublishOnShapes(string $case): void {
@@ -91,11 +99,14 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
-   * Data provider of publish_on[0]['value'] shapes seen in the wild.
+   * Publish_on value shapes.
+   *
+   * Shapes that a publish_on[0]['value'] form value can take, depending on
+   * the widget and whether the field was actually filled in.
    */
   public static function publishOnValueProvider(): array {
     return [
-      'blank widget array (the reported crash)' => ['blank_widget_array'],
+      'blank widget array' => ['blank_widget_array'],
       'array with only a date filled in' => ['date_only_array'],
       'DrupalDateTime object' => ['drupal_date_time'],
       'plain string' => ['plain_string'],
@@ -104,10 +115,11 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
-   * A future publish_on should bump a brand new draft back to "draft".
+   * Fall back to draft on new content.
    *
-   * Original intent, from #9889: scheduling a future publish date while
-   * saving as "Published" is a conflict; new content falls back to draft.
+   * Setting new content to "Published" with a future publish_on date is a
+   * conflict: the content can't be live yet, so it should fall back to
+   * "draft" and warn the user instead of silently publishing early.
    */
   public function testFuturePublishFallsBackToDraftForNewContent(): void {
     $form_state = $this->buildFormState(
@@ -123,7 +135,10 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
-   * A future publish_on should fall back to the content's prior state.
+   * Fall back to previous moderation state.
+   *
+   * For existing content, the same conflict should fall back to whatever
+   * moderation state the content was already in, not "draft".
    */
   public function testFuturePublishFallsBackToPriorStateForExistingContent(): void {
     $form_state = $this->buildFormState(
@@ -140,7 +155,10 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
-   * A publish_on date already in the past isn't a conflict.
+   * Past publish_on date.
+   *
+   * A publish_on date already in the past is not a conflict: nothing
+   * should change, and no warning should be shown.
    */
   public function testPastPublishDateHasNoConflict(): void {
     $form_state = $this->buildFormState(
@@ -155,7 +173,11 @@ class SchedulerModerationValidateTest extends UnitTestCase {
   }
 
   /**
-   * A future unpublish_on should fall back to the content's prior state.
+   * Fall back for unpublish_on date.
+   *
+   * Setting content to "archived" with a future unpublish_on date is a
+   * conflict: the content is still live, so the moderation state should
+   * fall back to its prior value instead of archiving early.
    */
   public function testFutureUnpublishFallsBackToPriorState(): void {
     $form_state = $this->buildFormState(
