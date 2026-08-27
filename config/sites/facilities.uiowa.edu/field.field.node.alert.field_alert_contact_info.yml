@@ -1,0 +1,24 @@
+uuid: a63e73e6-b353-4226-b95f-2323ca123694
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_alert_contact_info
+    - filter.format.minimal
+    - node.type.alert
+  module:
+    - text
+id: node.alert.field_alert_contact_info
+field_name: field_alert_contact_info
+entity_type: node
+bundle: alert
+label: 'Contact information'
+description: 'Provide the project manager name, email, and/or phone number.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - minimal
+field_type: text_long
