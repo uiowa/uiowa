@@ -5,13 +5,18 @@ namespace SiteNow\Config;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Reader and writer for the site manifest (blt/manifest.yml).
+ * Reader and writer for the site manifest (sitenow/manifest.yml).
  *
  * The manifest is keyed by Acquia application (AH_SITE_GROUP), each holding
  * the list of multisite hosts that application owns. It is the source of truth
  * for which sites exist and where they are deployed.
  */
 class Manifest {
+
+  /**
+   * The manifest's path relative to the repository root.
+   */
+  const RELATIVE_PATH = 'sitenow/manifest.yml';
 
   /**
    * Constructs a manifest reader/writer.
@@ -22,6 +27,19 @@ class Manifest {
   public function __construct(
     private string $path,
   ) {}
+
+  /**
+   * The manifest's location within a repository checkout.
+   *
+   * @param string $repoRoot
+   *   Absolute path to the repository root.
+   *
+   * @return string
+   *   Absolute path to the manifest, present or not.
+   */
+  public static function defaultPath(string $repoRoot): string {
+    return "{$repoRoot}/" . self::RELATIVE_PATH;
+  }
 
   /**
    * The whole manifest, keyed by application.
