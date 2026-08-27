@@ -64,8 +64,7 @@ class DeployUpdateCommand extends Command {
     $is_acquia = (bool) getenv('AH_SITE_ENVIRONMENT');
 
     // The Acquia site list comes from the manifest, so a missing one must fail
-    // the deploy rather than read as an empty fleet. Locally the list comes
-    // from local.blt.yml, and an explicit --sites bypasses both.
+    // the deploy rather than read as an empty fleet.
     $needs_manifest = $is_acquia && !$this->parseList($input->getOption('sites'));
     if ($needs_manifest && !$this->requireManifest($io)) {
       return Command::FAILURE;
@@ -112,8 +111,9 @@ class DeployUpdateCommand extends Command {
   /**
    * Resolve the list of sites to update.
    *
-   * On Acquia the list comes from blt/manifest.yml keyed by AH_SITE_GROUP;
-   * locally it comes from blt/local.blt.yml. The --sites option overrides both.
+   * On Acquia the list comes from sitenow/manifest.yml keyed by AH_SITE_GROUP;
+   * locally it comes from sitenow/local.sites.yml. The --sites option overrides
+   * both.
    */
   private function siteList(InputInterface $input, string $app, bool $is_acquia): array {
     $override = $this->parseList($input->getOption('sites'));
@@ -121,7 +121,7 @@ class DeployUpdateCommand extends Command {
       return $override;
     }
 
-    return $is_acquia ? $this->manifestSites($app) : $this->localMultisites();
+    return $is_acquia ? $this->manifestSites($app) : $this->localSites();
   }
 
   /**

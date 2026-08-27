@@ -35,19 +35,17 @@ Ddev creates a database container that is accessible from the web container. You
 ## Logging
 As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages can be viewed by running `ddev logs`.
 
-### BLT Configuration
-Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
+### SiteNow Configuration
+Save your [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) in `~/.sitenow/credentials.yml`. This file lives in your home directory rather than the repository so it can never be committed. Do not share your key or secret with anyone.
 ```
-uiowa:
-  credentials:
-    acquia:
-      key: foo
-      secret: bar
+acquia:
+  key: foo
+  secret: bar
 ```
 
-Set the multisites that you want BLT to sync by default:
+Set the sites you work with locally in `sitenow/local.sites.yml`. This file is ignored by Git. It is the list `ddev sn sync:all` syncs and `ddev sn umi` installs, and it can be overridden per-run with `--sites`.
 ```
-multisites:
+sites:
   - default
   - bar.uiowa.edu
   - foo.uiowa.edu

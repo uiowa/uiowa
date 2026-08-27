@@ -3,7 +3,6 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Common\YamlMunge;
 use Consolidation\AnnotatedCommand\CommandError;
 
 /**
@@ -47,21 +46,6 @@ class ReplaceCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
 
-    $file = $this->getConfigValue('repo.root') . '/blt/local.blt.yml';
-    $yaml = YamlMunge::parseFile($file);
-
-    if (isset($yaml['multisites']) && !empty($yaml['multisites'])) {
-      $this->logger->info('Multisites overridden in local.blt.yml file. Copying to temporary config.');
-
-      $this->taskFilesystemStack()
-        ->copy($file, $this->getConfigValue('repo.root') . '/tmp/local.blt.yml')
-        ->stopOnFail(TRUE)
-        ->run();
-
-      unset($yaml['multisites']);
-      YamlMunge::writeFile($file, $yaml);
-    }
-
     $this->taskExecStack()
       ->dir($this->getConfigValue('docroot'))
       ->exec('rm sites/*/settings/default.local.settings.php')
@@ -71,7 +55,7 @@ class ReplaceCommands extends BltTasks {
   }
 
   /**
-   * Copy any temporary multisites config back from pre-command hook.
+   * Point each multisite's stage file proxy at a real origin.
    *
    * @hook post-command source:build:settings
    */
@@ -94,19 +78,6 @@ EOD;
       $this->taskWriteToFile("$root/docroot/sites/$site/settings/local.settings.php")
         ->append()
         ->text($text)
-        ->run();
-    }
-
-    $from = "$root/tmp/local.blt.yml";
-
-    if (file_exists($from)) {
-      $to = "$root/blt/local.blt.yml";
-
-      $this->taskFilesystemStack()
-        ->stopOnFail(TRUE)
-        ->remove($to)
-        ->copy($from, $to)
-        ->remove($from)
         ->run();
     }
   }
