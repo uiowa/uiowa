@@ -8,9 +8,10 @@ use SiteNow\Command\ReportInactiveCommand;
 /**
  * Unit tests for the inactive report's drush-output parsing.
  *
- * The parseLastLogin() and parseLastRevision() methods turn a site's drush
- * output into a timestamp, NULL (no data), or FALSE (query error). Pure logic:
- * no drush or SSH.
+ * The cleanUserList() and parseLastRevision() methods turn a site's drush
+ * output into a timestamp/array, NULL (no data), or FALSE (query error).
+ * parseLastLogin() and filterUsers() then operate on the decoded user list.
+ * Pure logic: no drush or SSH.
  *
  * @group unit
  */
@@ -23,10 +24,28 @@ class ReportInactiveTest extends UnitTestCase {
     return new class extends ReportInactiveCommand {
 
       /**
-       * Exposes parseLastLogin().
+       * Exposes cleanUserList() + parseLastLogin() as the command runs them.
        */
       public function login(string $output, int $exit): int|null|false {
-        return $this->parseLastLogin($output, $exit);
+        $users = $this->cleanUserList($output, $exit);
+        if (!is_array($users)) {
+          return $users;
+        }
+        return $this->parseLastLogin($users);
+      }
+
+      /**
+       * Exposes cleanUserList().
+       */
+      public function users(string $output, int $exit): array|null|false {
+        return $this->cleanUserList($output, $exit);
+      }
+
+      /**
+       * Exposes filterUsers().
+       */
+      public function webmasters(array $users, array $roles = ['webmaster']): array {
+        return $this->filterUsers($users, $roles);
       }
 
       /**
@@ -116,6 +135,64 @@ class ReportInactiveTest extends UnitTestCase {
    */
   public function testNonNumericRevisionIsError(): void {
     $this->assertFalse($this->command()->revision("no results\n", 0));
+  }
+
+  /**
+   * A non-zero exit or unparseable output is a query error: FALSE.
+   */
+  public function testCleanUserListNonZeroExitIsError(): void {
+    $command = $this->command();
+    $this->assertFalse($command->users('{"2":{"uid":2}}', 1));
+    $this->assertFalse($command->users('not json at all', 0));
+    $this->assertFalse($command->users('', 0));
+  }
+
+  /**
+   * An empty JSON object means no user data: NULL.
+   */
+  public function testCleanUserListEmptyIsNull(): void {
+    $this->assertNull($this->command()->users('{}', 0));
+  }
+
+  /**
+   * Valid output decodes into the keyed user array.
+   */
+  public function testCleanUserListDecodesUsers(): void {
+    $json = json_encode(['2' => ['uid' => 2, 'name' => 'jdoe']]);
+    $this->assertSame(['2' => ['uid' => 2, 'name' => 'jdoe']], $this->command()->users($json, 0));
+  }
+
+  /**
+   * Only active users with a matching role are kept; uid 1 is always skipped.
+   */
+  public function testFilterUsersReturnsMatchingWebmasters(): void {
+    $users = [
+      '1' => ['uid' => 1, 'name' => 'admin', 'status' => 'active', 'roles' => ['webmaster']],
+      '2' => ['uid' => 2, 'name' => 'jdoe', 'status' => 'active', 'roles' => ['webmaster']],
+      '3' => ['uid' => 3, 'name' => 'blocked', 'status' => 'blocked', 'roles' => ['webmaster']],
+      '4' => ['uid' => 4, 'name' => 'other', 'status' => 'active', 'roles' => ['authenticated']],
+      '5' => ['uid' => 5, 'name' => 'norole', 'status' => 'active'],
+    ];
+    $webmasters = $this->command()->webmasters($users);
+    $this->assertSame(['jdoe'], array_column($webmasters, 'name'));
+  }
+
+  /**
+   * The roles filter can be overridden.
+   */
+  public function testFilterUsersWithCustomRoles(): void {
+    $users = [
+      '2' => ['uid' => 2, 'name' => 'jdoe', 'status' => 'active', 'roles' => ['editor']],
+    ];
+    $this->assertSame([], $this->command()->webmasters($users));
+    $this->assertSame(['jdoe'], array_column($this->command()->webmasters($users, ['editor']), 'name'));
+  }
+
+  /**
+   * No matching users returns an empty array, not NULL or FALSE.
+   */
+  public function testFilterUsersNoMatchesIsEmptyArray(): void {
+    $this->assertSame([], $this->command()->webmasters([]));
   }
 
 }
