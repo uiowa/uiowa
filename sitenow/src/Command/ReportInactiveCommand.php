@@ -37,8 +37,8 @@ class ReportInactiveCommand extends Command {
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Locates sitenow/manifest.yml and the
-   *   CSV export location.
+   *   Absolute path to the repository root.
+   *   Locates sitenow/manifest.yml and the CSV export location.
    */
   public function __construct(
     private string $repoRoot = '',
@@ -163,7 +163,19 @@ class ReportInactiveCommand extends Command {
           $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
         }
 
-        $row = [$app_name, $domain, $days_since_revision, $days_since_login, $status];
+        if ($users) {
+          $webmasters = $this->filterUsers($users);
+        }
+        $user_output = isset($webmasters) ? implode(',', array_column($webmasters, 'name')) : 'N/A';
+
+        $row = [
+          $app_name,
+          $domain,
+          $days_since_revision,
+          $days_since_login,
+          $status,
+          $user_output,
+        ];
         if ($writer) {
           $writer->writeRow($row);
         }
@@ -273,6 +285,36 @@ class ReportInactiveCommand extends Command {
     }
 
     return $latest_login;
+  }
+
+  /**
+   * Filter `users:list --format=json` on the provided roles list.
+   *
+   * @param array $users
+   *   The drush stdout.
+   * @param array $roles
+   *   The roles on which to filter.
+   *
+   * @return array
+   *   The users which have at least one of the given roles.
+   */
+  protected function filterUsers(array $users, array $roles = ['webmaster']): array {
+    $user_list = [];
+    foreach ($users as $user) {
+      if (isset($user['uid']) && $user['uid'] == 1) {
+        continue;
+      }
+      if (isset($user['status']) && $user['status'] !== 'active') {
+        continue;
+      }
+      if (!isset($user['roles'])) {
+        continue;
+      }
+      if (!empty(array_intersect($roles, $user['roles']))) {
+        $user_list[] = $user;
+      }
+    }
+    return $user_list;
   }
 
   /**
