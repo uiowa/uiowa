@@ -95,7 +95,13 @@ class ReportInactiveCommand extends Command {
       return Command::FAILURE;
     }
 
-    $headers = ['Application', 'URL', 'Days Since Revision', 'Days Since Login', "Login Inactive: {$threshold}"];
+    $headers = ['Application',
+      'URL',
+      'Days Since Revision',
+      'Days Since Login',
+      "Login Inactive: {$threshold}",
+      'Webmasters',
+    ];
 
     $err->writeln("<comment>Checking last revision on {$site_count} sites...</comment>");
     $revisions = $runner->run($selection, [
@@ -133,7 +139,17 @@ class ReportInactiveCommand extends Command {
           $days_since_revision = ceil(($now - $last_revision) / 86400);
         }
 
-        $last_login = $this->parseLastLogin($logins[$domain]['output'], $logins[$domain]['exit']);
+        $users = $this->cleanUserList($logins[$domain]['output'], $logins[$domain]['exit']);
+
+        // If we don't have an array of users,
+        // just pass the value forward to last_login
+        // for error handling.
+        if (!is_array($users)) {
+          $last_login = $users;
+        }
+        else {
+          $last_login = $this->parseLastLogin($users);
+        }
         if ($last_login === FALSE) {
           $days_since_login = 'N/A';
           $status = 'Error';
@@ -196,18 +212,18 @@ class ReportInactiveCommand extends Command {
   }
 
   /**
-   * Parse `users:list --format=json` output into the latest login timestamp.
+   * Clean `users:list --format=json` output for easier processing.
    *
    * @param string $output
    *   The drush stdout.
    * @param int $exit_code
    *   The drush exit code.
    *
-   * @return int|null|false
+   * @return array|null|false
    *   Latest non-admin login timestamp, NULL when there is no login data, or
    *   FALSE on a non-zero exit or unparseable output.
    */
-  protected function parseLastLogin(string $output, int $exit_code): int|null|false {
+  protected function cleanUserList(string $output, int $exit_code): array|null|false {
     if ($exit_code !== 0 || trim($output) === '') {
       return FALSE;
     }
@@ -224,7 +240,20 @@ class ReportInactiveCommand extends Command {
     if (!is_array($users) || empty($users)) {
       return NULL;
     }
+    return $users;
+  }
 
+  /**
+   * Parse `users:list --format=json` output into the latest login timestamp.
+   *
+   * @param array $users
+   *   The drush stdout.
+   *
+   * @return int|null|false
+   *   Latest non-admin login timestamp, NULL when there is no login data, or
+   *   FALSE on a non-zero exit or unparseable output.
+   */
+  protected function parseLastLogin(array $users): int|null|false {
     $latest_login = NULL;
     $floor = strtotime('2000-01-01');
 
