@@ -163,10 +163,8 @@ class ReportInactiveCommand extends Command {
           $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
         }
 
-        if ($users) {
-          $webmasters = $this->filterUsers($users);
-        }
-        $user_output = isset($webmasters) ? implode(',', array_column($webmasters, 'name')) : 'N/A';
+        $webmasters = $users ? $this->filterUsers($users) : [];
+        $user_output = $webmasters ? implode(',', array_column($webmasters, 'name')) : 'N/A';
 
         $row = [
           $app_name,
@@ -232,7 +230,7 @@ class ReportInactiveCommand extends Command {
    *   The drush exit code.
    *
    * @return array|null|false
-   *   Latest non-admin login timestamp, NULL when there is no login data, or
+   *   The decoded user list keyed by uid, NULL when there is no user data, or
    *   FALSE on a non-zero exit or unparseable output.
    */
   protected function cleanUserList(string $output, int $exit_code): array|null|false {
@@ -259,13 +257,12 @@ class ReportInactiveCommand extends Command {
    * Parse `users:list --format=json` output into the latest login timestamp.
    *
    * @param array $users
-   *   The drush stdout.
+   *   The decoded user list, as returned by cleanUserList().
    *
-   * @return int|null|false
-   *   Latest non-admin login timestamp, NULL when there is no login data, or
-   *   FALSE on a non-zero exit or unparseable output.
+   * @return int|null
+   *   Latest non-admin login timestamp, or NULL when there is no login data.
    */
-  protected function parseLastLogin(array $users): int|null|false {
+  protected function parseLastLogin(array $users): int|null {
     $latest_login = NULL;
     $floor = strtotime('2000-01-01');
 
@@ -291,7 +288,7 @@ class ReportInactiveCommand extends Command {
    * Filter `users:list --format=json` on the provided roles list.
    *
    * @param array $users
-   *   The drush stdout.
+   *   The decoded user list, as returned by cleanUserList().
    * @param array $roles
    *   The roles on which to filter.
    *
