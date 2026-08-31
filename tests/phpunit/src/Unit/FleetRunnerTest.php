@@ -199,11 +199,9 @@ YAML);
   }
 
   /**
-   * A site on this very application and environment is addressed locally.
+   * A site on this application and environment is addressed locally.
    *
-   * Drush treats any alias with a host as remote, so an alias naming this
-   * same machine would still be run over SSH. The local job therefore carries
-   * no alias and no ssh options at all — just the docroot and the site URI.
+   * The local job carries no alias and no ssh options.
    */
   public function testBuildJobsLocalOnMatchingAppAndEnv(): void {
     $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');
@@ -214,8 +212,7 @@ YAML);
       $jobs['vote.uiowa.edu']
     );
 
-    // A different application on the same box is still a remote target: its
-    // code and database credentials are not the ones this process has.
+    // A different application is still a remote target.
     $this->assertContains('@accessibility.prod', $jobs['accessibility.uiowa.edu']);
   }
 
@@ -231,9 +228,6 @@ YAML);
 
   /**
    * Off Acquia, every job is remote.
-   *
-   * The Acquia variables are cleared in setUp(), so this is the default
-   * constructor on a workstation.
    */
   public function testRunsLocallyFalseOffAcquia(): void {
     $runner = new FleetRunner($this->repoRoot, $this->manifest);
@@ -244,9 +238,6 @@ YAML);
 
   /**
    * A selection entirely on the running app and env needs no SSH.
-   *
-   * This is the precondition the fleet commands gate their SSH agent check
-   * on, so it must be FALSE for a scheduled job reaching its own sites.
    */
   public function testHasRemoteJobs(): void {
     $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');

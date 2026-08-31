@@ -16,9 +16,9 @@ use SiteNow\Utility\Multisite;
  * text. The manifest (sitenow/manifest.yml, maintained by every provision) is
  * the source of truth for which sites exist on which application.
  *
- * It also owns how each site is reached: over SSH by site alias, or as a plain
- * local drush call when the site belongs to the application and environment
- * this process is already running on. See runsLocally().
+ * Sites are reached over SSH by site alias, or by local drush when the site
+ * belongs to the application and environment this process runs on. See
+ * runsLocally().
  */
 class FleetRunner {
 
@@ -30,8 +30,7 @@ class FleetRunner {
   /**
    * Validated safe concurrent SSH sessions per multiplexed app connection.
    *
-   * Doubles as the per-app process cap for a local run, where the limit is
-   * concurrent drush bootstraps on one web node rather than sshd sessions.
+   * Also caps concurrent local drush processes per app.
    */
   const PER_APP_CAP = 8;
 
@@ -217,13 +216,8 @@ class FleetRunner {
   /**
    * Whether one site's job runs on this machine rather than over SSH.
    *
-   * True only for a site of the application and environment this process is
-   * itself running on — an Acquia scheduled job reaching its own environment's
-   * sites. There the code, the database credentials and the files are all
-   * already here, so the job is a plain local drush call addressed by --uri,
-   * the same way scripts/drush-cron.sh and site:update reach a site.
-   *
-   * Anything else is a genuinely different machine and goes over SSH.
+   * True only for a site on the application and environment this process is
+   * running on. Anything else is a different machine.
    *
    * @param string $app
    *   The application the site belongs to.
@@ -240,10 +234,8 @@ class FleetRunner {
   /**
    * Whether any site in a selection will be reached over SSH.
    *
-   * Callers use this to decide whether an SSH agent is a precondition at all:
-   * a run that is entirely local needs no keys, and demanding them there is
-   * what made a scheduled job fail on a machine that never needed to connect
-   * anywhere.
+   * Callers gate the SSH agent precondition on this; an entirely local run
+   * needs no keys.
    *
    * @param array<string, array<int, string>> $selection
    *   Map of app name => site domains, as returned by select().
@@ -266,11 +258,9 @@ class FleetRunner {
   /**
    * Build one site's drush argv, local or remote.
    *
-   * A remote job is addressed by site alias, which drush runs over SSH: its
-   * isRemote() is nothing more than "the alias has a host", so an alias
-   * naming this very machine still gets an SSH transport. A local job
-   * therefore has to skip the alias entirely and address the site by --uri
-   * against the local docroot, or it would connect back into itself.
+   * Remote jobs are addressed by site alias, which drush always runs over SSH,
+   * even for an alias naming this machine. Local jobs omit the alias and
+   * address the site by --root and --uri.
    *
    * @param string $app
    *   The application the site belongs to.
@@ -286,8 +276,7 @@ class FleetRunner {
    */
   protected function jobArgv(string $app, string $domain, string $env, array $drush_args): array {
     if ($this->runsLocally($app, $env)) {
-      // --root rather than relying on the working directory, since the pool
-      // launches jobs without setting one.
+      // The process pool launches jobs without a working directory.
       return array_merge(
         $this->drushCommand(),
         ["--root={$this->repoRoot}/docroot", "--uri={$domain}"],

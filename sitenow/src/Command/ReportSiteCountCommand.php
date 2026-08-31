@@ -137,7 +137,6 @@ HELP);
       return Command::SUCCESS;
     }
 
-    // Keys are a precondition only for sites this run actually connects to.
     if ($runner->hasRemoteJobs($selection, $env) && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
