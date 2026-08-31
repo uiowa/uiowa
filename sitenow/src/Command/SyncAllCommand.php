@@ -16,10 +16,7 @@ use Symfony\Component\Process\Process;
  * Syncs every locally-enabled multisite from a remote environment to local.
  *
  * The bulk wrapper that runs site:sync once per site. The site list comes from
- * the uncommented "multisites" entries in blt/local.blt.yml (the same list
- * deploy:update reads locally), or from --sites. An empty list syncs nothing
- * rather than falling back to the entire fleet — a local bulk sync clobbers
- * every local database, so it must be asked for explicitly.
+ * sitenow/local.sites.yml, or from --sites.
  *
  * Runs sequentially: local databases and remote sources should not be hit by
  * many parallel syncs at once.
@@ -46,7 +43,7 @@ class SyncAllCommand extends Command {
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Locates blt/local.blt.yml and the
+   *   Absolute path to the repository root. Locates sitenow/local.sites.yml and
    *   sn binary used for each site:sync.
    */
   public function __construct(
@@ -60,7 +57,7 @@ class SyncAllCommand extends Command {
    */
   protected function configure(): void {
     $this
-      ->addOption('sites', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site list to sync instead of the blt/local.blt.yml multisites list.', '')
+      ->addOption('sites', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site list to sync instead of the sitenow/local.sites.yml list.', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Remote source environment: dev, test, or prod.', 'prod')
       ->addOption('sync-public-files', NULL, InputOption::VALUE_NONE, 'Also rsync each site\'s public files from the remote.')
@@ -71,15 +68,15 @@ class SyncAllCommand extends Command {
       ->setHelp(<<<'HELP'
 Syncs each locally-enabled site's remote database over its local one, in turn.
 
-The site list is the uncommented "multisites" entries in blt/local.blt.yml,
-unless --sites is given. An empty list syncs nothing (it will not fall back to
-every site). Each site is handed to site:sync, so the same --env and file
-options apply to every site in the run.
+The site list is the "sites" entries in sitenow/local.sites.yml, unless --sites
+given. An empty list syncs nothing (it will not fall back to every site). Each
+site is handed to site:sync, so the same --env and file options apply to every
+site in the run.
 
   # Sync every enabled site's prod database to local:
   ddev sn sync:all
 
-  # From dev, database only, without editing local.blt.yml:
+  # From dev, database only, without editing sitenow/local.sites.yml:
   ddev sn dsa --sites=brand.uiowa.edu,admissions.uiowa.edu --env=dev --no-update
 
   # Every enabled site except one, with public files:
@@ -112,7 +109,7 @@ HELP);
     $sites = array_values(array_diff($this->siteList($input), $exclude));
 
     if (!$sites) {
-      $io->warning('No sites to sync. Uncomment entries under "multisites" in blt/local.blt.yml, or pass --sites=...');
+      $io->warning('No sites to sync. Add entries under "sites" in sitenow/local.sites.yml, or pass --sites=...');
       return Command::SUCCESS;
     }
 
@@ -164,12 +161,12 @@ HELP);
   /**
    * Resolve the list of sites to sync.
    *
-   * The --sites option overrides the locally-enabled multisites.
+   * The --sites option overrides the locally-enabled sites.
    */
   private function siteList(InputInterface $input): array {
     $override = $this->parseList($input->getOption('sites'));
 
-    return $override ?: $this->localMultisites();
+    return $override ?: $this->localSites();
   }
 
 }

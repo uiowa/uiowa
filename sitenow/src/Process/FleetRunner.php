@@ -4,6 +4,7 @@ namespace SiteNow\Process;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use SiteNow\Config\Manifest;
 use SiteNow\Utility\Multisite;
 
 /**
@@ -12,7 +13,7 @@ use SiteNow\Utility\Multisite;
  * This is the shared layer between fleet commands and the process pool:
  * consumers (multisite:execute, report commands) get back plain arrays of
  * {site, app, exit, output, error} to branch on or parse — never rendered
- * text. The manifest (blt/manifest.yml, maintained by every provision) is
+ * text. The manifest (sitenow/manifest.yml, maintained by every provision) is
  * the source of truth for which sites exist on which application.
  */
 class FleetRunner {
@@ -57,8 +58,8 @@ class FleetRunner {
    *   Absolute path to the repository root. Locates the drush binary fleet
    *   jobs run, plus the manifest and drush config unless overridden.
    * @param string|null $manifestPath
-   *   Manifest location, defaulting to blt/manifest.yml under the repository
-   *   root.
+   *   Manifest location, defaulting to sitenow/manifest.yml under the
+   *   repository root.
    * @param string|null $drushConfigPath
    *   Location of the drush.yml whose ssh.options fleet jobs inherit,
    *   defaulting to drush/drush.yml under the repository root.
@@ -68,7 +69,7 @@ class FleetRunner {
     ?string $manifestPath = NULL,
     ?string $drushConfigPath = NULL,
   ) {
-    $this->manifestPath = $manifestPath ?? "{$repoRoot}/blt/manifest.yml";
+    $this->manifestPath = $manifestPath ?? Manifest::defaultPath($repoRoot);
     $this->drushConfigPath = $drushConfigPath ?? "{$repoRoot}/drush/drush.yml";
   }
 

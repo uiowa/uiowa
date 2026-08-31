@@ -540,7 +540,7 @@ class MultisiteDeleteTest extends UnitTestCase {
       'Remove <info>docroot/sites/doomed.uiowa.edu</info>',
       'Remove <info>drush/sites/doomed.site.yml</info>',
       'Remove <info>sites.php</info> directory aliases for <info>doomed.uiowa.edu</info>',
-      'Remove <info>doomed.uiowa.edu</info> from <info>blt/manifest.yml</info> (app: <info>uiowa02</info>)',
+      'Remove <info>doomed.uiowa.edu</info> from <info>sitenow/manifest.yml</info> (app: <info>uiowa02</info>)',
       'Commit "Delete doomed.uiowa.edu multisite on uiowa02"',
     ], $repo_steps);
   }
@@ -560,7 +560,7 @@ class MultisiteDeleteTest extends UnitTestCase {
 
     $labels = array_column($plan->steps(), 'label');
 
-    $this->assertStringContainsString('blt/manifest.yml', end($labels));
+    $this->assertStringContainsString('sitenow/manifest.yml', end($labels));
   }
 
   /**
