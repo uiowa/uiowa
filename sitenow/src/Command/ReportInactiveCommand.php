@@ -76,10 +76,6 @@ class ReportInactiveCommand extends Command {
       return Command::FAILURE;
     }
 
-    if (!$this->requireSshAgent($io)) {
-      return Command::FAILURE;
-    }
-
     $runner = new FleetRunner($this->repoRoot);
     try {
       $selection = $runner->select($target_apps, $exclude);
@@ -92,6 +88,13 @@ class ReportInactiveCommand extends Command {
     $site_count = array_sum(array_map('count', $selection));
     if ($site_count === 0) {
       $err->error('No sites matched the selection.');
+      return Command::FAILURE;
+    }
+
+    // Last precondition checked, so that a mistyped option or app name reports
+    // itself rather than an unrelated SSH error. Only the remote jobs need an
+    // agent: sites on this application's own environment run local drush.
+    if ($runner->hasRemoteJobs($selection, 'prod') && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 

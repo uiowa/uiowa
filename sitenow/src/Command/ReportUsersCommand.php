@@ -106,8 +106,9 @@ class ReportUsersCommand extends Command {
     }
 
     // Last precondition checked, so that a mistyped option or app name reports
-    // itself rather than an unrelated SSH error.
-    if (!$this->requireSshAgent($io)) {
+    // itself rather than an unrelated SSH error. Only the remote jobs need an
+    // agent: sites on this application's own environment run local drush.
+    if ($runner->hasRemoteJobs($selection, 'prod') && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 

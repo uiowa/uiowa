@@ -10,8 +10,9 @@ use SiteNow\Process\FleetRunner;
  *
  * Covers select() filtering/exclusion against a fixture manifest, the drush
  * argv structure buildJobs() produces (including the per-invocation SSH
- * multiplexing option), the local-vs-SSH transport rule, and the
- * defaultConcurrency() scaling rule. No drush or SSH.
+ * multiplexing option), the local-vs-SSH transport rule as the fixture
+ * aliases define it, and the defaultConcurrency() scaling rule. No drush or
+ * SSH.
  *
  * @group unit
  */
@@ -23,6 +24,18 @@ class FleetRunnerTest extends UnitTestCase {
    * @var string
    */
   protected string $manifest;
+
+  /**
+   * Path to the fixture drush alias directory written for each test.
+   *
+   * The transport rule reads each site's alias for the Acquia site user and
+   * the environment's own hostname, so these files carry the shapes that
+   * matter: uiowa02, where alias key 'test' is environment 'test', and
+   * uiowa03, where it is 'stage'.
+   *
+   * @var string
+   */
+  protected string $aliasDir;
 
   /**
    * Stand-in repository root.
@@ -57,6 +70,29 @@ uiowa02:
 uiowa03:
   - accessibility.uiowa.edu
 YAML);
+
+    $this->aliasDir = tempnam(sys_get_temp_dir(), 'aliases');
+    unlink($this->aliasDir);
+    mkdir($this->aliasDir);
+
+    foreach ([
+      'vote' => ['app' => 'uiowa02', 'test_env' => 'test'],
+      'tippie' => ['app' => 'uiowa02', 'test_env' => 'test'],
+      'accessibility' => ['app' => 'uiowa03', 'test_env' => 'stage'],
+    ] as $id => $site) {
+      ['app' => $app, 'test_env' => $test_env] = $site;
+      file_put_contents("{$this->aliasDir}/{$id}.site.yml", <<<YAML
+dev:
+  uri: {$id}.dev.drupal.uiowa.edu
+  user: {$app}.dev
+prod:
+  uri: {$id}.uiowa.edu
+  user: {$app}.prod
+test:
+  uri: {$id}.stage.drupal.uiowa.edu
+  user: {$app}.{$test_env}
+YAML);
+    }
   }
 
   /**
@@ -64,6 +100,10 @@ YAML);
    */
   protected function tearDown(): void {
     @unlink($this->manifest);
+    foreach (glob("{$this->aliasDir}/*.site.yml") ?: [] as $alias) {
+      @unlink($alias);
+    }
+    @rmdir($this->aliasDir);
     putenv('AH_SITE_GROUP');
     putenv('AH_SITE_ENVIRONMENT');
     parent::tearDown();
@@ -204,7 +244,7 @@ YAML);
    * The local job carries no alias and no ssh options.
    */
   public function testBuildJobsLocalOnMatchingAppAndEnv(): void {
-    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod', $this->aliasDir);
     ['jobs' => $jobs] = $runner->buildJobs($runner->select(), ['cr'], 'prod');
 
     $this->assertSame(
@@ -220,7 +260,7 @@ YAML);
    * A different environment on the running application stays remote.
    */
   public function testBuildJobsRemoteOnOtherEnv(): void {
-    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod', $this->aliasDir);
     ['jobs' => $jobs] = $runner->buildJobs($runner->select(['uiowa02']), ['cr'], 'dev');
 
     $this->assertContains('@vote.dev', $jobs['vote.uiowa.edu']);
@@ -230,9 +270,9 @@ YAML);
    * Off Acquia, every job is remote.
    */
   public function testRunsLocallyFalseOffAcquia(): void {
-    $runner = new FleetRunner($this->repoRoot, $this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, NULL, NULL, $this->aliasDir);
 
-    $this->assertFalse($runner->runsLocally('uiowa02', 'prod'));
+    $this->assertFalse($runner->runsLocally('uiowa02', 'vote.uiowa.edu', 'prod'));
     $this->assertTrue($runner->hasRemoteJobs($runner->select(), 'prod'));
   }
 
@@ -240,7 +280,7 @@ YAML);
    * A selection entirely on the running app and env needs no SSH.
    */
   public function testHasRemoteJobs(): void {
-    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod', $this->aliasDir);
 
     $this->assertFalse($runner->hasRemoteJobs($runner->select(['uiowa02']), 'prod'));
     $this->assertTrue($runner->hasRemoteJobs($runner->select(['uiowa02']), 'dev'));
@@ -252,12 +292,64 @@ YAML);
    * The local app and env default to the Acquia Cloud environment variables.
    */
   public function testLocalTargetDefaultsToAcquiaEnvironment(): void {
-    putenv('AH_SITE_GROUP=uiowa03');
+    putenv('AH_SITE_GROUP=uiowa02');
     putenv('AH_SITE_ENVIRONMENT=test');
-    $runner = new FleetRunner($this->repoRoot, $this->manifest);
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, NULL, NULL, $this->aliasDir);
 
-    $this->assertTrue($runner->runsLocally('uiowa03', 'test'));
-    $this->assertFalse($runner->runsLocally('uiowa02', 'test'));
+    $this->assertTrue($runner->runsLocally('uiowa02', 'vote.uiowa.edu', 'test'));
+    $this->assertFalse($runner->runsLocally('uiowa03', 'accessibility.uiowa.edu', 'test'));
+  }
+
+  /**
+   * The alias key and the Acquia environment name don't have to match.
+   *
+   * Alias key 'test' is environment 'stage' on uiowa07 through uiowa09
+   * (uiowa03 in the fixture). Comparing the key to AH_SITE_ENVIRONMENT sends
+   * the running environment's own sites over SSH on exactly those
+   * applications, which is where the site-count job had no keys to use.
+   */
+  public function testRunsLocallyWhenAliasKeyAndEnvironmentNameDiffer(): void {
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa03', 'stage', $this->aliasDir);
+
+    $this->assertTrue($runner->runsLocally('uiowa03', 'accessibility.uiowa.edu', 'test'));
+    $this->assertFalse($runner->hasRemoteJobs($runner->select(['uiowa03']), 'test'));
+
+    // The same alias key on an application that does name it 'test'.
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'test', $this->aliasDir);
+
+    $this->assertTrue($runner->runsLocally('uiowa02', 'vote.uiowa.edu', 'test'));
+  }
+
+  /**
+   * A local job's --uri is the alias hostname, not the manifest domain.
+   *
+   * The manifest holds production domains; dev and test have hostnames of
+   * their own. A job carrying the production domain would give the site a
+   * production base_url while reading a non-production database.
+   */
+  public function testBuildJobsLocalUriComesFromAlias(): void {
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'dev', $this->aliasDir);
+    ['jobs' => $jobs] = $runner->buildJobs($runner->select(['uiowa02']), ['cr'], 'dev');
+
+    $this->assertSame(
+      array_merge($this->drush, ['--root=/repo/docroot', '--uri=vote.dev.drupal.uiowa.edu', 'cr']),
+      $jobs['vote.uiowa.edu']
+    );
+  }
+
+  /**
+   * A site with no readable alias falls back to the SSH transport.
+   *
+   * Nothing then claims the job is local, and drush reports the missing alias
+   * itself.
+   */
+  public function testBuildJobsRemoteWhenAliasUnreadable(): void {
+    unlink("{$this->aliasDir}/vote.site.yml");
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod', $this->aliasDir);
+    ['jobs' => $jobs] = $runner->buildJobs($runner->select(['uiowa02']), ['cr'], 'prod');
+
+    $this->assertContains('@vote.prod', $jobs['vote.uiowa.edu']);
+    $this->assertTrue($runner->hasRemoteJobs($runner->select(['uiowa02']), 'prod'));
   }
 
   /**
