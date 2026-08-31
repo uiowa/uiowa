@@ -162,7 +162,9 @@ HELP);
       ['jobs' => $jobs] = $runner->buildJobs($selection, $cmd, $env);
       $ssh_option = '--ssh-options=' . $runner->sshOptions();
       $io->writeln("Dry run: {$site_count} sites across " . count($selection) . " app(s), concurrency {$concurrency}.");
-      $io->writeln('Each command also gets ' . escapeshellarg($ssh_option) . ' (SSH multiplexing, omitted below).');
+      if ($runner->hasRemoteJobs($selection, $env)) {
+        $io->writeln('Each command also gets ' . escapeshellarg($ssh_option) . ' (SSH multiplexing, omitted below).');
+      }
       foreach ($jobs as $argv) {
         $argv = array_filter($argv, fn ($a) => $a !== $ssh_option);
         $io->writeln($this->renderArgv($argv));
@@ -170,7 +172,8 @@ HELP);
       return Command::SUCCESS;
     }
 
-    if (!$this->canSkipSshAgent($env) && !$this->requireSshAgent($io)) {
+    // Keys are a precondition only for sites this run actually connects to.
+    if ($runner->hasRemoteJobs($selection, $env) && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 

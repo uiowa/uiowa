@@ -79,7 +79,9 @@ per application. Intended for an application that never has v2 sites.
 
 On Acquia Cloud (a scheduled job, or an interactive shell on a hosted
 environment), --apps is pinned to the application actually running the
-command, same as multisite:execute.
+command, same as multisite:execute. Sites on that application's own
+environment are queried by local drush, so no SSH keys are needed there;
+reaching any other environment still requires a loaded agent.
 
 Examples:
   # Weekly cron, from a scheduled job on the application itself:
@@ -135,7 +137,8 @@ HELP);
       return Command::SUCCESS;
     }
 
-    if (!$this->canSkipSshAgent($env) && !$this->requireSshAgent($io)) {
+    // Keys are a precondition only for sites this run actually connects to.
+    if ($runner->hasRemoteJobs($selection, $env) && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 

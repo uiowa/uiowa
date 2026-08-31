@@ -10,8 +10,8 @@ use SiteNow\Process\FleetRunner;
  *
  * Covers select() filtering/exclusion against a fixture manifest, the drush
  * argv structure buildJobs() produces (including the per-invocation SSH
- * multiplexing option), and the defaultConcurrency() scaling rule. No drush
- * or SSH.
+ * multiplexing option), the local-vs-SSH transport rule, and the
+ * defaultConcurrency() scaling rule. No drush or SSH.
  *
  * @group unit
  */
@@ -47,6 +47,8 @@ class FleetRunnerTest extends UnitTestCase {
    */
   protected function setUp(): void {
     parent::setUp();
+    putenv('AH_SITE_GROUP');
+    putenv('AH_SITE_ENVIRONMENT');
     $this->manifest = tempnam(sys_get_temp_dir(), 'manifest');
     file_put_contents($this->manifest, <<<YAML
 uiowa02:
@@ -62,6 +64,8 @@ YAML);
    */
   protected function tearDown(): void {
     @unlink($this->manifest);
+    putenv('AH_SITE_GROUP');
+    putenv('AH_SITE_ENVIRONMENT');
     parent::tearDown();
   }
 
@@ -192,6 +196,77 @@ YAML);
       'sql:query',
       'SELECT COUNT(*) FROM node',
     ]), $jobs['accessibility.uiowa.edu']);
+  }
+
+  /**
+   * A site on this very application and environment is addressed locally.
+   *
+   * Drush treats any alias with a host as remote, so an alias naming this
+   * same machine would still be run over SSH. The local job therefore carries
+   * no alias and no ssh options at all — just the docroot and the site URI.
+   */
+  public function testBuildJobsLocalOnMatchingAppAndEnv(): void {
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');
+    ['jobs' => $jobs] = $runner->buildJobs($runner->select(), ['cr'], 'prod');
+
+    $this->assertSame(
+      array_merge($this->drush, ['--root=/repo/docroot', '--uri=vote.uiowa.edu', 'cr']),
+      $jobs['vote.uiowa.edu']
+    );
+
+    // A different application on the same box is still a remote target: its
+    // code and database credentials are not the ones this process has.
+    $this->assertContains('@accessibility.prod', $jobs['accessibility.uiowa.edu']);
+  }
+
+  /**
+   * A different environment on the running application stays remote.
+   */
+  public function testBuildJobsRemoteOnOtherEnv(): void {
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');
+    ['jobs' => $jobs] = $runner->buildJobs($runner->select(['uiowa02']), ['cr'], 'dev');
+
+    $this->assertContains('@vote.dev', $jobs['vote.uiowa.edu']);
+  }
+
+  /**
+   * Off Acquia, every job is remote.
+   *
+   * The Acquia variables are cleared in setUp(), so this is the default
+   * constructor on a workstation.
+   */
+  public function testRunsLocallyFalseOffAcquia(): void {
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
+
+    $this->assertFalse($runner->runsLocally('uiowa02', 'prod'));
+    $this->assertTrue($runner->hasRemoteJobs($runner->select(), 'prod'));
+  }
+
+  /**
+   * A selection entirely on the running app and env needs no SSH.
+   *
+   * This is the precondition the fleet commands gate their SSH agent check
+   * on, so it must be FALSE for a scheduled job reaching its own sites.
+   */
+  public function testHasRemoteJobs(): void {
+    $runner = new FleetRunner($this->repoRoot, $this->manifest, NULL, 'uiowa02', 'prod');
+
+    $this->assertFalse($runner->hasRemoteJobs($runner->select(['uiowa02']), 'prod'));
+    $this->assertTrue($runner->hasRemoteJobs($runner->select(['uiowa02']), 'dev'));
+    $this->assertTrue($runner->hasRemoteJobs($runner->select(), 'prod'));
+    $this->assertFalse($runner->hasRemoteJobs([], 'prod'));
+  }
+
+  /**
+   * The local app and env default to the Acquia Cloud environment variables.
+   */
+  public function testLocalTargetDefaultsToAcquiaEnvironment(): void {
+    putenv('AH_SITE_GROUP=uiowa03');
+    putenv('AH_SITE_ENVIRONMENT=test');
+    $runner = new FleetRunner($this->repoRoot, $this->manifest);
+
+    $this->assertTrue($runner->runsLocally('uiowa03', 'test'));
+    $this->assertFalse($runner->runsLocally('uiowa02', 'test'));
   }
 
   /**
