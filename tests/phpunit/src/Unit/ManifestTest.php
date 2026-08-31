@@ -157,4 +157,12 @@ class ManifestTest extends UnitTestCase {
     $this->assertSame($before, file_get_contents($this->path));
   }
 
+  /**
+   * The manifest's location is derived from the repository root.
+   */
+  public function testDefaultPathIsUnderRepoRoot(): void {
+    $this->assertSame('/repo/sitenow/manifest.yml', Manifest::defaultPath('/repo'));
+    $this->assertSame('sitenow/manifest.yml', Manifest::RELATIVE_PATH);
+  }
+
 }

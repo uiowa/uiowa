@@ -191,8 +191,8 @@ class MultisiteCreateCommand extends Command {
     }
 
     // SSL coverage is the only live API query.
-    $creds = $this->getAcquiaCredentials();
-    $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+    $acquia = $this->credentials()->acquia();
+    $client = $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
     $ssl_parts = Multisite::getSslParts($host);
     $coverage = $this->gatherSslCoverage($io, $client, array_column($candidates, 'uuid', 'name'), $ssl_parts);
     foreach ($coverage as $name => $ssl) {
@@ -295,8 +295,7 @@ class MultisiteCreateCommand extends Command {
    *   Site counts keyed by application name.
    */
   private function siteCountsByApp(string $root): array {
-    $path = "{$root}/blt/manifest.yml";
-    $manifest = file_exists($path) ? (Yaml::parseFile($path) ?? []) : [];
+    $manifest = (new Manifest(Manifest::defaultPath($root)))->all();
     return array_map(fn($sites) => is_array($sites) ? count($sites) : 0, $manifest);
   }
 
@@ -485,8 +484,8 @@ EOD;
     // Steps run in order; the commit comes last so it captures every
     // generated file.
     if (empty($options['no-db'])) {
-      $creds = $this->getAcquiaCredentials();
-      $client = $this->getAcquiaCloudApiClient($creds['key'], $creds['secret']);
+      $acquia = $this->credentials()->acquia();
+      $client = $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
       $uuid = $app['uuid'];
       $app_name = $app['name'];
       $plan->addStep(
@@ -552,10 +551,10 @@ EOD;
       }
     );
 
-    $manifest_path = "{$root}/blt/manifest.yml";
+    $manifest_path = Manifest::defaultPath($root);
     $app_name = $app['name'];
     $plan->addStep(
-      "Update <info>blt/manifest.yml</info> (app: <info>{$app_name}</info>)",
+      "Update <info>" . Manifest::RELATIVE_PATH . "</info> (app: <info>{$app_name}</info>)",
       function () use ($manifest_path, $app_name, $host) {
         (new Manifest($manifest_path))->addSite($app_name, $host);
       }
@@ -579,7 +578,7 @@ EOD;
       $message = "Initialize {$host} multisite on {$app_name}";
       $commit_paths = [
         'docroot/sites/sites.php',
-        'blt/manifest.yml',
+        Manifest::RELATIVE_PATH,
         "docroot/sites/{$host}",
         "drush/sites/{$id}.site.yml",
       ];
