@@ -64,7 +64,7 @@ class ReportUsersCommand extends Command {
    */
   protected function configure(): void {
     $this
-      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to include (e.g. uiowa02,uiowa03). Defaults to all.', '')
+      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to include (e.g. uiowa02,uiowa03). Defaults to all apps; pinned to the running application on Acquia Cloud.', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('exclude-users', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated email addresses to omit from the report.', '')
       ->addOption('threshold', NULL, InputOption::VALUE_REQUIRED, 'Login-recency window (e.g. "1 year", "6 months").', '1 year')
@@ -87,6 +87,11 @@ class ReportUsersCommand extends Command {
 
     if (strtotime("-{$threshold}") === FALSE) {
       $err->error("Could not parse threshold '{$threshold}'.");
+      return Command::FAILURE;
+    }
+
+    $target_apps = $this->restrictToRunningApp($target_apps, $err);
+    if ($target_apps === NULL) {
       return Command::FAILURE;
     }
 

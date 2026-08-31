@@ -57,7 +57,7 @@ class ReportSplitsCommand extends Command {
   protected function configure(): void {
     $this
       ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated split IDs to filter to (e.g. event,thesis_defense).', '')
-      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa02,uiowa03).', '')
+      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa02,uiowa03). Defaults to all apps; pinned to the running application on Acquia Cloud.', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.');
   }
@@ -73,6 +73,11 @@ class ReportSplitsCommand extends Command {
     $target_apps = $this->parseList($input->getOption('apps'));
     $exclude = $this->parseList($input->getOption('exclude'));
     $export = (bool) $input->getOption('export');
+
+    $target_apps = $this->restrictToRunningApp($target_apps, $err);
+    if ($target_apps === NULL) {
+      return Command::FAILURE;
+    }
 
     $runner = new FleetRunner($this->repoRoot);
     try {

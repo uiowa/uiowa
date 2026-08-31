@@ -51,7 +51,7 @@ class ReportInactiveCommand extends Command {
    */
   protected function configure(): void {
     $this
-      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa,uiowa03).', '')
+      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa,uiowa03). Defaults to all apps; pinned to the running application on Acquia Cloud.', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('threshold', NULL, InputOption::VALUE_REQUIRED, 'Inactivity threshold (e.g. "1 year", "6 months").', '1 year')
       ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.');
@@ -73,6 +73,11 @@ class ReportInactiveCommand extends Command {
     $cutoff = strtotime("-{$threshold}", $now);
     if ($cutoff === FALSE) {
       $err->error("Could not parse threshold '{$threshold}'.");
+      return Command::FAILURE;
+    }
+
+    $target_apps = $this->restrictToRunningApp($target_apps, $err);
+    if ($target_apps === NULL) {
       return Command::FAILURE;
     }
 
