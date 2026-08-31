@@ -7942,3 +7942,9 @@ $sites['studiostrings.uiowa.ddev.site'] = 'strings.studio.uiowa.edu';
 $sites['studiostrings.dev.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
 $sites['studiostrings.stage.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
 $sites['studiostrings.prod.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
+
+// Directory aliases for choirs.music.uiowa.edu.
+$sites['musicchoirs.uiowa.ddev.site'] = 'choirs.music.uiowa.edu';
+$sites['musicchoirs.dev.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
+$sites['musicchoirs.stage.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
+$sites['musicchoirs.prod.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
