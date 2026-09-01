@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: fogeneralstores.uiowa.ddev.site
+    protocol: https
+  machine_name: fogeneralstores
+  human_name: generalstores.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fogeneralstores.prod
 drupal:
   db:
     database: generalstores_fo_uiowa_edu
+uiowa:
+  requester: dagwang

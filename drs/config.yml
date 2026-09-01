@@ -1,7 +1,11 @@
 # Local DB credentials shared by all multisites, used to template
 # docroot/sites/${site}/settings/local.settings.php.
 #
-# The per-site database name lives in docroot/sites/${site}/drs/config.yml.
+# The per-site database name and metadata (human_name, requester, config
+# split, etc.) live in docroot/sites/${site}/drs/config.yml.
+project:
+  profile:
+    name: sitenow
 drupal:
   db:
     username: db

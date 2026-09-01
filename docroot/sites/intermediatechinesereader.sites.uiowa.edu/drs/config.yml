@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: sitesintermediatechinesereader.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesintermediatechinesereader
+  human_name: intermediatechinesereader.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesintermediatechinesereader.prod
 drupal:
   db:
     database: intermediatechinesereader_sites_uiowa_edu
+uiowa:
+  requester: ylu15

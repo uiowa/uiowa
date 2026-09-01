@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: studiovirtualdance.uiowa.ddev.site
+    protocol: https
+  machine_name: studiovirtualdance
+  human_name: virtualdance.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiovirtualdance.prod
 drupal:
   db:
     database: virtualdance_studio_uiowa_edu
+uiowa:
+  requester: amjennings

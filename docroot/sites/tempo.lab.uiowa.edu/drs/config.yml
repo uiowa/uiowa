@@ -1,3 +1,18 @@
+project:
+  machine_name: labtempo
+  human_name: tempo.lab.uiowa.edu
+  local:
+    hostname: labtempo.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labtempo.prod
 drupal:
   db:
     database: tempo_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://labtempo.prod.drupal.uiowa.edu
+  requester: advorak
+  site-name: TEMPO Lab

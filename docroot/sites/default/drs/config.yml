@@ -1,3 +1,16 @@
+project:
+  local:
+    hostname: default.uiowa.ddev.site
+    protocol: https
+  machine_name: default
+  human_name: default
+drush:
+  aliases:
+    local: self
+    remote: default.prod
 drupal:
   db:
     database: uiowa
+uiowa:
+  stage_file_proxy:
+    origin: https://default.prod.drupal.uiowa.edu

@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: sitespaleorepository.uiowa.ddev.site
+    protocol: https
+  machine_name: sitespaleorepository
+  human_name: paleorepository.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitespaleorepository.prod
 drupal:
   db:
     database: paleorepository_sites_uiowa_edu
+uiowa:
+  requester: tadrain

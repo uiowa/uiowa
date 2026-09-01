@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: orgwics.uiowa.ddev.site
+    protocol: https
+  machine_name: orgwics
+  human_name: wics.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgwics.prod
 drupal:
   db:
     database: wics_org_uiowa_edu
+uiowa:
+  requester: mdeneve

@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: siteswni.uiowa.ddev.site
+    protocol: https
+  machine_name: siteswni
+  human_name: wni.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteswni.prod
 drupal:
   db:
     database: wni_sites_uiowa_edu
+uiowa:
+  requester: dsuppmontgomerie

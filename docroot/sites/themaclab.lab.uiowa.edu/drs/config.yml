@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: labthemaclab.uiowa.ddev.site
+    protocol: https
+  machine_name: labthemaclab
+  human_name: themaclab.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labthemaclab.prod
 drupal:
   db:
     database: themaclab_lab_uiowa_edu
+uiowa:
+  requester: krisrooff

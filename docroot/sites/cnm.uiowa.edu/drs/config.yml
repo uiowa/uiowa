@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: cnm.uiowa.ddev.site
+    protocol: https
+  machine_name: cnm
+  human_name: cnm.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: cnm.prod
 drupal:
   db:
     database: cnm_uiowa_edu
+uiowa:
+  requester: gompper

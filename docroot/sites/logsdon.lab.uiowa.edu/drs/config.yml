@@ -1,3 +1,13 @@
+project:
+  local:
+    hostname: lablogsdon.uiowa.ddev.site
+    protocol: https
+  machine_name: lablogsdon
+  human_name: logsdon.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablogsdon.prod
 drupal:
   db:
     database: logsdon_lab_uiowa_edu

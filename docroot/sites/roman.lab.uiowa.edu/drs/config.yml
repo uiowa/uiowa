@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: labroman.uiowa.ddev.site
+    protocol: https
+  machine_name: labroman
+  human_name: roman.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labroman.prod
 drupal:
   db:
     database: roman_lab_uiowa_edu
+uiowa:
+  requester: droman

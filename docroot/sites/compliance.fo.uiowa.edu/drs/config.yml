@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: focompliance.uiowa.ddev.site
+    protocol: https
+  machine_name: focompliance
+  human_name: compliance.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: focompliance.prod
 drupal:
   db:
     database: compliance_fo_uiowa_edu
+uiowa:
+  requester: dagwang

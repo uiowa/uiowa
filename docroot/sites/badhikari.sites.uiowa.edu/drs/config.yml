@@ -1,3 +1,17 @@
+project:
+  machine_name: sitesbadhikari
+  human_name: badhikari.sites.uiowa.edu
+  local:
+    hostname: sitesbadhikari.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: sitesbadhikari.prod
 drupal:
   db:
     database: badhikari_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://sitesbadhikari.prod.drupal.uiowa.edu
+  requester: badhikari

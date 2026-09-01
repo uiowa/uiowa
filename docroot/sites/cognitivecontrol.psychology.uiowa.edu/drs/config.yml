@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: psychologycognitivecontrol.uiowa.ddev.site
+    protocol: https
+  machine_name: psychologycognitivecontrol
+  human_name: cognitivecontrol.psychology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: psychologycognitivecontrol.prod
 drupal:
   db:
     database: cognitivecontrol_psychology_uiowa_edu
+uiowa:
+  requester: jrwessel

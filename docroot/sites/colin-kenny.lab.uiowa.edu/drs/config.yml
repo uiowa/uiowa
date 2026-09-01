@@ -1,3 +1,18 @@
+project:
+  machine_name: labcolin-kenny
+  human_name: colin-kenny.lab.uiowa.edu
+  local:
+    hostname: labcolin-kenny.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labcolin-kenny.prod
 drupal:
   db:
     database: colin_kenny_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://labcolin-kenny.prod.drupal.uiowa.edu
+  requester: jstrom1
+  site-name: Kenny Lab

@@ -1,3 +1,13 @@
+project:
+  local:
+    hostname: oldcap.uiowa.ddev.site
+    protocol: https
+  machine_name: oldcap
+  human_name: oldcap.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: oldcap.prod
 drupal:
   db:
     database: oldcap_uiowa_edu

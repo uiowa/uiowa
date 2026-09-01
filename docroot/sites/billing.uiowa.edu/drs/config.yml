@@ -1,3 +1,13 @@
+project:
+  local:
+    hostname: billing.uiowa.ddev.site
+    protocol: https
+  machine_name: billing
+  human_name: billing.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: billing.prod
 drupal:
   db:
     database: billing_uiowa_edu

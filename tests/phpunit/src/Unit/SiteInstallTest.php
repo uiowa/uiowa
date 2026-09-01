@@ -133,11 +133,11 @@ class SiteInstallTest extends UnitTestCase {
   }
 
   /**
-   * The per-site blt.yml supplies the post-install values.
+   * The per-site drs/config.yml supplies the post-install values.
    */
   public function testSiteConfigIsReadFromTheSiteDirectory() {
     $repo = $this->fixtureRepo([
-      'docroot/sites/brand.uiowa.edu/blt.yml' => <<<'YAML'
+      'docroot/sites/brand.uiowa.edu/drs/config.yml' => <<<'YAML'
 project:
   human_name: brand.uiowa.edu
 uiowa:
@@ -156,7 +156,7 @@ YAML,
   }
 
   /**
-   * A site with no blt.yml yields an empty config rather than an error.
+   * A site with no drs/config.yml yields an empty config rather than an error.
    */
   public function testMissingSiteConfigIsEmpty() {
     $repo = $this->fixtureRepo();
@@ -165,18 +165,19 @@ YAML,
   }
 
   /**
-   * The install profile comes from blt/blt.yml.
+   * The install profile comes from the repository's drs/config.yml.
    */
-  public function testProfileIsReadFromBltConfig() {
+  public function testProfileIsReadFromDrsConfig() {
     $repo = $this->fixtureRepo([
-      'blt/blt.yml' => "project:\n  profile:\n    name: someprofile\n",
+      'drs/config.yml' => "project:\n  profile:\n    name: someprofile\n",
     ]);
 
     $this->assertSame('someprofile', $this->command($repo)->pubProfile());
   }
 
   /**
-   * With no readable blt.yml the profile falls back to the built-in default.
+   * With no readable drs/config.yml the profile falls back to the built-in
+   * default.
    */
   public function testProfileFallsBackToDefault() {
     $repo = $this->fixtureRepo();

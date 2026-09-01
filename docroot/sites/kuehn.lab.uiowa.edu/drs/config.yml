@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: labkuehn.uiowa.ddev.site
+    protocol: https
+  machine_name: labkuehn
+  human_name: kuehn.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkuehn.prod
 drupal:
   db:
     database: kuehn_lab_uiowa_edu
+uiowa:
+  requester: brettjohnson

@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: itcommunities.uiowa.ddev.site
+    protocol: https
+  machine_name: itcommunities
+  human_name: itcommunities.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itcommunities.prod
 drupal:
   db:
     database: itcommunities_uiowa_edu
+uiowa:
+  requester: alklopfe

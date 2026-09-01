@@ -1,3 +1,13 @@
+project:
+  local:
+    hostname: home.uiowa.ddev.site
+    protocol: https
+  machine_name: home
+  human_name: uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: home.prod
 drupal:
   db:
     database: uiowa_edu

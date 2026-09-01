@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: debate.uiowa.ddev.site
+    protocol: https
+  machine_name: debate
+  human_name: debate.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: debate.prod
 drupal:
   db:
     database: debate_uiowa_edu
+uiowa:
+  requester: pbellus

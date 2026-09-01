@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: fobusinessmanager.uiowa.ddev.site
+    protocol: https
+  machine_name: fobusinessmanager
+  human_name: businessmanager.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fobusinessmanager.prod
 drupal:
   db:
     database: businessmanager_fo_uiowa_edu
+uiowa:
+  requester: dagwang

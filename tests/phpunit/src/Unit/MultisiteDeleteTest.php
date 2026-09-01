@@ -359,8 +359,9 @@ class MultisiteDeleteTest extends UnitTestCase {
    * @param bool $database
    *   Whether the application still has the site's database.
    * @param string|null $configured
-   *   The database blt.yml names, or NULL to leave the site directory absent
-   *   entirely — the state a run interrupted mid-dismantle leaves behind.
+   *   The database drs/config.yml names, or NULL to leave the site directory
+   *   absent entirely — the state a run interrupted mid-dismantle leaves
+   *   behind.
    *
    * @return \SiteNow\Plan\CheckResult
    *   The check's result.
@@ -369,9 +370,9 @@ class MultisiteDeleteTest extends UnitTestCase {
     $dir = 'doomed.uiowa.edu';
 
     if ($configured !== NULL) {
-      mkdir("{$this->dir}/docroot/sites/{$dir}", 0777, TRUE);
+      mkdir("{$this->dir}/docroot/sites/{$dir}/drs", 0777, TRUE);
       file_put_contents(
-        "{$this->dir}/docroot/sites/{$dir}/blt.yml",
+        "{$this->dir}/docroot/sites/{$dir}/drs/config.yml",
         Yaml::dump(['drupal' => ['db' => ['database' => $configured]]])
       );
     }
@@ -401,16 +402,16 @@ class MultisiteDeleteTest extends UnitTestCase {
   }
 
   /**
-   * A blt.yml naming the derived database confirms it.
+   * A drs/config.yml naming the derived database confirms it.
    */
-  public function testDatabaseNameIsConfirmedByBltYml() {
+  public function testDatabaseNameIsConfirmedByDrsConfig() {
     $result = $this->databaseNameCheck(TRUE, 'doomed_uiowa_edu');
 
     $this->assertSame(CheckStatus::Pass, $result->status);
   }
 
   /**
-   * A blt.yml naming a different database refuses the delete.
+   * A drs/config.yml naming a different database refuses the delete.
    *
    * The derived name belongs to a database this site never used, so deleting it
    * would take out one that is still in service.
@@ -425,9 +426,9 @@ class MultisiteDeleteTest extends UnitTestCase {
   /**
    * An unconfirmable name warns when the database is already gone.
    *
-   * The blt.yml goes with the site directory, so an interrupted run leaves the
-   * name unconfirmable. There is no database left to delete, so nothing is at
-   * risk and the rerun may finish the repository cleanup.
+   * The drs/config.yml goes with the site directory, so an interrupted run
+   * leaves the name unconfirmable. There is no database left to delete, so
+   * nothing is at risk and the rerun may finish the repository cleanup.
    */
   public function testUnconfirmableDatabaseAlreadyGoneOnlyWarns() {
     $result = $this->databaseNameCheck(FALSE, NULL);
@@ -600,8 +601,9 @@ class MultisiteDeleteTest extends UnitTestCase {
       "{$this->dir}/docroot/sites/sites.php",
       "<?php\n\$sites['demo.sitenow.uiowa.edu'] = 'default';\n"
     );
+    mkdir("{$this->dir}/docroot/sites/default/drs", 0777, TRUE);
     file_put_contents(
-      "{$this->dir}/docroot/sites/default/blt.yml",
+      "{$this->dir}/docroot/sites/default/drs/config.yml",
       Yaml::dump(['drupal' => ['db' => ['database' => 'uiowa']]])
     );
 

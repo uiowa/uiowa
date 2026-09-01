@@ -1,3 +1,18 @@
+project:
+  machine_name: labbridge
+  human_name: bridge.lab.uiowa.edu
+  local:
+    hostname: labbridge.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labbridge.prod
 drupal:
   db:
     database: bridge_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://labbridge.prod.drupal.uiowa.edu
+  requester: mchrstianson
+  site-name: BRIDGE

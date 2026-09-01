@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: orglegalclinic.uiowa.ddev.site
+    protocol: https
+  machine_name: orglegalclinic
+  human_name: legalclinic.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orglegalclinic.prod
 drupal:
   db:
     database: legalclinic_org_uiowa_edu
+uiowa:
+  requester: eckland

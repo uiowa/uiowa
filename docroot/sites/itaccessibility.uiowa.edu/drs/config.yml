@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: itaccessibility.uiowa.ddev.site
+    protocol: https
+  machine_name: itaccessibility
+  human_name: itaccessibility.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itaccessibility.prod
 drupal:
   db:
     database: itaccessibility_uiowa_edu
+uiowa:
+  requester: tmweiss

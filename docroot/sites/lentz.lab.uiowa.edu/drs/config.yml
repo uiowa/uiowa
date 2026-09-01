@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: lablentz.uiowa.ddev.site
+    protocol: https
+  machine_name: lablentz
+  human_name: lentz.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablentz.prod
 drupal:
   db:
     database: lentz_lab_uiowa_edu
+uiowa:
+  requester: strommerl

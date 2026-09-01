@@ -1,3 +1,13 @@
+project:
+  local:
+    hostname: gradgss.uiowa.ddev.site
+    protocol: https
+  machine_name: gradgss
+  human_name: gss.grad.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: gradgss.prod
 drupal:
   db:
     database: gss_grad_uiowa_edu

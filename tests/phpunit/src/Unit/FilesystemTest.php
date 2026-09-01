@@ -120,7 +120,7 @@ EOD;
   }
 
   /**
-   * Test that multisite files exist and that BLT config is set correctly.
+   * Test that multisite files exist and that the per-site config is correct.
    *
    * @throws \Exception
    */
@@ -130,7 +130,7 @@ EOD;
     foreach ($sites as $site) {
       $path = $this->root . "/../docroot/sites/{$site}";
 
-      $this->assertFileExists("{$path}/blt.yml");
+      $this->assertFileExists("{$path}/drs/config.yml");
       $this->assertFileExists("{$path}/default.local.drush.yml");
       $this->assertFileExists("{$path}/default.settings.php");
       $this->assertFileExists("{$path}/settings.php");
@@ -141,7 +141,7 @@ EOD;
       $local = Multisite::getInternalDomains($id)['local'];
 
       // Test per-site config.
-      $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
+      $yaml = Yaml::parse(file_get_contents("{$path}/drs/config.yml"));
       $db = $yaml['drupal']['db']['database'];
 
       $this->assertEquals(Multisite::getDatabaseName($site), $db);

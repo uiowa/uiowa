@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: labhbrl-neurosurgery.uiowa.ddev.site
+    protocol: https
+  machine_name: labhbrl-neurosurgery
+  human_name: hbrl-neurosurgery.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhbrl-neurosurgery.prod
 drupal:
   db:
     database: hbrl_neurosurgery_lab_uiowa_edu
+uiowa:
+  requester: rjwoods

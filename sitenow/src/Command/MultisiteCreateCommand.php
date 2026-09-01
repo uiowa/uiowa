@@ -466,11 +466,11 @@ class MultisiteCreateCommand extends Command {
     $drush_alias['prod']['uri'] = $host;
     $drush_alias['prod']['paths']['files'] = $files_path;
 
-    $blt = $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
+    $config = $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
 
     // settings.php include: on Acquia, load the per-environment DB credentials,
-    // then BLT's settings. Replaces the bare BLT require the copied file ships
-    // with (see the patch step below).
+    // then Acquia Drupal Recommended Settings. Replaces the bare DRS require
+    // the copied file ships with (see the patch step below).
     $acquia_block = <<<EOD
 \$ah_group = getenv('AH_SITE_GROUP');
 
@@ -478,7 +478,7 @@ if (file_exists('/var/www/site-php')) {
   require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
 }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";
 EOD;
 
     // Steps run in order; the commit comes last so it captures every
@@ -517,11 +517,11 @@ EOD;
     $plan->addStep(
       "Patch <info>settings.php</info> with Acquia DB include for <info>{$db}</info>",
       function () use ($fs, $settings_path, $acquia_block) {
-        $from = 'require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n";
+        $from = 'require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";' . "\n";
         $to = $acquia_block . "\n";
         $contents = (string) file_get_contents($settings_path);
         if (!str_contains($contents, $from)) {
-          throw new \RuntimeException("Expected BLT require line not found in {$settings_path}.");
+          throw new \RuntimeException("Expected DRS require line not found in {$settings_path}.");
         }
         $fs->dumpFile($settings_path, str_replace($from, $to, $contents));
       }
@@ -535,11 +535,11 @@ EOD;
       }
     );
 
-    $blt_path = "{$dest}/blt.yml";
+    $drs_config_path = "{$dest}/drs/config.yml";
     $plan->addStep(
-      "Write <info>docroot/sites/{$host}/blt.yml</info>",
-      function () use ($fs, $blt_path, $blt) {
-        $fs->dumpFile($blt_path, Yaml::dump($blt, 10, 2));
+      "Write <info>docroot/sites/{$host}/drs/config.yml</info>",
+      function () use ($fs, $drs_config_path, $config) {
+        $fs->dumpFile($drs_config_path, Yaml::dump($config, 10, 2));
       }
     );
 
@@ -561,15 +561,15 @@ EOD;
     );
 
     $plan->addStep(
-      'Run <info>blt:init:settings</info> to generate local settings files',
+      'Run <info>drush settings</info> to generate local settings files',
       function (SymfonyStyle $io) use ($root, $host) {
-        $process = new Process(['./vendor/bin/blt', 'blt:init:settings', "--site={$host}"], $root);
+        $process = new Process(['./vendor/bin/drush', 'settings', "--uri={$host}"], $root);
         $process->setTimeout(NULL);
         $process->run(function ($type, $buffer) use ($io) {
           $io->write($buffer);
         });
         if (!$process->isSuccessful()) {
-          throw new \RuntimeException('blt:init:settings failed.');
+          throw new \RuntimeException('drush settings failed.');
         }
       }
     );
@@ -601,7 +601,7 @@ EOD;
   }
 
   /**
-   * Assemble the per-site blt.yml configuration array.
+   * Assemble the per-site drs/config.yml configuration array.
    *
    * @param string $host
    *   The multisite host.
@@ -617,10 +617,10 @@ EOD;
    *   Command options. Reads 'requester', 'split', and 'site-name'.
    *
    * @return array
-   *   The per-site blt.yml structure.
+   *   The per-site drs/config.yml structure.
    */
   protected function buildSiteConfig(string $host, string $id, string $db, string $local, string $prod_domain, array $options): array {
-    $blt = [
+    $config = [
       'project' => [
         'machine_name' => $id,
         'human_name' => $host,
@@ -632,18 +632,18 @@ EOD;
     ];
 
     if (!empty($options['requester'])) {
-      $blt['uiowa']['requester'] = $options['requester'];
+      $config['uiowa']['requester'] = $options['requester'];
     }
     if (!empty($options['split'])) {
       // SiteInstallCommand reads a scalar or a list.
       $splits = array_map('trim', explode(',', $options['split']));
-      $blt['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
+      $config['uiowa']['config']['split'] = count($splits) === 1 ? $splits[0] : $splits;
     }
     if (!empty($options['site-name'])) {
-      $blt['uiowa']['site-name'] = $options['site-name'];
+      $config['uiowa']['site-name'] = $options['site-name'];
     }
 
-    return $blt;
+    return $config;
   }
 
   /**

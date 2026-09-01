@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: orgirbr.uiowa.ddev.site
+    protocol: https
+  machine_name: orgirbr
+  human_name: irbr.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgirbr.prod
 drupal:
   db:
     database: irbr_org_uiowa_edu
+uiowa:
+  requester: jcomeron

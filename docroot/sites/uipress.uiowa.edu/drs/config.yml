@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: uipress.uiowa.ddev.site
+    protocol: https
+  machine_name: uipress
+  human_name: uipress.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: uipress.prod
 drupal:
   db:
     database: uipress_uiowa_edu
+uiowa:
+  requester: athmas

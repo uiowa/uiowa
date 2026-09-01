@@ -1,3 +1,13 @@
+project:
+  local:
+    hostname: gradneuroscience.uiowa.ddev.site
+    protocol: https
+  machine_name: gradneuroscience
+  human_name: neuroscience.grad.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: gradneuroscience.prod
 drupal:
   db:
     database: neuroscience_grad_uiowa_edu

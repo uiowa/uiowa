@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: labmoyerowley.uiowa.ddev.site
+    protocol: https
+  machine_name: labmoyerowley
+  human_name: moyerowley.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmoyerowley.prod
 drupal:
   db:
     database: moyerowley_lab_uiowa_edu
+uiowa:
+  requester: moyerowleyw

@@ -1,3 +1,18 @@
+project:
+  machine_name: medicineui-cair
+  human_name: ui-cair.medicine.uiowa.edu
+  local:
+    hostname: medicineui-cair.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: medicineui-cair.prod
 drupal:
   db:
     database: ui_cair_medicine_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://medicineui-cair.prod.drupal.uiowa.edu
+  requester: cmarsengill
+  site-name: UI-CAIR

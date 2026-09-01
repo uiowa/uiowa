@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: labmiles.uiowa.ddev.site
+    protocol: https
+  machine_name: labmiles
+  human_name: miles.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmiles.prod
 drupal:
   db:
     database: miles_lab_uiowa_edu
+uiowa:
+  requester: gmccrory

@@ -1,3 +1,15 @@
+project:
+  local:
+    hostname: labauditoryresearch.uiowa.ddev.site
+    protocol: https
+  machine_name: labauditoryresearch
+  human_name: auditoryresearch.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labauditoryresearch.prod
 drupal:
   db:
     database: auditoryresearch_lab_uiowa_edu
+uiowa:
+  requester: ostrem
