@@ -100,6 +100,7 @@ class ReportInactiveCommand extends Command {
       'Days Since Revision',
       'Days Since Login',
       "Login Inactive: {$threshold}",
+      'Site Mail',
       'Webmasters',
     ];
 
@@ -117,6 +118,12 @@ class ReportInactiveCommand extends Command {
       '--format=json',
       '--no-interaction',
     ], 'prod', NULL, $this->progress($err, 'login'));
+    $site_mails = $runner->run($selection, [
+      'cget',
+      'system.site',
+      'mail',
+      '--format=string',
+    ], 'prod', NULL, $this->progress($err, 'mail'));
 
     $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Inactive-Report', $headers, [
       $target_apps ? implode('+', $target_apps) : 'all-apps',
@@ -164,7 +171,15 @@ class ReportInactiveCommand extends Command {
         }
 
         $webmasters = $users ? $this->filterUsers($users) : [];
-        $user_output = $webmasters ? implode(',', array_column($webmasters, 'name')) : 'N/A';
+        $user_output = $webmasters ? implode(',', array_column($webmasters, 'mail')) : 'N/A';
+
+        if ($site_mails[$domain]['exit'] !== 0 || empty($site_mails[$domain]['output'])) {
+          $site_mail = FALSE;
+        }
+        else {
+          $site_mail = $site_mails[$domain]['output'];
+        }
+        $site_mail_output = ($site_mail) ?: 'N/A';
 
         $row = [
           $app_name,
@@ -172,6 +187,7 @@ class ReportInactiveCommand extends Command {
           $days_since_revision,
           $days_since_login,
           $status,
+          $site_mail_output,
           $user_output,
         ];
         if ($writer) {
