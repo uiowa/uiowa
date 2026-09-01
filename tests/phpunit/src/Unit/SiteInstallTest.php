@@ -176,8 +176,7 @@ YAML,
   }
 
   /**
-   * With no readable drs/config.yml the profile falls back to the built-in
-   * default.
+   * With no readable drs/config.yml the profile falls back to the default.
    */
   public function testProfileFallsBackToDefault() {
     $repo = $this->fixtureRepo();
