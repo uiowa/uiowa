@@ -1,11 +1,13 @@
 <?php
 
-namespace Drupal\uiowa_core\Commands;
+namespace Drupal\uiowa_core\Drush\Commands;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\uiowa_core\FileSchemeMigrator;
+use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
 use Drush\Exceptions\UserAbortException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Drush commands for moving managed files between stream wrappers.
@@ -31,6 +33,27 @@ class FileSchemeCommands extends DrushCommands {
   }
 
   /**
+   * Builds the command handler from the container.
+   *
+   * Drush instantiates attribute-discovered command classes inside a
+   * try/catch, so a container cached before this module's services existed
+   * drops the command instead of fatalling every drush call on the site. A
+   * drush.services.yml entry has no such protection.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The Drupal service container.
+   *
+   * @return self
+   *   The command handler.
+   */
+  public static function create(ContainerInterface $container): self {
+    return new static(
+      $container->get('uiowa_core.file_scheme_migrator'),
+      $container->get('entity_type.manager'),
+    );
+  }
+
+  /**
    * Moves managed files between the public and private file systems.
    *
    * Changing a field's uri_scheme only affects new uploads. Existing files keep
@@ -40,24 +63,17 @@ class FileSchemeCommands extends DrushCommands {
    *   The destination scheme, either 'private' or 'public'.
    * @param array $options
    *   Additional options for the command.
-   *
-   * @command uiowa_core:migrate-files
-   * @aliases uicore-mf
-   *
-   * @option dry-run Report what would move without moving anything.
-   * @option skip-flush Leave image style derivatives in place.
-   * @option no-rewrite Leave content references pointing at the old location.
-   * @option list-paths List every hard-coded path instead of counting them.
-   *
-   * @usage uiowa_core:migrate-files private --dry-run
-   *   List the files that would move to private storage.
-   * @usage uiowa_core:migrate-files private --dry-run --list-paths
-   *   Also list every content reference that would be rewritten.
-   * @usage uiowa_core:migrate-files private
-   *   Move every public file into private storage.
-   * @usage uiowa_core:migrate-files public
-   *   Move every private file back into public storage.
    */
+  #[CLI\Command(name: 'uiowa_core:migrate-files', aliases: ['uicore-mf'])]
+  #[CLI\Argument(name: 'to', description: "The destination scheme, either 'private' or 'public'.")]
+  #[CLI\Option(name: 'dry-run', description: 'Report what would move without moving anything.')]
+  #[CLI\Option(name: 'skip-flush', description: 'Leave image style derivatives in place.')]
+  #[CLI\Option(name: 'no-rewrite', description: 'Leave content references pointing at the old location.')]
+  #[CLI\Option(name: 'list-paths', description: 'List every hard-coded path instead of counting them.')]
+  #[CLI\Usage(name: 'uiowa_core:migrate-files private --dry-run', description: 'List the files that would move to private storage.')]
+  #[CLI\Usage(name: 'uiowa_core:migrate-files private --dry-run --list-paths', description: 'Also list every content reference that would be rewritten.')]
+  #[CLI\Usage(name: 'uiowa_core:migrate-files private', description: 'Move every public file into private storage.')]
+  #[CLI\Usage(name: 'uiowa_core:migrate-files public', description: 'Move every private file back into public storage.')]
   public function migrateFiles(
     string $to,
     array $options = [
