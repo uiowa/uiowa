@@ -5,7 +5,7 @@
  * Global settings for every multisite.
  */
 
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\DrupalEnvironmentDetector\AcquiaDrupalEnvironmentDetector as EnvironmentDetector;
 use Drupal\Core\Installer\InstallerKernel;
 
 // Prevent access to uninstalled sites through the web interface.

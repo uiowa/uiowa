@@ -769,44 +769,19 @@ $settings['entity_update_batch_size'] = 50;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 
-// Load BLT settings for production/Acquia environments.
-// In CI (Travis, GitHub Actions), we use custom settings to avoid BLT dependencies.
-$is_ci = getenv('CI') === 'true' || getenv('GITHUB_ACTIONS') === 'true';
-$is_travis = getenv('TRAVIS') === 'true';
-
-if ($is_travis) {
-  // Travis CI: Use BLT settings (it has Travis-specific support).
-  $ah_group = getenv('AH_SITE_GROUP');
+$ah_group = getenv('AH_SITE_GROUP');
 
 if (file_exists('/var/www/site-php')) {
   require "/var/www/site-php/{$ah_group}/everydayexamples_sites_uiowa_edu-settings.inc";
 }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
-}
-elseif ($is_ci) {
-  // Other CI (GitHub Actions): Use custom CI settings.
-  // Load minimal required settings without BLT dependencies.
-  if (file_exists(DRUPAL_ROOT . '/sites/settings/ci.settings.php')) {
-    require DRUPAL_ROOT . '/sites/settings/ci.settings.php';
-  }
-}
-else {
-  // Production/Acquia/Local: Use BLT settings.
-  $ah_group = getenv('AH_SITE_GROUP');
-
-if (file_exists('/var/www/site-php')) {
-  require "/var/www/site-php/{$ah_group}/everydayexamples_sites_uiowa_edu-settings.inc";
-}
-
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
-}
+require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";
 
 /**
- * IMPORTANT.
- *
- * Do not include additional settings here. Instead, add them to settings
- * included by `blt.settings.php` or custom CI settings files.
- *
- * @link http://blt.readthedocs.io
- */
+  * IMPORTANT.
+  *
+  * Do not include additional settings here. Instead, add them to settings
+  * included by `acquia-recommended.settings.php`. See Acquia's documentation for more detail.
+  *
+  * @link https://docs.acquia.com/
+*/
