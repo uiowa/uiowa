@@ -50,7 +50,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Uiowa\\": "blt/src/",
             "SiteNow\\": "sitenow/src"
         }
     },
@@ -74,22 +73,21 @@
             "php": "8.3"
         },
         "allow-plugins": {
+            "acquia/drupal-recommended-settings": true,
             "composer/installers": true,
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "acquia/blt": true,
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
-            "phpstan/extension-installer": true,
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "tbachert/spi": true
         }
     },
     "require": {
         "ext-json": "*",
         "ext-simplexml": "*",
-        "acquia/blt": "^13.7.4",
-        "acquia/blt-multisite": "dev-master",
+        "acquia/drupal-recommended-settings": "^1.2",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "6.7.2",
@@ -254,6 +252,16 @@
         "typhonius/acquia-php-sdk-v2": "^2.6"
     },
     "extra": {
+        "drupal-recommended-settings": {
+            "operations": {
+                "${docroot}/sites/${site}/settings/local.settings.php": {
+                    "copy": {
+                        "path": "${docroot}/sites/${site}/settings/default.local.settings.php",
+                        "with-placeholder": true
+                    }
+                }
+            }
+        },
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
