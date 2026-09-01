@@ -2,7 +2,6 @@
 
 namespace Uiowa\Tests\PHPUnit\Unit;
 
-use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -40,7 +39,7 @@ class FilesystemTest extends UnitTestCase {
       ->sortByName();
 
     foreach ($files->getIterator() as $file) {
-      $config = YamlMunge::parseFile($file->getRealPath());
+      $config = Yaml::parse((string) file_get_contents($file->getRealPath()));
       $this->assertEquals('/var/www/html/docroot', $config['local']['root'], "$file");
     }
   }
@@ -52,7 +51,7 @@ class FilesystemTest extends UnitTestCase {
     $config = Yaml::parseFile($this->root . '/../sitenow/applications.yml');
 
     foreach ($config['applications'] as $app => $attrs) {
-      $config = YamlMunge::parseFile($this->root . "/../drush/sites/$app.site.yml");
+      $config = Yaml::parse((string) file_get_contents($this->root . "/../drush/sites/$app.site.yml"));
 
       foreach (['local', 'dev', ' test', 'prod'] as $env) {
         if (isset($config[$env]['paths'])) {
@@ -141,7 +140,7 @@ EOD;
       $id = Multisite::getIdentifier("//{$site}");
       $local = Multisite::getInternalDomains($id)['local'];
 
-      // Test BLT config.
+      // Test per-site config.
       $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
       $db = $yaml['drupal']['db']['database'];
 
@@ -159,7 +158,7 @@ if (file_exists('/var/www/site-php')) {
   require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
 }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";
 EOD;
 
       $file = "{$path}/settings.php";
