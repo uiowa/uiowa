@@ -15,6 +15,10 @@ use SiteNow\Utility\Multisite;
  * {site, app, exit, output, error} to branch on or parse — never rendered
  * text. The manifest (sitenow/manifest.yml, maintained by every provision) is
  * the source of truth for which sites exist on which application.
+ *
+ * Sites are reached over SSH by site alias, or by local drush when the site
+ * belongs to the application and environment this process runs on. See
+ * runsLocally().
  */
 class FleetRunner {
 
@@ -25,6 +29,8 @@ class FleetRunner {
 
   /**
    * Validated safe concurrent SSH sessions per multiplexed app connection.
+   *
+   * Also caps concurrent local drush processes per app.
    */
   const PER_APP_CAP = 8;
 
@@ -52,6 +58,32 @@ class FleetRunner {
   private string $drushConfigPath;
 
   /**
+   * Absolute path to the directory holding the per-site drush alias files.
+   */
+  private string $aliasDir;
+
+  /**
+   * Parsed alias environments, keyed by "<site id>.<env>".
+   *
+   * A selection can run to four figures of sites, and both the transport
+   * decision and the local --uri read the same alias file, so each one is
+   * parsed at most once.
+   *
+   * @var array<string, array|null>
+   */
+  private array $aliasCache = [];
+
+  /**
+   * The Acquia application this process is running on, or NULL if not on one.
+   */
+  private ?string $localApp;
+
+  /**
+   * The Acquia environment this process is running in, or NULL.
+   */
+  private ?string $localEnv;
+
+  /**
    * Constructs the runner.
    *
    * @param string $repoRoot
@@ -63,14 +95,29 @@ class FleetRunner {
    * @param string|null $drushConfigPath
    *   Location of the drush.yml whose ssh.options fleet jobs inherit,
    *   defaulting to drush/drush.yml under the repository root.
+   * @param string|null $localApp
+   *   The Acquia application this process is running on, defaulting to
+   *   AH_SITE_GROUP. Injected by tests.
+   * @param string|null $localEnv
+   *   The Acquia environment this process is running in, defaulting to
+   *   AH_SITE_ENVIRONMENT. Injected by tests.
+   * @param string|null $aliasDir
+   *   Location of the per-site drush alias files, defaulting to drush/sites
+   *   under the repository root. Injected by tests.
    */
   public function __construct(
     private string $repoRoot,
     ?string $manifestPath = NULL,
     ?string $drushConfigPath = NULL,
+    ?string $localApp = NULL,
+    ?string $localEnv = NULL,
+    ?string $aliasDir = NULL,
   ) {
     $this->manifestPath = $manifestPath ?? Manifest::defaultPath($repoRoot);
     $this->drushConfigPath = $drushConfigPath ?? "{$repoRoot}/drush/drush.yml";
+    $this->aliasDir = $aliasDir ?? "{$repoRoot}/drush/sites";
+    $this->localApp = $localApp ?? (getenv('AH_SITE_GROUP') ?: NULL);
+    $this->localEnv = $localEnv ?? (getenv('AH_SITE_ENVIRONMENT') ?: NULL);
   }
 
   /**
@@ -176,18 +223,193 @@ class FleetRunner {
   public function buildJobs(array $selection, array $drush_args, string $env = 'prod'): array {
     $jobs = [];
     $groups = [];
-    $drush = $this->drushCommand();
-    $ssh_option = '--ssh-options=' . $this->sshOptions();
 
     foreach ($selection as $app => $domains) {
       foreach ($domains as $domain) {
-        $alias = Multisite::getIdentifier('http://' . $domain) . '.' . $env;
-        $jobs[$domain] = array_merge($drush, ["@{$alias}", $ssh_option], $drush_args);
+        $jobs[$domain] = $this->jobArgv($app, $domain, $env, $drush_args);
         $groups[$domain] = $app;
       }
     }
 
     return ['jobs' => $jobs, 'groups' => $groups];
+  }
+
+  /**
+   * Whether one site's job runs on this machine rather than over SSH.
+   *
+   * True only for a site on the application and environment this process is
+   * running on. Anything else is a different machine.
+   *
+   * The environment is settled by the alias, not by comparing $env to
+   * AH_SITE_ENVIRONMENT: the alias key and the Acquia environment name are
+   * not the same string everywhere. Alias key 'test' is environment 'test' on
+   * uiowa through uiowa06 but 'stage' on uiowa07, uiowa08 and uiowa09, so a
+   * direct comparison would call the running environment remote on those
+   * three and demand SSH keys that aren't there.
+   *
+   * @param string $app
+   *   The application the site belongs to.
+   * @param string $domain
+   *   The site domain, which locates its alias file.
+   * @param string $env
+   *   The target environment (e.g. 'prod').
+   *
+   * @return bool
+   *   TRUE when the job runs locally.
+   */
+  public function runsLocally(string $app, string $domain, string $env): bool {
+    return $this->localAlias($app, $domain, $env) !== NULL;
+  }
+
+  /**
+   * Whether any site in a selection will be reached over SSH.
+   *
+   * Callers gate the SSH agent precondition on this; an entirely local run
+   * needs no keys.
+   *
+   * @param array<string, array<int, string>> $selection
+   *   Map of app name => site domains, as returned by select().
+   * @param string $env
+   *   The target environment (e.g. 'prod').
+   *
+   * @return bool
+   *   TRUE when at least one job needs SSH.
+   */
+  public function hasRemoteJobs(array $selection, string $env = 'prod'): bool {
+    foreach ($selection as $app => $domains) {
+      foreach ($domains as $domain) {
+        if (!$this->runsLocally($app, $domain, $env)) {
+          return TRUE;
+        }
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Build one site's drush argv, local or remote.
+   *
+   * Remote jobs are addressed by site alias. Any alias with a host key is
+   * remote to drush — site-alias tests only for that key's presence
+   * (SiteAliasTrait::isRemote()) and never compares the host to this machine
+   * — so an alias naming this very environment still opens an SSH connection
+   * back to itself. Authentication isn't the obstacle there: Acquia's own
+   * drush-cron.sh runs its environment's alias with no agent loaded, and
+   * `drush @uiowa07.prod status` succeeds on uiowa07.prod. Host key
+   * verification is, and it took down the scheduled site-count job on every
+   * application whose sites have to be queried individually
+   * (uiowa/uiowa#10101). Local jobs drop the alias and address the site by
+   * --root and --uri, so no connection is opened to fail.
+   *
+   * --root is this process's own docroot rather than the alias's, so the job
+   * runs the code that is actually deployed here. --uri comes from the alias,
+   * which is the only place the site's per-environment hostname is recorded:
+   * the manifest holds production domains, and pointing a dev or test job at
+   * one would hand the site a production base_url.
+   *
+   * @param string $app
+   *   The application the site belongs to.
+   * @param string $domain
+   *   The site domain.
+   * @param string $env
+   *   The target environment (e.g. 'prod').
+   * @param array $drush_args
+   *   Drush arguments, each a separate element.
+   *
+   * @return array<int, string>
+   *   The full argv for the job.
+   */
+  protected function jobArgv(string $app, string $domain, string $env, array $drush_args): array {
+    if ($alias = $this->localAlias($app, $domain, $env)) {
+      // The process pool launches jobs without a working directory.
+      return array_merge(
+        $this->drushCommand(),
+        ["--root={$this->repoRoot}/docroot", "--uri={$alias['uri']}"],
+        $drush_args,
+      );
+    }
+
+    $alias = Multisite::getIdentifier('http://' . $domain) . '.' . $env;
+
+    return array_merge(
+      $this->drushCommand(),
+      ["@{$alias}", '--ssh-options=' . $this->sshOptions()],
+      $drush_args,
+    );
+  }
+
+  /**
+   * One site's alias definition, when it names this very environment.
+   *
+   * The alias's 'user' is the Acquia site user — "uiowa07.stage" — which is
+   * AH_SITE_GROUP and AH_SITE_ENVIRONMENT joined, and so answers both halves
+   * of the question at once. Returning the definition rather than a boolean
+   * lets the local branch read the hostname from the same parse.
+   *
+   * @param string $app
+   *   The application the site belongs to.
+   * @param string $domain
+   *   The site domain.
+   * @param string $env
+   *   The target environment (e.g. 'prod').
+   *
+   * @return array|null
+   *   The alias environment definition, or NULL when the job is not local.
+   */
+  protected function localAlias(string $app, string $domain, string $env): ?array {
+
+    // Off Acquia nothing is local; a different application never is, and the
+    // manifest's app names are AH_SITE_GROUP values, so this settles most of
+    // a fleet-wide selection without opening a file.
+    if ($this->localApp === NULL || $this->localEnv === NULL || $app !== $this->localApp) {
+      return NULL;
+    }
+
+    $alias = $this->aliasEnv($domain, $env);
+    if (!isset($alias['user'], $alias['uri']) || $alias['user'] !== "{$this->localApp}.{$this->localEnv}") {
+      return NULL;
+    }
+
+    return $alias;
+  }
+
+  /**
+   * Read one environment out of a site's drush alias file.
+   *
+   * @param string $domain
+   *   The site domain.
+   * @param string $env
+   *   The alias key to read (e.g. 'prod').
+   *
+   * @return array|null
+   *   The alias environment definition, or NULL when the file is missing,
+   *   unparseable, or has no such environment.
+   */
+  protected function aliasEnv(string $domain, string $env): ?array {
+    $id = Multisite::getIdentifier('http://' . $domain);
+    $key = "{$id}.{$env}";
+
+    if (!array_key_exists($key, $this->aliasCache)) {
+      $this->aliasCache[$key] = NULL;
+      $path = "{$this->aliasDir}/{$id}.site.yml";
+
+      if (file_exists($path)) {
+        try {
+          $alias = Yaml::parseFile($path);
+          if (is_array($alias) && is_array($alias[$env] ?? NULL)) {
+            $this->aliasCache[$key] = $alias[$env];
+          }
+        }
+        catch (ParseException) {
+          // An alias file that doesn't parse breaks the remote transport too;
+          // leaving this NULL sends the job over SSH, where drush reports the
+          // broken alias better than a crash here would.
+        }
+      }
+    }
+
+    return $this->aliasCache[$key];
   }
 
   /**
@@ -234,15 +456,18 @@ class FleetRunner {
    *   site and its drush result.
    */
   public function preflight(array $selection, string $command, string $env = 'prod'): ?array {
-    $domains = reset($selection);
+    if (empty($selection)) {
+      return NULL;
+    }
+
+    $app = array_key_first($selection);
+    $domains = $selection[$app];
     if (empty($domains)) {
       return NULL;
     }
 
     $site = $domains[0];
-    $alias = Multisite::getIdentifier('http://' . $site) . '.' . $env;
-    $argv = array_merge($this->drushCommand(), ["@{$alias}", '--ssh-options=' . $this->sshOptions(), 'help', $command]);
-    $result = $this->runCanary($site, $argv);
+    $result = $this->runCanary($site, $this->jobArgv($app, $site, $env, ['help', $command]));
 
     return $result['exit'] === 0 ? NULL : ['site' => $site] + $result;
   }
