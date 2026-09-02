@@ -17,7 +17,7 @@ The Configuration Split module defines a configuration entity that allows defini
 There are a few prerequisites that you should read and understand before
 working with config splits.
 
-- https://docs.acquia.com/blt/developer/config-split/
+- https://docs.acquia.com/acquia-cloud-platform/help/94086-how-enable-config-split
 - https://www.drupal.org/project/config_split/issues/2885643#comment-12125863
 
 If there is config that should be ignored as part of a config split, the appropriate mechanism for defining this is by implementing the `hook_config_ignore_settings_alter` hook. See `commencement_core.module` for an example implementation.
@@ -59,8 +59,8 @@ Split will enable them.
 
 **DO NOT** share theme-dependent configuration in the sync directory if your
 site split has complete-split a custom theme. The shared configuration will be
-deleted on export which will break BLT's configuration integrity checks. An
-example of this would be a block.
+deleted on export, which breaks the deploy's config import step. An example of
+this would be a block.
 
 ## Best Practices
 ### Complete vs. Partial Split ?
