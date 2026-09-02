@@ -9,8 +9,53 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\Core\Url;
 use Drupal\sitenow_intranet\IntranetHelper;
+
+/**
+ * Implements hook_file_download().
+ *
+ * Grants delivery of oEmbed thumbnails held in private storage.
+ *
+ * Private files are delivered only if some module returns headers for them.
+ * file_file_download() does that by looking for an entity field referencing the
+ * file, which it finds through file usage records. Media registers no usage for
+ * an oEmbed thumbnail because it hangs off a computed thumbnail rather than a
+ * field, and media implements no hook_file_download() of its own. Nothing else
+ * claims them, so without this they are undeliverable to everyone, including
+ * authenticated users, and remote video thumbnails render broken.
+ *
+ * This grants delivery rather than access. Anonymous and unprivileged requests
+ * are already refused before file delivery by SitenowIntranetSubscriber, which
+ * is what keeps the site closed.
+ */
+function sitenow_intranet_file_download($uri) {
+  if (StreamWrapperManager::getScheme($uri) !== 'private') {
+    return NULL;
+  }
+
+  $target = StreamWrapperManager::getTarget($uri);
+
+  if (!is_string($target) || !str_starts_with($target, 'oembed_thumbnails/')) {
+    return NULL;
+  }
+
+  /** @var \Drupal\file\FileRepositoryInterface $repository */
+  $repository = \Drupal::service('file.repository');
+  $file = $repository->loadByUri($uri);
+
+  // Thumbnails are normally managed, but an unmanaged one is still ours to
+  // deliver, so fall back to describing the file on disk.
+  if ($file) {
+    return file_get_content_headers($file);
+  }
+
+  return [
+    'Content-Type' => \Drupal::service('file.mime_type.guesser')->guessMimeType($uri),
+    'Content-Length' => filesize($uri),
+  ];
+}
 
 /**
  * Implements hook_preprocess_block().
