@@ -20,6 +20,8 @@ use SiteNow\Utility\Multisite;
  * then reconciles the copy via site:update (updatedb, config import, deploy
  * hooks). Runs inside DDEV and reaches the remote over drush aliases + SSH, so
  * it needs a forwarded SSH agent (`ddev auth ssh`).
+ *
+ * A local.settings.php file is generated for the site if one does not exist.
  */
 #[AsCommand(
   name: 'site:sync',
@@ -115,6 +117,20 @@ HELP);
     $remote = "@{$id}.{$env}";
     $local = "@{$id}.local";
 
+    // Generate a local.settings.php file if one doesn't exist so that a
+    // local db can be created and a sync can proceed.
+    $dir = $this->siteDirectory($site);
+    $local_settings = "{$this->repoRoot}/docroot/sites/{$dir}/settings/local.settings.php";
+    if (!is_file($local_settings)) {
+      $io->newLine();
+      $io->section('Generate local settings');
+      $init = $this->drush(['settings'], TRUE, $site);
+      if (!$init->isSuccessful()) {
+        $err->error("Could not generate local.settings.php for {$site}.");
+        return Command::FAILURE;
+      }
+    }
+
     if (!$input->getOption('yes')) {
       $io->writeln("Sync <comment>{$remote}</comment> => <comment>{$local}</comment>");
       if (!$io->confirm("This overwrites your local database for {$site}. Continue?", FALSE)) {
@@ -164,7 +180,6 @@ HELP);
 
     // 4. Optional file syncs, mirroring the old `ds --sync-*-files` behavior.
     //    The local destinations match where BLT's dsf/dspf wrote them.
-    $dir = $this->siteDirectory($site);
     if ($input->getOption('sync-public-files')) {
       $io->newLine();
       $io->section('Public files');
