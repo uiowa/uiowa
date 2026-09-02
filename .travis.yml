@@ -51,7 +51,7 @@ install:
   - composer install
   - export PATH="$COMPOSER_BIN:$PATH"
 
-  # Frontend build (still using BLT command hook for now)
+  # Frontend build
   - yarn install --production --ignore-optional --frozen-lockfile --non-interactive
   - yarn workspaces run build
 
