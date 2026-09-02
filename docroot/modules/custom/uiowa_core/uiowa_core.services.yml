@@ -15,3 +15,13 @@ services:
     arguments: ['@current_user']
     tags:
       - { name: access_check, applies_to: _uiowa_core_access_check }
+  uiowa_core.file_scheme_migrator:
+    class: Drupal\uiowa_core\FileSchemeMigrator
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_field.manager'
+      - '@file_system'
+      - '@file.repository'
+      - '@stream_wrapper_manager'
+      - '@database'
+      - '@logger.channel.uiowa_core'
