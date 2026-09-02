@@ -1,0 +1,38 @@
+diff --git a/big_pipe_sessionless.info.yml b/big_pipe_sessionless.info.yml
+index 491cc7991afb3b401bc2b3c03277372962bbdb5d..b25af6a0ab973631025bf38202f86fc88f73376c 100644
+--- a/big_pipe_sessionless.info.yml
++++ b/big_pipe_sessionless.info.yml
+@@ -2,7 +2,7 @@ name: Sessionless BigPipe
+ type: module
+ description: 'Accelerates Page Cache misses using the BigPipe technique.'
+ package: 'Performance and scalability'
+-core_version_requirement: ^9 || ^10
++core_version_requirement: ^10 || ^11
+ dependencies:
+   - drupal:big_pipe
+   - drupal:page_cache
+diff --git a/composer.json b/composer.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b4bbcd7a50f9b4fbf8faee6e2957a68b726470f2
+--- /dev/null
++++ b/composer.json
+@@ -0,0 +1,6 @@
++{
++  "name": "drupal/big_pipe_sessionless",
++  "type": "drupal-module",
++  "description": "Accelerates Page Cache misses using the BigPipe technique.",
++  "license": "GPL-2.0-or-later"
++}
+diff --git a/src/Render/BigPipeSessionless.php b/src/Render/BigPipeSessionless.php
+index 4351c362eae22e4162f42ff3a0deb21ea13e666f..de754fbf8c83844c3f10fb2ae7050b3e1c5d751f 100644
+--- a/src/Render/BigPipeSessionless.php
++++ b/src/Render/BigPipeSessionless.php
+@@ -136,7 +136,7 @@ class BigPipeSessionless extends BigPipe {
+     // for debugging purposes and for modules that integrate with reverse
+     // proxies that support cache tags.
+     $fake_request = $this->requestStack->getMainRequest()->duplicate();
+-    $streamed_response = $this->filterResponse($fake_request, HttpKernelInterface::MASTER_REQUEST, $streamed_response);
++    $streamed_response = $this->filterResponse($fake_request, HttpKernelInterface::MAIN_REQUEST, $streamed_response);
+ 
+     // Prime Page Cache.
+     // @see \Drupal\big_pipe_sessionless\StackMiddleware\BigPipeSessionlessPageCache
