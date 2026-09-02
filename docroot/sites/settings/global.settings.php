@@ -57,7 +57,7 @@ switch ($ah_env) {
  */
 $settings['maintenance_theme'] = 'uids_base';
 
-// Override BLTs hash salt to be unique per site.
+// Override DRS's hash salt to be unique per site.
 $settings['hash_salt'] = hash('sha256', $ah_group . $ah_env . $site_name);
 
 // Compatibility with Acquia Platform Email for Symfony Mailer module.
