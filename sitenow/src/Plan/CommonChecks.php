@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
  * passes to `runChecks()`.
  *
  * Requires the using class to also use `SiteNowCommandsTrait` for
- * `isHostShell()` and `getAcquiaCredentials()`.
+ * `isHostShell()` and `credentials()`.
  */
 trait CommonChecks {
 
@@ -38,10 +38,9 @@ trait CommonChecks {
    */
   protected function checkAcquiaCredentials(): Check {
     return new Check(self::CHECK_ACQUIA_CREDENTIALS, function (): CheckResult {
-      $creds = $this->getAcquiaCredentials();
-      return (!empty($creds['key']) && !empty($creds['secret']))
+      return $this->credentials()->hasAcquia()
         ? CheckResult::pass()
-        : CheckResult::fail('Acquia credentials not found. Set uiowa.credentials.acquia.key/secret in blt/local.blt.yml.');
+        : CheckResult::fail($this->acquiaCredentialsMissing());
     });
   }
 

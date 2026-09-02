@@ -49,7 +49,7 @@ class ReportSiteCountCommand extends Command {
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Locates blt/manifest.yml.
+   *   Absolute path to the repository root. Locates sitenow/manifest.yml.
    */
   public function __construct(
     private string $repoRoot = '',

@@ -42,7 +42,7 @@ class ReportSplitsCommand extends Command {
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Locates blt/manifest.yml and the
+   *   Absolute path to the repository root. Locates sitenow/manifest.yml and the
    *   CSV export.
    */
   public function __construct(

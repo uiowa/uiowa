@@ -6,7 +6,7 @@
 # the code path uses AH_SITE_NAME (e.g. uiowa07prod).
 
 log="/shared/logs/drush-cron-${AH_SITE_GROUP}.log"
-manifest="/var/www/html/${AH_SITE_NAME}/blt/manifest.yml"
+manifest="/var/www/html/${AH_SITE_NAME}/sitenow/manifest.yml"
 
 sites=$(sed -n "/^${AH_SITE_GROUP}:/,/^[^ ]/p" "$manifest" | grep "  -" | awk '{print $2}')
 
