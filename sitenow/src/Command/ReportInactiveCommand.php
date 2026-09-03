@@ -4,6 +4,7 @@ namespace SiteNow\Command;
 
 use SiteNow\Process\FleetRunner;
 use SiteNow\Report\CsvWriter;
+use SiteNow\Report\FleetDomains;
 use SiteNow\Traits\DescribesDrushFailures;
 use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
@@ -37,8 +38,8 @@ class ReportInactiveCommand extends Command {
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Locates sitenow/manifest.yml and the
-   *   CSV export location.
+   *   Absolute path to the repository root.
+   *   Locates sitenow/manifest.yml and the CSV export location.
    */
   public function __construct(
     private string $repoRoot = '',
@@ -54,7 +55,8 @@ class ReportInactiveCommand extends Command {
       ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa,uiowa03).', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('threshold', NULL, InputOption::VALUE_REQUIRED, 'Inactivity threshold (e.g. "1 year", "6 months").', '1 year')
-      ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.');
+      ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.')
+      ->addOption('domains', NULL, InputOption::VALUE_NONE, 'Add a launch status column (Live / In Progress) by cross-checking Acquia Cloud for a registered domain. Requires Acquia credentials.');
   }
 
   /**
@@ -95,7 +97,35 @@ class ReportInactiveCommand extends Command {
       return Command::FAILURE;
     }
 
-    $headers = ['Application', 'URL', 'Days Since Revision', 'Days Since Login', "Login Inactive: {$threshold}"];
+    $show_domains = (bool) $input->getOption('domains');
+    $live_domains = [];
+    if ($show_domains) {
+      $client = $this->requireAcquiaClient($io);
+      if ($client === NULL) {
+        return Command::FAILURE;
+      }
+
+      $err->writeln('<comment>Checking registered domains on Acquia Cloud...</comment>');
+      $applications = $this->getSortedApplications($client);
+      $fleet = new FleetDomains($client);
+      foreach ($fleet->iterate($applications, array_keys($selection), ['prod']) as $row) {
+        $live_domains[$row['app']][$row['domain']] = TRUE;
+      }
+    }
+
+    $headers = ['Application',
+      'URL',
+    ];
+    if ($show_domains) {
+      $headers[] = 'Launch Status';
+    }
+    $headers = array_merge($headers, [
+      'Days Since Revision',
+      'Days Since Login',
+      "Login Inactive: {$threshold}",
+      'Site Mail',
+      'Webmasters',
+    ]);
 
     $err->writeln("<comment>Checking last revision on {$site_count} sites...</comment>");
     $revisions = $runner->run($selection, [
@@ -111,6 +141,12 @@ class ReportInactiveCommand extends Command {
       '--format=json',
       '--no-interaction',
     ], 'prod', NULL, $this->progress($err, 'login'));
+    $site_mails = $runner->run($selection, [
+      'cget',
+      'system.site',
+      'mail',
+      '--format=string',
+    ], 'prod', NULL, $this->progress($err, 'mail'));
 
     $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Inactive-Report', $headers, [
       $target_apps ? implode('+', $target_apps) : 'all-apps',
@@ -133,7 +169,17 @@ class ReportInactiveCommand extends Command {
           $days_since_revision = ceil(($now - $last_revision) / 86400);
         }
 
-        $last_login = $this->parseLastLogin($logins[$domain]['output'], $logins[$domain]['exit']);
+        $users = $this->cleanUserList($logins[$domain]['output'], $logins[$domain]['exit']);
+
+        // If we don't have an array of users,
+        // just pass the value forward to last_login
+        // for error handling.
+        if (!is_array($users)) {
+          $last_login = $users;
+        }
+        else {
+          $last_login = $this->parseLastLogin($users);
+        }
         if ($last_login === FALSE) {
           $days_since_login = 'N/A';
           $status = 'Error';
@@ -147,7 +193,22 @@ class ReportInactiveCommand extends Command {
           $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
         }
 
-        $row = [$app_name, $domain, $days_since_revision, $days_since_login, $status];
+        $webmasters = $users ? $this->filterUsers($users) : [];
+        $user_output = $webmasters ? implode(',', array_column($webmasters, 'mail')) : 'N/A';
+
+        if ($site_mails[$domain]['exit'] !== 0 || empty($site_mails[$domain]['output'])) {
+          $site_mail = FALSE;
+        }
+        else {
+          $site_mail = $site_mails[$domain]['output'];
+        }
+        $site_mail_output = ($site_mail) ?: 'N/A';
+
+        $row = [$app_name, $domain];
+        if ($show_domains) {
+          $row[] = $this->isLive($domain, $app_name, $live_domains) ? 'Live' : 'In Progress';
+        }
+        array_push($row, $days_since_revision, $days_since_login, $status, $site_mail_output, $user_output);
         if ($writer) {
           $writer->writeRow($row);
         }
@@ -196,18 +257,39 @@ class ReportInactiveCommand extends Command {
   }
 
   /**
-   * Parse `users:list --format=json` output into the latest login timestamp.
+   * Determine whether a site's manifest domain is registered on Acquia.
+   *
+   * A newly provisioned site only has internal domains,
+   * and should be considered "in progress" and otherwise
+   * not "live" until its manifest domain has been added.
+   *
+   * @param string $domain
+   *   The site's manifest domain.
+   * @param string $app
+   *   The application the site belongs to.
+   * @param array<string, array<string, bool>> $live_domains
+   *   Registered domains per app, keyed as built from FleetDomains::iterate().
+   *
+   * @return bool
+   *   TRUE if the domain is registered on the app's prod environment.
+   */
+  protected function isLive(string $domain, string $app, array $live_domains): bool {
+    return isset($live_domains[$app][$domain]);
+  }
+
+  /**
+   * Clean `users:list --format=json` output for easier processing.
    *
    * @param string $output
    *   The drush stdout.
    * @param int $exit_code
    *   The drush exit code.
    *
-   * @return int|null|false
-   *   Latest non-admin login timestamp, NULL when there is no login data, or
+   * @return array|null|false
+   *   The decoded user list keyed by uid, NULL when there is no user data, or
    *   FALSE on a non-zero exit or unparseable output.
    */
-  protected function parseLastLogin(string $output, int $exit_code): int|null|false {
+  protected function cleanUserList(string $output, int $exit_code): array|null|false {
     if ($exit_code !== 0 || trim($output) === '') {
       return FALSE;
     }
@@ -224,7 +306,19 @@ class ReportInactiveCommand extends Command {
     if (!is_array($users) || empty($users)) {
       return NULL;
     }
+    return $users;
+  }
 
+  /**
+   * Parse `users:list --format=json` output into the latest login timestamp.
+   *
+   * @param array $users
+   *   The decoded user list, as returned by cleanUserList().
+   *
+   * @return int|null
+   *   Latest non-admin login timestamp, or NULL when there is no login data.
+   */
+  protected function parseLastLogin(array $users): int|null {
     $latest_login = NULL;
     $floor = strtotime('2000-01-01');
 
@@ -244,6 +338,36 @@ class ReportInactiveCommand extends Command {
     }
 
     return $latest_login;
+  }
+
+  /**
+   * Filter `users:list --format=json` on the provided roles list.
+   *
+   * @param array $users
+   *   The decoded user list, as returned by cleanUserList().
+   * @param array $roles
+   *   The roles on which to filter.
+   *
+   * @return array
+   *   The users which have at least one of the given roles.
+   */
+  protected function filterUsers(array $users, array $roles = ['webmaster']): array {
+    $user_list = [];
+    foreach ($users as $user) {
+      if (isset($user['uid']) && $user['uid'] == 1) {
+        continue;
+      }
+      if (isset($user['status']) && $user['status'] !== 'active') {
+        continue;
+      }
+      if (!isset($user['roles'])) {
+        continue;
+      }
+      if (!empty(array_intersect($roles, $user['roles']))) {
+        $user_list[] = $user;
+      }
+    }
+    return $user_list;
   }
 
   /**
