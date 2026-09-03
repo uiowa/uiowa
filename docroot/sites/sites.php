@@ -467,12 +467,6 @@ $sites['fobusinsvc.dev.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
 $sites['fobusinsvc.stage.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
 $sites['fobusinsvc.prod.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
 
-// Directory aliases for ighn.international.uiowa.edu.
-$sites['internationalighn.uiowa.ddev.site'] = 'ighn.international.uiowa.edu';
-$sites['internationalighn.dev.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
-$sites['internationalighn.stage.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
-$sites['internationalighn.prod.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
-
 // Directory aliases for conflictmanagement.org.uiowa.edu.
 $sites['orgconflictmanagement.uiowa.ddev.site'] = 'conflictmanagement.org.uiowa.edu';
 $sites['orgconflictmanagement.dev.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
@@ -736,12 +730,6 @@ $sites['sitesfric.uiowa.ddev.site'] = 'fric.sites.uiowa.edu';
 $sites['sitesfric.dev.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
 $sites['sitesfric.stage.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
 $sites['sitesfric.prod.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
-
-// Directory aliases for accel.education.uiowa.edu.
-$sites['educationaccel.uiowa.ddev.site'] = 'accel.education.uiowa.edu';
-$sites['educationaccel.dev.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
-$sites['educationaccel.stage.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
-$sites['educationaccel.prod.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
 
 // Directory aliases for intermediatechinesereader.sites.uiowa.edu.
 $sites['sitesintermediatechinesereader.uiowa.ddev.site'] = 'intermediatechinesereader.sites.uiowa.edu';
@@ -7871,12 +7859,6 @@ $sites['labexso.dev.drupal.uiowa.edu'] = 'exso.lab.uiowa.edu';
 $sites['labexso.stage.drupal.uiowa.edu'] = 'exso.lab.uiowa.edu';
 $sites['labexso.prod.drupal.uiowa.edu'] = 'exso.lab.uiowa.edu';
 
-// Directory aliases for badhikari.cs.uiowa.edu.
-$sites['csbadhikari.uiowa.ddev.site'] = 'badhikari.cs.uiowa.edu';
-$sites['csbadhikari.dev.drupal.uiowa.edu'] = 'badhikari.cs.uiowa.edu';
-$sites['csbadhikari.stage.drupal.uiowa.edu'] = 'badhikari.cs.uiowa.edu';
-$sites['csbadhikari.prod.drupal.uiowa.edu'] = 'badhikari.cs.uiowa.edu';
-
 // Directory aliases for faculty.provost.uiowa.edu.
 $sites['provostfaculty.uiowa.ddev.site'] = 'faculty.provost.uiowa.edu';
 $sites['provostfaculty.dev.drupal.uiowa.edu'] = 'faculty.provost.uiowa.edu';
@@ -7960,3 +7942,9 @@ $sites['studiostrings.uiowa.ddev.site'] = 'strings.studio.uiowa.edu';
 $sites['studiostrings.dev.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
 $sites['studiostrings.stage.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
 $sites['studiostrings.prod.drupal.uiowa.edu'] = 'strings.studio.uiowa.edu';
+
+// Directory aliases for choirs.music.uiowa.edu.
+$sites['musicchoirs.uiowa.ddev.site'] = 'choirs.music.uiowa.edu';
+$sites['musicchoirs.dev.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
+$sites['musicchoirs.stage.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
+$sites['musicchoirs.prod.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
