@@ -55,6 +55,13 @@ class ReportInactiveTest extends UnitTestCase {
         return $this->parseLastRevision($output, $exit);
       }
 
+      /**
+       * Exposes isLive().
+       */
+      public function live(string $domain, string $app, array $live_domains): bool {
+        return $this->isLive($domain, $app, $live_domains);
+      }
+
     };
   }
 
@@ -193,6 +200,24 @@ class ReportInactiveTest extends UnitTestCase {
    */
   public function testFilterUsersNoMatchesIsEmptyArray(): void {
     $this->assertSame([], $this->command()->webmasters([]));
+  }
+
+  /**
+   * A domain registered for the site's app is live.
+   */
+  public function testIsLiveMatchesRegisteredDomain(): void {
+    $live_domains = ['uiowa02' => ['example.uiowa.edu' => TRUE]];
+    $this->assertTrue($this->command()->live('example.uiowa.edu', 'uiowa02', $live_domains));
+  }
+
+  /**
+   * A domain absent from its app's registered set is not live, even if it is
+   * registered under a different app.
+   */
+  public function testIsLiveRejectsUnregisteredOrWrongAppDomain(): void {
+    $live_domains = ['uiowa02' => ['example.uiowa.edu' => TRUE]];
+    $this->assertFalse($this->command()->live('unlaunched.uiowa.edu', 'uiowa02', $live_domains));
+    $this->assertFalse($this->command()->live('example.uiowa.edu', 'uiowa03', $live_domains));
   }
 
 }
