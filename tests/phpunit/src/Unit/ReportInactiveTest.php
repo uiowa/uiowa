@@ -211,12 +211,13 @@ class ReportInactiveTest extends UnitTestCase {
   }
 
   /**
-   * A domain absent from its app's registered set is not live, even if it is
-   * registered under a different app.
+   * A domain absent from its app's registered set is not live.
    */
   public function testIsLiveRejectsUnregisteredOrWrongAppDomain(): void {
     $live_domains = ['uiowa02' => ['example.uiowa.edu' => TRUE]];
     $this->assertFalse($this->command()->live('unlaunched.uiowa.edu', 'uiowa02', $live_domains));
+    // Should still be rejected, because it is live
+    // on a different domain than is being tested against.
     $this->assertFalse($this->command()->live('example.uiowa.edu', 'uiowa03', $live_domains));
   }
 
