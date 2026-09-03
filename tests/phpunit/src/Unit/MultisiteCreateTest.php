@@ -370,12 +370,12 @@ class MultisiteCreateTest extends UnitTestCase {
    * The core project and database keys derive from the host and identifier.
    */
   public function testCoreConfigDerivation() {
-    $blt = $this->siteConfig([]);
+    $drs = $this->siteConfig([]);
 
-    $this->assertSame('newsite', $blt['project']['machine_name']);
-    $this->assertSame('newsite.uiowa.edu', $blt['project']['human_name']);
-    $this->assertSame('newsite_uiowa_edu', $blt['drupal']['db']['database']);
-    $this->assertSame('https://newsite.prod.drupal.uiowa.edu', $blt['uiowa']['stage_file_proxy']['origin']);
+    $this->assertSame('newsite', $drs['project']['machine_name']);
+    $this->assertSame('newsite.uiowa.edu', $drs['project']['human_name']);
+    $this->assertSame('newsite_uiowa_edu', $drs['drupal']['db']['database']);
+    $this->assertSame('https://newsite.prod.drupal.uiowa.edu', $drs['uiowa']['stage_file_proxy']['origin']);
   }
 
   // --- Hostname validation ----------------------------------------------------
