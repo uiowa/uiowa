@@ -4,6 +4,7 @@ namespace SiteNow\Command;
 
 use SiteNow\Process\FleetRunner;
 use SiteNow\Report\CsvWriter;
+use SiteNow\Report\FleetDomains;
 use SiteNow\Traits\DescribesDrushFailures;
 use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
@@ -54,7 +55,8 @@ class ReportInactiveCommand extends Command {
       ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa,uiowa03).', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('threshold', NULL, InputOption::VALUE_REQUIRED, 'Inactivity threshold (e.g. "1 year", "6 months").', '1 year')
-      ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.');
+      ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.')
+      ->addOption('domains', NULL, InputOption::VALUE_NONE, 'Add a launch status column (Live / In Progress) by cross-checking Acquia Cloud for a registered domain. Requires Acquia credentials.');
   }
 
   /**
@@ -95,14 +97,35 @@ class ReportInactiveCommand extends Command {
       return Command::FAILURE;
     }
 
+    $show_domains = (bool) $input->getOption('domains');
+    $live_domains = [];
+    if ($show_domains) {
+      $client = $this->requireAcquiaClient($io);
+      if ($client === NULL) {
+        return Command::FAILURE;
+      }
+
+      $err->writeln('<comment>Checking registered domains on Acquia Cloud...</comment>');
+      $applications = $this->getSortedApplications($client);
+      $fleet = new FleetDomains($client);
+      foreach ($fleet->iterate($applications, array_keys($selection), ['prod']) as $row) {
+        $live_domains[$row['app']][$row['domain']] = TRUE;
+      }
+    }
+
     $headers = ['Application',
       'URL',
+    ];
+    if ($show_domains) {
+      $headers[] = 'Launch Status';
+    }
+    $headers = array_merge($headers, [
       'Days Since Revision',
       'Days Since Login',
       "Login Inactive: {$threshold}",
       'Site Mail',
       'Webmasters',
-    ];
+    ]);
 
     $err->writeln("<comment>Checking last revision on {$site_count} sites...</comment>");
     $revisions = $runner->run($selection, [
@@ -181,15 +204,11 @@ class ReportInactiveCommand extends Command {
         }
         $site_mail_output = ($site_mail) ?: 'N/A';
 
-        $row = [
-          $app_name,
-          $domain,
-          $days_since_revision,
-          $days_since_login,
-          $status,
-          $site_mail_output,
-          $user_output,
-        ];
+        $row = [$app_name, $domain];
+        if ($show_domains) {
+          $row[] = $this->isLive($domain, $app_name, $live_domains) ? 'Live' : 'In Progress';
+        }
+        array_push($row, $days_since_revision, $days_since_login, $status, $site_mail_output, $user_output);
         if ($writer) {
           $writer->writeRow($row);
         }
@@ -235,6 +254,27 @@ class ReportInactiveCommand extends Command {
         $err->writeln("<error>✖</error> [{$done}/{$total}] {$query} attempt failed: {$key} — " . $this->failureReason($result));
       }
     };
+  }
+
+  /**
+   * Determine whether a site's manifest domain is registered on Acquia.
+   *
+   * A newly provisioned site only has internal domains,
+   * and should be considered "in progress" and otherwise
+   * not "live" until its manifest domain has been added.
+   *
+   * @param string $domain
+   *   The site's manifest domain.
+   * @param string $app
+   *   The application the site belongs to.
+   * @param array<string, array<string, bool>> $live_domains
+   *   Registered domains per app, keyed as built from FleetDomains::iterate().
+   *
+   * @return bool
+   *   TRUE if the domain is registered on the app's prod environment.
+   */
+  protected function isLive(string $domain, string $app, array $live_domains): bool {
+    return isset($live_domains[$app][$domain]);
   }
 
   /**
