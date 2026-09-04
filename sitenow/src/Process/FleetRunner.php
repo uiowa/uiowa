@@ -16,9 +16,9 @@ use SiteNow\Utility\Multisite;
  * text. The manifest (sitenow/manifest.yml, maintained by every provision) is
  * the source of truth for which sites exist on which application.
  *
- * Sites are reached over SSH by site alias, or by local drush when the site
- * belongs to the application and environment this process runs on. See
- * runsLocally().
+ * Each site is reached either by a drush site alias, which always opens an
+ * SSH connection, or directly by --root and --uri, which opens none. See
+ * runsLocally() for which one a given site gets.
  */
 class FleetRunner {
 
@@ -48,14 +48,12 @@ class FleetRunner {
   const MUX_OPTIONS = '-o ControlMaster=auto -o ControlPath=~/.ssh/cm-%C -o ControlPersist=60';
 
   /**
-   * Drupal's own default site directory, provisioned automatically.
+   * Drupal's shared default site directory.
    *
-   * The one directory Multisite::getIdentifier() never names an alias file
-   * after: this site is set up automatically rather than through per-site
-   * provisioning, so its alias file is named after the directory
-   * (default.site.yml) instead of an identifier derived from whichever
-   * domain sites.php happens to alias to it (e.g. demo.sitenow.uiowa.edu).
-   * See aliasIdentifier().
+   * The one site whose alias file isn't named after a domain-derived
+   * identifier: it isn't tied to any single domain, so its alias file is
+   * named after the directory itself (default.site.yml). See
+   * aliasIdentifier().
    */
   const DEFAULT_SITE_DIRECTORY = 'default';
 
@@ -254,17 +252,9 @@ class FleetRunner {
   }
 
   /**
-   * Whether one site's job runs on this machine rather than over SSH.
+   * Whether a site's job is addressed locally rather than over SSH.
    *
-   * True only for a site on the application and environment this process is
-   * running on. Anything else is a different machine.
-   *
-   * The environment is settled by the alias, not by comparing $env to
-   * AH_SITE_ENVIRONMENT: the alias key and the Acquia environment name are
-   * not the same string everywhere. Alias key 'test' is environment 'test' on
-   * uiowa through uiowa06 but 'stage' on uiowa07, uiowa08 and uiowa09, so a
-   * direct comparison would call the running environment remote on those
-   * three and demand SSH keys that aren't there.
+   * See localAlias() for exactly what "local" requires.
    *
    * @param string $app
    *   The application the site belongs to.
@@ -309,23 +299,18 @@ class FleetRunner {
   /**
    * Build one site's drush argv, local or remote.
    *
-   * Remote jobs are addressed by site alias. Any alias with a host key is
-   * remote to drush — site-alias tests only for that key's presence
-   * (SiteAliasTrait::isRemote()) and never compares the host to this machine
-   * — so an alias naming this very environment still opens an SSH connection
-   * back to itself. Authentication isn't the obstacle there: Acquia's own
-   * drush-cron.sh runs its environment's alias with no agent loaded, and
-   * `drush @uiowa07.prod status` succeeds on uiowa07.prod. Host key
-   * verification is, and it took down the scheduled site-count job on every
-   * application whose sites have to be queried individually
-   * (uiowa/uiowa#10101). Local jobs drop the alias and address the site by
-   * --root and --uri, so no connection is opened to fail.
+   * A local job addresses the site with --root and --uri and opens no
+   * connection. A remote job addresses it with a site alias instead, which
+   * drush always reaches over SSH — including an alias whose host happens to
+   * be this very machine, since drush decides "remote" purely from whether
+   * the alias carries a host key, not from whether that host is itself.
    *
-   * --root is this process's own docroot rather than the alias's, so the job
-   * runs the code that is actually deployed here. --uri comes from the alias,
-   * which is the only place the site's per-environment hostname is recorded:
-   * the manifest holds production domains, and pointing a dev or test job at
-   * one would hand the site a production base_url.
+   * --root is this process's own docroot, so a local job runs the code
+   * actually deployed here rather than whatever the alias records. --uri
+   * comes from the alias because the manifest only holds each site's
+   * production domain; dev and test have their own hostnames, and addressing
+   * one of those by its production domain would give the site a production
+   * base_url.
    *
    * @param string $app
    *   The application the site belongs to.
@@ -359,12 +344,17 @@ class FleetRunner {
   }
 
   /**
-   * One site's alias definition, when it names this very environment.
+   * One site's alias environment, when it is this process's own.
    *
-   * The alias's 'user' is the Acquia site user — "uiowa07.stage" — which is
-   * AH_SITE_GROUP and AH_SITE_ENVIRONMENT joined, and so answers both halves
-   * of the question at once. Returning the definition rather than a boolean
-   * lets the local branch read the hostname from the same parse.
+   * A site is local when its application matches $app, and the alias
+   * environment's 'user' field (e.g. "uiowa07.stage") matches this
+   * application and environment joined the same way. 'user' is compared
+   * rather than checking $env against AH_SITE_ENVIRONMENT directly, because
+   * an alias key doesn't always name the environment it points to: 'test' on
+   * some applications means AH_SITE_ENVIRONMENT 'stage' on others, and a
+   * direct comparison would misjudge those. Returning the alias environment
+   * rather than a boolean lets the caller read its hostname from the same
+   * parse.
    *
    * @param string $app
    *   The application the site belongs to.
@@ -374,13 +364,11 @@ class FleetRunner {
    *   The target environment (e.g. 'prod').
    *
    * @return array|null
-   *   The alias environment definition, or NULL when the job is not local.
+   *   The matched alias environment, or NULL when the site isn't local.
    */
   protected function localAlias(string $app, string $domain, string $env): ?array {
 
-    // Off Acquia nothing is local; a different application never is, and the
-    // manifest's app names are AH_SITE_GROUP values, so this settles most of
-    // a fleet-wide selection without opening a file.
+    // Off Acquia, or targeting a different application, this is never local.
     if ($this->localApp === NULL || $this->localEnv === NULL || $app !== $this->localApp) {
       return NULL;
     }
@@ -434,15 +422,10 @@ class FleetRunner {
   /**
    * The identifier a site's drush alias file is named after.
    *
-   * Multisite::getIdentifier() derives this from the domain and matches the
-   * alias filename for every site except the application's own default site
-   * (DEFAULT_SITE_DIRECTORY): that one is provisioned automatically rather
-   * than through per-site provisioning, so its alias file is named after the
-   * directory (default.site.yml), not an identifier derived from whichever
-   * domain sites.php happens to alias to it. Skipping this for every other
-   * site keeps the fleet-wide selection cheap: siteDirectory() only opens
-   * sites.php on the first call of any kind, and most fleets never hit this
-   * one site to begin with.
+   * Matches Multisite::getIdentifier()'s domain-derived identifier for every
+   * site except the shared default site, whose alias file is named after its
+   * directory instead (default.site.yml), since it isn't tied to any single
+   * domain.
    *
    * @param string $domain
    *   The site domain.
@@ -459,10 +442,8 @@ class FleetRunner {
   /**
    * Resolve a site domain to its multisite directory, per sites.php.
    *
-   * Mirrors Drupal's own aliasing: a host with no entry resolves to a
-   * same-named directory, and sites.php maps the handful of exceptions,
-   * notably the application's own default site — reached at a domain like
-   * demo.sitenow.uiowa.edu but living in docroot/sites/default.
+   * A host with no entry there resolves to a same-named directory; sites.php
+   * maps the handful of exceptions, including the shared default site.
    *
    * @param string $domain
    *   The site domain.
