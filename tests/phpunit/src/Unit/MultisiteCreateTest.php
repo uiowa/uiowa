@@ -52,8 +52,8 @@ class MultisiteCreateTest extends UnitTestCase {
         return $this->eligibleApps($candidates);
       }
 
-      public function pubBuildSiteConfig(string $host, string $id, string $db, string $local, string $prod_domain, array $options): array {
-        return $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
+      public function pubBuildSiteConfig(string $host, string $id, string $db, string $local, array $options): array {
+        return $this->buildSiteConfig($host, $id, $db, $local, $options);
       }
 
       public function pubHasIdentifierConflict(string $host, array $existing): bool {
@@ -72,7 +72,6 @@ class MultisiteCreateTest extends UnitTestCase {
       'newsite',
       'newsite_uiowa_edu',
       'newsite.dev.local.drupal.uiowa.edu',
-      'newsite.prod.drupal.uiowa.edu',
       $options
     );
   }
@@ -375,7 +374,6 @@ class MultisiteCreateTest extends UnitTestCase {
     $this->assertSame('newsite', $drs['project']['machine_name']);
     $this->assertSame('newsite.uiowa.edu', $drs['project']['human_name']);
     $this->assertSame('newsite_uiowa_edu', $drs['drupal']['db']['database']);
-    $this->assertSame('https://newsite.prod.drupal.uiowa.edu', $drs['uiowa']['stage_file_proxy']['origin']);
   }
 
   // --- Hostname validation ----------------------------------------------------

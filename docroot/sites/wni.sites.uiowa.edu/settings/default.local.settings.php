@@ -150,3 +150,12 @@ $settings['file_public_path'] = 'sites/' . EnvironmentDetector::getSiteName($sit
 $settings['trusted_host_patterns'] = [
   '^.+$',
 ];
+
+/**
+ * Serve missing files from the site's own live URL.
+ *
+ * Defaults to the site's own hostname rather than its internal Acquia
+ * production domain, since most local work today is against sites that have
+ * already launched to their own URL.
+ */
+$config['stage_file_proxy.settings']['origin'] = 'https://${site}';

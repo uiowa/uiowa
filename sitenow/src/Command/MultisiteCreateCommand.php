@@ -466,7 +466,7 @@ class MultisiteCreateCommand extends Command {
     $drush_alias['prod']['uri'] = $host;
     $drush_alias['prod']['paths']['files'] = $files_path;
 
-    $config = $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
+    $config = $this->buildSiteConfig($host, $id, $db, $local, $options);
 
     // settings.php include: on Acquia, load the per-environment DB credentials,
     // then Acquia Drupal Recommended Settings. Replaces the bare DRS require
@@ -611,15 +611,13 @@ EOD;
    *   The database name.
    * @param string $local
    *   The local internal domain.
-   * @param string $prod_domain
-   *   The prod internal domain, used for the stage_file_proxy origin.
    * @param array $options
    *   Command options. Reads 'requester', 'split', and 'site-name'.
    *
    * @return array
    *   The per-site drs/config.yml structure.
    */
-  protected function buildSiteConfig(string $host, string $id, string $db, string $local, string $prod_domain, array $options): array {
+  protected function buildSiteConfig(string $host, string $id, string $db, string $local, array $options): array {
     $config = [
       'project' => [
         'machine_name' => $id,
@@ -628,7 +626,7 @@ EOD;
       ],
       'drush' => ['aliases' => ['local' => 'self', 'remote' => "{$id}.prod"]],
       'drupal' => ['db' => ['database' => $db]],
-      'uiowa' => ['stage_file_proxy' => ['origin' => "https://{$prod_domain}"]],
+      'uiowa' => [],
     ];
 
     if (!empty($options['requester'])) {
