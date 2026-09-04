@@ -230,7 +230,7 @@ class MultisiteCreateCommand extends Command {
     }
 
     $context = ['app' => $app, 'app_candidates' => $candidates];
-    $summary = $this->summary($app, $input);
+    $summary = $this->summary($app, $input, $options);
     $plan = new Plan($title, $input, $validation, $summary, $context);
 
     // A failed plan carries the decision only; skip building the steps that
@@ -403,25 +403,37 @@ class MultisiteCreateCommand extends Command {
   }
 
   /**
-   * Assembles the application and database rows for the plan header.
+   * Assembles the application, database, and site rows for the plan header.
    *
    * @param array|null $app
    *   The selected application facts, or NULL when unresolved.
    * @param array $input
    *   Normalized command input.
+   * @param array $options
+   *   Command options. Reads 'site-name', 'requester', and 'split'.
    *
    * @return array
    *   Array of ['label' => string, 'value' => string] rows.
    */
-  private function summary(?array $app, array $input): array {
+  protected function summary(?array $app, array $input, array $options): array {
     if (!$app) {
       return [];
     }
-    return [
+    $summary = [
       ['label' => 'Application', 'value' => $app['name']],
       ['label' => 'Database', 'value' => $input['db'] ?? 'n/a'],
       ['label' => 'Reason', 'value' => $app['reasoning'] ?? ''],
     ];
+    if (!empty($options['site-name'])) {
+      $summary[] = ['label' => 'Site name', 'value' => $options['site-name']];
+    }
+    if (!empty($options['requester'])) {
+      $summary[] = ['label' => 'Requester', 'value' => $options['requester']];
+    }
+    if (!empty($options['split'])) {
+      $summary[] = ['label' => 'Config split', 'value' => $options['split']];
+    }
+    return $summary;
   }
 
   /**
