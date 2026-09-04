@@ -355,7 +355,7 @@ YAML);
   /**
    * The application's own default site resolves by directory, not identifier.
    *
-   * sites.php aliases it to the shared 'default' directory under a domain
+   * The sites.php aliases it to the shared 'default' directory under a domain
    * (demo.example.uiowa.edu) that Multisite::getIdentifier() would turn into
    * 'exampledemo' — a name no alias file carries, since this site's alias
    * file is named after the directory instead (default.site.yml). Confirms
