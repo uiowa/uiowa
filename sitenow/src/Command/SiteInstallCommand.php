@@ -68,7 +68,7 @@ class SiteInstallCommand extends Command {
   public const BLOCKED = 4;
 
   /**
-   * The install profile, when blt/blt.yml cannot be read.
+   * The install profile, when drs/config.yml cannot be read.
    */
   const PROFILE = 'sitenow';
 
@@ -107,8 +107,8 @@ class SiteInstallCommand extends Command {
    * Constructs the command.
    *
    * @param string $repoRoot
-   *   Absolute path to the repository root. Locates drush, the site's blt.yml,
-   *   and the exported configuration.
+   *   Absolute path to the repository root. Locates drush, the site's
+   *   drs/config.yml, and the exported configuration.
    */
   public function __construct(
     private string $repoRoot = '',
@@ -130,11 +130,11 @@ Installs Drupal for one multisite and applies the post-install steps that have
 to follow it: the site name from uiowa.site-name, the requester as a webmaster,
 and any config splits from uiowa.config.split.
 
-Run it again on a site that is already installed and it reasserts what blt.yml
-declares, reporting anything it had to correct. It will not create an account
-there, and it will not rename a site whose blt.yml names none: both would undo a
-decision someone made after the install. Run it on a site whose install died
-partway and it reinstalls.
+Run it again on a site that is already installed and it reasserts what
+drs/config.yml declares, reporting anything it had to correct. It will not
+create an account there, and it will not rename a site whose drs/config.yml
+names none: both would undo a decision someone made after the install. Run it
+on a site whose install died partway and it reinstalls.
 
 --reinstall replaces a site that is already installed, which is what you want to
 rebuild a local site and check the exported config produces a working one.
@@ -502,15 +502,15 @@ HELP);
 
     // An install always names the site, because importing the exported
     // configuration leaves it called whatever that configuration says. The
-    // declared name is used when blt.yml has one and the domain when it does
-    // not.
+    // declared name is used when drs/config.yml has one and the domain when it
+    // does not.
     //
     // A repair only names a site still carrying the exported name, which is
     // provably an install whose naming step never ran. Neither value is current
-    // enough to assert over a running site: blt.yml records the name requested
-    // when the site was created and is never updated, so a site an editor
-    // renamed years later would be renamed back, and the domain was only ever a
-    // placeholder.
+    // enough to assert over a running site: drs/config.yml records the name
+    // requested when the site was created and is never updated, so a site an
+    // editor renamed years later would be renamed back, and the domain was only
+    // ever a placeholder.
     $name = $config['uiowa']['site-name'] ?? $site;
 
     // Both halves have to be readable to conclude anything. Two NULLs would
@@ -541,7 +541,7 @@ HELP);
   }
 
   /**
-   * Ensure the site name matches what the site's blt.yml asks for.
+   * Ensure the site name matches what the site's drs/config.yml asks for.
    *
    * Installing from existing configuration overwrites the name the installer
    * was given with the exported one, so it has to be set afterwards.
@@ -727,21 +727,21 @@ HELP);
   }
 
   /**
-   * Read the site's own blt.yml.
+   * Read the site's own drs/config.yml.
    *
    * The per-site file is the source of the values the install and post-install
    * steps need — human_name, uiowa.site-name, uiowa.requester,
    * uiowa.config.split — and holds them as literals, so it is read directly
-   * rather than through BLT's layered configuration.
+   * rather than through DRS's layered configuration.
    *
    * @param string $dir
    *   The multisite directory name.
    *
    * @return array
-   *   The parsed configuration, empty when the site has no blt.yml.
+   *   The parsed configuration, empty when the site has no drs/config.yml.
    */
   protected function siteConfig(string $dir): array {
-    $path = "{$this->repoRoot}/docroot/sites/{$dir}/blt.yml";
+    $path = "{$this->repoRoot}/docroot/sites/{$dir}/drs/config.yml";
 
     return is_file($path) ? (Yaml::parseFile($path) ?: []) : [];
   }
@@ -750,10 +750,11 @@ HELP);
    * The install profile to install.
    *
    * @return string
-   *   The profile name from blt/blt.yml, or the built-in default.
+   *   The profile name from the repository's drs/config.yml, or the built-in
+   *   default.
    */
   protected function profile(): string {
-    $path = "{$this->repoRoot}/blt/blt.yml";
+    $path = "{$this->repoRoot}/drs/config.yml";
     $config = is_file($path) ? (Yaml::parseFile($path) ?: []) : [];
 
     return $config['project']['profile']['name'] ?? self::PROFILE;

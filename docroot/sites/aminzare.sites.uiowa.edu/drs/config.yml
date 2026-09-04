@@ -1,0 +1,18 @@
+project:
+  machine_name: sitesaminzare
+  human_name: aminzare.sites.uiowa.edu
+  local:
+    hostname: sitesaminzare.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: sitesaminzare.prod
+drupal:
+  db:
+    database: aminzare_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://sitesaminzare.prod.drupal.uiowa.edu
+  requester: zaminzare
+  site-name: Zahra Aminzare

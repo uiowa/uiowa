@@ -1,0 +1,18 @@
+project:
+  machine_name: studiostrings
+  human_name: strings.studio.uiowa.edu
+  local:
+    hostname: studiostrings.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: studiostrings.prod
+drupal:
+  db:
+    database: strings_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://studiostrings.prod.drupal.uiowa.edu
+  requester: vorhon
+  site-name: UI Strings

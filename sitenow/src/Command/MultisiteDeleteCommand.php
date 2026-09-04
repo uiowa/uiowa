@@ -501,26 +501,26 @@ HELP);
           : CheckResult::warn("Database {$input['db']} is not on {$input['app']}. Already deleted, or it never existed.");
       }),
       new Check(self::CHECK_DATABASE_NAME_MATCHES, function () use ($cloud, $input): CheckResult {
-        // The site's blt.yml is authoritative for the database it uses. If that
-        // disagrees with the name derived from the directory, the derived name
-        // belongs to a database this site never used, so refuse rather than
-        // guess which one to delete.
+        // The site's drs/config.yml is authoritative for the database it uses.
+        // If that disagrees with the name derived from the directory, the
+        // derived name belongs to a database this site never used, so refuse
+        // rather than guess which one to delete.
         $dir = $input['dir'];
-        $blt_path = "{$this->repoRoot}/docroot/sites/{$dir}/blt.yml";
+        $config_path = "{$this->repoRoot}/docroot/sites/{$dir}/drs/config.yml";
 
-        if (is_file($blt_path)) {
-          $configured = Yaml::parseFile($blt_path)['drupal']['db']['database'] ?? NULL;
+        if (is_file($config_path)) {
+          $configured = Yaml::parseFile($config_path)['drupal']['db']['database'] ?? NULL;
 
           return $configured === $input['db']
             ? CheckResult::pass()
-            : CheckResult::fail("Database mismatch: docroot/sites/{$dir}/blt.yml names '{$configured}', expected '{$input['db']}'.");
+            : CheckResult::fail("Database mismatch: docroot/sites/{$dir}/drs/config.yml names '{$configured}', expected '{$input['db']}'.");
         }
 
-        // blt.yml goes with the site directory, so a run interrupted during the
-        // repository removals leaves the derived name unconfirmable.
+        // drs/config.yml goes with the site directory, so a run interrupted
+        // during the repository removals leaves the derived name unconfirmable.
         return empty($cloud['database'])
-          ? CheckResult::warn("No blt.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is already absent from {$input['app']}.")
-          : CheckResult::fail("No blt.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is still on {$input['app']}. Restore the site directory first: git checkout -- docroot/sites/{$dir}");
+          ? CheckResult::warn("No drs/config.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is already absent from {$input['app']}.")
+          : CheckResult::fail("No drs/config.yml at docroot/sites/{$dir} to confirm database '{$input['db']}', which is still on {$input['app']}. Restore the site directory first: git checkout -- docroot/sites/{$dir}");
       }),
       new Check(self::CHECK_CLOUD_DOMAINS, function () use ($cloud, $input): CheckResult {
         return $cloud['domains']

@@ -27,7 +27,7 @@ class Multisite {
    */
   public static function getDatabaseName($dir) {
     if ($dir == 'default') {
-      throw new \Exception('The default site is configured automatically by BLT.');
+      throw new \Exception('The default site is configured automatically by DRS.');
     }
     else {
       $db = str_replace(['.', '-'], '_', $dir);

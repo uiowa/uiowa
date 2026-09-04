@@ -1,0 +1,18 @@
+project:
+  machine_name: siteseverydayexamples
+  human_name: everydayexamples.sites.uiowa.edu
+  local:
+    hostname: siteseverydayexamples.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: siteseverydayexamples.prod
+drupal:
+  db:
+    database: everydayexamples_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://siteseverydayexamples.prod.drupal.uiowa.edu
+  requester: cunni
+  site-name: Everyday Examples
