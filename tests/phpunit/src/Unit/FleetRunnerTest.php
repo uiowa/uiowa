@@ -353,6 +353,68 @@ YAML);
   }
 
   /**
+   * The application's own default site resolves by directory, not identifier.
+   *
+   * sites.php aliases it to the shared 'default' directory under a domain
+   * (demo.example.uiowa.edu) that Multisite::getIdentifier() would turn into
+   * 'exampledemo' — a name no alias file carries, since this site's alias
+   * file is named after the directory instead (default.site.yml). Confirms
+   * FleetRunner::aliasIdentifier() reads the directory via sites.php rather
+   * than deriving a name from the domain: the site still resolves local on
+   * its own application, and its SSH alias still names a file that exists.
+   */
+  public function testDefaultSiteResolvesByDirectoryNotIdentifier(): void {
+    $root = tempnam(sys_get_temp_dir(), 'root');
+    unlink($root);
+    mkdir("{$root}/docroot/sites", 0777, TRUE);
+    file_put_contents("{$root}/docroot/sites/sites.php", "<?php\n\$sites['demo.example.uiowa.edu'] = 'default';\n");
+
+    $manifest = tempnam(sys_get_temp_dir(), 'manifest');
+    file_put_contents($manifest, "uiowa10:\n  - demo.example.uiowa.edu\n");
+
+    $aliasDir = tempnam(sys_get_temp_dir(), 'aliases');
+    unlink($aliasDir);
+    mkdir($aliasDir);
+    file_put_contents("{$aliasDir}/default.site.yml", <<<YAML
+dev:
+  uri: default.dev.drupal.uiowa.edu
+  user: uiowa10.dev
+prod:
+  uri: default.prod.drupal.uiowa.edu
+  user: uiowa10.prod
+YAML);
+
+    try {
+      $runner = new FleetRunner($root, $manifest, NULL, 'uiowa10', 'prod', $aliasDir);
+      $selection = $runner->select();
+
+      $this->assertTrue($runner->runsLocally('uiowa10', 'demo.example.uiowa.edu', 'prod'));
+      $this->assertFalse($runner->hasRemoteJobs($selection, 'prod'));
+
+      ['jobs' => $jobs] = $runner->buildJobs($selection, ['cr'], 'prod');
+      $this->assertSame(
+        [PHP_BINARY, '-d', 'display_errors=stderr', "{$root}/vendor/bin/drush", "--root={$root}/docroot", '--uri=default.prod.drupal.uiowa.edu', 'cr'],
+        $jobs['demo.example.uiowa.edu']
+      );
+
+      // A different application still resolves the alias by directory, not
+      // by the identifier Multisite::getIdentifier() would derive.
+      $remote = new FleetRunner($root, $manifest, NULL, 'uiowa11', 'prod', $aliasDir);
+      ['jobs' => $remoteJobs] = $remote->buildJobs($remote->select(), ['cr'], 'prod');
+      $this->assertContains('@default.prod', $remoteJobs['demo.example.uiowa.edu']);
+    }
+    finally {
+      unlink("{$aliasDir}/default.site.yml");
+      rmdir($aliasDir);
+      unlink($manifest);
+      unlink("{$root}/docroot/sites/sites.php");
+      rmdir("{$root}/docroot/sites");
+      rmdir("{$root}/docroot");
+      rmdir($root);
+    }
+  }
+
+  /**
    * Fleet ssh options inherit the repo-wide drush.yml ssh.options base.
    *
    * Drush's --ssh-options replaces the configured value rather than
