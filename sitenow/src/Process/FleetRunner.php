@@ -48,6 +48,18 @@ class FleetRunner {
   const MUX_OPTIONS = '-o ControlMaster=auto -o ControlPath=~/.ssh/cm-%C -o ControlPersist=60';
 
   /**
+   * Drupal's own default site directory, provisioned automatically.
+   *
+   * The one directory Multisite::getIdentifier() never names an alias file
+   * after: this site is set up automatically rather than through per-site
+   * provisioning, so its alias file is named after the directory
+   * (default.site.yml) instead of an identifier derived from whichever
+   * domain sites.php happens to alias to it (e.g. demo.sitenow.uiowa.edu).
+   * See aliasIdentifier().
+   */
+  const DEFAULT_SITE_DIRECTORY = 'default';
+
+  /**
    * Absolute path to the manifest of applications and their site domains.
    */
   private string $manifestPath;
@@ -72,6 +84,13 @@ class FleetRunner {
    * @var array<string, array|null>
    */
   private array $aliasCache = [];
+
+  /**
+   * The sites.php host => directory aliases, read once.
+   *
+   * @var array<string, string>|null
+   */
+  private ?array $siteDirectories = NULL;
 
   /**
    * The Acquia application this process is running on, or NULL if not on one.
@@ -330,7 +349,7 @@ class FleetRunner {
       );
     }
 
-    $alias = Multisite::getIdentifier('http://' . $domain) . '.' . $env;
+    $alias = $this->aliasIdentifier($domain) . '.' . $env;
 
     return array_merge(
       $this->drushCommand(),
@@ -387,7 +406,7 @@ class FleetRunner {
    *   unparseable, or has no such environment.
    */
   protected function aliasEnv(string $domain, string $env): ?array {
-    $id = Multisite::getIdentifier('http://' . $domain);
+    $id = $this->aliasIdentifier($domain);
     $key = "{$id}.{$env}";
 
     if (!array_key_exists($key, $this->aliasCache)) {
@@ -410,6 +429,59 @@ class FleetRunner {
     }
 
     return $this->aliasCache[$key];
+  }
+
+  /**
+   * The identifier a site's drush alias file is named after.
+   *
+   * Multisite::getIdentifier() derives this from the domain and matches the
+   * alias filename for every site except the application's own default site
+   * (DEFAULT_SITE_DIRECTORY): that one is provisioned automatically rather
+   * than through per-site provisioning, so its alias file is named after the
+   * directory (default.site.yml), not an identifier derived from whichever
+   * domain sites.php happens to alias to it. Skipping this for every other
+   * site keeps the fleet-wide selection cheap: siteDirectory() only opens
+   * sites.php on the first call of any kind, and most fleets never hit this
+   * one site to begin with.
+   *
+   * @param string $domain
+   *   The site domain.
+   *
+   * @return string
+   *   The alias identifier, i.e. the alias file's basename.
+   */
+  protected function aliasIdentifier(string $domain): string {
+    return $this->siteDirectory($domain) === self::DEFAULT_SITE_DIRECTORY
+      ? self::DEFAULT_SITE_DIRECTORY
+      : Multisite::getIdentifier('http://' . $domain);
+  }
+
+  /**
+   * Resolve a site domain to its multisite directory, per sites.php.
+   *
+   * Mirrors Drupal's own aliasing: a host with no entry resolves to a
+   * same-named directory, and sites.php maps the handful of exceptions,
+   * notably the application's own default site — reached at a domain like
+   * demo.sitenow.uiowa.edu but living in docroot/sites/default.
+   *
+   * @param string $domain
+   *   The site domain.
+   *
+   * @return string
+   *   The multisite directory name.
+   */
+  protected function siteDirectory(string $domain): string {
+    if ($this->siteDirectories === NULL) {
+      $sites = [];
+      $sites_file = "{$this->repoRoot}/docroot/sites/sites.php";
+      if (file_exists($sites_file)) {
+        // sites.php populates $sites with host => directory aliases.
+        include $sites_file;
+      }
+      $this->siteDirectories = $sites;
+    }
+
+    return $this->siteDirectories[$domain] ?? $domain;
   }
 
   /**
