@@ -201,6 +201,7 @@ class ReportInactiveCommand extends Command {
         }
         else {
           $site_mail = $site_mails[$domain]['output'];
+          $site_mail = trim($site_mail);
         }
         $site_mail_output = ($site_mail) ?: 'N/A';
 
