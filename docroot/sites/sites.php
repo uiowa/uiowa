@@ -2561,12 +2561,6 @@ $sites['labfskiff.dev.drupal.uiowa.edu'] = 'fskiff.lab.uiowa.edu';
 $sites['labfskiff.stage.drupal.uiowa.edu'] = 'fskiff.lab.uiowa.edu';
 $sites['labfskiff.prod.drupal.uiowa.edu'] = 'fskiff.lab.uiowa.edu';
 
-// Directory aliases for audiogenomics.lab.uiowa.edu.
-$sites['labaudiogenomics.uiowa.ddev.site'] = 'audiogenomics.lab.uiowa.edu';
-$sites['labaudiogenomics.dev.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
-$sites['labaudiogenomics.stage.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
-$sites['labaudiogenomics.prod.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
-
 // Directory aliases for cld.lab.uiowa.edu.
 $sites['labcld.uiowa.ddev.site'] = 'cld.lab.uiowa.edu';
 $sites['labcld.dev.drupal.uiowa.edu'] = 'cld.lab.uiowa.edu';
