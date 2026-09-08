@@ -7954,3 +7954,9 @@ $sites['labflunker.uiowa.ddev.site'] = 'flunker.lab.uiowa.edu';
 $sites['labflunker.dev.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
 $sites['labflunker.stage.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
 $sites['labflunker.prod.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
+
+// Directory aliases for jones.lab.uiowa.edu.
+$sites['labjones.uiowa.ddev.site'] = 'jones.lab.uiowa.edu';
+$sites['labjones.dev.drupal.uiowa.edu'] = 'jones.lab.uiowa.edu';
+$sites['labjones.stage.drupal.uiowa.edu'] = 'jones.lab.uiowa.edu';
+$sites['labjones.prod.drupal.uiowa.edu'] = 'jones.lab.uiowa.edu';
