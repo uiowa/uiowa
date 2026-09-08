@@ -198,16 +198,22 @@ class ReportInactiveCommand extends Command {
         // An array means we have a list of users for the site.
         if (is_null($users)) {
           $webmaster_output = 'None';
+          $webmaster_display = 'None';
         }
         elseif ($users === FALSE) {
           $webmaster_output = 'Errored';
+          $webmaster_display = 'Errored';
         }
         else {
           $webmasters = $this->filterUsers($users);
           // At this point, if we still don't have webmasters,
           // label as "N/A" distinct from empty, for possible debugging.
-          $webmaster_output = $webmasters ? implode(',', array_column($webmasters, 'mail')) : 'N/A';
-
+          // Additionally filter out webmasters who don't have an email.
+          $webmaster_mails = array_filter(array_column($webmasters, 'mail'));
+          $webmaster_output = $webmaster_mails ? implode(',', $webmaster_mails) : 'N/A';
+          // Make a display version that outputs on new lines to help
+          // with keeping things clean in the terminal.
+          $webmaster_display = $webmaster_mails ? implode("\n", $webmaster_mails) : 'N/A';
         }
 
         if ($site_mails[$domain]['exit'] !== 0 || empty($site_mails[$domain]['output'])) {
@@ -223,11 +229,12 @@ class ReportInactiveCommand extends Command {
         if ($show_domains) {
           $row[] = $this->isLive($domain, $app_name, $live_domains) ? 'Live' : 'In Progress';
         }
-        array_push($row, $days_since_revision, $days_since_login, $status, $site_mail_output, $webmaster_output);
         if ($writer) {
+          array_push($row, $days_since_revision, $days_since_login, $status, $site_mail_output, $webmaster_output);
           $writer->writeRow($row);
         }
         else {
+          array_push($row, $days_since_revision, $days_since_login, $status, $site_mail_output, $webmaster_display);
           $rows[] = $row;
         }
       }
@@ -237,7 +244,14 @@ class ReportInactiveCommand extends Command {
       $io->success("Results exported to {$writer->getPath()}");
     }
     else {
-      $io->table($headers, $rows);
+      // Bound the Webmasters column so a site with many addresses wraps
+      // within its cell instead of stretching the whole table past the
+      // terminal width.
+      $table = $io->createTable();
+      $table->setHeaders($headers);
+      $table->setRows($rows);
+      $table->setColumnMaxWidth(count($headers) - 1, 40);
+      $table->render();
     }
 
     return Command::SUCCESS;
