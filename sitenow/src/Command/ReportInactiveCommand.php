@@ -193,8 +193,22 @@ class ReportInactiveCommand extends Command {
           $status = ($last_login < $cutoff) ? 'Inactive' : 'Active';
         }
 
-        $webmasters = $users ? $this->filterUsers($users) : [];
-        $user_output = $webmasters ? implode(',', array_column($webmasters, 'mail')) : 'N/A';
+        // For determining webmasters, a NULL users means
+        // there was no users data. FALSE means there was an error.
+        // An array means we have a list of users for the site.
+        if (is_null($users)) {
+          $webmaster_output = 'None';
+        }
+        elseif ($users === FALSE) {
+          $webmaster_output = 'Errored';
+        }
+        else {
+          $webmasters = $this->filterUsers($users);
+          // At this point, if we still don't have webmasters,
+          // label as "N/A" distinct from empty, for possible debugging.
+          $webmaster_output = $webmasters ? implode(',', array_column($webmasters, 'mail')) : 'N/A';
+
+        }
 
         if ($site_mails[$domain]['exit'] !== 0 || empty($site_mails[$domain]['output'])) {
           $site_mail = FALSE;
@@ -209,7 +223,7 @@ class ReportInactiveCommand extends Command {
         if ($show_domains) {
           $row[] = $this->isLive($domain, $app_name, $live_domains) ? 'Live' : 'In Progress';
         }
-        array_push($row, $days_since_revision, $days_since_login, $status, $site_mail_output, $user_output);
+        array_push($row, $days_since_revision, $days_since_login, $status, $site_mail_output, $webmaster_output);
         if ($writer) {
           $writer->writeRow($row);
         }
