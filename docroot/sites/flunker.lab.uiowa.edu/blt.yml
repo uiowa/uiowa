@@ -1,0 +1,18 @@
+project:
+  machine_name: labflunker
+  human_name: flunker.lab.uiowa.edu
+  local:
+    hostname: labflunker.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labflunker.prod
+drupal:
+  db:
+    database: flunker_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labflunker.prod.drupal.uiowa.edu'
+  requester: jflunker
+  site-name: 'Flunker Lab'

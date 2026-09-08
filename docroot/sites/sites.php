@@ -7948,3 +7948,9 @@ $sites['musicchoirs.uiowa.ddev.site'] = 'choirs.music.uiowa.edu';
 $sites['musicchoirs.dev.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
 $sites['musicchoirs.stage.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
 $sites['musicchoirs.prod.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
+
+// Directory aliases for flunker.lab.uiowa.edu.
+$sites['labflunker.uiowa.ddev.site'] = 'flunker.lab.uiowa.edu';
+$sites['labflunker.dev.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
+$sites['labflunker.stage.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
+$sites['labflunker.prod.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
