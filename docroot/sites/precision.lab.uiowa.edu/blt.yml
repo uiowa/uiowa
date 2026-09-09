@@ -1,0 +1,18 @@
+project:
+  machine_name: labprecision
+  human_name: precision.lab.uiowa.edu
+  local:
+    hostname: labprecision.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labprecision.prod
+drupal:
+  db:
+    database: precision_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labprecision.prod.drupal.uiowa.edu'
+  requester: manders2
+  site-name: 'PRECISION Lab'
