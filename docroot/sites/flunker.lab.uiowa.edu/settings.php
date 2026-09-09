@@ -772,10 +772,11 @@ $settings['entity_update_batch_size'] = 50;
 $ah_group = getenv('AH_SITE_GROUP');
 
 if (file_exists('/var/www/site-php')) {
-  require "/var/www/site-php/{$ah_group}/audiogenomics_lab_uiowa_edu-settings.inc";
+  require "/var/www/site-php/{$ah_group}/flunker_lab_uiowa_edu-settings.inc";
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";
+
 /**
  * IMPORTANT.
  *
