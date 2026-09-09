@@ -64,7 +64,7 @@ class ReportUsersCommand extends Command {
    */
   protected function configure(): void {
     $this
-      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to include (e.g. uiowa02,uiowa03). Defaults to all.', '')
+      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to include (e.g. uiowa02,uiowa03). Defaults to all apps; pinned to the running application on Acquia Cloud.', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('exclude-users', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated email addresses to omit from the report.', '')
       ->addOption('threshold', NULL, InputOption::VALUE_REQUIRED, 'Login-recency window (e.g. "1 year", "6 months").', '1 year')
@@ -90,6 +90,11 @@ class ReportUsersCommand extends Command {
       return Command::FAILURE;
     }
 
+    $target_apps = $this->restrictToRunningApp($target_apps, $err);
+    if ($target_apps === NULL) {
+      return Command::FAILURE;
+    }
+
     $runner = new FleetRunner($this->repoRoot);
     try {
       $selection = $runner->select($target_apps, $exclude);
@@ -106,8 +111,9 @@ class ReportUsersCommand extends Command {
     }
 
     // Last precondition checked, so that a mistyped option or app name reports
-    // itself rather than an unrelated SSH error.
-    if (!$this->requireSshAgent($io)) {
+    // itself rather than an unrelated SSH error. Only the remote jobs need an
+    // agent: sites on this application's own environment run local drush.
+    if ($runner->hasRemoteJobs($selection, 'prod') && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 
