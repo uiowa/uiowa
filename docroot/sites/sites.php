@@ -2561,12 +2561,6 @@ $sites['labfskiff.dev.drupal.uiowa.edu'] = 'fskiff.lab.uiowa.edu';
 $sites['labfskiff.stage.drupal.uiowa.edu'] = 'fskiff.lab.uiowa.edu';
 $sites['labfskiff.prod.drupal.uiowa.edu'] = 'fskiff.lab.uiowa.edu';
 
-// Directory aliases for audiogenomics.lab.uiowa.edu.
-$sites['labaudiogenomics.uiowa.ddev.site'] = 'audiogenomics.lab.uiowa.edu';
-$sites['labaudiogenomics.dev.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
-$sites['labaudiogenomics.stage.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
-$sites['labaudiogenomics.prod.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
-
 // Directory aliases for cld.lab.uiowa.edu.
 $sites['labcld.uiowa.ddev.site'] = 'cld.lab.uiowa.edu';
 $sites['labcld.dev.drupal.uiowa.edu'] = 'cld.lab.uiowa.edu';
@@ -7948,3 +7942,27 @@ $sites['musicchoirs.uiowa.ddev.site'] = 'choirs.music.uiowa.edu';
 $sites['musicchoirs.dev.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
 $sites['musicchoirs.stage.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
 $sites['musicchoirs.prod.drupal.uiowa.edu'] = 'choirs.music.uiowa.edu';
+
+// Directory aliases for flunker.lab.uiowa.edu.
+$sites['labflunker.uiowa.ddev.site'] = 'flunker.lab.uiowa.edu';
+$sites['labflunker.dev.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
+$sites['labflunker.stage.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
+$sites['labflunker.prod.drupal.uiowa.edu'] = 'flunker.lab.uiowa.edu';
+
+// Directory aliases for jones.lab.uiowa.edu.
+$sites['labjones.uiowa.ddev.site'] = 'jones.lab.uiowa.edu';
+$sites['labjones.dev.drupal.uiowa.edu'] = 'jones.lab.uiowa.edu';
+$sites['labjones.stage.drupal.uiowa.edu'] = 'jones.lab.uiowa.edu';
+$sites['labjones.prod.drupal.uiowa.edu'] = 'jones.lab.uiowa.edu';
+
+// Directory aliases for rahman.lab.uiowa.edu.
+$sites['labrahman.uiowa.ddev.site'] = 'rahman.lab.uiowa.edu';
+$sites['labrahman.dev.drupal.uiowa.edu'] = 'rahman.lab.uiowa.edu';
+$sites['labrahman.stage.drupal.uiowa.edu'] = 'rahman.lab.uiowa.edu';
+$sites['labrahman.prod.drupal.uiowa.edu'] = 'rahman.lab.uiowa.edu';
+
+// Directory aliases for precision.lab.uiowa.edu.
+$sites['labprecision.uiowa.ddev.site'] = 'precision.lab.uiowa.edu';
+$sites['labprecision.dev.drupal.uiowa.edu'] = 'precision.lab.uiowa.edu';
+$sites['labprecision.stage.drupal.uiowa.edu'] = 'precision.lab.uiowa.edu';
+$sites['labprecision.prod.drupal.uiowa.edu'] = 'precision.lab.uiowa.edu';

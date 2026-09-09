@@ -1,0 +1,18 @@
+project:
+  machine_name: labjones
+  human_name: jones.lab.uiowa.edu
+  local:
+    hostname: labjones.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labjones.prod
+drupal:
+  db:
+    database: jones_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labjones.prod.drupal.uiowa.edu'
+  requester: gmjns
+  site-name: 'Disturbance and Biodiversity Lab'
