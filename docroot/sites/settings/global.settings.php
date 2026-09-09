@@ -5,7 +5,7 @@
  * Global settings for every multisite.
  */
 
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\DrupalEnvironmentDetector\AcquiaDrupalEnvironmentDetector as EnvironmentDetector;
 use Drupal\Core\Installer\InstallerKernel;
 
 // Prevent access to uninstalled sites through the web interface.
@@ -57,7 +57,7 @@ switch ($ah_env) {
  */
 $settings['maintenance_theme'] = 'uids_base';
 
-// Override BLTs hash salt to be unique per site.
+// Override DRS's hash salt to be unique per site.
 $settings['hash_salt'] = hash('sha256', $ah_group . $ah_env . $site_name);
 
 // Compatibility with Acquia Platform Email for Symfony Mailer module.

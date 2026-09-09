@@ -142,7 +142,6 @@ trait SiteNowCommandsTrait {
    *   The drush alias identifier (e.g., 'siteswebcommunity.prod').
    */
   protected function getDrushAlias(string $multisite): string {
-    // @todo Move out of BLT.
     return Multisite::getIdentifier('http://' . $multisite);
   }
 

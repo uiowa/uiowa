@@ -775,12 +775,12 @@ if (file_exists('/var/www/site-php')) {
   require "/var/www/site-php/{$ah_group}/inventionofwriting_sites_uiowa_edu-settings.inc";
 }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";
 /**
  * IMPORTANT.
  *
  * Do not include additional settings here. Instead, add them to settings
- * included by `blt.settings.php`. See BLT's documentation for more detail.
+ * included by `acquia-recommended.settings.php`. See Acquia's documentation for more detail.
  *
- * @link http://blt.readthedocs.io
+ * @link https://docs.acquia.com/
  */

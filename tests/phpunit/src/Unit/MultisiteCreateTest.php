@@ -52,12 +52,16 @@ class MultisiteCreateTest extends UnitTestCase {
         return $this->eligibleApps($candidates);
       }
 
-      public function pubBuildSiteConfig(string $host, string $id, string $db, string $local, string $prod_domain, array $options): array {
-        return $this->buildSiteConfig($host, $id, $db, $local, $prod_domain, $options);
+      public function pubBuildSiteConfig(string $host, string $id, string $db, string $local, array $options): array {
+        return $this->buildSiteConfig($host, $id, $db, $local, $options);
       }
 
       public function pubHasIdentifierConflict(string $host, array $existing): bool {
         return $this->hasIdentifierConflict($host, $existing);
+      }
+
+      public function pubSummary(?array $app, array $input, array $options): array {
+        return $this->summary($app, $input, $options);
       }
 
     };
@@ -72,7 +76,6 @@ class MultisiteCreateTest extends UnitTestCase {
       'newsite',
       'newsite_uiowa_edu',
       'newsite.dev.local.drupal.uiowa.edu',
-      'newsite.prod.drupal.uiowa.edu',
       $options
     );
   }
@@ -370,12 +373,60 @@ class MultisiteCreateTest extends UnitTestCase {
    * The core project and database keys derive from the host and identifier.
    */
   public function testCoreConfigDerivation() {
-    $blt = $this->siteConfig([]);
+    $drs = $this->siteConfig([]);
 
-    $this->assertSame('newsite', $blt['project']['machine_name']);
-    $this->assertSame('newsite.uiowa.edu', $blt['project']['human_name']);
-    $this->assertSame('newsite_uiowa_edu', $blt['drupal']['db']['database']);
-    $this->assertSame('https://newsite.prod.drupal.uiowa.edu', $blt['uiowa']['stage_file_proxy']['origin']);
+    $this->assertSame('newsite', $drs['project']['machine_name']);
+    $this->assertSame('newsite.uiowa.edu', $drs['project']['human_name']);
+    $this->assertSame('newsite_uiowa_edu', $drs['drupal']['db']['database']);
+  }
+
+  // --- Plan summary rows -------------------------------------------------------
+
+  /**
+   * An unresolved application yields no summary rows.
+   */
+  public function testSummaryIsEmptyWithoutAnApp() {
+    $summary = $this->command()->pubSummary(NULL, ['db' => 'newsite_uiowa_edu'], []);
+
+    $this->assertSame([], $summary);
+  }
+
+  /**
+   * The application, database, and reason are always shown.
+   */
+  public function testSummaryAlwaysShowsAppDatabaseAndReason() {
+    $app = ['name' => 'uiowa09', 'reasoning' => 'Fewest sites (87) among eligible apps.'];
+    $summary = $this->command()->pubSummary($app, ['db' => 'newsite_uiowa_edu'], []);
+
+    $this->assertSame([
+      ['label' => 'Application', 'value' => 'uiowa09'],
+      ['label' => 'Database', 'value' => 'newsite_uiowa_edu'],
+      ['label' => 'Reason', 'value' => 'Fewest sites (87) among eligible apps.'],
+    ], $summary);
+  }
+
+  /**
+   * Site name, requester, and split each add a row only when provided.
+   *
+   * These are the values that shape the new site but land only in
+   * drs/config.yml, which a dry run never writes — surfacing them here is
+   * what lets a mistyped or dropped option be caught before the real run.
+   */
+  public function testSummaryIncludesShapingOptionsOnlyWhenProvided() {
+    $app = ['name' => 'uiowa09', 'reasoning' => 'reason'];
+
+    $bare = $this->command()->pubSummary($app, ['db' => 'db'], []);
+    $this->assertCount(3, $bare);
+
+    $full = $this->command()->pubSummary($app, ['db' => 'db'], [
+      'site-name' => 'New Site',
+      'requester' => 'hawkid',
+      'split' => 'event,sitenow_v2',
+    ]);
+
+    $this->assertSame(['label' => 'Site name', 'value' => 'New Site'], $full[3]);
+    $this->assertSame(['label' => 'Requester', 'value' => 'hawkid'], $full[4]);
+    $this->assertSame(['label' => 'Config split', 'value' => 'event,sitenow_v2'], $full[5]);
   }
 
   // --- Hostname validation ----------------------------------------------------

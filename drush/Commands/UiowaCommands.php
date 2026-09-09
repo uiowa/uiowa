@@ -65,7 +65,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   }
 
   /**
-   * Invoke BLT update command after sql:sync for remote targets only.
+   * Invoke the site update command after sql:sync for remote targets only.
    *
    * @param mixed $result
    *   The command result.
@@ -86,12 +86,10 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       $process = $this->processManager()->siteProcess(
         $record,
         [
-          './vendor/bin/blt',
-          'drupal:update',
+          './sn',
+          'site:update',
+          $record->uri(),
         ],
-        [
-          'site' => $record->uri(),
-        ]
       );
 
       $process->setWorkingDirectory($record->root() . '/..');
