@@ -142,7 +142,6 @@ trait SiteNowCommandsTrait {
    *   The drush alias identifier (e.g., 'siteswebcommunity.prod').
    */
   protected function getDrushAlias(string $multisite): string {
-    // @todo Move out of BLT.
     return Multisite::getIdentifier('http://' . $multisite);
   }
 
@@ -526,30 +525,6 @@ trait SiteNowCommandsTrait {
     }
 
     return [$current_app];
-  }
-
-  /**
-   * Determine if the SSH agent precondition can be skipped.
-   *
-   * On Acquia Cloud, restrictToRunningApp() already pins the selection to the
-   * application running the command; when --env also matches the running
-   * environment, every resulting drush alias points right back at this same
-   * environment. Drush resolves that locally rather than over SSH — the same
-   * way the Acquia-provisioned drush-cron.sh scheduled job runs drush against
-   * its own environment's alias on every application with no SSH agent
-   * available (confirmed directly on uiowa07.prod: no agent is running
-   * there, yet `drush @uiowa07.prod status` succeeds). A different --env is
-   * a genuinely different environment reached over real SSH, so the agent is
-   * still required there.
-   *
-   * @param string $env
-   *   The --env option value.
-   *
-   * @return bool
-   *   TRUE when the SSH agent precondition can be skipped.
-   */
-  protected function canSkipSshAgent(string $env): bool {
-    return $this->isAcquia() && $env === getenv('AH_SITE_ENVIRONMENT');
   }
 
   /**

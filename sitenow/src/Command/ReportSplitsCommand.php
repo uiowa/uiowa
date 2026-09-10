@@ -57,7 +57,7 @@ class ReportSplitsCommand extends Command {
   protected function configure(): void {
     $this
       ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated split IDs to filter to (e.g. event,thesis_defense).', '')
-      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa02,uiowa03).', '')
+      ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to filter by (e.g. uiowa02,uiowa03). Defaults to all apps; pinned to the running application on Acquia Cloud.', '')
       ->addOption('exclude', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated site domains to skip.', '')
       ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.');
   }
@@ -74,7 +74,8 @@ class ReportSplitsCommand extends Command {
     $exclude = $this->parseList($input->getOption('exclude'));
     $export = (bool) $input->getOption('export');
 
-    if (!$this->requireSshAgent($io)) {
+    $target_apps = $this->restrictToRunningApp($target_apps, $err);
+    if ($target_apps === NULL) {
       return Command::FAILURE;
     }
 
@@ -90,6 +91,13 @@ class ReportSplitsCommand extends Command {
     $site_count = array_sum(array_map('count', $selection));
     if ($site_count === 0) {
       $err->error('No sites matched the selection.');
+      return Command::FAILURE;
+    }
+
+    // Last precondition checked, so that a mistyped option or app name reports
+    // itself rather than an unrelated SSH error. Only the remote jobs need an
+    // agent: sites on this application's own environment run local drush.
+    if ($runner->hasRemoteJobs($selection, 'prod') && !$this->requireSshAgent($io)) {
       return Command::FAILURE;
     }
 

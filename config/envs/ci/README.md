@@ -1,1 +1,1 @@
-This directory contains configuration to be imported into your Drupal site via config_split for the CI environment. See [configuration management](http://blt.readthedocs.io/en/9.x/readme/configuration-management/) for more information.
+This directory contains configuration to be imported into your Drupal site via config_split for the CI environment. See [How to enable Config Split](https://docs.acquia.com/acquia-cloud-platform/help/94086-how-enable-config-split) for more information.

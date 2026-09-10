@@ -4,7 +4,7 @@ All modifications to contributed projects and most modifications to Drupal core 
 
 ## Applying patches
 
-Patches can be applied by referencing them in `composer.json` in the format below. BLT then uses [cweagans/composer-patches](https://github.com/cweagans/composer-patches) to apply the patches on any subsequent site builds.
+Patches can be applied by referencing them in `composer.json` in the format below. [cweagans/composer-patches](https://github.com/cweagans/composer-patches) applies the patches on any subsequent site builds.
 
 Patch information should be specified in the JSON array in accordance with the following schema:
 

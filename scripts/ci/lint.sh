@@ -34,7 +34,7 @@ fi
 
 # 2. PHP Syntax Linting
 echo -e "${YELLOW}2. Linting PHP files for syntax errors...${NC}"
-PHP_FILES=$(find docroot/modules/custom docroot/themes/custom docroot/profiles/custom blt/src tests/phpunit -type f \( -name "*.php" -o -name "*.module" -o -name "*.install" -o -name "*.profile" \) 2>/dev/null || true)
+PHP_FILES=$(find docroot/modules/custom docroot/themes/custom docroot/profiles/custom tests/phpunit -type f \( -name "*.php" -o -name "*.module" -o -name "*.install" -o -name "*.profile" \) 2>/dev/null || true)
 PHP_LINT_FAILED=0
 PHP_COUNT=0
 
