@@ -174,10 +174,10 @@ class ReportInactiveTest extends UnitTestCase {
    */
   public function testFilterUsersReturnsMatchingWebmasters(): void {
     $users = [
-      '1' => ['uid' => 1, 'name' => 'admin', 'status' => 'active', 'roles' => ['webmaster']],
-      '2' => ['uid' => 2, 'name' => 'jdoe', 'status' => 'active', 'roles' => ['webmaster']],
-      '3' => ['uid' => 3, 'name' => 'blocked', 'status' => 'blocked', 'roles' => ['webmaster']],
-      '4' => ['uid' => 4, 'name' => 'other', 'status' => 'active', 'roles' => ['authenticated']],
+      '1' => ['uid' => 1, 'name' => 'admin', 'status' => 'active', 'roles' => ['webmaster'], 'mail' => 'admin@uiowa.edu'],
+      '2' => ['uid' => 2, 'name' => 'jdoe', 'status' => 'active', 'roles' => ['webmaster'], 'mail' => 'jdoe@uiowa.edu'],
+      '3' => ['uid' => 3, 'name' => 'blocked', 'status' => 'blocked', 'roles' => ['webmaster'], 'mail' => 'blocked@uiowa.edu'],
+      '4' => ['uid' => 4, 'name' => 'other', 'status' => 'active', 'roles' => ['authenticated'], 'mail' => 'other@uiowa.edu'],
       '5' => ['uid' => 5, 'name' => 'norole', 'status' => 'active'],
     ];
     $webmasters = $this->command()->webmasters($users);
@@ -189,10 +189,24 @@ class ReportInactiveTest extends UnitTestCase {
    */
   public function testFilterUsersWithCustomRoles(): void {
     $users = [
-      '2' => ['uid' => 2, 'name' => 'jdoe', 'status' => 'active', 'roles' => ['editor']],
+      '2' => ['uid' => 2, 'name' => 'jdoe', 'status' => 'active', 'roles' => ['editor'], 'mail' => 'jdoe@uiowa.edu'],
     ];
     $this->assertSame([], $this->command()->webmasters($users));
     $this->assertSame(['jdoe'], array_column($this->command()->webmasters($users, ['editor']), 'name'));
+  }
+
+  /**
+   * Users with no mail, or a dummy/placeholder mail, are excluded.
+   */
+  public function testFilterUsersExcludesDummyMail(): void {
+    $users = [
+      '2' => ['uid' => 2, 'name' => 'nomail', 'status' => 'active', 'roles' => ['webmaster']],
+      '3' => ['uid' => 3, 'name' => 'emailprefix', 'status' => 'active', 'roles' => ['webmaster'], 'mail' => 'email_3@uiowa.edu'],
+      '4' => ['uid' => 4, 'name' => 'userprefix', 'status' => 'active', 'roles' => ['webmaster'], 'mail' => 'user+4@uiowa.edu'],
+      '5' => ['uid' => 5, 'name' => 'jdoe', 'status' => 'active', 'roles' => ['webmaster'], 'mail' => 'jdoe@uiowa.edu'],
+    ];
+    $webmasters = $this->command()->webmasters($users);
+    $this->assertSame(['jdoe'], array_column($webmasters, 'name'));
   }
 
   /**
