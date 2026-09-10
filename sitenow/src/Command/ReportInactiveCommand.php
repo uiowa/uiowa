@@ -392,6 +392,12 @@ class ReportInactiveCommand extends Command {
       if (!isset($user['roles'])) {
         continue;
       }
+      // Filter out empty or unusable, dummy email addresses.
+      if (empty($user['mail']) ||
+        str_starts_with($user['mail'], 'email_') ||
+        str_starts_with($user['mail'], 'user+')) {
+        continue;
+      }
       if (!empty(array_intersect($roles, $user['roles']))) {
         $user_list[] = $user;
       }
