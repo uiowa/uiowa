@@ -7966,3 +7966,9 @@ $sites['csdauditorytraining.uiowa.ddev.site'] = 'auditorytraining.csd.uiowa.edu'
 $sites['csdauditorytraining.dev.drupal.uiowa.edu'] = 'auditorytraining.csd.uiowa.edu';
 $sites['csdauditorytraining.stage.drupal.uiowa.edu'] = 'auditorytraining.csd.uiowa.edu';
 $sites['csdauditorytraining.prod.drupal.uiowa.edu'] = 'auditorytraining.csd.uiowa.edu';
+
+// Directory aliases for lib.uiowa.edu.
+$sites['lib.uiowa.ddev.site'] = 'lib.uiowa.edu';
+$sites['lib.dev.drupal.uiowa.edu'] = 'lib.uiowa.edu';
+$sites['lib.stage.drupal.uiowa.edu'] = 'lib.uiowa.edu';
+$sites['lib.prod.drupal.uiowa.edu'] = 'lib.uiowa.edu';
