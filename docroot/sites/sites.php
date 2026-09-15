@@ -1181,12 +1181,6 @@ $sites['tutor.dev.drupal.uiowa.edu'] = 'tutor.uiowa.edu';
 $sites['tutor.stage.drupal.uiowa.edu'] = 'tutor.uiowa.edu';
 $sites['tutor.prod.drupal.uiowa.edu'] = 'tutor.uiowa.edu';
 
-// Directory aliases for theatrelobby.studio.uiowa.edu.
-$sites['studiotheatrelobby.uiowa.ddev.site'] = 'theatrelobby.studio.uiowa.edu';
-$sites['studiotheatrelobby.dev.drupal.uiowa.edu'] = 'theatrelobby.studio.uiowa.edu';
-$sites['studiotheatrelobby.stage.drupal.uiowa.edu'] = 'theatrelobby.studio.uiowa.edu';
-$sites['studiotheatrelobby.prod.drupal.uiowa.edu'] = 'theatrelobby.studio.uiowa.edu';
-
 // Directory aliases for chinesereadingworld.sites.uiowa.edu.
 $sites['siteschinesereadingworld.uiowa.ddev.site'] = 'chinesereadingworld.sites.uiowa.edu';
 $sites['siteschinesereadingworld.dev.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
