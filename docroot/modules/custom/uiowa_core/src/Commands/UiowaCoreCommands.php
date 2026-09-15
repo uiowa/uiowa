@@ -7,7 +7,6 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Extension\ModuleHandler;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drush\Commands\DrushCommands;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -19,13 +18,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class UiowaCoreCommands extends DrushCommands {
   use LoggerChannelTrait;
-
-  /**
-   * The uiowa_core logger channel.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected ?LoggerInterface $logger;
 
   /**
    * The config factory service.
@@ -44,8 +36,7 @@ class UiowaCoreCommands extends DrushCommands {
   /**
    * Command constructor.
    */
-  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler) {
-    $this->logger = $logger;
+  public function __construct(ConfigFactoryInterface $configFactory, ModuleHandler $moduleHandler) {
     $this->configFactory = $configFactory;
     $this->moduleHandler = $moduleHandler;
   }
