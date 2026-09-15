@@ -4,7 +4,6 @@ namespace Drupal\Tests\sitenow_intranet\Unit;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceEntityFormatter;
 use Drupal\Tests\UnitTestCase;
-use Drupal\media\Plugin\Filter\MediaEmbed;
 use Drupal\search_api\Event\GatheringPluginInfoEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\search_api\Plugin\search_api\processor\RenderedItem;
@@ -28,7 +27,6 @@ class RecursionGuardTest extends UnitTestCase {
    */
   protected const GUARDS = [
     EntityReferenceEntityFormatter::class => 'recursiveRenderDepth',
-    MediaEmbed::class => 'recursiveRenderDepth',
   ];
 
   /**
@@ -41,7 +39,7 @@ class RecursionGuardTest extends UnitTestCase {
   }
 
   /**
-   * Test that both counters are emptied.
+   * Test that every counter is emptied.
    */
   public function testResetEmptiesEveryGuard() {
     $this->setGuards(['nodepersonfield_image216media1041' => 21]);
