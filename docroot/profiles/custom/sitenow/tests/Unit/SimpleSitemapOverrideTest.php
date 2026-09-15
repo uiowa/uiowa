@@ -58,7 +58,7 @@ class SimpleSitemapOverrideTest extends UnitTestCase {
   /**
    * DataProvider for testConfigByEnv().
    */
-  public function providerConfigByEnv() {
+  public static function providerConfigByEnv() {
     return [
       [
         'www.foo.com',

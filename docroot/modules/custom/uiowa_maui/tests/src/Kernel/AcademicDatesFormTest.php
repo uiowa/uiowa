@@ -170,7 +170,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * Data provider for session prefilters.
    */
-  public function sessionPrefilterProvider() {
+  public static function sessionPrefilterProvider() {
     return [
       [0],
       [1],
@@ -181,7 +181,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * Data provider for dates limit test.
    */
-  public function datesLimitProvider() {
+  public static function datesLimitProvider() {
     return [
       [0, 0, 2],
       [100, 0, 2],

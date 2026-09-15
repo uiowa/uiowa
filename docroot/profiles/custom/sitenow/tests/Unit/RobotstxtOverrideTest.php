@@ -58,7 +58,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   /**
    * DataProvider for testConfigByInternalDomain().
    */
-  public function providerConfigByInternalDomain() {
+  public static function providerConfigByInternalDomain() {
     return [
       [
         'foo.uiowa.ddev.site',
@@ -94,7 +94,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   /**
    * DataProvider for testConfigByEnv().
    */
-  public function providerConfigByProductionDomain() {
+  public static function providerConfigByProductionDomain() {
     return [
       [
         'foo.uiowa.edu',
