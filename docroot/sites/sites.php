@@ -7960,3 +7960,9 @@ $sites['medicinepathways.uiowa.ddev.site'] = 'pathways.medicine.uiowa.edu';
 $sites['medicinepathways.dev.drupal.uiowa.edu'] = 'pathways.medicine.uiowa.edu';
 $sites['medicinepathways.stage.drupal.uiowa.edu'] = 'pathways.medicine.uiowa.edu';
 $sites['medicinepathways.prod.drupal.uiowa.edu'] = 'pathways.medicine.uiowa.edu';
+
+// Directory aliases for auditorytraining.csd.uiowa.edu.
+$sites['csdauditorytraining.uiowa.ddev.site'] = 'auditorytraining.csd.uiowa.edu';
+$sites['csdauditorytraining.dev.drupal.uiowa.edu'] = 'auditorytraining.csd.uiowa.edu';
+$sites['csdauditorytraining.stage.drupal.uiowa.edu'] = 'auditorytraining.csd.uiowa.edu';
+$sites['csdauditorytraining.prod.drupal.uiowa.edu'] = 'auditorytraining.csd.uiowa.edu';
