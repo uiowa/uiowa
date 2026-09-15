@@ -3,6 +3,7 @@
 namespace SiteNow\Utility;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Static class with various helper methods related multisite management.
@@ -177,6 +178,63 @@ class Multisite {
       'sans' => $sans,
       'related' => $related,
     ];
+  }
+
+  /**
+   * Read an application's drush alias file.
+   *
+   * @param string $repoRoot
+   *   Absolute path to the repository root.
+   * @param string $app
+   *   The application (AH_SITE_GROUP), e.g. 'uiowa09'.
+   *
+   * @return array
+   *   Parsed alias definitions keyed by environment (local, dev, test,
+   *   prod), or an empty array if the alias file does not exist.
+   */
+  public static function getAliasFile(string $repoRoot, string $app): array {
+    $path = "{$repoRoot}/drush/sites/{$app}.site.yml";
+
+    if (!is_file($path)) {
+      return [];
+    }
+
+    return Yaml::parseFile($path) ?? [];
+  }
+
+  /**
+   * Resolve Acquia Cloud's own name for an application's environment.
+   *
+   * Drush aliases always key the middle environment 'test', but Acquia
+   * Cloud does not: it calls that environment 'test' on uiowa01-06 and
+   * 'stage' on uiowa07-09. Every other environment name is uniform. The
+   * alias's `user` field records the Acquia name we need, e.g.
+   * `user: uiowa09.stage` versus `user: uiowa04.test`. This is the single
+   * source of truth for the divergence; callers that need to match an
+   * Acquia API environment name should resolve it through here rather than
+   * assuming 'test' or hardcoding the 'stage' exception.
+   *
+   * @param string $repoRoot
+   *   Absolute path to the repository root.
+   * @param string $app
+   *   The application (AH_SITE_GROUP), e.g. 'uiowa09'.
+   * @param string $env
+   *   The drush alias environment: local, dev, test, or prod.
+   *
+   * @return string|null
+   *   The Acquia Cloud environment name, or NULL if the alias file or the
+   *   requested environment's user field is missing.
+   */
+  public static function getCloudEnvName(string $repoRoot, string $app, string $env): ?string {
+    $user = static::getAliasFile($repoRoot, $app)[$env]['user'] ?? NULL;
+
+    if (!is_string($user) || $user === '') {
+      return NULL;
+    }
+
+    // The patterns are like "uiowa09.stage", so we can just take
+    // the substring after the period.
+    return substr($user, strrpos($user, '.') + 1);
   }
 
   /**

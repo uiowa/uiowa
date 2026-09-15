@@ -12,6 +12,7 @@ use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\PlanTrait;
 use SiteNow\Traits\ParsesListOptions;
 use SiteNow\Traits\SiteNowCommandsTrait;
+use SiteNow\Utility\Multisite;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -59,7 +60,7 @@ class DeployActivateCommand extends Command {
     $this
       ->addOption('tag', NULL, InputOption::VALUE_REQUIRED, 'Release tag to activate, e.g. 3.32.42-build. Defaults to the latest build tag on origin.', '')
       ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated application subset (default: all registered).', '')
-      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Environment to switch.', 'prod')
+      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Target environment to switch: dev, test, or prod.', 'prod')
       ->addOption('dry-run', NULL, InputOption::VALUE_NONE, 'Show the plan and exit without switching.');
   }
 
@@ -88,6 +89,10 @@ class DeployActivateCommand extends Command {
     }
 
     $env = trim($input->getOption('env')) ?: 'prod';
+    if (!$this->requireEnvironment($io, $env)) {
+      return Command::FAILURE;
+    }
+
     $dry_run = (bool) $input->getOption('dry-run');
 
     // Reuse the shared host-shell and credentials preconditions.
@@ -136,13 +141,8 @@ class DeployActivateCommand extends Command {
     $failed = [];
     foreach ($names as $name) {
       try {
-        $target = NULL;
-        foreach ($environments->getAll($registry->uuid($name)) as $environment) {
-          if ($environment->name === $env) {
-            $target = $environment;
-            break;
-          }
-        }
+        $target = $this->findEnvironment($environments->getAll($registry->uuid($name)), $name, $env);
+
         if (!$target) {
           $io->warning("{$name}: no {$env} environment found; skipping.");
           $failed[] = $name;
@@ -163,6 +163,36 @@ class DeployActivateCommand extends Command {
     }
     $io->success("Activation of {$tag} started on all applications.");
     return Command::SUCCESS;
+  }
+
+  /**
+   * Find the environment matching an application's Acquia name for $env.
+   *
+   * Drush alias environments (dev/test/prod) do not always match Acquia
+   * Cloud's own environment name for it: some applications call 'test'
+   * 'stage'. Resolved through the application's drush alias via
+   * [[Multisite::getCloudEnvName]] rather than assuming $env is it.
+   *
+   * @param iterable $environments
+   *   EnvironmentResponse objects for the application.
+   * @param string $app
+   *   The application (AH_SITE_GROUP).
+   * @param string $env
+   *   The requested drush alias environment, e.g. 'test'.
+   *
+   * @return object|null
+   *   The matching environment, or NULL if none matches.
+   */
+  protected function findEnvironment(iterable $environments, string $app, string $env): ?object {
+    $cloud_env = Multisite::getCloudEnvName($this->repoRoot, $app, $env) ?? $env;
+
+    foreach ($environments as $environment) {
+      if ($environment->name === $cloud_env) {
+        return $environment;
+      }
+    }
+
+    return NULL;
   }
 
   /**

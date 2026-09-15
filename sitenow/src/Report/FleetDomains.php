@@ -4,14 +4,16 @@ namespace SiteNow\Report;
 
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Endpoints\Environments;
+use SiteNow\Utility\Multisite;
 
 /**
  * Iterates customer-facing domains across the Acquia application fleet.
  *
  * Centralizes the filtering rules shared by the report commands: skip
  * UIHC-owned applications, strip the 'prod:' hosting prefix, exclude
- * internal Acquia platform domains, and treat 'stage' as 'test' when
- * filtering environments.
+ * internal Acquia platform domains, and resolve each application's drush
+ * alias environments (dev/test/prod) to Acquia's own environment names
+ * when filtering, since 'test' is called 'stage' on some applications.
  */
 class FleetDomains {
 
@@ -25,9 +27,13 @@ class FleetDomains {
    *
    * @param \AcquiaCloudApi\Connector\Client $client
    *   An authenticated Acquia Cloud API client.
+   * @param string $repoRoot
+   *   Absolute path to the repository root. Used to resolve applications'
+   *   drush alias environment names.
    */
   public function __construct(
     private Client $client,
+    private string $repoRoot,
   ) {}
 
   /**
@@ -83,19 +89,35 @@ class FleetDomains {
   }
 
   /**
-   * Normalize an environment name for filtering.
+   * Determine whether an environment's raw API name satisfies a request.
    *
-   * Some apps use 'stage' instead of 'test' (e.g. uiowa07); treat them as
-   * equivalent so --env=test matches both.
+   * $target_envs are drush alias environment names (dev/test/prod); the
+   * API's raw environment name does not always match, since some
+   * applications call the 'test' environment 'stage'. Each target is
+   * resolved to that application's actual Acquia name via
+   * [[Multisite::getCloudEnvName]] before comparing, so the divergence is
+   * handled from the drush alias rather than assumed.
    *
-   * @param string $name
+   * @param string $app_name
+   *   The short application name (e.g. 'uiowa09').
+   * @param string $raw_env_name
    *   The environment name as reported by the API.
+   * @param array $target_envs
+   *   Requested drush alias environment names (e.g. ['test']).
    *
-   * @return string
-   *   The normalized name.
+   * @return bool
+   *   TRUE if $raw_env_name is the Acquia name for any of $target_envs.
    */
-  public static function normalizeEnvName(string $name): string {
-    return $name === 'stage' ? 'test' : $name;
+  protected function matchesTargetEnv(string $app_name, string $raw_env_name, array $target_envs): bool {
+    foreach ($target_envs as $target_env) {
+      $cloud_name = Multisite::getCloudEnvName($this->repoRoot, $app_name, $target_env) ?? $target_env;
+
+      if ($raw_env_name === $cloud_name) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
   /**
@@ -152,7 +174,7 @@ class FleetDomains {
 
       /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
       foreach ($api_environments->getAll($application->uuid) as $environment) {
-        if (!in_array(self::normalizeEnvName($environment->name), $target_envs)) {
+        if (!$this->matchesTargetEnv($app_name, $environment->name, $target_envs)) {
           continue;
         }
 
