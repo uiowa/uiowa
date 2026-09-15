@@ -7954,3 +7954,9 @@ $sites['labprecision.uiowa.ddev.site'] = 'precision.lab.uiowa.edu';
 $sites['labprecision.dev.drupal.uiowa.edu'] = 'precision.lab.uiowa.edu';
 $sites['labprecision.stage.drupal.uiowa.edu'] = 'precision.lab.uiowa.edu';
 $sites['labprecision.prod.drupal.uiowa.edu'] = 'precision.lab.uiowa.edu';
+
+// Directory aliases for pathways.medicine.uiowa.edu.
+$sites['medicinepathways.uiowa.ddev.site'] = 'pathways.medicine.uiowa.edu';
+$sites['medicinepathways.dev.drupal.uiowa.edu'] = 'pathways.medicine.uiowa.edu';
+$sites['medicinepathways.stage.drupal.uiowa.edu'] = 'pathways.medicine.uiowa.edu';
+$sites['medicinepathways.prod.drupal.uiowa.edu'] = 'pathways.medicine.uiowa.edu';
