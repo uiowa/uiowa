@@ -110,7 +110,7 @@ class FleetDomains {
    */
   protected function matchesTargetEnv(string $app_name, string $raw_env_name, array $target_envs): bool {
     foreach ($target_envs as $target_env) {
-      $cloud_name = Multisite::getCloudEnvName($this->repoRoot, $app_name, $target_env) ?? $target_env;
+      $cloud_name = Multisite::getCloudEnvName("{$this->repoRoot}/drush/sites", $app_name, $target_env) ?? $target_env;
 
       if ($raw_env_name === $cloud_name) {
         return TRUE;

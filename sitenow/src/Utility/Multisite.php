@@ -3,6 +3,7 @@
 namespace SiteNow\Utility;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -14,6 +15,16 @@ class Multisite {
    * Static class.
    */
   private function __construct() {}
+
+  /**
+   * Parsed alias files, keyed by "<alias dir>::<name>".
+   *
+   * A fleet run can ask for the same file hundreds of times (once per site
+   * per environment lookup), so each one is parsed at most once per request.
+   *
+   * @var array<string, array>
+   */
+  private static array $aliasFileCache = [];
 
   /**
    * Given a site directory name, return the standardized database name.
@@ -181,25 +192,63 @@ class Multisite {
   }
 
   /**
-   * Read an application's drush alias file.
+   * Read an application or site's drush alias file.
    *
-   * @param string $repoRoot
-   *   Absolute path to the repository root.
-   * @param string $app
-   *   The application (AH_SITE_GROUP), e.g. 'uiowa09'.
+   * @param string $aliasDir
+   *   Absolute path to the directory holding the alias files: drush/sites
+   *   under the repository root, unless a caller (e.g. FleetRunner, for
+   *   tests) points elsewhere.
+   * @param string $name
+   *   The alias file's basename, without extension: an application
+   *   (AH_SITE_GROUP, e.g. 'uiowa09') or a site identifier (e.g.
+   *   'accessibility').
    *
    * @return array
    *   Parsed alias definitions keyed by environment (local, dev, test,
-   *   prod), or an empty array if the alias file does not exist.
+   *   prod), or an empty array if the alias file does not exist or fails
+   *   to parse.
    */
-  public static function getAliasFile(string $repoRoot, string $app): array {
-    $path = "{$repoRoot}/drush/sites/{$app}.site.yml";
+  public static function getAliasFile(string $aliasDir, string $name): array {
+    $key = "{$aliasDir}::{$name}";
 
-    if (!is_file($path)) {
-      return [];
+    if (!array_key_exists($key, self::$aliasFileCache)) {
+      $parsed = [];
+      $path = "{$aliasDir}/{$name}.site.yml";
+
+      if (is_file($path)) {
+        try {
+          $parsed = Yaml::parseFile($path) ?? [];
+        }
+        catch (ParseException) {
+          // A malformed alias file resolves to no environments rather than
+          // crashing every caller that reads it.
+        }
+      }
+
+      self::$aliasFileCache[$key] = is_array($parsed) ? $parsed : [];
     }
 
-    return Yaml::parseFile($path) ?? [];
+    return self::$aliasFileCache[$key];
+  }
+
+  /**
+   * Read one environment out of an application or site's drush alias file.
+   *
+   * @param string $aliasDir
+   *   Absolute path to the directory holding the alias files.
+   * @param string $name
+   *   The alias file's basename, without extension.
+   * @param string $env
+   *   The drush alias environment: local, dev, test, or prod.
+   *
+   * @return array|null
+   *   The environment's definition (uri, user, host, etc.), or NULL when the
+   *   alias file or the requested environment is missing.
+   */
+  public static function getAliasEnv(string $aliasDir, string $name, string $env): ?array {
+    $definition = static::getAliasFile($aliasDir, $name)[$env] ?? NULL;
+
+    return is_array($definition) ? $definition : NULL;
   }
 
   /**
@@ -214,10 +263,10 @@ class Multisite {
    * Acquia API environment name should resolve it through here rather than
    * assuming 'test' or hardcoding the 'stage' exception.
    *
-   * @param string $repoRoot
-   *   Absolute path to the repository root.
-   * @param string $app
-   *   The application (AH_SITE_GROUP), e.g. 'uiowa09'.
+   * @param string $aliasDir
+   *   Absolute path to the directory holding the alias files.
+   * @param string $name
+   *   The alias file's basename, without extension.
    * @param string $env
    *   The drush alias environment: local, dev, test, or prod.
    *
@@ -225,8 +274,8 @@ class Multisite {
    *   The Acquia Cloud environment name, or NULL if the alias file or the
    *   requested environment's user field is missing.
    */
-  public static function getCloudEnvName(string $repoRoot, string $app, string $env): ?string {
-    $user = static::getAliasFile($repoRoot, $app)[$env]['user'] ?? NULL;
+  public static function getCloudEnvName(string $aliasDir, string $name, string $env): ?string {
+    $user = static::getAliasEnv($aliasDir, $name, $env)['user'] ?? NULL;
 
     if (!is_string($user) || $user === '') {
       return NULL;

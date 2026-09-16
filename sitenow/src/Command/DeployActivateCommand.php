@@ -184,7 +184,7 @@ class DeployActivateCommand extends Command {
    *   The matching environment, or NULL if none matches.
    */
   protected function findEnvironment(iterable $environments, string $app, string $env): ?object {
-    $cloud_env = Multisite::getCloudEnvName($this->repoRoot, $app, $env) ?? $env;
+    $cloud_env = Multisite::getCloudEnvName("{$this->repoRoot}/drush/sites", $app, $env) ?? $env;
 
     foreach ($environments as $environment) {
       if ($environment->name === $cloud_env) {
