@@ -7972,3 +7972,9 @@ $sites['lib.uiowa.ddev.site'] = 'lib.uiowa.edu';
 $sites['lib.dev.drupal.uiowa.edu'] = 'lib.uiowa.edu';
 $sites['lib.stage.drupal.uiowa.edu'] = 'lib.uiowa.edu';
 $sites['lib.prod.drupal.uiowa.edu'] = 'lib.uiowa.edu';
+
+// Directory aliases for daniela-coelho.sites.uiowa.edu.
+$sites['sitesdaniela-coelho.uiowa.ddev.site'] = 'daniela-coelho.sites.uiowa.edu';
+$sites['sitesdaniela-coelho.dev.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
+$sites['sitesdaniela-coelho.stage.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
+$sites['sitesdaniela-coelho.prod.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
