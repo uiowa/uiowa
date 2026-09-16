@@ -1,0 +1,16 @@
+project:
+  machine_name: lib
+  human_name: lib.uiowa.edu
+  local:
+    hostname: lib.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: lib.prod
+drupal:
+  db:
+    database: lib_uiowa_edu
+uiowa:
+  requester: clinkenb
+  site-name: 'University of Iowa Libraries'
