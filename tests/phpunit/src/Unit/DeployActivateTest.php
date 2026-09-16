@@ -12,10 +12,11 @@ use Symfony\Component\Yaml\Yaml;
  *
  * Covers resolveBuildTag(): parsing `git ls-remote --tags` output, ordering
  * the tags by semantic version, and appending the -build suffix distribute
- * pushes to the Acquia remotes. Also covers findEnvironment(): matching an
- * application's environments against a requested drush alias environment
- * (dev/test/prod), which is not always Acquia's own name for it — uiowa07-09
- * call 'test' 'stage'. No git remote or Acquia API access.
+ * pushes to the Acquia remotes. Also covers findEnvironment() and
+ * stepLabel(): matching/describing an application's environments against a
+ * requested drush alias environment (dev/test/prod), which is not always
+ * Acquia's own name for it — uiowa07-09 call 'test' 'stage'. No git remote
+ * or Acquia API access.
  *
  * @group unit
  */
@@ -86,6 +87,10 @@ class DeployActivateTest extends UnitTestCase {
         return $this->findEnvironment($environments, $app, $env);
       }
 
+      public function pubStepLabel(string $name, string $env, string $tag): string {
+        return $this->stepLabel($name, $env, $tag);
+      }
+
     };
   }
 
@@ -146,6 +151,43 @@ class DeployActivateTest extends UnitTestCase {
     $target = $this->commandInDir()->pubFindEnvironment($environments, 'unknownapp', 'test');
 
     $this->assertSame('env-test', $target->uuid);
+  }
+
+  /**
+   * A divergent application's step label names its own Acquia environment.
+   *
+   * This is what --dry-run shows: the exact target findEnvironment() will
+   * look for, without running the switch to find out.
+   */
+  public function testStepLabelNamesTheCloudEnvWhenItDiverges(): void {
+    $this->writeAlias('uiowa09', 'uiowa09.stage');
+
+    $this->assertSame(
+      'Switch uiowa09 test (stage) to 3.32.42-build',
+      $this->commandInDir()->pubStepLabel('uiowa09', 'test', '3.32.42-build')
+    );
+  }
+
+  /**
+   * A uniform application's step label names only the requested environment.
+   */
+  public function testStepLabelOmitsTheCloudEnvWhenUniform(): void {
+    $this->writeAlias('uiowa04', 'uiowa04.test');
+
+    $this->assertSame(
+      'Switch uiowa04 test to 3.32.42-build',
+      $this->commandInDir()->pubStepLabel('uiowa04', 'test', '3.32.42-build')
+    );
+  }
+
+  /**
+   * Without an alias file, the label names only the requested environment.
+   */
+  public function testStepLabelFallsBackWithoutAnAliasFile(): void {
+    $this->assertSame(
+      'Switch unknownapp test to 3.32.42-build',
+      $this->commandInDir()->pubStepLabel('unknownapp', 'test', '3.32.42-build')
+    );
   }
 
   /**
