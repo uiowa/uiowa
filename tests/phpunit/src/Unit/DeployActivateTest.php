@@ -4,17 +4,63 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use SiteNow\Command\DeployActivateCommand;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 /**
- * Unit tests for the deploy:activate command's tag resolution.
+ * Unit tests for the deploy:activate command's tag and environment resolution.
  *
  * Covers resolveBuildTag(): parsing `git ls-remote --tags` output, ordering
  * the tags by semantic version, and appending the -build suffix distribute
- * pushes to the Acquia remotes. No git remote access.
+ * pushes to the Acquia remotes. Also covers findEnvironment() and
+ * stepLabel(): matching/describing an application's environments against a
+ * requested drush alias environment (dev/test/prod), which is not always
+ * Acquia's own name for it — uiowa07-09 call 'test' 'stage'. No git remote
+ * or Acquia API access.
  *
  * @group unit
  */
 class DeployActivateTest extends UnitTestCase {
+
+  /**
+   * Scratch directory for fixture drush alias files.
+   *
+   * @var string
+   */
+  private string $dir;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    $this->dir = sys_get_temp_dir() . '/sn-deploy-activate-' . uniqid();
+    mkdir("{$this->dir}/drush/sites", 0777, TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function tearDown(): void {
+    (new Filesystem())->remove($this->dir);
+    parent::tearDown();
+  }
+
+  /**
+   * Write a fixture drush alias file for an application.
+   *
+   * @param string $app
+   *   The application (AH_SITE_GROUP).
+   * @param string $test_user
+   *   The 'test' environment's user field, e.g. 'uiowa09.stage'.
+   */
+  private function writeAlias(string $app, string $test_user): void {
+    file_put_contents("{$this->dir}/drush/sites/{$app}.site.yml", Yaml::dump([
+      'dev' => ['user' => "{$app}.dev"],
+      'test' => ['user' => $test_user],
+      'prod' => ['user' => "{$app}.prod"],
+    ], 4, 2));
+  }
 
   /**
    * A command instance exposing the protected tag resolver.
@@ -27,6 +73,121 @@ class DeployActivateTest extends UnitTestCase {
       }
 
     };
+  }
+
+  /**
+   * A command instance exposing the protected findEnvironment().
+   *
+   * Rooted at the scratch directory holding the fixture alias files.
+   */
+  private function commandInDir(): DeployActivateCommand {
+    return new class($this->dir) extends DeployActivateCommand {
+
+      public function pubFindEnvironment(iterable $environments, string $app, string $env): ?object {
+        return $this->findEnvironment($environments, $app, $env);
+      }
+
+      public function pubStepLabel(string $name, string $env, string $tag): string {
+        return $this->stepLabel($name, $env, $tag);
+      }
+
+    };
+  }
+
+  /**
+   * An application's own name for 'test' is matched, not the literal string.
+   *
+   * This is the exact bug report: on uiowa07-09, `--env=test` matched nothing
+   * because the API's environment is named 'stage' there.
+   */
+  public function testFindEnvironmentMatchesTheApplicationsOwnName(): void {
+    $this->writeAlias('uiowa09', 'uiowa09.stage');
+
+    $environments = [
+      (object) ['name' => 'dev', 'uuid' => 'env-dev'],
+      (object) ['name' => 'stage', 'uuid' => 'env-stage'],
+      (object) ['name' => 'prod', 'uuid' => 'env-prod'],
+    ];
+
+    $target = $this->commandInDir()->pubFindEnvironment($environments, 'uiowa09', 'test');
+
+    $this->assertNotNull($target);
+    $this->assertSame('env-stage', $target->uuid);
+  }
+
+  /**
+   * An application with no divergence matches the requested name directly.
+   */
+  public function testFindEnvironmentMatchesDirectlyWhenUniform(): void {
+    $this->writeAlias('uiowa04', 'uiowa04.test');
+
+    $environments = [(object) ['name' => 'test', 'uuid' => 'env-test']];
+
+    $target = $this->commandInDir()->pubFindEnvironment($environments, 'uiowa04', 'test');
+
+    $this->assertSame('env-test', $target->uuid);
+  }
+
+  /**
+   * No environment named 'test' resolves to NULL, not a false match on 'stage'.
+   */
+  public function testFindEnvironmentReturnsNullWhenNothingMatches(): void {
+    $this->writeAlias('uiowa09', 'uiowa09.stage');
+
+    $environments = [
+      (object) ['name' => 'dev', 'uuid' => 'env-dev'],
+      (object) ['name' => 'prod', 'uuid' => 'env-prod'],
+    ];
+
+    $this->assertNull($this->commandInDir()->pubFindEnvironment($environments, 'uiowa09', 'test'));
+  }
+
+  /**
+   * Without an alias file, the requested name is used as-is.
+   */
+  public function testFindEnvironmentFallsBackWithoutAnAliasFile(): void {
+    $environments = [(object) ['name' => 'test', 'uuid' => 'env-test']];
+
+    $target = $this->commandInDir()->pubFindEnvironment($environments, 'unknownapp', 'test');
+
+    $this->assertSame('env-test', $target->uuid);
+  }
+
+  /**
+   * A divergent application's step label names its own Acquia environment.
+   *
+   * This is what --dry-run shows: the exact target findEnvironment() will
+   * look for, without running the switch to find out.
+   */
+  public function testStepLabelNamesTheCloudEnvWhenItDiverges(): void {
+    $this->writeAlias('uiowa09', 'uiowa09.stage');
+
+    $this->assertSame(
+      'Switch uiowa09 test (stage) to 3.32.42-build',
+      $this->commandInDir()->pubStepLabel('uiowa09', 'test', '3.32.42-build')
+    );
+  }
+
+  /**
+   * A uniform application's step label names only the requested environment.
+   */
+  public function testStepLabelOmitsTheCloudEnvWhenUniform(): void {
+    $this->writeAlias('uiowa04', 'uiowa04.test');
+
+    $this->assertSame(
+      'Switch uiowa04 test to 3.32.42-build',
+      $this->commandInDir()->pubStepLabel('uiowa04', 'test', '3.32.42-build')
+    );
+  }
+
+  /**
+   * Without an alias file, the label names only the requested environment.
+   */
+  public function testStepLabelFallsBackWithoutAnAliasFile(): void {
+    $this->assertSame(
+      'Switch unknownapp test to 3.32.42-build',
+      $this->commandInDir()->pubStepLabel('unknownapp', 'test', '3.32.42-build')
+    );
   }
 
   /**

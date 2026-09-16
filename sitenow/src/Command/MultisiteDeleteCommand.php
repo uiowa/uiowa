@@ -370,13 +370,7 @@ HELP);
    *   environment the alias does not define.
    */
   protected function mountsByEnv(string $app): array {
-    $path = "{$this->repoRoot}/drush/sites/{$app}.site.yml";
-
-    if (!is_file($path)) {
-      return [];
-    }
-
-    $alias = Yaml::parseFile($path) ?? [];
+    $alias = Multisite::getAliasFile("{$this->repoRoot}/drush/sites", $app);
     $mounts = [];
 
     foreach (self::ENVIRONMENTS as $env) {

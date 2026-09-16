@@ -73,17 +73,6 @@ class FleetRunner {
   private string $aliasDir;
 
   /**
-   * Parsed alias environments, keyed by "<site id>.<env>".
-   *
-   * A selection can run to four figures of sites, and both the transport
-   * decision and the local --uri read the same alias file, so each one is
-   * parsed at most once.
-   *
-   * @var array<string, array|null>
-   */
-  private array $aliasCache = [];
-
-  /**
    * The sites.php host => directory aliases, read once.
    *
    * @var array<string, string>|null
@@ -384,6 +373,9 @@ class FleetRunner {
   /**
    * Read one environment out of a site's drush alias file.
    *
+   * Simple wrapper for the Multisite::getAliasEnv(). Handles 'stage'
+   * v 'test' difference across applications and caches.
+   *
    * @param string $domain
    *   The site domain.
    * @param string $env
@@ -394,29 +386,7 @@ class FleetRunner {
    *   unparseable, or has no such environment.
    */
   protected function aliasEnv(string $domain, string $env): ?array {
-    $id = $this->aliasIdentifier($domain);
-    $key = "{$id}.{$env}";
-
-    if (!array_key_exists($key, $this->aliasCache)) {
-      $this->aliasCache[$key] = NULL;
-      $path = "{$this->aliasDir}/{$id}.site.yml";
-
-      if (file_exists($path)) {
-        try {
-          $alias = Yaml::parseFile($path);
-          if (is_array($alias) && is_array($alias[$env] ?? NULL)) {
-            $this->aliasCache[$key] = $alias[$env];
-          }
-        }
-        catch (ParseException) {
-          // An alias file that doesn't parse breaks the remote transport too;
-          // leaving this NULL sends the job over SSH, where drush reports the
-          // broken alias better than a crash here would.
-        }
-      }
-    }
-
-    return $this->aliasCache[$key];
+    return Multisite::getAliasEnv($this->aliasDir, $this->aliasIdentifier($domain), $env);
   }
 
   /**
