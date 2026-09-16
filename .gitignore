@@ -160,6 +160,12 @@ drush/sites/.checksums
 # PHPCS
 .phpcs-cache
 
+# Backups written by GNU patch. The post-drupal-scaffold-cmd hooks in
+# composer.json run `patch` directly, which regenerates these on every
+# install.
+*.orig
+*.rej
+
 # PHPUnit
 phpunit.xml
 .phpunit.result.cache
