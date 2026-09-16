@@ -106,7 +106,7 @@ class DeployActivateCommand extends Command {
       ['label' => 'Environment', 'value' => $env],
       ['label' => 'Applications', 'value' => implode(', ', $names)],
     ];
-    $steps = array_map(fn($name) => ['label' => "Switch {$name} {$env} to {$tag}"], $names);
+    $steps = array_map(fn($name) => ['label' => $this->stepLabel($name, $env, $tag)], $names);
 
     $this->renderPlan($io, "deploy:activate {$tag}", $summary, $validation, $steps);
 
@@ -193,6 +193,32 @@ class DeployActivateCommand extends Command {
     }
 
     return NULL;
+  }
+
+  /**
+   * The plan-display label for one application's switch step.
+   *
+   * Names the application's own Acquia environment alongside the requested
+   * one when they diverge (uiowa07-09's 'test' is Acquia's 'stage'), so
+   * --dry-run surfaces what findEnvironment() will actually look for without
+   * running the switch to find out.
+   *
+   * @param string $name
+   *   The application (AH_SITE_GROUP).
+   * @param string $env
+   *   The requested drush alias environment, e.g. 'test'.
+   * @param string $tag
+   *   The release tag being activated.
+   *
+   * @return string
+   *   The step label.
+   */
+  protected function stepLabel(string $name, string $env, string $tag): string {
+    $cloud_env = Multisite::getCloudEnvName("{$this->repoRoot}/drush/sites", $name, $env) ?? $env;
+
+    return $cloud_env === $env
+      ? "Switch {$name} {$env} to {$tag}"
+      : "Switch {$name} {$env} ({$cloud_env}) to {$tag}";
   }
 
   /**
