@@ -60,7 +60,7 @@ The `ddev yarn frontend:build` command will install and compile frontend assets.
 ## Multisite Management
 SiteNow provides host-side multisite commands through the `sn` CLI, including `multisite:create`. See [sitenow/README.md](sitenow/README.md).
 
-Because the `.git` directory is not synced to the web container, `./sn` commands need to be run on your host machine instead of in the web container.
+Run `sn` from your host. A few commands act on a site's local database, which only exists in the web container, so they are run as `ddev sn`. Those are marked `(ddev required)` in `./sn list`.
 
 # Updating Dependencies
 Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `ddev sn sync:all`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. Drupal core scaffolding may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
