@@ -2,6 +2,29 @@
 
 /**
  * @file
+ * Theme functions for UIDS Base.
+ */
+
+use Drupal\Core\Extension\ThemeSettingsProvider;
+
+/**
+ * Gets a UIDS Base theme setting.
+ *
+ * @param string $setting
+ *   The setting name.
+ * @param string|null $theme
+ *   The theme name, when reading another theme's settings.
+ *
+ * @return mixed
+ *   The configured setting value.
+ */
+function uids_base_theme_get_setting(string $setting, ?string $theme = NULL): mixed {
+  return \Drupal::service(ThemeSettingsProvider::class)
+    ->getSetting($setting, $theme);
+}
+
+/**
+ * @file
  * Functions to support theming in the uids_base theme.
  */
 
@@ -184,7 +207,7 @@ function uids_base_preprocess_html(&$variables) {
 
   $sticky_class = 'header-not-sticky';
   // Only set to sticky if it is set and nav_style is 'toggle'.
-  if (theme_get_setting('header.nav_style') === 'toggle' && theme_get_setting('header.sticky')) {
+  if (uids_base_theme_get_setting('header.nav_style') === 'toggle' && uids_base_theme_get_setting('header.sticky')) {
     $sticky_class = 'header-sticky';
   }
 
@@ -192,26 +215,26 @@ function uids_base_preprocess_html(&$variables) {
 
   $toppage = 'no-top-scroll';
   // Used for page by page basis display of scroll to top button.
-  if (theme_get_setting('header.toppage')) {
+  if (uids_base_theme_get_setting('header.toppage')) {
     $toppage = 'top-scroll';
   }
   $variables['attributes']['class'][] = $toppage;
 
   // Get header type for setting sticky padding for tertiary header.
-  $variables['header_type'] = theme_get_setting('header.type');
+  $variables['header_type'] = uids_base_theme_get_setting('header.type');
 
   // Get header branding type.
-  $variables['header_branding'] = theme_get_setting('header.branding_options');
+  $variables['header_branding'] = uids_base_theme_get_setting('header.branding_options');
 
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
-  $style_selector = theme_get_setting('style.style_selector');
+  $style_selector = uids_base_theme_get_setting('style.style_selector');
   if ($style_selector !== NULL && $style_selector !== 'brand') {
     $variables['#attached']['library'][] = 'uids_base/theme-overrides';
   }
 
-  if (theme_get_setting('style.style_selector') === 'gray') {
+  if (uids_base_theme_get_setting('style.style_selector') === 'gray') {
     $variables['attributes']['class'][] = 'off-brand';
     $css = ':root {--brand-primary: #d7d7d7!important;}';
     $variables['#attached']['html_head'][] = [
@@ -229,7 +252,7 @@ function uids_base_preprocess_html(&$variables) {
   }
 
   // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
-  if (theme_get_setting('fonts.font-family') === 'serif') {
+  if (uids_base_theme_get_setting('fonts.font-family') === 'serif') {
     $variables['attributes']['class'][] = 'text--serif';
     $variables['#attached']['library'][] = 'uids_base/global-serif';
   }
@@ -276,14 +299,14 @@ function uids_base_preprocess_page(&$variables) {
   $variables['uiowa_logo'] = TRUE;
   $variables['is_off_brand'] = FALSE;
 
-  $style_selector = theme_get_setting('style.style_selector');
+  $style_selector = uids_base_theme_get_setting('style.style_selector');
   if (!empty($style_selector) && $style_selector !== 'brand') {
     $variables['uiowa_logo'] = FALSE;
     $variables['is_off_brand'] = TRUE;
   }
 
-  if (!theme_get_setting('logo.use_default')) {
-    $logo_path = theme_get_setting('logo.path');
+  if (!uids_base_theme_get_setting('logo.use_default')) {
+    $logo_path = uids_base_theme_get_setting('logo.path');
     if (!empty($logo_path)) {
       $file_system = \Drupal::service('file_system');
       $logo_uri = $file_system->realpath($logo_path);
@@ -300,12 +323,12 @@ function uids_base_preprocess_page(&$variables) {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $variables['uiowa_logo_path'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
-  $variables['header_type'] = theme_get_setting('header.type');
-  $variables['header_nav'] = theme_get_setting('header.nav_style');
-  $variables['header_sticky'] = theme_get_setting('header.sticky');
-  $variables['header_toppage'] = theme_get_setting('header.toppage');
-  $variables['header_branding'] = theme_get_setting('header.branding_options');
-  $variables['footer_logo'] = theme_get_setting('header.footer_logo');
+  $variables['header_type'] = uids_base_theme_get_setting('header.type');
+  $variables['header_nav'] = uids_base_theme_get_setting('header.nav_style');
+  $variables['header_sticky'] = uids_base_theme_get_setting('header.sticky');
+  $variables['header_toppage'] = uids_base_theme_get_setting('header.toppage');
+  $variables['header_branding'] = uids_base_theme_get_setting('header.branding_options');
+  $variables['footer_logo'] = uids_base_theme_get_setting('header.footer_logo');
   $variables['header_classes'] = [];
   $name_length = strlen($variables['site_name']);
 
@@ -365,7 +388,7 @@ function uids_base_preprocess_page(&$variables) {
   }
 
   // Link to the SSO route if configured to display the footer login link.
-  if (theme_get_setting('footer.login_link') ?? TRUE) {
+  if (uids_base_theme_get_setting('footer.login_link') ?? TRUE) {
     $route = 'samlauth.saml_controller_login';
     $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
 
@@ -887,7 +910,7 @@ function uids_base_preprocess_layout__twocol__card_sidebar(&$variables) {
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
 function uids_base_preprocess_block(&$variables) {
-  $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
+  $variables['uids_base_container_settings'] = uids_base_theme_get_setting('layout.container');
 
   if (in_array($variables['base_plugin_id'], [
     'system_menu_block',
@@ -1177,7 +1200,7 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
 function uids_base_preprocess_menu(&$variables) {
   switch ($variables['menu_name']) {
     case 'top-links':
-      $variables['limit'] = theme_get_setting('header.top_links_limit');
+      $variables['limit'] = uids_base_theme_get_setting('header.top_links_limit');
 
       // Remove nested children from menu items.
       if (!empty($variables['items'])) {

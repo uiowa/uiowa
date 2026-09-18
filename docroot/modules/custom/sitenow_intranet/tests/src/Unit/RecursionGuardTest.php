@@ -70,7 +70,7 @@ class RecursionGuardTest extends UnitTestCase {
    * climb, so scoping them means clearing them.
    */
   public function testCountsAreNotSelfClearing() {
-    $depth = EntityReferenceEntityFormatter::RECURSIVE_RENDER_LIMIT - 1;
+    $depth = 19;
     $this->setGuards(['nodepersonfield_image216media1041' => $depth]);
 
     foreach (array_keys(static::GUARDS) as $class) {

@@ -2,6 +2,13 @@
 
 /**
  * @file
+ * Install and update hooks for Pharmacy Core.
+ */
+
+use Drupal\Core\Field\FieldPurger;
+
+/**
+ * @file
  * Install, update and uninstall functions for the Pharmacy Core module.
  */
 
@@ -79,7 +86,7 @@ function pharmacy_core_update_9001() {
   $field_storage->delete();
 
   // Purge in order for new field to be created after deleting the old.
-  field_purge_batch(100);
+  \Drupal::service(FieldPurger::class)->purgeBatch(100);
 
   // Save our new, updated field storage.
   $new_field_storage = FieldStorageConfig::create($new_field_storage);

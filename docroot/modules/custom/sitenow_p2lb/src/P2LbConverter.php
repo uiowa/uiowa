@@ -5,6 +5,7 @@ namespace Drupal\sitenow_p2lb;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\layout_builder\Section;
+use Drupal\menu_ui\MenuUiUtility;
 use Drupal\sitenow_pages\Entity\Page;
 
 /**
@@ -257,7 +258,8 @@ class P2LbConverter {
     if (!in_array('no_sidebars', array_column($this->page->get('field_publish_options')
       ->getValue(), 'value'))) {
       // Check if node has menu children.
-      $menu_defaults = menu_ui_get_menu_link_defaults($this->page);
+      $menu_defaults = \Drupal::service(MenuUiUtility::class)
+        ->getMenuLinkDefaults($this->page);
       $menu_children = $this->entityTypeManager->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
 
       if (!empty($menu_children)) {

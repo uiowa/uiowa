@@ -36,7 +36,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
 
     $this->requestStack->expects($this->any())
       ->method('getCurrentRequest')
-      ->will($this->returnValue($this->request));
+      ->willReturn($this->request);
   }
 
   /**
@@ -47,7 +47,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   public function testConfigByInternalDomain($host) {
     $this->request->expects($this->any())
       ->method('getHost')
-      ->will($this->returnValue($host));
+      ->willReturn($host);
 
     $sut = new RobotstxtOverride($this->requestStack);
 
@@ -83,7 +83,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   public function testConfigByProductionDomain($host) {
     $this->request->expects($this->any())
       ->method('getHost')
-      ->will($this->returnValue($host));
+      ->willReturn($host);
 
     $sut = new RobotstxtOverride($this->requestStack);
 

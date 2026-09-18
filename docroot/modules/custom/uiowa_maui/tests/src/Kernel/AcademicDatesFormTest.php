@@ -37,23 +37,23 @@ class AcademicDatesFormTest extends KernelTestBase {
 
     $this->maui->expects($this->any())
       ->method('getCurrentSession')
-      ->will($this->returnValue(
+      ->willReturn(
         (object) [
           'id' => 1,
           'shortDescription' => 'Winter 2020',
         ]
-      ));
+      );
 
     $this->maui->expects($this->any())
       ->method('getDateCategories')
-      ->will($this->returnValue([
+      ->willReturn([
         'foo' => 'Foo',
         'bar' => 'Bar',
-      ]));
+      ]);
 
     $this->maui->expects($this->any())
       ->method('getSessionsBounded')
-      ->will($this->returnValue([
+      ->willReturn([
         (object) [
           'id' => 1,
           'shortDescription' => 'Winter 2020',
@@ -66,11 +66,11 @@ class AcademicDatesFormTest extends KernelTestBase {
           'id' => 3,
           'shortDescription' => 'Summer 2021',
         ],
-      ]));
+      ]);
 
     $this->maui->expects($this->any())
       ->method('searchSessionDates')
-      ->will($this->returnValue([
+      ->willReturn([
         (object) [
           'name' => 'foo',
           'beginDate' => '1/1/2021',
@@ -97,7 +97,7 @@ class AcademicDatesFormTest extends KernelTestBase {
           ],
           'reviewed' => TRUE,
         ],
-      ]));
+      ]);
 
   }
 

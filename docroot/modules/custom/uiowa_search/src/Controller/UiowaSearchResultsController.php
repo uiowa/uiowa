@@ -22,7 +22,7 @@ class UiowaSearchResultsController extends ControllerBase {
    */
   public function build(Request $request) {
     $config = $this->config('uiowa_search.settings')->get('uiowa_search');
-    $search_terms = $request->get('terms');
+    $search_terms = $request->query->get('terms');
 
     $display_search_all_uiowa = $config['display_search_all_uiowa'] ?? TRUE;
 

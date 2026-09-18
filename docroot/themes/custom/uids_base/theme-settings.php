@@ -36,7 +36,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'inline' => t('Display inline with the IOWA bar'),
       'below' => t('Display below the IOWA bar'),
     ],
-    '#default_value' => theme_get_setting('header.type'),
+    '#default_value' => uids_base_theme_get_setting('header.type'),
   ];
 
   // If there is a parent organization or the name is longer than 43
@@ -75,14 +75,14 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'horizontal' => t('Horizontal navigation'),
       'mega' => t('Mega menu navigation'),
     ],
-    '#default_value' => theme_get_setting('header.nav_style'),
+    '#default_value' => uids_base_theme_get_setting('header.nav_style'),
   ];
 
   $form['header']['sticky'] = [
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),
     '#description' => t('A sticky header will continue to be available as the user scrolls down the page. It will hide on scroll down and show when the user starts to scroll up.'),
-    '#default_value' => theme_get_setting('header.sticky'),
+    '#default_value' => uids_base_theme_get_setting('header.sticky'),
     '#states' => [
       'visible' => [
         ':input[name="header[nav_style]"]' => [
@@ -97,7 +97,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#type' => 'checkbox',
     '#title' => t('Back to top button'),
     '#description' => t('A back to top button will be visible when the user scrolls down the page.'),
-    '#default_value' => theme_get_setting('header.toppage'),
+    '#default_value' => uids_base_theme_get_setting('header.toppage'),
   ];
 
   $form['header']['branding_options'] = [
@@ -109,7 +109,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'uihc' => t('Iowa Health Care'),
       'regents' => t('Regents'),
     ],
-    '#default_value' => theme_get_setting('header.branding_options'),
+    '#default_value' => uids_base_theme_get_setting('header.branding_options'),
   ];
 
   if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
@@ -120,7 +120,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#type' => 'checkbox',
     '#title' => t('Footer logo'),
     '#description' => t('Display UIowa logo in the footer.'),
-    '#default_value' => theme_get_setting('header.footer_logo'),
+    '#default_value' => uids_base_theme_get_setting('header.footer_logo'),
     '#states' => [
       'visible' => [
         ':input[name="header[branding_options]"]' => [
@@ -134,7 +134,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     $form['header']['footer_logo']['#access'] = FALSE;
   }
 
-  $top_links_limit = theme_get_setting('header.top_links_limit');
+  $top_links_limit = uids_base_theme_get_setting('header.top_links_limit');
 
   // Get limit, otherwise limit to 2.
   $form['header']['top_links_limit'] = [
@@ -162,7 +162,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'brand' => t('Iowa brand'),
       'gray' => t('Gray'),
     ],
-    '#default_value' => theme_get_setting('style.style_selector'),
+    '#default_value' => uids_base_theme_get_setting('style.style_selector'),
   ];
 
   // Value set on submit. Read-only for admins.
@@ -192,7 +192,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'sans-serif' => t('Sans serif (Roboto)'),
       'serif' => t('Serif (Zilla Slab)'),
     ],
-    '#default_value' => theme_get_setting('fonts.font-family'),
+    '#default_value' => uids_base_theme_get_setting('fonts.font-family'),
   ];
 
   // Only allow access to these sites.
@@ -222,7 +222,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#type' => 'checkbox',
     '#title' => t('Footer login link'),
     '#description' => t('Display a login link in the footer.'),
-    '#default_value' => theme_get_setting('footer.login_link') ?? TRUE,
+    '#default_value' => uids_base_theme_get_setting('footer.login_link') ?? TRUE,
     '#access' => FALSE,
   ];
 
