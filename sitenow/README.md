@@ -28,8 +28,3 @@ is the registry of applications; `manifest.yml` maps each site to it's applicati
 `src/` is organized by the resource acted on, with verbs as methods:
 `Acquia\CloudApi`, `Config\Manifest`, `Config\SitesPhp`. Commands live in
 `Command/`.
-
-Do not add verb-named classes. One class per action grows a class per resource
-per verb, and forces shared plumbing for what should be private methods on a
-resource class. The `Operation/` namespace had that shape and was removed in
-#10055.
