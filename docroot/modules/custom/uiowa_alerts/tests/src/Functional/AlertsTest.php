@@ -101,7 +101,7 @@ class AlertsTest extends BrowserTestBase {
    * @return array
    *   Array of custom alert levels.
    */
-  public function alertLevels() {
+  public static function alertLevels() {
     return [
       ['Info'],
       ['Warning'],

@@ -60,7 +60,7 @@ if [ -z "${SIMPLETEST_DB:-}" ]; then
   echo "Using default: $SIMPLETEST_DB"
 fi
 
-# Run PHPUnit with verbose output
+# Run PHPUnit.
 echo "Configuration: phpunit.xml.dist"
 echo "Database: $SIMPLETEST_DB"
 echo ""
@@ -86,7 +86,7 @@ if [ "$EXCLUDE_FUNCTIONAL" = true ]; then
   PHPUNIT_ARGS="$PHPUNIT_ARGS --exclude-group functional"
 fi
 
-if vendor/bin/phpunit --verbose $PHPUNIT_ARGS; then
+if vendor/bin/phpunit $PHPUNIT_ARGS; then
   echo -e "\n${GREEN}✓ PHPUnit tests passed${NC}"
   exit 0
 else

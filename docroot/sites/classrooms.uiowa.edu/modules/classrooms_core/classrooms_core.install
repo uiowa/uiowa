@@ -172,5 +172,5 @@ function classrooms_core_update_9004() {
       ->condition('field_room_guide_uri', $old)
       ->execute();
   }
-  \Drupal::service('cache.render')->invalidateAll();
+  \Drupal::service('cache.render')->deleteAll();
 }

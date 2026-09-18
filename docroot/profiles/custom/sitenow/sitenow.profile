@@ -2,6 +2,13 @@
 
 /**
  * @file
+ * Profile hooks for SiteNow.
+ */
+
+use Drupal\Core\Extension\ThemeSettingsProvider;
+
+/**
+ * @file
  * Profile code.
  */
 
@@ -159,7 +166,8 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
   if ($form['id']['#default_value'] === 'top-links') {
     $theme = \Drupal::config('system.theme')->get('default');
     if (in_array($theme, ['uids_base'])) {
-      $limit = theme_get_setting('header.top_links_limit', 'uids_base');
+      $limit = \Drupal::service(ThemeSettingsProvider::class)
+        ->getSetting('header.top_links_limit', 'uids_base');
       if ($limit) {
         $warning_text = t('Only the top @limit menu items will display. Child/submenu items are automatically hidden to maintain a usable header layout.', [
           '@limit' => $limit,

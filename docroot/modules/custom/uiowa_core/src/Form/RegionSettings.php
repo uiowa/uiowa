@@ -167,11 +167,11 @@ class RegionSettings extends ConfigFormBase {
         ),
       ];
 
-      $view = views_embed_view('region_items', 'region_items', $region_item_machine_name);
-      $render = $this->renderer->render($view);
       $form['region_item_' . $key . '_container']['region_items']['region_items_view_container']['region_items_view'] = [
-        '#type' => 'markup',
-        '#markup' => $render,
+        '#type' => 'view',
+        '#name' => 'region_items',
+        '#display_id' => 'region_items',
+        '#arguments' => [$region_item_machine_name],
       ];
     }
 

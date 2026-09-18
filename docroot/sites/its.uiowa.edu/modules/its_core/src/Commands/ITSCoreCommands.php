@@ -9,6 +9,7 @@ use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\symfony_mailer\EmailFactoryInterface;
+use Drupal\views\Views;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -53,7 +54,7 @@ class ITSCoreCommands extends DrushCommands {
       'service_announcements' => 'Service Announcements',
       'ongoing' => 'Ongoing Maintenance',
     ] as $key => $title) {
-      $view = views_get_view_result('alerts_list_block', $key);
+      $view = Views::getViewResult('alerts_list_block', $key);
       if (!empty($view)) {
         $views[$key] = [
           'title' => $title,
