@@ -21,7 +21,7 @@ terminal, so a command that asks a question can be answered.
 Sites are spread across several Acquia applications rather than living on one.
 An application's SSL certificate lists its domains as SANs and that list caps
 near 100, so no single application can hold the whole fleet. `applications.yml`
-is the registry of applications; `manifest.yml` maps each site to one.
+is the registry of applications; `manifest.yml` maps each site to it's application.
 
 ## Code structure
 
