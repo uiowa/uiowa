@@ -21,6 +21,11 @@ use Drupal\sitenow_intranet\Search\ScopedRenderedItem;
 class RecursionGuardTest extends UnitTestCase {
 
   /**
+   * A nonzero value used to verify that counters remain set until reset.
+   */
+  private const COUNTER_VALUE = 1;
+
+  /**
    * The guards, keyed by the class holding them.
    *
    * @var string[]
@@ -70,7 +75,7 @@ class RecursionGuardTest extends UnitTestCase {
    * climb, so scoping them means clearing them.
    */
   public function testCountsAreNotSelfClearing() {
-    $depth = 19;
+    $depth = static::COUNTER_VALUE;
     $this->setGuards(['nodepersonfield_image216media1041' => $depth]);
 
     foreach (array_keys(static::GUARDS) as $class) {
