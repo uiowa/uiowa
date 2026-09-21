@@ -7984,3 +7984,9 @@ $sites['sitesalvee.uiowa.ddev.site'] = 'alvee.sites.uiowa.edu';
 $sites['sitesalvee.dev.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
 $sites['sitesalvee.stage.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
 $sites['sitesalvee.prod.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
+
+// Directory aliases for hawkinson.tippie.uiowa.edu.
+$sites['tippiehawkinson.uiowa.ddev.site'] = 'hawkinson.tippie.uiowa.edu';
+$sites['tippiehawkinson.dev.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
+$sites['tippiehawkinson.stage.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
+$sites['tippiehawkinson.prod.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
