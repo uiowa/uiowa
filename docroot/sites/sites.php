@@ -7990,3 +7990,9 @@ $sites['tippiehawkinson.uiowa.ddev.site'] = 'hawkinson.tippie.uiowa.edu';
 $sites['tippiehawkinson.dev.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
 $sites['tippiehawkinson.stage.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
 $sites['tippiehawkinson.prod.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
+
+// Directory aliases for joydatta.sites.uiowa.edu.
+$sites['sitesjoydatta.uiowa.ddev.site'] = 'joydatta.sites.uiowa.edu';
+$sites['sitesjoydatta.dev.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
+$sites['sitesjoydatta.stage.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
+$sites['sitesjoydatta.prod.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
