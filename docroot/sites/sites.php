@@ -7978,3 +7978,9 @@ $sites['sitesdaniela-coelho.uiowa.ddev.site'] = 'daniela-coelho.sites.uiowa.edu'
 $sites['sitesdaniela-coelho.dev.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
 $sites['sitesdaniela-coelho.stage.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
 $sites['sitesdaniela-coelho.prod.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
+
+// Directory aliases for alvee.sites.uiowa.edu.
+$sites['sitesalvee.uiowa.ddev.site'] = 'alvee.sites.uiowa.edu';
+$sites['sitesalvee.dev.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
+$sites['sitesalvee.stage.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
+$sites['sitesalvee.prod.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
