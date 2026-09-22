@@ -30,10 +30,13 @@ class SearchResultsTest extends BrowserTestBase {
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
     $this->config('uiowa_search.settings')
       ->set('uiowa_search.display_search_all_uiowa', TRUE)
+      ->set('uiowa_search.cse_engine_id', 'test-engine')
+      ->set('uiowa_search.cse_scope', 'test-scope')
       ->save();
 
     $terms = 'Hawk Test';
     $this->drupalGet('search', ['query' => ['terms' => $terms]]);
+    $this->assertSession()->statusCodeEquals(200);
     $link = $this->getSession()->getPage()
       ->findLink("Search all University of Iowa for $terms");
 
