@@ -379,6 +379,13 @@ class MauiApi extends ApiClientBase {
       if ($fresh !== FALSE && isset($fresh['NewDataSet']['Table'])) {
         $this->cache->set($cid, $fresh, time() + $options['cache_length']);
       }
+      else {
+        // The status below can still be 'ok' (served from cache), so log here.
+        $this->logger->warning('Final exam schedule refresh for session @session ' .
+          'returned no usable schedule; the cached copy was left unchanged.', [
+            '@session' => $session_id,
+          ]);
+      }
     }
 
     $data = $this->get($endpoint, $options, 'xml');
