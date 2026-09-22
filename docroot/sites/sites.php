@@ -7996,3 +7996,9 @@ $sites['sitesjoydatta.uiowa.ddev.site'] = 'joydatta.sites.uiowa.edu';
 $sites['sitesjoydatta.dev.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
 $sites['sitesjoydatta.stage.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
 $sites['sitesjoydatta.prod.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
+
+// Directory aliases for kamelia-zaman-moon.sites.uiowa.edu.
+$sites['siteskamelia-zaman-moon.uiowa.ddev.site'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+$sites['siteskamelia-zaman-moon.dev.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+$sites['siteskamelia-zaman-moon.stage.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+$sites['siteskamelia-zaman-moon.prod.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
