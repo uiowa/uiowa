@@ -94,13 +94,25 @@ Before starting updates, make sure your local environment is on a feature branch
 Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `ddev sn sync:all` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
 
 ## Testing Dependencies
-Testing a uids change in uiowa:
+
+### Testing a uids change
 1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids4": "uiowa/uids4#[Enter hash here]"
 2. Then run `yarn upgrade @uiowa/uids4`
 3. `rm -rf ./node_modules`
 4. `yarn cache clean`
 5. `yarn install`
 6. `yarn workspace uids_base gulp --development`
+
+### Testing a module update
+
+Run the update hooks against a database built under the old code, the way a deploy hits production:
+
+1. On `main`, run `ddev composer install`.
+2. Sync the site: `ddev sn ds <site>`.
+3. Check out the feature branch and run `ddev composer install` again.
+4. Run `ddev drush @<id>.local updb -y`.
+
+Syncing after the branch is checked out would test the update hook against a database that already has the new schema, which is not what a deploy does.
 
 ## Core
 Run `composer update "drupal/core-*" --with-all-dependencies`.
