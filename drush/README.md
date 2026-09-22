@@ -12,7 +12,7 @@ Each site's alias file also carries a `local` target, used as `ddev drush @<id>.
 
 The id is not the site's domain. `ace.lab.uiowa.edu` is `labace`. Run `ddev drush site:alias` or look in `drush/sites/` rather than deriving it; `Multisite::getIdentifier()` is the authority.
 
-The local site is served at the alias's `uri`, for example `https://its.uiowa.ddev.site`.
+DDEV serves the local site at the alias's `uri`, for example `https://its.uiowa.ddev.site`.
 
 ### For remote environments
 

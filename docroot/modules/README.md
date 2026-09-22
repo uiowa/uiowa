@@ -20,10 +20,10 @@ package in `composer.json`. Remove the package only once that has fully
 deployed.
 
 Config import and `updb` run per site, sequentially, across the whole fleet.
-Dropping the package in the same deploy that removes its usage leaves every
-site not yet processed running new code without the module while its active
-config still lists it. Those sites fatal until their own import runs, assuming
-the deploy gets that far.
+Drop the package in the same deploy that removes its usage and every site not
+yet processed ends up running new code without the module, while its active
+config still lists that module. Those sites fatal until their own import runs,
+assuming the deploy gets that far.
 
 Patches against the module can ship with the usage-removal PR, since no site
 runs the patched code path after its config import.
