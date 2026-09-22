@@ -5,13 +5,6 @@
  * Profile hooks for SiteNow.
  */
 
-use Drupal\Core\Extension\ThemeSettingsProvider;
-
-/**
- * @file
- * Profile code.
- */
-
 use Drupal\sitenow\Plugin\WebformHandler\EmailOverrideWebformHandler;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -20,6 +13,7 @@ use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;

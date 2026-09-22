@@ -2,10 +2,25 @@
 
 /**
  * @file
- * Theme functions for UIDS Base.
+ * Functions to support theming in the uids_base theme.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Extension\ThemeSettingsProvider;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\fragments\Entity\FragmentInterface;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\uids_base\UidsPreRender;
+use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\LinkHelper;
+use Drupal\views\Plugin\views\field\EntityField;
 
 /**
  * Gets a UIDS Base theme setting.
@@ -22,27 +37,6 @@ function uids_base_theme_get_setting(string $setting, ?string $theme = NULL): mi
   return \Drupal::service(ThemeSettingsProvider::class)
     ->getSetting($setting, $theme);
 }
-
-/**
- * @file
- * Functions to support theming in the uids_base theme.
- */
-
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
-use Drupal\Core\Menu\MenuTreeParameters;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Url;
-use Drupal\block\Entity\Block;
-use Drupal\block_content\Entity\BlockContent;
-use Drupal\fragments\Entity\FragmentInterface;
-use Drupal\node\NodeInterface;
-use Drupal\paragraphs\ParagraphInterface;
-use Drupal\uids_base\UidsPreRender;
-use Drupal\uiowa_core\HeadlineHelper;
-use Drupal\uiowa_core\LinkHelper;
-use Drupal\views\Plugin\views\field\EntityField;
 
 /**
  * Implements hook_element_info_alter().

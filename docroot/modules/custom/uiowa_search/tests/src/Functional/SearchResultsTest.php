@@ -28,6 +28,9 @@ class SearchResultsTest extends BrowserTestBase {
    */
   public function testSearchTermsArePassedToSearchAllLink(): void {
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
+    $this->config('uiowa_search.settings')
+      ->set('uiowa_search.display_search_all_uiowa', TRUE)
+      ->save();
 
     $terms = 'Hawk Test';
     $this->drupalGet('search', ['query' => ['terms' => $terms]]);

@@ -3,14 +3,8 @@
 /**
  * @file
  * Install and update hooks for the SiteNow profile.
- */
-
-use Drupal\Core\Field\FieldPurger;
-use Drupal\node\NodeAccessRebuild;
-
-/**
- * @file
- * The sitenow profile cannot contain a hook_install() implementation.
+ *
+ * The SiteNow profile cannot contain a hook_install() implementation.
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
@@ -21,6 +15,7 @@ use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
+use Drupal\Core\Field\FieldPurger;
 use Drupal\block_content\BlockContentInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -29,6 +24,7 @@ use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeAccessRebuild;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\uiowa_core\Entity\Card;
 use Drupal\uiowa_core\Entity\Event;
@@ -4926,4 +4922,21 @@ function sitenow_update_10040() {
   }
 
   return t('Trimmed whitespace from @count container(s).', ['@count' => $updated]);
+}
+
+/**
+ * Remove the retired UI Icons backport module from existing sites.
+ */
+function sitenow_update_10041() {
+  $extension = \Drupal::configFactory()->getEditable('core.extension');
+  if ($extension->get('module.ui_icons_backport') === NULL) {
+    return t('UI Icons backport was not installed.');
+  }
+
+  // UI Icons 2.0 removes this Drupal 11.0-only submodule. Its code is already
+  // absent, so remove the installed-module state before config import.
+  $extension->clear('module.ui_icons_backport')->save(TRUE);
+  \Drupal::keyValue('system.schema')->delete('ui_icons_backport');
+
+  return t('Removed the retired UI Icons backport module state.');
 }

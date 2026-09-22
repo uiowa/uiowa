@@ -47,7 +47,7 @@ class RecursionGuardTest extends UnitTestCase {
    * Test that every counter is emptied.
    */
   public function testResetEmptiesEveryGuard() {
-    $this->setGuards(['nodepersonfield_image216media1041' => 21]);
+    $this->setGuards(['nodepersonfield_image216media1041' => static::COUNTER_VALUE]);
 
     RecursionGuard::reset();
 
