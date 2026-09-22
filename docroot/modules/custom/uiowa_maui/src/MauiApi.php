@@ -349,16 +349,45 @@ class MauiApi extends ApiClientBase {
 
   /**
    * Basic final exam fetcher.
+   *
+   * @param string $session_id
+   *   The session ID to fetch the final exam schedule for.
+   * @param bool $refresh
+   *   Force a live fetch and re-cache; only the cron warmer should pass TRUE.
+   *
+   * @return array
+   *   The schedule data, keyed by '_status' ('ok', 'error', or 'empty').
    */
-  public function getFinalExamSchedule($session_id) {
+  public function getFinalExamSchedule($session_id, $refresh = FALSE) {
     $endpoint = "pub/registrar/exam-schedule/{$session_id}";
     $options = [
       'headers' => [
         'Accept' => 'application/xml',
         'Content-Type' => 'application/x-www-form-urlencoded',
       ],
+      // Safety margin only; the cron warmer's daily refresh keeps this fresh.
+      'cache_length' => 48 * 60 * 60,
     ];
+
+    $cid = $this->getRequestCacheId($endpoint, $options);
+
+    if ($refresh) {
+      // Overwrite only on success so a bad response can't wipe out good data.
+      $request_options = $options;
+      unset($request_options['cache_length']);
+      $fresh = $this->request('GET', $endpoint, $request_options, 'xml');
+      if ($fresh !== FALSE && isset($fresh['NewDataSet']['Table'])) {
+        $this->cache->set($cid, $fresh, time() + $options['cache_length']);
+      }
+    }
+
     $data = $this->get($endpoint, $options, 'xml');
+
+    // Evict a non-success response so it isn't frozen in for the full TTL.
+    if ($data !== FALSE && !isset($data['NewDataSet']['Table'])) {
+      $this->cache->delete($cid);
+    }
+
     // The request() within get() already logs, but we need to handle
     // the output differently for each scenario.
     if ($data === FALSE) {
