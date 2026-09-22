@@ -4,22 +4,18 @@ The base application on Acquia Cloud for the University of Iowa.
 
 # Documentation
 
-This README covers setup, local development and dependency updates. Everything
-else is documented next to the code it describes.
+This README covers setup, local development and dependency updates. Check the table below for additional information.
 
-| Doc | Covers |
+| Doc | Topic |
 |---|---|
-| [sitenow/README.md](sitenow/README.md) | The `./sn` CLI: commands, where each one runs, application and site selection |
-| [config/README.md](config/README.md) | Configuration strategy, config split and config ignore |
-| [config/features/README.md](config/features/README.md) | Feature splits and how they are activated per site |
-| [docroot/modules/README.md](docroot/modules/README.md) | Which module directory new code belongs in, and the two-deploy pattern for removing one |
-| [patches/README.md](patches/README.md) | Patching contrib and core, and where patch files live |
-| [drush/README.md](drush/README.md) | Drush configuration and site aliases |
-| [scripts/ci/README.md](scripts/ci/README.md) | Running CI checks locally and in Travis |
-| [tests/README.md](tests/README.md) | Automated tests and how to run core or contrib test suites |
-
-Add a row when you add a doc. A doc nobody can find is a doc nobody maintains.
-
+| [sitenow/README.md](sitenow/README.md) | The `./sn` CLI |
+| [config/README.md](config/README.md) | Configuration management |
+| [config/features/README.md](config/features/README.md) | Feature splits |
+| [docroot/modules/README.md](docroot/modules/README.md) | Custom and contributed modules |
+| [patches/README.md](patches/README.md) | Patching contrib and core |
+| [drush/README.md](drush/README.md) | Drush configuration and aliases |
+| [scripts/ci/README.md](scripts/ci/README.md) | Continuous integration checks |
+| [tests/README.md](tests/README.md) | Automated tests |
 
 # Getting Started
 
