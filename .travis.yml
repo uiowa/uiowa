@@ -57,7 +57,9 @@ install:
   - yarn workspaces run build
 
 before_script:
-  - docker run --detach --rm --name selenium-chrome --shm-size=2g -p 4444:4444 selenium/standalone-chrome:4.49.0
+  # Chrome must share the build network so that its localhost can reach the
+  # Drush test server at localhost:8080.
+  - docker run --detach --rm --name selenium-chrome --network host --shm-size=2g selenium/standalone-chrome:4.49.0
 
 script:
   # Run CI checks using new scripts

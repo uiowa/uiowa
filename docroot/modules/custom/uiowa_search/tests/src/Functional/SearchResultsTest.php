@@ -27,6 +27,7 @@ class SearchResultsTest extends BrowserTestBase {
    * Tests that the search term is passed to the all-University search link.
    */
   public function testSearchTermsArePassedToSearchAllLink(): void {
+    $this->drupalLogin($this->drupalCreateUser(['access content']));
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
     $this->config('uiowa_search.settings')
       ->set('uiowa_search.display_search_all_uiowa', TRUE)
