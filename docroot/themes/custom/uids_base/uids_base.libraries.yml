@@ -70,6 +70,9 @@ virtual_tour:
 status-messages:
   js:
     assets/js/uids.status-messages.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
 message:
   js:
     assets/js/message.theme.js: {}
@@ -85,6 +88,10 @@ search-toggle:
       assets/css/components/search-toggle.css: { weight: 200}
   js:
     assets/js/search-toggle.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
 search-results:
   css:
     component:
