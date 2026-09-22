@@ -8002,3 +8002,9 @@ $sites['siteskamelia-zaman-moon.uiowa.ddev.site'] = 'kamelia-zaman-moon.sites.ui
 $sites['siteskamelia-zaman-moon.dev.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
 $sites['siteskamelia-zaman-moon.stage.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
 $sites['siteskamelia-zaman-moon.prod.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+
+// Directory aliases for alt.lab.uiowa.edu.
+$sites['labalt.uiowa.ddev.site'] = 'alt.lab.uiowa.edu';
+$sites['labalt.dev.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
+$sites['labalt.stage.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
+$sites['labalt.prod.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
