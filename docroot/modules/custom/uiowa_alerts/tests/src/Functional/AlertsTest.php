@@ -92,6 +92,7 @@ class AlertsTest extends BrowserTestBase {
     $session = $this->assertSession();
     $session->pageTextContains("This is an alert of type $level.");
     $session->elementExists('css', 'div.alert--' . strtolower($level));
+    $session->elementExists('css', 'div.alert--' . strtolower($level) . ' h2');
 
   }
 
