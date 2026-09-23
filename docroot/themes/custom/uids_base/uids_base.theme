@@ -290,6 +290,15 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
 
+  // Render primary_menu blocks inline so toggle-nav.html.twig can test the
+  // region for content.
+  // @see https://www.drupal.org/project/drupal/issues/3533588
+  if (!empty($variables['page']['primary_menu'])) {
+    foreach (Element::children($variables['page']['primary_menu']) as $key) {
+      $variables['page']['primary_menu'][$key]['#create_placeholder'] = FALSE;
+    }
+  }
+
   $variables['uiowa_logo'] = TRUE;
   $variables['is_off_brand'] = FALSE;
 
