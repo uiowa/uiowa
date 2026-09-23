@@ -190,9 +190,9 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
           }
         }
         catch (ClientException $e) {
-          $this->logger()->warning($this->t('Unable to get thumbnail image for @media.', [
+          $this->getLogger('sitenow_media_wysiwyg')->warning('Unable to get thumbnail image for @media.', [
             '@media' => $media->uuid(),
-          ]));
+          ]);
 
           // Use the default thumbnail if we can't get one.
           return NULL;

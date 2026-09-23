@@ -46,7 +46,7 @@ class ItemsImporterOverride extends ItemsImporter {
     if ($purgeItems) {
       $feed->deleteItems();
     }
-    parent::refresh($feed);
+    return parent::refresh($feed);
   }
 
 }
