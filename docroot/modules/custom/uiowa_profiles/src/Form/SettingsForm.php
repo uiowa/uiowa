@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_profiles\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
@@ -49,6 +50,8 @@ class SettingsForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config.factory service.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    * @param \Drupal\pathauto\AliasCleanerInterface $aliasCleaner
    *   The pathauto.alias_cleaner service.
    * @param \Drupal\Core\Path\PathValidatorInterface $pathValidator
@@ -58,8 +61,8 @@ class SettingsForm extends ConfigFormBase {
    * @param \Drupal\Core\Routing\RouteProviderInterface $routeProvider
    *   The router.route_provider service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator, RouteBuilderInterface $routeBuilder, RouteProviderInterface $routeProvider) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator, RouteBuilderInterface $routeBuilder, RouteProviderInterface $routeProvider) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->aliasCleaner = $aliasCleaner;
     $this->pathValidator = $pathValidator;
     $this->routeBuilder = $routeBuilder;
@@ -72,6 +75,7 @@ class SettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('pathauto.alias_cleaner'),
       $container->get('path.validator'),
       $container->get('router.builder'),

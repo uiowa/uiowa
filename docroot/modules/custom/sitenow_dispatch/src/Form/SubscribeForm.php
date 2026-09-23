@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_dispatch\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
@@ -21,11 +22,13 @@ class SubscribeForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    * @param \Drupal\sitenow_dispatch\DispatchApiClientInterface $dispatch
    *   The Dispatch API client service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, protected DispatchApiClientInterface $dispatch) {
+    parent::__construct($config_factory, $typed_config_manager);
   }
 
   /**
@@ -34,6 +37,7 @@ class SubscribeForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('sitenow_dispatch.dispatch_client'),
     );
   }

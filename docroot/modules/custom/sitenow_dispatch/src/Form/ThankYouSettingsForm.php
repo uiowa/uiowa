@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_dispatch\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_dispatch\DispatchApiClientInterface;
@@ -37,8 +38,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, protected DispatchApiClientInterface $dispatch, $check) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, protected DispatchApiClientInterface $dispatch, $check) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->check = $check;
   }
 
@@ -48,6 +49,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('sitenow_dispatch.dispatch_client'),
       $container->get('uiowa_core.access_checker'),
     );
