@@ -5,6 +5,7 @@ namespace Drupal\sitenow_p2lb\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -42,6 +43,8 @@ class P2LbSettingsForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config.factory service.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    * @param \Drupal\Core\Config\StorageInterface $configStorage
    *   The config.storage service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -49,8 +52,8 @@ class P2LbSettingsForm extends ConfigFormBase {
    * @param \Drupal\sitenow_p2lb\P2LbConverterManagerInterface $conversionManager
    *   The P2LB converter manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, EntityTypeManagerInterface $entityTypeManager, P2LbConverterManagerInterface $conversionManager) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, StorageInterface $configStorage, EntityTypeManagerInterface $entityTypeManager, P2LbConverterManagerInterface $conversionManager) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->configStorage = $configStorage;
     $this->entityTypeManager = $entityTypeManager;
     $this->conversionManager = $conversionManager;
@@ -62,6 +65,7 @@ class P2LbSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('config.storage'),
       $container->get('entity_type.manager'),
       $container->get('sitenow_p2lb.converter_manager'),
