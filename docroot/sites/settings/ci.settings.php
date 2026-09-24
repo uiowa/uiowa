@@ -24,7 +24,6 @@ if ($simpletest_db = getenv('SIMPLETEST_DB')) {
     'password' => '',
     'host' => '',
     'port' => '',
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
     'driver' => 'mysql',
     'prefix' => '',
     'collation' => 'utf8mb4_general_ci',
@@ -46,7 +45,6 @@ else {
     'password' => 'drupal',
     'host' => '127.0.0.1',
     'port' => '3306',
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
     'driver' => 'mysql',
     'prefix' => '',
   ];

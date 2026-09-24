@@ -13,11 +13,6 @@ if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
 
-// Unset the VCS config directory so cim/cex default to sync.
-if (isset($config_directories['vcs'])) {
-  unset($config_directories['vcs']);
-}
-
 // Get some variables from the Acquia EnvironmentDetector or fall back to local.
 // Note that $site_path is always set and exposed by the Drupal Kernel.
 $ah_group = EnvironmentDetector::getAhGroup() ?: 'local';
@@ -25,25 +20,6 @@ $ah_env = EnvironmentDetector::getAhEnv() ?: 'local';
 
 /** @var $site_path string The path to the bootstrapped site. */
 $site_name = EnvironmentDetector::getSiteName($site_path);
-
-// Set the environment indicator settings for the toolbar color and name.
-switch ($ah_env) {
-  case 'local':
-    $settings['simple_environment_indicator'] = '#00664F local';
-    break;
-
-  case 'dev':
-    $settings['simple_environment_indicator'] = '#00558C dev';
-    break;
-
-  case 'test':
-    $settings['simple_environment_indicator'] = '#BD472A test';
-    break;
-
-  case 'prod':
-    $settings['simple_environment_indicator'] = '#63666A prod';
-    break;
-}
 
 /**
  * A custom theme for the offline page.
