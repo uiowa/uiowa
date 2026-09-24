@@ -93,6 +93,15 @@ class SplitRefreshCommand extends Command implements SignalableCommandInterface 
   private array $activation = [];
 
   /**
+   * Config that still differs from active config after each target's export.
+   *
+   * NULL for a target whose config status could not be read.
+   *
+   * @var array<string, string[]|null>
+   */
+  private array $unreproduced = [];
+
+  /**
    * Per-target results, keyed by target label then stage.
    *
    * @var array<string, array<string, string>>
@@ -327,13 +336,13 @@ HELP);
     }
     $synced = $this->pool($jobs, 'sync', self::SYNC_TIMEOUT, $concurrency, $this->appGroups($hosts), retries: 1);
     foreach (array_keys($sites) as $host) {
-      $this->results[$host]['sync'] = $synced[$host] ? 'ok' : 'failed';
+      $this->results[$host]['sync'] = $synced[$host]['ok'] ? 'ok' : 'failed';
     }
 
     if (!$features) {
       return;
     }
-    if (!$synced['default']) {
+    if (!$synced['default']['ok']) {
       foreach (array_keys($features) as $id) {
         $this->results["{$id} (feature)"]['sync'] = 'failed';
       }
@@ -387,14 +396,21 @@ HELP);
       $updated = $this->pool($jobs, 'update', self::UPDATE_TIMEOUT, $concurrency, [], self::UPDATED);
       $jobs = [];
       foreach ($ready as $host) {
-        $this->results[$host]['update'] = $updated[$host] ? 'ok' : 'failed';
-        if ($updated[$host]) {
+        $this->results[$host]['update'] = $updated[$host]['ok'] ? 'ok' : 'failed';
+        if ($updated[$host]['ok']) {
           $jobs[$host] = $this->drushJob($host, ['config-split:export', 'site', '--yes']);
         }
       }
       $exported = $this->pool($jobs, 'export', self::UPDATE_TIMEOUT, $concurrency);
-      foreach (array_keys($jobs) as $host) {
-        $this->results[$host]['export'] = $exported[$host] ? 'ok' : 'failed';
+      $jobs = [];
+      foreach (array_keys($exported) as $host) {
+        $this->results[$host]['export'] = $exported[$host]['ok'] ? 'ok' : 'failed';
+        if ($exported[$host]['ok']) {
+          $jobs[$host] = $this->drushJob($host, ['config:status', '--format=json']);
+        }
+      }
+      foreach ($this->pool($jobs, 'status', self::UPDATE_TIMEOUT, $concurrency) as $host => $status) {
+        $this->unreproduced[$host] = $status['ok'] ? $this->differingConfig($status['output']) : NULL;
       }
     }
 
@@ -420,6 +436,11 @@ HELP);
         }
         $ok = $this->step('default', ['config-split:export', $id, '--yes'], "export-{$id}");
         $this->results[$label]['export'] = $ok ? 'ok' : 'failed';
+        if ($ok) {
+          $status = new Process($this->drushJob('default', ['config:status', '--format=json']), $this->repoRoot);
+          $status->setTimeout(self::UPDATE_TIMEOUT)->run();
+          $this->unreproduced[$label] = $status->isSuccessful() ? $this->differingConfig($status->getOutput()) : NULL;
+        }
         $this->progress($ok, 'export', $id);
       }
     }
@@ -442,15 +463,17 @@ HELP);
     $all_ok = TRUE;
     foreach ($this->results as $label => $stages) {
       $all_ok = $all_ok && ($stages['export'] ?? '') === 'ok';
+      $unreproduced = array_key_exists($label, $this->unreproduced) ? $this->unreproduced[$label] : [];
       $rows[] = [
         $label,
         $stages['sync'] ?? '-',
         $stages['activate'] ?? '-',
         $stages['update'] ?? '-',
         $stages['export'] ?? '-',
+        $unreproduced === NULL ? 'unknown' : (count($unreproduced) ?: '-'),
       ];
     }
-    $this->io->table(['Target', 'Sync', 'Activate', 'Update', 'Export'], $rows);
+    $this->io->table(['Target', 'Sync', 'Activate', 'Update', 'Export', 'Unreproduced'], $rows);
 
     $folders = [];
     foreach ($features as $id => $folder) {
@@ -482,17 +505,33 @@ HELP);
     if (!$changes) {
       $this->io->writeln('No config changes.');
     }
+    else {
+      $this->io->writeln('Flagged files are likely rejects. The rest still need review.');
+    }
+    $orphans = array_flip($this->orphanPatches($changes));
     ksort($grouped);
     foreach ($grouped as $owner => $paths) {
+      $unreproduced = $this->unreproduced[$owner] ?? [];
+      $lines = [];
+      foreach ($paths as $path) {
+        $flags = [];
+        if (in_array($this->configName($path), $unreproduced ?? [], TRUE)) {
+          $flags[] = 'does not reproduce active config';
+        }
+        if (isset($orphans[$path])) {
+          $flags[] = 'patches config not tracked in config/';
+        }
+        $lines[] = $flags ? "{$path}  <comment>[" . implode('; ', $flags) . ']</comment>' : $path;
+      }
       $this->io->writeln("<info>{$owner}</info>");
-      $this->io->listing($paths);
+      $this->io->listing($lines);
+      $unchanged = array_diff($unreproduced ?? [], array_map([$this, 'configName'], $paths));
+      if ($unchanged) {
+        $this->io->writeln('  Still differs from active config, with no file changed: ' . implode(', ', $unchanged));
+      }
     }
     if ($outside) {
       $this->io->warning("Changed outside the refreshed splits' folders:\n  " . implode("\n  ", $outside));
-    }
-    $orphans = $this->orphanPatches($changes);
-    if ($orphans) {
-      $this->io->warning("Patches for config that is not tracked anywhere in config/. These usually carry one site's local config into a shared split:\n  " . implode("\n  ", $orphans));
     }
 
     $this->io->writeln("Logs: {$this->runDir}/logs");
@@ -608,8 +647,8 @@ HELP);
    *   How many times to re-run a job that exits nonzero, even with an exit
    *   code in $success.
    *
-   * @return array<string, bool>
-   *   Whether each job succeeded, keyed by target.
+   * @return array<string, array{ok: bool, output: string}>
+   *   Whether each job succeeded, and its output, keyed by target.
    */
   private function pool(array $jobs, string $stage, int $timeout, int $concurrency, array $groups = [], array $success = [Command::SUCCESS], int $retries = 0): array {
     if (!$jobs) {
@@ -622,7 +661,10 @@ HELP);
         $this->progress(in_array($result['exit'], $success, TRUE), $stage, $key, "{$done}/{$total}");
       }
     });
-    return array_map(fn (array $result) => in_array($result['exit'], $success, TRUE), $results);
+    return array_map(fn (array $result) => [
+      'ok' => in_array($result['exit'], $success, TRUE),
+      'output' => $result['output'],
+    ], $results);
   }
 
   /**
@@ -829,6 +871,33 @@ HELP);
       $paths[] = str_contains($path, ' -> ') ? explode(' -> ', $path)[1] : $path;
     }
     return $paths;
+  }
+
+  /**
+   * List the config config:status reports as differing.
+   *
+   * @param string $output
+   *   The JSON output of drush config:status --format=json.
+   *
+   * @return string[]
+   *   Config names.
+   */
+  private function differingConfig(string $output): array {
+    return array_keys(json_decode($output, TRUE) ?: []);
+  }
+
+  /**
+   * Get the config name a file under config/ stores.
+   *
+   * @param string $path
+   *   The file path.
+   *
+   * @return string
+   *   The config name. For a split patch, the name of the config it patches.
+   */
+  private function configName(string $path): string {
+    $name = basename($path, '.yml');
+    return str_starts_with($name, 'config_split.patch.') ? substr($name, strlen('config_split.patch.')) : $name;
   }
 
   /**
