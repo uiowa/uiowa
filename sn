@@ -36,6 +36,7 @@ use SiteNow\Command\RoutesCustomCommand;
 use SiteNow\Command\SiteInstallCommand;
 use SiteNow\Command\SiteSyncCommand;
 use SiteNow\Command\SiteUpdateCommand;
+use SiteNow\Command\SplitRefreshCommand;
 use SiteNow\Command\SyncAllCommand;
 use Symfony\Component\Console\Application;
 
@@ -73,5 +74,6 @@ $application->add(new RoutesCustomCommand($root));
 $application->add(new SiteInstallCommand($root));
 $application->add(new SiteSyncCommand($root));
 $application->add(new SiteUpdateCommand($root));
+$application->add(new SplitRefreshCommand($root));
 $application->add(new SyncAllCommand($root));
 $application->run();

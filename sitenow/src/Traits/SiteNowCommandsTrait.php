@@ -283,6 +283,19 @@ trait SiteNowCommandsTrait {
   }
 
   /**
+   * Get the path of a site's local settings file.
+   *
+   * @param string $host
+   *   The site host / canonical domain.
+   *
+   * @return string
+   *   Absolute path to the site's local.settings.php.
+   */
+  protected function localSettingsFile(string $host): string {
+    return "{$this->repoRoot}/docroot/sites/{$this->siteDirectory($host)}/settings/local.settings.php";
+  }
+
+  /**
    * The branch currently checked out.
    *
    * @return string
