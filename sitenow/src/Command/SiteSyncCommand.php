@@ -120,7 +120,7 @@ HELP);
     // Generate a local.settings.php file if one doesn't exist so that a
     // local db can be created and a sync can proceed.
     $dir = $this->siteDirectory($site);
-    $local_settings = "{$this->repoRoot}/docroot/sites/{$dir}/settings/local.settings.php";
+    $local_settings = $this->localSettingsFile($site);
     if (!is_file($local_settings)) {
       $io->newLine();
       $io->section('Generate local settings');
@@ -148,7 +148,7 @@ HELP);
       'sql-sync', $remote, $local,
       '--structure-tables-key=lightweight',
       '--create-db',
-      '--target-dump=' . sys_get_temp_dir() . '/tmp.target.sql.gz',
+      '--target-dump=' . sys_get_temp_dir() . "/{$id}.target.sql.gz",
       '--yes',
     ], TRUE);
     if (!$sync->isSuccessful()) {
