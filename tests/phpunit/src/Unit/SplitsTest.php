@@ -46,8 +46,12 @@ class SplitsTest extends UnitTestCase {
   /**
    * Write a split definition into the fixture.
    */
-  private function define(string $dir, string $id, string $folder): void {
-    file_put_contents("{$this->fixture}/{$dir}/config_split.config_split.{$id}.yml", "id: {$id}\nfolder: {$folder}\n");
+  private function define(string $dir, string $id, string $folder, array $enforced = []): void {
+    $yaml = "id: {$id}\nfolder: {$folder}\n";
+    if ($enforced) {
+      $yaml .= "dependencies:\n  enforced:\n    config:\n" . implode('', array_map(fn ($name) => "      - {$name}\n", $enforced));
+    }
+    file_put_contents("{$this->fixture}/{$dir}/config_split.config_split.{$id}.yml", $yaml);
   }
 
   /**
@@ -71,12 +75,23 @@ class SplitsTest extends UnitTestCase {
   }
 
   /**
-   * A split's dependencies are activated before it.
+   * Splits a definition enforces a dependency on are activated before it.
    */
   public function testActivationOrderPutsDependenciesFirst(): void {
+    $this->define('config/default', 'sitenow_v2', '../config/features/sitenow_v2');
+    $this->define('config/default', 'p2lb', '../config/features/p2lb', ['config_split.config_split.sitenow_v2', 'node.type.page']);
     $splits = new Splits($this->fixture);
     $this->assertSame(['sitenow_v2', 'p2lb'], $splits->activationOrder('p2lb'));
     $this->assertSame(['event'], $splits->activationOrder('event'));
+  }
+
+  /**
+   * A dependency cycle ends.
+   */
+  public function testActivationOrderStopsAtCycles(): void {
+    $this->define('config/default', 'first', '../config/features/first', ['config_split.config_split.second']);
+    $this->define('config/default', 'second', '../config/features/second', ['config_split.config_split.first']);
+    $this->assertSame(['second', 'first'], (new Splits($this->fixture))->activationOrder('first'));
   }
 
 }

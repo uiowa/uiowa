@@ -10,11 +10,9 @@ use Symfony\Component\Yaml\Yaml;
 class Splits {
 
   /**
-   * Splits that must be active before the keyed split can be activated.
+   * The config name prefix shared by every split definition.
    */
-  const DEPENDENCIES = [
-    'p2lb' => ['sitenow_v2'],
-  ];
+  const PREFIX = 'config_split.config_split.';
 
   /**
    * Constructs the split list.
@@ -36,7 +34,7 @@ class Splits {
    */
   public function features(): array {
     $features = [];
-    foreach (glob("{$this->repoRoot}/config/default/config_split.config_split.*.yml") as $file) {
+    foreach (glob("{$this->repoRoot}/config/default/" . self::PREFIX . '*.yml') as $file) {
       $split = Yaml::parseFile($file);
       $folder = $this->relativeFolder($split['folder'] ?? '');
       if (isset($split['id']) && str_starts_with($folder, 'config/features/')) {
@@ -69,6 +67,9 @@ class Splits {
   /**
    * Get the splits to activate for a feature split, dependencies first.
    *
+   * A split depends on the splits its definition lists under
+   * dependencies.enforced.config.
+   *
    * @param string $id
    *   The feature split ID.
    *
@@ -76,7 +77,33 @@ class Splits {
    *   Split IDs in activation order, ending with $id.
    */
   public function activationOrder(string $id): array {
-    return [...(self::DEPENDENCIES[$id] ?? []), $id];
+    $order = [];
+    $this->addWithDependencies($id, $order, []);
+    return $order;
+  }
+
+  /**
+   * Append a split to an activation order after its dependencies.
+   *
+   * @param string $id
+   *   The split ID.
+   * @param string[] $order
+   *   The order being built.
+   * @param string[] $path
+   *   The splits whose dependencies are being resolved, to stop a cycle.
+   */
+  private function addWithDependencies(string $id, array &$order, array $path): void {
+    if (in_array($id, $order, TRUE) || in_array($id, $path, TRUE)) {
+      return;
+    }
+    $file = "{$this->repoRoot}/config/default/" . self::PREFIX . "{$id}.yml";
+    $split = is_file($file) ? Yaml::parseFile($file) : [];
+    foreach ($split['dependencies']['enforced']['config'] ?? [] as $name) {
+      if (str_starts_with($name, self::PREFIX)) {
+        $this->addWithDependencies(substr($name, strlen(self::PREFIX)), $order, [...$path, $id]);
+      }
+    }
+    $order[] = $id;
   }
 
   /**

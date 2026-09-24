@@ -2,7 +2,7 @@
 
 namespace SiteNow\Command;
 
-use Composer\Autoload\ClassLoader;
+use SiteNow\Config\Manifest;
 use SiteNow\Config\Splits;
 use SiteNow\Process\ProcessPool;
 use SiteNow\Traits\ParsesListOptions;
@@ -14,7 +14,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * Re-exports config splits from freshly synced remote databases.
@@ -37,23 +39,6 @@ class SplitRefreshCommand extends Command implements SignalableCommandInterface 
    * Seconds allowed for one site update or split export.
    */
   const UPDATE_TIMEOUT = 3600;
-
-  /**
-   * Autoload prefixes preloaded before any branch switch.
-   *
-   * A branch switch followed by composer install replaces vendor/ and
-   * sitenow/src on disk.
-   */
-  const PRELOAD_PREFIXES = [
-    'SiteNow\\',
-    'Symfony\\Component\\Console\\',
-    'Symfony\\Component\\Filesystem\\',
-    'Symfony\\Component\\Finder\\',
-    'Symfony\\Component\\Process\\',
-    'Symfony\\Component\\String\\',
-    'Symfony\\Component\\Yaml\\',
-    'Symfony\\Contracts\\Service\\',
-  ];
 
   /**
    * The site:update exit codes that count as updated.
@@ -99,6 +84,13 @@ class SplitRefreshCommand extends Command implements SignalableCommandInterface 
    * The run's directory, relative to the repository root.
    */
   private string $runDir = '';
+
+  /**
+   * Split IDs to activate for each feature split, in order.
+   *
+   * @var array<string, string[]>
+   */
+  private array $activation = [];
 
   /**
    * Per-target results, keyed by target label then stage.
@@ -237,6 +229,9 @@ HELP);
       $features = array_intersect_key($features, array_flip($only_splits));
       $sites = array_intersect_key($sites, array_flip($only_sites));
     }
+    foreach (array_keys($features) as $id) {
+      $this->activation[$id] = $splits->activationOrder($id);
+    }
 
     if (!$this->requireDdevRunning()) {
       return Command::FAILURE;
@@ -271,12 +266,11 @@ HELP);
     $hosts = [...array_keys($sites), ...($features ? ['default'] : [])];
     $this->ensureLocalSettings($hosts);
 
-    $this->preload();
-
     try {
       // The sync boots each local site before copying over it, and a database
       // a newer branch has updated may not boot on the base branch's code.
       $this->emptyDatabases($hosts);
+      $this->preload();
       if ($two_phase) {
         $this->assertNoNewCode();
         $this->switchTo($base);
@@ -288,16 +282,21 @@ HELP);
       }
       $this->export($features, $sites, $concurrency);
       $this->assertNoNewCode();
+      $this->syncFiles();
     }
     catch (\RuntimeException $e) {
       $err->error($e->getMessage());
       $this->restoreBranch();
-      $this->syncFiles();
+      try {
+        $this->syncFiles();
+      }
+      catch (\RuntimeException $sync) {
+        $err->warning("The report may miss exported files. {$sync->getMessage()}");
+      }
       $this->report($features, $sites);
       return Command::FAILURE;
     }
 
-    $this->syncFiles();
     return $this->report($features, $sites) ? Command::SUCCESS : Command::FAILURE;
   }
 
@@ -326,7 +325,7 @@ HELP);
     foreach ($hosts as $host) {
       $jobs[$host] = $this->snJob(['site:sync', $host, "--env={$env}", '--no-update', '--yes']);
     }
-    $synced = $this->pool($jobs, 'sync', self::SYNC_TIMEOUT, $concurrency, $this->appGroups($hosts));
+    $synced = $this->pool($jobs, 'sync', self::SYNC_TIMEOUT, $concurrency, $this->appGroups($hosts), retries: 1);
     foreach (array_keys($sites) as $host) {
       $this->results[$host]['sync'] = $synced[$host] ? 'ok' : 'failed';
     }
@@ -347,16 +346,15 @@ HELP);
     if (!$this->step('default', ['sql:dump', '--gzip', "--result-file={$db}/base.sql"], 'dump-base')) {
       throw new \RuntimeException('Could not dump the synced default site. See the dump-base log.');
     }
-    $splits = new Splits($this->repoRoot);
     foreach (array_keys($features) as $id) {
       $label = "{$id} (feature)";
       $this->results[$label]['sync'] = 'ok';
-      if ($base !== NULL && !$this->definedOn($base, $splits->activationOrder($id))) {
+      if ($base !== NULL && !$this->definedOn($base, $this->activation[$id])) {
         $this->results[$label]['activate'] = 'after update';
         continue;
       }
       $ok = $this->loadDatabase("{$db}/base.sql.gz", "activate-{$id}");
-      foreach ($splits->activationOrder($id) as $split) {
+      foreach ($this->activation[$id] as $split) {
         $ok = $ok && $this->step('default', ['config-split:activate', $split, '--yes'], "activate-{$id}");
       }
       $ok = $ok && $this->step('default', ['sql:dump', '--gzip', "--result-file={$db}/{$id}.sql"], "activate-{$id}");
@@ -407,13 +405,12 @@ HELP);
     if ($ready) {
       $this->io->section('Update and export feature splits');
       $db = self::CONTAINER_ROOT . "/{$this->runDir}/db";
-      $splits = new Splits($this->repoRoot);
       foreach ($ready as $id) {
         $label = "{$id} (feature)";
         $deferred = $this->results[$label]['activate'] === 'after update';
         $ok = $this->loadDatabase($deferred ? "{$db}/base.sql.gz" : "{$db}/{$id}.sql.gz", "update-{$id}");
         $ok = $ok && $this->runLogged($this->snJob(['site:update', 'default']), "update-{$id}", self::UPDATED);
-        foreach ($deferred ? $splits->activationOrder($id) : [] as $split) {
+        foreach ($deferred ? $this->activation[$id] : [] as $split) {
           $ok = $ok && $this->step('default', ['config-split:activate', $split, '--yes'], "update-{$id}");
         }
         $this->results[$label]['update'] = $ok ? 'ok' : 'failed';
@@ -567,37 +564,15 @@ HELP);
   }
 
   /**
-   * Load every class the command can reach from the current checkout.
+   * Load the classes the run first uses after a branch switch.
+   *
+   * A class loaded later comes from whichever branch is checked out, which
+   * assertNoNewCode() catches.
    */
   private function preload(): void {
-    set_error_handler(fn () => TRUE, E_DEPRECATED | E_USER_DEPRECATED);
-    foreach (ClassLoader::getRegisteredLoaders() as $loader) {
-      foreach ($loader->getPrefixesPsr4() as $prefix => $dirs) {
-        if (!in_array($prefix, self::PRELOAD_PREFIXES, TRUE)) {
-          continue;
-        }
-        foreach ($dirs as $dir) {
-          $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS));
-          foreach ($files as $file) {
-            $relative = substr($file->getPathname(), strlen(rtrim($dir, '/')) + 1);
-            // Only class files. Loading a functions file such as
-            // Resources/functions.php a second time is a fatal redeclaration.
-            if (!preg_match('#^([A-Z][A-Za-z0-9]*/)*[A-Z][A-Za-z0-9]*\.php$#', $relative) || preg_match('#(^|/)(Resources|Tests)/#', $relative)) {
-              continue;
-            }
-            $class = $prefix . strtr(substr($relative, 0, -4), '/', '\\');
-            try {
-              class_exists($class) || interface_exists($class) || trait_exists($class) || enum_exists($class);
-            }
-            catch (\Throwable) {
-              // A class extending an optional dependency that is not installed.
-              // Nothing here can reach it.
-            }
-          }
-        }
-      }
+    foreach ([ProcessPool::class, Manifest::class, ProcessTimedOutException::class, ParseException::class] as $class) {
+      class_exists($class);
     }
-    restore_error_handler();
     $this->baseline = get_included_files();
   }
 
@@ -610,7 +585,7 @@ HELP);
       fn ($file) => str_starts_with($file, "{$this->repoRoot}/vendor/") || str_starts_with($file, "{$this->repoRoot}/sitenow/"),
     );
     if ($new) {
-      throw new \RuntimeException("Code was loaded after preloading, so it may come from the other branch. Add its prefix to PRELOAD_PREFIXES:\n  " . implode("\n  ", $new));
+      throw new \RuntimeException("Code was loaded after preloading, so it may come from the other branch. Load it in preload():\n  " . implode("\n  ", $new));
     }
   }
 
@@ -629,15 +604,18 @@ HELP);
    *   Per-job group names, for the pool's per-group cap.
    * @param int[] $success
    *   Exit codes that count as success.
+   * @param int $retries
+   *   How many times to re-run a job that exits nonzero, even with an exit
+   *   code in $success.
    *
    * @return array<string, bool>
    *   Whether each job succeeded, keyed by target.
    */
-  private function pool(array $jobs, string $stage, int $timeout, int $concurrency, array $groups = [], array $success = [Command::SUCCESS]): array {
+  private function pool(array $jobs, string $stage, int $timeout, int $concurrency, array $groups = [], array $success = [Command::SUCCESS], int $retries = 0): array {
     if (!$jobs) {
       return [];
     }
-    $pool = new ProcessPool($concurrency, 8, $timeout);
+    $pool = new ProcessPool($concurrency, 8, $timeout, $retries);
     $results = $pool->run($jobs, $groups, function (int $done, int $total, ?string $key, ?array $result) use ($stage, $success) {
       if ($key !== NULL) {
         $this->log("{$stage}-{$key}", $result['output'] . $result['error']);
@@ -803,10 +781,18 @@ HELP);
 
   /**
    * Flush Mutagen's sync between the host and the container.
+   *
+   * @throws \RuntimeException
+   *   When the sync fails, leaving one side with stale files.
    */
   private function syncFiles(): void {
-    if ($this->mutagen) {
-      (new Process(['ddev', 'mutagen', 'sync'], $this->repoRoot))->setTimeout(600)->run();
+    if (!$this->mutagen) {
+      return;
+    }
+    $sync = new Process(['ddev', 'mutagen', 'sync'], $this->repoRoot);
+    $sync->setTimeout(600)->run();
+    if (!$sync->isSuccessful()) {
+      throw new \RuntimeException("ddev mutagen sync failed:\n" . $sync->getErrorOutput());
     }
   }
 
