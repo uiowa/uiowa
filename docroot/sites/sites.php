@@ -7978,3 +7978,33 @@ $sites['sitesdaniela-coelho.uiowa.ddev.site'] = 'daniela-coelho.sites.uiowa.edu'
 $sites['sitesdaniela-coelho.dev.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
 $sites['sitesdaniela-coelho.stage.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
 $sites['sitesdaniela-coelho.prod.drupal.uiowa.edu'] = 'daniela-coelho.sites.uiowa.edu';
+
+// Directory aliases for alvee.sites.uiowa.edu.
+$sites['sitesalvee.uiowa.ddev.site'] = 'alvee.sites.uiowa.edu';
+$sites['sitesalvee.dev.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
+$sites['sitesalvee.stage.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
+$sites['sitesalvee.prod.drupal.uiowa.edu'] = 'alvee.sites.uiowa.edu';
+
+// Directory aliases for hawkinson.tippie.uiowa.edu.
+$sites['tippiehawkinson.uiowa.ddev.site'] = 'hawkinson.tippie.uiowa.edu';
+$sites['tippiehawkinson.dev.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
+$sites['tippiehawkinson.stage.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
+$sites['tippiehawkinson.prod.drupal.uiowa.edu'] = 'hawkinson.tippie.uiowa.edu';
+
+// Directory aliases for joydatta.sites.uiowa.edu.
+$sites['sitesjoydatta.uiowa.ddev.site'] = 'joydatta.sites.uiowa.edu';
+$sites['sitesjoydatta.dev.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
+$sites['sitesjoydatta.stage.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
+$sites['sitesjoydatta.prod.drupal.uiowa.edu'] = 'joydatta.sites.uiowa.edu';
+
+// Directory aliases for kamelia-zaman-moon.sites.uiowa.edu.
+$sites['siteskamelia-zaman-moon.uiowa.ddev.site'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+$sites['siteskamelia-zaman-moon.dev.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+$sites['siteskamelia-zaman-moon.stage.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+$sites['siteskamelia-zaman-moon.prod.drupal.uiowa.edu'] = 'kamelia-zaman-moon.sites.uiowa.edu';
+
+// Directory aliases for alt.lab.uiowa.edu.
+$sites['labalt.uiowa.ddev.site'] = 'alt.lab.uiowa.edu';
+$sites['labalt.dev.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
+$sites['labalt.stage.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
+$sites['labalt.prod.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
