@@ -583,7 +583,6 @@ HELP);
     if (!$this->runLogged(['ddev', 'composer', 'install', '--no-interaction', '--no-progress'], "composer-{$ref}")) {
       throw new \RuntimeException("composer install failed on {$ref}. See the composer-{$ref} log.");
     }
-    $this->syncFiles();
   }
 
   /**
