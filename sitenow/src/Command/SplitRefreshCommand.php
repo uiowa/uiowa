@@ -580,7 +580,7 @@ HELP);
     }
     $this->switched = $ref !== $this->branch;
     $this->syncFiles();
-    if (!$this->runLogged(['ddev', 'composer', 'install', '--no-interaction', '--no-progress'], "composer-{$ref}")) {
+    if (!$this->runLogged(['ddev', 'exec', 'composer', 'install', '--no-interaction', '--no-progress'], "composer-{$ref}")) {
       throw new \RuntimeException("composer install failed on {$ref}. See the composer-{$ref} log.");
     }
   }
