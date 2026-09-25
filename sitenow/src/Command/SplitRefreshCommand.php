@@ -276,6 +276,7 @@ HELP);
     $this->ensureLocalSettings($hosts);
 
     try {
+      $this->removeIgnoredConfig();
       // The sync boots each local site before copying over it, and a database
       // a newer branch has updated may not boot on the base branch's code.
       $this->emptyDatabases($hosts);
@@ -584,6 +585,24 @@ HELP);
     if (!$this->runLogged(['ddev', 'exec', 'composer', 'install', '--no-interaction', '--no-progress'], "composer-{$ref}")) {
       throw new \RuntimeException("composer install failed on {$ref}. See the composer-{$ref} log.");
     }
+  }
+
+  /**
+   * Delete gitignored files from the split folders.
+   */
+  private function removeIgnoredConfig(): void {
+    // Import reads every file in a split folder, ignored or not.
+    $clean = $this->git(['clean', '-fX', '--', 'config/features', 'config/sites']);
+    if (!$clean->isSuccessful()) {
+      throw new \RuntimeException("git clean failed:\n" . $clean->getErrorOutput());
+    }
+    $removed = array_filter(explode("\n", trim($clean->getOutput())));
+    if (!$removed) {
+      return;
+    }
+    $this->io->section('Remove ignored split files');
+    $this->io->listing(array_map(fn ($line) => substr($line, strlen('Removing ')), $removed));
+    $this->syncFiles();
   }
 
   /**
