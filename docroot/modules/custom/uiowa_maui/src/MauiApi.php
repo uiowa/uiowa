@@ -349,16 +349,57 @@ class MauiApi extends ApiClientBase {
 
   /**
    * Basic final exam fetcher.
+   *
+   * @param string $session_id
+   *   The session ID to fetch the final exam schedule for.
+   * @param bool $refresh
+   *   Force a live fetch and re-cache; only the cron warmer should pass TRUE.
+   *
+   * @return array
+   *   The schedule data, keyed by '_status' ('ok', 'error', or 'empty').
    */
-  public function getFinalExamSchedule($session_id) {
+  public function getFinalExamSchedule($session_id, $refresh = FALSE) {
     $endpoint = "pub/registrar/exam-schedule/{$session_id}";
     $options = [
       'headers' => [
         'Accept' => 'application/xml',
         'Content-Type' => 'application/x-www-form-urlencoded',
       ],
+      // Safety margin only; the cron warmer's daily refresh keeps this fresh.
+      'cache_length' => 48 * 60 * 60,
     ];
+
+    $cid = $this->getRequestCacheId($endpoint, $options);
+
+    if ($refresh) {
+      // Overwrite only on success so a bad response can't wipe out good data.
+      $request_options = $options;
+      unset($request_options['cache_length']);
+      $fresh = $this->request('GET', $endpoint, $request_options, 'xml');
+      if ($fresh !== FALSE && isset($fresh['NewDataSet']['Table'])) {
+        $this->cache->set($cid, $fresh, time() + $options['cache_length']);
+      }
+      elseif ($this->isFinalExamErrorResponse($fresh)) {
+        // A genuinely empty schedule isn't an error, so only warn on
+        // the rest. The status below can still be 'ok' (served from
+        // cache), so log here.
+        $this->logger->warning('Final exam schedule refresh for session @session ' .
+          'returned no usable schedule; the cached copy was left unchanged.', [
+            '@session' => $session_id,
+          ]);
+      }
+    }
+
     $data = $this->get($endpoint, $options, 'xml');
+
+    // Evict a non-success response, including a legitimately empty one,
+    // so it isn't frozen in for the full TTL. An empty result is cheap
+    // to re-check live, and doing so lets us notice a newly-published
+    // schedule as soon as possible instead of waiting on the cache.
+    if ($data !== FALSE && !isset($data['NewDataSet']['Table'])) {
+      $this->cache->delete($cid);
+    }
+
     // The request() within get() already logs, but we need to handle
     // the output differently for each scenario.
     if ($data === FALSE) {
@@ -389,6 +430,26 @@ class MauiApi extends ApiClientBase {
       '_status' => 'error',
       '_message' => 'Unexpected response from the upstream source.',
     ];
+  }
+
+  /**
+   * Whether a raw final exam schedule response represents a real failure.
+   *
+   * A genuinely empty response (no exams published yet) is expected and
+   * is not an error; only a failed request or an unexpected shape counts.
+   *
+   * @param mixed $data
+   *   The raw response data from request(), or FALSE on failure.
+   *
+   * @return bool
+   *   TRUE if the response indicates an actual error worth logging.
+   */
+  protected function isFinalExamErrorResponse($data): bool {
+    if ($data === FALSE) {
+      return TRUE;
+    }
+
+    return !isset($data['NewDataSet']['Table']) && !(isset($data['a']) && empty($data['a']));
   }
 
   /**
