@@ -588,11 +588,11 @@ HELP);
   }
 
   /**
-   * Delete gitignored files from the split folders.
+   * Delete gitignored config files from the split folders.
    */
   private function removeIgnoredConfig(): void {
     // Import reads every file in a split folder, ignored or not.
-    $clean = $this->git(['clean', '-fX', '--', 'config/features', 'config/sites']);
+    $clean = $this->git(['clean', '-fX', '--', ':(glob)config/features/**/*.yml', ':(glob)config/sites/**/*.yml']);
     if (!$clean->isSuccessful()) {
       throw new \RuntimeException("git clean failed:\n" . $clean->getErrorOutput());
     }
