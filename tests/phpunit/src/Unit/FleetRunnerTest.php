@@ -53,7 +53,7 @@ class FleetRunnerTest extends UnitTestCase {
    *
    * @var array<int, string>
    */
-  protected array $drush = [PHP_BINARY, '-d', 'display_errors=stderr', '/repo/vendor/bin/drush'];
+  protected array $drush = [PHP_BINARY, '-d', 'display_errors=stderr', '/repo/vendor/bin/drush.php'];
 
   /**
    * {@inheritdoc}
@@ -393,7 +393,7 @@ YAML);
 
       ['jobs' => $jobs] = $runner->buildJobs($selection, ['cr'], 'prod');
       $this->assertSame(
-        [PHP_BINARY, '-d', 'display_errors=stderr', "{$root}/vendor/bin/drush", "--root={$root}/docroot", '--uri=default.prod.drupal.uiowa.edu', 'cr'],
+        [PHP_BINARY, '-d', 'display_errors=stderr', "{$root}/vendor/bin/drush.php", "--root={$root}/docroot", '--uri=default.prod.drupal.uiowa.edu', 'cr'],
         $jobs['demo.example.uiowa.edu']
       );
 

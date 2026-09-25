@@ -479,13 +479,14 @@ class FleetRunner {
    * newer than the container's emits deprecation notices from the local vendor
    * tree, and the CLI SAPI writes those to stdout, where they land in the
    * per-site output consumers parse. Sending them to stderr keeps parsed output
-   * clean without hiding them.
+   * clean without hiding them. PHP given vendor/bin/drush, a shell script,
+   * prints it and exits 0.
    *
    * @return array<int, string>
    *   The argv prefix: the PHP binary, its ini overrides, then drush.
    */
   protected function drushCommand(): array {
-    return [PHP_BINARY, '-d', 'display_errors=stderr', "{$this->repoRoot}/vendor/bin/drush"];
+    return [PHP_BINARY, '-d', 'display_errors=stderr', "{$this->repoRoot}/vendor/bin/drush.php"];
   }
 
   /**
