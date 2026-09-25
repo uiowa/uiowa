@@ -4,6 +4,7 @@ namespace Drupal\its_core\Form;
 
 use Drupal\Component\Utility\EmailValidator;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -25,11 +26,13 @@ class ItsCoreSettingsForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config.factory service.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    * @param \Drupal\Component\Utility\EmailValidator $email_validator
    *   The email.validator service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EmailValidator $email_validator) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, EmailValidator $email_validator) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->emailValidator = $email_validator;
   }
 
@@ -39,6 +42,7 @@ class ItsCoreSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('email.validator'),
     );
   }

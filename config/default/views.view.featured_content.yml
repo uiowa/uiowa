@@ -278,7 +278,6 @@ display:
               class: more-link
               text: More
               aria_label: 'Read more about [node:title]'
-              token_browser: ''
             summary_handler: full
             trim_options:
               text: true
@@ -568,11 +567,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -617,12 +611,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
             reduce: true
           is_grouped: false
           group_info:
@@ -645,7 +633,7 @@ display:
           admin_label: ''
           plugin_id: taxonomy_index_tid
           operator: or
-          value: null
+          value: {  }
           group: 1
           exposed: true
           expose:
@@ -662,12 +650,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -718,12 +700,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
             reduce: true
           is_grouped: false
           group_info:
@@ -765,12 +741,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -864,6 +834,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
         options:

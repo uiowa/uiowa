@@ -30,7 +30,6 @@ class AccessTest extends BrowserTestBase {
     'node',
     'robotstxt',
     'samlauth',
-    'sitenow_intranet',
     'simple_sitemap',
     'uiowa_search',
   ];
@@ -46,6 +45,12 @@ class AccessTest extends BrowserTestBase {
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
 
     $this->drupalCreateContentType(['type' => 'page']);
+
+    // The intranet search view depends on field.storage.node.body, which
+    // Drupal 11 no longer ships with the node module. Creating the content
+    // type first supplies it, matching production, where the module is
+    // enabled on a site that already has content types.
+    \Drupal::service('module_installer')->install(['sitenow_intranet']);
   }
 
   /**

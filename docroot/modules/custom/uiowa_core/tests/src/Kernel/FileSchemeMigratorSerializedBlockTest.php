@@ -3,6 +3,7 @@
 namespace Drupal\Tests\uiowa_core\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\field\Traits\BodyFieldCreationTrait;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\block_content\Entity\BlockContentType;
 
@@ -17,6 +18,8 @@ use Drupal\block_content\Entity\BlockContentType;
  * @coversDefaultClass \Drupal\uiowa_core\FileSchemeMigrator
  */
 class FileSchemeMigratorSerializedBlockTest extends KernelTestBase {
+
+  use BodyFieldCreationTrait;
 
   /**
    * The path a migration would break.
@@ -58,7 +61,7 @@ class FileSchemeMigratorSerializedBlockTest extends KernelTestBase {
       'id' => 'basic',
       'label' => 'Basic block',
     ])->save();
-    block_content_add_body_field('basic');
+    $this->createBodyField('block_content', 'basic');
 
     $this->migrator = $this->container->get('uiowa_core.file_scheme_migrator');
   }

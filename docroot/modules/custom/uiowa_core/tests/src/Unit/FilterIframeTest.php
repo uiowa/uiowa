@@ -109,7 +109,7 @@ class FilterIframeTest extends UnitTestCase {
   /**
    * Data provider for testIframeAllowedAndClassesSet.
    */
-  public function providerDimensions() {
+  public static function providerDimensions() {
     return [
       ['1by1', 500, 500],
       ['4by3', 1024, 768],

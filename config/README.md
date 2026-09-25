@@ -68,6 +68,10 @@ You will need to decide whether to add your config items to the Complete list or
 * __Complete list__ - Any configuration that is completely unique and not duplicated in the default configuration or another split. This would include custom content types, custom vocabularies, and custom fields added to existing content types.
 * __Partial list__ - Configuration that is overriding existing settings, content types, etc. This would include `user.role.*.yml`, re-ordering of fields in the entity display, or the entity form.
 
+### Overriding feature split config in a site split
+* List every feature config the site split changes in the site split's partial list, including config changed indirectly. Adding a site-only field to a feature content type changes that type's form and view displays, so both belong in the partial list. Config left off the list may export an incomplete patch, or none.
+* Do not use a wildcard in a feature split that could match config a site split adds or overrides. List those items by name instead.
+
 ### How to split a custom content type
 A custom content type consists of several types of interrelated configuration: `node.type.*.yml`, `field.storage.*.*.yml`, `field.field.*.*.*.yml`, `core.entity_form_display.*.*.yml`, and `core.entity_view_display.*.*.yml` at a minimum. The rules of configuration dependencies mean that if you add some of these items, the others will be inferred from that. After you set up your content type, it is a good idea to run `drush @site.local cst` to see a list of the config items that are new or have changed.
 * Add the `node.type.*.yml` to the config split first. After that, run `drush @site.local config-split:export site`. You will notice that many config files get exported that were not added to the split.

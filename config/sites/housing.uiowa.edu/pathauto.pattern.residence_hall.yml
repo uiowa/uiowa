@@ -7,16 +7,16 @@ dependencies:
 id: residence_hall
 label: 'Residence Hall'
 type: 'canonical_entities:node'
-pattern: '[node:menu-link:parent:url:path]/[node:title]'
+pattern: '/[node:menu-link:parent:url:path]/[node:title]'
 selection_criteria:
   8cacff33-960e-424b-8939-7fd883c311b6:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 8cacff33-960e-424b-8939-7fd883c311b6
     context_mapping:
       node: node
     bundles:
       residence_hall: residence_hall
+    uuid: 8cacff33-960e-424b-8939-7fd883c311b6
 selection_logic: and
 weight: -5
 relationships: {  }

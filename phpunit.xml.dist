@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="docroot/core/tests/bootstrap.php" colors="true"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="docroot/core/tests/bootstrap.php"
+         colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
-         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter">
+         cacheDirectory=".phpunit.cache">
   <php>
     <!-- Set error reporting to E_ALL. -->
     <ini name="error_reporting" value="32767"/>
@@ -24,6 +27,23 @@
     <!-- <env name="MINK_DRIVER_ARGS_PHANTOMJS" value='["http://127.0.0.1:8510"]'/> -->
     <!-- <env name="MINK_DRIVER_ARGS_WEBDRIVER" value='["firefox", null, "http://localhost:4444/wd/hub"]'/> -->
   </php>
+
+  <!-- Replaces the PHPUnit 9 printerClass and listeners, both removed in
+    PHPUnit 10. Drupal\Tests\Listeners no longer exists in Drupal 11; the
+    deprecation bridge is now wired up by core's tests/bootstrap.php. -->
+  <extensions>
+    <!-- Functional tests HTML output logging. -->
+    <bootstrap class="Drupal\TestTools\Extension\HtmlLogging\HtmlOutputLogger">
+      <parameter name="outputDirectory" value="sites/simpletest/browser_output"/>
+      <parameter name="verbose" value="true"/>
+    </bootstrap>
+    <!-- Debug dump() printer. -->
+    <bootstrap class="Drupal\TestTools\Extension\Dump\DebugDump">
+      <parameter name="colors" value="true"/>
+      <parameter name="printCaller" value="true"/>
+    </bootstrap>
+  </extensions>
+
   <testsuites>
     <testsuite name="application">
       <directory>./tests/phpunit/</directory>
@@ -52,12 +72,8 @@
     <testsuite name="uiowa_search">
       <directory>./docroot/modules/custom/uiowa_search/tests/</directory>
     </testsuite>
+    <testsuite name="uids_base">
+      <directory>./docroot/themes/custom/uids_base/tests/</directory>
+    </testsuite>
   </testsuites>
-  <listeners>
-    <listener class="\Drupal\Tests\Listeners\DrupalListener">
-    </listener>
-    <!-- The Symfony deprecation listener has to come after the Drupal listener -->
-    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
-    </listener>
-  </listeners>
 </phpunit>

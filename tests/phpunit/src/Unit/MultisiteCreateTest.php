@@ -452,7 +452,7 @@ class MultisiteCreateTest extends UnitTestCase {
   /**
    * Valid host fixtures.
    */
-  public function validHostProvider(): array {
+  public static function validHostProvider(): array {
     return [
       ['newsite.uiowa.edu'],
       ['a.b.uiowa.edu'],
@@ -497,7 +497,7 @@ class MultisiteCreateTest extends UnitTestCase {
   /**
    * Invalid host fixtures.
    */
-  public function invalidHostProvider(): array {
+  public static function invalidHostProvider(): array {
     return [
       'uppercase' => ['NewSite.uiowa.edu'],
       'underscore' => ['new_site.uiowa.edu'],

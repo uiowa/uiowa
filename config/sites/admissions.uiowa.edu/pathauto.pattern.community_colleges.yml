@@ -7,16 +7,16 @@ dependencies:
 id: community_colleges
 label: 'Community Colleges'
 type: 'canonical_entities:taxonomy_term'
-pattern: 'academics/2plus2/[term:name]'
+pattern: '/academics/2plus2/[term:name]'
 selection_criteria:
   ca9fdfa5-9f57-4e7d-b34b-799ddee6906a:
     id: 'entity_bundle:taxonomy_term'
     negate: false
-    uuid: ca9fdfa5-9f57-4e7d-b34b-799ddee6906a
     context_mapping:
       taxonomy_term: taxonomy_term
     bundles:
       community_colleges: community_colleges
+    uuid: ca9fdfa5-9f57-4e7d-b34b-799ddee6906a
 selection_logic: and
 weight: -5
 relationships: {  }

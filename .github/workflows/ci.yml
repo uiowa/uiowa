@@ -204,7 +204,6 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -250,6 +249,11 @@ jobs:
           fi
 
           composer install --no-interaction --prefer-dist
+
+      # Chrome must share the runner network so that its localhost can reach
+      # the Drush test server at localhost:8080.
+      - name: Start Selenium WebDriver
+        run: docker run --detach --rm --name selenium-chrome --network host --shm-size=2g selenium/standalone-chrome:4.49.0
 
       - name: Setup test environment and web server
         run: scripts/ci/setup.sh

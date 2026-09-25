@@ -23,7 +23,11 @@ class P2LbDeleteRevisions {
       $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
       // Fetch revision ids.
-      $vids = $node_storage->revisionIds($node);
+      $vids = $node_storage->getQuery()
+        ->allRevisions()
+        ->accessCheck(FALSE)
+        ->condition('nid', $node->id())
+        ->execute();
 
       // Get the protected revision.
       $protected_vid = $node->get('field_v3_conversion_revision_id')->value;

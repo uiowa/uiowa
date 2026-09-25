@@ -8,6 +8,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\menu_ui\MenuUiUtility;
 use Drupal\sitenow_pages\Entity\Page;
 
 /**
@@ -31,7 +32,19 @@ class P2LbHelper {
    *   If the tests match.
    */
   public static function formattedTextIsSame(string $text, string $format_one, string $format_two): bool {
-    return check_markup($text, $format_one) == check_markup($text, $format_two);
+    $renderer = \Drupal::service('renderer');
+    $first = $renderer->renderInIsolation([
+      '#type' => 'processed_text',
+      '#text' => $text,
+      '#format' => $format_one,
+    ]);
+    $second = $renderer->renderInIsolation([
+      '#type' => 'processed_text',
+      '#text' => $text,
+      '#format' => $format_two,
+    ]);
+
+    return $first == $second;
   }
 
   /**
@@ -56,7 +69,8 @@ class P2LbHelper {
     if (!in_array('no_sidebars', array_column($page->get('field_publish_options')
       ->getValue(), 'value'))) {
       // Check if node has menu children.
-      $menu_defaults = menu_ui_get_menu_link_defaults($page);
+      $menu_defaults = \Drupal::service(MenuUiUtility::class)
+        ->getMenuLinkDefaults($page);
       $menu_children = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(['parent' => $menu_defaults['id']]);
 
       if (!empty($menu_children)) {
