@@ -2,6 +2,20 @@
 
 The base application on Acquia Cloud for the University of Iowa.
 
+# Documentation
+
+This README covers setup, local development and dependency updates. Check the table below for additional information.
+
+| Doc | Topic |
+|---|---|
+| [sitenow/README.md](sitenow/README.md) | The `./sn` CLI |
+| [config/README.md](config/README.md) | Configuration management |
+| [config/features/README.md](config/features/README.md) | Feature splits |
+| [docroot/modules/README.md](docroot/modules/README.md) | Custom and contributed modules |
+| [patches/README.md](patches/README.md) | Patching contrib and core |
+| [drush/README.md](drush/README.md) | Drush configuration and aliases |
+| [scripts/ci/README.md](scripts/ci/README.md) | Continuous integration checks |
+| [tests/README.md](tests/README.md) | Automated tests |
 
 # Getting Started
 
@@ -60,7 +74,7 @@ The `ddev yarn frontend:build` command will install and compile frontend assets.
 ## Multisite Management
 SiteNow provides host-side multisite commands through the `sn` CLI, including `multisite:create`. See [sitenow/README.md](sitenow/README.md).
 
-Because the `.git` directory is not synced to the web container, `./sn` commands need to be run on your host machine instead of in the web container.
+Run `sn` from your host. A few commands act on a site's local database, which only exists in the web container, so run those as `ddev sn`. `./sn list` marks them `(ddev required)`.
 
 # Updating Dependencies
 Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `ddev sn sync:all`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. Drupal core scaffolding may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
@@ -80,13 +94,25 @@ Before starting updates, make sure your local environment is on a feature branch
 Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `ddev sn sync:all` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
 
 ## Testing Dependencies
-Testing a uids change in uiowa:
+
+### Testing a uids change
 1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids4": "uiowa/uids4#[Enter hash here]"
 2. Then run `yarn upgrade @uiowa/uids4`
 3. `rm -rf ./node_modules`
 4. `yarn cache clean`
 5. `yarn install`
 6. `yarn workspace uids_base gulp --development`
+
+### Testing a module update
+
+Run the update hooks against a database built under the old code, the way a deploy hits production:
+
+1. On `main`, run `ddev composer install`.
+2. Sync the site: `ddev sn ds <site>`.
+3. Check out the feature branch and run `ddev composer install` again.
+4. Run `ddev drush @<id>.local updb -y`.
+
+Syncing after the branch is checked out would test the update hook against a database that already has the new schema, which is not what a deploy does.
 
 ## Core
 Run `composer update "drupal/core-*" --with-all-dependencies`.
