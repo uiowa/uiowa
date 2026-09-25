@@ -7,16 +7,16 @@ dependencies:
 id: artwork
 label: Artwork
 type: 'canonical_entities:node'
-pattern: 'art-on-campus/artwork/[node:title]'
+pattern: '/art-on-campus/artwork/[node:title]'
 selection_criteria:
   2cd84015-f5f0-4157-92f9-62ccbf663b16:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 2cd84015-f5f0-4157-92f9-62ccbf663b16
     context_mapping:
       node: node
     bundles:
       artwork: artwork
+    uuid: 2cd84015-f5f0-4157-92f9-62ccbf663b16
 selection_logic: and
 weight: -5
 relationships: {  }
