@@ -2,8 +2,6 @@
 
 namespace Drupal\registrar_core\Commands;
 
-use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -29,20 +27,6 @@ class RegistrarCoreCommands extends DrushCommands {
   protected $mauiApi;
 
   /**
-   * The cache.uiowa_maui service.
-   *
-   * @var \Drupal\Core\Cache\CacheBackendInterface
-   */
-  protected $mauiCache;
-
-  /**
-   * The datetime.time service.
-   *
-   * @var \Drupal\Component\Datetime\TimeInterface
-   */
-  protected $time;
-
-  /**
    * The config factory.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -54,17 +38,11 @@ class RegistrarCoreCommands extends DrushCommands {
    *
    * @param \Drupal\uiowa_maui\MauiApi $mauiApi
    *   The uiowa_maui.api service.
-   * @param \Drupal\Core\Cache\CacheBackendInterface $mauiCache
-   *   The cache.uiowa_maui service.
-   * @param \Drupal\Component\Datetime\TimeInterface $time
-   *   The datetime.time service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
    */
-  public function __construct(MauiApi $mauiApi, CacheBackendInterface $mauiCache, TimeInterface $time, ConfigFactoryInterface $config_factory) {
+  public function __construct(MauiApi $mauiApi, ConfigFactoryInterface $config_factory) {
     $this->mauiApi = $mauiApi;
-    $this->mauiCache = $mauiCache;
-    $this->time = $time;
     $this->configFactory = $config_factory;
   }
 
@@ -78,28 +56,19 @@ class RegistrarCoreCommands extends DrushCommands {
    */
   public function getFinalExam() {
     $session_id = $this->configFactory->get('registrar_core.final_exam_schedule')->get('session_id');
-    $data = $this->mauiApi->getFinalExamSchedule($session_id);
 
-    switch ($data['_status']) {
-      case 'ok':
-        $data = $data['_data'];
-        break;
+    // Force a refresh so this actually warms the cache daily.
+    $data = $this->mauiApi->getFinalExamSchedule($session_id, TRUE);
 
-      default:
-        // Handle errored or empty results.
-        $arguments = [
-          '@status' => $data['_status'],
-          '@session_id' => $session_id,
-          '@message' => $data['_message'],
-        ];
-        $this->getLogger('registrar_core')->notice($this->t('Final exam schedule import for session @session_id: @status. @message', $arguments));
-        return;
+    if ($data['_status'] !== 'ok') {
+      // Handle errored or empty results.
+      $arguments = [
+        '@status' => $data['_status'],
+        '@session_id' => $session_id,
+        '@message' => $data['_message'],
+      ];
+      $this->getLogger('registrar_core')->notice($this->t('Final exam schedule import for session @session_id: @status. @message', $arguments));
     }
-
-    // Create a cache item set to 24 hours.
-    $cid = "uiowa_maui:request:final_exam_schedule:{$session_id}";
-    $request_time = $this->time->getRequestTime();
-    $this->mauiCache->set($cid, $data, $request_time + 86400);
   }
 
 }
