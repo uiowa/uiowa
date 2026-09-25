@@ -121,7 +121,7 @@ class FleetRunner {
   ) {
     $this->manifestPath = $manifestPath ?? Manifest::defaultPath($repoRoot);
     $this->drushConfigPath = $drushConfigPath ?? "{$repoRoot}/drush/drush.yml";
-    $this->aliasDir = $aliasDir ?? "{$repoRoot}/drush/sites";
+    $this->aliasDir = $aliasDir ?? Multisite::aliasDir($repoRoot);
     $this->localApp = $localApp ?? (getenv('AH_SITE_GROUP') ?: NULL);
     $this->localEnv = $localEnv ?? (getenv('AH_SITE_ENVIRONMENT') ?: NULL);
   }

@@ -92,30 +92,39 @@ class MultisiteUtilityTest extends UnitTestCase {
   }
 
   /**
-   * A missing alias file resolves to NULL rather than an error.
+   * A missing alias file falls back to the requested environment.
    */
   public function testCloudEnvNameWithoutAliasFile(): void {
-    $this->assertNull(Multisite::getCloudEnvName($this->aliasDir, 'uiowa09', 'test'));
+    $this->assertSame('test', Multisite::getCloudEnvName($this->aliasDir, 'uiowa09', 'test'));
   }
 
   /**
-   * An alias environment with no user field resolves to NULL.
+   * An alias environment with no user field falls back to the requested one.
    */
   public function testCloudEnvNameWithoutUserField(): void {
     file_put_contents("{$this->aliasDir}/uiowa09.site.yml", Yaml::dump([
       'test' => ['uri' => 'foo.stage.drupal.uiowa.edu'],
     ]));
 
-    $this->assertNull(Multisite::getCloudEnvName($this->aliasDir, 'uiowa09', 'test'));
+    $this->assertSame('test', Multisite::getCloudEnvName($this->aliasDir, 'uiowa09', 'test'));
   }
 
   /**
-   * A requested environment absent from the alias resolves to NULL.
+   * A user field without an environment suffix falls back to the requested one.
+   */
+  public function testCloudEnvNameWithoutUserSuffix(): void {
+    $this->writeAlias('uiowa09', 'uiowa09');
+
+    $this->assertSame('test', Multisite::getCloudEnvName($this->aliasDir, 'uiowa09', 'test'));
+  }
+
+  /**
+   * A requested environment absent from the alias falls back to itself.
    */
   public function testCloudEnvNameForUnknownEnvironment(): void {
     $this->writeAlias('uiowa09', 'uiowa09.stage');
 
-    $this->assertNull(Multisite::getCloudEnvName($this->aliasDir, 'uiowa09', 'staging'));
+    $this->assertSame('staging', Multisite::getCloudEnvName($this->aliasDir, 'uiowa09', 'staging'));
   }
 
   /**

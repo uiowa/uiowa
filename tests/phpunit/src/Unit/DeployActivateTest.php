@@ -87,8 +87,8 @@ class DeployActivateTest extends UnitTestCase {
         return $this->findEnvironment($environments, $app, $env);
       }
 
-      public function pubStepLabel(string $name, string $env, string $tag): string {
-        return $this->stepLabel($name, $env, $tag);
+      public function pubStepLabel(string $app, string $env, string $tag): string {
+        return $this->stepLabel($app, $env, $tag);
       }
 
     };

@@ -49,6 +49,19 @@ class Multisite {
   }
 
   /**
+   * Return the directory holding the drush alias files.
+   *
+   * @param string $repoRoot
+   *   Absolute path to the repository root.
+   *
+   * @return string
+   *   Absolute path to drush/sites under the repository root.
+   */
+  public static function aliasDir(string $repoRoot): string {
+    return "{$repoRoot}/drush/sites";
+  }
+
+  /**
    * Given a URI, create and return a unique identifier.
    *
    * Used for internal subdomain and Drush alias group name, i.e. file name.
@@ -270,15 +283,15 @@ class Multisite {
    * @param string $env
    *   The drush alias environment: local, dev, test, or prod.
    *
-   * @return string|null
-   *   The Acquia Cloud environment name, or NULL if the alias file or the
-   *   requested environment's user field is missing.
+   * @return string
+   *   The Acquia Cloud environment name, falling back to $env if
+   *   the alias file or the requested environment's user field is missing.
    */
-  public static function getCloudEnvName(string $aliasDir, string $name, string $env): ?string {
+  public static function getCloudEnvName(string $aliasDir, string $name, string $env): string {
     $user = static::getAliasEnv($aliasDir, $name, $env)['user'] ?? NULL;
 
-    if (!is_string($user) || $user === '') {
-      return NULL;
+    if (!is_string($user) || !str_contains($user, '.')) {
+      return $env;
     }
 
     // The patterns are like "uiowa09.stage", so we can just take

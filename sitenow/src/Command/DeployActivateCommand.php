@@ -77,15 +77,15 @@ class DeployActivateCommand extends Command {
       return Command::FAILURE;
     }
 
-    $names = $registry->names();
+    $apps = $registry->names();
     $requested = $this->parseList($input->getOption('apps'));
     if ($requested) {
-      $unknown = array_diff($requested, $names);
+      $unknown = array_diff($requested, $apps);
       if ($unknown) {
         $io->error('Unknown application(s): ' . implode(', ', $unknown));
         return Command::FAILURE;
       }
-      $names = $requested;
+      $apps = $requested;
     }
 
     $env = trim($input->getOption('env')) ?: 'prod';
@@ -104,9 +104,9 @@ class DeployActivateCommand extends Command {
     $summary = [
       ['label' => 'Tag', 'value' => $tag],
       ['label' => 'Environment', 'value' => $env],
-      ['label' => 'Applications', 'value' => implode(', ', $names)],
+      ['label' => 'Applications', 'value' => implode(', ', $apps)],
     ];
-    $steps = array_map(fn($name) => ['label' => $this->stepLabel($name, $env, $tag)], $names);
+    $steps = array_map(fn($app) => ['label' => $this->stepLabel($app, $env, $tag)], $apps);
 
     $this->renderPlan($io, "deploy:activate {$tag}", $summary, $validation, $steps);
 
@@ -121,7 +121,7 @@ class DeployActivateCommand extends Command {
       return Command::SUCCESS;
     }
 
-    return $this->switchApplications($io, $registry, $names, $env, $tag);
+    return $this->switchApplications($io, $registry, $apps, $env, $tag);
   }
 
   /**
@@ -130,7 +130,7 @@ class DeployActivateCommand extends Command {
    * @return int
    *   A console exit code; FAILURE if any application did not switch.
    */
-  private function switchApplications(SymfonyStyle $io, Applications $registry, array $names, string $env, string $tag): int {
+  private function switchApplications(SymfonyStyle $io, Applications $registry, array $apps, string $env, string $tag): int {
     $client = $this->requireAcquiaClient($io);
     if (!$client) {
       return Command::FAILURE;
@@ -139,21 +139,21 @@ class DeployActivateCommand extends Command {
     $code = new Code($client);
 
     $failed = [];
-    foreach ($names as $name) {
+    foreach ($apps as $app) {
       try {
-        $target = $this->findEnvironment($environments->getAll($registry->uuid($name)), $name, $env);
+        $target = $this->findEnvironment($environments->getAll($registry->uuid($app)), $app, $env);
 
         if (!$target) {
-          $io->warning("{$name}: no {$env} environment found; skipping.");
-          $failed[] = $name;
+          $io->warning("{$app}: no {$env} environment found; skipping.");
+          $failed[] = $app;
           continue;
         }
         $code->switch($target->uuid, $tag);
-        $io->writeln("{$name}: switch to {$tag} started.");
+        $io->writeln("{$app}: switch to {$tag} started.");
       }
       catch (\Throwable $e) {
-        $io->error("{$name}: switch failed: {$e->getMessage()}");
-        $failed[] = $name;
+        $io->error("{$app}: switch failed: {$e->getMessage()}");
+        $failed[] = $app;
       }
     }
 
@@ -184,7 +184,7 @@ class DeployActivateCommand extends Command {
    *   The matching environment, or NULL if none matches.
    */
   protected function findEnvironment(iterable $environments, string $app, string $env): ?object {
-    $cloud_env = Multisite::getCloudEnvName("{$this->repoRoot}/drush/sites", $app, $env) ?? $env;
+    $cloud_env = Multisite::getCloudEnvName(Multisite::aliasDir($this->repoRoot), $app, $env);
 
     foreach ($environments as $environment) {
       if ($environment->name === $cloud_env) {
@@ -203,7 +203,7 @@ class DeployActivateCommand extends Command {
    * --dry-run surfaces what findEnvironment() will actually look for without
    * running the switch to find out.
    *
-   * @param string $name
+   * @param string $app
    *   The application (AH_SITE_GROUP).
    * @param string $env
    *   The requested drush alias environment, e.g. 'test'.
@@ -213,12 +213,12 @@ class DeployActivateCommand extends Command {
    * @return string
    *   The step label.
    */
-  protected function stepLabel(string $name, string $env, string $tag): string {
-    $cloud_env = Multisite::getCloudEnvName("{$this->repoRoot}/drush/sites", $name, $env) ?? $env;
+  protected function stepLabel(string $app, string $env, string $tag): string {
+    $cloud_env = Multisite::getCloudEnvName(Multisite::aliasDir($this->repoRoot), $app, $env);
 
     return $cloud_env === $env
-      ? "Switch {$name} {$env} to {$tag}"
-      : "Switch {$name} {$env} ({$cloud_env}) to {$tag}";
+      ? "Switch {$app} {$env} to {$tag}"
+      : "Switch {$app} {$env} ({$cloud_env}) to {$tag}";
   }
 
   /**
