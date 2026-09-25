@@ -90,25 +90,25 @@ class DeployDistributeCommand extends Command {
 
     // Resolve target applications and their remotes.
     $registry = new Applications("{$this->repoRoot}/sitenow/applications.yml");
-    $names = $registry->names();
+    $apps = $registry->names();
     $requested = $this->parseList($input->getOption('apps'));
     if ($requested) {
-      $unknown = array_diff($requested, $names);
+      $unknown = array_diff($requested, $apps);
       if ($unknown) {
         $io->error('Unknown application(s): ' . implode(', ', $unknown));
         return Command::FAILURE;
       }
-      $names = $requested;
+      $apps = $requested;
     }
 
     $targets = [];
-    foreach ($names as $name) {
-      $remote = $registry->remote($name);
+    foreach ($apps as $app) {
+      $remote = $registry->remote($app);
       if (!$remote) {
-        $io->error("Application {$name} has no remote configured in sitenow/applications.yml.");
+        $io->error("Application {$app} has no remote configured in sitenow/applications.yml.");
         return Command::FAILURE;
       }
-      $targets[$name] = $remote;
+      $targets[$app] = $remote;
     }
 
     $dry_run = (bool) $input->getOption('dry-run');
@@ -130,13 +130,13 @@ class DeployDistributeCommand extends Command {
     // Push to each remote, isolating per-remote failures.
     $rows = [];
     $failed = 0;
-    foreach ($targets as $name => $remote) {
+    foreach ($targets as $app => $remote) {
       if ($dry_run) {
-        $rows[] = [$name, 'would push', $this->pushDescription($branch !== NULL, $remote, $ref)];
+        $rows[] = [$app, 'would push', $this->pushDescription($branch !== NULL, $remote, $ref)];
         continue;
       }
       [$ok, $detail] = $this->push($build_dir, $remote, $ref, $branch !== NULL);
-      $rows[] = [$name, $ok ? 'pushed' : 'FAILED', $detail];
+      $rows[] = [$app, $ok ? 'pushed' : 'FAILED', $detail];
       if (!$ok) {
         $failed++;
       }

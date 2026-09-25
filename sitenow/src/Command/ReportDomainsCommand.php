@@ -46,7 +46,7 @@ class ReportDomainsCommand extends Command {
   protected function configure(): void {
     $this
       ->addOption('export', NULL, InputOption::VALUE_NONE, 'Export results to a CSV file at the repository root.')
-      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated environments to include (e.g. dev,test). Defaults to prod.', '')
+      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated environments to include: dev, test, or prod. Defaults to prod.', '')
       ->addOption('apps', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated app names to include (e.g. uiowa02,uiowa03). Defaults to all.', '');
   }
 
@@ -60,6 +60,11 @@ class ReportDomainsCommand extends Command {
     $target_envs = $this->parseList($input->getOption('env')) ?: ['prod'];
     $target_apps = $this->parseList($input->getOption('apps'));
     $export = (bool) $input->getOption('export');
+
+    if ($unknown_envs = array_diff($target_envs, self::ENVIRONMENTS)) {
+      $err->error('Invalid environment(s): ' . implode(', ', $unknown_envs) . '. Must be one of: ' . implode(', ', self::ENVIRONMENTS));
+      return Command::FAILURE;
+    }
 
     $client = $this->requireAcquiaClient($io);
     if ($client === NULL) {
@@ -77,7 +82,7 @@ class ReportDomainsCommand extends Command {
       return Command::FAILURE;
     }
 
-    $fleet = new FleetDomains($client);
+    $fleet = new FleetDomains($client, $this->repoRoot);
 
     $writer = $export ? new CsvWriter($this->repoRoot, 'SiteNow-Domains-Report', self::HEADERS) : NULL;
     $rows = [];
