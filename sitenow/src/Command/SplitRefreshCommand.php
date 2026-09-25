@@ -352,7 +352,8 @@ HELP);
     $this->io->section('Activate feature splits');
     $db = self::CONTAINER_ROOT . "/{$this->runDir}/db";
     $this->ddevExec(['mkdir', '-p', $db]);
-    if (!$this->step('default', ['sql:dump', '--gzip', "--result-file={$db}/base.sql"], 'dump-base')) {
+    // sql:query decompresses a .gz input in place, and this dump is loaded repeatedly.
+    if (!$this->step('default', ['sql:dump', "--result-file={$db}/base.sql"], 'dump-base')) {
       throw new \RuntimeException('Could not dump the synced default site. See the dump-base log.');
     }
     foreach (array_keys($features) as $id) {
@@ -362,7 +363,7 @@ HELP);
         $this->results[$label]['activate'] = 'after update';
         continue;
       }
-      $ok = $this->loadDatabase("{$db}/base.sql.gz", "activate-{$id}");
+      $ok = $this->loadDatabase("{$db}/base.sql", "activate-{$id}");
       foreach ($this->activation[$id] as $split) {
         $ok = $ok && $this->step('default', ['config-split:activate', $split, '--yes'], "activate-{$id}");
       }
@@ -424,7 +425,7 @@ HELP);
       foreach ($ready as $id) {
         $label = "{$id} (feature)";
         $deferred = $this->results[$label]['activate'] === 'after update';
-        $ok = $this->loadDatabase($deferred ? "{$db}/base.sql.gz" : "{$db}/{$id}.sql.gz", "update-{$id}");
+        $ok = $this->loadDatabase($deferred ? "{$db}/base.sql" : "{$db}/{$id}.sql.gz", "update-{$id}");
         $ok = $ok && $this->runLogged($this->snJob(['site:update', 'default']), "update-{$id}", self::UPDATED);
         foreach ($deferred ? $this->activation[$id] : [] as $split) {
           $ok = $ok && $this->step('default', ['config-split:activate', $split, '--yes'], "update-{$id}");
