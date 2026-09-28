@@ -15,7 +15,6 @@ $sites['prod.drupal.uiowa.edu'] = 'default';
 $sites['default.dev.drupal.uiowa.edu'] = 'default';
 $sites['default.stage.drupal.uiowa.edu'] = 'default';
 $sites['default.prod.drupal.uiowa.edu'] = 'default';
-$sites['demo.sitenow.uiowa.edu'] = 'default';
 
 // Directory aliases for hr.uiowa.edu.
 $sites['hr.uiowa.ddev.site'] = 'hr.uiowa.edu';
