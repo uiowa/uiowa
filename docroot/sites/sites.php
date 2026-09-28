@@ -8008,3 +8008,9 @@ $sites['labalt.uiowa.ddev.site'] = 'alt.lab.uiowa.edu';
 $sites['labalt.dev.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
 $sites['labalt.stage.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
 $sites['labalt.prod.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
+
+// Directory aliases for ersm.lab.uiowa.edu.
+$sites['labersm.uiowa.ddev.site'] = 'ersm.lab.uiowa.edu';
+$sites['labersm.dev.drupal.uiowa.edu'] = 'ersm.lab.uiowa.edu';
+$sites['labersm.stage.drupal.uiowa.edu'] = 'ersm.lab.uiowa.edu';
+$sites['labersm.prod.drupal.uiowa.edu'] = 'ersm.lab.uiowa.edu';
