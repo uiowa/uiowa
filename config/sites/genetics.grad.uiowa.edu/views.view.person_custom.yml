@@ -18,6 +18,8 @@ dependencies:
     - field.storage.node.field_pt_student_program_start
     - field.storage.node.pt_student_dissertation_title
     - node.type.person
+    - sitenow_people.person_type.faculty
+    - sitenow_people.person_type.student
     - taxonomy.vocabulary.research_areas
   module:
     - datetime
@@ -913,16 +915,17 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
+        field_person_types_target_id_1:
+          id: field_person_types_target_id_1
           table: node__field_person_types
           field: field_person_types_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: faculty
+          plugin_id: entity_reference
+          operator: or
+          value:
+            faculty: faculty
           group: 1
           exposed: false
           expose:
@@ -939,7 +942,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -952,6 +955,12 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          sub_handler: 'default:person_type'
+          widget: select
+          sub_handler_settings:
+            target_bundles: null
+            auto_create: false
         field_person_type_status_value:
           id: field_person_type_status_value
           table: node__field_person_type_status
@@ -1622,6 +1631,7 @@ display:
           plugin_id: bundle
           value:
             person: person
+          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -1712,16 +1722,17 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
+        field_person_types_target_id_1:
+          id: field_person_types_target_id_1
           table: node__field_person_types
           field: field_person_types_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: student
+          plugin_id: entity_reference
+          operator: or
+          value:
+            student: student
           group: 1
           exposed: false
           expose:
@@ -1738,7 +1749,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1751,6 +1762,12 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          sub_handler: 'default:person_type'
+          widget: select
+          sub_handler_settings:
+            target_bundles: null
+            auto_create: false
         field_person_type_status_value:
           id: field_person_type_status_value
           table: node__field_person_type_status
@@ -2296,6 +2313,7 @@ display:
           plugin_id: bundle
           value:
             person: person
+          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -2385,16 +2403,17 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
+        field_person_types_target_id_1:
+          id: field_person_types_target_id_1
           table: node__field_person_types
           field: field_person_types_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: student
+          plugin_id: entity_reference
+          operator: or
+          value:
+            student: student
           group: 1
           exposed: false
           expose:
@@ -2411,7 +2430,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -2424,6 +2443,12 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          sub_handler: 'default:person_type'
+          widget: select
+          sub_handler_settings:
+            target_bundles: null
+            auto_create: false
         field_person_type_status_value:
           id: field_person_type_status_value
           table: node__field_person_type_status
