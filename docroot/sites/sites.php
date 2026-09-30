@@ -15,7 +15,6 @@ $sites['prod.drupal.uiowa.edu'] = 'default';
 $sites['default.dev.drupal.uiowa.edu'] = 'default';
 $sites['default.stage.drupal.uiowa.edu'] = 'default';
 $sites['default.prod.drupal.uiowa.edu'] = 'default';
-$sites['demo.sitenow.uiowa.edu'] = 'default';
 
 // Directory aliases for hr.uiowa.edu.
 $sites['hr.uiowa.ddev.site'] = 'hr.uiowa.edu';
@@ -8008,3 +8007,15 @@ $sites['labalt.uiowa.ddev.site'] = 'alt.lab.uiowa.edu';
 $sites['labalt.dev.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
 $sites['labalt.stage.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
 $sites['labalt.prod.drupal.uiowa.edu'] = 'alt.lab.uiowa.edu';
+
+// Directory aliases for ersm.lab.uiowa.edu.
+$sites['labersm.uiowa.ddev.site'] = 'ersm.lab.uiowa.edu';
+$sites['labersm.dev.drupal.uiowa.edu'] = 'ersm.lab.uiowa.edu';
+$sites['labersm.stage.drupal.uiowa.edu'] = 'ersm.lab.uiowa.edu';
+$sites['labersm.prod.drupal.uiowa.edu'] = 'ersm.lab.uiowa.edu';
+
+// Directory aliases for scar.lab.uiowa.edu.
+$sites['labscar.uiowa.ddev.site'] = 'scar.lab.uiowa.edu';
+$sites['labscar.dev.drupal.uiowa.edu'] = 'scar.lab.uiowa.edu';
+$sites['labscar.stage.drupal.uiowa.edu'] = 'scar.lab.uiowa.edu';
+$sites['labscar.prod.drupal.uiowa.edu'] = 'scar.lab.uiowa.edu';
