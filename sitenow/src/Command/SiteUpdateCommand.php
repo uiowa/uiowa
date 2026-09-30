@@ -79,10 +79,10 @@ class SiteUpdateCommand extends Command {
     $is_acquia = (bool) getenv('AH_SITE_ENVIRONMENT');
 
     // Resolve the site directory the way Drupal does, via sites.php. For most
-    // sites the directory is the host itself; an aliased host (notably the
-    // default site, addressed as demo.sitenow.uiowa.edu but living in the
-    // default directory) resolves to a different directory, which in turn
-    // drives the settings-include name below.
+    // sites the directory is the host itself; an aliased host (notably an
+    // application's own default site, addressed by a real domain but living
+    // in the default directory) resolves to a different directory, which in
+    // turn drives the settings-include name below.
     $dir = $this->siteDirectory($site);
 
     // Skip unless the site directory exists. Without this, an unresolved --uri
