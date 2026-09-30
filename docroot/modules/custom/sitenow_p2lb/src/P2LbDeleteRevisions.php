@@ -38,7 +38,7 @@ class P2LbDeleteRevisions {
       }
 
       if ($protected_vid) {
-        foreach ($vids as $vid) {
+        foreach (array_keys($vids) as $vid) {
           if ($vid <= $protected_vid) {
             // Built-in protection from deleting active revision.
             $node_storage->deleteRevision($vid);
