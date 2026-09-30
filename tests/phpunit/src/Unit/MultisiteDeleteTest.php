@@ -589,8 +589,8 @@ class MultisiteDeleteTest extends UnitTestCase {
   /**
    * A host that resolves to 'default' through sites.php is refused.
    *
-   * The demo.sitenow.uiowa.edu host is one: it is in the manifest, and
-   * sites.php maps it to the shared directory. Every other check passes for
+   * An application's own default site is addressed by a real domain that
+   * sites.php maps to the shared directory. Every other check passes for
    * it — the directory exists and its derived database is the application's
    * own — so without this check the plan would delete docroot/sites/default,
    * the application database, and the aliases the application is served on.
@@ -599,7 +599,7 @@ class MultisiteDeleteTest extends UnitTestCase {
     mkdir("{$this->dir}/docroot/sites/default", 0777, TRUE);
     file_put_contents(
       "{$this->dir}/docroot/sites/sites.php",
-      "<?php\n\$sites['demo.sitenow.uiowa.edu'] = 'default';\n"
+      "<?php\n\$sites['demo.example.uiowa.edu'] = 'default';\n"
     );
     mkdir("{$this->dir}/docroot/sites/default/drs", 0777, TRUE);
     file_put_contents(
@@ -615,8 +615,8 @@ class MultisiteDeleteTest extends UnitTestCase {
     );
 
     $plan = $this->commandInDir()->pubDecide(
-      'demo.sitenow.uiowa.edu',
-      ['demo.sitenow.uiowa.edu' => 'uiowa'],
+      'demo.example.uiowa.edu',
+      ['demo.example.uiowa.edu' => 'uiowa'],
       ['no-commit' => TRUE, 'dry-run' => TRUE]
     );
 

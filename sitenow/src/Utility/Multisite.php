@@ -3,6 +3,8 @@
 namespace SiteNow\Utility;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Static class with various helper methods related multisite management.
@@ -13,6 +15,16 @@ class Multisite {
    * Static class.
    */
   private function __construct() {}
+
+  /**
+   * Parsed alias files, keyed by "<alias dir>::<name>".
+   *
+   * A fleet run can ask for the same file hundreds of times (once per site
+   * per environment lookup), so each one is parsed at most once per request.
+   *
+   * @var array<string, array>
+   */
+  private static array $aliasFileCache = [];
 
   /**
    * Given a site directory name, return the standardized database name.
@@ -34,6 +46,19 @@ class Multisite {
     }
 
     return $db;
+  }
+
+  /**
+   * Return the directory holding the drush alias files.
+   *
+   * @param string $repoRoot
+   *   Absolute path to the repository root.
+   *
+   * @return string
+   *   Absolute path to drush/sites under the repository root.
+   */
+  public static function aliasDir(string $repoRoot): string {
+    return "{$repoRoot}/drush/sites";
   }
 
   /**
@@ -177,6 +202,101 @@ class Multisite {
       'sans' => $sans,
       'related' => $related,
     ];
+  }
+
+  /**
+   * Read an application or site's drush alias file.
+   *
+   * @param string $aliasDir
+   *   Absolute path to the directory holding the alias files: drush/sites
+   *   under the repository root, unless a caller (e.g. FleetRunner, for
+   *   tests) points elsewhere.
+   * @param string $name
+   *   The alias file's basename, without extension: an application
+   *   (AH_SITE_GROUP, e.g. 'uiowa09') or a site identifier (e.g.
+   *   'accessibility').
+   *
+   * @return array
+   *   Parsed alias definitions keyed by environment (local, dev, test,
+   *   prod), or an empty array if the alias file does not exist or fails
+   *   to parse.
+   */
+  public static function getAliasFile(string $aliasDir, string $name): array {
+    $key = "{$aliasDir}::{$name}";
+
+    if (!array_key_exists($key, self::$aliasFileCache)) {
+      $parsed = [];
+      $path = "{$aliasDir}/{$name}.site.yml";
+
+      if (is_file($path)) {
+        try {
+          $parsed = Yaml::parseFile($path) ?? [];
+        }
+        catch (ParseException) {
+          // A malformed alias file resolves to no environments rather than
+          // crashing every caller that reads it.
+        }
+      }
+
+      self::$aliasFileCache[$key] = is_array($parsed) ? $parsed : [];
+    }
+
+    return self::$aliasFileCache[$key];
+  }
+
+  /**
+   * Read one environment out of an application or site's drush alias file.
+   *
+   * @param string $aliasDir
+   *   Absolute path to the directory holding the alias files.
+   * @param string $name
+   *   The alias file's basename, without extension.
+   * @param string $env
+   *   The drush alias environment: local, dev, test, or prod.
+   *
+   * @return array|null
+   *   The environment's definition (uri, user, host, etc.), or NULL when the
+   *   alias file or the requested environment is missing.
+   */
+  public static function getAliasEnv(string $aliasDir, string $name, string $env): ?array {
+    $definition = static::getAliasFile($aliasDir, $name)[$env] ?? NULL;
+
+    return is_array($definition) ? $definition : NULL;
+  }
+
+  /**
+   * Resolve Acquia Cloud's own name for an application's environment.
+   *
+   * Drush aliases always key the middle environment 'test', but Acquia
+   * Cloud does not: it calls that environment 'test' on uiowa01-06 and
+   * 'stage' on uiowa07-09. Every other environment name is uniform. The
+   * alias's `user` field records the Acquia name we need, e.g.
+   * `user: uiowa09.stage` versus `user: uiowa04.test`. This is the single
+   * source of truth for the divergence; callers that need to match an
+   * Acquia API environment name should resolve it through here rather than
+   * assuming 'test' or hardcoding the 'stage' exception.
+   *
+   * @param string $aliasDir
+   *   Absolute path to the directory holding the alias files.
+   * @param string $name
+   *   The alias file's basename, without extension.
+   * @param string $env
+   *   The drush alias environment: local, dev, test, or prod.
+   *
+   * @return string
+   *   The Acquia Cloud environment name, falling back to $env if
+   *   the alias file or the requested environment's user field is missing.
+   */
+  public static function getCloudEnvName(string $aliasDir, string $name, string $env): string {
+    $user = static::getAliasEnv($aliasDir, $name, $env)['user'] ?? NULL;
+
+    if (!is_string($user) || !str_contains($user, '.')) {
+      return $env;
+    }
+
+    // The patterns are like "uiowa09.stage", so we can just take
+    // the substring after the period.
+    return substr($user, strrpos($user, '.') + 1);
   }
 
   /**

@@ -263,12 +263,12 @@ HELP);
           : CheckResult::fail("Site {$host} is not in sitenow/manifest.yml. Nothing to delete.");
       }),
       new Check(self::CHECK_NOT_DEFAULT_SITE, function () use ($dir, $host): CheckResult {
-        // demo.sitenow.uiowa.edu is in the manifest and sites.php maps it to
-        // 'default', so every other check passes for it: the directory exists
-        // and its derived database is the application's own. Deleting it takes
-        // out docroot/sites/default, the application database, the default
-        // site's files on all three mounts, and the sites.php aliases the whole
-        // application is served on.
+        // An application's own default site, if ever listed in the manifest,
+        // would be one sites.php maps to 'default', so every other check
+        // passes for it: the directory exists and its derived database is the
+        // application's own. Deleting it takes out docroot/sites/default, the
+        // application database, the default site's files on all three mounts,
+        // and the sites.php aliases the whole application is served on.
         return $dir !== self::DEFAULT_SITE_DIRECTORY
           ? CheckResult::pass()
           : CheckResult::fail("{$host} resolves to the shared docroot/sites/default directory, which this command will not delete.");
@@ -370,13 +370,7 @@ HELP);
    *   environment the alias does not define.
    */
   protected function mountsByEnv(string $app): array {
-    $path = "{$this->repoRoot}/drush/sites/{$app}.site.yml";
-
-    if (!is_file($path)) {
-      return [];
-    }
-
-    $alias = Yaml::parseFile($path) ?? [];
+    $alias = Multisite::getAliasFile(Multisite::aliasDir($this->repoRoot), $app);
     $mounts = [];
 
     foreach (self::ENVIRONMENTS as $env) {

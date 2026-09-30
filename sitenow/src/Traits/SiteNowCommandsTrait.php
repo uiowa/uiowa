@@ -227,8 +227,8 @@ trait SiteNowCommandsTrait {
    * Resolve a host to its multisite directory via sites.php.
    *
    * Mirrors Drupal's own aliasing: sites.php maps alias hosts to a directory,
-   * and a host with no entry uses a same-named directory. This is what lets the
-   * default site be addressed by its real domain (demo.sitenow.uiowa.edu) while
+   * and a host with no entry uses a same-named directory. This is what lets an
+   * application's own default site be addressed by its real domain while
    * resolving to the default directory, and it is what keeps file syncs landing
    * in the right directory.
    *
@@ -280,6 +280,19 @@ trait SiteNowCommandsTrait {
     $dir = $this->siteDirectory($host);
 
     return $dir === 'default' ? $app : str_replace(['.', '-'], '_', $dir);
+  }
+
+  /**
+   * Get the path of a site's local settings file.
+   *
+   * @param string $host
+   *   The site host / canonical domain.
+   *
+   * @return string
+   *   Absolute path to the site's local.settings.php.
+   */
+  protected function localSettingsFile(string $host): string {
+    return "{$this->repoRoot}/docroot/sites/{$this->siteDirectory($host)}/settings/local.settings.php";
   }
 
   /**
