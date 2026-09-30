@@ -9,8 +9,8 @@ use SiteNow\Command\SiteUpdateCommand;
  * Unit tests for the site:update command's directory resolution.
  *
  * Covers siteDirectory(), which mirrors Drupal's own sites.php aliasing:
- * an aliased host resolves to its mapped directory (notably the default site,
- * addressed as demo.sitenow.uiowa.edu but living in default), and an
+ * an aliased host resolves to its mapped directory (notably an application's
+ * own default site, addressed by a real domain but living in default), and an
  * unaliased host resolves to a same-named directory. No drush or Acquia
  * access.
  *
@@ -78,11 +78,11 @@ class SiteUpdateTest extends UnitTestCase {
    */
   public function testDefaultSiteHostResolvesToDefaultDirectory() {
     $repo = $this->fixtureRepo([
-      'demo.sitenow.uiowa.edu' => 'default',
+      'demo.example.uiowa.edu' => 'default',
       'alias.uiowa.edu' => 'realdir.uiowa.edu',
     ]);
 
-    $this->assertSame('default', $this->command($repo)->pubSiteDirectory('demo.sitenow.uiowa.edu'));
+    $this->assertSame('default', $this->command($repo)->pubSiteDirectory('demo.example.uiowa.edu'));
   }
 
   /**
