@@ -128,21 +128,22 @@ class SplitRefreshCommand extends Command implements SignalableCommandInterface 
       ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated feature split IDs to refresh (e.g. event,thesis_defense).', '')
       ->addOption('sites', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated hosts whose site splits to refresh.', '')
       ->addOption('base', NULL, InputOption::VALUE_REQUIRED, 'The branch whose code matches production.', 'main')
-      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Remote source environment: dev, test, or prod.', 'prod')
+      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Remote source environment for site splits: dev, test, or prod.', 'prod')
       ->addOption('concurrency', 'j', InputOption::VALUE_REQUIRED, 'Number of site operations to run in parallel.', '4')
       ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.')
       ->setHelp(<<<'HELP'
-Syncs remote databases (prod by default) and re-exports config splits from
-them, so the exports reflect what running this branch's updates against those
-databases produces. Run it on the host shell, on the branch that will receive the
+Syncs remote databases (prod by default) and re-exports site splits from them,
+so the exports reflect what running this branch's updates against those
+databases produces. Feature splits are exported from a fresh local install of
+the default site. Run it on the host shell, on the branch that will receive the
 exports, with no uncommitted changes to tracked files.
 
 With no --split or --sites, every feature split and every site split is
 refreshed. Each target overwrites a local database: the default site's for
 feature splits, the host's own for site splits.
 
-When the branch has commits the base branch lacks, databases are synced and
-feature splits activated with the base branch checked out, then updated and
+When the branch has commits the base branch lacks, databases are synced or
+installed and feature splits activated with the base branch checked out, then updated and
 exported with this branch checked out. A feature split the base branch does
 not define is activated after the update instead. The command switches branches and
 runs composer install for each phase, and returns to this branch even if it
@@ -313,9 +314,9 @@ HELP);
   /**
    * Sync databases and prepare the feature split snapshots.
    *
-   * Every host with a site split is synced. The default site is synced once,
-   * dumped, and each feature split is activated on a fresh copy of that dump
-   * and snapshotted.
+   * Every host with a site split is synced. The default site is installed
+   * once from the default config, dumped, and each feature split is activated
+   * on a fresh copy of that dump and snapshotted.
    *
    * @param array<string, string> $features
    *   Feature split folders keyed by ID.
@@ -329,21 +330,26 @@ HELP);
    *   The base branch checked out, or NULL when running without switching.
    */
   private function prepare(array $features, array $sites, string $env, int $concurrency, ?string $base): void {
-    $this->io->section('Sync databases');
-    $hosts = [...array_keys($sites), ...($features ? ['default'] : [])];
-    $jobs = [];
-    foreach ($hosts as $host) {
-      $jobs[$host] = $this->snJob(['site:sync', $host, "--env={$env}", '--no-update', '--yes']);
-    }
-    $synced = $this->pool($jobs, 'sync', self::SYNC_TIMEOUT, $concurrency, $this->appGroups($hosts), retries: 1);
-    foreach (array_keys($sites) as $host) {
-      $this->results[$host]['sync'] = $synced[$host]['ok'] ? 'ok' : 'failed';
+    if ($sites) {
+      $this->io->section('Sync databases');
+      $hosts = array_keys($sites);
+      $jobs = [];
+      foreach ($hosts as $host) {
+        $jobs[$host] = $this->snJob(['site:sync', $host, "--env={$env}", '--no-update', '--yes']);
+      }
+      $synced = $this->pool($jobs, 'sync', self::SYNC_TIMEOUT, $concurrency, $this->appGroups($hosts), retries: 1);
+      foreach ($hosts as $host) {
+        $this->results[$host]['sync'] = $synced[$host]['ok'] ? 'ok' : 'failed';
+      }
     }
 
     if (!$features) {
       return;
     }
-    if (!$synced['default']['ok']) {
+    $this->io->section('Install the default site');
+    $installed = $this->runLogged($this->snJob(['site:install', 'default', '--reinstall', '--force']), 'install-default');
+    $this->progress($installed, 'install', 'default');
+    if (!$installed) {
       foreach (array_keys($features) as $id) {
         $this->results["{$id} (feature)"]['sync'] = 'failed';
       }
@@ -355,11 +361,11 @@ HELP);
     $this->ddevExec(['mkdir', '-p', $db]);
     // sql:query decompresses a .gz input in place, and this dump is loaded repeatedly.
     if (!$this->step('default', ['sql:dump', "--result-file={$db}/base.sql"], 'dump-base')) {
-      throw new \RuntimeException('Could not dump the synced default site. See the dump-base log.');
+      throw new \RuntimeException('Could not dump the installed default site. See the dump-base log.');
     }
     foreach (array_keys($features) as $id) {
       $label = "{$id} (feature)";
-      $this->results[$label]['sync'] = 'ok';
+      $this->results[$label]['sync'] = 'installed';
       if ($base !== NULL && !$this->definedOn($base, $this->activation[$id])) {
         $this->results[$label]['activate'] = 'after update';
         continue;
