@@ -5,6 +5,7 @@
  * Primary module hooks for SiteNow Landing Pages module.
  */
 
+use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
 
@@ -24,6 +25,56 @@ function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context)
   // Keep landing pages out of search engine results.
   if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
     $metatags['robots'] = 'noindex, follow';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function sitenow_landing_pages_preprocess_page(&$variables) {
+  $node = $variables['node'] ?? NULL;
+
+  // Hide site search, main navigation and breadcrumbs on landing pages.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset(
+      $variables['page']['search'],
+      $variables['page']['primary_menu'],
+      $variables['page']['breadcrumb'],
+    );
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for block templates.
+ */
+function sitenow_landing_pages_preprocess_block(&$variables) {
+  if ($variables['plugin_id'] !== 'system_breadcrumb_block') {
+    return;
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Hide breadcrumbs placed in landing page layouts.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset($variables['content']);
+  }
+}
+
+/**
+ * Implements hook_plugin_filter_TYPE__CONSUMER_alter().
+ */
+function sitenow_landing_pages_plugin_filter_block__layout_builder_alter(array &$definitions, array $extra) {
+  $storage = $extra['section_storage'] ?? NULL;
+
+  if (!$storage instanceof OverridesSectionStorageInterface) {
+    return;
+  }
+
+  $entity = $storage->getContextValue('entity');
+
+  // Landing pages can't place the main navigation block.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    unset($definitions['menu_block:main']);
   }
 }
 
