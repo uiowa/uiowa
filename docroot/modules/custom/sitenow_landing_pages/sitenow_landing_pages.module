@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Landing Pages module.
+ */
+
+use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
+
+/**
+ * Implements hook_simple_sitemap_links_alter().
+ */
+function sitenow_landing_pages_simple_sitemap_links_alter(array &$links, SimpleSitemapInterface $sitemap) {
+  $ids = \Drupal::entityQuery('node')
+    ->accessCheck(FALSE)
+    ->condition('type', 'page')
+    ->condition('field_landing_page', 1)
+    ->execute();
+
+  if (!$ids) {
+    return;
+  }
+
+  // Entity queries are keyed by revision ID, so key by node ID instead.
+  $ids = array_flip($ids);
+
+  // Remove landing pages from the sitemap.
+  foreach ($links as $key => $link) {
+    $info = $link['meta']['entity_info'] ?? NULL;
+    if ($info && $info['entity_type'] === 'node' && isset($ids[$info['id']])) {
+      unset($links[$key]);
+    }
+  }
+}
