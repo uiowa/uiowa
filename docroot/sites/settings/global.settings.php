@@ -21,6 +21,24 @@ $ah_env = EnvironmentDetector::getAhEnv() ?: 'local';
 /** @var $site_path string The path to the bootstrapped site. */
 $site_name = EnvironmentDetector::getSiteName($site_path);
 
+switch ($ah_env) {
+  case 'local':
+    $settings['simple_environment_indicator'] = '#00664F local';
+    break;
+
+  case 'dev':
+    $settings['simple_environment_indicator'] = '#00558C dev';
+    break;
+
+  case 'test':
+    $settings['simple_environment_indicator'] = '#BD472A test';
+    break;
+
+  case 'prod':
+    $settings['simple_environment_indicator'] = '#63666A prod';
+    break;
+}
+
 /**
  * A custom theme for the offline page.
  *
