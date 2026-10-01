@@ -5,6 +5,9 @@
  * Primary module hooks for SiteNow Landing Pages module.
  */
 
+use Drupal\block\Entity\Block;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
@@ -42,6 +45,29 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
       $variables['page']['breadcrumb'],
     );
   }
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function sitenow_landing_pages_block_access(Block $block, $operation, AccountInterface $account) {
+  if ($operation !== 'view' || $block->getPluginId() !== 'uiowa_alerts_block') {
+    return AccessResult::neutral();
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $result = AccessResult::neutral()->addCacheContexts(['route']);
+
+  // Hide Hawk Alerts and custom alerts on landing pages.
+  if ($node instanceof NodeInterface) {
+    $result->addCacheableDependency($node);
+
+    if (_sitenow_landing_pages_is_landing_page($node)) {
+      $result = AccessResult::forbidden()->addCacheContexts(['route'])->addCacheableDependency($node);
+    }
+  }
+
+  return $result;
 }
 
 /**
