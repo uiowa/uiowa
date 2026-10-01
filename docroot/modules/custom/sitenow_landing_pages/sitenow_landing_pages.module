@@ -5,7 +5,27 @@
  * Primary module hooks for SiteNow Landing Pages module.
  */
 
+use Drupal\node\NodeInterface;
 use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
+
+/**
+ * Determine whether a node is a landing page.
+ */
+function _sitenow_landing_pages_is_landing_page(NodeInterface $node): bool {
+  return $node->hasField('field_landing_page') && (bool) $node->get('field_landing_page')->value;
+}
+
+/**
+ * Implements hook_metatags_alter().
+ */
+function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context) {
+  $entity = $context['entity'] ?? NULL;
+
+  // Keep landing pages out of search engine results.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    $metatags['robots'] = 'noindex, follow';
+  }
+}
 
 /**
  * Implements hook_simple_sitemap_links_alter().
