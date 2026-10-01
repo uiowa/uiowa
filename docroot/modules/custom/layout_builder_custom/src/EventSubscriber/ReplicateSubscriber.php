@@ -256,7 +256,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
         ->condition('nid', $entity->id())
         ->execute();
       $current = $entity->getRevisionId();
-      foreach ($vids as $vid) {
+      foreach (array_keys($vids) as $vid) {
         // Skip deleting if it is the current revision.
         if ((int) $vid === (int) $current) {
           continue;
