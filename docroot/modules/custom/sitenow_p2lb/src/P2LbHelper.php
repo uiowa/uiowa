@@ -33,18 +33,18 @@ class P2LbHelper {
    */
   public static function formattedTextIsSame(string $text, string $format_one, string $format_two): bool {
     $renderer = \Drupal::service('renderer');
-    $first = $renderer->renderInIsolation([
+    $first_element = [
       '#type' => 'processed_text',
       '#text' => $text,
       '#format' => $format_one,
-    ]);
-    $second = $renderer->renderInIsolation([
+    ];
+    $second_element = [
       '#type' => 'processed_text',
       '#text' => $text,
       '#format' => $format_two,
-    ]);
+    ];
 
-    return $first == $second;
+    return (string) $renderer->renderInIsolation($first_element) === (string) $renderer->renderInIsolation($second_element);
   }
 
   /**
