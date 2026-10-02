@@ -37,12 +37,14 @@ function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context)
 function sitenow_landing_pages_preprocess_page(&$variables) {
   $node = $variables['node'] ?? NULL;
 
-  // Hide site search, main navigation and breadcrumbs on landing pages.
+  // Hide site search, main navigation, breadcrumbs and footer menus on
+  // landing pages.
   if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
     unset(
       $variables['page']['search'],
       $variables['page']['primary_menu'],
       $variables['page']['breadcrumb'],
+      $variables['page']['footer_second'],
     );
 
     // Display the block IOWA logo without a link.
