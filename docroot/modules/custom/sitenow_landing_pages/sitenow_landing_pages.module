@@ -1,0 +1,136 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Landing Pages module.
+ */
+
+use Drupal\block\Entity\Block;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\layout_builder\OverridesSectionStorageInterface;
+use Drupal\node\NodeInterface;
+use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
+
+/**
+ * Determine whether a node is a landing page.
+ */
+function _sitenow_landing_pages_is_landing_page(NodeInterface $node): bool {
+  return $node->hasField('field_landing_page') && (bool) $node->get('field_landing_page')->value;
+}
+
+/**
+ * Implements hook_metatags_alter().
+ */
+function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context) {
+  $entity = $context['entity'] ?? NULL;
+
+  // Keep landing pages out of search engine results.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    $metatags['robots'] = 'noindex, follow';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function sitenow_landing_pages_preprocess_page(&$variables) {
+  $node = $variables['node'] ?? NULL;
+
+  // Hide site search, main navigation, breadcrumbs and footer menus on
+  // landing pages.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset(
+      $variables['page']['search'],
+      $variables['page']['primary_menu'],
+      $variables['page']['breadcrumb'],
+      $variables['page']['footer_second'],
+    );
+
+    // Display the block IOWA logo without a link.
+    $variables['logo_link'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function sitenow_landing_pages_block_access(Block $block, $operation, AccountInterface $account) {
+  if ($operation !== 'view' || $block->getPluginId() !== 'uiowa_alerts_block') {
+    return AccessResult::neutral();
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $result = AccessResult::neutral()->addCacheContexts(['route']);
+
+  // Hide Hawk Alerts and custom alerts on landing pages.
+  if ($node instanceof NodeInterface) {
+    $result->addCacheableDependency($node);
+
+    if (_sitenow_landing_pages_is_landing_page($node)) {
+      $result = AccessResult::forbidden()->addCacheContexts(['route'])->addCacheableDependency($node);
+    }
+  }
+
+  return $result;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for block templates.
+ */
+function sitenow_landing_pages_preprocess_block(&$variables) {
+  if ($variables['plugin_id'] !== 'system_breadcrumb_block') {
+    return;
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Hide breadcrumbs placed in landing page layouts.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset($variables['content']);
+  }
+}
+
+/**
+ * Implements hook_plugin_filter_TYPE__CONSUMER_alter().
+ */
+function sitenow_landing_pages_plugin_filter_block__layout_builder_alter(array &$definitions, array $extra) {
+  $storage = $extra['section_storage'] ?? NULL;
+
+  if (!$storage instanceof OverridesSectionStorageInterface) {
+    return;
+  }
+
+  $entity = $storage->getContextValue('entity');
+
+  // Landing pages can't place the main navigation block.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    unset($definitions['menu_block:main']);
+  }
+}
+
+/**
+ * Implements hook_simple_sitemap_links_alter().
+ */
+function sitenow_landing_pages_simple_sitemap_links_alter(array &$links, SimpleSitemapInterface $sitemap) {
+  $ids = \Drupal::entityQuery('node')
+    ->accessCheck(FALSE)
+    ->condition('type', 'page')
+    ->condition('field_landing_page', 1)
+    ->execute();
+
+  if (!$ids) {
+    return;
+  }
+
+  // Entity queries are keyed by revision ID, so key by node ID instead.
+  $ids = array_flip($ids);
+
+  // Remove landing pages from the sitemap.
+  foreach ($links as $key => $link) {
+    $info = $link['meta']['entity_info'] ?? NULL;
+    if ($info && $info['entity_type'] === 'node' && isset($ids[$info['id']])) {
+      unset($links[$key]);
+    }
+  }
+}
