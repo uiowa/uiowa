@@ -44,6 +44,9 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
       $variables['page']['primary_menu'],
       $variables['page']['breadcrumb'],
     );
+
+    // Display the block IOWA logo without a link.
+    $variables['logo_link'] = FALSE;
   }
 }
 
