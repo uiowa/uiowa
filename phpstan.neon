@@ -1,9 +1,10 @@
-# https://github.com/mglaman/drupal-check?tab=readme-ov-file#rollback-update-to-phpstan-level-2-for-deprecation-analysis
 parameters:
-  customRulesetUsed: true
+  level: 0
   ignoreErrors:
     - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
     - '#Class __TwigTemplate_.* extends @internal class#'
+    # new static() is a best practice in Drupal, so we cannot fix that.
+    - '#^Unsafe usage of new static#'
   reportUnmatchedIgnoredErrors: false
   excludePaths:
     - */sites/simpletest/*

@@ -7,16 +7,16 @@ dependencies:
 id: grant
 label: Grant
 type: 'canonical_entities:node'
-pattern: 'grants/[node:title]'
+pattern: '/grants/[node:title]'
 selection_criteria:
   01eb9faa-7b76-4b4a-abd2-020004708acc:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 01eb9faa-7b76-4b4a-abd2-020004708acc
     context_mapping:
       node: node
     bundles:
       grant: grant
+    uuid: 01eb9faa-7b76-4b4a-abd2-020004708acc
 selection_logic: and
 weight: -5
 relationships: {  }

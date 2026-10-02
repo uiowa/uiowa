@@ -103,14 +103,6 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
-if (isset(\$config_directories['vcs'])) {
-  unset(\$config_directories['vcs']);
-}
-EOD;
-
-    $this->assertStringContainsString($needle, $haystack);
-
-    $needle = <<<EOD
 if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }

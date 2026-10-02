@@ -7,16 +7,16 @@ dependencies:
 id: venue
 label: Venue
 type: 'canonical_entities:node'
-pattern: 'venue/[node:title]'
+pattern: '/venue/[node:title]'
 selection_criteria:
   fc4159d6-32c0-4452-830a-822430af69d9:
     id: 'entity_bundle:node'
     negate: false
-    uuid: fc4159d6-32c0-4452-830a-822430af69d9
     context_mapping:
       node: node
     bundles:
       venue: venue
+    uuid: fc4159d6-32c0-4452-830a-822430af69d9
 selection_logic: and
 weight: -5
 relationships: {  }

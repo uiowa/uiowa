@@ -8,9 +8,8 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
-use Consolidation\SiteProcess\ProcessManagerAwareTrait;
 use Drush\Boot\DrupalBootLevels;
-use Drush\Drupal\Commands\sql\SanitizePluginInterface;
+use Drush\Commands\sql\sanitize\SanitizePluginInterface;
 use Drush\Drush;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -19,7 +18,6 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface, SanitizePluginInterface {
   use SiteAliasManagerAwareTrait;
-  use ProcessManagerAwareTrait;
 
   /**
    * Configuration that should be sanitized.

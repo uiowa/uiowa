@@ -7,16 +7,16 @@ dependencies:
 id: writer_bio
 label: 'Writer Bio'
 type: 'canonical_entities:node'
-pattern: 'writers/[node:field_writer_bio_session_status:entity]/[node:title]'
+pattern: '/writers/[node:field_writer_bio_session_status:entity]/[node:title]'
 selection_criteria:
   894e513d-0ecf-486d-9dd4-6cec5c916bf7:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 894e513d-0ecf-486d-9dd4-6cec5c916bf7
     context_mapping:
       node: node
     bundles:
       writer_bio: writer_bio
+    uuid: 894e513d-0ecf-486d-9dd4-6cec5c916bf7
 selection_logic: and
 weight: -5
 relationships: {  }

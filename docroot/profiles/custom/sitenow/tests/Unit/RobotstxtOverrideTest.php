@@ -36,7 +36,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
 
     $this->requestStack->expects($this->any())
       ->method('getCurrentRequest')
-      ->will($this->returnValue($this->request));
+      ->willReturn($this->request);
   }
 
   /**
@@ -47,7 +47,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   public function testConfigByInternalDomain($host) {
     $this->request->expects($this->any())
       ->method('getHost')
-      ->will($this->returnValue($host));
+      ->willReturn($host);
 
     $sut = new RobotstxtOverride($this->requestStack);
 
@@ -58,7 +58,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   /**
    * DataProvider for testConfigByInternalDomain().
    */
-  public function providerConfigByInternalDomain() {
+  public static function providerConfigByInternalDomain() {
     return [
       [
         'foo.uiowa.ddev.site',
@@ -83,7 +83,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   public function testConfigByProductionDomain($host) {
     $this->request->expects($this->any())
       ->method('getHost')
-      ->will($this->returnValue($host));
+      ->willReturn($host);
 
     $sut = new RobotstxtOverride($this->requestStack);
 
@@ -94,7 +94,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   /**
    * DataProvider for testConfigByEnv().
    */
-  public function providerConfigByProductionDomain() {
+  public static function providerConfigByProductionDomain() {
     return [
       [
         'foo.uiowa.edu',

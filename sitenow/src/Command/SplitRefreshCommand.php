@@ -93,6 +93,15 @@ class SplitRefreshCommand extends Command implements SignalableCommandInterface 
   private array $activation = [];
 
   /**
+   * Config that still differs from active config after each target's export.
+   *
+   * NULL for a target whose config status could not be read.
+   *
+   * @var array<string, string[]|null>
+   */
+  private array $unreproduced = [];
+
+  /**
    * Per-target results, keyed by target label then stage.
    *
    * @var array<string, array<string, string>>
@@ -119,21 +128,22 @@ class SplitRefreshCommand extends Command implements SignalableCommandInterface 
       ->addOption('split', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated feature split IDs to refresh (e.g. event,thesis_defense).', '')
       ->addOption('sites', NULL, InputOption::VALUE_REQUIRED, 'Comma-separated hosts whose site splits to refresh.', '')
       ->addOption('base', NULL, InputOption::VALUE_REQUIRED, 'The branch whose code matches production.', 'main')
-      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Remote source environment: dev, test, or prod.', 'prod')
+      ->addOption('env', NULL, InputOption::VALUE_REQUIRED, 'Remote source environment for site splits: dev, test, or prod.', 'prod')
       ->addOption('concurrency', 'j', InputOption::VALUE_REQUIRED, 'Number of site operations to run in parallel.', '4')
       ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Skip the confirmation prompt.')
       ->setHelp(<<<'HELP'
-Syncs remote databases (prod by default) and re-exports config splits from
-them, so the exports reflect what running this branch's updates against those
-databases produces. Run it on the host shell, on the branch that will receive the
+Syncs remote databases (prod by default) and re-exports site splits from them,
+so the exports reflect what running this branch's updates against those
+databases produces. Feature splits are exported from a fresh local install of
+the default site. Run it on the host shell, on the branch that will receive the
 exports, with no uncommitted changes to tracked files.
 
 With no --split or --sites, every feature split and every site split is
 refreshed. Each target overwrites a local database: the default site's for
 feature splits, the host's own for site splits.
 
-When the branch has commits the base branch lacks, databases are synced and
-feature splits activated with the base branch checked out, then updated and
+When the branch has commits the base branch lacks, databases are synced or
+installed and feature splits activated with the base branch checked out, then updated and
 exported with this branch checked out. A feature split the base branch does
 not define is activated after the update instead. The command switches branches and
 runs composer install for each phase, and returns to this branch even if it
@@ -267,6 +277,7 @@ HELP);
     $this->ensureLocalSettings($hosts);
 
     try {
+      $this->removeIgnoredConfig();
       // The sync boots each local site before copying over it, and a database
       // a newer branch has updated may not boot on the base branch's code.
       $this->emptyDatabases($hosts);
@@ -303,9 +314,9 @@ HELP);
   /**
    * Sync databases and prepare the feature split snapshots.
    *
-   * Every host with a site split is synced. The default site is synced once,
-   * dumped, and each feature split is activated on a fresh copy of that dump
-   * and snapshotted.
+   * Every host with a site split is synced. The default site is installed
+   * once from the default config, dumped, and each feature split is activated
+   * on a fresh copy of that dump and snapshotted.
    *
    * @param array<string, string> $features
    *   Feature split folders keyed by ID.
@@ -319,21 +330,26 @@ HELP);
    *   The base branch checked out, or NULL when running without switching.
    */
   private function prepare(array $features, array $sites, string $env, int $concurrency, ?string $base): void {
-    $this->io->section('Sync databases');
-    $hosts = [...array_keys($sites), ...($features ? ['default'] : [])];
-    $jobs = [];
-    foreach ($hosts as $host) {
-      $jobs[$host] = $this->snJob(['site:sync', $host, "--env={$env}", '--no-update', '--yes']);
-    }
-    $synced = $this->pool($jobs, 'sync', self::SYNC_TIMEOUT, $concurrency, $this->appGroups($hosts), retries: 1);
-    foreach (array_keys($sites) as $host) {
-      $this->results[$host]['sync'] = $synced[$host] ? 'ok' : 'failed';
+    if ($sites) {
+      $this->io->section('Sync databases');
+      $hosts = array_keys($sites);
+      $jobs = [];
+      foreach ($hosts as $host) {
+        $jobs[$host] = $this->snJob(['site:sync', $host, "--env={$env}", '--no-update', '--yes']);
+      }
+      $synced = $this->pool($jobs, 'sync', self::SYNC_TIMEOUT, $concurrency, $this->appGroups($hosts), retries: 1);
+      foreach ($hosts as $host) {
+        $this->results[$host]['sync'] = $synced[$host]['ok'] ? 'ok' : 'failed';
+      }
     }
 
     if (!$features) {
       return;
     }
-    if (!$synced['default']) {
+    $this->io->section('Install the default site');
+    $installed = $this->runLogged($this->snJob(['site:install', 'default', '--reinstall', '--force']), 'install-default');
+    $this->progress($installed, 'install', 'default');
+    if (!$installed) {
       foreach (array_keys($features) as $id) {
         $this->results["{$id} (feature)"]['sync'] = 'failed';
       }
@@ -343,17 +359,18 @@ HELP);
     $this->io->section('Activate feature splits');
     $db = self::CONTAINER_ROOT . "/{$this->runDir}/db";
     $this->ddevExec(['mkdir', '-p', $db]);
-    if (!$this->step('default', ['sql:dump', '--gzip', "--result-file={$db}/base.sql"], 'dump-base')) {
-      throw new \RuntimeException('Could not dump the synced default site. See the dump-base log.');
+    // sql:query decompresses a .gz input in place, and this dump is loaded repeatedly.
+    if (!$this->step('default', ['sql:dump', "--result-file={$db}/base.sql"], 'dump-base')) {
+      throw new \RuntimeException('Could not dump the installed default site. See the dump-base log.');
     }
     foreach (array_keys($features) as $id) {
       $label = "{$id} (feature)";
-      $this->results[$label]['sync'] = 'ok';
+      $this->results[$label]['sync'] = 'installed';
       if ($base !== NULL && !$this->definedOn($base, $this->activation[$id])) {
         $this->results[$label]['activate'] = 'after update';
         continue;
       }
-      $ok = $this->loadDatabase("{$db}/base.sql.gz", "activate-{$id}");
+      $ok = $this->loadDatabase("{$db}/base.sql", "activate-{$id}");
       foreach ($this->activation[$id] as $split) {
         $ok = $ok && $this->step('default', ['config-split:activate', $split, '--yes'], "activate-{$id}");
       }
@@ -387,14 +404,21 @@ HELP);
       $updated = $this->pool($jobs, 'update', self::UPDATE_TIMEOUT, $concurrency, [], self::UPDATED);
       $jobs = [];
       foreach ($ready as $host) {
-        $this->results[$host]['update'] = $updated[$host] ? 'ok' : 'failed';
-        if ($updated[$host]) {
+        $this->results[$host]['update'] = $updated[$host]['ok'] ? 'ok' : 'failed';
+        if ($updated[$host]['ok']) {
           $jobs[$host] = $this->drushJob($host, ['config-split:export', 'site', '--yes']);
         }
       }
       $exported = $this->pool($jobs, 'export', self::UPDATE_TIMEOUT, $concurrency);
-      foreach (array_keys($jobs) as $host) {
-        $this->results[$host]['export'] = $exported[$host] ? 'ok' : 'failed';
+      $jobs = [];
+      foreach (array_keys($exported) as $host) {
+        $this->results[$host]['export'] = $exported[$host]['ok'] ? 'ok' : 'failed';
+        if ($exported[$host]['ok']) {
+          $jobs[$host] = $this->drushJob($host, ['config:status', '--format=json']);
+        }
+      }
+      foreach ($this->pool($jobs, 'status', self::UPDATE_TIMEOUT, $concurrency) as $host => $status) {
+        $this->unreproduced[$host] = $status['ok'] ? $this->differingConfig($status['output']) : NULL;
       }
     }
 
@@ -408,7 +432,7 @@ HELP);
       foreach ($ready as $id) {
         $label = "{$id} (feature)";
         $deferred = $this->results[$label]['activate'] === 'after update';
-        $ok = $this->loadDatabase($deferred ? "{$db}/base.sql.gz" : "{$db}/{$id}.sql.gz", "update-{$id}");
+        $ok = $this->loadDatabase($deferred ? "{$db}/base.sql" : "{$db}/{$id}.sql.gz", "update-{$id}");
         $ok = $ok && $this->runLogged($this->snJob(['site:update', 'default']), "update-{$id}", self::UPDATED);
         foreach ($deferred ? $this->activation[$id] : [] as $split) {
           $ok = $ok && $this->step('default', ['config-split:activate', $split, '--yes'], "update-{$id}");
@@ -420,6 +444,11 @@ HELP);
         }
         $ok = $this->step('default', ['config-split:export', $id, '--yes'], "export-{$id}");
         $this->results[$label]['export'] = $ok ? 'ok' : 'failed';
+        if ($ok) {
+          $status = new Process($this->drushJob('default', ['config:status', '--format=json']), $this->repoRoot);
+          $status->setTimeout(self::UPDATE_TIMEOUT)->run();
+          $this->unreproduced[$label] = $status->isSuccessful() ? $this->differingConfig($status->getOutput()) : NULL;
+        }
         $this->progress($ok, 'export', $id);
       }
     }
@@ -442,15 +471,17 @@ HELP);
     $all_ok = TRUE;
     foreach ($this->results as $label => $stages) {
       $all_ok = $all_ok && ($stages['export'] ?? '') === 'ok';
+      $unreproduced = array_key_exists($label, $this->unreproduced) ? $this->unreproduced[$label] : [];
       $rows[] = [
         $label,
         $stages['sync'] ?? '-',
         $stages['activate'] ?? '-',
         $stages['update'] ?? '-',
         $stages['export'] ?? '-',
+        $unreproduced === NULL ? 'unknown' : (count($unreproduced) ?: '-'),
       ];
     }
-    $this->io->table(['Target', 'Sync', 'Activate', 'Update', 'Export'], $rows);
+    $this->io->table(['Target', 'Sync', 'Activate', 'Update', 'Export', 'Unreproduced'], $rows);
 
     $folders = [];
     foreach ($features as $id => $folder) {
@@ -482,17 +513,33 @@ HELP);
     if (!$changes) {
       $this->io->writeln('No config changes.');
     }
+    else {
+      $this->io->writeln('Flagged files are likely rejects. The rest still need review.');
+    }
+    $orphans = array_flip($this->orphanPatches($changes));
     ksort($grouped);
     foreach ($grouped as $owner => $paths) {
+      $unreproduced = $this->unreproduced[$owner] ?? [];
+      $lines = [];
+      foreach ($paths as $path) {
+        $flags = [];
+        if (in_array($this->configName($path), $unreproduced ?? [], TRUE)) {
+          $flags[] = 'does not reproduce active config';
+        }
+        if (isset($orphans[$path])) {
+          $flags[] = 'patches config not tracked in config/';
+        }
+        $lines[] = $flags ? "{$path}  <comment>[" . implode('; ', $flags) . ']</comment>' : $path;
+      }
       $this->io->writeln("<info>{$owner}</info>");
-      $this->io->listing($paths);
+      $this->io->listing($lines);
+      $unchanged = array_diff($unreproduced ?? [], array_map([$this, 'configName'], $paths));
+      if ($unchanged) {
+        $this->io->writeln('  Still differs from active config, with no file changed: ' . implode(', ', $unchanged));
+      }
     }
     if ($outside) {
       $this->io->warning("Changed outside the refreshed splits' folders:\n  " . implode("\n  ", $outside));
-    }
-    $orphans = $this->orphanPatches($changes);
-    if ($orphans) {
-      $this->io->warning("Patches for config that is not tracked anywhere in config/. These usually carry one site's local config into a shared split:\n  " . implode("\n  ", $orphans));
     }
 
     $this->io->writeln("Logs: {$this->runDir}/logs");
@@ -541,9 +588,26 @@ HELP);
     }
     $this->switched = $ref !== $this->branch;
     $this->syncFiles();
-    if (!$this->runLogged(['ddev', 'composer', 'install', '--no-interaction', '--no-progress'], "composer-{$ref}")) {
+    if (!$this->runLogged(['ddev', 'exec', 'composer', 'install', '--no-interaction', '--no-progress'], "composer-{$ref}")) {
       throw new \RuntimeException("composer install failed on {$ref}. See the composer-{$ref} log.");
     }
+  }
+
+  /**
+   * Delete gitignored config files from the split folders.
+   */
+  private function removeIgnoredConfig(): void {
+    // Import reads every file in a split folder, ignored or not.
+    $clean = $this->git(['clean', '-fX', '--', ':(glob)config/features/**/*.yml', ':(glob)config/sites/**/*.yml']);
+    if (!$clean->isSuccessful()) {
+      throw new \RuntimeException("git clean failed:\n" . $clean->getErrorOutput());
+    }
+    $removed = array_filter(explode("\n", trim($clean->getOutput())));
+    if (!$removed) {
+      return;
+    }
+    $this->io->section('Remove ignored split files');
+    $this->io->listing(array_map(fn ($line) => substr($line, strlen('Removing ')), $removed));
     $this->syncFiles();
   }
 
@@ -608,8 +672,8 @@ HELP);
    *   How many times to re-run a job that exits nonzero, even with an exit
    *   code in $success.
    *
-   * @return array<string, bool>
-   *   Whether each job succeeded, keyed by target.
+   * @return array<string, array{ok: bool, output: string}>
+   *   Whether each job succeeded, and its output, keyed by target.
    */
   private function pool(array $jobs, string $stage, int $timeout, int $concurrency, array $groups = [], array $success = [Command::SUCCESS], int $retries = 0): array {
     if (!$jobs) {
@@ -622,7 +686,10 @@ HELP);
         $this->progress(in_array($result['exit'], $success, TRUE), $stage, $key, "{$done}/{$total}");
       }
     });
-    return array_map(fn (array $result) => in_array($result['exit'], $success, TRUE), $results);
+    return array_map(fn (array $result) => [
+      'ok' => in_array($result['exit'], $success, TRUE),
+      'output' => $result['output'],
+    ], $results);
   }
 
   /**
@@ -829,6 +896,33 @@ HELP);
       $paths[] = str_contains($path, ' -> ') ? explode(' -> ', $path)[1] : $path;
     }
     return $paths;
+  }
+
+  /**
+   * List the config config:status reports as differing.
+   *
+   * @param string $output
+   *   The JSON output of drush config:status --format=json.
+   *
+   * @return string[]
+   *   Config names.
+   */
+  private function differingConfig(string $output): array {
+    return array_keys(json_decode($output, TRUE) ?: []);
+  }
+
+  /**
+   * Get the config name a file under config/ stores.
+   *
+   * @param string $path
+   *   The file path.
+   *
+   * @return string
+   *   The config name. For a split patch, the name of the config it patches.
+   */
+  private function configName(string $path): string {
+    $name = basename($path, '.yml');
+    return str_starts_with($name, 'config_split.patch.') ? substr($name, strlen('config_split.patch.')) : $name;
   }
 
   /**
