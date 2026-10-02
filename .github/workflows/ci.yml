@@ -301,7 +301,6 @@ jobs:
   percy:
     name: Percy Visual Regression
     runs-on: ubuntu-22.04
-    needs: frontend
     if: github.event_name == 'pull_request'
 
     services:
@@ -355,13 +354,11 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'yarn'
 
-      - name: Install root dependencies
+      - name: Install dependencies
         run: yarn install --production --ignore-optional --frozen-lockfile --non-interactive
 
-      - name: Download frontend assets
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-assets
+      - name: Build frontend assets
+        run: yarn workspaces run build
 
       - name: Setup test environment and web server
         run: scripts/ci/setup.sh
