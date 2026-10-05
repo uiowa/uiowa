@@ -17,10 +17,16 @@ echo -e "${GREEN}=== Percy Visual Regression ===${NC}\n"
 # Ensure we're in the project root
 cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
 
-# PERCY_TOKEN authenticates with the Percy project. Skip gracefully when it's
-# not available (e.g. local runs without a token, or PRs from forks) instead
-# of failing the whole pipeline.
+# PERCY_TOKEN authenticates with the Percy project. In GitHub Actions, a
+# missing token is a misconfiguration and must fail the build rather than
+# report success. Locally, skip gracefully since a dev may not have a
+# token handy.
 if [ -z "${PERCY_TOKEN:-}" ]; then
+  if [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
+    echo -e "${RED}PERCY_TOKEN not set. Add it as a repo secret to run visual regression tests.${NC}" >&2
+    exit 1
+  fi
+
   echo -e "${YELLOW}PERCY_TOKEN not set; skipping Percy snapshot.${NC}"
   echo "To run locally, export a token from https://percy.io and re-run:"
   echo "  PERCY_TOKEN=<token> ddev ci percy"
