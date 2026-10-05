@@ -4132,12 +4132,6 @@ $sites['educationirrc.dev.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
 $sites['educationirrc.stage.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
 $sites['educationirrc.prod.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
 
-// Directory aliases for environmentalsymposium2023.conference.uiowa.edu.
-$sites['conferenceenvironmentalsymposium2023.uiowa.ddev.site'] = 'environmentalsymposium2023.conference.uiowa.edu';
-$sites['conferenceenvironmentalsymposium2023.dev.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
-$sites['conferenceenvironmentalsymposium2023.stage.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
-$sites['conferenceenvironmentalsymposium2023.prod.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
-
 // Directory aliases for buchakjian.lab.uiowa.edu.
 $sites['labbuchakjian.uiowa.ddev.site'] = 'buchakjian.lab.uiowa.edu';
 $sites['labbuchakjian.dev.drupal.uiowa.edu'] = 'buchakjian.lab.uiowa.edu';
