@@ -112,8 +112,11 @@ export BROWSERTEST_OUTPUT_DIRECTORY="${BROWSERTEST_OUTPUT_DIRECTORY:-/tmp/browse
 export SYMFONY_DEPRECATIONS_HELPER="${SYMFONY_DEPRECATIONS_HELPER:-disabled}"
 
 # The CI services provide Selenium with Chrome at the conventional WebDriver
-# endpoint. Local DDEV uses its own ChromeDriver configuration instead.
-if [ "$ENV" = "travis" ] || [ "$ENV" = "github" ]; then
+# endpoint. Local DDEV uses its own ChromeDriver configuration instead. Only
+# wait for it when the caller actually started a Selenium container (e.g.
+# the PHPUnit job) -- jobs with no FunctionalJavascript tests (e.g. Percy)
+# set NEEDS_WEBDRIVER=false and skip this entirely.
+if [ "${NEEDS_WEBDRIVER:-true}" = "true" ] && { [ "$ENV" = "travis" ] || [ "$ENV" = "github" ]; }; then
   export MINK_DRIVER_ARGS_WEBDRIVER='["chrome", {"browserName":"chrome","goog:chromeOptions":{"w3c":true,"args":["--headless=new","--disable-gpu","--no-sandbox"]}}, "http://127.0.0.1:4444/wd/hub"]'
 
   echo "Waiting for Selenium WebDriver..."
