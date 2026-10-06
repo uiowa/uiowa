@@ -370,6 +370,16 @@ jobs:
       - name: Debug - inspect pages Percy will snapshot
         run: |
           source ./tmp/ci-env.sh
+          echo "=== Env vars this step sees ==="
+          echo "SIMPLETEST_DB=$SIMPLETEST_DB"
+          echo "pwd=$(pwd)"
+          echo
+          echo "=== What settings.php actually resolves \$databases to ==="
+          vendor/bin/drush --root=docroot php:eval 'var_export($GLOBALS["databases"] ?? "NOT SET");' 2>&1 || true
+          echo
+          echo "=== Tables that actually exist in that connection ==="
+          vendor/bin/drush --root=docroot sql-query "SHOW TABLES" 2>&1 || true
+          echo
           echo "=== Drush status ==="
           vendor/bin/drush --root=docroot status --fields=drupal-version,db-status,bootstrap,theme,default-theme || true
           echo
