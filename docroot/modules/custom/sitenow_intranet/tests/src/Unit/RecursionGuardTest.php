@@ -4,7 +4,6 @@ namespace Drupal\Tests\sitenow_intranet\Unit;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceEntityFormatter;
 use Drupal\Tests\UnitTestCase;
-use Drupal\media\Plugin\Filter\MediaEmbed;
 use Drupal\search_api\Event\GatheringPluginInfoEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\search_api\Plugin\search_api\processor\RenderedItem;
@@ -22,13 +21,17 @@ use Drupal\sitenow_intranet\Search\ScopedRenderedItem;
 class RecursionGuardTest extends UnitTestCase {
 
   /**
+   * A nonzero value used to verify that counters remain set until reset.
+   */
+  private const COUNTER_VALUE = 1;
+
+  /**
    * The guards, keyed by the class holding them.
    *
    * @var string[]
    */
   protected const GUARDS = [
     EntityReferenceEntityFormatter::class => 'recursiveRenderDepth',
-    MediaEmbed::class => 'recursiveRenderDepth',
   ];
 
   /**
@@ -41,10 +44,10 @@ class RecursionGuardTest extends UnitTestCase {
   }
 
   /**
-   * Test that both counters are emptied.
+   * Test that every counter is emptied.
    */
   public function testResetEmptiesEveryGuard() {
-    $this->setGuards(['nodepersonfield_image216media1041' => 21]);
+    $this->setGuards(['nodepersonfield_image216media1041' => static::COUNTER_VALUE]);
 
     RecursionGuard::reset();
 
@@ -72,7 +75,7 @@ class RecursionGuardTest extends UnitTestCase {
    * climb, so scoping them means clearing them.
    */
   public function testCountsAreNotSelfClearing() {
-    $depth = EntityReferenceEntityFormatter::RECURSIVE_RENDER_LIMIT - 1;
+    $depth = static::COUNTER_VALUE;
     $this->setGuards(['nodepersonfield_image216media1041' => $depth]);
 
     foreach (array_keys(static::GUARDS) as $class) {

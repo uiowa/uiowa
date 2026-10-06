@@ -36,7 +36,7 @@ class SimpleSitemapOverrideTest extends UnitTestCase {
 
     $this->requestStack->expects($this->any())
       ->method('getCurrentRequest')
-      ->will($this->returnValue($this->request));
+      ->willReturn($this->request);
   }
 
   /**
@@ -47,7 +47,7 @@ class SimpleSitemapOverrideTest extends UnitTestCase {
   public function testConfigByEnv($host) {
     $this->request->expects($this->any())
       ->method('getHost')
-      ->will($this->returnValue($host));
+      ->willReturn($host);
 
     $sut = new SimpleSitemapOverride($this->requestStack);
 
@@ -58,7 +58,7 @@ class SimpleSitemapOverrideTest extends UnitTestCase {
   /**
    * DataProvider for testConfigByEnv().
    */
-  public function providerConfigByEnv() {
+  public static function providerConfigByEnv() {
     return [
       [
         'www.foo.com',

@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_pages\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -56,6 +57,8 @@ class SettingsForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
+   *   The typed config manager.
    * @param \Drupal\pathauto\AliasCleanerInterface $pathauto_alias_cleaner
    *   The alias cleaner.
    * @param \Drupal\path_alias\AliasRepositoryInterface $aliasRepository
@@ -65,8 +68,8 @@ class SettingsForm extends ConfigFormBase {
    * @param \Drupal\pathauto\PathautoGenerator $pathAutoGenerator
    *   The PathautoGenerator service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
-    parent::__construct($config_factory);
+  public function __construct(ConfigFactoryInterface $config_factory, TypedConfigManagerInterface $typed_config_manager, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
+    parent::__construct($config_factory, $typed_config_manager);
     $this->aliasCleaner = $pathauto_alias_cleaner;
     $this->aliasRepository = $aliasRepository;
     $this->entityTypeManager = $entityTypeManager;
@@ -79,6 +82,7 @@ class SettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('pathauto.alias_cleaner'),
       $container->get('path_alias.repository'),
       $container->get('entity_type.manager'),

@@ -9,6 +9,7 @@ use Drupal\Core\Session\UserSession;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\symfony_mailer\EmailFactoryInterface;
+use Drupal\views\Views;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -50,7 +51,7 @@ class BrandCoreCommands extends DrushCommands {
   public function lockupDigest($options = ['msg' => FALSE]) {
     // Switch to the admin user to get hidden view result.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
-    $view = views_get_view_result('lockup_moderation', 'block_review');
+    $view = Views::getViewResult('lockup_moderation', 'block_review');
 
     if (!empty($view)) {
       $results = count($view);

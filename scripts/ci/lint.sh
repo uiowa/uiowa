@@ -156,7 +156,7 @@ fi
 echo "Configuration: phpcs.xml"
 echo ""
 
-if vendor/bin/phpcs --standard=phpcs.xml; then
+if vendor/bin/phpcs --standard=phpcs.xml --runtime-set testVersion 8.3-; then
   echo -e "\n${GREEN}✓ PHPCS passed${NC}\n"
 else
   echo -e "\n${RED}✗ PHPCS failed${NC}"

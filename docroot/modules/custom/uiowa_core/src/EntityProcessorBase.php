@@ -41,6 +41,13 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
   protected ?array $entityIds;
 
   /**
+   * The source records, cached by getData() implementations.
+   *
+   * @var array|null
+   */
+  protected $data;
+
+  /**
    * The number of created entities.
    *
    * @var int
@@ -243,8 +250,11 @@ abstract class EntityProcessorBase implements EntityProcessorInterface {
    *   The entity.
    * @param mixed $record
    *   The source record.
+   *
+   * @return bool
+   *   TRUE if the entity changed and needs saving.
    */
-  protected function processEntity(ContentEntityInterface &$entity, $record): bool {}
+  abstract protected function processEntity(ContentEntityInterface &$entity, $record): bool;
 
   /**
    * Get created entities count.
