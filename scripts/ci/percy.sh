@@ -66,7 +66,7 @@ fi
 PERCY_LOG="$(mktemp)"
 trap 'rm -f "$PERCY_LOG"' EXIT
 
-if npx percy snapshot --base-url "$SIMPLETEST_BASE_URL" snapshots.yml | tee "$PERCY_LOG"; then
+if npx percy snapshot --base-url "$SIMPLETEST_BASE_URL" snapshots.yml 2>&1 | tee "$PERCY_LOG"; then
   if grep -qi "Build not created" "$PERCY_LOG"; then
     echo -e "\n${RED}✗ Percy snapshot failed: no build was created (all snapshots errored)${NC}"
     exit 1

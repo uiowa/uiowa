@@ -370,6 +370,17 @@ jobs:
       - name: Debug - inspect pages Percy will snapshot
         run: |
           source ./tmp/ci-env.sh
+          echo "=== Drush status ==="
+          vendor/bin/drush --root=docroot status --fields=drupal-version,db-status,bootstrap,theme,default-theme || true
+          echo
+          echo "=== Content counts ==="
+          vendor/bin/drush --root=docroot sql-query "SELECT COUNT(*) AS nodes FROM node_field_data" || true
+          vendor/bin/drush --root=docroot sql-query "SELECT COUNT(*) AS block_content FROM block_content_field_data" || true
+          vendor/bin/drush --root=docroot sql-query "SELECT COUNT(*) AS path_aliases FROM path_alias" || true
+          echo
+          echo "=== Recent watchdog errors (if dblog enabled) ==="
+          vendor/bin/drush --root=docroot watchdog:show --count=30 --severity=Error 2>&1 || true
+          echo
           for path in / /about /people /people/herky-hawk /news /news/2019/09/demo-article; do
             url="${SIMPLETEST_BASE_URL}${path}"
             echo "=== $url ==="
