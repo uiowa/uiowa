@@ -27,6 +27,7 @@ settings:
   default_form_submit_back: false
   default_form_details_toggle: false
   default_form_file_limit: ''
+  default_form_file_limit_message: 'Whoa there! This form''s file upload quota of %quota has been exceeded. Please remove some files.'
   default_wizard_prev_button_label: '< Previous Page'
   default_wizard_next_button_label: 'Next Page >'
   default_wizard_start_label: Start
@@ -246,15 +247,9 @@ export:
   header_prefix: true
   header_prefix_key_delimiter: __
   header_prefix_label_delimiter: ': '
-  entity_reference_items:
-    - id
-    - title
-    - url
   options_single_format: compact
   options_multiple_format: compact
   options_item_format: label
-  likert_answers_format: label
-  signature_format: status
   composite_element_item_format: label
   excluded_exporters:
     yaml: yaml
@@ -373,7 +368,6 @@ libraries:
 requirements:
   cdn: true
   clientside_validation: true
-  bootstrap: true
   spam: true
 third_party_settings:
   captcha:

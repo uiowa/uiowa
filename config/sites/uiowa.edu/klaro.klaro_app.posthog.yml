@@ -20,6 +20,9 @@ info_url: 'https://posthog.com/docs/privacy/data-collection'
 privacy_policy_url: 'https://posthog.com/privacy'
 javascripts: {  }
 callback_code: "window.posthog.set_config({ cookieless_mode: 'on_reject' })\r\nif (consent === true) {\r\n  window.posthog.opt_in_capturing()\r\n}\r\nif (consent === false) {\r\n  window.posthog.opt_out_capturing()\r\n}\r\n"
+on_init: ''
+on_accept: ''
+on_decline: ''
 wrapper_identifier: {  }
 attachments: {  }
 weight: 0

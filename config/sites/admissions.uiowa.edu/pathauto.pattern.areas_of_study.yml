@@ -7,16 +7,16 @@ dependencies:
 id: areas_of_study
 label: 'Areas of Study'
 type: 'canonical_entities:node'
-pattern: 'academics/[node:title]'
+pattern: '/academics/[node:title]'
 selection_criteria:
   54f05111-8938-48c9-8c4f-ed10afcf4603:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 54f05111-8938-48c9-8c4f-ed10afcf4603
     context_mapping:
       node: node
     bundles:
       area_of_study: area_of_study
+    uuid: 54f05111-8938-48c9-8c4f-ed10afcf4603
 selection_logic: and
 weight: -5
 relationships: {  }

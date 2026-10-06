@@ -96,7 +96,6 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     if ($config->get('custom_alert.display')) {
       $message = trim($config->get('custom_alert.message'));
-      $filtered_message = check_markup($message, 'minimal');
       $level = $config->get('custom_alert.level');
 
       // Map alert level to icon.
@@ -150,7 +149,9 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
               'class' => 'hawk-alert-message',
             ],
             'message' => [
-              '#markup' => $filtered_message,
+              '#type' => 'processed_text',
+              '#text' => $message,
+              '#format' => 'minimal',
             ],
           ],
         ],

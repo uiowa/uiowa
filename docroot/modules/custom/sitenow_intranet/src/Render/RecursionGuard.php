@@ -3,7 +3,6 @@
 namespace Drupal\sitenow_intranet\Render;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceEntityFormatter;
-use Drupal\media\Plugin\Filter\MediaEmbed;
 
 /**
  * Clears the render recursion guards core keeps in static properties.
@@ -28,7 +27,6 @@ class RecursionGuard {
    */
   protected const GUARDS = [
     EntityReferenceEntityFormatter::class => 'recursiveRenderDepth',
-    MediaEmbed::class => 'recursiveRenderDepth',
   ];
 
   /**
@@ -40,7 +38,7 @@ class RecursionGuard {
    */
   public static function reset(): void {
     foreach (static::GUARDS as $class => $name) {
-      if (!class_exists($class)) {
+      if (!class_exists($class) || !property_exists($class, $name)) {
         continue;
       }
 

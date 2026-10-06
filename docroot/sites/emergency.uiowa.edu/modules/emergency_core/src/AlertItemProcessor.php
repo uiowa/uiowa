@@ -26,7 +26,7 @@ class AlertItemProcessor extends EntityItemProcessorBase {
     foreach (static::$fieldMap as $to => $from) {
       if (!$entity->hasField($to)) {
         // Add a log message that the field being mapped to doesn't exist.
-        static::getLogger('emergency_core')
+        \Drupal::logger('emergency_core')
           ->notice('While processing the @type, a field was mapped that does not exist: @field_name', [
             '@type' => !is_null($entity->bundle()) ? "{$entity->bundle()} {$entity->getEntityType()}" : $entity->getEntityType(),
             '@field_name' => $to,

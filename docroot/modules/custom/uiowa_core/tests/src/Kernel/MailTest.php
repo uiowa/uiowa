@@ -100,7 +100,7 @@ class MailTest extends KernelTestBase {
    * @return array
    *   Array of arguments.
    */
-  public function providerO365() {
+  public static function providerO365() {
     return [
       [
         'someone@external.com',

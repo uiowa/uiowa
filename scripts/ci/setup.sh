@@ -111,6 +111,28 @@ fi
 export BROWSERTEST_OUTPUT_DIRECTORY="${BROWSERTEST_OUTPUT_DIRECTORY:-/tmp/browsertest_output}"
 export SYMFONY_DEPRECATIONS_HELPER="${SYMFONY_DEPRECATIONS_HELPER:-disabled}"
 
+# The CI services provide Selenium with Chrome at the conventional WebDriver
+# endpoint. Local DDEV uses its own ChromeDriver configuration instead.
+if [ "$ENV" = "travis" ] || [ "$ENV" = "github" ]; then
+  export MINK_DRIVER_ARGS_WEBDRIVER='["chrome", {"browserName":"chrome","goog:chromeOptions":{"w3c":true,"args":["--headless=new","--disable-gpu","--no-sandbox"]}}, "http://127.0.0.1:4444/wd/hub"]'
+
+  echo "Waiting for Selenium WebDriver..."
+  WEBDRIVER_STARTED=false
+  for i in {1..60}; do
+    if curl -f -s -o /dev/null "http://127.0.0.1:4444/wd/hub/status"; then
+      echo "✓ Selenium WebDriver is ready"
+      WEBDRIVER_STARTED=true
+      break
+    fi
+    sleep 1
+  done
+
+  if [ "$WEBDRIVER_STARTED" = false ]; then
+    echo -e "${RED}✗ Selenium WebDriver failed to start${NC}"
+    exit 1
+  fi
+fi
+
 # Create browsertest output directory if it doesn't exist
 mkdir -p "$BROWSERTEST_OUTPUT_DIRECTORY"
 chmod 777 "$BROWSERTEST_OUTPUT_DIRECTORY" 2>/dev/null || true
@@ -214,6 +236,10 @@ export SIMPLETEST_BASE_URL="$SIMPLETEST_BASE_URL"
 export BROWSERTEST_OUTPUT_DIRECTORY="$BROWSERTEST_OUTPUT_DIRECTORY"
 export SYMFONY_DEPRECATIONS_HELPER="$SYMFONY_DEPRECATIONS_HELPER"
 EOF
+
+if [ -n "${MINK_DRIVER_ARGS_WEBDRIVER:-}" ]; then
+  printf 'export MINK_DRIVER_ARGS_WEBDRIVER=%q\n' "$MINK_DRIVER_ARGS_WEBDRIVER" >> "$ENV_FILE"
+fi
 
 echo -e "\n${GREEN}✓ Setup complete${NC}"
 echo "Environment variables exported to: $ENV_FILE"
