@@ -150,9 +150,14 @@ if [ "${INSTALL_DRUPAL:-false}" = "true" ]; then
   # Run drush from docroot directory and ensure db-url is used
   cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
 
-  # Site install with explicit database URL
+  # Site install with explicit database URL. --existing-config imports the
+  # real module/config set from config/default -- without it, the sitenow
+  # profile has no module dependencies of its own and installs only a bare
+  # system/user/path_alias skeleton, silently missing node, views, media,
+  # and everything else a real site needs.
   ../vendor/bin/drush site:install sitenow \
     --yes \
+    --existing-config \
     --db-url="$DB_URL" \
     --site-name="Test Site" \
     --account-name=admin \
