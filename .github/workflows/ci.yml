@@ -323,6 +323,7 @@ jobs:
           php-version: '8.3'
           extensions: gd, pdo_mysql
           coverage: none
+          ini-values: memory_limit=-1, max_execution_time=0
 
       - name: Configure Git and Composer authentication
         run: |
