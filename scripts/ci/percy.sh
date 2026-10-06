@@ -8,6 +8,7 @@
 
 set -e  # Exit on error
 set -u  # Exit on undefined variable
+set -o pipefail  # Surface percy's exit code through the `tee` below
 
 # Load shared color codes
 source "$(dirname "$0")/colors.sh"
@@ -57,7 +58,19 @@ if [ ! -f "node_modules/.bin/percy" ]; then
   exit 1
 fi
 
-if npx percy snapshot --base-url "$SIMPLETEST_BASE_URL" snapshots.yml; then
+# Percy's CLI treats per-snapshot errors (e.g. a selector that didn't match)
+# as non-fatal and still exits 0 so one broken page doesn't kill the whole
+# suite. That means a build where every snapshot failed and no build was
+# ever created on Percy's side can still report success here. Capture the
+# output so we can catch that case explicitly, in addition to the exit code.
+PERCY_LOG="$(mktemp)"
+trap 'rm -f "$PERCY_LOG"' EXIT
+
+if npx percy snapshot --base-url "$SIMPLETEST_BASE_URL" snapshots.yml | tee "$PERCY_LOG"; then
+  if grep -qi "Build not created" "$PERCY_LOG"; then
+    echo -e "\n${RED}✗ Percy snapshot failed: no build was created (all snapshots errored)${NC}"
+    exit 1
+  fi
   echo -e "\n${GREEN}✓ Percy snapshot complete${NC}"
   exit 0
 else

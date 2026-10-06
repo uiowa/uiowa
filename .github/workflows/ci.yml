@@ -367,6 +367,19 @@ jobs:
           INSTALL_DRUPAL: true
           RUN_SERVER: true
 
+      - name: Debug - inspect pages Percy will snapshot
+        run: |
+          source ./tmp/ci-env.sh
+          for path in / /about /people /people/herky-hawk /news /news/2019/09/demo-article; do
+            url="${SIMPLETEST_BASE_URL}${path}"
+            echo "=== $url ==="
+            code=$(curl -s -o /tmp/page.html -w '%{http_code}' "$url")
+            echo "HTTP status: $code"
+            echo "Bytes: $(wc -c < /tmp/page.html)"
+            grep -o 'uiowa-alerts-wrapper\|search-button\|block-inline-blockuiowa-events' /tmp/page.html | sort -u || echo "(none of the expected selectors found)"
+            echo
+          done
+
       - name: Run Percy snapshot
         run: scripts/ci/percy.sh
         env:
