@@ -248,7 +248,7 @@
         "npm-asset/jquery-collapse": "^1.1",
         "npm-asset/pannellum": "^2.5",
         "npm-asset/photoswipe-dynamic-caption-plugin": "^1.2",
-        "npm-asset/slick-carousel": "^1.8",
+        "npm-asset/slick-carousel": "^2.0",
         "npm-asset/splidejs--splide": "^4.1",
         "npm-asset/vanilla-icon-picker": "^1.2",
         "oomphinc/composer-installers-extender": "^2.0",
@@ -282,6 +282,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "bower-asset/chosen": {
+                "Replace removed jQuery.trim with native string trimming": "patches/chosen-jquery4-trim.patch"
+            },
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
