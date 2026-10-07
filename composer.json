@@ -282,6 +282,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "bower-asset/chosen": {
+                "Replace removed jQuery.trim with native string trimming": "patches/chosen-jquery4-trim.patch"
+            },
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
