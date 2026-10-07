@@ -1,3 +1,7 @@
+{% if logged_in %}
+  {{ attach_library('uids_base/admin') }}
+{% endif %}
+
 <main role="main" class="page__container">
   <a id="main-content" tabindex="-1"></a>
   {{ page.content }}
