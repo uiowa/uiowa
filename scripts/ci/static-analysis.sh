@@ -27,7 +27,7 @@ if [ ! -f "phpstan.neon" ]; then
   echo -e "${YELLOW}Warning: phpstan.neon not found${NC}"
 fi
 
-# Define paths to analyze (matching BLT's tests:deprecated command)
+# Define paths to analyze
 PATHS=(
   "tests/"
   "docroot/profiles/custom/"
