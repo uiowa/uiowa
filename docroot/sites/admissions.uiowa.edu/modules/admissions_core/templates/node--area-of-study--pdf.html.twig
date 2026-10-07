@@ -123,7 +123,7 @@
           {{ content.field_area_of_study_selective|render|replace({'\xc2\xa0': ' ', '\xe2\x80\xaf': ' '})|striptags('<p><strong><div>')|t }}
           {{ content.field_area_of_study_select_txt|render|replace({'\xc2\xa0': ' ', '\xe2\x80\xaf': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {% if field_area_of_study_competitive|render|replace({'\xc2\xa0': ' ', '\xe2\x80\xaf': ' '})|striptags is not empty %}
+        {% if content.field_area_of_study_competitive|render|replace({'\xc2\xa0': ' ', '\xe2\x80\xaf': ' '})|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_competitive|render|replace({'\xc2\xa0': ' ', '\xe2\x80\xaf': ' '})|striptags('<p><strong><div>')|t }}
           {{ content.field_area_of_study_comp_txt|render|replace({'\xc2\xa0': ' ', '\xe2\x80\xaf': ' '})|striptags('<p><strong><div>')|t }}
