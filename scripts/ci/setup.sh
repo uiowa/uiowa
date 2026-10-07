@@ -162,7 +162,7 @@ if [ "${INSTALL_DRUPAL:-false}" = "true" ]; then
     --site-name="Test Site" \
     --account-name=admin \
     --account-pass=admin \
-    --debug
+    --verbose
 
   echo "✓ Drupal installed successfully"
 
