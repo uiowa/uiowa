@@ -100,7 +100,7 @@ class GoogleTagOverrideTest extends UnitTestCase {
    * @return array
    *   Array of environment strings.
    */
-  public function nonProdEnvProvider() {
+  public static function nonProdEnvProvider() {
     return [
       [FALSE],
       ['dev'],

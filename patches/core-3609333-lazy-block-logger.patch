@@ -1,0 +1,41 @@
+diff --git a/core/core.services.yml b/core/core.services.yml
+--- a/core/core.services.yml
++++ b/core/core.services.yml
+@@ -853,5 +853,5 @@ services:
+   plugin.manager.block:
+     class: Drupal\Core\Block\BlockManager
+     parent: default_plugin_manager
+-    arguments: ['@logger.channel.default']
++    arguments: ['@>logger.channel.default']
+   Drupal\Core\Block\BlockManagerInterface: '@plugin.manager.block'
+diff --git a/core/lib/Drupal/Core/Block/BlockManager.php b/core/lib/Drupal/Core/Block/BlockManager.php
+--- a/core/lib/Drupal/Core/Block/BlockManager.php
++++ b/core/lib/Drupal/Core/Block/BlockManager.php
+@@ -28,6 +28,6 @@
+   /**
+    * The logger.
+    *
+-   * @var \Psr\Log\LoggerInterface
++   * @var \Closure|\Psr\Log\LoggerInterface
+    */
+   protected $logger;
+@@ -42,8 +42,8 @@
+    *   Cache backend instance to use.
+    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+    *   The module handler to invoke the alter hook with.
+-   * @param \Psr\Log\LoggerInterface $logger
++   * @param \Closure|\Psr\Log\LoggerInterface $logger
+    *   The logger.
+    */
+-  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, LoggerInterface $logger) {
++  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, LoggerInterface|\Closure $logger) {
+     parent::__construct('Plugin/Block', $namespaces, $module_handler, BlockPluginInterface::class, Block::class, 'Drupal\Core\Block\Annotation\Block');
+@@ -90,6 +90,7 @@
+    * {@inheritdoc}
+    */
+   protected function handlePluginNotFound($plugin_id, array $configuration) {
+-    $this->logger->warning('The "%plugin_id" block plugin was not found', ['%plugin_id' => $plugin_id]);
++    $logger = $this->logger instanceof \Closure ? ($this->logger)() : $this->logger;
++    $logger->warning('The "%plugin_id" block plugin was not found', ['%plugin_id' => $plugin_id]);
+     return parent::handlePluginNotFound($plugin_id, $configuration);
+   }

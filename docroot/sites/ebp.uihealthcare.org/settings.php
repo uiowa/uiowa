@@ -227,33 +227,6 @@ $databases = [];
  */
 
 /**
- * Location of the site configuration files.
- *
- * The $config_directories array specifies the location of file system
- * directories used for configuration data. On install, the "sync" directory is
- * created. This is used for configuration imports. The "active" directory is
- * not created by default since the default storage for active configuration is
- * the database rather than the file system. (This can be changed. See "Active
- * configuration settings" below).
- *
- * The default location for the "sync" directory is inside a randomly-named
- * directory in the public files path. The setting below allows you to override
- * the "sync" location.
- *
- * If you use files for the "active" configuration, you can tell the
- * Configuration system where this directory is located by adding an entry with
- * array key CONFIG_ACTIVE_DIRECTORY.
- *
- * Example:
- * @code
- *   $config_directories = array(
- *     CONFIG_SYNC_DIRECTORY => '/directory/outside/webroot',
- *   );
- * @endcode
- */
-$config_directories = [];
-
-/**
  * Settings:
  *
  * $settings contains environment-specific configuration, such as the files
@@ -769,13 +742,18 @@ $settings['entity_update_batch_size'] = 50;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 
+// Load Acquia Drupal Recommended Settings for all environments. It detects
+// Acquia Cloud, CI, and local environments on its own and includes the
+// appropriate settings cascade, including our custom
+// sites/settings/ci.settings.php.
 $ah_group = getenv('AH_SITE_GROUP');
 
 if (file_exists('/var/www/site-php')) {
-  require "/var/www/site-php/{$ah_group}/environmentalsymposium2023_conference_uiowa_edu-settings.inc";
+  require "/var/www/site-php/{$ah_group}/ebp_uihealthcare_org-settings.inc";
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";
+
 /**
  * IMPORTANT.
  *

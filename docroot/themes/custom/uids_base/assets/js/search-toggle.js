@@ -50,12 +50,32 @@ class SearchOverlay {
           this.searchInput = document.getElementsByName('search-terms')[0];
         }
 
-        setTimeout(() => {
-            this.searchInput.focus()
+        this.focusTimer = setTimeout(() => this.focusSearchInput(), 750);
+
+        // If the user starts typing before the delay ends, focus right away
+        // so the keystroke lands in the input instead of being lost. Space is
+        // skipped so it can still toggle the button closed.
+        this.earlyFocusHandler = (event) => {
+          if (event.key.length === 1 && event.key !== ' ' && !event.ctrlKey && !event.metaKey && !event.altKey) {
+            this.focusSearchInput();
           }
-          ,750);
+        };
+        document.addEventListener('keydown', this.earlyFocusHandler, true);
+      }
+      else {
+        this.cancelPendingFocus();
       }
     }
+  }
+
+  focusSearchInput() {
+    this.cancelPendingFocus();
+    this.searchInput.focus();
+  }
+
+  cancelPendingFocus() {
+    clearTimeout(this.focusTimer);
+    document.removeEventListener('keydown', this.earlyFocusHandler, true);
   }
 }
 

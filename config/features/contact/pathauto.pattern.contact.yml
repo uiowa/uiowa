@@ -7,16 +7,16 @@ dependencies:
 id: contact
 label: Contact
 type: 'canonical_entities:node'
-pattern: 'contact/[node:title]'
+pattern: '/contact/[node:title]'
 selection_criteria:
   687c01d7-27be-4dd7-bb85-5a02903a2118:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 687c01d7-27be-4dd7-bb85-5a02903a2118
     context_mapping:
       node: node
     bundles:
       contact: contact
+    uuid: 687c01d7-27be-4dd7-bb85-5a02903a2118
 selection_logic: and
 weight: -5
 relationships: {  }

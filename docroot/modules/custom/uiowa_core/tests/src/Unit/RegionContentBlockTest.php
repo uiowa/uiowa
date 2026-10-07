@@ -33,7 +33,7 @@ class RegionContentBlockTest extends UnitTestCase {
     $esi = $this->createMock(FragmentStorage::class);
     $esi->expects($this->any())
       ->method('load')
-      ->will($this->returnValue(NULL));
+      ->willReturn(NULL);
 
     $evb = $this->createMock(EntityViewBuilder::class);
     $etm = $this->createMock(EntityTypeManager::class);
@@ -41,11 +41,11 @@ class RegionContentBlockTest extends UnitTestCase {
 
     $etm->expects($this->any())
       ->method('getStorage')
-      ->will($this->returnValue($esi));
+      ->willReturn($esi);
 
     $etm->expects($this->any())
       ->method('getViewBuilder')
-      ->will($this->returnValue($evb));
+      ->willReturn($evb);
 
     $sut = new RegionContentBlock($configuration, 'region_content_block', ['provider' => 'uiowa_core'], $config_factory, $etm, $route_matcher);
     $sut->setStringTranslation($this->getStringTranslationStub());

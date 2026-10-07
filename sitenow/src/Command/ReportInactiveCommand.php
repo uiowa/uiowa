@@ -115,7 +115,7 @@ class ReportInactiveCommand extends Command {
 
       $err->writeln('<comment>Checking registered domains on Acquia Cloud...</comment>');
       $applications = $this->getSortedApplications($client);
-      $fleet = new FleetDomains($client);
+      $fleet = new FleetDomains($client, $this->repoRoot);
       foreach ($fleet->iterate($applications, array_keys($selection), ['prod']) as $row) {
         $live_domains[$row['app']][$row['domain']] = TRUE;
       }
