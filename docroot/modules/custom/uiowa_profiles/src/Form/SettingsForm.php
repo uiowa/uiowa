@@ -260,7 +260,7 @@ class SettingsForm extends ConfigFormBase {
         $form['profiles_fieldset']['tabs_container']['directories'][$key]['delete'] = [
           '#type' => 'submit',
           '#value' => $this->t('Delete @directory', [
-            '@directory' => $directory['title'],
+            '@directory' => !empty($directory['title']) ? $directory['title'] : 'People-' . ($key + 1),
           ]),
           '#submit' => ['::removeSubmit'],
           '#ajax' => [
