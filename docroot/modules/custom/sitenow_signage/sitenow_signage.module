@@ -588,6 +588,12 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
 
   // Check if the custom query param is present.
   if (isset($params['setautoplay'])) {
+    // Skip if the params were already added. This can happen if the iframe is
+    // preprocessed through more than one theme hook.
+    if (str_contains((string) $variables['media'], 'autoplay=1')) {
+      return;
+    }
+
     /** @var \Drupal\media\OEmbed\Resource $resource */
     $resource = $variables['resource'];
 
@@ -618,6 +624,19 @@ function sitenow_signage_preprocess_media_oembed_iframe(array &$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for media_oembed_iframe__iframe_title_filter.
+ *
+ * The iframe_title_filter module (3.1.x) now renders the oEmbed iframe through
+ * its own theme hook, which has no base hook, so the media_oembed_iframe
+ * preprocess above is skipped. Run the same logic for it.
+ *
+ * @see sitenow_signage_preprocess_media_oembed_iframe()
+ */
+function sitenow_signage_preprocess_media_oembed_iframe__iframe_title_filter(array &$variables) {
+  sitenow_signage_preprocess_media_oembed_iframe($variables);
 }
 
 /**
