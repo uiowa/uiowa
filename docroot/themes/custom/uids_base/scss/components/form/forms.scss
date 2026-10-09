@@ -28,7 +28,7 @@
     box-sizing: border-box;
     width: 100%;
     height: 3.5rem;
-    margin: 0 0 1rem;
+    margin: 0 0 var(--form-item-margin, 1em);
     padding: 0.5rem;
     transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
     color: var(--brand-secondary);
@@ -69,8 +69,8 @@
   // === Spacing === //
   .form-item,
   .form-actions {
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: var(--form-item-margin, 1em);
+    margin-bottom: var(--form-item-margin, 1em);
   }
 
   // === Labels/Description === //
@@ -462,6 +462,11 @@ details.form__details--multi-select {
 
 // === End: Details === //
 // === END static copy of UIDS form styles === //
+
+// Tighter field spacing, e.g. for webforms in banners.
+.form--compact {
+  --form-item-margin: 0.75rem;
+}
 
 .form {
 

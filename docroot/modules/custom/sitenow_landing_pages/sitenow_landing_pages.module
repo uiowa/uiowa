@@ -1,0 +1,195 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Landing Pages module.
+ */
+
+use Drupal\block\Entity\Block;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\layout_builder\OverridesSectionStorageInterface;
+use Drupal\node\NodeInterface;
+use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
+use Drupal\sitenow_landing_pages\LandingPageUnlink;
+
+/**
+ * Determine whether a node is a landing page.
+ */
+function _sitenow_landing_pages_is_landing_page(NodeInterface $node): bool {
+  return $node->hasField('field_landing_page') && (bool) $node->get('field_landing_page')->value;
+}
+
+/**
+ * Implements hook_metatags_alter().
+ */
+function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context) {
+  $entity = $context['entity'] ?? NULL;
+
+  // Keep landing pages out of search engine results.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    $metatags['robots'] = 'noindex, follow';
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms.
+ */
+function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Move the landing page checkbox into the sidebar's Page Options.
+  if (isset($form['field_landing_page'])) {
+    $form['field_landing_page']['#group'] = 'node_publish';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function sitenow_landing_pages_preprocess_page(&$variables) {
+  $node = $variables['node'] ?? NULL;
+
+  // Hide site search, main navigation, breadcrumbs and footer menus on
+  // landing pages.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset(
+      $variables['page']['search'],
+      $variables['page']['primary_menu'],
+      $variables['page']['breadcrumb'],
+      $variables['page']['footer_second'],
+    );
+
+    // Display the block IOWA logo, site name and parent site name without
+    // links.
+    $variables['branding_links'] = FALSE;
+
+    // Hide the footer admin login link.
+    $variables['footer_login_link'] = FALSE;
+
+    $variables['#attached']['library'][] = 'sitenow_landing_pages/landing-page';
+  }
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function sitenow_landing_pages_block_access(Block $block, $operation, AccountInterface $account) {
+  $hidden = ['uiowa_alerts_block', 'menu_block:social'];
+
+  if ($operation !== 'view' || !in_array($block->getPluginId(), $hidden, TRUE)) {
+    return AccessResult::neutral();
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $result = AccessResult::neutral()->addCacheContexts(['route']);
+
+  // Hide Hawk Alerts, custom alerts and social media links on landing pages.
+  if ($node instanceof NodeInterface) {
+    $result->addCacheableDependency($node);
+
+    if (_sitenow_landing_pages_is_landing_page($node)) {
+      $result = AccessResult::forbidden()->addCacheContexts(['route'])->addCacheableDependency($node);
+    }
+  }
+
+  return $result;
+}
+
+/**
+ * Determine whether a block plugin is the footer contact info block.
+ */
+function _sitenow_landing_pages_is_footer_contact(BlockPluginInterface $block): bool {
+  $placed = Block::load('uids_base_footercontactinfo');
+  return $placed && $placed->getPluginId() === $block->getPluginId();
+}
+
+/**
+ * Implements hook_block_build_BASE_BLOCK_ID_alter() for block_content.
+ */
+function sitenow_landing_pages_block_build_block_content_alter(array &$build, BlockPluginInterface $block) {
+  if (!_sitenow_landing_pages_is_footer_contact($block)) {
+    return;
+  }
+
+  // Cache the footer contact info per page, since landing pages unlink it.
+  $build['#cache']['contexts'][] = 'route';
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface) {
+    $build['#cache']['tags'] = Cache::mergeTags($build['#cache']['tags'] ?? [], $node->getCacheTags());
+  }
+}
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter() for block_content.
+ */
+function sitenow_landing_pages_block_view_block_content_alter(array &$build, BlockPluginInterface $block) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Unlink phone numbers, emails, etc. in the footer contact info.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node) && _sitenow_landing_pages_is_footer_contact($block)) {
+    $build['#post_render'][] = [LandingPageUnlink::class, 'postRender'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for block templates.
+ */
+function sitenow_landing_pages_preprocess_block(&$variables) {
+  if ($variables['plugin_id'] !== 'system_breadcrumb_block') {
+    return;
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Hide breadcrumbs placed in landing page layouts.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset($variables['content']);
+  }
+}
+
+/**
+ * Implements hook_plugin_filter_TYPE__CONSUMER_alter().
+ */
+function sitenow_landing_pages_plugin_filter_block__layout_builder_alter(array &$definitions, array $extra) {
+  $storage = $extra['section_storage'] ?? NULL;
+
+  if (!$storage instanceof OverridesSectionStorageInterface) {
+    return;
+  }
+
+  $entity = $storage->getContextValue('entity');
+
+  // Landing pages can't place the main navigation block.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    unset($definitions['menu_block:main']);
+  }
+}
+
+/**
+ * Implements hook_simple_sitemap_links_alter().
+ */
+function sitenow_landing_pages_simple_sitemap_links_alter(array &$links, SimpleSitemapInterface $sitemap) {
+  $ids = \Drupal::entityQuery('node')
+    ->accessCheck(FALSE)
+    ->condition('type', 'page')
+    ->condition('field_landing_page', 1)
+    ->execute();
+
+  if (!$ids) {
+    return;
+  }
+
+  // Entity queries are keyed by revision ID, so key by node ID instead.
+  $ids = array_flip($ids);
+
+  // Remove landing pages from the sitemap.
+  foreach ($links as $key => $link) {
+    $info = $link['meta']['entity_info'] ?? NULL;
+    if ($info && $info['entity_type'] === 'node' && isset($ids[$info['id']])) {
+      unset($links[$key]);
+    }
+  }
+}

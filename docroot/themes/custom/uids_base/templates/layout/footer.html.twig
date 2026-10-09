@@ -33,9 +33,13 @@
         {% if site_name %}
           {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
           {% if header_type != 'homepage' %}
+            {% if branding_links is not same as(false) %}
               <a class="site-name-link" href="{{ path('<front>') }}">
                 <h2 class="site-name">{{ site_name }}</h2>
               </a>
+            {% else %}
+              <h2 class="site-name">{{ site_name }}</h2>
+            {% endif %}
           {% endif %}
         {% endif %}
       {% endblock %}
@@ -43,9 +47,13 @@
       {% block site_slogan %}
         {% if site_has_parent %}
           <strong class="parent-site-name">
-            <a href="{{ site_parent_url }}">
+            {% if branding_links is not same as(false) %}
+              <a href="{{ site_parent_url }}">
+                {{ site_parent_name }}
+              </a>
+            {% else %}
               {{ site_parent_name }}
-            </a>
+            {% endif %}
           </strong>
         {% endif %}
       {% endblock %}
