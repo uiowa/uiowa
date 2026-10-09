@@ -9,6 +9,7 @@ use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\node\NodeInterface;
@@ -31,6 +32,16 @@ function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context)
   // Keep landing pages out of search engine results.
   if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
     $metatags['robots'] = 'noindex, follow';
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms.
+ */
+function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Move the landing page checkbox into the sidebar's Page Options.
+  if (isset($form['field_landing_page'])) {
+    $form['field_landing_page']['#group'] = 'node_publish';
   }
 }
 
