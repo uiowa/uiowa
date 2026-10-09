@@ -50,6 +50,9 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
     // Display the block IOWA logo, site name and parent site name without
     // links.
     $variables['branding_links'] = FALSE;
+
+    // Hide the footer admin login link.
+    $variables['footer_login_link'] = FALSE;
   }
 }
 
