@@ -26,7 +26,7 @@ elif [ "${CI:-false}" = "true" ]; then
 else
   ENV="local"
   echo "Running in local DDEV environment (CI mode)"
-  # Export CI=true so that Drupal loads ci.settings.php instead of BLT settings
+  # Export CI=true so that Drupal loads ci.settings.php instead of local settings
   export CI="true"
 fi
 

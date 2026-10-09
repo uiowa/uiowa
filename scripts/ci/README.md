@@ -40,7 +40,7 @@ See `FUNCTIONAL_TESTS.md` for details on running functional tests when needed.
 2. **Code Standards** (`lint.sh`)
    - Runs PHPCS with `phpcs.xml` configuration
    - Checks against Acquia Drupal Strict standards
-   - Validates: custom modules, themes, profiles, BLT commands, tests
+   - Validates: custom modules, themes, profiles, and tests
 
 3. **Static Analysis** (`static-analysis.sh`)
    - Runs PHPStan for type checking and bug detection
@@ -240,25 +240,7 @@ ddev exec php -i | grep memory_limit
 ✅ **Same environment** - DDEV and Travis both use PHP 8.3, MySQL 8.0
 ✅ **Easy to use** - single `ddev ci` command
 ✅ **Modular** - run individual checks as needed
-✅ **BLT-free** - no dependency on deprecated tooling
-
-## Migration from BLT
-
-### Old BLT Commands
-
-```bash
-blt validate    # PHPCS linting
-blt tests       # PHPUnit tests
-```
-
-### New CI Scripts
-
-```bash
-ddev ci lint    # Replaces: blt validate
-ddev ci test    # Replaces: blt tests (PHPUnit only)
-```
-
-**Note:** These scripts focus on **testing only**. Other BLT functionality (multisite management, deployment) is handled separately and not part of this migration.
+✅ **No deprecated tooling** - no dependency on legacy build tools
 
 ## See Also
 
