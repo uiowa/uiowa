@@ -51,7 +51,7 @@ class ReportSiteCountTest extends UnitTestCase {
    * @return array{exit: int, output: string, error: string}
    *   The result.
    */
-  private function result(int $exit, string $output = ''): array {
+  private function siteResult(int $exit, string $output = ''): array {
     return ['exit' => $exit, 'output' => $output, 'error' => ''];
   }
 
@@ -61,9 +61,9 @@ class ReportSiteCountTest extends UnitTestCase {
   public function testCleanRunSplitsSites(): void {
     $domains = ['a.example.edu', 'b.example.edu', 'c.example.edu'];
     $results = [
-      'a.example.edu' => $this->result(0, '1'),
-      'b.example.edu' => $this->result(0, '0'),
-      'c.example.edu' => $this->result(0, '0'),
+      'a.example.edu' => $this->siteResult(0, '1'),
+      'b.example.edu' => $this->siteResult(0, '0'),
+      'c.example.edu' => $this->siteResult(0, '0'),
     ];
 
     $this->assertSame([
@@ -85,8 +85,8 @@ class ReportSiteCountTest extends UnitTestCase {
   public function testFailedSiteIsNamedAndExcluded(): void {
     $domains = ['a.example.edu', 'b.example.edu'];
     $results = [
-      'a.example.edu' => $this->result(0, '1'),
-      'b.example.edu' => $this->result(1, ''),
+      'a.example.edu' => $this->siteResult(0, '1'),
+      'b.example.edu' => $this->siteResult(1, ''),
     ];
 
     $this->assertSame([
@@ -105,8 +105,8 @@ class ReportSiteCountTest extends UnitTestCase {
   public function testAllSitesFailedReportsZeroReachable(): void {
     $domains = ['a.example.edu', 'b.example.edu'];
     $results = [
-      'a.example.edu' => $this->result(1, ''),
-      'b.example.edu' => $this->result(255, ''),
+      'a.example.edu' => $this->siteResult(1, ''),
+      'b.example.edu' => $this->siteResult(255, ''),
     ];
 
     $tally = $this->command()->count($domains, $results);

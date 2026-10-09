@@ -15,6 +15,7 @@ cache:
 
 services:
 - mysql
+- docker
 
 addons:
   chrome: stable
@@ -54,6 +55,11 @@ install:
   # Frontend build
   - yarn install --production --ignore-optional --frozen-lockfile --non-interactive
   - yarn workspaces run build
+
+before_script:
+  # Chrome must share the build network so that its localhost can reach the
+  # Drush test server at localhost:8080.
+  - docker run --detach --rm --name selenium-chrome --network host --shm-size=2g selenium/standalone-chrome:4.49.0
 
 script:
   # Run CI checks using new scripts
