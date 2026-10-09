@@ -3,6 +3,7 @@
 namespace Drupal\admissions_core\EventSubscriber;
 
 use Drupal\entity_print\Event\PrintCssAlterEvent;
+use Drupal\entity_print\Event\PrintHtmlAlterEvent;
 use Drupal\entity_print\Event\PrintEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,6 +20,7 @@ class EntityPrintSubscriber implements EventSubscriberInterface {
 
     if (class_exists(PrintEvents::class)) {
       $events[PrintEvents::CSS_ALTER][] = 'alterCss';
+      $events[PrintEvents::POST_RENDER][] = 'alterHtml';
     }
 
     return $events;
@@ -32,6 +34,17 @@ class EntityPrintSubscriber implements EventSubscriberInterface {
    */
   public function alterCss(PrintCssAlterEvent $event) {
     $event->getBuild()['#attached']['library'][] = 'admissions_core/pdf';
+  }
+
+  /**
+   * Replace Unicode spaces (e.g. U+202F) that render as stray glyphs.
+   *
+   * @param \Drupal\entity_print\Event\PrintHtmlAlterEvent $event
+   *   The PrintHtmlAlterEvent event.
+   */
+  public function alterHtml(PrintHtmlAlterEvent $event) {
+    $html = &$event->getHtml();
+    $html = preg_replace('/\p{Zs}/u', ' ', $html) ?? $html;
   }
 
 }
