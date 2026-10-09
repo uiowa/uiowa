@@ -56,14 +56,16 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
  * Implements hook_block_access().
  */
 function sitenow_landing_pages_block_access(Block $block, $operation, AccountInterface $account) {
-  if ($operation !== 'view' || $block->getPluginId() !== 'uiowa_alerts_block') {
+  $hidden = ['uiowa_alerts_block', 'menu_block:social'];
+
+  if ($operation !== 'view' || !in_array($block->getPluginId(), $hidden, TRUE)) {
     return AccessResult::neutral();
   }
 
   $node = \Drupal::routeMatch()->getParameter('node');
   $result = AccessResult::neutral()->addCacheContexts(['route']);
 
-  // Hide Hawk Alerts and custom alerts on landing pages.
+  // Hide Hawk Alerts, custom alerts and social media links on landing pages.
   if ($node instanceof NodeInterface) {
     $result->addCacheableDependency($node);
 
