@@ -7,10 +7,13 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
+use Drupal\sitenow_landing_pages\LandingPageUnlink;
 
 /**
  * Determine whether a node is a landing page.
@@ -53,6 +56,8 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
 
     // Hide the footer admin login link.
     $variables['footer_login_link'] = FALSE;
+
+    $variables['#attached']['library'][] = 'sitenow_landing_pages/landing-page';
   }
 }
 
@@ -79,6 +84,43 @@ function sitenow_landing_pages_block_access(Block $block, $operation, AccountInt
   }
 
   return $result;
+}
+
+/**
+ * Determine whether a block plugin is the footer contact info block.
+ */
+function _sitenow_landing_pages_is_footer_contact(BlockPluginInterface $block): bool {
+  $placed = Block::load('uids_base_footercontactinfo');
+  return $placed && $placed->getPluginId() === $block->getPluginId();
+}
+
+/**
+ * Implements hook_block_build_BASE_BLOCK_ID_alter() for block_content.
+ */
+function sitenow_landing_pages_block_build_block_content_alter(array &$build, BlockPluginInterface $block) {
+  if (!_sitenow_landing_pages_is_footer_contact($block)) {
+    return;
+  }
+
+  // Cache the footer contact info per page, since landing pages unlink it.
+  $build['#cache']['contexts'][] = 'route';
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface) {
+    $build['#cache']['tags'] = Cache::mergeTags($build['#cache']['tags'] ?? [], $node->getCacheTags());
+  }
+}
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter() for block_content.
+ */
+function sitenow_landing_pages_block_view_block_content_alter(array &$build, BlockPluginInterface $block) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Unlink phone numbers, emails, etc. in the footer contact info.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node) && _sitenow_landing_pages_is_footer_contact($block)) {
+    $build['#post_render'][] = [LandingPageUnlink::class, 'postRender'];
+  }
 }
 
 /**
