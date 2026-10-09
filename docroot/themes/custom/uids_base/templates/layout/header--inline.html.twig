@@ -3,12 +3,16 @@
 {% block uiowa_bar %}
   {% if logo_path and is_off_brand %}
     <div class="site-name">
-      <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
+      {% if branding_links is not same as(false) %}
+        <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
+      {% else %}
+        <img alt="{{ site_name }}" src ="{{ logo_path }}" />
+      {% endif %}
     </div>
   {% else %}
     {% include '@uids_base/uids/site-name.html.twig' with {
       'site_name': site_name,
-      'site_url': path('<front>'),
+      'site_url': branding_links is not same as(false) ? path('<front>'),
     } %}
   {% endif %}
 

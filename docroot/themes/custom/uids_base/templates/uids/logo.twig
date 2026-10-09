@@ -2,7 +2,7 @@
 {% if logo_classes is not empty %}
   {% set classes = classes ~ ' ' ~ logo_classes %}
 {% endif %}
-{% set linked = logo_link is not same as(false) %}
+{% set linked = branding_links is not same as(false) %}
 {% set id = 'logo' %}
 {% if logo_id is not empty %}
   {% set id = id ~ '-' ~ logo_id %}
