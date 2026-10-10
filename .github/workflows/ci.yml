@@ -5,6 +5,7 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 # Grant workflow token read access to repository contents
 permissions:
@@ -298,3 +299,81 @@ jobs:
             docroot/themes/*/dist/
             docroot/modules/*/dist/
           retention-days: 7
+
+  # Percy visual regression testing. Scoped to pull requests only so we
+  # don't burn snapshot quota on every push to main/develop as well.
+  percy:
+    name: Percy Visual Regression
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'pull_request'
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: drupal_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+          ini-values: memory_limit=-1, max_execution_time=0
+
+      - name: Configure Git and Composer authentication
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --production --ignore-optional --frozen-lockfile --non-interactive
+
+      - name: Build frontend assets
+        run: yarn workspaces run build
+
+      - name: Setup test environment and web server
+        run: scripts/ci/setup.sh
+        env:
+          CI: true
+          INSTALL_DRUPAL: true
+          RUN_SERVER: true
+          NEEDS_WEBDRIVER: false
+
+      - name: Run Percy snapshot
+        run: scripts/ci/percy.sh
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}

@@ -51,6 +51,12 @@ See `FUNCTIONAL_TESTS.md` for details on running functional tests when needed.
    - Tests all custom code test suites
    - Can pass extra arguments: `ddev ci test --testsuite=uiowa_core`
 
+5. **Percy Visual Regression** (`percy.sh`)
+   - Snapshots the pages defined in `snapshots.yml` via `@percy/cli`
+   - Requires a `PERCY_TOKEN` (skips with a warning if unset)
+   - Runs in GitHub Actions on pull requests only
+   - Run locally: `PERCY_TOKEN=<token> ddev ci percy`
+
 ## Usage Examples
 
 ### Before Committing
