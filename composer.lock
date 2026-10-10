@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e29a9c428b59a69761b469644149ec0c",
+    "content-hash": "78a773341a8825e854656d485d4ef567",
     "packages": [
         {
             "name": "acquia/drupal-environment-detector",
@@ -4478,48 +4478,47 @@
         },
         {
             "name": "drupal/entity_usage",
-            "version": "2.2.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_usage.git",
-                "reference": "8.x-2.2"
+                "reference": "5.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_usage-8.x-2.2.zip",
-                "reference": "8.x-2.2",
-                "shasum": "1086b8893ed36602e7877f4fcf45232bf1504600"
+                "url": "https://ftp.drupal.org/files/projects/entity_usage-5.0.1.zip",
+                "reference": "5.0.1",
+                "shasum": "4673ea44b976a8aa20afc80f45876c7b2392bcff"
             },
             "require": {
-                "drupal/core": "^10.3 || ^11"
+                "drupal/core": "^11.4 || ^12"
+            },
+            "conflict": {
+                "drupal/trash": "< 3.0.30",
+                "drush/drush": "< 13.7"
             },
             "require-dev": {
                 "drupal/block_field": "~1.0",
                 "drupal/dynamic_entity_reference": "^3.0",
-                "drupal/entity_browser": "~2.0",
-                "drupal/entity_browser_block": "~1.0 || ^2.0",
+                "drupal/entity_browser": "~2.15",
+                "drupal/entity_browser_block": "^2.0",
                 "drupal/entity_embed": "^1.7",
-                "drupal/entity_reference_revisions": "~1.0",
-                "drupal/inline_entity_form": "^1.0@RC || ^3.0@RC",
-                "drupal/paragraphs": "~1.0",
+                "drupal/entity_reference_revisions": "^1.12",
+                "drupal/inline_entity_form": "^3.0@RC",
+                "drupal/paragraphs": "^1.19",
                 "drupal/redirect": "^1.11",
-                "drupal/trash": "~3.0",
-                "drupal/webform": "^6.0.0",
-                "drush/drush": "^12.0 || ^13.0 || ^14.0"
+                "drupal/trash": "^3.0.30",
+                "drupal/webform": "^6.3@beta",
+                "drush/drush": "^13.7 || ^14.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.2",
-                    "datestamp": "1784797651",
+                    "version": "5.0.1",
+                    "datestamp": "1790174861",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9 || ^10 || ^11"
                     }
                 }
             },
@@ -4551,8 +4550,8 @@
                 "Drupal"
             ],
             "support": {
-                "source": "http://cgit.drupalcode.org/entity_usage",
-                "issues": "http://drupal.org/project/issues/entity_usage"
+                "source": "https://git.drupalcode.org/project/entity_usage",
+                "issues": "https://drupal.org/project/issues/entity_usage"
             }
         },
         {
@@ -24794,7 +24793,6 @@
         "drupal/ckeditor_small_tag": 5,
         "drupal/default_content": 15,
         "drupal/diff": 10,
-        "drupal/entity_usage": 10,
         "drupal/layout_builder_limit": 10,
         "drupal/layout_builder_lock": 5,
         "drupal/media_entity_instagram": 10,
