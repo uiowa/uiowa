@@ -324,7 +324,7 @@ jobs:
   # don't burn snapshot quota on every push to main/develop as well.
   percy:
     name: Percy Visual Regression
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
 
     services:
