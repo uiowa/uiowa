@@ -423,6 +423,13 @@ jobs:
           echo "> WOFF2 headers with an Origin header set, simulating a cross-origin font fetch like Percy's renderer:"
           curl -s -I -H "Origin: https://percy.io" http://localhost:8080/libraries/fontawesome/webfonts/fa-solid-900.woff2
 
+          echo "--- <link> and <style>/@font-face tags actually rendered in the front page HTML ---"
+          curl -s http://localhost:8080/ -o /tmp/frontpage.html
+          echo "> All stylesheet <link> tags:"
+          grep -o '<link[^>]*rel="stylesheet"[^>]*>' /tmp/frontpage.html
+          echo "> Any mention of fontawesome or global.css in the HTML source:"
+          grep -o '[^"'\'' ]*fontawesome[^"'\'' ]*\|[^"'\'' ]*global\.css[^"'\'' ]*' /tmp/frontpage.html | sort -u
+
       - name: Run Percy snapshot
         run: scripts/ci/percy.sh
         env:
