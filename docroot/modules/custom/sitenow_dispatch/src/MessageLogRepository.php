@@ -90,9 +90,8 @@ class MessageLogRepository {
         ->execute();
     }
     catch (\Exception $e) {
-      $this->messenger()->addMessage($this->t('Update failed. Message = %message, query= %query', [
+      $this->messenger()->addMessage($this->t('Update failed. Message = %message', [
         '%message' => $e->getMessage(),
-        '%query' => $e->query_string,
       ]
       ), 'error');
     }

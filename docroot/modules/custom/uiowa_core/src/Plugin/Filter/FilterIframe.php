@@ -76,7 +76,7 @@ class FilterIframe extends FilterBase {
           // Borrowed from iframe_title_filter module.
           if (!$iframe->hasAttribute('title')) {
             $url_pieces = parse_url($src);
-            $host = $url_pieces['host'];
+            $host = $url_pieces['host'] ?? '';
             $title = $this->t("Embedded content from @host", ['@host' => $host]);
             $iframe->setAttribute('title', $title);
           }
