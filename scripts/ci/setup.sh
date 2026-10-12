@@ -105,7 +105,11 @@ if [ "$ENV" = "local" ]; then
   export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
 else
   # CI environments (Travis, GitHub Actions, etc.)
-  export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://localhost:8080}"
+  # Use 127.0.0.1 rather than localhost: Node-based tooling (e.g. Percy's
+  # asset-discovery direct-fetch fallback) can resolve "localhost" to the
+  # IPv6 loopback (::1), which drush runserver's "0.0.0.0" bind doesn't
+  # listen on, causing ECONNREFUSED for resources fetched that way.
+  export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://127.0.0.1:8080}"
 fi
 
 export BROWSERTEST_OUTPUT_DIRECTORY="${BROWSERTEST_OUTPUT_DIRECTORY:-/tmp/browsertest_output}"

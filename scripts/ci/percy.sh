@@ -44,7 +44,10 @@ fi
 # Determine the base URL to snapshot against
 if [ -z "${SIMPLETEST_BASE_URL:-}" ]; then
   if [ "${GITHUB_ACTIONS:-false}" = "true" ] || [ "${TRAVIS:-false}" = "true" ] || [ "${CI:-false}" = "true" ]; then
-    SIMPLETEST_BASE_URL="http://localhost:8080"
+    # 127.0.0.1, not localhost: Percy's asset-discovery direct-fetch fallback
+    # can resolve "localhost" to the IPv6 loopback, which the dev server
+    # (bound to 0.0.0.0, IPv4 only) doesn't listen on.
+    SIMPLETEST_BASE_URL="http://127.0.0.1:8080"
   else
     # Local DDEV environment
     SIMPLETEST_BASE_URL="https://uiowa.ddev.site"
