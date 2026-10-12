@@ -406,6 +406,15 @@ jobs:
           RUN_SERVER: true
           NEEDS_WEBDRIVER: false
 
+      - name: Debug FontAwesome asset availability
+        run: |
+          echo "--- docroot/libraries/fontawesome on disk ---"
+          ls -la docroot/libraries/fontawesome/css/all.min.css docroot/libraries/fontawesome/webfonts/ 2>&1 || echo "MISSING from disk"
+
+          echo "--- Served via the running web server ---"
+          curl -s -o /dev/null -w "CSS   %{http_code} %{content_type} %{size_download} bytes\n" http://localhost:8080/libraries/fontawesome/css/all.min.css
+          curl -s -o /dev/null -w "WOFF2 %{http_code} %{content_type} %{size_download} bytes\n" http://localhost:8080/libraries/fontawesome/webfonts/fa-solid-900.woff2
+
       - name: Run Percy snapshot
         run: scripts/ci/percy.sh
         env:
