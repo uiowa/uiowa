@@ -406,38 +406,7 @@ jobs:
           RUN_SERVER: true
           NEEDS_WEBDRIVER: false
 
-      - name: Debug FontAwesome asset availability
-        run: |
-          echo "--- docroot/libraries/fontawesome on disk ---"
-          ls -la docroot/libraries/fontawesome/css/all.min.css docroot/libraries/fontawesome/webfonts/ 2>&1 || echo "MISSING from disk"
-
-          echo "--- Served via the running web server (status line) ---"
-          curl -s -o /dev/null -w "CSS   %{http_code} %{content_type} %{size_download} bytes\n" http://localhost:8080/libraries/fontawesome/css/all.min.css
-          curl -s -o /dev/null -w "WOFF2 %{http_code} %{content_type} %{size_download} bytes\n" http://localhost:8080/libraries/fontawesome/webfonts/fa-solid-900.woff2
-
-          echo "--- Full response headers (checking for CORS: Access-Control-Allow-Origin) ---"
-          echo "> CSS headers:"
-          curl -s -I http://localhost:8080/libraries/fontawesome/css/all.min.css
-          echo "> WOFF2 headers:"
-          curl -s -I http://localhost:8080/libraries/fontawesome/webfonts/fa-solid-900.woff2
-          echo "> WOFF2 headers with an Origin header set, simulating a cross-origin font fetch like Percy's renderer:"
-          curl -s -I -H "Origin: https://percy.io" http://localhost:8080/libraries/fontawesome/webfonts/fa-solid-900.woff2
-
-          echo "--- <link> and <style>/@font-face tags actually rendered in the front page HTML ---"
-          curl -s http://localhost:8080/ -o /tmp/frontpage.html
-          echo "> All stylesheet <link> tags:"
-          grep -o '<link[^>]*rel="stylesheet"[^>]*>' /tmp/frontpage.html || echo "(none matched)"
-          echo "> Any mention of fontawesome or global.css in the HTML source:"
-          grep -o '[^"'\'' ]*fontawesome[^"'\'' ]*\|[^"'\'' ]*global\.css[^"'\'' ]*' /tmp/frontpage.html | sort -u || echo "(none matched)"
-
-          echo "--- Literal surrounding markup for those two references (ground truth, not inference) ---"
-          echo "> all.min.css (line + 2 lines of context each side):"
-          grep -n -B2 -A2 "all\.min\.css" /tmp/frontpage.html || echo "(no match for all.min.css)"
-          echo "> global.css (line + 2 lines of context each side):"
-          grep -n -B2 -A2 "global\.css" /tmp/frontpage.html || echo "(no match for global.css)"
-
       - name: Run Percy snapshot
         run: scripts/ci/percy.sh
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-          PERCY_LOGLEVEL: debug
