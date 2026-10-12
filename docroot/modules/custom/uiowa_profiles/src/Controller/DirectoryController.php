@@ -87,11 +87,11 @@ class DirectoryController extends ControllerBase {
         ],
         'drupalSettings' => [
           'uiowaProfiles' => [
-            'basePath' => Html::escape($directory['path']),
-            'api_key' => Html::escape($directory['api_key']),
+            'basePath' => Html::escape($directory['path'] ?? ''),
+            'api_key' => Html::escape($directory['api_key'] ?? ''),
             'endpoint' => $this->profiles->endpoint,
             'siteName' => $this->config('system.site')->get('name'),
-            'directoryTitle' => Html::escape($directory['title']),
+            'directoryTitle' => Html::escape($directory['title'] ?? ''),
           ],
         ],
       ],
@@ -141,10 +141,10 @@ class DirectoryController extends ControllerBase {
       '#type' => 'html_tag',
       '#tag' => 'profiles-client',
       '#attributes' => [
-        'api-key' => Html::escape($directory['api_key']),
+        'api-key' => Html::escape($directory['api_key'] ?? ''),
         'site-name' => $this->config('system.site')->get('name'),
-        'directory-name' => Html::escape($directory['title']),
-        ':page-size' => Html::escape($directory['page_size']),
+        'directory-name' => Html::escape($directory['title'] ?? ''),
+        ':page-size' => Html::escape($directory['page_size'] ?? ''),
         ':breadcrumbs' => json_encode($breadcrumbs),
       ],
       'intro' => [
@@ -219,7 +219,7 @@ class DirectoryController extends ControllerBase {
       $title = [
         '#tag' => 'title',
         '#value' => $this->t('@title | @site_name', [
-          '@title' => $directory['title'],
+          '@title' => $directory['title'] ?? '',
           '@site_name' => $this->config('system.site')->get('name'),
         ]),
       ];
@@ -229,7 +229,7 @@ class DirectoryController extends ControllerBase {
         '#attributes' => [
           'name' => 'description',
           'content' => $this->t('@title - The University of Iowa', [
-            '@title' => $directory['title'],
+            '@title' => $directory['title'] ?? '',
           ]),
         ],
       ];

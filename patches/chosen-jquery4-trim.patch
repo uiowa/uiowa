@@ -1,0 +1,12 @@
+diff --git a/chosen.jquery.js b/chosen.jquery.js
+--- a/chosen.jquery.js
++++ b/chosen.jquery.js
+@@ -1224,7 +1224,7 @@
+     };
+ 
+     Chosen.prototype.get_search_text = function() {
+-      return $.trim(this.get_search_field_value());
++      return this.get_search_field_value().trim();
+     };
+ 
+     Chosen.prototype.escape_html = function(text) {

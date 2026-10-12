@@ -80,7 +80,10 @@
                 "CVE-2026-13240": "paragraphs_library which is not in-use.",
                 "CVE-2026-13241": "paragraphs_library which is not in-use.",
                 "SA-CORE-2026-012": "Layout builder; mitigated by access.",
-                "SA-CORE-2026-010": "Image style derivatives; limited to file scheme configurations"
+                "SA-CORE-2026-010": "Image style derivatives; limited to file scheme configurations",
+                "PKSA-8j6w-3kr7-s9xk": "enshrined/svg-sanitize pinned by imagecache_external ~0.22",
+                "PKSA-6j95-1jtb-x6wc": "enshrined/svg-sanitize pinned by imagecache_external ~0.22",
+                "PKSA-cbx2-m9db-bmzd": "enshrined/svg-sanitize pinned by imagecache_external ~0.22"
             }
         },
         "sort-packages": true,
@@ -248,7 +251,7 @@
         "npm-asset/jquery-collapse": "^1.1",
         "npm-asset/pannellum": "^2.5",
         "npm-asset/photoswipe-dynamic-caption-plugin": "^1.2",
-        "npm-asset/slick-carousel": "^1.8",
+        "npm-asset/slick-carousel": "^2.0",
         "npm-asset/splidejs--splide": "^4.1",
         "npm-asset/vanilla-icon-picker": "^1.2",
         "oomphinc/composer-installers-extender": "^2.0",
@@ -282,6 +285,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "bower-asset/chosen": {
+                "Replace removed jQuery.trim with native string trimming": "patches/chosen-jquery4-trim.patch"
+            },
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
