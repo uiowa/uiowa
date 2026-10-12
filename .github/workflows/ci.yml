@@ -430,6 +430,11 @@ jobs:
           echo "> Any mention of fontawesome or global.css in the HTML source:"
           grep -o '[^"'\'' ]*fontawesome[^"'\'' ]*\|[^"'\'' ]*global\.css[^"'\'' ]*' /tmp/frontpage.html | sort -u
 
+          echo "--- Literal surrounding markup for those two references (ground truth, not inference) ---"
+          grep -o '.\{200\}all\.min\.css[^"'\'' ]*.\{100\}' /tmp/frontpage.html
+          echo "> ---"
+          grep -o '.\{200\}global\.css[^"'\'' ]*.\{100\}' /tmp/frontpage.html
+
       - name: Run Percy snapshot
         run: scripts/ci/percy.sh
         env:
