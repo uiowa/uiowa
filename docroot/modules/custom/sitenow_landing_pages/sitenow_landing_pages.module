@@ -39,9 +39,16 @@ function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context)
  * Implements hook_form_BASE_FORM_ID_alter() for node forms.
  */
 function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Move the landing page checkbox into the sidebar's Page Options.
-  if (isset($form['field_landing_page'])) {
-    $form['field_landing_page']['#group'] = 'node_publish';
+  if (!isset($form['field_landing_page'])) {
+    return;
+  }
+
+  $publish = $form['field_publish_options'] ?? [];
+
+  // Show the checkbox with the page options so it shares their spacing.
+  if (($publish['#access'] ?? TRUE) && !empty($publish['widget']['#options'])) {
+    $form['field_publish_options']['widget']['field_landing_page'] = $form['field_landing_page'];
+    unset($form['field_landing_page']);
   }
 }
 
