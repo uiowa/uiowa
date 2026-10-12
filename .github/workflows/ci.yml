@@ -52,6 +52,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -62,9 +63,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -115,6 +120,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -125,9 +131,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -169,6 +179,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -179,9 +190,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -232,6 +247,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -242,9 +258,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -342,6 +362,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -351,7 +372,19 @@ jobs:
       - name: Install Composer dependencies
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
-        run: composer install --no-interaction --prefer-dist
+        run: |
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
