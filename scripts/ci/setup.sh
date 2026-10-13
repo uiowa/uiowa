@@ -105,15 +105,22 @@ if [ "$ENV" = "local" ]; then
   export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
 else
   # CI environments (Travis, GitHub Actions, etc.)
-  export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://localhost:8080}"
+  # Use 127.0.0.1 rather than localhost: Node-based tooling (e.g. Percy's
+  # asset-discovery direct-fetch fallback) can resolve "localhost" to the
+  # IPv6 loopback (::1), which drush runserver's "0.0.0.0" bind doesn't
+  # listen on, causing ECONNREFUSED for resources fetched that way.
+  export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://127.0.0.1:8080}"
 fi
 
 export BROWSERTEST_OUTPUT_DIRECTORY="${BROWSERTEST_OUTPUT_DIRECTORY:-/tmp/browsertest_output}"
 export SYMFONY_DEPRECATIONS_HELPER="${SYMFONY_DEPRECATIONS_HELPER:-disabled}"
 
 # The CI services provide Selenium with Chrome at the conventional WebDriver
-# endpoint. Local DDEV uses its own ChromeDriver configuration instead.
-if [ "$ENV" = "travis" ] || [ "$ENV" = "github" ]; then
+# endpoint. Local DDEV uses its own ChromeDriver configuration instead. Only
+# wait for it when the caller actually started a Selenium container (e.g.
+# the PHPUnit job) -- jobs with no FunctionalJavascript tests (e.g. Percy)
+# set NEEDS_WEBDRIVER=false and skip this entirely.
+if [ "${NEEDS_WEBDRIVER:-true}" = "true" ] && { [ "$ENV" = "travis" ] || [ "$ENV" = "github" ]; }; then
   export MINK_DRIVER_ARGS_WEBDRIVER='["chrome", {"browserName":"chrome","goog:chromeOptions":{"w3c":true,"args":["--headless=new","--disable-gpu","--no-sandbox"]}}, "http://127.0.0.1:4444/wd/hub"]'
 
   echo "Waiting for Selenium WebDriver..."
@@ -147,9 +154,14 @@ if [ "${INSTALL_DRUPAL:-false}" = "true" ]; then
   # Run drush from docroot directory and ensure db-url is used
   cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
 
-  # Site install with explicit database URL
+  # Site install with explicit database URL. --existing-config imports the
+  # real module/config set from config/default -- without it, the sitenow
+  # profile has no module dependencies of its own and installs only a bare
+  # system/user/path_alias skeleton, silently missing node, views, media,
+  # and everything else a real site needs.
   ../vendor/bin/drush site:install sitenow \
     --yes \
+    --existing-config \
     --db-url="$DB_URL" \
     --site-name="Test Site" \
     --account-name=admin \
