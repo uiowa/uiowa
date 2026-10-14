@@ -8019,3 +8019,15 @@ $sites['org-uihealthcareebp.uiowa.ddev.site'] = 'ebp.uihealthcare.org';
 $sites['org-uihealthcareebp.dev.drupal.uiowa.edu'] = 'ebp.uihealthcare.org';
 $sites['org-uihealthcareebp.stage.drupal.uiowa.edu'] = 'ebp.uihealthcare.org';
 $sites['org-uihealthcareebp.prod.drupal.uiowa.edu'] = 'ebp.uihealthcare.org';
+
+// Directory aliases for darbro.lab.uiowa.edu.
+$sites['labdarbro.uiowa.ddev.site'] = 'darbro.lab.uiowa.edu';
+$sites['labdarbro.dev.drupal.uiowa.edu'] = 'darbro.lab.uiowa.edu';
+$sites['labdarbro.stage.drupal.uiowa.edu'] = 'darbro.lab.uiowa.edu';
+$sites['labdarbro.prod.drupal.uiowa.edu'] = 'darbro.lab.uiowa.edu';
+
+// Directory aliases for han.sites.uiowa.edu.
+$sites['siteshan.uiowa.ddev.site'] = 'han.sites.uiowa.edu';
+$sites['siteshan.dev.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
+$sites['siteshan.stage.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
+$sites['siteshan.prod.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
