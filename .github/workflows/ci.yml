@@ -320,12 +320,11 @@ jobs:
             docroot/modules/*/dist/
           retention-days: 7
 
-  # Percy visual regression testing. Scoped to pull requests only so we
-  # don't burn snapshot quota on every push to main/develop as well.
+  # Percy visual regression testing. Pushes to main produce the baseline
+  # that pull requests are compared against.
   percy:
     name: Percy Visual Regression
     runs-on: ubuntu-22.04
-    if: github.event_name == 'pull_request'
 
     services:
       mysql:
