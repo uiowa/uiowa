@@ -53,6 +53,18 @@ function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for html templates.
+ */
+function sitenow_landing_pages_preprocess_html(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Top links are hidden on landing pages, so the body class should say so.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    $variables['has_enabled_links'] = FALSE;
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for page templates.
  */
 function sitenow_landing_pages_preprocess_page(&$variables) {
@@ -83,7 +95,7 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
  * Implements hook_block_access().
  */
 function sitenow_landing_pages_block_access(Block $block, $operation, AccountInterface $account) {
-  $hidden = ['uiowa_alerts_block', 'menu_block:social'];
+  $hidden = ['uiowa_alerts_block', 'menu_block:social', 'menu_block:top-links'];
 
   if ($operation !== 'view' || !in_array($block->getPluginId(), $hidden, TRUE)) {
     return AccessResult::neutral();
@@ -92,7 +104,7 @@ function sitenow_landing_pages_block_access(Block $block, $operation, AccountInt
   $node = \Drupal::routeMatch()->getParameter('node');
   $result = AccessResult::neutral()->addCacheContexts(['route']);
 
-  // Hide Hawk Alerts, custom alerts and social media links on landing pages.
+  // Hide alerts, social media links and top links on landing pages.
   if ($node instanceof NodeInterface) {
     $result->addCacheableDependency($node);
 
