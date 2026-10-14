@@ -8025,3 +8025,9 @@ $sites['labdarbro.uiowa.ddev.site'] = 'darbro.lab.uiowa.edu';
 $sites['labdarbro.dev.drupal.uiowa.edu'] = 'darbro.lab.uiowa.edu';
 $sites['labdarbro.stage.drupal.uiowa.edu'] = 'darbro.lab.uiowa.edu';
 $sites['labdarbro.prod.drupal.uiowa.edu'] = 'darbro.lab.uiowa.edu';
+
+// Directory aliases for han.sites.uiowa.edu.
+$sites['siteshan.uiowa.ddev.site'] = 'han.sites.uiowa.edu';
+$sites['siteshan.dev.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
+$sites['siteshan.stage.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
+$sites['siteshan.prod.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
