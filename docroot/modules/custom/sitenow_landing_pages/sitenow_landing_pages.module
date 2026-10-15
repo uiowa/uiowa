@@ -110,6 +110,8 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
 
     // Hide the header site name unless the page opts in.
     $variables['show_site_name'] = _sitenow_landing_pages_shows_site_name($node);
+
+    $variables['#attached']['library'][] = 'sitenow_landing_pages/landing-page';
   }
 }
 
