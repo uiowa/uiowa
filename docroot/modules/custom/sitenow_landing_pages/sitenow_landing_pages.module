@@ -50,14 +50,23 @@ function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $
   $fields = ['field_landing_page'];
 
   if (isset($form['field_landing_page_site_name'])) {
-    $fields[] = 'field_landing_page_site_name';
+    // The uiowa.edu homepage header never shows a site name, and other sites
+    // may not have one.
+    $site_path = \Drupal::getContainer()->getParameter('site.path');
 
-    // Only offer the site name option on landing pages.
-    $form['field_landing_page_site_name']['#states'] = [
-      'visible' => [
-        ':input[name="field_landing_page[value]"]' => ['checked' => TRUE],
-      ],
-    ];
+    if ($site_path === 'sites/uiowa.edu' || empty(\Drupal::config('system.site')->get('name'))) {
+      $form['field_landing_page_site_name']['#access'] = FALSE;
+    }
+    else {
+      $fields[] = 'field_landing_page_site_name';
+
+      // Only offer the site name option on landing pages.
+      $form['field_landing_page_site_name']['#states'] = [
+        'visible' => [
+          ':input[name="field_landing_page[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+    }
   }
 
   $publish = $form['field_publish_options'] ?? [];
