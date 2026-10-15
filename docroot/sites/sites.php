@@ -8037,3 +8037,9 @@ $sites['siteslaurent-jay.uiowa.ddev.site'] = 'laurent-jay.sites.uiowa.edu';
 $sites['siteslaurent-jay.dev.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
 $sites['siteslaurent-jay.stage.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
 $sites['siteslaurent-jay.prod.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
+
+// Directory aliases for bloom.lab.uiowa.edu.
+$sites['labbloom.uiowa.ddev.site'] = 'bloom.lab.uiowa.edu';
+$sites['labbloom.dev.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
+$sites['labbloom.stage.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
+$sites['labbloom.prod.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
