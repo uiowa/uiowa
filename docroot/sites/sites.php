@@ -8031,3 +8031,9 @@ $sites['siteshan.uiowa.ddev.site'] = 'han.sites.uiowa.edu';
 $sites['siteshan.dev.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
 $sites['siteshan.stage.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
 $sites['siteshan.prod.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
+
+// Directory aliases for laurent-jay.sites.uiowa.edu.
+$sites['siteslaurent-jay.uiowa.ddev.site'] = 'laurent-jay.sites.uiowa.edu';
+$sites['siteslaurent-jay.dev.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
+$sites['siteslaurent-jay.stage.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
+$sites['siteslaurent-jay.prod.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
