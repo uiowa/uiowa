@@ -8043,3 +8043,9 @@ $sites['labbloom.uiowa.ddev.site'] = 'bloom.lab.uiowa.edu';
 $sites['labbloom.dev.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
 $sites['labbloom.stage.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
 $sites['labbloom.prod.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
+
+// Directory aliases for cap.lab.uiowa.edu.
+$sites['labcap.uiowa.ddev.site'] = 'cap.lab.uiowa.edu';
+$sites['labcap.dev.drupal.uiowa.edu'] = 'cap.lab.uiowa.edu';
+$sites['labcap.stage.drupal.uiowa.edu'] = 'cap.lab.uiowa.edu';
+$sites['labcap.prod.drupal.uiowa.edu'] = 'cap.lab.uiowa.edu';
