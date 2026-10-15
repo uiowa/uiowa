@@ -7,20 +7,24 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Block\BlockPluginInterface;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_builder\OverridesSectionStorageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
-use Drupal\sitenow_landing_pages\LandingPageUnlink;
 
 /**
  * Determine whether a node is a landing page.
  */
 function _sitenow_landing_pages_is_landing_page(NodeInterface $node): bool {
   return $node->hasField('field_landing_page') && (bool) $node->get('field_landing_page')->value;
+}
+
+/**
+ * Determine whether a landing page shows the site name in the header.
+ */
+function _sitenow_landing_pages_shows_site_name(NodeInterface $node): bool {
+  return $node->hasField('field_landing_page_site_name') && (bool) $node->get('field_landing_page_site_name')->value;
 }
 
 /**
@@ -43,12 +47,27 @@ function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $
     return;
   }
 
+  $fields = ['field_landing_page'];
+
+  if (isset($form['field_landing_page_site_name'])) {
+    $fields[] = 'field_landing_page_site_name';
+
+    // Only offer the site name option on landing pages.
+    $form['field_landing_page_site_name']['#states'] = [
+      'visible' => [
+        ':input[name="field_landing_page[value]"]' => ['checked' => TRUE],
+      ],
+    ];
+  }
+
   $publish = $form['field_publish_options'] ?? [];
 
-  // Show the checkbox with the page options so it shares their spacing.
+  // Show the checkboxes with the page options so they share their spacing.
   if (($publish['#access'] ?? TRUE) && !empty($publish['widget']['#options'])) {
-    $form['field_publish_options']['widget']['field_landing_page'] = $form['field_landing_page'];
-    unset($form['field_landing_page']);
+    foreach ($fields as $field) {
+      $form['field_publish_options']['widget'][$field] = $form[$field];
+      unset($form[$field]);
+    }
   }
 }
 
@@ -58,9 +77,11 @@ function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $
 function sitenow_landing_pages_preprocess_html(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
 
-  // Top links are hidden on landing pages, so the body class should say so.
+  // Top links and the parent site are hidden on landing pages, so the body
+  // class should say so.
   if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
     $variables['has_enabled_links'] = FALSE;
+    $variables['site_has_parent'] = FALSE;
   }
 }
 
@@ -70,20 +91,25 @@ function sitenow_landing_pages_preprocess_html(&$variables) {
 function sitenow_landing_pages_preprocess_page(&$variables) {
   $node = $variables['node'] ?? NULL;
 
-  // Hide site search, main navigation, breadcrumbs and footer menus on
+  // Hide site search, main navigation, breadcrumbs and footer regions on
   // landing pages.
   if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
     unset(
       $variables['page']['search'],
       $variables['page']['primary_menu'],
       $variables['page']['breadcrumb'],
+      $variables['page']['footer_first'],
       $variables['page']['footer_second'],
     );
 
-    // Hide the footer admin login link.
-    $variables['footer_login_link'] = FALSE;
+    // Render only the footer socket.
+    $variables['footer_socket_only'] = TRUE;
 
-    $variables['#attached']['library'][] = 'sitenow_landing_pages/landing-page';
+    // Render the header as if the site has no parent site.
+    $variables['site_has_parent'] = FALSE;
+
+    // Hide the header site name unless the page opts in.
+    $variables['show_site_name'] = _sitenow_landing_pages_shows_site_name($node);
   }
 }
 
@@ -91,7 +117,7 @@ function sitenow_landing_pages_preprocess_page(&$variables) {
  * Implements hook_block_access().
  */
 function sitenow_landing_pages_block_access(Block $block, $operation, AccountInterface $account) {
-  $hidden = ['uiowa_alerts_block', 'menu_block:social', 'menu_block:top-links'];
+  $hidden = ['uiowa_alerts_block', 'menu_block:top-links'];
 
   if ($operation !== 'view' || !in_array($block->getPluginId(), $hidden, TRUE)) {
     return AccessResult::neutral();
@@ -100,7 +126,7 @@ function sitenow_landing_pages_block_access(Block $block, $operation, AccountInt
   $node = \Drupal::routeMatch()->getParameter('node');
   $result = AccessResult::neutral()->addCacheContexts(['route']);
 
-  // Hide alerts, social media links and top links on landing pages.
+  // Hide alerts and top links on landing pages.
   if ($node instanceof NodeInterface) {
     $result->addCacheableDependency($node);
 
@@ -110,43 +136,6 @@ function sitenow_landing_pages_block_access(Block $block, $operation, AccountInt
   }
 
   return $result;
-}
-
-/**
- * Determine whether a block plugin is the footer contact info block.
- */
-function _sitenow_landing_pages_is_footer_contact(BlockPluginInterface $block): bool {
-  $placed = Block::load('uids_base_footercontactinfo');
-  return $placed && $placed->getPluginId() === $block->getPluginId();
-}
-
-/**
- * Implements hook_block_build_BASE_BLOCK_ID_alter() for block_content.
- */
-function sitenow_landing_pages_block_build_block_content_alter(array &$build, BlockPluginInterface $block) {
-  if (!_sitenow_landing_pages_is_footer_contact($block)) {
-    return;
-  }
-
-  // Cache the footer contact info per page, since landing pages unlink it.
-  $build['#cache']['contexts'][] = 'route';
-  $node = \Drupal::routeMatch()->getParameter('node');
-
-  if ($node instanceof NodeInterface) {
-    $build['#cache']['tags'] = Cache::mergeTags($build['#cache']['tags'] ?? [], $node->getCacheTags());
-  }
-}
-
-/**
- * Implements hook_block_view_BASE_BLOCK_ID_alter() for block_content.
- */
-function sitenow_landing_pages_block_view_block_content_alter(array &$build, BlockPluginInterface $block) {
-  $node = \Drupal::routeMatch()->getParameter('node');
-
-  // Unlink phone numbers, emails, etc. in the footer contact info.
-  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node) && _sitenow_landing_pages_is_footer_contact($block)) {
-    $build['#post_render'][] = [LandingPageUnlink::class, 'postRender'];
-  }
 }
 
 /**

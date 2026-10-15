@@ -153,7 +153,8 @@ function uids_base_preprocess(&$variables, $hook) {
  */
 function uids_base_preprocess_html(&$variables) {
   $config = \Drupal::config('system.site');
-  $variables['site_has_parent'] = $config->get('has_parent');
+  // Respect a module that has already hidden the parent site.
+  $variables['site_has_parent'] = ($variables['site_has_parent'] ?? NULL) !== FALSE && $config->get('has_parent');
   // Body class for top links.
   // Load the uids_base_toplinks block entity.
   if (class_exists('\Drupal\block\Entity\Block')) {
@@ -291,7 +292,8 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_slogan'] = $config->get('slogan');
 
   // These values will be populated automatically if uiowa_core is enabled.
-  $variables['site_has_parent'] = $config->get('has_parent');
+  // Respect a module that has already hidden the parent site.
+  $variables['site_has_parent'] = ($variables['site_has_parent'] ?? NULL) !== FALSE && $config->get('has_parent');
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
 
@@ -360,6 +362,12 @@ function uids_base_preprocess_page(&$variables) {
     $variables['header_type'] = 'below';
   }
 
+  // A hidden site name would leave the 'below' header's second bar empty, so
+  // use the 'inline' header option instead.
+  if (($variables['show_site_name'] ?? TRUE) === FALSE) {
+    $variables['header_type'] = 'inline';
+  }
+
   $variables['uiowa_url'] = 'https://uiowa.edu';
 
   // This is the homepage.
@@ -396,7 +404,7 @@ function uids_base_preprocess_page(&$variables) {
   }
 
   // Link to the SSO route if configured to display the footer login link.
-  if (($variables['footer_login_link'] ?? NULL) !== FALSE && (uids_base_theme_get_setting('footer.login_link') ?? TRUE)) {
+  if (uids_base_theme_get_setting('footer.login_link') ?? TRUE) {
     $route = 'samlauth.saml_controller_login';
     $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
 

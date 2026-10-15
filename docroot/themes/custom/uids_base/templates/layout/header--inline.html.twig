@@ -1,19 +1,17 @@
 {% extends '@uids_base/layout/header.html.twig' %}
 
 {% block uiowa_bar %}
+  {% if show_site_name is not same as(false) %}
   {% if logo_path and is_off_brand %}
     <div class="site-name">
-      {% if branding_links is not same as(false) %}
-        <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
-      {% else %}
-        <img alt="{{ site_name }}" src ="{{ logo_path }}" />
-      {% endif %}
+      <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
     </div>
   {% else %}
     {% include '@uids_base/uids/site-name.html.twig' with {
       'site_name': site_name,
-      'site_url': branding_links is not same as(false) ? path('<front>'),
+      'site_url': path('<front>'),
     } %}
+  {% endif %}
   {% endif %}
 
   {% if page.action_menu %}

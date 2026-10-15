@@ -2,15 +2,8 @@ adding:
   dependencies:
     config:
       - field.field.node.page.field_landing_page
-  content:
-    field_landing_page:
-      type: boolean
-      label: above
-      settings:
-        format: default
-        format_custom_false: ''
-        format_custom_true: ''
-      third_party_settings: {  }
-      weight: 4
-      region: content
+      - field.field.node.page.field_landing_page_site_name
+  hidden:
+    field_landing_page: true
+    field_landing_page_site_name: true
 removing: {  }
