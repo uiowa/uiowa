@@ -5,6 +5,9 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+    # ready_for_review lets Percy run when a draft PR is marked ready; the
+    # other jobs skip that event since no code changed.
+    types: [ opened, synchronize, reopened, ready_for_review ]
   workflow_dispatch:
 
 # Grant workflow token read access to repository contents
@@ -17,6 +20,7 @@ jobs:
   lint:
     name: Code Standards (PHPCS)
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
 
     steps:
       - name: Checkout code
@@ -92,6 +96,7 @@ jobs:
   static-analysis:
     name: Static Analysis (PHPStan)
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
 
     steps:
       - name: Checkout code
@@ -151,6 +156,7 @@ jobs:
   security:
     name: Security Audit (Composer)
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
 
     steps:
       - name: Checkout code
@@ -210,6 +216,7 @@ jobs:
   test:
     name: PHPUnit Tests
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
 
     services:
       mysql:
@@ -294,6 +301,7 @@ jobs:
   frontend:
     name: Frontend Build
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
 
     steps:
       - name: Checkout code
@@ -321,10 +329,11 @@ jobs:
           retention-days: 7
 
   # Percy visual regression testing. Pushes to main produce the baseline
-  # that pull requests are compared against.
+  # that pull requests are compared against. Draft PRs are skipped.
   percy:
     name: Percy Visual Regression
     runs-on: ubuntu-22.04
+    if: github.event.pull_request.draft != true
 
     services:
       mysql:
