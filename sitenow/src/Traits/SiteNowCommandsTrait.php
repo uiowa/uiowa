@@ -7,6 +7,7 @@ use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Applications;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use SiteNow\Acquia\RetryingClient;
 use SiteNow\Command\SiteUpdateCommand;
 use SiteNow\Config\Credentials;
 use SiteNow\Config\Manifest;
@@ -57,12 +58,13 @@ trait SiteNowCommandsTrait {
    *   An authenticated Acquia Cloud API client.
    */
   protected function getAcquiaCloudApiClient(string $key, string $secret): Client {
-    $connector = new Connector([
+    $connector = fn() => new Connector([
       'key'    => $key,
       'secret' => $secret,
     ]);
 
-    return Client::factory($connector);
+    // Custom extend of Client that retries once on an expired token.
+    return RetryingClient::factory($connector())->setConnectorFactory($connector);
   }
 
   /**
