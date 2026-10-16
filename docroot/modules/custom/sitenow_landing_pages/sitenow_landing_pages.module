@@ -91,6 +91,7 @@ function sitenow_landing_pages_preprocess_html(&$variables) {
   if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
     $variables['has_enabled_links'] = FALSE;
     $variables['site_has_parent'] = FALSE;
+    $variables['show_site_name'] = _sitenow_landing_pages_shows_site_name($node);
   }
 }
 

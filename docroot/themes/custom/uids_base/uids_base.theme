@@ -223,6 +223,11 @@ function uids_base_preprocess_html(&$variables) {
   // Get header type for setting sticky padding for tertiary header.
   $variables['header_type'] = uids_base_theme_get_setting('header.type');
 
+  // Match the 'inline' header used when the site name is hidden.
+  if (($variables['show_site_name'] ?? TRUE) === FALSE) {
+    $variables['header_type'] = 'inline';
+  }
+
   // Get header branding type.
   $variables['header_branding'] = uids_base_theme_get_setting('header.branding_options');
 
