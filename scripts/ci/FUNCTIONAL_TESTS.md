@@ -199,7 +199,7 @@ ddev phpunit \
 
 ## Summary
 
-**For Issue #9852 (Non-BLT Testing):**
+**Automated test coverage:**
 
 ✅ **Working well:**
 - Unit tests - Fast and reliable
