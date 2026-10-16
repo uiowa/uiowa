@@ -4940,3 +4940,22 @@ function sitenow_update_10041() {
 
   return t('Removed the retired UI Icons backport module state.');
 }
+
+/**
+ * Re-save config whose stored values no longer match updated schema.
+ */
+function sitenow_update_10042() {
+  // Pathauto 1.15 adds a leading slash to the pattern on save.
+  $patterns = \Drupal::entityTypeManager()->getStorage('pathauto_pattern')->loadMultiple();
+  foreach ($patterns as $pattern) {
+    $pattern->save();
+  }
+
+  // Saving casts display_search_all_uiowa to the boolean its schema declares.
+  $search = \Drupal::configFactory()->getEditable('uiowa_search.settings');
+  if (!$search->isNew()) {
+    $search->save();
+  }
+
+  return t('Re-saved @count pathauto pattern(s).', ['@count' => count($patterns)]);
+}
