@@ -97,7 +97,7 @@
 {% endif %}
 
 {% block footer %}
-  {% if page.pre_footer or page.footer_first or page.footer_second %}
+  {% if page.pre_footer or page.footer_first or page.footer_second or footer_socket_only %}
     {% include '@uids_base/layout/footer.html.twig' %}
   {% endif %}
 {% endblock %}

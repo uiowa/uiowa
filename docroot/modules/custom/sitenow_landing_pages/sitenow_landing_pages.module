@@ -1,0 +1,211 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Landing Pages module.
+ */
+
+use Drupal\block\Entity\Block;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\layout_builder\OverridesSectionStorageInterface;
+use Drupal\node\NodeInterface;
+use Drupal\simple_sitemap\Entity\SimpleSitemapInterface;
+
+/**
+ * Determine whether a node is a landing page.
+ */
+function _sitenow_landing_pages_is_landing_page(NodeInterface $node): bool {
+  return $node->hasField('field_landing_page') && (bool) $node->get('field_landing_page')->value;
+}
+
+/**
+ * Determine whether a landing page shows the site name in the header.
+ */
+function _sitenow_landing_pages_shows_site_name(NodeInterface $node): bool {
+  return $node->hasField('field_landing_page_site_name') && (bool) $node->get('field_landing_page_site_name')->value;
+}
+
+/**
+ * Implements hook_metatags_alter().
+ */
+function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context) {
+  $entity = $context['entity'] ?? NULL;
+
+  // Keep landing pages out of search engine results.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    $metatags['robots'] = 'noindex, follow';
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms.
+ */
+function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!isset($form['field_landing_page'])) {
+    return;
+  }
+
+  $fields = ['field_landing_page'];
+
+  if (isset($form['field_landing_page_site_name'])) {
+    // The uiowa.edu homepage header never shows a site name, and other sites
+    // may not have one.
+    $site_path = \Drupal::getContainer()->getParameter('site.path');
+
+    if ($site_path === 'sites/uiowa.edu' || empty(\Drupal::config('system.site')->get('name'))) {
+      $form['field_landing_page_site_name']['#access'] = FALSE;
+    }
+    else {
+      $fields[] = 'field_landing_page_site_name';
+
+      // Only offer the site name option on landing pages.
+      $form['field_landing_page_site_name']['#states'] = [
+        'visible' => [
+          ':input[name="field_landing_page[value]"]' => ['checked' => TRUE],
+        ],
+      ];
+    }
+  }
+
+  $publish = $form['field_publish_options'] ?? [];
+
+  // Show the checkboxes with the page options so they share their spacing.
+  if (($publish['#access'] ?? TRUE) && !empty($publish['widget']['#options'])) {
+    foreach ($fields as $field) {
+      $form['field_publish_options']['widget'][$field] = $form[$field];
+      unset($form[$field]);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for html templates.
+ */
+function sitenow_landing_pages_preprocess_html(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Top links and the parent site are hidden on landing pages, so the body
+  // class should say so.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    $variables['has_enabled_links'] = FALSE;
+    $variables['site_has_parent'] = FALSE;
+    $variables['show_site_name'] = _sitenow_landing_pages_shows_site_name($node);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function sitenow_landing_pages_preprocess_page(&$variables) {
+  $node = $variables['node'] ?? NULL;
+
+  // Hide site search, main navigation, breadcrumbs and footer regions on
+  // landing pages.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset(
+      $variables['page']['search'],
+      $variables['page']['primary_menu'],
+      $variables['page']['breadcrumb'],
+      $variables['page']['footer_first'],
+      $variables['page']['footer_second'],
+    );
+
+    // Render only the footer socket.
+    $variables['footer_socket_only'] = TRUE;
+
+    // Render the header as if the site has no parent site.
+    $variables['site_has_parent'] = FALSE;
+
+    // Hide the header site name unless the page opts in.
+    $variables['show_site_name'] = _sitenow_landing_pages_shows_site_name($node);
+
+    $variables['#attached']['library'][] = 'sitenow_landing_pages/landing-page';
+  }
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function sitenow_landing_pages_block_access(Block $block, $operation, AccountInterface $account) {
+  $hidden = ['uiowa_alerts_block', 'menu_block:top-links'];
+
+  if ($operation !== 'view' || !in_array($block->getPluginId(), $hidden, TRUE)) {
+    return AccessResult::neutral();
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $result = AccessResult::neutral()->addCacheContexts(['route']);
+
+  // Hide alerts and top links on landing pages.
+  if ($node instanceof NodeInterface) {
+    $result->addCacheableDependency($node);
+
+    if (_sitenow_landing_pages_is_landing_page($node)) {
+      $result = AccessResult::forbidden()->addCacheContexts(['route'])->addCacheableDependency($node);
+    }
+  }
+
+  return $result;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for block templates.
+ */
+function sitenow_landing_pages_preprocess_block(&$variables) {
+  if ($variables['plugin_id'] !== 'system_breadcrumb_block') {
+    return;
+  }
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Hide breadcrumbs placed in landing page layouts.
+  if ($node instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($node)) {
+    unset($variables['content']);
+  }
+}
+
+/**
+ * Implements hook_plugin_filter_TYPE__CONSUMER_alter().
+ */
+function sitenow_landing_pages_plugin_filter_block__layout_builder_alter(array &$definitions, array $extra) {
+  $storage = $extra['section_storage'] ?? NULL;
+
+  if (!$storage instanceof OverridesSectionStorageInterface) {
+    return;
+  }
+
+  $entity = $storage->getContextValue('entity');
+
+  // Landing pages can't place the main navigation block.
+  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
+    unset($definitions['menu_block:main']);
+  }
+}
+
+/**
+ * Implements hook_simple_sitemap_links_alter().
+ */
+function sitenow_landing_pages_simple_sitemap_links_alter(array &$links, SimpleSitemapInterface $sitemap) {
+  $ids = \Drupal::entityQuery('node')
+    ->accessCheck(FALSE)
+    ->condition('type', 'page')
+    ->condition('field_landing_page', 1)
+    ->execute();
+
+  if (!$ids) {
+    return;
+  }
+
+  // Entity queries are keyed by revision ID, so key by node ID instead.
+  $ids = array_flip($ids);
+
+  // Remove landing pages from the sitemap.
+  foreach ($links as $key => $link) {
+    $info = $link['meta']['entity_info'] ?? NULL;
+    if ($info && $info['entity_type'] === 'node' && isset($ids[$info['id']])) {
+      unset($links[$key]);
+    }
+  }
+}
