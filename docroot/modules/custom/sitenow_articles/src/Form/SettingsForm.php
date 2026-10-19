@@ -499,7 +499,7 @@ class SettingsForm extends ConfigFormBase {
       $parts[] = '[node:created:custom:m]';
     }
     $parts[] = '[node:title]';
-    $new_pattern = implode('/', $parts);
+    $new_pattern = '/' . implode('/', $parts);
 
     // Only run this potentially expensive process if this setting is changing.
     if ($new_pattern != $old_pattern) {
