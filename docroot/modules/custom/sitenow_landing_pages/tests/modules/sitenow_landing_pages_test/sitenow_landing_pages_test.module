@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Support module for SiteNow Landing Pages tests.
+ */
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function sitenow_landing_pages_test_config_schema_info_alter(&$schemas) {
+  // Mirror the parent organization schema uiowa_core adds to system.site,
+  // since uiowa_core can't be installed on its own.
+  $schemas['system.site']['mapping']['has_parent'] = [
+    'type' => 'boolean',
+    'label' => 'Has parent organization',
+  ];
+  $schemas['system.site']['mapping']['parent'] = [
+    'type' => 'mapping',
+    'label' => 'Parent organization',
+    'mapping' => [
+      'name' => [
+        'type' => 'text',
+        'label' => 'Parent organization name',
+      ],
+      'url' => [
+        'type' => 'uri',
+        'label' => 'Parent organization URL',
+      ],
+    ],
+  ];
+}
