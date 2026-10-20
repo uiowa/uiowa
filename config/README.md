@@ -8,6 +8,8 @@ The Config Ignore module defines a config entity for excluding config entities o
 
 Config split status (which determines whether the split is active or not) should be included in the ignored config values list. This allows us to enabled or disable a split without needing to do a code deployment.
 
+Config Ignore runs in advanced mode, with separate lists for config being created, updated and deleted. Add a split's status to the `update` and `delete` lists only. On create, Config Ignore drops ignored keys, and a split saved without a status is active. A status listed under `create` turns a new split on for every site on its first import.
+
 Note: Configuration that is ignored cannot be selectively enabled/disabled in
 environment splits. Use Drupal's [configuration override system](https://www.drupal.org/docs/8/api/configuration-api/configuration-override-system) if you need to override configuration per environment.
 
