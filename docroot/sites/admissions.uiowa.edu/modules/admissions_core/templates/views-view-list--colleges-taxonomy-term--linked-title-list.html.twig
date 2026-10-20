@@ -2,7 +2,7 @@
 /**
  * @file
  * Theme override implementation for a view template to display a list of rows.
- * Grouping is an h2 instead of the default h3.
+ * Grouping is an h2 with an h3 style class instead of the default h3.
  *
  * Available variables:
  * - attributes: HTML attributes for the container.
@@ -23,7 +23,7 @@
   <div{{ attributes }}>
 {% endif %}
   {% if title %}
-    <h2>{{ title }}</h2>
+    <h2 class="h3">{{ title }}</h2>
   {% endif %}
 
   <{{ list.type }}{{ list.attributes }}>
