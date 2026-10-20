@@ -19,9 +19,11 @@ terminal, so a command that asks a question can be answered.
 ## Applications
 
 Sites are spread across several Acquia applications rather than living on one.
-An application's SSL certificate lists its domains as SANs and that list caps
-near 100, so no single application can hold the whole fleet. `applications.yml`
-is the registry of applications; `manifest.yml` maps each site to its application.
+The constraint is SSL certificate coverage: an application's certificate lists
+its domains as SANs, and `multisite:create` checks a candidate site's domains
+against each application's live certificates before it picks one.
+`applications.yml` is the registry of applications; `manifest.yml` maps each
+site to its application.
 
 ## Code structure
 

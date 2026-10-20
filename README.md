@@ -111,6 +111,7 @@ Run the update hooks against a database built under the old code, the way a depl
 2. Sync the site: `ddev sn ds <site>`.
 3. Check out the feature branch and run `ddev composer install` again.
 4. Run `ddev drush @<id>.local updb -y`.
+5. Export and commit any config the update changed, per [Configuration changes](#configuration-changes) above.
 
 Syncing after the branch is checked out would test the update hook against a database that already has the new schema, which is not what a deploy does.
 
