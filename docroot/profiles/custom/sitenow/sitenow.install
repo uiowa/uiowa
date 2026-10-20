@@ -4955,3 +4955,18 @@ function sitenow_update_10042() {
 
   return t('Re-saved uiowa_search.settings.');
 }
+
+/**
+ * Cast remove_yearmonth_slug to the boolean its schema declares.
+ */
+function sitenow_update_10043() {
+  $articles = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+  if ($articles->isNew()) {
+    return t('sitenow_articles.settings does not exist.');
+  }
+
+  // Saving casts each value to its schema type.
+  $articles->save();
+
+  return t('Re-saved sitenow_articles.settings.');
+}
