@@ -3,6 +3,11 @@
 @use "../../../../../themes/custom/uids_base/uids/scss/layout/_grid.scss";
 
 .block-views-blockstudent-card-block-student-grid {
+  // Make it look like an h3 regardless of what is selected.
+  .block__headline {
+    @include utilities.h3;
+  }
+
   &[class*="grid"] {
     .view-content.list-container__inner {
       gap: 0 !important;
