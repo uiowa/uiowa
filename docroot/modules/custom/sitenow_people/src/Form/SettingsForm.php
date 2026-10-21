@@ -365,7 +365,7 @@ class SettingsForm extends ConfigFormBase {
 
     $old_pattern = $this->config('pathauto.pattern.person')->get('pattern');
 
-    $new_pattern = $path . '/[node:title]';
+    $new_pattern = '/' . $path . '/[node:title]';
 
     // Only run this potentially expensive process if this setting is changing.
     if ($new_pattern != $old_pattern) {

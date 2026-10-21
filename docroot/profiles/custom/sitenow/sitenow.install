@@ -4940,3 +4940,33 @@ function sitenow_update_10041() {
 
   return t('Removed the retired UI Icons backport module state.');
 }
+
+/**
+ * Cast display_search_all_uiowa to the boolean its schema declares.
+ */
+function sitenow_update_10042() {
+  $search = \Drupal::configFactory()->getEditable('uiowa_search.settings');
+  if ($search->isNew()) {
+    return t('uiowa_search.settings does not exist.');
+  }
+
+  // Saving casts each value to its schema type.
+  $search->save();
+
+  return t('Re-saved uiowa_search.settings.');
+}
+
+/**
+ * Cast remove_yearmonth_slug to the boolean its schema declares.
+ */
+function sitenow_update_10043() {
+  $articles = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+  if ($articles->isNew()) {
+    return t('sitenow_articles.settings does not exist.');
+  }
+
+  // Saving casts each value to its schema type.
+  $articles->save();
+
+  return t('Re-saved sitenow_articles.settings.');
+}

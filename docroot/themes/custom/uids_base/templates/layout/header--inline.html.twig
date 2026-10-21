@@ -1,6 +1,7 @@
 {% extends '@uids_base/layout/header.html.twig' %}
 
 {% block uiowa_bar %}
+  {% if show_site_name is not same as(false) %}
   {% if logo_path and is_off_brand %}
     <div class="site-name">
       <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
@@ -10,6 +11,7 @@
       'site_name': site_name,
       'site_url': path('<front>'),
     } %}
+  {% endif %}
   {% endif %}
 
   {% if page.action_menu %}
