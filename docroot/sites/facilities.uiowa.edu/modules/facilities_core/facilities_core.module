@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -77,6 +78,121 @@ function facilities_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['artwork'])) {
     $bundles['node']['artwork']['class'] = Artwork::class;
   }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function facilities_core_entity_extra_field_info() {
+  $extra = [];
+
+  $extra['node']['building']['display']['building_map_links'] = [
+    'label' => t('Map links'),
+    'description' => t('Apple and Google map links generated from the building latitude and longitude.'),
+    'weight' => 100,
+    'visible' => FALSE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function facilities_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() !== 'building' || !$display->getComponent('building_map_links')) {
+    return;
+  }
+
+  $has_address = !$entity->get('field_building_address')->isEmpty();
+  $map_links = _facilities_core_building_map_links($entity);
+
+  // Nothing to render without an address or coordinates.
+  if (!$has_address && !$map_links) {
+    return;
+  }
+
+  // If address exists, render. Map links are appended
+  // in facilities_core_preprocess_field().
+  if ($has_address) {
+    $build['building_map_links'] = $entity->get('field_building_address')->view([
+      'label' => 'hidden',
+      'type' => 'string',
+      'settings' => ['link_to_entity' => FALSE],
+    ]);
+    return;
+  }
+
+  // Render links if no address but lat/long exist mimicking field for styling.
+  $build['building_map_links'] = [
+    '#theme' => 'field',
+    '#title' => t('Map links'),
+    '#label_display' => 'inline',
+    '#field_type' => 'link',
+    '#formatter' => 'link',
+    '#field_name' => 'building_map_links',
+    '#entity_type' => 'node',
+    '#bundle' => 'building',
+    '#view_mode' => 'default',
+    '#is_multiple' => FALSE,
+    0 => $map_links,
+  ];
+}
+
+/**
+ * Builds Apple and Google map links for a building node.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The building node.
+ *
+ * @return array
+ *   A render array of map links, or an empty array when the building has no
+ *   usable latitude/longitude.
+ */
+function _facilities_core_building_map_links(NodeInterface $node): array {
+  $latitude = trim($node->get('field_building_latitude')->getString());
+  $longitude = trim($node->get('field_building_longitude')->getString());
+
+  if ($latitude === '' || $longitude === '') {
+    return [];
+  }
+
+  $coordinates = $latitude . ',' . $longitude;
+
+  return [
+    '#prefix' => ' <span class="map-links">(',
+    '#suffix' => ')</span>',
+    'apple' => [
+      '#type' => 'link',
+      '#title' => t('Apple'),
+      '#url' => Url::fromUri('https://maps.apple.com/place?coordinate=' . $coordinates),
+      '#options' => [
+        'attributes' => [
+          'aria-label' => t('Apple map'),
+          'target' => '_blank',
+          'rel' => 'noopener noreferrer',
+        ],
+      ],
+    ],
+    'separator' => [
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => ' / ',
+      '#attributes' => ['aria-hidden' => 'true'],
+    ],
+    'google' => [
+      '#type' => 'link',
+      '#title' => t('Google'),
+      '#url' => Url::fromUri('https://www.google.com/maps/search/?api=1&query=' . $coordinates),
+      '#options' => [
+        'attributes' => [
+          'aria-label' => t('Google map'),
+          'target' => '_blank',
+          'rel' => 'noopener noreferrer',
+        ],
+      ],
+    ],
+  ];
 }
 
 /**
@@ -302,20 +418,36 @@ function facilities_core_preprocess_field(&$variables) {
     case 'field_building_address':
       $node = \Drupal::routeMatch()->getParameter('node');
       if ($node instanceof NodeInterface) {
-        // Get the content type of the current node.
-        $node = $node->bundle();
-        if ($node == 'named_building') {
+        if ($node->bundle() == 'named_building') {
           $variables['label_display'] = 'inline';
         }
         else {
           uiowa_core_set_field_icon($variables, 'fa-compass');
           uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+
+          // Append Apple/Google map links after the address.
+          $building = $variables['element']['#object'] ?? NULL;
+          if ($building instanceof NodeInterface && $building->bundle() === 'building') {
+            $map_links = _facilities_core_building_map_links($building);
+            if ($map_links && isset($variables['items'][0]['content'])) {
+              $variables['items'][0]['content'] = [
+                'address' => $variables['items'][0]['content'],
+                'links' => $map_links,
+              ];
+            }
+          }
         }
       }
       break;
 
     case 'field_building_number':
       uiowa_core_set_field_label_icon($variables, 'fa-hashtag');
+      uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
+      break;
+
+    case 'building_map_links':
+      // Styling for the standalone (no address) map links pseudo-field.
+      uiowa_core_set_field_label_icon($variables, 'fa-location-dot');
       uiowa_core_set_attributes($variables, 'banner__text padding--inline-end--md');
       break;
 
@@ -508,6 +640,7 @@ function facilities_core_preprocess_block(&$variables) {
       break;
 
     // Add inline class for blocks to appear inline.
+    case 'extra_field_block:node:building:building_map_links':
     case 'field_block:node:building:field_building_address':
     case 'field_block:node:building:field_building_number':
     case 'field_block:node:building:field_building_abbreviation':
