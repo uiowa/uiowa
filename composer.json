@@ -240,6 +240,7 @@
         "drupal/weight": "^3.2",
         "drupal/workbench_email": "^3.0",
         "drush/drush": "^13.8",
+        "enshrined/svg-sanitize": "1.0.0 as 0.22.1",
         "giggsey/libphonenumber-for-php-lite": "^9.0",
         "iio/libmergepdf": "^4.0",
         "kartsims/easysvg": "2.5",
@@ -248,7 +249,7 @@
         "npm-asset/jquery-collapse": "^1.1",
         "npm-asset/pannellum": "^2.5",
         "npm-asset/photoswipe-dynamic-caption-plugin": "^1.2",
-        "npm-asset/slick-carousel": "^1.8",
+        "npm-asset/slick-carousel": "^2.0",
         "npm-asset/splidejs--splide": "^4.1",
         "npm-asset/vanilla-icon-picker": "^1.2",
         "oomphinc/composer-installers-extender": "^2.0",
@@ -282,6 +283,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "bower-asset/chosen": {
+                "Replace removed jQuery.trim with native string trimming": "patches/chosen-jquery4-trim.patch"
+            },
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
@@ -347,7 +351,8 @@
                 "Allow radio buttons for single-select group form type": "patches/lbs_3290930.patch"
             },
             "drupal/link_attributes": {
-                "Linkit with attributes widget overrides parent options": "patches/3379989.patch"
+                "Linkit with attributes widget overrides parent options": "patches/3379989.patch",
+                "Preserve parent widget processing in massageFormValues": "patches/3379989-parent-massage-form-values.patch"
             },
             "drupal/linkit": {
                 "Add Webform Matcher": "https://www.drupal.org/files/issues/2023-06-13/linkit-webform-matcher-2946234-36.patch",

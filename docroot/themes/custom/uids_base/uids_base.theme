@@ -153,30 +153,36 @@ function uids_base_preprocess(&$variables, $hook) {
  */
 function uids_base_preprocess_html(&$variables) {
   $config = \Drupal::config('system.site');
-  $variables['site_has_parent'] = $config->get('has_parent');
+  // Respect a module that has already hidden the parent site.
+  $variables['site_has_parent'] = ($variables['site_has_parent'] ?? NULL) !== FALSE && $config->get('has_parent');
   // Body class for top links.
   // Load the uids_base_toplinks block entity.
   if (class_exists('\Drupal\block\Entity\Block')) {
     $block = Block::load('uids_base_toplinks');
     if ($block) {
-      // Initialize a variable to count the number of enabled menu links.
-      $enabled_links = 0;
-      // Load the 'top-links' menu tree.
-      $menu_links = \Drupal::menuTree()->load('top-links', new MenuTreeParameters());
-      // Iterate through the menu links.
-      foreach ($menu_links as $menu_link) {
-        // If the link is disabled, skip to the next link.
-        if (!$menu_link->link->isEnabled()) {
-          continue;
+      // Respect a module that has already hidden the top links.
+      $has_enabled_links = $variables['has_enabled_links'] ?? NULL;
+
+      if ($has_enabled_links === NULL) {
+        // Initialize a variable to count the number of enabled menu links.
+        $enabled_links = 0;
+        // Load the 'top-links' menu tree.
+        $menu_links = \Drupal::menuTree()->load('top-links', new MenuTreeParameters());
+        // Iterate through the menu links.
+        foreach ($menu_links as $menu_link) {
+          // If the link is disabled, skip to the next link.
+          if (!$menu_link->link->isEnabled()) {
+            continue;
+          }
+          // Increment the number of enabled links.
+          $enabled_links++;
         }
-        // Increment the number of enabled links.
-        $enabled_links++;
+        // Check if there are any enabled links in the menu.
+        $has_enabled_links = ($enabled_links > 0);
+        // Add the 'has_enabled_links' variable to the variables array,
+        // to be used in templates.
+        $variables['has_enabled_links'] = $has_enabled_links;
       }
-      // Check if there are any enabled links in the menu.
-      $has_enabled_links = ($enabled_links > 0);
-      // Add the 'has_enabled_links' variable to the variables array,
-      // to be used in templates.
-      $variables['has_enabled_links'] = $has_enabled_links;
       // Add the 'has_top_links' variable to the variables array,
       // to be used in templates.
       // If there are enabled links, set the variable to 'has-top-links',
@@ -216,6 +222,11 @@ function uids_base_preprocess_html(&$variables) {
 
   // Get header type for setting sticky padding for tertiary header.
   $variables['header_type'] = uids_base_theme_get_setting('header.type');
+
+  // Match the 'inline' header used when the site name is hidden.
+  if (($variables['show_site_name'] ?? TRUE) === FALSE) {
+    $variables['header_type'] = 'inline';
+  }
 
   // Get header branding type.
   $variables['header_branding'] = uids_base_theme_get_setting('header.branding_options');
@@ -286,7 +297,8 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_slogan'] = $config->get('slogan');
 
   // These values will be populated automatically if uiowa_core is enabled.
-  $variables['site_has_parent'] = $config->get('has_parent');
+  // Respect a module that has already hidden the parent site.
+  $variables['site_has_parent'] = ($variables['site_has_parent'] ?? NULL) !== FALSE && $config->get('has_parent');
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
 
@@ -353,6 +365,12 @@ function uids_base_preprocess_page(&$variables) {
   // characters, we force the site to use the 'below' header option.
   if ($variables['site_has_parent'] || $name_length > 43) {
     $variables['header_type'] = 'below';
+  }
+
+  // A hidden site name would leave the 'below' header's second bar empty, so
+  // use the 'inline' header option instead.
+  if (($variables['show_site_name'] ?? TRUE) === FALSE) {
+    $variables['header_type'] = 'inline';
   }
 
   $variables['uiowa_url'] = 'https://uiowa.edu';

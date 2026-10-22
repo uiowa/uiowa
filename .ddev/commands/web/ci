@@ -1,13 +1,14 @@
 #!/bin/bash
 
 ## Description: Run CI checks locally (simulates Travis pipeline)
-## Usage: ci [--skip-setup] [--fast-fail] [--exclude-functional] [lint|test|static-analysis|security]
+## Usage: ci [--skip-setup] [--fast-fail] [--exclude-functional] [lint|test|static-analysis|security|percy]
 ## Example: "ddev ci" runs all checks
 ## Example: "ddev ci lint" runs only PHPCS
 ## Example: "ddev ci security" runs security audit
 ## Example: "ddev ci --fast-fail" stops at first failure
 ## Example: "ddev ci test --exclude-functional" skips functional tests
 ## Example: "ddev ci --skip-setup test" skips setup, runs only tests
+## Example: "PERCY_TOKEN=<token> ddev ci percy" runs Percy visual regression
 
 # Pass all arguments to the run-all script
 if [ $# -eq 0 ] || [[ "$1" == --* ]]; then
@@ -30,6 +31,10 @@ else
     security|audit)
       /var/www/html/scripts/ci/security.sh
       ;;
+    percy|visual)
+      /var/www/html/scripts/ci/setup.sh
+      /var/www/html/scripts/ci/percy.sh
+      ;;
     setup)
       /var/www/html/scripts/ci/setup.sh
       ;;
@@ -39,7 +44,7 @@ else
       ;;
     *)
       echo "Unknown check: $1"
-      echo "Valid options: lint, test, static-analysis, security, setup, all"
+      echo "Valid options: lint, test, static-analysis, security, percy, setup, all"
       exit 1
       ;;
   esac

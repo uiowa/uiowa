@@ -3,8 +3,13 @@ name: CI
 on:
   push:
     branches: [ main, develop ]
+    tags: [ '*' ]
   pull_request:
     branches: [ main ]
+    # ready_for_review lets Percy run when a draft PR is marked ready; the
+    # other jobs skip that event since no code changed.
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch:
 
 # Grant workflow token read access to repository contents
 permissions:
@@ -16,6 +21,10 @@ jobs:
   lint:
     name: Code Standards (PHPCS)
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: lint-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -51,6 +60,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -61,9 +71,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -86,6 +100,10 @@ jobs:
   static-analysis:
     name: Static Analysis (PHPStan)
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: static-analysis-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -114,6 +132,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -124,9 +143,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -140,6 +163,10 @@ jobs:
   security:
     name: Security Audit (Composer)
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: security-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -168,6 +195,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -178,9 +206,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -194,6 +226,10 @@ jobs:
   test:
     name: PHPUnit Tests
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: test-${{ github.ref }}
+      cancel-in-progress: true
 
     services:
       mysql:
@@ -231,6 +267,7 @@ jobs:
           path: |
             vendor
             docroot/core
+            docroot/libraries
             docroot/modules/contrib
             docroot/themes/contrib
             docroot/profiles/contrib
@@ -241,9 +278,13 @@ jobs:
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          # Validate cache integrity - if vendor exists but core doesn't, clear vendor
-          if [ -d "vendor" ] && [ ! -d "docroot/core" ]; then
-            echo "Cache inconsistency detected: vendor exists but docroot/core missing"
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
             echo "Clearing vendor to force fresh install..."
             rm -rf vendor
           fi
@@ -273,6 +314,10 @@ jobs:
   frontend:
     name: Frontend Build
     runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: frontend-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -298,3 +343,162 @@ jobs:
             docroot/themes/*/dist/
             docroot/modules/*/dist/
           retention-days: 7
+
+  # Percy visual regression testing. Pushes to main produce the baseline
+  # that pull requests are compared against. Draft PRs are skipped.
+  percy:
+    name: Percy Visual Regression
+    runs-on: ubuntu-22.04
+    if: github.event.pull_request.draft != true
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: drupal_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+          ini-values: memory_limit=-1, max_execution_time=0
+
+      - name: Configure Git and Composer authentication
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/libraries
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --production --ignore-optional --frozen-lockfile --non-interactive
+
+      - name: Build frontend assets
+        run: yarn workspaces run build
+
+      - name: Setup test environment and web server
+        run: scripts/ci/setup.sh
+        env:
+          CI: true
+          INSTALL_DRUPAL: true
+          RUN_SERVER: true
+          NEEDS_WEBDRIVER: false
+
+      - name: Run Percy snapshot
+        run: scripts/ci/percy.sh
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
+  # Build the artifact and push it to the Acquia Cloud remotes.
+  deploy:
+    name: Deploy to Acquia
+    runs-on: ubuntu-22.04
+    needs: [ lint, static-analysis, security, test, frontend ]
+    if: github.event_name == 'push'
+    environment: acquia
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      # Full history and tags: the build stamps a tag-based version into
+      # custom .info.yml files.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      # Installs sn's own dependencies.
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Build artifact
+        run: scripts/deploy/build.sh
+
+      - name: Configure SSH for Acquia
+        env:
+          ACQUIA_SSH_KEY: ${{ secrets.ACQUIA_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ACQUIA_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          grep -oE 'svn-[0-9]+\.prod\.hosting\.acquia\.com' sitenow/applications.yml \
+            | sort -u | xargs ssh-keyscan >> ~/.ssh/known_hosts
+
+      - name: Distribute artifact
+        run: |
+          if [ "${{ github.ref_type }}" = tag ]; then
+            ./sn deploy:distribute --tag="${{ github.ref_name }}-build" \
+              --commit-msg="Automated deploy by GitHub Actions for ${{ github.ref_name }}"
+          else
+            ./sn deploy:distribute --branch="${{ github.ref_name }}-build" \
+              --commit-msg="Automated deploy by GitHub Actions for run ${{ github.run_id }}"
+          fi
