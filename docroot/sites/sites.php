@@ -8055,3 +8055,9 @@ $sites['labsml.uiowa.ddev.site'] = 'sml.lab.uiowa.edu';
 $sites['labsml.dev.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
 $sites['labsml.stage.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
 $sites['labsml.prod.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
+
+// Directory aliases for haiwc.org.uiowa.edu.
+$sites['orghaiwc.uiowa.ddev.site'] = 'haiwc.org.uiowa.edu';
+$sites['orghaiwc.dev.drupal.uiowa.edu'] = 'haiwc.org.uiowa.edu';
+$sites['orghaiwc.stage.drupal.uiowa.edu'] = 'haiwc.org.uiowa.edu';
+$sites['orghaiwc.prod.drupal.uiowa.edu'] = 'haiwc.org.uiowa.edu';
