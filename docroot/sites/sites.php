@@ -8031,3 +8031,27 @@ $sites['siteshan.uiowa.ddev.site'] = 'han.sites.uiowa.edu';
 $sites['siteshan.dev.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
 $sites['siteshan.stage.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
 $sites['siteshan.prod.drupal.uiowa.edu'] = 'han.sites.uiowa.edu';
+
+// Directory aliases for laurent-jay.sites.uiowa.edu.
+$sites['siteslaurent-jay.uiowa.ddev.site'] = 'laurent-jay.sites.uiowa.edu';
+$sites['siteslaurent-jay.dev.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
+$sites['siteslaurent-jay.stage.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
+$sites['siteslaurent-jay.prod.drupal.uiowa.edu'] = 'laurent-jay.sites.uiowa.edu';
+
+// Directory aliases for bloom.lab.uiowa.edu.
+$sites['labbloom.uiowa.ddev.site'] = 'bloom.lab.uiowa.edu';
+$sites['labbloom.dev.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
+$sites['labbloom.stage.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
+$sites['labbloom.prod.drupal.uiowa.edu'] = 'bloom.lab.uiowa.edu';
+
+// Directory aliases for cap.lab.uiowa.edu.
+$sites['labcap.uiowa.ddev.site'] = 'cap.lab.uiowa.edu';
+$sites['labcap.dev.drupal.uiowa.edu'] = 'cap.lab.uiowa.edu';
+$sites['labcap.stage.drupal.uiowa.edu'] = 'cap.lab.uiowa.edu';
+$sites['labcap.prod.drupal.uiowa.edu'] = 'cap.lab.uiowa.edu';
+
+// Directory aliases for sml.lab.uiowa.edu.
+$sites['labsml.uiowa.ddev.site'] = 'sml.lab.uiowa.edu';
+$sites['labsml.dev.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
+$sites['labsml.stage.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
+$sites['labsml.prod.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
