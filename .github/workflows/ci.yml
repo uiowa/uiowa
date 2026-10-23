@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [ main, develop ]
+    tags: [ '*' ]
   pull_request:
     branches: [ main ]
     # ready_for_review lets Percy run when a draft PR is marked ready; the
@@ -21,6 +22,9 @@ jobs:
     name: Code Standards (PHPCS)
     runs-on: ubuntu-22.04
     if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: lint-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -97,6 +101,9 @@ jobs:
     name: Static Analysis (PHPStan)
     runs-on: ubuntu-22.04
     if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: static-analysis-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -157,6 +164,9 @@ jobs:
     name: Security Audit (Composer)
     runs-on: ubuntu-22.04
     if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: security-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -217,6 +227,9 @@ jobs:
     name: PHPUnit Tests
     runs-on: ubuntu-22.04
     if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: test-${{ github.ref }}
+      cancel-in-progress: true
 
     services:
       mysql:
@@ -302,6 +315,9 @@ jobs:
     name: Frontend Build
     runs-on: ubuntu-22.04
     if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: frontend-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
@@ -418,3 +434,71 @@ jobs:
         run: scripts/ci/percy.sh
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
+  # Build the artifact and push it to the Acquia Cloud remotes.
+  deploy:
+    name: Deploy to Acquia
+    runs-on: ubuntu-22.04
+    needs: [ lint, static-analysis, security, test, frontend ]
+    if: github.event_name == 'push'
+    environment: acquia
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      # Full history and tags: the build stamps a tag-based version into
+      # custom .info.yml files.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      # Installs sn's own dependencies.
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Build artifact
+        run: scripts/deploy/build.sh
+
+      - name: Configure SSH for Acquia
+        env:
+          ACQUIA_SSH_KEY: ${{ secrets.ACQUIA_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ACQUIA_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          grep -oE 'svn-[0-9]+\.prod\.hosting\.acquia\.com' sitenow/applications.yml \
+            | sort -u | xargs ssh-keyscan >> ~/.ssh/known_hosts
+
+      - name: Distribute artifact
+        run: |
+          if [ "${{ github.ref_type }}" = tag ]; then
+            ./sn deploy:distribute --tag="${{ github.ref_name }}-build" \
+              --commit-msg="Automated deploy by GitHub Actions for ${{ github.ref_name }}"
+          else
+            ./sn deploy:distribute --branch="${{ github.ref_name }}-build" \
+              --commit-msg="Automated deploy by GitHub Actions for run ${{ github.run_id }}"
+          fi
