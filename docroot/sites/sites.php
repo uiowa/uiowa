@@ -8067,3 +8067,9 @@ $sites['labkoenig.uiowa.ddev.site'] = 'koenig.lab.uiowa.edu';
 $sites['labkoenig.dev.drupal.uiowa.edu'] = 'koenig.lab.uiowa.edu';
 $sites['labkoenig.stage.drupal.uiowa.edu'] = 'koenig.lab.uiowa.edu';
 $sites['labkoenig.prod.drupal.uiowa.edu'] = 'koenig.lab.uiowa.edu';
+
+// Directory aliases for hassert.lab.uiowa.edu.
+$sites['labhassert.uiowa.ddev.site'] = 'hassert.lab.uiowa.edu';
+$sites['labhassert.dev.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
+$sites['labhassert.stage.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
+$sites['labhassert.prod.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
