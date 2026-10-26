@@ -8073,3 +8073,9 @@ $sites['labhassert.uiowa.ddev.site'] = 'hassert.lab.uiowa.edu';
 $sites['labhassert.dev.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
 $sites['labhassert.stage.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
 $sites['labhassert.prod.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
+
+// Directory aliases for graphoplex.lab.uiowa.edu.
+$sites['labgraphoplex.uiowa.ddev.site'] = 'graphoplex.lab.uiowa.edu';
+$sites['labgraphoplex.dev.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
+$sites['labgraphoplex.stage.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
+$sites['labgraphoplex.prod.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
