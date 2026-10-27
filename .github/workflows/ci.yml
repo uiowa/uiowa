@@ -437,7 +437,7 @@ jobs:
 
   # Build the artifact and push it to the Acquia Cloud remotes.
   deploy:
-    name: Deploy to Acquia
+    name: Push artifact to Acquia
     runs-on: ubuntu-22.04
     needs: [ lint, static-analysis, security, test, frontend ]
     if: github.event_name == 'push'
