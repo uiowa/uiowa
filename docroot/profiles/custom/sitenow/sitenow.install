@@ -4970,3 +4970,34 @@ function sitenow_update_10043() {
 
   return t('Re-saved sitenow_articles.settings.');
 }
+
+/**
+ * Remove orphaned Rabbit Hole field definitions left by uninstalling rh_*.
+ */
+function sitenow_update_10044() {
+  $repository = \Drupal::service('entity.last_installed_schema.repository');
+  $module_handler = \Drupal::moduleHandler();
+  $schema_data = \Drupal::keyValue('entity.storage_schema.sql');
+  $removed = [];
+
+  // Uninstalling rh_node left rh_redirect in the installed definitions after
+  // its column was dropped, so entity storage queries a missing column.
+  foreach (\Drupal::entityTypeManager()->getDefinitions() as $entity_type_id => $entity_type) {
+    foreach ($repository->getLastInstalledFieldStorageDefinitions($entity_type_id) as $name => $definition) {
+      if (!str_starts_with($name, 'rh_') || $module_handler->moduleExists($definition->getProvider())) {
+        continue;
+      }
+      $repository->deleteLastInstalledFieldStorageDefinition($definition);
+      $schema_data->delete("$entity_type_id.field_schema_data.$name");
+      $removed[] = "$entity_type_id.$name";
+    }
+  }
+
+  if (!$removed) {
+    return t('No orphaned Rabbit Hole field definitions found.');
+  }
+
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+
+  return t('Removed orphaned field definitions: @fields.', ['@fields' => implode(', ', $removed)]);
+}
