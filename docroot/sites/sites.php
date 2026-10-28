@@ -8079,3 +8079,9 @@ $sites['labgraphoplex.uiowa.ddev.site'] = 'graphoplex.lab.uiowa.edu';
 $sites['labgraphoplex.dev.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
 $sites['labgraphoplex.stage.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
 $sites['labgraphoplex.prod.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
+
+// Directory aliases for mpumanual.sites.uiowa.edu.
+$sites['sitesmpumanual.uiowa.ddev.site'] = 'mpumanual.sites.uiowa.edu';
+$sites['sitesmpumanual.dev.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
+$sites['sitesmpumanual.stage.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
+$sites['sitesmpumanual.prod.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
