@@ -8085,3 +8085,9 @@ $sites['sitesmpumanual.uiowa.ddev.site'] = 'mpumanual.sites.uiowa.edu';
 $sites['sitesmpumanual.dev.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
 $sites['sitesmpumanual.stage.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
 $sites['sitesmpumanual.prod.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
+
+// Directory aliases for iws.program.uiowa.edu.
+$sites['programiws.uiowa.ddev.site'] = 'iws.program.uiowa.edu';
+$sites['programiws.dev.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
+$sites['programiws.stage.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
+$sites['programiws.prod.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
