@@ -8055,3 +8055,39 @@ $sites['labsml.uiowa.ddev.site'] = 'sml.lab.uiowa.edu';
 $sites['labsml.dev.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
 $sites['labsml.stage.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
 $sites['labsml.prod.drupal.uiowa.edu'] = 'sml.lab.uiowa.edu';
+
+// Directory aliases for haiwc.org.uiowa.edu.
+$sites['orghaiwc.uiowa.ddev.site'] = 'haiwc.org.uiowa.edu';
+$sites['orghaiwc.dev.drupal.uiowa.edu'] = 'haiwc.org.uiowa.edu';
+$sites['orghaiwc.stage.drupal.uiowa.edu'] = 'haiwc.org.uiowa.edu';
+$sites['orghaiwc.prod.drupal.uiowa.edu'] = 'haiwc.org.uiowa.edu';
+
+// Directory aliases for koenig.lab.uiowa.edu.
+$sites['labkoenig.uiowa.ddev.site'] = 'koenig.lab.uiowa.edu';
+$sites['labkoenig.dev.drupal.uiowa.edu'] = 'koenig.lab.uiowa.edu';
+$sites['labkoenig.stage.drupal.uiowa.edu'] = 'koenig.lab.uiowa.edu';
+$sites['labkoenig.prod.drupal.uiowa.edu'] = 'koenig.lab.uiowa.edu';
+
+// Directory aliases for hassert.lab.uiowa.edu.
+$sites['labhassert.uiowa.ddev.site'] = 'hassert.lab.uiowa.edu';
+$sites['labhassert.dev.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
+$sites['labhassert.stage.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
+$sites['labhassert.prod.drupal.uiowa.edu'] = 'hassert.lab.uiowa.edu';
+
+// Directory aliases for graphoplex.lab.uiowa.edu.
+$sites['labgraphoplex.uiowa.ddev.site'] = 'graphoplex.lab.uiowa.edu';
+$sites['labgraphoplex.dev.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
+$sites['labgraphoplex.stage.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
+$sites['labgraphoplex.prod.drupal.uiowa.edu'] = 'graphoplex.lab.uiowa.edu';
+
+// Directory aliases for mpumanual.sites.uiowa.edu.
+$sites['sitesmpumanual.uiowa.ddev.site'] = 'mpumanual.sites.uiowa.edu';
+$sites['sitesmpumanual.dev.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
+$sites['sitesmpumanual.stage.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
+$sites['sitesmpumanual.prod.drupal.uiowa.edu'] = 'mpumanual.sites.uiowa.edu';
+
+// Directory aliases for iws.program.uiowa.edu.
+$sites['programiws.uiowa.ddev.site'] = 'iws.program.uiowa.edu';
+$sites['programiws.dev.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
+$sites['programiws.stage.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
+$sites['programiws.prod.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
