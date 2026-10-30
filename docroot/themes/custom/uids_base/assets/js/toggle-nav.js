@@ -9,6 +9,10 @@ class ToggleNavBehavior {
       this.toggleButtons = this.context.querySelectorAll('button.toggle-nav__bttn');
       this.canvasDrawer = this.context.querySelector('.o-canvas__drawer');
 
+      // Superfish marks its accordion aria-hidden, but the drawer controls
+      // its visibility here, so remove it to expose the menu when open.
+      this.context.querySelector('#superfish-main-accordion')?.removeAttribute('aria-hidden');
+
       // Set positioning of canvasDrawer based on iowaBar height
       this.iowaBarHeight = this.iowaHeader.offsetHeight;
       this.canvasDrawer.style.top = `${this.iowaBarHeight}px`;
