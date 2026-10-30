@@ -18,6 +18,7 @@
  *   ddev exec ./sn sync:all
  */
 
+use SiteNow\Command\CloudflareProxyCommand;
 use SiteNow\Command\DeployActivateCommand;
 use SiteNow\Command\DeployDistributeCommand;
 use SiteNow\Command\DeployPostDbCopyCommand;
@@ -56,6 +57,7 @@ require "{$root}/vendor/autoload.php";
 chdir($root);
 
 $application = new Application('sn');
+$application->add(new CloudflareProxyCommand($root));
 $application->add(new DeployActivateCommand($root));
 $application->add(new DeployDistributeCommand($root));
 $application->add(new DeployPostDbCopyCommand($root));
