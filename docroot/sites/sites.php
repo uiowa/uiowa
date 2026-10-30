@@ -8091,3 +8091,9 @@ $sites['programiws.uiowa.ddev.site'] = 'iws.program.uiowa.edu';
 $sites['programiws.dev.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
 $sites['programiws.stage.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
 $sites['programiws.prod.drupal.uiowa.edu'] = 'iws.program.uiowa.edu';
+
+// Directory aliases for artemyev.lab.uiowa.edu.
+$sites['labartemyev.uiowa.ddev.site'] = 'artemyev.lab.uiowa.edu';
+$sites['labartemyev.dev.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
+$sites['labartemyev.stage.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
+$sites['labartemyev.prod.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
