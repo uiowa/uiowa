@@ -61,7 +61,7 @@ class AcademicDatesForm extends FormBase {
       $options = [];
 
       foreach ($this->maui->getSessionsBounded() as $session) {
-        $options[$session->id] = Html::escape($session->shortDescription);
+        $options[$session->id] = Html::escape($session->shortDescription ?? '');
       }
 
       $form['session'] = [
