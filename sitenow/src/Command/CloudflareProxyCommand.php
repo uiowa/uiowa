@@ -253,14 +253,14 @@ class CloudflareProxyCommand extends Command {
       $status = $api->certificateStatus($zoneId, $host);
       $dots .= '.';
       if ($status === 'active') {
-        $io->writeln("\rSSL Certificate: {$dots} Active");
+        $io->writeln("\r\033[KSSL Certificate: Active");
         return;
       }
       if (time() >= $deadline) {
-        $io->writeln(sprintf("\rSSL Certificate: %s Timed out: still %s after %d minutes", $dots, $status ?? 'not issued', self::CERTIFICATE_TIMEOUT / 60));
+        $io->writeln(sprintf("\r\033[KSSL Certificate: Timed out: still %s after %d minutes", $status ?? 'not issued', self::CERTIFICATE_TIMEOUT / 60));
         throw new \RuntimeException('Re-run to keep checking.');
       }
-      $io->write("\rSSL Certificate: {$dots} Checking");
+      $io->write("\rSSL Certificate: Checking {$dots}");
       sleep(self::POLL_INTERVAL);
     }
   }
