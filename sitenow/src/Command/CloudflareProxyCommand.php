@@ -179,7 +179,10 @@ class CloudflareProxyCommand extends Command {
     }
 
     if (!$record['proxied']) {
-      $plan->addStep("Turn on proxying for {$host}", fn() => $api->proxy($zone['id'], $record['id']));
+      $plan->addStep("Turn on proxying for {$host}", function (SymfonyStyle $io) use ($api, $zone, $record, $host): void {
+        $api->proxy($zone['id'], $record['id']);
+        $io->writeln("  Proxied: {$host}");
+      });
     }
     $plan->addStep('Wait for the edge certificate to become active', fn(SymfonyStyle $io) => $this->awaitCertificate($io, $api, $zone['id'], $host));
     // A TTL of 1 means automatic, which Cloudflare serves as 300 seconds.
