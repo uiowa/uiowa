@@ -251,19 +251,17 @@ class CloudflareProxyCommand extends Command {
    */
   private function awaitCertificate(SymfonyStyle $io, CloudflareApi $api, string $zoneId, string $host): void {
     $deadline = time() + self::CERTIFICATE_TIMEOUT;
-    // FALSE, not NULL: NULL is a real status (no pack yet) that must print.
-    $last = FALSE;
+    $io->write('  Certificate: ');
 
     while (TRUE) {
       $status = $api->certificateStatus($zoneId, $host);
-      if ($status !== $last) {
-        $io->writeln('  Certificate: ' . ($status ?? 'none yet'));
-        $last = $status;
-      }
+      $io->write('.');
       if ($status === 'active') {
+        $io->writeln(' active');
         return;
       }
       if (time() >= $deadline) {
+        $io->writeln(' ' . ($status ?? 'none'));
         throw new \RuntimeException(sprintf('Certificate for %s not active after %d minutes. Re-run to keep checking.', $host, self::CERTIFICATE_TIMEOUT / 60));
       }
       sleep(self::POLL_INTERVAL);
