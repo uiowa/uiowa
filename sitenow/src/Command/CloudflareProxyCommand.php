@@ -2,11 +2,9 @@
 
 namespace SiteNow\Command;
 
-use AcquiaCloudApi\Endpoints\Environments;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use SiteNow\Cloudflare\CloudflareApi;
-use SiteNow\Config\Applications;
 use SiteNow\Config\Credentials;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CheckResult;
@@ -15,7 +13,6 @@ use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
 use SiteNow\Traits\SiteNowCommandsTrait;
-use SiteNow\Utility\Multisite;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -30,7 +27,7 @@ use Symfony\Component\Process\Process;
  */
 #[AsCommand(
   name: 'cloudflare:proxy',
-  description: "Proxy a site's DNS record through Cloudflare, or every Acquia record in a zone, then check SSL certificates, DNS and Acquia Cloud domains.",
+  description: "Proxy a site's DNS record through Cloudflare, or every Acquia record in a zone, then check SSL certificates and DNS.",
 )]
 class CloudflareProxyCommand extends Command {
 
@@ -191,7 +188,6 @@ class CloudflareProxyCommand extends Command {
       $this->checkCloudflareRouting($zone, $host);
       $io->writeln('DNS through Cloudflare: Active');
     });
-    $plan->addStep('Check for the domain in Acquia Cloud', fn(SymfonyStyle $io) => $io->writeln('Acquia Cloud: ' . $this->acquiaDomainStatus($app, $host)));
 
     return $plan;
   }
@@ -284,20 +280,19 @@ class CloudflareProxyCommand extends Command {
     // the run before the batch.
     $first = array_intersect_key($todo, ["www.{$name}" => TRUE, $name => TRUE]);
     foreach ($first as $host => $record) {
-      $plan->addStep("Proxy {$host} and check it", function (SymfonyStyle $io) use ($api, $zone, $record, $host, $apps): void {
+      $plan->addStep("Proxy {$host} and check it", function (SymfonyStyle $io) use ($api, $zone, $record, $host): void {
         $api->proxy($zone['id'], $record['id']);
         $io->writeln("Proxy enabled for {$host}");
         $this->awaitCertificate($io, $api, $zone['id'], $host);
         $this->checkCloudflareRouting($zone, $host);
         $io->writeln('DNS through Cloudflare: Active');
-        $io->writeln('Acquia Cloud: ' . $this->acquiaDomainStatus($apps[$host], $host));
         $io->newLine();
       });
     }
 
     $rest = array_diff_key($todo, $first);
     if ($rest) {
-      $plan->addStep(sprintf($first ? 'Proxy %d more hosts, then check them' : 'Proxy %d hosts, then check them', count($rest)), fn(SymfonyStyle $io) => $this->proxyBatch($io, $api, $zone, $rest, $apps));
+      $plan->addStep(sprintf($first ? 'Proxy %d more hosts, then check them' : 'Proxy %d hosts, then check them', count($rest)), fn(SymfonyStyle $io) => $this->proxyBatch($io, $api, $zone, $rest));
     }
 
     return $plan;
@@ -316,25 +311,23 @@ class CloudflareProxyCommand extends Command {
    *   The zone.
    * @param array $records
    *   The records to proxy, keyed by host.
-   * @param array $apps
-   *   Application names keyed by host.
    *
    * @throws \RuntimeException
    *   If any host fails a check.
    */
-  private function proxyBatch(SymfonyStyle $io, CloudflareApi $api, array $zone, array $records, array $apps): void {
+  private function proxyBatch(SymfonyStyle $io, CloudflareApi $api, array $zone, array $records): void {
     $rows = [];
     $proxied = [];
     foreach ($records as $host => $record) {
       try {
         $api->proxy($zone['id'], $record['id']);
         $io->writeln("Proxy enabled for {$host}");
-        $rows[$host] = [$host, '-', '-', '-'];
+        $rows[$host] = [$host, '-', '-'];
         $proxied[] = $host;
       }
       catch (\Exception $e) {
         $io->writeln("Proxy failed for {$host}: {$e->getMessage()}");
-        $rows[$host] = [$host, 'Proxy failed', '-', '-'];
+        $rows[$host] = [$host, 'Proxy failed', '-'];
       }
     }
 
@@ -343,7 +336,7 @@ class CloudflareProxyCommand extends Command {
     $dots = '';
     foreach ($statuses as $host => $status) {
       $dots .= '.';
-      $io->write("\rDNS and Acquia Cloud: Checking {$dots}");
+      $io->write("\rDNS through Cloudflare: Checking {$dots}");
       $rows[$host][1] = $status === 'active' ? 'Active' : ($status ?? 'not issued');
       if ($status === 'active') {
         try {
@@ -354,30 +347,19 @@ class CloudflareProxyCommand extends Command {
           $rows[$host][2] = $e->getMessage();
         }
       }
-      try {
-        $rows[$host][3] = $this->acquiaDomainStatus($apps[$host], $host);
-      }
-      catch (\Exception $e) {
-        $rows[$host][3] = $e->getMessage();
-      }
     }
     $io->write("\r\033[K");
 
-    $io->table(
-      ['Host', 'SSL Certificate', 'DNS through Cloudflare', 'Acquia Cloud'],
-      array_values($rows),
-    );
+    $io->table(['Host', 'SSL Certificate', 'DNS through Cloudflare'], array_values($rows));
 
-    $failed = array_filter($rows, fn($row) => $row[1] !== 'Active'
-      || $row[2] !== 'Active'
-      || !in_array($row[3], ['Active', 'No domain present'], TRUE));
+    $failed = array_filter($rows, fn($row) => $row[1] !== 'Active' || $row[2] !== 'Active');
     if ($failed) {
       throw new \RuntimeException(sprintf('%d of %d hosts did not pass every check. Re-check one with a single-host run.', count($failed), count($rows)));
     }
   }
 
   /**
-   * The checks every run needs before it can talk to Cloudflare and Acquia.
+   * The checks every run needs before it can talk to Cloudflare.
    *
    * @param string|null $token
    *   The Cloudflare token.
@@ -388,7 +370,6 @@ class CloudflareProxyCommand extends Command {
   private function setupChecks(?string $token): array {
     return [
       $this->checkHostShell(),
-      $this->checkAcquiaCredentials(),
       new Check(self::CHECK_CLOUDFLARE_TOKEN, fn(): CheckResult => $token
         ? CheckResult::pass()
         : CheckResult::fail('Cloudflare token not found. Set cloudflare.token in ' . Credentials::defaultPath() . '.')),
@@ -562,27 +543,6 @@ class CloudflareProxyCommand extends Command {
     if ($response->getStatusCode() >= 500) {
       throw new \RuntimeException("{$host} returned {$response->getStatusCode()} through Cloudflare.");
     }
-  }
-
-  /**
-   * Whether the host is a domain on its application's prod environment.
-   *
-   * @return string
-   *   "Active", or "No domain present".
-   */
-  private function acquiaDomainStatus(string $app, string $host): string {
-    $uuid = (new Applications("{$this->repoRoot}/sitenow/applications.yml"))->uuid($app);
-    $prod = Multisite::getCloudEnvName(Multisite::aliasDir($this->repoRoot), $app, 'prod');
-    $acquia = $this->credentials()->acquia();
-    $client = $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
-
-    foreach ((new Environments($client))->getAll($uuid) as $environment) {
-      if ($environment->name === $prod) {
-        return in_array($host, (array) $environment->domains, TRUE) ? 'Active' : 'No domain present';
-      }
-    }
-
-    throw new \RuntimeException("No {$prod} environment found on {$app}.");
   }
 
   /**
