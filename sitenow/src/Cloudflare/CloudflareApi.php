@@ -114,17 +114,6 @@ class CloudflareApi {
   }
 
   /**
-   * The IP ranges Cloudflare serves proxied traffic from.
-   *
-   * @return string[]
-   *   IPv4 and IPv6 CIDR ranges.
-   */
-  public function edgeRanges(): array {
-    $ips = $this->request('GET', 'ips')['result'];
-    return array_merge($ips['ipv4_cidrs'], $ips['ipv6_cidrs']);
-  }
-
-  /**
    * Fetch every page of a list endpoint.
    *
    * @param string $path

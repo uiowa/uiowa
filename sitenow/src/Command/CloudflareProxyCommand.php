@@ -2,9 +2,11 @@
 
 namespace SiteNow\Command;
 
+use AcquiaCloudApi\Endpoints\Environments;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use SiteNow\Cloudflare\CloudflareApi;
+use SiteNow\Config\Applications;
 use SiteNow\Config\Credentials;
 use SiteNow\Plan\Check;
 use SiteNow\Plan\CheckResult;
@@ -13,6 +15,7 @@ use SiteNow\Plan\CommonChecks;
 use SiteNow\Plan\Plan;
 use SiteNow\Plan\PlanTrait;
 use SiteNow\Traits\SiteNowCommandsTrait;
+use SiteNow\Utility\Multisite;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +23,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\Process\Process;
 
 /**
@@ -28,7 +30,7 @@ use Symfony\Component\Process\Process;
  */
 #[AsCommand(
   name: 'cloudflare:proxy',
-  description: "Proxy a site's DNS record through Cloudflare, then check its certificate, DNS and launch status.",
+  description: "Proxy a site's DNS record through Cloudflare, then check its SSL certificate, DNS and Acquia Cloud domain.",
 )]
 class CloudflareProxyCommand extends Command {
 
@@ -47,11 +49,6 @@ class CloudflareProxyCommand extends Command {
    * Record contents that point at Acquia.
    */
   const ACQUIA_TARGETS = ['acquia-dlb.its.uiowa.edu', '54.163.225.50'];
-
-  /**
-   * Public resolvers used to see whether cached answers have caught up.
-   */
-  const PUBLIC_RESOLVERS = ['1.1.1.1', '8.8.8.8'];
 
   /**
    * Seconds to wait for the edge certificate to become active.
@@ -130,6 +127,7 @@ class CloudflareProxyCommand extends Command {
 
     $validation = $this->runChecks([
       $this->checkHostShell(),
+      $this->checkAcquiaCredentials(),
       new Check(self::CHECK_CLOUDFLARE_TOKEN, fn(): CheckResult => $token
         ? CheckResult::pass()
         : CheckResult::fail('Cloudflare token not found. Set cloudflare.token in ' . Credentials::defaultPath() . '.')),
@@ -181,14 +179,12 @@ class CloudflareProxyCommand extends Command {
     if (!$record['proxied']) {
       $plan->addStep("Turn on proxying for {$host}", function (SymfonyStyle $io) use ($api, $zone, $record, $host): void {
         $api->proxy($zone['id'], $record['id']);
-        $io->writeln("  Proxied: {$host}");
+        $io->writeln("Proxy enabled for {$host}");
       });
     }
-    $plan->addStep('Wait for the edge certificate to become active', fn(SymfonyStyle $io) => $this->awaitCertificate($io, $api, $zone['id'], $host));
-    // A TTL of 1 means automatic, which Cloudflare serves as 300 seconds.
-    $ttl = $record['ttl'] === 1 ? 300 : $record['ttl'];
-    $plan->addStep('Check DNS resolves to Cloudflare', fn(SymfonyStyle $io) => $this->checkDns($io, $api, $zone, $host, $ttl));
-    $plan->addStep('Check whether the site is launched', fn(SymfonyStyle $io) => $this->checkLaunched($io, $zone, $host));
+    $plan->addStep('Wait for the SSL certificate to become active', fn(SymfonyStyle $io) => $this->awaitCertificate($io, $api, $zone['id'], $host));
+    $plan->addStep('Check DNS routes through Cloudflare', fn(SymfonyStyle $io) => $this->checkCloudflareRouting($io, $zone, $host));
+    $plan->addStep('Check for the domain in Acquia Cloud', fn(SymfonyStyle $io) => $this->checkAcquiaDomain($io, $app, $host));
 
     return $plan;
   }
@@ -251,78 +247,79 @@ class CloudflareProxyCommand extends Command {
    */
   private function awaitCertificate(SymfonyStyle $io, CloudflareApi $api, string $zoneId, string $host): void {
     $deadline = time() + self::CERTIFICATE_TIMEOUT;
-    $io->write('  Certificate: ');
+    $dots = '';
 
     while (TRUE) {
       $status = $api->certificateStatus($zoneId, $host);
-      $io->write('.');
+      $dots .= '.';
       if ($status === 'active') {
-        $io->writeln(' active');
+        $io->writeln("\rSSL Certificate: {$dots} Active");
         return;
       }
       if (time() >= $deadline) {
-        $io->writeln(' ' . ($status ?? 'none'));
-        throw new \RuntimeException(sprintf('Certificate for %s not active after %d minutes. Re-run to keep checking.', $host, self::CERTIFICATE_TIMEOUT / 60));
+        $io->writeln(sprintf("\rSSL Certificate: %s Timed out: still %s after %d minutes", $dots, $status ?? 'not issued', self::CERTIFICATE_TIMEOUT / 60));
+        throw new \RuntimeException('Re-run to keep checking.');
       }
+      $io->write("\rSSL Certificate: {$dots} Checking");
       sleep(self::POLL_INTERVAL);
     }
   }
 
   /**
-   * Check that Cloudflare answers with its edge, and whether resolvers agree.
+   * Request the site through Cloudflare's edge, as a visitor off VPN would.
    *
    * @throws \RuntimeException
-   *   If Cloudflare's nameservers do not answer with the edge.
+   *   On a TLS failure, a response Cloudflare did not serve, or a Cloudflare
+   *   error reaching Acquia.
    */
-  private function checkDns(SymfonyStyle $io, CloudflareApi $api, array $zone, string $host, int $previousTtl): void {
-    $ranges = $api->edgeRanges();
-    $isEdge = fn(array $ips) => $ips && !array_filter($ips, fn($ip) => !IpUtils::checkIp($ip, $ranges));
-
-    if (!$isEdge($this->resolve($host, $zone['name_servers'][0]))) {
-      throw new \RuntimeException("Cloudflare's nameservers are not answering {$host} with Cloudflare IPs.");
+  private function checkCloudflareRouting(SymfonyStyle $io, array $zone, string $host): void {
+    $ips = $this->resolve($host, $zone['name_servers'][0]);
+    if (!$ips) {
+      throw new \RuntimeException("Cloudflare's nameservers returned no address for {$host}.");
     }
-    $io->writeln("  Cloudflare's nameservers: Cloudflare IPs");
-
-    // Public resolvers keep a cached answer until the record's previous TTL
-    // runs out, which can be a day.
-    foreach (self::PUBLIC_RESOLVERS as $resolver) {
-      $io->writeln($isEdge($this->resolve($host, $resolver))
-        ? "  {$resolver}: Cloudflare IPs"
-        : sprintf('  %s: still cached, catches up within %s', $resolver, $this->duration($previousTtl)));
-    }
-  }
-
-  /**
-   * Request the site through Cloudflare's edge and report whether it is live.
-   *
-   * @throws \RuntimeException
-   *   On a TLS failure or an unexpected status.
-   */
-  private function checkLaunched(SymfonyStyle $io, array $zone, string $host): void {
-    $ip = $this->resolve($host, $zone['name_servers'][0])[0];
-    $address = str_contains($ip, ':') ? "[{$ip}]" : $ip;
+    $address = str_contains($ips[0], ':') ? "[{$ips[0]}]" : $ips[0];
 
     try {
-      $status = (new Client())->get("https://{$host}/", [
+      $response = (new Client())->get("https://{$host}/", [
         'allow_redirects' => FALSE,
         'http_errors' => FALSE,
         'timeout' => 15,
         'curl' => [CURLOPT_RESOLVE => ["{$host}:443:{$address}"]],
-      ])->getStatusCode();
+      ]);
     }
     catch (GuzzleException $e) {
       throw new \RuntimeException("Request to {$host} through Cloudflare failed: {$e->getMessage()}", 0, $e);
     }
 
-    // Acquia answers 404 for a host no launched site claims.
-    if ($status === 404) {
-      $io->writeln('  Site: not launched (404)');
-      return;
+    if (!$response->hasHeader('cf-ray')) {
+      throw new \RuntimeException("The response from {$host} did not come through Cloudflare.");
     }
-    if ($status >= 400) {
-      throw new \RuntimeException("{$host} returned {$status} through Cloudflare.");
+    // 52x statuses are Cloudflare failing to reach or trust Acquia.
+    if ($response->getStatusCode() >= 500) {
+      throw new \RuntimeException("{$host} returned {$response->getStatusCode()} through Cloudflare.");
     }
-    $io->writeln("  Site: launched ({$status})");
+    $io->writeln('DNS through Cloudflare: Active');
+  }
+
+  /**
+   * Report whether the host is a domain on its application's prod environment.
+   */
+  private function checkAcquiaDomain(SymfonyStyle $io, string $app, string $host): void {
+    $uuid = (new Applications("{$this->repoRoot}/sitenow/applications.yml"))->uuid($app);
+    $prod = Multisite::getCloudEnvName(Multisite::aliasDir($this->repoRoot), $app, 'prod');
+    $acquia = $this->credentials()->acquia();
+    $client = $this->getAcquiaCloudApiClient($acquia['key'], $acquia['secret']);
+
+    foreach ((new Environments($client))->getAll($uuid) as $environment) {
+      if ($environment->name === $prod) {
+        $io->writeln(in_array($host, (array) $environment->domains, TRUE)
+          ? 'Acquia Cloud: Active'
+          : 'Acquia Cloud: No domain present');
+        return;
+      }
+    }
+
+    throw new \RuntimeException("No {$prod} environment found on {$app}.");
   }
 
   /**
@@ -354,13 +351,6 @@ class CloudflareProxyCommand extends Command {
     $process = new Process($args);
     $process->run();
     return array_filter(explode("\n", trim($process->getOutput())));
-  }
-
-  /**
-   * A TTL as hours or minutes.
-   */
-  private function duration(int $seconds): string {
-    return $seconds >= 3600 ? round($seconds / 3600) . 'h' : max(1, round($seconds / 60)) . 'm';
   }
 
 }
