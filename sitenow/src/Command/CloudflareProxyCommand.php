@@ -269,7 +269,7 @@ class CloudflareProxyCommand extends Command {
     $summary = [
       ['label' => 'Zone', 'value' => $name],
       ['label' => 'Proxied', 'value' => (string) $proxied],
-      ['label' => 'To proxy', 'value' => (string) count($todo)],
+      ['label' => 'To proxy', 'value' => $todo ? implode(', ', array_keys($todo)) : 'none'],
     ];
     if ($reclaim) {
       $summary[] = ['label' => 'Reclaim', 'value' => implode(', ', $reclaim) . ' (not in the manifest)'];
