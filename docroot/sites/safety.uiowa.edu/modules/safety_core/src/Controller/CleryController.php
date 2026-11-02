@@ -37,7 +37,7 @@ class CleryController extends ControllerBase {
   /**
    * The base URL for the Clery Edge API.
    */
-  const BASE_URL = 'https://api.cleryedge.net';
+  const BASE_URL = 'https://api.cleryedge.net/api/public/';
 
   /**
    * Constructs a new CleryController instance.
