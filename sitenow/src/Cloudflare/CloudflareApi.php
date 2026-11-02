@@ -62,18 +62,18 @@ class CloudflareApi {
   }
 
   /**
-   * The DNS records with a given name.
+   * The DNS records in a zone.
    *
    * @param string $zoneId
    *   The zone ID.
-   * @param string $name
-   *   The record name, e.g. "foo.sites.uiowa.edu".
+   * @param string|null $name
+   *   A record name, e.g. "foo.sites.uiowa.edu", or NULL for every record.
    *
    * @return array
    *   The matching records, of any type.
    */
-  public function records(string $zoneId, string $name): array {
-    return $this->getAll("zones/{$zoneId}/dns_records", ['name' => $name]);
+  public function records(string $zoneId, ?string $name = NULL): array {
+    return $this->getAll("zones/{$zoneId}/dns_records", $name ? ['name' => $name] : []);
   }
 
   /**
@@ -89,28 +89,34 @@ class CloudflareApi {
   }
 
   /**
-   * The status of the edge certificate covering a host.
+   * The status of the edge certificate covering each of several hosts.
    *
    * @param string $zoneId
    *   The zone ID.
-   * @param string $host
-   *   The hostname.
+   * @param string[] $hosts
+   *   The hostnames.
    *
-   * @return string|null
-   *   The certificate pack status, e.g. "active" or "pending_validation", or
-   *   NULL when no pack covers the host.
+   * @return array
+   *   Each host's certificate pack status, e.g. "active" or
+   *   "pending_validation", or NULL when no pack covers it, keyed by host.
    */
-  public function certificateStatus(string $zoneId, string $host): ?string {
-    $wildcard = '*.' . substr($host, strpos($host, '.') + 1);
+  public function certificateStatuses(string $zoneId, array $hosts): array {
+    $packs = $this->getAll("zones/{$zoneId}/ssl/certificate_packs", ['status' => 'all']);
+    $statuses = [];
 
-    foreach ($this->getAll("zones/{$zoneId}/ssl/certificate_packs", ['status' => 'all']) as $pack) {
-      $hosts = $pack['hosts'] ?? [];
-      if (in_array($host, $hosts, TRUE) || in_array($wildcard, $hosts, TRUE)) {
-        return $pack['status'];
+    foreach ($hosts as $host) {
+      $wildcard = '*.' . substr($host, strpos($host, '.') + 1);
+      $statuses[$host] = NULL;
+      foreach ($packs as $pack) {
+        $covered = $pack['hosts'] ?? [];
+        if (in_array($host, $covered, TRUE) || in_array($wildcard, $covered, TRUE)) {
+          $statuses[$host] = $pack['status'];
+          break;
+        }
       }
     }
 
-    return NULL;
+    return $statuses;
   }
 
   /**
