@@ -141,10 +141,10 @@ class CloudflareProxyCommand extends Command {
     $app = $this->hostApps()[$host] ?? NULL;
 
     $validation = $this->runChecks([
-      ...$this->setupChecks($token),
       new Check(self::CHECK_IN_MANIFEST, fn(): CheckResult => $app
         ? CheckResult::pass()
         : CheckResult::fail("{$host} is not in the manifest. If its DNS still points at Acquia, it may be a domain to reclaim.")),
+      ...$this->setupChecks($token),
     ]);
 
     if ($validation['overall'] === CheckStatus::Fail) {
