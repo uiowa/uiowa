@@ -1,0 +1,4 @@
+services:
+  uiowa_jobs.rss_parser:
+    class: Drupal\uiowa_jobs\RssFeedParser
+    arguments: ['@http_client', '@cache.default', '@logger.factory']

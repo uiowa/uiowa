@@ -2,7 +2,9 @@
 
 /**
  * @file
- * The sitenow profile cannot contain a hook_install() implementation.
+ * Install and update hooks for the SiteNow profile.
+ *
+ * The SiteNow profile cannot contain a hook_install() implementation.
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
@@ -13,13 +15,16 @@ use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
+use Drupal\Core\Field\FieldPurger;
 use Drupal\block_content\BlockContentInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\google_tag\Migration\GoogleAnalyticsMigrator;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeAccessRebuild;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\uiowa_core\Entity\Card;
 use Drupal\uiowa_core\Entity\Event;
@@ -1164,7 +1169,7 @@ function sitenow_update_9012() {
  */
 function sitenow_update_9013() {
   // Batch it.
-  node_access_rebuild(TRUE);
+  \Drupal::service(NodeAccessRebuild::class)->rebuild(TRUE);
 }
 
 /**
@@ -1237,7 +1242,7 @@ function sitenow_update_9016() {
   }
 
   // Rebuild node permissions.
-  node_access_rebuild(TRUE);
+  \Drupal::service(NodeAccessRebuild::class)->rebuild(TRUE);
 }
 
 /**
@@ -1857,7 +1862,7 @@ function sitenow_update_9047() {
     $field_storage->delete();
 
     // Purge in order for new field to be created after deleting the old.
-    field_purge_batch(100);
+    \Drupal::service(FieldPurger::class)->purgeBatch(100);
 
     // Save our new, updated field storage.
     $new_field_storage = FieldStorageConfig::create($new_field_storage);
@@ -4260,7 +4265,7 @@ function sitenow_update_10026() {
   // Remove the old field.
   $field_storage->delete();
   // Purge in order for new field to be created after deleting the old.
-  field_purge_batch(100);
+  \Drupal::service(FieldPurger::class)->purgeBatch(100);
 
   // Save our new, updated field storage.
   $new_storage = FieldStorageConfig::create($new_field_storage);
@@ -4712,4 +4717,287 @@ function sitenow_update_10034() {
   }
 
   return t('No webform handlers required attachment changes.');
+}
+
+/**
+ * Update people_list_block instances for BEF compatibility.
+ */
+function sitenow_update_10035() {
+  // First, ensure the view configuration is updated to use BEF.
+  // This is critical because the update hook runs before config sync.
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // Import the updated view configuration.
+  $config_name = 'views.view.people_list_block';
+  $config_data = $source->read($config_name);
+
+  if ($config_data) {
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write($config_name, $config_data);
+
+    // Clear the config cache for this specific view.
+    \Drupal::configFactory()->clearStaticCache();
+    // Clear views data cache so the updated view configuration is used.
+    \Drupal::service('cache.discovery')->delete('views_data');
+  }
+
+  // Now update block instances with the BEF-compatible view in place.
+  $block_plugin_id = 'views_block:people_list_block-list_card';
+
+  _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component) {
+    $configuration = $component->get('configuration');
+
+    // The view now uses BEF for exposed forms. The research areas
+    // filter needs a slightly different format. Remove the
+    // 'type' designation completely, and update the values
+    // to be tid-keyed instead of simple indexed.
+    if (isset($configuration['exposed'])) {
+      $filter_key = 'filter-field_person_research_areas_target_id';
+      if (isset($configuration['exposed'][$filter_key]) && is_array($configuration['exposed'][$filter_key])) {
+        unset($configuration['exposed'][$filter_key]['type']);
+        $values = array_values($configuration['exposed'][$filter_key]['value']);
+        unset($configuration['exposed'][$filter_key]['value']);
+        foreach ($values as $value) {
+          $configuration['exposed'][$filter_key]['value'][$value] = $value;
+        }
+      }
+      $component->set('configuration', $configuration);
+    }
+  });
+}
+
+/**
+ * Migrate Google Analytics and prepare existing Google Tag containers.
+ */
+function sitenow_update_10036(&$sandbox) {
+  // The update google_tag_update_8201 skips disabled containers so to migrate
+  // them, we need to change their status during the update process.
+  $config_factory = \Drupal::configFactory();
+  $container_storage = \Drupal::entityTypeManager()->getStorage('google_tag_container');
+  $disabled_ids = $container_storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('status', 0)
+    ->execute();
+  \Drupal::state()->set('sitenow_disabled_google_tag_containers', array_values($disabled_ids));
+  foreach ($disabled_ids as $id) {
+    $config_factory->getEditable('google_tag.container.' . $id)->set('status', TRUE)->save();
+  }
+
+  // Import config_ignore so that google_tag.settings exists before import.
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  \Drupal::service('config.storage')->write('config_ignore.settings', $source->read('config_ignore.settings'));
+
+  $ga_config = \Drupal::config('google_analytics.settings');
+  $account = $ga_config->get('account');
+
+  if (empty($account)) {
+    return t('Google Analytics migration skipped - no accounts configured');
+  }
+
+  try {
+    $ga_migrator = new GoogleAnalyticsMigrator(
+      \Drupal::service('plugin.manager.google_tag_event'),
+      \Drupal::service('plugin.manager.condition'),
+      \Drupal::service('config.factory'),
+      \Drupal::service('entity_type.manager')
+    );
+
+    $ga_migrator->migrateGaToGoogleTag();
+
+    // Enable the collection UI for existing sites so site owners
+    // can manage their containers.
+    \Drupal::configFactory()->getEditable('google_tag.settings')
+      ->set('use_collection', TRUE)->save();
+
+    return t('Google Analytics accounts migrated to Google Tag container');
+
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('sitenow')->error('GA Migration failed: @message', ['@message' => $e->getMessage()]);
+    return t('Google Analytics migration failed - check logs for details');
+  }
+}
+
+/**
+ * Enable site-specific Google Tag on sites where Google Analytics is on.
+ *
+ * Sites that have explicitly disabled Google Analytics (HIPAA/compliance or
+ * an alternative tracking platform) are left untouched in either direction.
+ */
+function sitenow_update_10037() {
+  $config = \Drupal::configFactory()->getEditable('uiowa_core.settings');
+  $ga = (int) $config->get('uiowa_core.ga');
+  $gtag = (int) $config->get('uiowa_core.gtag');
+
+  if ($ga === 1 && $gtag === 0) {
+    $config->set('uiowa_core.gtag', 1)->save();
+    return t('Enabled uiowa_core.gtag since Google Analytics is enabled on this site');
+  }
+
+  return t('No change - uiowa_core.gtag already enabled, or Google Analytics is disabled on this site');
+}
+
+/**
+ * Clear the original Google Analytics account now that it's migrated.
+ *
+ * Avoids double tracking now that the value lives on a google_tag
+ * container, per sitenow_update_10035.
+ */
+function sitenow_update_10038() {
+  if (!\Drupal::moduleHandler()->moduleExists('google_analytics')) {
+    return t('Google Analytics module not installed - nothing to clear');
+  }
+
+  $config = \Drupal::configFactory()->getEditable('google_analytics.settings');
+  if (empty($config->get('account'))) {
+    return t('No Google Analytics account to clear');
+  }
+
+  $config->set('account', '')->save();
+  return t('Cleared migrated Google Analytics account');
+}
+
+/**
+ * Restore original status for containers temporarily enabled for upgrade.
+ */
+function sitenow_update_10039() {
+  $ids = \Drupal::state()->get('sitenow_disabled_google_tag_containers', []);
+  if (!$ids) {
+    return t('No disabled containers needed restoring.');
+  }
+
+  // Flip status via the raw config object.
+  $config_factory = \Drupal::configFactory();
+  foreach ($ids as $id) {
+    $config_factory->getEditable('google_tag.container.' . $id)->set('status', FALSE)->save();
+  }
+  \Drupal::state()->delete('sitenow_disabled_google_tag_containers');
+
+  return t('Restored disabled status for @count container(s).', ['@count' => count($ids)]);
+}
+
+/**
+ * Trim whitespace from google_tag container config names and labels.
+ */
+function sitenow_update_10040() {
+  $config_factory = \Drupal::configFactory();
+  $db = \Drupal::database();
+
+  // Load config entries directly to find any with whitespace in the name.
+  $result = $db->query("SELECT name FROM config WHERE name LIKE 'google_tag.container.%'");
+  $updated = 0;
+
+  foreach ($result as $row) {
+    $config_name = $row->name;
+    // Extract the container ID from the config name.
+    $id = str_replace('google_tag.container.', '', $config_name);
+    $trimmed_id = trim($id);
+
+    // Skip if no trimming needed.
+    if ($id === $trimmed_id) {
+      continue;
+    }
+
+    // Load the old config data.
+    $old_config = $config_factory->get($config_name);
+    $data = $old_config->getRawData();
+
+    // Update the ID and label fields.
+    $data['id'] = $trimmed_id;
+    if (isset($data['label'])) {
+      $data['label'] = trim($data['label']);
+    }
+
+    // Delete the old config entry.
+    $config_factory->getEditable($config_name)->delete();
+
+    // Create the new config entry with trimmed ID.
+    $config_factory->getEditable('google_tag.container.' . $trimmed_id)
+      ->setData($data)
+      ->save();
+
+    $updated++;
+  }
+
+  return t('Trimmed whitespace from @count container(s).', ['@count' => $updated]);
+}
+
+/**
+ * Remove the retired UI Icons backport module from existing sites.
+ */
+function sitenow_update_10041() {
+  $extension = \Drupal::configFactory()->getEditable('core.extension');
+  if ($extension->get('module.ui_icons_backport') === NULL) {
+    return t('UI Icons backport was not installed.');
+  }
+
+  // UI Icons 2.0 removes this Drupal 11.0-only submodule. Its code is already
+  // absent, so remove the installed-module state before config import.
+  $extension->clear('module.ui_icons_backport')->save(TRUE);
+  \Drupal::keyValue('system.schema')->delete('ui_icons_backport');
+
+  return t('Removed the retired UI Icons backport module state.');
+}
+
+/**
+ * Cast display_search_all_uiowa to the boolean its schema declares.
+ */
+function sitenow_update_10042() {
+  $search = \Drupal::configFactory()->getEditable('uiowa_search.settings');
+  if ($search->isNew()) {
+    return t('uiowa_search.settings does not exist.');
+  }
+
+  // Saving casts each value to its schema type.
+  $search->save();
+
+  return t('Re-saved uiowa_search.settings.');
+}
+
+/**
+ * Cast remove_yearmonth_slug to the boolean its schema declares.
+ */
+function sitenow_update_10043() {
+  $articles = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+  if ($articles->isNew()) {
+    return t('sitenow_articles.settings does not exist.');
+  }
+
+  // Saving casts each value to its schema type.
+  $articles->save();
+
+  return t('Re-saved sitenow_articles.settings.');
+}
+
+/**
+ * Remove orphaned Rabbit Hole field definitions left by uninstalling rh_*.
+ */
+function sitenow_update_10044() {
+  $repository = \Drupal::service('entity.last_installed_schema.repository');
+  $module_handler = \Drupal::moduleHandler();
+  $schema_data = \Drupal::keyValue('entity.storage_schema.sql');
+  $removed = [];
+
+  // Uninstalling rh_node left rh_redirect in the installed definitions after
+  // its column was dropped, so entity storage queries a missing column.
+  foreach (\Drupal::entityTypeManager()->getDefinitions() as $entity_type_id => $entity_type) {
+    foreach ($repository->getLastInstalledFieldStorageDefinitions($entity_type_id) as $name => $definition) {
+      if (!str_starts_with($name, 'rh_') || $module_handler->moduleExists($definition->getProvider())) {
+        continue;
+      }
+      $repository->deleteLastInstalledFieldStorageDefinition($definition);
+      $schema_data->delete("$entity_type_id.field_schema_data.$name");
+      $removed[] = "$entity_type_id.$name";
+    }
+  }
+
+  if (!$removed) {
+    return t('No orphaned Rabbit Hole field definitions found.');
+  }
+
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+
+  return t('Removed orphaned field definitions: @fields.', ['@fields' => implode(', ', $removed)]);
 }

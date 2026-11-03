@@ -5,17 +5,12 @@
  * Global settings for every multisite.
  */
 
-use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\DrupalEnvironmentDetector\AcquiaDrupalEnvironmentDetector as EnvironmentDetector;
 use Drupal\Core\Installer\InstallerKernel;
 
 // Prevent access to uninstalled sites through the web interface.
 if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
-}
-
-// Unset the VCS config directory so cim/cex default to sync.
-if (isset($config_directories['vcs'])) {
-  unset($config_directories['vcs']);
 }
 
 // Get some variables from the Acquia EnvironmentDetector or fall back to local.
@@ -26,7 +21,6 @@ $ah_env = EnvironmentDetector::getAhEnv() ?: 'local';
 /** @var $site_path string The path to the bootstrapped site. */
 $site_name = EnvironmentDetector::getSiteName($site_path);
 
-// Set the environment indicator settings for the toolbar color and name.
 switch ($ah_env) {
   case 'local':
     $settings['simple_environment_indicator'] = '#00664F local';
@@ -57,7 +51,7 @@ switch ($ah_env) {
  */
 $settings['maintenance_theme'] = 'uids_base';
 
-// Override BLTs hash salt to be unique per site.
+// Override DRS's hash salt to be unique per site.
 $settings['hash_salt'] = hash('sha256', $ah_group . $ah_env . $site_name);
 
 // Compatibility with Acquia Platform Email for Symfony Mailer module.

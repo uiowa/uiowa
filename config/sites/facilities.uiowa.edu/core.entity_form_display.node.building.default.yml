@@ -25,9 +25,11 @@ dependencies:
     - field.field.node.building.field_alt4_coordinator_title
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
+    - field.field.node.building.field_building_aed
     - field.field.node.building.field_building_area
     - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_energy_dashboard
+    - field.field.node.building.field_building_evac_chairs
     - field.field.node.building.field_building_hours
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
@@ -42,6 +44,7 @@ dependencies:
     - field.field.node.building.field_building_rr_single_men
     - field.field.node.building.field_building_rr_single_neutral
     - field.field.node.building.field_building_rr_single_women
+    - field.field.node.building.field_building_stop_the_bleed
     - field.field.node.building.field_building_year_built
     - field.field.node.building.field_main_coordinator_dept
     - field.field.node.building.field_main_coordinator_email
@@ -58,6 +61,7 @@ dependencies:
     - image
     - link
     - metatag
+    - paragraphs
     - path
     - rabbit_hole
     - telephone
@@ -95,6 +99,43 @@ third_party_settings:
       region: content
       parent_name: ''
       weight: 40
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_service_resources:
+      children:
+        - field_building_lactation_rooms
+        - field_building_aed
+        - field_building_stop_the_bleed
+        - field_building_evac_chairs
+      label: 'Service Resources'
+      region: content
+      parent_name: ''
+      weight: 41
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_restrooms:
+      children:
+        - field_building_rr_multi_men
+        - field_building_rr_multi_women
+        - field_building_rr_single_men
+        - field_building_rr_single_women
+        - field_building_rr_single_neutral
+      label: Restrooms
+      region: content
+      parent_name: ''
+      weight: 42
       format_type: details
       format_settings:
         classes: ''
@@ -286,6 +327,22 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_building_aed:
+    type: paragraphs
+    weight: 100
+    region: content
+    settings:
+      title: 'Service resource'
+      title_plural: 'Service resources'
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
+    third_party_settings: {  }
   field_building_area:
     type: number
     weight: 14
@@ -309,6 +366,22 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_building_evac_chairs:
+    type: paragraphs
+    weight: 100
+    region: content
+    settings:
+      title: 'Service resource'
+      title_plural: 'Service resources'
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
+    third_party_settings: {  }
   field_building_hours:
     type: text_textarea
     weight: 27
@@ -326,12 +399,20 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
   field_building_lactation_rooms:
-    type: string_textfield
-    weight: 18
+    type: paragraphs
+    weight: 100
     region: content
     settings:
-      size: 60
-      placeholder: ''
+      title: 'Service resource'
+      title_plural: 'Service resources'
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
     third_party_settings: {  }
   field_building_latitude:
     type: string_textfield
@@ -422,6 +503,22 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_building_stop_the_bleed:
+    type: paragraphs
+    weight: 100
+    region: content
+    settings:
+      title: 'Service resource'
+      title_plural: 'Service resources'
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
     third_party_settings: {  }
   field_building_year_built:
     type: string_textfield

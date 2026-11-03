@@ -44,3 +44,24 @@ function facilities_core_update_9001() {
   $config->set('status', TRUE);
   $config->save(TRUE);
 }
+
+/**
+ * Rename alert category taxonomy terms per issue #10057.
+ */
+function facilities_core_update_9002() {
+  $renames = [
+    'Road Closure' => 'Road/lane closure',
+    'Parking Lot Closure' => 'Parking space closure',
+  ];
+
+  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $terms = $term_storage->loadByProperties(['vid' => 'alert_categories']);
+
+  foreach ($terms as $term) {
+    $old_name = $term->getName();
+    if (isset($renames[$old_name])) {
+      $term->setName($renames[$old_name]);
+      $term->save();
+    }
+  }
+}

@@ -23,7 +23,6 @@ dependencies:
     - field.field.node.room.field_room_scheduling_regions
     - field.field.node.room.field_room_seating_chart
     - field.field.node.room.field_room_technology_features
-    - field.field.node.room.field_room_tile_details
     - field.field.node.room.field_room_type
     - field.field.node.room.field_room_video
     - field.field.node.room.rabbit_hole__settings
@@ -329,28 +328,6 @@ third_party_settings:
                   field_delimiter:
                     delimiter: ''
             weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 9c41beba-4bcb-4d91-b48a-e08bd81063d1
-            region: third
-            configuration:
-              id: 'field_block:node:room:field_room_tile_details'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -824,14 +801,6 @@ content:
       field_delimiter:
         delimiter: ''
     weight: 13
-    region: content
-  field_room_tile_details:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 18
     region: content
   field_room_type:
     type: entity_reference_label

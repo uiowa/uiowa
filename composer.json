@@ -6,6 +6,21 @@
     "prefer-stable": true,
     "license": "GPL-2.0-only",
     "repositories": {
+        "big_pipe_sessionless": {
+            "type": "package",
+            "package": {
+                "name": "drupal/big_pipe_sessionless",
+                "version": "2.2.0",
+                "type": "drupal-module",
+                "require": {
+                    "drupal/core": "^10 || ^11"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://ftp.drupal.org/files/projects/big_pipe_sessionless-2.2.0.zip"
+                }
+            }
+        },
         "accessible-menu": {
             "type": "package",
             "package": {
@@ -23,13 +38,27 @@
                 }
             }
         },
+        "slick-carousel": {
+            "type": "package",
+            "package": {
+                "name": "npm-asset/slick-carousel",
+                "version": "2.0.1",
+                "type": "npm-asset",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/kenwheeler/slick.git",
+                    "reference": "ad3198e26bb5f4182c56cf40bcdee1d239b30ac3"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/kenwheeler/slick/zipball/ad3198e26bb5f4182c56cf40bcdee1d239b30ac3",
+                    "reference": "ad3198e26bb5f4182c56cf40bcdee1d239b30ac3"
+                }
+            }
+        },
         "asset-packagist": {
             "type": "composer",
             "url": "https://asset-packagist.org"
-        },
-        "blt-drupal-test": {
-            "type": "path",
-            "url": "./packages/blt-drupal-test"
         },
         "drupal": {
             "type": "composer",
@@ -37,7 +66,7 @@
         },
         "uiowa_auth": {
             "type": "git",
-            "url": "git@github.com:uiowa/uiowa_auth"
+            "url": "https://github.com/uiowa/uiowa_auth"
         },
         "vanilla-icon-picker": {
             "type": "package",
@@ -54,7 +83,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Uiowa\\": "blt/src/",
             "SiteNow\\": "sitenow/src"
         }
     },
@@ -67,10 +95,10 @@
         "audit": {
             "abandoned": "ignore",
             "ignore": {
-                "CVE-2025-67746": "Temporarily ignore.",
-                "CVE-2026-40261": "Temporarily ignore.",
-                "CVE-2026-40176": "Temporarily ignore.",
-                "PKSA-pwvr-3754-v57r": "Temporarily ignore."
+                "CVE-2026-13240": "paragraphs_library which is not in-use.",
+                "CVE-2026-13241": "paragraphs_library which is not in-use.",
+                "SA-CORE-2026-012": "Layout builder; mitigated by access.",
+                "SA-CORE-2026-010": "Image style derivatives; limited to file scheme configurations"
             }
         },
         "sort-packages": true,
@@ -78,32 +106,29 @@
             "php": "8.3"
         },
         "allow-plugins": {
+            "acquia/drupal-recommended-settings": true,
             "composer/installers": true,
             "cweagans/composer-patches": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "acquia/blt": true,
-            "acquia/blt-phpcs": true,
             "drupal/core-composer-scaffold": true,
             "oomphinc/composer-installers-extender": true,
-            "phpstan/extension-installer": true,
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "symfony/runtime": true,
             "tbachert/spi": true
         }
     },
     "require": {
         "ext-json": "*",
         "ext-simplexml": "*",
-        "acquia/blt": "^13.7.4",
-        "acquia/blt-drupal-test": "*",
-        "acquia/blt-multisite": "dev-master",
-        "acquia/blt-travis": "^1.1.0",
+        "acquia/drupal-recommended-settings": "^1.2",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "6.7.2",
         "bower-asset/lazysizes": "^5.2",
         "bower-asset/photoswipe": "^5",
         "cweagans/composer-patches": "^1.7",
-        "dompdf/dompdf": "^2.0.0",
+        "dompdf/dompdf": "^3.1.6",
         "drupal/acquia_connector": "^4.0",
         "drupal/acquia_purge": "^1.5",
         "drupal/address": "^2.0",
@@ -121,8 +146,8 @@
         "drupal/config_ignore": "^3.3",
         "drupal/config_inspector": "^2.1",
         "drupal/config_split": "^2.0",
-        "drupal/core-composer-scaffold": "~10.5.9",
-        "drupal/core-recommended": "~10.5.9",
+        "drupal/core-composer-scaffold": "~11.4.0",
+        "drupal/core-recommended": "~11.4.0",
         "drupal/crop": "^2.4",
         "drupal/cshs": "^4.0",
         "drupal/ctools": "^4.1",
@@ -143,22 +168,20 @@
         "drupal/field_delimiter": "^2.0",
         "drupal/field_group": "^4.0",
         "drupal/file_mdm": "^3.0",
-        "drupal/find_text": "3.0.1",
+        "drupal/find_text": "3.1.0",
         "drupal/focal_point": "^2.1",
         "drupal/fontawesome": "^3.0",
-        "drupal/fragments": "^2.1",
+        "drupal/fragments": "^2.2",
         "drupal/fullcalendar": "^3.0",
-        "drupal/fullcalendar_view": "^5.0",
         "drupal/geofield": "^10.3",
-        "drupal/google_analytics": "^4.0",
-        "drupal/google_tag": "^1.8",
+        "drupal/google_tag": "^2.0",
         "drupal/gpa_calculator": "^2.0",
         "drupal/heading": "^2.0",
         "drupal/honeypot": "2.2.2",
         "drupal/iframe_title_filter": "^3.0",
         "drupal/imagecache_external": "^3.0",
         "drupal/imagemagick": "^4.0",
-        "drupal/inline_entity_form": "^3.0.0-rc19",
+        "drupal/inline_entity_form": "^3.0",
         "drupal/jsonapi_extras": "^3.23",
         "drupal/jsonapi_include": "^1.6",
         "drupal/klaro": "^3.0",
@@ -199,19 +222,18 @@
         "drupal/photoswipe": "^5.0",
         "drupal/piwik_pro": "^1.4",
         "drupal/private_content": "^2.1",
-        "drupal/purge": "^3.6.0",
+        "drupal/purge": "^3.7",
         "drupal/rabbit_hole": "^2.0@beta",
         "drupal/redirect": "^1.12.0",
         "drupal/replicate": "^1.3",
         "drupal/replicate_ui": "^1.2",
-        "drupal/reroute_email": "^2.1",
+        "drupal/reroute_email": "^2.3.0-rc2",
         "drupal/responsive_table_filter": "^2.0",
         "drupal/robotstxt": "^1.2",
         "drupal/scheduler": "^2.2",
         "drupal/scheduler_content_moderation_integration": "^3.0",
         "drupal/schema_metatag": "^3.0",
         "drupal/search_api": "^1.40",
-        "drupal/search_api_autocomplete": "^1.11",
         "drupal/simple_sitemap": "^4.2",
         "drupal/simplei": "^3.0",
         "drupal/siteimprove": "^3.0",
@@ -219,76 +241,95 @@
         "drupal/smart_trim": "^2.0",
         "drupal/stage_file_proxy": "^3.1",
         "drupal/superfish": "^1.13",
-        "drupal/symfony_mailer": "^1.3",
+        "drupal/symfony_mailer": "^1.6",
         "drupal/table_header_scope_attribute": "^1.0",
         "drupal/taxonomy_path_breadcrumb": "^1.0@beta",
         "drupal/theme_permission": "^2.0",
         "drupal/token": "^1.16",
         "drupal/turnstile": "^1.1",
         "drupal/tvi": "^2.0",
-        "drupal/ui_icons": "^1.0@beta",
+        "drupal/ui_icons": "^2.0",
         "drupal/views_bulk_operations": "^4.4",
         "drupal/views_core_entity_reference": "^1.0@alpha",
         "drupal/views_custom_cache_tag": "^1.3",
         "drupal/views_data_export": "^1.6",
         "drupal/views_tree": "^3.0",
-        "drupal/webform": "^6.2",
+        "drupal/webform": "^6.3",
         "drupal/weight": "^3.2",
         "drupal/workbench_email": "^3.0",
-        "drush/drush": "^12.4.4",
+        "drush/drush": "^13.8",
+        "enshrined/svg-sanitize": "1.0.0 as 0.22.1",
         "giggsey/libphonenumber-for-php-lite": "^9.0",
         "iio/libmergepdf": "^4.0",
         "kartsims/easysvg": "2.5",
         "npm-asset/accessible-menu": "4.0.0",
+        "npm-asset/dompurify": "^3.4",
         "npm-asset/jquery-collapse": "^1.1",
         "npm-asset/pannellum": "^2.5",
         "npm-asset/photoswipe-dynamic-caption-plugin": "^1.2",
-        "npm-asset/slick-carousel": "^1.8",
+        "npm-asset/slick-carousel": "^2.0",
         "npm-asset/splidejs--splide": "^4.1",
         "npm-asset/vanilla-icon-picker": "^1.2",
         "oomphinc/composer-installers-extender": "^2.0",
         "richardbporter/drush-users-commands": "^4.0.0",
-        "symfony/polyfill-intl-idn": "1.38.1 as 1.37.0",
-        "twig/twig": "v3.27.0 as v3.26.0",
         "uiowa/uiowa_auth": "^2.1"
     },
     "require-dev": {
-        "acquia/blt-phpcs": "^1.0",
         "acquia/coding-standards": "^3.0",
+        "drupal/core-dev": "~11.4.0",
         "mglaman/phpstan-drupal": "^1.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.12",
         "phpstan/phpstan-deprecation-rules": "^1.2",
-        "typhonius/acquia-php-sdk-v2": "^2.6"
+        "typhonius/acquia-php-sdk-v2": "^3.8"
     },
     "extra": {
+        "drupal-recommended-settings": {
+            "operations": {
+                "${docroot}/sites/${site}/settings/local.settings.php": {
+                    "copy": {
+                        "path": "${docroot}/sites/${site}/settings/default.local.settings.php",
+                        "with-placeholder": true
+                    }
+                }
+            }
+        },
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
         },
         "patches": {
+            "bower-asset/chosen": {
+                "Replace removed jQuery.trim with native string trimming": "patches/chosen-jquery4-trim.patch"
+            },
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
+            "drupal/better_exposed_filters": {
+                "[3600959] Fatal TypeError in addElementToGroup() when a malformed request submits an array for a collapsible exposed filter's value": "patches/better_exposed_filters-3600959.patch"
+            },
+            "drupal/big_pipe_sessionless": {
+                "[3428235] Drupal 11 compatibility": "patches/3428235.patch"
+            },
             "drupal/core": {
-                "[2985199] Extensions in Multisite Directories Not Registered When Rebuilding Cache": "https://www.drupal.org/files/issues/2024-08-01/2985199-98.patch",
-                "[2942975] Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2024-12-20/2942975-273_0.patch",
-                "[2605218] Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2024-06-13/2605218-135.patch",
+                "[2985199] Extensions in Multisite Directories Not Registered When Rebuilding Cache": "https://www.drupal.org/files/issues/2025-12-23/2985199-100.patch",
+                "[2942975] Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2026-07-20/294297-293.patch",
+                "[2605218] Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2026-01-15/2605218-143.diff",
                 "[2984272] Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
                 "[3160785] Fix LB contextual links after dragging block to new section": "https://www.drupal.org/files/issues/2023-06-09/3160785-uuid_0.patch",
-                "[3008292] ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "https://www.drupal.org/files/issues/2025-07-11/3008292-10.5x-108.patch",
-                "[3015152] Support third party settings for components within a section": "https://www.drupal.org/files/issues/2024-06-27/3015152-213.patch",
+                "[3008292] ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "https://www.drupal.org/files/issues/2026-08-14/3008292-drupal-11-4-4.patch",
+                "[3015152] Support third party settings for components within a section": "https://www.drupal.org/files/issues/2026-01-21/3015152-11.3.2-no_tests.patch",
                 "[3030154] layout_builder__layout_section column hitting database limit": "https://www.drupal.org/files/issues/2021-10-11/3030154-44.patch",
                 "[3359465] Layout builder off-canvas positioning problem when resizing browser ": "https://www.drupal.org/files/issues/2023-07-19/3359465-8.patch",
-                "[2230909] Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2025-09-04/2230909-381.patch",
+                "[2230909] Simple decimals fail to pass validation": "https://www.drupal.org/files/issues/2026-03-30/2230909-simple-decimals-fail-validation-11.3.x-hacky-disable-validation-MR152288.patch",
                 "[3163299] Ajax exposed filters not working for multiple instances of the same Views block placed on one page": "patches/core-3163299.patch",
                 "[3047022] Layout builder fails to assign inline block access dependencies for the overrides section storage on entities with pending revisions": "patches/core-3047022.patch",
                 "[2755791] Ajax error ajax.$form.ajaxSubmit() is not a function": "patches/core-2755791.patch",
                 "[3310075] Toolbar js errors when you remove the administration menu": "patches/core-3310075.patch",
-                "[3274635] Use CKEditor 5's native <ol type> and <ul type> UX" : "https://www.drupal.org/files/issues/2025-03-21/3274635-mr5079-94fde602-10.3.x-updated-editorStyleFixCondition--119.patch",
-                "[3498100] Duplicate summary on vertical tabs" : "https://www.drupal.org/files/issues/2025-01-08/3498100-2-core-duplicate-summary-on-vertical-tabs.patch"
+                "[3351603] .ck-balloon-panel (link balloon, media balloon …) not visible for CKE5 instances in a Drupal dialog": "patches/3351603.patch",
+                "[3609333] Avoid a Drupal 11.4 syslog/block-manager service-container cycle": "patches/core-3609333-lazy-block-logger.patch"
             },
             "drupal/ckeditor": {
                 "Changing an existing embedded media's alignment or alt data attributes does not get saved with CKEditor": "https://www.drupal.org/files/issues/2023-01-03/3330723-3.patch"
@@ -317,26 +358,33 @@
                 "Expose Calendar instance on DOM element for external JS access": "patches/fullcalendar_expose_calendar_instance.patch",
                 "[3499954] Make height and contentHeight settings functional": "patches/fullcalendar_height_contentheight.patch"
             },
+            "drupal/google_tag": {
+                "[3376960] Multiple containers don't load": "patches/3376960.patch",
+                "[3469014] Weight is not preserved when saving multiple tags within the same container": "patches/3469014.patch",
+                "[3544836] Can't save Google Tag ID": "patches/3544836.patch"
+            },
             "drupal/layout_builder_styles": {
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
                 "Some styles get added multiple times": "https://www.drupal.org/files/issues/2023-02-14/3341740-3.patch",
                 "Allow radio buttons for single-select group form type": "patches/lbs_3290930.patch"
             },
             "drupal/link_attributes": {
-                "Linkit with attributes widget overrides parent options": "patches/3379989.patch"
+                "Linkit with attributes widget overrides parent options": "patches/3379989.patch",
+                "Preserve parent widget processing in massageFormValues": "patches/3379989-parent-massage-form-values.patch"
             },
             "drupal/linkit": {
                 "Add Webform Matcher": "https://www.drupal.org/files/issues/2023-06-13/linkit-webform-matcher-2946234-36.patch",
                 "[3223781]Add Support for <nolink>": "patches/3223781.patch"
             },
-            "drupal/paragraphs": {
-                "find the correct revision ID of the parent": "https://www.drupal.org/files/issues/2020-07-08/access-controll-issue-3090200-22.patch"
+            "drupal/media_thumbnails_video": {
+                "Drupal 11 compatibility: viewElements() return type and FileVideoFormatter constructor signature (backported from 2.1.x)": "patches/media_thumbnails_video-d11-formatter.patch"
             },
-            "drupal/rabbit_hole": {
-                "Issue with .install file.": "patches/rabbit_hole_install_fix.patch"
+            "drupal/paragraphs": {
+                "[3090200] Paragraph view access check using incorrect revision of its parent": "https://www.drupal.org/files/issues/2026-07-06/paragraphs-parent-access-block-content-skip-3090200-97.patch"
             },
             "drupal/redirect": {
-                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
+                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch",
+                "[3588067] Adding a redirect from a deleted node path 404s instead of saving": "patches/3588067.patch"
             },
             "drupal/replicate": {
                 "Replicate components in the proper order.": "patches/3392959.patch"
@@ -347,11 +395,8 @@
             "drupal/scheduler_content_moderation_integration": {
                 "Set a default value in the publish / unpublish state dropdowns": "https://www.drupal.org/files/issues/2023-04-19/3270462-25.patch"
             },
-            "drupal/superfish": {
-                "Menu renders empty <ul></ul> if it only contains menu link(s) that are not enabled": "patches/superfish-3548286.patch"
-            },
-            "drupal/webform": {
-                "Webform export separate option doesn't show values for specific options": "https://www.drupal.org/files/issues/2024-07-22/3462726-optionbase-1.patch"
+            "drupal/symfony_mailer": {
+                "Add support for complex address strings in back-compatibility mode": "https://www.drupal.org/files/issues/2025-05-28/symfony_mailer-support_complex_address_strings-3350992-38.patch"
             }
         },
         "installer-types": [
@@ -409,9 +454,6 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd": [
-            "blt internal:create-project:init-repo"
-        ],
         "post-drupal-scaffold-cmd": [
             "patch -p1 < patches/core_htaccess.patch",
             "patch -p1 < patches/development_services.patch"

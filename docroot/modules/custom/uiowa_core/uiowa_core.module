@@ -8,6 +8,7 @@
 use Drupal\Component\Utility\Html;
 use Drupal\content_moderation\Plugin\WorkflowType\ContentModeration;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
@@ -16,11 +17,11 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\symfony_mailer\EmailInterface;
@@ -263,7 +264,21 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
   // For entities with moderation and scheduler.
   // Catching an odd situation after scheduler where it changes the node
   // status to unpublished but doesn't change the moderation state.
+  // This is needed for programmatic saves such as bulk operations.
+  // Node saves are handled instead by
+  // uiowa_core_scheduler_moderation_validate.
   if ($entity instanceof NodeInterface) {
+    // If we don't have moderation on this entity,
+    // exit early.
+    $moderation_info = \Drupal::service('content_moderation.moderation_information');
+    $is_moderated = $moderation_info->shouldModerateEntitiesOfBundle(
+      $entity->getEntityType(),
+      $entity->bundle()
+    );
+    if (!$is_moderated) {
+      return;
+    }
+
     if ($set_state = $entity->moderation_state?->value) {
       if ($set_state == 'published' && !$entity->isPublished()) {
         if ($entity->isNew()) {
@@ -275,7 +290,7 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
         // Add a user message along with changing the state.
         $entity->moderation_state = $fallback_state;
         $warning_text = t('Content criteria for <em>"@label,"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
-          '@label' => $entity->label(),
+          '@label' => $entity->label() ?: t('Title'),
           '@set_state' => $set_state,
           '@fallback_state' => $fallback_state,
         ]);
@@ -289,7 +304,7 @@ function uiowa_core_entity_presave(EntityInterface $entity) {
           if ($archive_time > $request_time) {
             $entity->moderation_state = $entity->original->moderation_state->value;
             $warning_text = t('Content scheduling criteria for <em>"@label,"</em> conflicts with the set "unpublished" moderation state. Switching back to "@fallback_state."', [
-              '@label' => $entity->label(),
+              '@label' => $entity->label() ?: t('Title'),
               '@set_state' => $set_state,
               '@fallback_state' => $entity->original->moderation_state->value,
             ]);
@@ -787,6 +802,15 @@ function uiowa_core_page_attachments(&$page) {
       }
     }
   }
+
+  // Message explaining containers that show as inactive (overwritten).
+  if (\Drupal::routeMatch()->getRouteName() === 'entity.google_tag_container.collection') {
+    $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
+    if ($uiowa_core_gtag === 0) {
+      \Drupal::messenger()
+        ->addWarning(t('Google Tag Manager containers are currently blocked from being inserted on this website. Containers below may show as inactive (overwritten) as a result. Contact an administrator to remove the site-wide restriction.'));
+    }
+  }
 }
 
 /**
@@ -866,33 +890,33 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     uiowa_core_scheduler_help_text($form);
   }
 
+  // Add early validation for scheduler/moderation conflicts.
+  // This prevents form validation errors
+  // from scheduler_content_moderation_integration
+  // by adjusting values before entity validation runs.
+  $module_handler = \Drupal::moduleHandler();
+  if ($module_handler->moduleExists('scheduler') && $module_handler->moduleExists('scheduler_content_moderation_integration')) {
+    $scheduler_manager = \Drupal::service('scheduler.manager');
+    if (in_array($form_id, $scheduler_manager->getEntityFormIds())) {
+      // Prepend our validation handler so it runs before entity validation.
+      array_unshift($form['#validate'], 'uiowa_core_scheduler_moderation_validate');
+    }
+  }
+
   switch ($form_id) {
+    case 'google_tag_container_form':
+      // After saving, redirect to the containers collection instead of the
+      // single-container settings page (which is now admin-only).
+      if (isset($form['actions']['submit'])) {
+        $form['actions']['submit']['#submit'][] = 'uiowa_core_google_tag_container_form_submit';
+      }
+      break;
+
     case 'fragment_region_item_add_form':
     case 'fragment_region_item_edit_form':
       // Ensure item is published to prevent rendering issue for anonymous user.
       $form['status']['widget']['value']['#default_value'] = TRUE;
       $form['status']['#disabled'] = TRUE;
-      break;
-
-    case 'google_tag_container':
-      $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
-      // Inform on configuration form that the functionality is
-      // currently being blocked from being inserted.
-      if ($uiowa_core_gtag === 0) {
-        \Drupal::messenger()
-          ->addWarning(t('Local Google Tag Manager container snippets are currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
-      }
-      break;
-
-    case 'google_analytics_admin_settings':
-      $uiowa_core_ga = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.ga');
-      // Inform on configuration form that the functionality is
-      // currently being blocked from being inserted.
-      if ($uiowa_core_ga === 0) {
-        $form["general"]["accounts"]['#disabled'] = TRUE;
-        \Drupal::messenger()
-          ->addWarning(t('Google Analytics is currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
-      }
       break;
 
     // Add delete forms as the types of protected blocks changes.
@@ -1203,6 +1227,116 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 }
 
 /**
+ * Custom validation handler to reconcile scheduler and moderation conflicts.
+ *
+ * This runs before entity validation to prevent form errors from
+ * scheduler_content_moderation_integration constraints. It automatically
+ * adjusts the moderation state when there's a conflict with scheduled
+ * publish/unpublish dates, allowing the save to proceed.
+ * This is similar to the process in uiowa_core_entity_presave.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function uiowa_core_scheduler_moderation_validate(array $form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $form_object->getEntity();
+
+  // Only process nodes with moderation.
+  if (!$entity instanceof NodeInterface) {
+    return;
+  }
+  if (!$entity->hasField('moderation_state')) {
+    return;
+  }
+
+  $moderation_state = $form_state->getValue('moderation_state');
+  if (!$moderation_state || empty($moderation_state[0]['value'])) {
+    return;
+  }
+
+  $set_state = $moderation_state[0]['value'];
+  $publish_on = $form_state->getValue('publish_on');
+  $unpublish_on = $form_state->getValue('unpublish_on');
+
+  // Normalize to a string; the widget may return an array or a
+  // DrupalDateTime instead.
+  $publish_on_value = $publish_on[0]['value'] ?? NULL;
+  if ($publish_on_value instanceof DrupalDateTime) {
+    $publish_on_value = $publish_on_value->format('Y-m-d\TH:i:s');
+  }
+  elseif (is_array($publish_on_value)) {
+    $date = $publish_on_value['date'] ?? '';
+    $publish_on_value = empty($date) ? NULL : $date . 'T' . ($publish_on_value['time'] ?? '00:00:00');
+  }
+
+  $unpublish_on_value = $unpublish_on[0]['value'] ?? NULL;
+  if ($unpublish_on_value instanceof DrupalDateTime) {
+    $unpublish_on_value = $unpublish_on_value->format('Y-m-d\TH:i:s');
+  }
+  elseif (is_array($unpublish_on_value)) {
+    $date = $unpublish_on_value['date'] ?? '';
+    $unpublish_on_value = empty($date) ? NULL : $date . 'T' . ($unpublish_on_value['time'] ?? '00:00:00');
+  }
+
+  // Check for conflict: trying to set to "published"
+  // with a future publish date.
+  if ($set_state === 'published' && !empty($publish_on_value)) {
+    $publish_timestamp = strtotime($publish_on_value);
+    $request_time = \Drupal::time()->getRequestTime();
+
+    if ($publish_timestamp > $request_time) {
+      // Determine fallback state.
+      if ($entity->isNew()) {
+        $fallback_state = 'draft';
+      }
+      else {
+        $fallback_state = $entity->moderation_state->value ?? 'draft';
+      }
+
+      // Update form state to use fallback instead of published.
+      $form_state->setValue(['moderation_state', 0, 'value'], $fallback_state);
+
+      // Add warning message.
+      $warning_text = t('Content criteria for <em>"@label"</em> conflicts with the set "@set_state" moderation state. Switching back to "@fallback_state."', [
+        '@label' => $entity->label() ?: t('this content'),
+        '@set_state' => $set_state,
+        '@fallback_state' => $fallback_state,
+      ]);
+      \Drupal::messenger()->addWarning($warning_text);
+    }
+  }
+
+  // Check for conflict: trying to set to "archived"
+  // with a future unpublish date.
+  if ($set_state === 'archived' && !empty($unpublish_on_value)) {
+    $unpublish_timestamp = strtotime($unpublish_on_value);
+    $request_time = \Drupal::time()->getRequestTime();
+
+    if ($unpublish_timestamp > $request_time) {
+      $fallback_state = $entity->moderation_state->value ?? 'draft';
+
+      // Update form state to use original state.
+      $form_state->setValue(['moderation_state', 0, 'value'], $fallback_state);
+
+      // Add warning message.
+      $warning_text = t('Content scheduling criteria for <em>"@label"</em> conflicts with the set "unpublished" moderation state. Switching back to "@fallback_state."', [
+        '@label' => $entity->label() ?: t('this content'),
+        '@fallback_state' => $fallback_state,
+      ]);
+      \Drupal::messenger()->addWarning($warning_text);
+    }
+  }
+}
+
+/**
  * Validation handler to clean up analytics attributes.
  */
 function uiowa_core_menu_link_analytics_validate($form, FormStateInterface $form_state) {
@@ -1217,6 +1351,16 @@ function uiowa_core_menu_links_discovered_alter(array &$links) {
   if (isset($links['entity.content_moderation_email_template.collection'])) {
     $links['entity.content_moderation_email_template.collection']['title'] = t('Content notifications');
     $links['entity.content_moderation_email_template.collection']['description'] = t('Email templates for content notifications.');
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ */
+function uiowa_core_local_tasks_alter(&$local_tasks) {
+  // Shorten the google_tag container list tab title.
+  if (isset($local_tasks['google_tag.container_list_tab'])) {
+    $local_tasks['google_tag.container_list_tab']['title'] = t('Tags');
   }
 }
 
@@ -1304,15 +1448,25 @@ function uiowa_core_contact_form_submit(array &$form, FormStateInterface $form_s
 }
 
 /**
- * {@inheritdoc}
+ * Implements hook_entity_prepare_form().
+ *
+ * Pre-populates insertion conditions for new Google Tag containers to match
+ * the path exclusions google_tag 1.x applied to every container by default.
  */
-function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
-  $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
-  $env = getenv('AH_PRODUCTION');
-  // Determine if site specific Google Tag should be inserted.
-  if ($uiowa_core_gtag === 0 || (int) $env === 0) {
-    $satisfied = FALSE;
+function uiowa_core_entity_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
+  if ($entity->getEntityTypeId() !== 'google_tag_container' || !$entity->isNew()) {
+    return;
   }
+  if ($entity->get('conditions')) {
+    return;
+  }
+  $entity->set('conditions', [
+    'request_path' => [
+      'id' => 'request_path',
+      'negate' => TRUE,
+      'pages' => "/admin\n/admin/*\n/batch\n/batch/*\n/node/add*\n/node/*/edit\n/node/*/delete\n/node/*/layout\n/taxonomy/term/*/edit\n/taxonomy/term/*/layout\n/user/*/edit*\n/user/*/cancel*\n/user/*/layout",
+    ],
+  ]);
 }
 
 /**
@@ -1421,6 +1575,15 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
       break;
 
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for fragment.
+ *
+ * Only print the child elements so the template does not re-render the entity.
+ */
+function uiowa_core_preprocess_fragment(&$variables) {
+  $variables['content'] = array_intersect_key($variables['content'], array_flip(Element::children($variables['content'])));
 }
 
 /**
@@ -2202,4 +2365,14 @@ function uiowa_core_configure_fontawesome_icon_field(array &$icon_element, $chec
       }
     }
   }
+}
+
+/**
+ * Submit handler for google_tag_container_form.
+ *
+ * Redirects to the containers collection page after save instead of the
+ * single-container settings page (which is admin-only).
+ */
+function uiowa_core_google_tag_container_form_submit($form, FormStateInterface $form_state) {
+  $form_state->setRedirect('entity.google_tag_container.collection');
 }

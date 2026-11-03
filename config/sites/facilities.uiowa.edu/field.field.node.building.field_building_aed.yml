@@ -1,0 +1,26 @@
+uuid: eed0b7d0-701d-449b-b255-b6891276c257
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_building_aed
+    - node.type.building
+    - paragraphs.paragraphs_type.service_resource
+  module:
+    - entity_reference_revisions
+id: node.building.field_building_aed
+field_name: field_building_aed
+entity_type: node
+bundle: building
+label: 'AED locations'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      service_resource: service_resource
+field_type: entity_reference_revisions

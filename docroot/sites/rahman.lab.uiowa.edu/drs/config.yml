@@ -1,0 +1,18 @@
+project:
+  machine_name: labrahman
+  human_name: rahman.lab.uiowa.edu
+  local:
+    hostname: labrahman.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labrahman.prod
+drupal:
+  db:
+    database: rahman_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labrahman.prod.drupal.uiowa.edu'
+  requester: lwbryant
+  site-name: 'Rahman Lab'

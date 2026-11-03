@@ -8,9 +8,8 @@ use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
-use Consolidation\SiteProcess\ProcessManagerAwareTrait;
 use Drush\Boot\DrupalBootLevels;
-use Drush\Drupal\Commands\sql\SanitizePluginInterface;
+use Drush\Commands\sql\sanitize\SanitizePluginInterface;
 use Drush\Drush;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -19,7 +18,6 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface, SanitizePluginInterface {
   use SiteAliasManagerAwareTrait;
-  use ProcessManagerAwareTrait;
 
   /**
    * Configuration that should be sanitized.
@@ -65,7 +63,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   }
 
   /**
-   * Invoke BLT update command after sql:sync for remote targets only.
+   * Invoke the site update command after sql:sync for remote targets only.
    *
    * @param mixed $result
    *   The command result.
@@ -86,12 +84,10 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       $process = $this->processManager()->siteProcess(
         $record,
         [
-          './vendor/bin/blt',
-          'drupal:update',
+          './sn',
+          'site:update',
+          $record->uri(),
         ],
-        [
-          'site' => $record->uri(),
-        ]
       );
 
       $process->setWorkingDirectory($record->root() . '/..');

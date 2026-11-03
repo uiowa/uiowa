@@ -4,6 +4,7 @@ namespace Drupal\layout_builder_custom;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Render\Element;
 
 /**
  * Helper class for doing common processing related to Layout Builder styles.
@@ -128,6 +129,45 @@ class LayoutBuilderStylesHelper {
           unset($build['#cache']['keys']);
         }
         // Break on the first match.
+        break;
+      }
+    }
+  }
+
+  /**
+   * Change the Photoswipe thumbnail image style based on the selected format.
+   *
+   * Unlike image and card blocks, the image gallery renders its thumbnails
+   * through the Photoswipe formatter, which crops via a responsive image style
+   * rather than a media view mode. Map the selected media format to the
+   * matching responsive image style so the crop is produced by the image style
+   * (focal-point aware) instead of CSS.
+   *
+   * @param array $build
+   *   The gallery field render array, whose delta children are the Photoswipe
+   *   item render arrays.
+   * @param string $size
+   *   The responsive image style size prefix, e.g. "medium".
+   * @param string $format
+   *   The media format class string, e.g. "media--square".
+   */
+  public static function setPhotoswipeThumbnailStyleFromFormat(array &$build, string $size, string $format) {
+    $format_styles = [
+      'media--square' => 'square',
+      'media--widescreen' => 'widescreen',
+      'media--no-crop' => 'no_crop',
+    ];
+
+    // Find the first matching format and apply its responsive image style to
+    // every thumbnail in the gallery.
+    foreach ($format_styles as $class => $shape) {
+      if (str_starts_with($format, $class)) {
+        $style = "{$size}__$shape";
+        foreach (Element::children($build) as $delta) {
+          if (isset($build[$delta]['#display_settings']['photoswipe_thumbnail_style'])) {
+            $build[$delta]['#display_settings']['photoswipe_thumbnail_style'] = $style;
+          }
+        }
         break;
       }
     }

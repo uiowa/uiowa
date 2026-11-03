@@ -2,17 +2,19 @@
 
 /**
  * @file
- * Profile code.
+ * Profile hooks for SiteNow.
  */
 
 use Drupal\sitenow\Plugin\WebformHandler\EmailOverrideWebformHandler;
 use Drupal\Component\Utility\Html;
+use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -57,10 +59,6 @@ function sitenow_preprocess_html(&$variables) {
 function sitenow_toolbar_alter(&$items) {
   if (isset($items['acquia_connector'])) {
     unset($items['acquia_connector']);
-  }
-
-  if (isset($items['tour'])) {
-    $items['tour']['#attached']['library'][] = 'claro/tour-styling';
   }
 
   // Accessibility tweak for color-contrast issue.
@@ -163,7 +161,8 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
   if ($form['id']['#default_value'] === 'top-links') {
     $theme = \Drupal::config('system.theme')->get('default');
     if (in_array($theme, ['uids_base'])) {
-      $limit = theme_get_setting('header.top_links_limit', 'uids_base');
+      $limit = \Drupal::service(ThemeSettingsProvider::class)
+        ->getSetting('header.top_links_limit', 'uids_base');
       if ($limit) {
         $warning_text = t('Only the top @limit menu items will display. Child/submenu items are automatically hidden to maintain a usable header layout.', [
           '@limit' => $limit,
@@ -490,6 +489,13 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
+
+  // Check if uiowa_core module is installed (may not be during installation).
+  // Using moduleHandler instead of container->has() because the service
+  // definition may exist before the module is actually enabled.
+  if (!\Drupal::moduleHandler()->moduleExists('uiowa_core')) {
+    return;
+  }
 
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
@@ -1178,5 +1184,20 @@ function sitenow_webform_handler_info_alter(array &$handlers) {
   // Replace the default email handler to override what settings are allowed.
   if (isset($handlers['email'])) {
     $handlers['email']['class'] = EmailOverrideWebformHandler::class;
+  }
+}
+
+/**
+ * Implements hook_config_ignore_ignored_alter().
+ */
+function sitenow_config_ignore_ignored_alter(ConfigIgnoreConfig $ignored) {
+  // Config Ignore drops ignored keys from config it creates, and a split
+  // created without a status is active.
+  foreach (['import', 'export'] as $direction) {
+    $list = array_filter(
+      $ignored->getList($direction, 'create'),
+      fn($line) => !preg_match('/^config_split\.config_split\.[^:]+:status$/', $line),
+    );
+    $ignored->setList($direction, 'create', $list);
   }
 }

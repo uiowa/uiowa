@@ -1,0 +1,27 @@
+uuid: 48312e8c-f8d3-43eb-b64e-86cac0f4066b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.department.rabbit_hole__settings
+    - taxonomy.vocabulary.department
+  module:
+    - text
+id: taxonomy_term.department.default
+targetEntityType: taxonomy_term
+bundle: department
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  rabbit_hole__settings: true
+  search_api_excerpt: true

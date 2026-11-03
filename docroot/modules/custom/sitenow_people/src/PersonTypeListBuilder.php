@@ -13,11 +13,24 @@ class PersonTypeListBuilder extends ConfigEntityListBuilder {
   /**
    * {@inheritdoc}
    */
+  public function getDefaultOperations(EntityInterface $entity) {
+    $operations = parent::getDefaultOperations($entity);
+    /** @var \Drupal\sitenow_people\PersonTypeInterface $entity */
+    if ($entity->isLocked()) {
+      unset($operations['delete']);
+    }
+    return $operations;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildHeader() {
     $header['label'] = $this->t('Label');
     $header['id'] = $this->t('Machine name');
     $header['status'] = $this->t('Status');
     $header['allow_former'] = $this->t('Allow former');
+    $header['locked'] = $this->t('Locked');
     return $header + parent::buildHeader();
   }
 
@@ -30,6 +43,7 @@ class PersonTypeListBuilder extends ConfigEntityListBuilder {
     $row['id'] = $entity->id();
     $row['status'] = $entity->status() ? $this->t('Enabled') : $this->t('Disabled');
     $row['allow_former'] = $entity->get('allow_former') ? $this->t('Enabled') : $this->t('Disabled');
+    $row['locked'] = $entity->isLocked() ? $this->t('Yes') : $this->t('No');
     return $row + parent::buildRow($entity);
   }
 

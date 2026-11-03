@@ -2,11 +2,10 @@
 
 namespace Uiowa\Tests\PHPUnit\Unit;
 
-use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Uiowa\Multisite;
+use SiteNow\Utility\Multisite;
 
 /**
  * Basic file system tests for application integrity.
@@ -19,9 +18,9 @@ class FilesystemTest extends UnitTestCase {
    * Each app should have a Drush alias.
    */
   public function testAppDrushAliasesExist() {
-    $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
+    $config = Yaml::parseFile($this->root . '/../sitenow/applications.yml');
 
-    foreach ($config['uiowa']['applications'] as $application => $attrs) {
+    foreach ($config['applications'] as $application => $attrs) {
       $this->assertFileExists($this->root . "/../drush/sites/{$application}.site.yml");
     }
   }
@@ -40,7 +39,7 @@ class FilesystemTest extends UnitTestCase {
       ->sortByName();
 
     foreach ($files->getIterator() as $file) {
-      $config = YamlMunge::parseFile($file->getRealPath());
+      $config = Yaml::parse((string) file_get_contents($file->getRealPath()));
       $this->assertEquals('/var/www/html/docroot', $config['local']['root'], "$file");
     }
   }
@@ -49,10 +48,10 @@ class FilesystemTest extends UnitTestCase {
    * Test that app aliases do not have a files path set.
    */
   public function testAppAliasesDoNotHaveFilesPath() {
-    $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
+    $config = Yaml::parseFile($this->root . '/../sitenow/applications.yml');
 
-    foreach ($config['uiowa']['applications'] as $app => $attrs) {
-      $config = YamlMunge::parseFile($this->root . "/../drush/sites/$app.site.yml");
+    foreach ($config['applications'] as $app => $attrs) {
+      $config = Yaml::parse((string) file_get_contents($this->root . "/../drush/sites/$app.site.yml"));
 
       foreach (['local', 'dev', ' test', 'prod'] as $env) {
         if (isset($config[$env]['paths'])) {
@@ -104,14 +103,6 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
-if (isset(\$config_directories['vcs'])) {
-  unset(\$config_directories['vcs']);
-}
-EOD;
-
-    $this->assertStringContainsString($needle, $haystack);
-
-    $needle = <<<EOD
 if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
@@ -121,7 +112,7 @@ EOD;
   }
 
   /**
-   * Test that multisite files exist and that BLT config is set correctly.
+   * Test that multisite files exist and that the per-site config is correct.
    *
    * @throws \Exception
    */
@@ -131,7 +122,7 @@ EOD;
     foreach ($sites as $site) {
       $path = $this->root . "/../docroot/sites/{$site}";
 
-      $this->assertFileExists("{$path}/blt.yml");
+      $this->assertFileExists("{$path}/drs/config.yml");
       $this->assertFileExists("{$path}/default.local.drush.yml");
       $this->assertFileExists("{$path}/default.settings.php");
       $this->assertFileExists("{$path}/settings.php");
@@ -141,8 +132,8 @@ EOD;
       $id = Multisite::getIdentifier("//{$site}");
       $local = Multisite::getInternalDomains($id)['local'];
 
-      // Test BLT config.
-      $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
+      // Test per-site config.
+      $yaml = Yaml::parse(file_get_contents("{$path}/drs/config.yml"));
       $db = $yaml['drupal']['db']['database'];
 
       $this->assertEquals(Multisite::getDatabaseName($site), $db);
@@ -159,7 +150,7 @@ if (file_exists('/var/www/site-php')) {
   require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
 }
 
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+require DRUPAL_ROOT . "/../vendor/acquia/drupal-recommended-settings/settings/acquia-recommended.settings.php";
 EOD;
 
       $file = "{$path}/settings.php";

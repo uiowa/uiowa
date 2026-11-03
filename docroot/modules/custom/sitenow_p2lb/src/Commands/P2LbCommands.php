@@ -49,11 +49,20 @@ class P2LbCommands extends DrushCommands {
   protected $configFactory;
 
   /**
+   * The sitenow_p2lb logger channel.
+   *
+   * DrushCommands::$logger is reserved for Drush's own logger manager.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannel
+   */
+  protected $drupalLogger;
+
+  /**
    * Command constructor.
    */
   public function __construct(AccountSwitcherInterface $accountSwitcher, LoggerChannel $logger, EntityTypeManagerInterface $entityTypeManager, EntityReferenceRevisionsOrphanPurger $orphanPurger, ConfigFactoryInterface $config_factory) {
     $this->accountSwitcher = $accountSwitcher;
-    $this->logger = $logger;
+    $this->drupalLogger = $logger;
     $this->entityTypeManager = $entityTypeManager;
     $this->orphanPurger = $orphanPurger;
     $this->configFactory = $config_factory;
@@ -89,7 +98,7 @@ class P2LbCommands extends DrushCommands {
 
     // If we don't have any entities, send a message and exit.
     if (empty($entities)) {
-      $this->logger->notice($this->t('No pages available to update.'));
+      $this->drupalLogger->notice($this->t('No pages available to update.'));
 
       // Switch user back.
       $this->accountSwitcher->switchBack();
@@ -132,7 +141,7 @@ class P2LbCommands extends DrushCommands {
 
     batch_set($batch);
     drush_backend_batch_process();
-    $this->logger->notice($this->t('Process batch operations ended.'));
+    $this->drupalLogger->notice($this->t('Process batch operations ended.'));
 
     // Delete orphaned paragraphs, three-levels deep (section > block > item).
     for ($i = 0; $i < 3; $i++) {

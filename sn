@@ -1,0 +1,79 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * @file
+ * SiteNow CLI (sn).
+ *
+ * Standalone Symfony Console entry point for SiteNow repository commands.
+ * Commands are hand-wired here; there is no DI container by design. Each
+ * command documents where it must run: most run either on the host shell or in
+ * the DDEV container, needing only loaded SSH keys to reach remote sites, while
+ * the sync commands write to the container's local database and so must run
+ * inside it (`ddev exec ./sn ...`).
+ *
+ * Run from the repository root, e.g.:
+ *   ./sn multisite:create newsite.uiowa.edu --dry-run
+ *   ./sn report:domains
+ *   ddev exec ./sn sync:all
+ */
+
+use SiteNow\Command\DeployActivateCommand;
+use SiteNow\Command\DeployDistributeCommand;
+use SiteNow\Command\DeployPostDbCopyCommand;
+use SiteNow\Command\DeployUpdateCommand;
+use SiteNow\Command\DeployVersionStampCommand;
+use SiteNow\Command\MultisiteCreateCommand;
+use SiteNow\Command\MultisiteDeleteCommand;
+use SiteNow\Command\MultisiteExecuteCommand;
+use SiteNow\Command\MultisiteInstallCommand;
+use SiteNow\Command\ReportDomainsCommand;
+use SiteNow\Command\ReportInactiveCommand;
+use SiteNow\Command\ReportSiteCountCommand;
+use SiteNow\Command\ReportSplitsCommand;
+use SiteNow\Command\ReportUsersCommand;
+use SiteNow\Command\RoutesCustomCommand;
+use SiteNow\Command\SiteInstallCommand;
+use SiteNow\Command\SiteSyncCommand;
+use SiteNow\Command\SiteUpdateCommand;
+use SiteNow\Command\SplitRefreshCommand;
+use SiteNow\Command\SyncAllCommand;
+use Symfony\Component\Console\Application;
+
+// This file lives at the repository root.
+$root = __DIR__;
+
+// Keep diagnostics off stdout, which carries report tables and CSV-bound rows.
+// A host PHP newer than the container's raises deprecation notices while the
+// vendor tree loads below, and the CLI SAPI displays those on stdout by
+// default. They stay visible, on stderr, where the rest of this CLI's
+// diagnostics already go.
+ini_set('display_errors', 'stderr');
+
+require "{$root}/vendor/autoload.php";
+
+// Repo-touching commands assume the working directory is the repository root.
+chdir($root);
+
+$application = new Application('sn');
+$application->add(new DeployActivateCommand($root));
+$application->add(new DeployDistributeCommand($root));
+$application->add(new DeployPostDbCopyCommand($root));
+$application->add(new DeployUpdateCommand($root));
+$application->add(new DeployVersionStampCommand($root));
+$application->add(new MultisiteCreateCommand($root));
+$application->add(new MultisiteDeleteCommand($root));
+$application->add(new MultisiteExecuteCommand($root));
+$application->add(new MultisiteInstallCommand($root));
+$application->add(new ReportDomainsCommand($root));
+$application->add(new ReportInactiveCommand($root));
+$application->add(new ReportSiteCountCommand($root));
+$application->add(new ReportSplitsCommand($root));
+$application->add(new ReportUsersCommand($root));
+$application->add(new RoutesCustomCommand($root));
+$application->add(new SiteInstallCommand($root));
+$application->add(new SiteSyncCommand($root));
+$application->add(new SiteUpdateCommand($root));
+$application->add(new SplitRefreshCommand($root));
+$application->add(new SyncAllCommand($root));
+$application->run();

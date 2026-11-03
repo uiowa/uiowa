@@ -7,16 +7,16 @@ dependencies:
 id: service
 label: Service
 type: 'canonical_entities:node'
-pattern: 'services/[node:title]'
+pattern: '/services/[node:title]'
 selection_criteria:
   452cb6b5-6f3a-4d46-b234-0697bf4782d3:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 452cb6b5-6f3a-4d46-b234-0697bf4782d3
     context_mapping:
       node: node
     bundles:
       service: service
+    uuid: 452cb6b5-6f3a-4d46-b234-0697bf4782d3
 selection_logic: and
 weight: -7
 relationships: {  }

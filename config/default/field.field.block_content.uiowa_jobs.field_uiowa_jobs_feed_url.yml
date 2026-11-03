@@ -1,0 +1,21 @@
+uuid: 8a6d87e8-103a-4bea-a5cb-233b691f97b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_jobs
+    - field.storage.block_content.field_uiowa_jobs_feed_url
+_core:
+  default_config_hash: IRpf3Xmvg2RZqoJ0IJ2FwE7a4jA0mVZnEhIrxIbCfGE
+id: block_content.uiowa_jobs.field_uiowa_jobs_feed_url
+field_name: field_uiowa_jobs_feed_url
+entity_type: block_content
+bundle: uiowa_jobs
+label: 'Feed URL'
+description: 'RSS feed URL from hris.uiowa.edu (e.g., https://hris.uiowa.edu/otac-rss/faculty.php?dept-code=DEPT-NUMBER). Note: The format=json and format=xml options are not currently supported.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

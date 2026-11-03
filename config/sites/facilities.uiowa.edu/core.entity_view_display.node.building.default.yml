@@ -26,9 +26,11 @@ dependencies:
     - field.field.node.building.field_alt4_coordinator_title
     - field.field.node.building.field_building_abbreviation
     - field.field.node.building.field_building_address
+    - field.field.node.building.field_building_aed
     - field.field.node.building.field_building_area
     - field.field.node.building.field_building_ca_manager
     - field.field.node.building.field_building_energy_dashboard
+    - field.field.node.building.field_building_evac_chairs
     - field.field.node.building.field_building_hours
     - field.field.node.building.field_building_image
     - field.field.node.building.field_building_lactation_rooms
@@ -43,6 +45,7 @@ dependencies:
     - field.field.node.building.field_building_rr_single_men
     - field.field.node.building.field_building_rr_single_neutral
     - field.field.node.building.field_building_rr_single_women
+    - field.field.node.building.field_building_stop_the_bleed
     - field.field.node.building.field_building_year_built
     - field.field.node.building.field_main_coordinator_dept
     - field.field.node.building.field_main_coordinator_email
@@ -114,7 +117,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -139,27 +142,6 @@ third_party_settings:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 8a0dcacd-e306-420e-a795-86efd1a81760
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_address'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 3
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
             uuid: 999d055a-5be7-4bed-a180-9ba9d2bbf840
             region: content
             configuration:
@@ -176,9 +158,22 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 17f90cc6-8231-4434-9633-c4c15dc20d0b
+            region: content
+            configuration:
+              id: 'extra_field_block:node:building:building_map_links'
+              label: 'Map links'
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 3
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
@@ -204,7 +199,7 @@ third_party_settings:
               provider: views
               context_mapping: {  }
               views_label: ''
-              items_per_page: '50'
+              items_per_page: 50
               pager: some
               exposed: {  }
               headline:
@@ -330,193 +325,30 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
-        layout_id: layout_fourcol
+        layout_id: layout_twocol
         layout_settings:
           label: ''
           context_mapping: {  }
+          column_widths: 33-67
           layout_builder_styles_style:
             0: ''
             1: section_margin_fixed_width_container
             section_alignment_start: section_alignment_start
-          layout_builder_custom_unique_id: building-services
         components:
           -
-            uuid: 7db46d29-0b5f-4716-90ae-d0dd5b5ec077
-            region: third
+            uuid: d00fb5df-05ff-4aa2-a63f-3782e81a00d2
+            region: first
             configuration:
-              id: services_headline_block
-              label: null
-              label_display: null
-              provider: facilities_core
-              context_mapping: {  }
-            weight: 0
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: 73f6cfe2-e0cd-424d-8793-5b41c9725c3f
-            region: third
-            configuration:
-              id: 'field_block:node:building:field_building_rr_single_neutral'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 2
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 49db3c30-2d68-410b-b7b0-d3cf9a9ed486
-            region: third
-            configuration:
-              id: 'field_block:node:building:field_building_rr_single_men'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 4
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 3dc7efe2-ba0b-40f2-b00d-4a9247958add
-            region: third
-            configuration:
-              id: 'field_block:node:building:field_building_rr_multi_men'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 6
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 7bf8f3ee-af1f-44b0-bf65-6c3fb50163df
-            region: third
-            configuration:
-              id: 'field_block:node:building:field_building_rr_single_women'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 3
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: f8c0bd71-7e84-459d-bc49-707f012eaf76
-            region: third
-            configuration:
-              id: 'field_block:node:building:field_building_rr_multi_women'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 5
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: ee4113c4-b612-4e63-a33d-3e804ca4a466
-            region: third
-            configuration:
-              id: 'field_block:node:building:field_building_lactation_rooms'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 7
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 3cbd5486-c764-40b0-b7f1-61e38d7ad21e
-            region: fourth
-            configuration:
-              id: 'field_block:node:building:field_building_hours'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 0
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
-            uuid: f1d34797-d12e-44d4-a030-756d3ce3b603
-            region: second
-            configuration:
-              id: 'views_block:projects-block_project_building'
+              id: 'views_block:building_coordinators-block_coordinators'
               label: null
               label_display: null
               provider: views
-              context_mapping: {  }
+              context_mapping:
+                nid: layout_builder.entity
               views_label: ''
-              items_per_page: none
+              items_per_page: 50
               pager: some
+              exposed: {  }
               headline:
                 headline: ''
                 hide_headline: 0
@@ -531,16 +363,41 @@ third_party_settings:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 3c1a0037-fed8-4698-b686-7f31a82aa57c
-            region: first
+            uuid: e7be9a9e-a31b-4872-8dea-d0e0d20ec47d
+            region: second
             configuration:
-              id: 'views_block:building_coordinators-block_coordinators'
+              id: building_tabs_block
+              label: null
+              label_display: null
+              provider: facilities_core
+              context_mapping:
+                node: layout_builder.entity
+            weight: 0
+            additional:
+              layout_builder_styles_style: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: f1d34797-d12e-44d4-a030-756d3ce3b603
+            region: content
+            configuration:
+              id: 'views_block:projects-block_project_building'
               label: null
               label_display: null
               provider: views
               context_mapping: {  }
               views_label: ''
-              items_per_page: none
+              items_per_page: null
               pager: some
               headline:
                 headline: ''
@@ -556,19 +413,20 @@ third_party_settings:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
         third_party_settings:
-          layout_builder_lock:
-            lock: {  }
           layout_builder_limit:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+          layout_builder_lock:
+            lock: {  }
+            regions: {  }
       -
         layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - section_background_style_gray
+            - section_background_style_black
             - section_margin_fixed_width_container
         components:
           -
@@ -589,6 +447,7 @@ third_party_settings:
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+            regions: {  }
           layout_builder_limit:
             limit:
               scope: disabled
@@ -614,7 +473,7 @@ third_party_settings:
               provider: views
               context_mapping: {  }
               views_label: ''
-              items_per_page: none
+              items_per_page: null
               pager: some
               headline:
                 headline: Artwork
@@ -680,6 +539,11 @@ targetEntityType: node
 bundle: building
 mode: default
 content:
+  building_map_links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
   field_building_abbreviation:
     type: string
     label: inline
@@ -734,14 +598,6 @@ content:
       use_description_as_link_text: true
     third_party_settings: {  }
     weight: 14
-    region: content
-  field_building_lactation_rooms:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 8
     region: content
   field_building_named_building:
     type: entity_reference_label
@@ -839,11 +695,15 @@ hidden:
   field_alt4_coordinator_name: true
   field_alt4_coordinator_phone: true
   field_alt4_coordinator_title: true
+  field_building_aed: true
   field_building_ca_manager: true
+  field_building_evac_chairs: true
   field_building_hours: true
+  field_building_lactation_rooms: true
   field_building_latitude: true
   field_building_longitude: true
   field_building_m_manager: true
+  field_building_stop_the_bleed: true
   field_main_coordinator_dept: true
   field_main_coordinator_email: true
   field_main_coordinator_name: true

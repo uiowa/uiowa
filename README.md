@@ -2,19 +2,32 @@
 
 The base application on Acquia Cloud for the University of Iowa.
 
+# Documentation
+
+This README covers setup, local development and dependency updates. Check the table below for additional information.
+
+| Doc | Topic |
+|---|---|
+| [sitenow/README.md](sitenow/README.md) | The `./sn` CLI |
+| [config/README.md](config/README.md) | Configuration management |
+| [config/features/README.md](config/features/README.md) | Feature splits |
+| [docroot/modules/README.md](docroot/modules/README.md) | Custom and contributed modules |
+| [patches/README.md](patches/README.md) | Patching contrib and core |
+| [drush/README.md](drush/README.md) | Drush configuration and aliases |
+| [scripts/ci/README.md](scripts/ci/README.md) | Continuous integration checks |
+| [tests/README.md](tests/README.md) | Automated tests |
 
 # Getting Started
 
-This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology.
+This project uses [Acquia Drupal Recommended Settings](https://github.com/acquia/drupal-recommended-settings) for its settings.php cascade, and a custom Symfony Console application (`./sn`, in `sitenow/`) for multisite provisioning, deployment, and reporting.
 
-1. Review the [Required / Recommended Skills](https://docs.acquia.com/blt/developer/skills/) for working with a BLT project.
-2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](https://docs.acquia.com/blt/install/#general-requirements).
-3. Request access to organization that owns the project repo in GitHub (if needed).
-4. Request access to the Acquia Cloud Environment for your project (if needed).
-5. Setup a SSH key that can be used for GitHub and the Acquia Cloud (you CAN use the same key).
+1. Ensure that your computer meets the minimum installation requirements for [DDEV](https://ddev.readthedocs.io/en/stable/#installation).
+2. Request access to organization that owns the project repo in GitHub (if needed).
+3. Request access to the Acquia Cloud Environment for your project (if needed).
+4. Setup a SSH key that can be used for GitHub and the Acquia Cloud (you CAN use the same key).
     1. [Setup GitHub SSH Keys](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
     2. [Setup Acquia Cloud SSH Keys](https://docs.acquia.com/acquia-cloud/ssh/generate)
-6. Clone the repository. By default, Git names this "origin" on your local.
+5. Clone the repository. By default, Git names this "origin" on your local.
     ```
     $ git clone git@github.com:uiowa/uiowa
     ```
@@ -22,7 +35,7 @@ This project is based on BLT, an open-source project template and tool that enab
 # Local Environment
 [Ddev](https://ddev.readthedocs.io/en/stable/) is used for the local environment. Follow their [docs](https://ddev.readthedocs.io/en/stable/#installation) to get it installed. Once installed, read up on [basic CLI](https://ddev.readthedocs.io/en/stable/users/cli-usage/) usage to understand how to manage the containers.
 
-Once installed and started, you can either `ddev ssh` and run non-ddev CLI commands there, or run them on your host with `ddev CMD`. For example, `ddev blt dsa` or `ddev composer install`.
+Once installed and started, you can either `ddev ssh` and run non-ddev CLI commands there, or run them on your host with `ddev CMD`. For example, `ddev sn sync:all` or `ddev composer install`.
 
 ## Workspaces
 Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the web container with `ddev yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
@@ -35,53 +48,36 @@ Ddev creates a database container that is accessible from the web container. You
 ## Logging
 As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages can be viewed by running `ddev logs`.
 
-### BLT Configuration
-Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
+### SiteNow Configuration
+Save your [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) in `~/.sitenow/credentials.yml`. This file lives in your home directory rather than the repository so it can never be committed. Do not share your key or secret with anyone.
 ```
-uiowa:
-  credentials:
-    acquia:
-      key: foo
-      secret: bar
+acquia:
+  key: foo
+  secret: bar
 ```
 
-Set the multisites that you want BLT to sync by default:
+Set the sites you work with locally in `sitenow/local.sites.yml`. This file is ignored by Git. It is the list `ddev sn sync:all` syncs and `ddev sn umi` installs, and it can be overridden per-run with `--sites`.
 ```
-multisites:
+sites:
   - default
   - bar.uiowa.edu
   - foo.uiowa.edu
 ```
 
 ### Common Tasks
-Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files for all multisites.
+Multisites will not be able to bootstrap without a `local.settings.php` file. The `drush settings --uri=SITE` command (provided by Acquia Drupal Recommended Settings) will generate local settings files for a multisite.
 
-Local configuration overrides can be set in a local.blt.yml file for each multisite as that file is not tracked in git. For example, to configure stage file proxy in the way it would normally be defined in local.settings.php (`$config['stage_file_proxy.settings']['origin'] = 'https://sandbox.prod.drupal.uiowa.edu';`) you would enter it in the local.blt.yml file like:
+Local overrides go directly in that site's `docroot/sites/SITE/settings/local.settings.php`, since it is not tracked in git. For example, to configure stage file proxy (`$config['stage_file_proxy.settings']['origin'] = 'https://sandbox.prod.drupal.uiowa.edu';`) add that line to the file directly.
 
-```
-uiowa:
-  stage_file_proxy:
-    origin: https://sandbox.prod.drupal.uiowa.edu
-```
-
-The `blt frontend` command will install and compile frontend assets.
+The `ddev yarn frontend:build` command will install and compile frontend assets.
 
 ## Multisite Management
-There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
+SiteNow provides host-side multisite commands through the `sn` CLI, including `multisite:create`. See [sitenow/README.md](sitenow/README.md).
 
-Because the `.git` directory is not synced to the web container, some commands need to be run on your host machine instead. You can run `./vendor/bin/blt` from the project root or install the [BLT Launcher](https://github.com/acquia/blt-launcher) to just run `blt`.
-
-### Overriding Configuration
-Please note this approach is not yet tested nor recommended.
-
-If an individual site wants to export ALL of its configuration and manage it going forward, an [include setting](https://docs.acquia.com/blt/install/next-steps/#adding-settings-to-settings-php) with the following should accomplish that:
-```
-$blt_override_config_directories = FALSE;
-$settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
-```
+Run `sn` from your host. A few commands act on a site's local database, which only exists in the web container, so run those as `ddev sn`. `./sn list` marks them `(ddev required)`.
 
 # Updating Dependencies
-Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `blt dsa`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
+Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `ddev sn sync:all`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. Drupal core scaffolding may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
 
 ## Updating core patched files
 
@@ -95,16 +91,29 @@ Before starting updates, make sure your local environment is on a feature branch
 
 ## Configuration changes
 
-Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
+Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `ddev sn sync:all` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
 
 ## Testing Dependencies
-Testing a uids change in uiowa:
+
+### Testing a uids change
 1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids4": "uiowa/uids4#[Enter hash here]"
 2. Then run `yarn upgrade @uiowa/uids4`
 3. `rm -rf ./node_modules`
 4. `yarn cache clean`
 5. `yarn install`
 6. `yarn workspace uids_base gulp --development`
+
+### Testing a module update
+
+Run the update hooks against a database built under the old code, the way a deploy hits production:
+
+1. On `main`, run `ddev composer install`.
+2. Sync the site: `ddev sn ds <site>`.
+3. Check out the feature branch and run `ddev composer install` again.
+4. Run `ddev drush @<id>.local updb -y`.
+5. Export and commit any config the update changed, per [Configuration changes](#configuration-changes) above.
+
+Syncing after the branch is checked out would test the update hook against a database that already has the new schema, which is not what a deploy does.
 
 ## Core
 Run `composer update "drupal/core-*" --with-all-dependencies`.
@@ -117,7 +126,6 @@ The packages below are locked at specific SHAs and will not update using the met
 
 | Package                      | Reason                                                                                                                       |
 |------------------------------|------------------------------------------------------------------------------------------------------------------------------|
-| uiowa/block_content_template | Forked from a deprecated project.                                                                                            |
 | drupal/theme_permission      | Using D10 compatibility patch that is compatible with dev version. Waiting for D10 release.                                  |
 
 
@@ -131,17 +139,4 @@ Note that too many .htaccess redirects can incur a performance hit. See the [Acq
 Ideally, redirects in .htaccess would only exist temporarily. Check the commit history of that file using a command similar to: `git log --before="6 months ago" --grep="redirect" -- docroot/.htaccess` to see how old a redirect is.
 
 # Resources
-Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
-```
-$ blt
-```
-
-Most of the BLT commands referenced above have shorthand aliases. Check the output of `blt` for details.
-
-You can also run blt commands on an Acquia Cloud environment, but you must run them using the path and from the app root. `./vendor/bin/blt my:blt:command foo`
-
-## Working With a BLT Project
-
-BLT projects are designed to instill software development best practices (including git workflows).
-
-Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/#workflow-example-local-development).
+Additional [Acquia Drupal Recommended Settings documentation](https://github.com/acquia/drupal-recommended-settings) may be useful for the settings.php cascade. See [sitenow/README.md](sitenow/README.md) for the `./sn` command reference.

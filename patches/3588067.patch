@@ -1,0 +1,20 @@
+diff --git a/src/Form/RedirectForm.php b/src/Form/RedirectForm.php
+index 6ee4867..a8c2d6e 100644
+--- a/src/Form/RedirectForm.php
++++ b/src/Form/RedirectForm.php
+@@ -5,6 +5,7 @@ namespace Drupal\redirect\Form;
+ use Drupal\Core\Entity\ContentEntityForm;
+ use Drupal\Core\Language\Language;
+ use Drupal\Core\Language\LanguageInterface;
++use Drupal\Core\ParamConverter\ParamNotConvertedException;
+ use Drupal\Core\Routing\AccessAwareRouterInterface;
+ use Drupal\Core\Routing\LocalAwareRedirectResponseTrait;
+ use Drupal\Core\Url;
+@@ -172,7 +173,7 @@ class RedirectForm extends ContentEntityForm {
+       catch (AccessDeniedHttpException) {
+         $existing_path = TRUE;
+       }
+-      catch (ResourceNotFoundException) {
++      catch (ResourceNotFoundException | ParamNotConvertedException) {
+         // Do nothing, expected behavior.
+       }

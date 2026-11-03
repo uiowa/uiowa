@@ -7,16 +7,16 @@ dependencies:
 id: support_article
 label: 'Support Article'
 type: 'canonical_entities:node'
-pattern: 'services/[node:field_support_article_service]/[node:title]'
+pattern: '/services/[node:field_support_article_service]/[node:title]'
 selection_criteria:
   3a7343ce-b86a-4724-ac3a-5de0ca504502:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 3a7343ce-b86a-4724-ac3a-5de0ca504502
     context_mapping:
       node: node
     bundles:
       support_article: support_article
+    uuid: 3a7343ce-b86a-4724-ac3a-5de0ca504502
 selection_logic: and
 weight: -5
 relationships: {  }

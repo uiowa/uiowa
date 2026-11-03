@@ -11,7 +11,6 @@ no_patching: false
 storage: folder
 folder: ../config/features/sitenow_alerts
 module:
-  rh_taxonomy: 0
   sitenow_alerts: 0
   views_custom_cache_tag: 0
 theme: {  }
@@ -24,6 +23,7 @@ complete_list:
   - 'field.storage.node.field_alert*'
   - pathauto.pattern.alert
 partial_list:
+  - rabbit_hole.settings
   - metatag.settings
   - workflows.workflow.editorial
   - 'user.role.*'

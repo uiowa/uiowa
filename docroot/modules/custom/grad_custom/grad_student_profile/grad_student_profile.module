@@ -115,10 +115,6 @@ function grad_student_profile_preprocess_node(&$variables) {
  */
 function grad_student_profile_theme($existing, $type, $theme, $path) {
   return [
-    'block_content__content_list' => [
-      'template' => 'block-content--content-list',
-      'base hook' => 'block_content',
-    ],
     'field__node__field_person_quote' => [
       'template' => 'field--node--field-person-quote',
       'base hook' => 'field',

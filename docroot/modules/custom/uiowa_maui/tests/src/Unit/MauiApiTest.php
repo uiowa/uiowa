@@ -36,7 +36,7 @@ class MauiApiTest extends UnitTestCase {
 
     $this->maui->expects($this->any())
       ->method('get')
-      ->will($this->returnValue($current));
+      ->willReturn($current);
 
     $data = $this->maui->getCurrentSession();
     $this->assertEquals(34, $data->id);
@@ -63,7 +63,7 @@ class MauiApiTest extends UnitTestCase {
 
     $this->maui->expects($this->any())
       ->method('get')
-      ->will($this->returnValue($bounding));
+      ->willReturn($bounding);
 
     $data = $this->maui->getSessionsBounded();
 
@@ -116,7 +116,7 @@ class MauiApiTest extends UnitTestCase {
 
     $this->maui->expects($this->any())
       ->method('get')
-      ->will($this->returnValue($dates));
+      ->willReturn($dates);
 
     $data = $this->maui->searchSessionDates(1);
     $this->assertCount(3, $data);

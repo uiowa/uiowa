@@ -8,15 +8,13 @@
  * See https://www.drupal.org/node/3305664
  */
 
-.js-off-canvas-dialog-open .dialog-off-canvas-main-canvas {
-  padding-right: calc(var(--off-canvas-width) + 13px) !important;
-}
-
 #drupal-off-canvas-wrapper {
   overflow: visible;
   padding: 0px;
   margin-right: -1px;
-  width: var(--off-canvas-width, 300) !important;
+  /* Width is owned by jQuery UI's dialog option, set in
+     layout_builder_custom.overrides.js. Do not set it here — a CSS
+     !important width overrides jQuery UI's inline writes during drag. */
   top: var(--drupal-displace-offset-top, 0px) !important;
 }
 

@@ -175,6 +175,7 @@ function sitenow_events_preprocess_views_view(&$variables) {
   if ($variables['view']->id() == 'events') {
     // Attach the library using the #attached property.
     $variables['#attached']['library'][] = 'uids_base/view-bef';
+    $variables['#attached']['library'][] = 'uids_base/view-events-list';
   }
 }
 

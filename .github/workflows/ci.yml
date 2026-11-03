@@ -1,0 +1,504 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ main ]
+    # ready_for_review lets Percy run when a draft PR is marked ready; the
+    # other jobs skip that event since no code changed.
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch:
+
+# Grant workflow token read access to repository contents
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  # Linting job - fast feedback
+  lint:
+    name: Code Standards (PHPCS)
+    runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: lint-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS (must be done BEFORE cache).
+          # Needed for a few packages that use SSH source for fallback.
+          # Not used in the normal --prefer-dist path; this only guards the rare dist-download fallback
+          # to `git clone` so CI doesn't fail on a missing SSH key for an unrelated dependency.
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication using multiple methods for reliability
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+          # Verify the configuration
+          echo "Git URL rewrites configured with token authentication"
+          git config --global --get-regexp url || true
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/libraries
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist --verbose
+
+          # Verify phpcs was installed
+          if [ ! -f vendor/bin/phpcs ]; then
+            echo "ERROR: phpcs not installed!"
+            echo "Checking vendor directory:"
+            ls -la vendor/ || echo "vendor directory not found"
+            exit 1
+          fi
+          echo "✓ Composer dependencies installed successfully"
+
+      - name: Run PHPCS
+        run: scripts/ci/lint.sh
+
+  # Static analysis job
+  static-analysis:
+    name: Static Analysis (PHPStan)
+    runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: static-analysis-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token (must be BEFORE cache)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/libraries
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      - name: Run PHPStan
+        run: scripts/ci/static-analysis.sh
+
+  # Security audit job
+  security:
+    name: Security Audit (Composer)
+    runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: security-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token (must be BEFORE cache)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/libraries
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      - name: Run Security Audit
+        run: scripts/ci/security.sh
+
+  # PHPUnit tests job - all test types
+  test:
+    name: PHPUnit Tests
+    runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: test-${{ github.ref }}
+      cancel-in-progress: true
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: drupal_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql, memcache
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          # Configure git to rewrite SSH URLs to HTTPS with token (must be BEFORE cache)
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+
+          # Configure Composer authentication
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/libraries
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      # Chrome must share the runner network so that its localhost can reach
+      # the Drush test server at localhost:8080.
+      - name: Start Selenium WebDriver
+        run: docker run --detach --rm --name selenium-chrome --network host --shm-size=2g selenium/standalone-chrome:4.49.0
+
+      - name: Setup test environment and web server
+        run: scripts/ci/setup.sh
+        env:
+          CI: true
+          INSTALL_DRUPAL: true
+          RUN_SERVER: true
+
+      - name: Run PHPUnit tests
+        run: scripts/ci/test.sh
+        env:
+          CI: true
+          SIMPLETEST_DB: mysql://drupal:drupal@127.0.0.1/drupal_test
+          SIMPLETEST_BASE_URL: http://localhost:8080
+
+  # Build frontend assets
+  frontend:
+    name: Frontend Build
+    runs-on: ubuntu-22.04
+    if: github.event.action != 'ready_for_review'
+    concurrency:
+      group: frontend-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --production --ignore-optional --frozen-lockfile --non-interactive
+
+      - name: Build frontend assets
+        run: yarn workspaces run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-assets
+          path: |
+            docroot/themes/*/dist/
+            docroot/modules/*/dist/
+          retention-days: 7
+
+  # Percy visual regression testing. Pushes to main produce the baseline
+  # that pull requests are compared against. Draft PRs are skipped.
+  percy:
+    name: Percy Visual Regression
+    runs-on: ubuntu-22.04
+    if: github.event.pull_request.draft != true
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: drupal_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+          ini-values: memory_limit=-1, max_execution_time=0
+
+      - name: Configure Git and Composer authentication
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor
+            docroot/core
+            docroot/libraries
+            docroot/modules/contrib
+            docroot/themes/contrib
+            docroot/profiles/contrib
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: |
+          # Validate cache integrity - vendor/composer/installed.json can mark a
+          # package installed even when its target dir wasn't restored, since
+          # docroot/core and docroot/libraries are cached separately from vendor.
+          # If either is missing while vendor is present, Composer will skip
+          # reinstalling and leave the gap. Clear vendor to force a fresh install.
+          if [ -d "vendor" ] && { [ ! -d "docroot/core" ] || [ ! -d "docroot/libraries" ]; }; then
+            echo "Cache inconsistency detected: vendor exists but docroot/core or docroot/libraries missing"
+            echo "Clearing vendor to force fresh install..."
+            rm -rf vendor
+          fi
+
+          composer install --no-interaction --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --production --ignore-optional --frozen-lockfile --non-interactive
+
+      - name: Build frontend assets
+        run: yarn workspaces run build
+
+      - name: Setup test environment and web server
+        run: scripts/ci/setup.sh
+        env:
+          CI: true
+          INSTALL_DRUPAL: true
+          RUN_SERVER: true
+          NEEDS_WEBDRIVER: false
+
+      - name: Run Percy snapshot
+        run: scripts/ci/percy.sh
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
+  # Build the artifact and push it to the Acquia Cloud remotes.
+  deploy:
+    name: Push artifact to Acquia
+    runs-on: ubuntu-22.04
+    needs: [ lint, static-analysis, security, test, frontend ]
+    if: github.event_name == 'push'
+    environment: acquia
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      # Full history and tags: the build stamps a tag-based version into
+      # custom .info.yml files.
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, pdo_mysql
+          coverage: none
+
+      - name: Configure Git and Composer authentication
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+          composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer config -g github-protocols https
+
+      # Installs sn's own dependencies.
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.GITHUB_TOKEN }}"}}'
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Build artifact
+        run: scripts/deploy/build.sh
+
+      - name: Configure SSH for Acquia
+        env:
+          ACQUIA_SSH_KEY: ${{ secrets.ACQUIA_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ACQUIA_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          grep -oE 'svn-[0-9]+\.prod\.hosting\.acquia\.com' sitenow/applications.yml \
+            | sort -u | xargs ssh-keyscan >> ~/.ssh/known_hosts
+
+      - name: Distribute artifact
+        run: |
+          if [ "${{ github.ref_type }}" = tag ]; then
+            ./sn deploy:distribute --tag="${{ github.ref_name }}-build" \
+              --commit-msg="Automated deploy by GitHub Actions for ${{ github.ref_name }}"
+          else
+            ./sn deploy:distribute --branch="${{ github.ref_name }}-build" \
+              --commit-msg="Automated deploy by GitHub Actions for run ${{ github.run_id }}"
+          fi

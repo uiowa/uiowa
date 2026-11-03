@@ -171,9 +171,9 @@ class BuildingsProcessor extends EntityProcessorBase {
         }
       }
       catch (ClientException $e) {
-        $this->logger()->warning($this->t('Unable to get image for @building.', [
+        $this->getLogger('facilities_core')->warning('Unable to get image for @building.', [
           '@building' => $result?->buildingNumber . ' : ' . $result?->buildingFormalName,
-        ]));
+        ]);
 
         // Use the default thumbnail if we can't get one.
         $result->imageUrl = '';

@@ -9,3 +9,18 @@
     margin-top: variables.$xsm;
   }
 }
+
+// Adds fixed size to Time column on OnIowa events table
+.view-id-events.view-display-id-page_upcoming {
+  table.views-table {
+    table-layout: fixed;
+
+    .views-field-field-event-when-value-1 {
+      width: 8rem;
+
+      @include utilities.breakpoint(xsm) {
+        width: 14rem;
+      }
+    }
+  }
+}

@@ -56,7 +56,7 @@ class PermissionsTest extends EntityKernelTestBase {
    * Test editor permissions.
    */
   public function testEditorPermissions() {
-    $path = $this->getDrupalRoot();
+    $path = $this->root;
     $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.editor');
 
@@ -82,7 +82,7 @@ class PermissionsTest extends EntityKernelTestBase {
    * Test publisher permissions.
    */
   public function testPublisherPermission() {
-    $path = $this->getDrupalRoot();
+    $path = $this->root;
     $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.publisher');
 
@@ -104,7 +104,7 @@ class PermissionsTest extends EntityKernelTestBase {
    * Test webmaster permissions.
    */
   public function testWebmasterPermission() {
-    $path = $this->getDrupalRoot();
+    $path = $this->root;
     $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.webmaster');
 

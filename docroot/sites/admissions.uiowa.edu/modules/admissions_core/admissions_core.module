@@ -358,6 +358,7 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_why':
+      $variables['label_tag'] = 'h2';
       $variables['label'] = t('Why Iowa?');
       break;
 
@@ -370,6 +371,13 @@ function admissions_core_preprocess_field(&$variables) {
         'headline--serif',
         'headline--underline',
       ]);
+      break;
+
+    case 'field_area_of_study_requirement':
+    case 'field_area_of_study_career':
+    case 'field_area_of_study_opportunity':
+    case 'field_area_of_study_course_work':
+      $variables['label_tag'] = 'h2';
       break;
 
     case 'field_cc_contact_info':
@@ -691,6 +699,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'views_view_unformatted__transfer_tips_list__block_transfer_tips' => [
       'template' => 'views-view-unformatted--transfer-tips-list--block-transfer-tips',
+      'base hook' => 'view',
+    ],
+    'views_view_list__colleges_taxonomy_term__linked_title_list' => [
+      'template' => 'views-view-list--colleges-taxonomy-term--linked-title-list',
       'base hook' => 'view',
     ],
     'field__node__field_area_of_study_stat' => [

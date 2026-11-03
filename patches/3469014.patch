@@ -1,0 +1,66 @@
+From 76fa958012e1d1510cf4fc15b71b28ac05b4f441 Mon Sep 17 00:00:00 2001
+From: bkosborne <bkosborne@788032.no-reply.drupal.org>
+Date: Mon, 19 Aug 2024 18:24:54 +0000
+Subject: [PATCH] Order tags within a container by weight before saving them.
+
+---
+ src/Form/TagContainerForm.php                  | 10 ++++++----
+ tests/src/Kernel/Form/TagContainerFormTest.php |  7 +++++--
+ 2 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/src/Form/TagContainerForm.php b/src/Form/TagContainerForm.php
+index 46746a2..2612dde 100644
+--- a/src/Form/TagContainerForm.php
++++ b/src/Form/TagContainerForm.php
+@@ -570,16 +570,18 @@ class TagContainerForm extends EntityForm {
+   public function submitForm(array &$form, FormStateInterface $form_state) {
+     parent::submitForm($form, $form_state);
+ 
+-    $default_id = '';
+     // No need to fetch again from entity,
+     // ids should already be available in form state values now.
++    // Place then into an array sorted by weight. The lowest sorted tag
++    // will become the default and be used for the ID and Label for newly
++    // created containers.
+     $tag_container_ids = [];
+     foreach ($form_state->getValue('accounts') as $account) {
+-      if (!$default_id) {
+-        $default_id = $account['value'];
+-      }
+       $tag_container_ids[$account['weight']] = $account['value'];
+     }
++    ksort($tag_container_ids);
++    $default_id = current($tag_container_ids);
++
+     // Need to save tags without weights otherwise it doesn't show up on UI.
+     $this->entity->set('tag_container_ids', array_values($tag_container_ids));
+ 
+diff --git a/tests/src/Kernel/Form/TagContainerFormTest.php b/tests/src/Kernel/Form/TagContainerFormTest.php
+index 4f3da31..2836b29 100644
+--- a/tests/src/Kernel/Form/TagContainerFormTest.php
++++ b/tests/src/Kernel/Form/TagContainerFormTest.php
+@@ -29,9 +29,9 @@ final class TagContainerFormTest extends GoogleTagTestCase {
+ 
+     $form_data = [
+       'accounts' => [
+-        ['value' => 'GT-XXXXXX', 'weight' => 0],
+         ['value' => 'UA-XXXXXX', 'weight' => 1],
+-        ['value' => 'GTM-XX3XXX', 'weight' => 1],
++        ['value' => 'GT-XXXXXX', 'weight' => 0],
++        ['value' => 'GTM-XX3XXX', 'weight' => 2],
+       ],
+       'status' => TRUE,
+       'form_build_id' => (string) $this->cssSelect('input[name="form_build_id"]')[0]->attributes()->value[0],
+@@ -57,6 +57,9 @@ final class TagContainerFormTest extends GoogleTagTestCase {
+     $google_tag = $this->container->get('entity_type.manager')->getStorage('google_tag_container')->load($google_tag_id);
+     self::assertEmpty($google_tag->get('conditions'));
+     self::assertTrue($google_tag->status());
++
++    // Default tag ID should be the one with the lowest weight.
++    self::assertEquals('GT-XXXXXX', $google_tag->getDefaultTagId());
+   }
+ 
+ }
+-- 
+GitLab
+

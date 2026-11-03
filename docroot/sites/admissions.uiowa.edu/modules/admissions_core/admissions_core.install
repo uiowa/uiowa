@@ -6,6 +6,8 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
+use Drupal\Core\Field\FieldPurger;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
@@ -128,7 +130,7 @@ function admissions_core_update_8002() {
     $field_storage->delete();
 
     // Purge in order for new field to be created after deleting the old.
-    field_purge_batch(100);
+    \Drupal::service(FieldPurger::class)->purgeBatch(100);
 
     // Save our new, updated field storage.
     $new_field_storage = FieldStorageConfig::create($new_field_storage);
@@ -668,6 +670,46 @@ function admissions_core_update_10002() {
         $entity->field_area_of_study_career->value = $htmlCareer;
         $htmlOpportunity = Html::serialize($opportunityValue);
         $entity->field_area_of_study_opportunity->value = $htmlOpportunity;
+        $entity->setNewRevision(TRUE);
+        $entity->setRevisionUserId(1);
+        $entity->setRevisionLogMessage('Automated save.');
+        $entity->save();
+
+        \Drupal::logger('admissions_core')->notice('The node {nid} was programmatically updated.', ['nid' => $entity->id()]);
+      }
+    }
+  }
+}
+
+/**
+ * Update AoS Career field statistic.
+ */
+function admissions_core_update_10003() {
+  $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
+
+  $ids = $query
+    ->condition('type', 'area_of_study')
+    ->accessCheck()
+    ->execute();
+
+  if ($ids) {
+    $controller = \Drupal::entityTypeManager()->getStorage('node');
+    $entities = $controller->loadMultiple($ids);
+
+    foreach ($entities as $entity) {
+      $document = Html::load($entity->field_area_of_study_career->value);
+      $xpath = new \DOMXPath($document);
+      $modified = FALSE;
+      foreach ($xpath->query('//text()') as $textNode) {
+        $new_value = str_replace('Within six months of graduating, 96 percent of Iowa graduates are employed', 'Within six months of graduating, 95 percent of Iowa graduates are employed', $textNode->nodeValue);
+        if ($new_value !== $textNode->nodeValue) {
+          $textNode->nodeValue = $new_value;
+          $modified = TRUE;
+        }
+      }
+      if ($modified) {
+        $html = Html::serialize($document);
+        $entity->field_area_of_study_career->value = $html;
         $entity->setNewRevision(TRUE);
         $entity->setRevisionUserId(1);
         $entity->setRevisionLogMessage('Automated save.');

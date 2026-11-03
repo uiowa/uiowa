@@ -21,6 +21,10 @@ adding:
         fields:
           title:
             label: Title
+          field_teaser:
+            exclude: true
+          field_image:
+            exclude: true
           field_event_when_value:
             id: field_event_when_value
             table: node__field_event_when
@@ -383,6 +387,7 @@ adding:
             empty_table: false
             caption: ''
             description: ''
+            class: ''
         row:
           type: 'entity:node'
           options:
@@ -424,6 +429,10 @@ removing:
         fields:
           title:
             label: ''
+          field_teaser:
+            exclude: false
+          field_image:
+            exclude: false
         exposed_form:
           options:
             reset_button: true

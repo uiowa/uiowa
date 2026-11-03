@@ -23,7 +23,6 @@ dependencies:
     - field.field.node.room.field_room_scheduling_regions
     - field.field.node.room.field_room_seating_chart
     - field.field.node.room.field_room_technology_features
-    - field.field.node.room.field_room_tile_details
     - field.field.node.room.field_room_type
     - field.field.node.room.field_room_video
     - field.field.node.room.rabbit_hole__settings
@@ -234,14 +233,6 @@ content:
     settings:
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_room_tile_details:
-    type: string_textfield
-    weight: 5
-    region: content
-    settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }

@@ -9,6 +9,38 @@ uids_base.settings:
         type:
           label: 'Header type'
           type: string
+        nav_style:
+          label: 'Header navigation style'
+          type: string
+        sticky:
+          label: 'Whether the header is sticky'
+          type: boolean
+        toppage:
+          label: 'Whether to display the back-to-top button'
+          type: boolean
+        top_links_limit:
+          label: 'Maximum number of top links to display'
+          type: integer
+        branding_options:
+          label: 'Header branding option'
+          type: string
+        footer_logo:
+          label: 'Whether to display the footer logo'
+          type: boolean
+    style:
+      label: 'Style settings'
+      type: mapping
+      mapping:
+        style_selector:
+          label: 'Color palette'
+          type: string
+    fonts:
+      label: 'Font settings'
+      type: mapping
+      mapping:
+        font-family:
+          label: 'Font family'
+          type: string
     footer:
       label: 'Footer settings'
       type: mapping

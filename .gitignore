@@ -7,7 +7,9 @@ tests/behat/local.yml
 box/local.config.yml
 *.local
 local.blt.yml
+local.sites.yml
 sites.local.php
+secrets.php
 deploy_key
 .ddev/config.web_environment.yaml
 docroot/sites/development.services.yml
@@ -105,6 +107,10 @@ tramp
 # User-specific stuff:
 .idea/
 .vscode/
+.claude
+CLAUDE.local.md
+.aider
+.opencode
 
 #XHProf
 xhprof_*
@@ -132,6 +138,11 @@ nbproject/*
 *.sql
 *.zip
 
+# Report exports written to the repo root by `./sn report:* --export`.
+# Interim: keep them out of git and the deploy artifact. Where these should
+# live is an open question for the team (top-level vs a dedicated directory).
+/SiteNow-*-Report-*.csv
+
 # PHPStorm
 atlassian-ide-plugin.xml
 
@@ -149,6 +160,13 @@ drush/sites/.checksums
 # PHPCS
 .phpcs-cache
 
+# Backups written by GNU patch. The post-drupal-scaffold-cmd hooks in
+# composer.json run `patch` directly, which regenerates these on every
+# install.
+*.orig
+*.rej
+
 # PHPUnit
 phpunit.xml
 .phpunit.result.cache
+.phpunit.cache/

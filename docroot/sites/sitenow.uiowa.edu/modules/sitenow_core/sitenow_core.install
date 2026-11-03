@@ -5,8 +5,8 @@
  * Install tasks.
  */
 
+use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Serialization\Yaml;
 
 /**
  * Import default config_ignore.settings to avoid deleting webforms.
@@ -28,6 +28,42 @@ function sitenow_core_update_8002() {
 
   $yaml = Yaml::decode($elements);
   $yaml['markup']['#markup'] = 'blt uiowa:multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --split sitenow_v2';
+  $elements = Yaml::encode($yaml);
+
+  $config
+    ->set('elements', $elements)
+    ->save();
+
+}
+
+/**
+ * Update the request form command to use the sn CLI.
+ */
+function sitenow_core_update_10001() {
+  $config = \Drupal::configFactory()->getEditable('webform.webform.request_a_site');
+  $elements = $config->get('elements');
+
+  $yaml = Yaml::decode($elements);
+  $yaml['markup']['#markup'] = './sn multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --split=sitenow_v2';
+  $elements = Yaml::encode($yaml);
+
+  $config
+    ->set('elements', $elements)
+    ->save();
+
+}
+
+/**
+ * Add the requested site name back to the request form command.
+ */
+function sitenow_core_update_10002() {
+  $config = \Drupal::configFactory()->getEditable('webform.webform.request_a_site');
+  $elements = $config->get('elements');
+
+  // Quoted because a site name contains spaces, which would otherwise reach
+  // the command as trailing arguments rather than as the option's value.
+  $yaml = Yaml::decode($elements);
+  $yaml['markup']['#markup'] = './sn multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --site-name="[webform_submission:values:site_name]"';
   $elements = Yaml::encode($yaml);
 
   $config

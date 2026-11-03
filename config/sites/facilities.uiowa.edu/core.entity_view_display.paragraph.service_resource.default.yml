@@ -1,0 +1,94 @@
+uuid: af3cf549-4bb0-4698-86cd-3a5fca7a8a66
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.service_resource.field_sr_access_info
+    - field.field.paragraph.service_resource.field_sr_contact_address
+    - field.field.paragraph.service_resource.field_sr_contact_email
+    - field.field.paragraph.service_resource.field_sr_contact_name
+    - field.field.paragraph.service_resource.field_sr_contact_phone
+    - field.field.paragraph.service_resource.field_sr_equipment
+    - field.field.paragraph.service_resource.field_sr_floor
+    - field.field.paragraph.service_resource.field_sr_location_guide
+    - field.field.paragraph.service_resource.field_sr_room
+    - paragraphs.paragraphs_type.service_resource
+id: paragraph.service_resource.default
+targetEntityType: paragraph
+bundle: service_resource
+mode: default
+content:
+  field_sr_access_info:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_sr_contact_address:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_sr_contact_email:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_sr_contact_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_sr_contact_phone:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_sr_equipment:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_sr_floor:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_sr_location_guide:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_sr_room:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

@@ -19,7 +19,7 @@ class RobotstxtOverride implements ConfigFactoryOverrideInterface {
     $overrides = [];
 
     if (in_array('robotstxt.settings', $names)) {
-      $overrides['robotstxt.settings']['content'] = "User-agent: *\r\nDisallow: /";
+      $overrides['robotstxt.settings']['content'] = "User-agent: SiteimproveBot-Crawler\r\nAllow: /\r\n\r\nUser-agent: *\r\nDisallow: /";
     }
 
     return $overrides;

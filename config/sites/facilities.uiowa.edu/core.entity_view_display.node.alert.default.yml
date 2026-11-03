@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.alert.field_alert_building
     - field.field.node.alert.field_alert_buildings_locations
     - field.field.node.alert.field_alert_category
+    - field.field.node.alert.field_alert_contact_info
     - field.field.node.alert.field_alert_date
     - field.field.node.alert.field_alert_override_building
     - field.field.node.alert.field_alert_project_number
@@ -303,6 +304,22 @@ third_party_settings:
             additional:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
+          -
+            uuid: ff7e6c11-7104-4977-94a0-b1c083afee4d
+            region: content
+            configuration:
+              id: 'field_block:node:alert:field_alert_contact_info'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -374,6 +391,13 @@ content:
       link: true
     third_party_settings: {  }
     weight: 103
+    region: content
+  field_alert_contact_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 120
     region: content
   field_alert_date:
     type: smartdate_default

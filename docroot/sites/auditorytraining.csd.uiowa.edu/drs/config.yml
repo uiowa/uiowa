@@ -1,0 +1,16 @@
+project:
+  machine_name: csdauditorytraining
+  human_name: auditorytraining.csd.uiowa.edu
+  local:
+    hostname: csdauditorytraining.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: csdauditorytraining.prod
+drupal:
+  db:
+    database: auditorytraining_csd_uiowa_edu
+uiowa:
+  requester: ehunter
+  site-name: 'https://auditorytraining.csd.uiowa.edu/'

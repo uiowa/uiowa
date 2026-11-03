@@ -5,6 +5,7 @@
  * Install, update and uninstall functions for the Sitenow Intranet module.
  */
 
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\search_api\Entity\Index;
 
 /**
@@ -29,7 +30,208 @@ function sitenow_intranet_install() {
     ->set('footer.login_link', FALSE)
     ->save();
 
+  // Everything below points file storage at private://, so the wrapper has to
+  // work before any of it is written. Pointing default_scheme and the media
+  // fields at an unusable wrapper leaves uploads failing with no visible
+  // cause, and the file migration's own check is never reached on a site that
+  // has no files to move.
+  if ($reason = sitenow_intranet_check_private_storage()) {
+    \Drupal::messenger()->addError(t('File settings were left on public storage because @reason. Fix that, then run drush uiowa_core:migrate-files private.', [
+      '@reason' => $reason,
+    ]));
+
+    \Drupal::messenger()->addStatus(__FUNCTION__);
+    return;
+  }
+
+  // The intranet split points these at private storage, but that only lands at
+  // config import. Setting them here first means enabling this module is
+  // self-contained: the destination is already private when files are moved
+  // below, and an upload made before the next import still lands in the right
+  // place. The values are listed rather than read out of the split folder,
+  // whose files are patches rather than whole config objects.
+  foreach ([
+    'system.file' => ['default_scheme' => 'private'],
+    'media.settings' => ['icon_base_uri' => 'private://media-icons/generic'],
+    'media.type.remote_video' => [
+      'source_configuration.thumbnails_directory' => 'private://oembed_thumbnails',
+    ],
+    'media_entity_twitter.settings' => [
+      'local_images' => 'private://twitter-thumbnails',
+    ],
+    'field.storage.media.field_media_audio_file' => ['settings.uri_scheme' => 'private'],
+    'field.storage.media.field_media_file' => ['settings.uri_scheme' => 'private'],
+    'field.storage.media.field_media_image' => ['settings.uri_scheme' => 'private'],
+    'field.storage.media.field_media_video_file' => ['settings.uri_scheme' => 'private'],
+  ] as $name => $values) {
+    $config = $config_factory->getEditable($name);
+
+    // Only adjust config that exists. Setting a key on a missing object would
+    // create it, and a field storage object holding nothing but a settings key
+    // has no type for its settings schema to resolve against.
+    if ($config->isNew()) {
+      continue;
+    }
+
+    foreach ($values as $key => $value) {
+      $config->set($key, $value);
+    }
+
+    $config->save();
+  }
+
+  // Writing field storage config directly bypasses the entity API, so the
+  // cached field definitions still describe public storage until cleared.
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+
+  sitenow_intranet_migrate_public_files();
+
+  // Runs after the file migration: the index stores rendered node output,
+  // which can embed file URLs, so the files have to be in private storage
+  // before anything is rendered into the index.
+  sitenow_intranet_index_content();
+
   \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Indexes existing content into the intranet search index.
+ *
+ * The index sets index_directly to FALSE with a cron_limit of 50, so leaving
+ * this to cron means a freshly enabled site has a /search page that returns
+ * nothing and reports no error.
+ */
+function sitenow_intranet_index_content() {
+  // The index is created from config/install, which is skipped when the module
+  // is enabled through config import: creating config entities while syncing
+  // is left to the importer, but this hook still runs.
+  $index = Index::load('sitenow_intranet_search_index');
+
+  if (!$index) {
+    return;
+  }
+
+  // Saving the index only populates the tracker synchronously in the CLI.
+  // Anywhere else it schedules a batch that runs after this hook, leaving
+  // nothing to index. Running the tasks here covers both paths and does
+  // nothing when tracking is already complete.
+  \Drupal::service('search_api.index_task_manager')->addItemsAll($index);
+
+  // Indexing in chunks rather than passing -1, which would load and index
+  // every remaining item in a single call.
+  $limit = $index->getOption('cron_limit', 50);
+  $indexed = 0;
+
+  while ($count = $index->indexItems($limit)) {
+    $indexed += $count;
+  }
+
+  if ($indexed) {
+    \Drupal::messenger()->addStatus(t('Indexed @count item(s) into the intranet search index.', [
+      '@count' => $indexed,
+    ]));
+  }
+}
+
+/**
+ * Reports why private file storage cannot be used, if it cannot.
+ *
+ * @return string|null
+ *   The reason, or NULL when private storage is usable.
+ */
+function sitenow_intranet_check_private_storage(): ?string {
+  if (!\Drupal::service('stream_wrapper_manager')->isValidScheme('private')) {
+    return 'the private:// stream wrapper is not registered, which usually means file_private_path is not set for this site';
+  }
+
+  $root = 'private://';
+
+  if (!\Drupal::service('file_system')->prepareDirectory($root, FileSystemInterface::CREATE_DIRECTORY)) {
+    return 'the private file directory could not be created or is not writable';
+  }
+
+  return NULL;
+}
+
+/**
+ * Moves any existing public files into private storage.
+ *
+ * A site that has been running as a public site keeps serving its existing
+ * files from the public directory even once the fields point at private
+ * storage, because changing uri_scheme only affects new uploads.
+ *
+ * Update hooks cannot do this. Installing a module marks every one of its
+ * existing update hooks complete, so on the retrofit this exists for they
+ * would never run.
+ */
+function sitenow_intranet_migrate_public_files() {
+  // uiowa_core is installed on every SiteNow site, but it is not declared as a
+  // dependency: doing so pulls it into installs that do not otherwise have it,
+  // where hooks of its own assume optional modules are present.
+  if (!\Drupal::moduleHandler()->moduleExists('uiowa_core')) {
+    \Drupal::messenger()->addWarning(t('Existing public files were not moved because uiowa_core is not installed. Enable it and run uiowa_core:migrate-files private.'));
+    return;
+  }
+
+  /** @var \Drupal\uiowa_core\FileSchemeMigrator $migrator */
+  $migrator = \Drupal::service('uiowa_core.file_scheme_migrator');
+
+  // A site being built from scratch has nothing to move, so it should not be
+  // told anything about private storage. Only a retrofit gets that far.
+  if ($migrator->countFiles('public') === 0) {
+    return;
+  }
+
+  if ($reason = $migrator->checkScheme('private')) {
+    \Drupal::messenger()->addError(t('Existing files were not moved to private storage: @reason', [
+      '@reason' => $reason,
+    ]));
+    return;
+  }
+
+  $results = $migrator->migrate('public', 'private');
+
+  // Content that points at a moved file by path does not follow it, so those
+  // references are rewritten too. A path pointing anywhere else is left alone.
+  if ($results['moved']) {
+    $rewritten = $migrator->rewriteReferences($results['moved'], 'public', 'private');
+
+    if (!empty($rewritten['rows'])) {
+      \Drupal::messenger()->addStatus(t('Rewrote @count content reference row(s) to the private file path.', [
+        '@count' => $rewritten['rows'],
+      ]));
+    }
+  }
+
+  if ($remaining = $migrator->findHardCodedPaths('public')) {
+    \Drupal::messenger()->addWarning(t('@count hard-coded path(s) into the public files directory remain and point at files that were not moved. Run uiowa_core:migrate-files private --dry-run --list-paths to see them.', [
+      '@count' => count($remaining),
+    ]));
+  }
+
+  \Drupal::messenger()->addStatus(t('Moved @count file(s) into private storage.', [
+    '@count' => count($results['moved']),
+  ]));
+
+  foreach (['missing' => 'had no file on disk', 'failed' => 'could not be moved'] as $key => $description) {
+    if ($results[$key]) {
+      \Drupal::messenger()->addWarning(t('@count file(s) @description: @fids', [
+        '@count' => count($results[$key]),
+        '@description' => $description,
+        '@fids' => implode(', ', array_keys($results[$key])),
+      ]));
+    }
+  }
+
+  // A derivative built from a public source stays readable by URL after its
+  // source moves, so flushing is part of the move.
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  if ($results['moved'] && $entity_type_manager->hasDefinition('image_style')) {
+    foreach ($entity_type_manager->getStorage('image_style')->loadMultiple() as $style) {
+      $style->flush();
+    }
+  }
 }
 
 /**

@@ -1,0 +1,29 @@
+uuid: 577cbb95-89a5-4d0a-86e5-d0561b165b12
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_ighn_languages
+    - node.type.person
+    - taxonomy.vocabulary.languages
+id: node.person.field_person_ighn_languages
+field_name: field_person_ighn_languages
+entity_type: node
+bundle: person
+label: Languages
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      languages: languages
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -7,16 +7,16 @@ dependencies:
 id: nonprofit_organization
 label: 'Nonprofit Organization'
 type: 'canonical_entities:node'
-pattern: 'non-profit-organizations/[node:title]'
+pattern: '/non-profit-organizations/[node:title]'
 selection_criteria:
   2417323a-ad61-467b-aa5a-69e06293be5e:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 2417323a-ad61-467b-aa5a-69e06293be5e
     context_mapping:
       node: node
     bundles:
       nonprofit_org: nonprofit_org
+    uuid: 2417323a-ad61-467b-aa5a-69e06293be5e
 selection_logic: and
 weight: -5
 relationships: {  }

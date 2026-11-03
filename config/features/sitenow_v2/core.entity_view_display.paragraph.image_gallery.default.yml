@@ -10,6 +10,7 @@ dependencies:
     - field.field.paragraph.image_gallery.field_uip_id
     - field.field.paragraph.image_gallery.field_uip_title
     - paragraphs.paragraphs_type.image_gallery
+    - responsive_image.styles.medium__no_crop
   module:
     - field_delimiter
     - photoswipe
@@ -23,8 +24,8 @@ content:
     type: photoswipe_responsive_field_formatter
     label: hidden
     settings:
-      photoswipe_thumbnail_style_first: null
-      photoswipe_thumbnail_style: null
+      photoswipe_thumbnail_style_first: ''
+      photoswipe_thumbnail_style: medium__no_crop
       photoswipe_image_style: ''
       photoswipe_reference_image_field: field_media_image
       photoswipe_view_mode: default
@@ -34,8 +35,8 @@ content:
       field_delimiter:
         delimiter: ''
       photoswipe_dynamic_caption:
-        photoswipe_caption: null
-        photoswipe_caption_custom: null
+        photoswipe_caption: title
+        photoswipe_caption_custom: ''
     weight: 1
     region: content
   field_uip_title:

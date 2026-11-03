@@ -20,7 +20,7 @@ function brand_core_update_8001() {
 
   // Obtain the storage manager for vocabularies.
   // Create a new vocabulary from the yaml configuration and save.
-  \Drupal::entityManager()->getStorage('taxonomy_vocabulary')
+  \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')
     ->create($source->read('taxonomy.vocabulary.orgs'))
     ->save();
 
@@ -100,7 +100,7 @@ function brand_core_update_8002(&$sandbox) {
     $moderation_state = $node->get('moderation_state')->value;
     if ($moderation_state === 'published') {
       $nid = $node->id();
-      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
+      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'), \Drupal::service('extension.path.resolver'));
       $lockup_controller->generate($nid);
     }
     $sandbox['current']++;

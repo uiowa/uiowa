@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: siteskamelia-zaman-moon.uiowa.ddev.site
+  paths:
+    files: sites/kamelia-zaman-moon.sites.uiowa.edu/files
+dev:
+  uri: siteskamelia-zaman-moon.dev.drupal.uiowa.edu
+  host: uiowa09dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/kamelia-zaman-moon.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.dev/docroot
+  user: uiowa09.dev
+prod:
+  uri: kamelia-zaman-moon.sites.uiowa.edu
+  host: uiowa09prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/kamelia-zaman-moon.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.prod/docroot
+  user: uiowa09.prod
+test:
+  uri: siteskamelia-zaman-moon.stage.drupal.uiowa.edu
+  host: uiowa09stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/kamelia-zaman-moon.sites.uiowa.edu/files
+  root: /var/www/html/uiowa09.stage/docroot
+  user: uiowa09.stage

@@ -2,6 +2,7 @@
 
 namespace Drupal\facilities_core;
 
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\uiowa_core\EntityItemProcessorBase;
 
 /**
@@ -29,7 +30,6 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
     'field_building_rr_single_men' => 'singleUserRestroomsMen',
     'field_building_rr_single_women' => 'singleUserRestroomsWomen',
     'field_building_rr_single_neutral' => 'singleUserRestrooms',
-    'field_building_lactation_rooms' => 'lactationRooms',
     'field_building_latitude' => 'latitude',
     'field_building_longitude' => 'longitude',
     'field_building_m_manager' => 'maintenanceManagerFullName',
@@ -94,7 +94,94 @@ class BuildingItemProcessor extends EntityItemProcessorBase {
       $updated = TRUE;
     }
 
+    // Map API arrays to paragraph reference fields.
+    $service_resource_fields = [
+      'field_building_lactation_rooms' => 'lactationRooms',
+      'field_building_aed' => 'aed',
+      'field_building_stop_the_bleed' => 'stopTheBleed',
+      'field_building_evac_chairs' => 'evacChairs',
+    ];
+
+    foreach ($service_resource_fields as $field_name => $api_key) {
+      if (static::processServiceResourceField($entity, $field_name, $record->{$api_key} ?? NULL)) {
+        $updated = TRUE;
+      }
+    }
+
     return $updated;
+  }
+
+  /**
+   * Maps resource property names to service_resource paragraph field names.
+   */
+  protected const RESOURCE_MAP = [
+    'floor' => 'field_sr_floor',
+    'room' => 'field_sr_room',
+    'contactName' => 'field_sr_contact_name',
+    'contactEmail' => 'field_sr_contact_email',
+    'contactPhone' => 'field_sr_contact_phone',
+    'contactCampusAddress' => 'field_sr_contact_address',
+    'facilityEquipment' => 'field_sr_equipment',
+    'additionalLocationGuide' => 'field_sr_location_guide',
+    'accessInformation' => 'field_sr_access_info',
+  ];
+
+  /**
+   * Sync a service_resource paragraph field from an API array.
+   *
+   * Deletes existing paragraphs on the field and recreates from API data.
+   * Returns TRUE if the field value changed.
+   *
+   * @param mixed $entity
+   *   The building node entity.
+   * @param string $field_name
+   *   The entity reference revisions field name.
+   * @param mixed $items
+   *   Array of stdClass objects from the API, or NULL.
+   *
+   * @return bool
+   *   TRUE if the field was updated.
+   */
+  protected static function processServiceResourceField($entity, string $field_name, mixed $items): bool {
+    $existing = $entity->get($field_name)->referencedEntities();
+    $incoming = is_array($items) ? $items : [];
+
+    // No existing, no incoming — nothing to do.
+    if (empty($existing) && empty($incoming)) {
+      return FALSE;
+    }
+
+    // Delete existing paragraphs.
+    foreach ($existing as $paragraph) {
+      $paragraph->delete();
+    }
+
+    if (empty($incoming)) {
+      $entity->set($field_name, []);
+      return TRUE;
+    }
+
+    $new = [];
+    foreach ($incoming as $item) {
+      if (!is_object($item)) {
+        continue;
+      }
+      $paragraph = Paragraph::create(['type' => 'service_resource']);
+      foreach (static::RESOURCE_MAP as $resource_property => $sr_field) {
+        $value = $item->{$resource_property} ?? NULL;
+        if (!is_null($value)) {
+          $paragraph->set($sr_field, $value);
+        }
+      }
+      $paragraph->save();
+      $new[] = [
+        'target_id' => $paragraph->id(),
+        'target_revision_id' => $paragraph->getRevisionId(),
+      ];
+    }
+
+    $entity->set($field_name, $new);
+    return TRUE;
   }
 
 }

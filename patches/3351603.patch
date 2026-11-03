@@ -1,0 +1,186 @@
+From a6be5cd8cb7f724d71876e098b5bc6cd38346d5e Mon Sep 17 00:00:00 2001
+From: IMMACULATE X <58532-immaculate.x@users.noreply.drupalcode.org>
+Date: Thu, 28 Mar 2024 10:40:35 +0000
+Subject: [PATCH 1/6] Update file editor.css
+
+---
+ core/modules/ckeditor5/css/editor.css | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/core/modules/ckeditor5/css/editor.css b/core/modules/ckeditor5/css/editor.css
+index bbc9a31b504f..d3ba6d9b10ae 100644
+--- a/core/modules/ckeditor5/css/editor.css
++++ b/core/modules/ckeditor5/css/editor.css
+@@ -25,6 +25,10 @@
+   overflow: auto;
+ }
+ 
++.ck.ck-balloon-panel {
++  z-index: 1300 !important;
++}
++
+ /* Enhance visibility of selected/active buttons on the toolbar. */
+ .ck-toolbar__items .ck.ck-button.ck-on {
+   border: 1px solid var(--ck-color-button-on-color);
+-- 
+GitLab
+
+
+From 52a9422a78b1bc6df7b541f3bb043173782afc64 Mon Sep 17 00:00:00 2001
+From: Brian Osborne <bkosborne@788032.no-reply.drupal.org>
+Date: Thu, 28 Mar 2024 14:25:06 -0400
+Subject: [PATCH 2/6] Ensure tooltips are higher z-index than the normal
+ balloons; add comment.
+
+---
+ core/modules/ckeditor5/css/editor.css | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/core/modules/ckeditor5/css/editor.css b/core/modules/ckeditor5/css/editor.css
+index d3ba6d9b10ae..3efb2f2f8171 100644
+--- a/core/modules/ckeditor5/css/editor.css
++++ b/core/modules/ckeditor5/css/editor.css
+@@ -25,9 +25,13 @@
+   overflow: auto;
+ }
+ 
++/* Balloon panels need a higher z-index than Drupal's modals */
+ .ck.ck-balloon-panel {
+   z-index: 1300 !important;
+ }
++.ck.ck-balloon-panel.ck-tooltip {
++  z-index: 1301 !important;
++}
+ 
+ /* Enhance visibility of selected/active buttons on the toolbar. */
+ .ck-toolbar__items .ck.ck-button.ck-on {
+-- 
+GitLab
+
+
+From 80b843eb0834a79dce8c593526ea5a9866fd9895 Mon Sep 17 00:00:00 2001
+From: Klaas Van Waesberghe <klaasvw@gmail.com>
+Date: Mon, 2 Sep 2024 15:44:28 +0200
+Subject: [PATCH 3/6] Only set z-index one step higher so it doesn't conflict
+ with other modals.
+
+---
+ core/modules/ckeditor5/css/editor.css | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/modules/ckeditor5/css/editor.css b/core/modules/ckeditor5/css/editor.css
+index 3efb2f2f8171..1f08c5f16767 100644
+--- a/core/modules/ckeditor5/css/editor.css
++++ b/core/modules/ckeditor5/css/editor.css
+@@ -27,10 +27,10 @@
+ 
+ /* Balloon panels need a higher z-index than Drupal's modals */
+ .ck.ck-balloon-panel {
+-  z-index: 1300 !important;
++  z-index: 1262 !important;
+ }
+ .ck.ck-balloon-panel.ck-tooltip {
+-  z-index: 1301 !important;
++  z-index: 1263 !important;
+ }
+ 
+ /* Enhance visibility of selected/active buttons on the toolbar. */
+-- 
+GitLab
+
+
+From 16d0b47b96bfab5e29f500124c7399ed8125d28a Mon Sep 17 00:00:00 2001
+From: Klaas Van Waesberghe <klaasvw@gmail.com>
+Date: Tue, 3 Sep 2024 12:02:10 +0200
+Subject: [PATCH 4/6] Set z-index equal to modal so it doesn't overlap with
+ dialogs opened from the panel.
+
+---
+ core/modules/ckeditor5/css/editor.css | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/modules/ckeditor5/css/editor.css b/core/modules/ckeditor5/css/editor.css
+index 1f08c5f16767..1ee20eec0878 100644
+--- a/core/modules/ckeditor5/css/editor.css
++++ b/core/modules/ckeditor5/css/editor.css
+@@ -27,10 +27,10 @@
+ 
+ /* Balloon panels need a higher z-index than Drupal's modals */
+ .ck.ck-balloon-panel {
+-  z-index: 1262 !important;
++  z-index: 1261 !important;
+ }
+ .ck.ck-balloon-panel.ck-tooltip {
+-  z-index: 1263 !important;
++  z-index: 1262 !important;
+ }
+ 
+ /* Enhance visibility of selected/active buttons on the toolbar. */
+-- 
+GitLab
+
+
+From f13af58179ba93636eaadcfb82630600539c280d Mon Sep 17 00:00:00 2001
+From: Vinmayi <57814-VinmayiSwamy@users.noreply.drupalcode.org>
+Date: Tue, 8 Oct 2024 19:10:56 +0000
+Subject: [PATCH 5/6] Issue #3351603 - Update CKEditor5DialogTest to verify
+ balloon panel visibility above modals
+
+---
+ .../src/FunctionalJavascript/CKEditor5DialogTest.php   | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/core/modules/ckeditor5/tests/src/FunctionalJavascript/CKEditor5DialogTest.php b/core/modules/ckeditor5/tests/src/FunctionalJavascript/CKEditor5DialogTest.php
+index 829a67d9106b..23bb731dcca7 100644
+--- a/core/modules/ckeditor5/tests/src/FunctionalJavascript/CKEditor5DialogTest.php
++++ b/core/modules/ckeditor5/tests/src/FunctionalJavascript/CKEditor5DialogTest.php
+@@ -73,6 +73,16 @@ function (ConstraintViolation $v) {
+     // Then press the button to add a link.
+     $this->pressEditorButton('Link');
+ 
++    // Check that the balloon panel is visible and above the modal.
++    $balloon_panel = $page->find('css', '.ck.ck-balloon-panel');
++    $this->assertTrue($balloon_panel->isVisible(), 'The CKEditor 5 balloon panel is visible and positioned above the modal.');
++
++    // If a tooltip is present, ensure it’s visible and above the modal.
++    $tooltip = $page->find('css', '.ck.ck-balloon-panel.ck-tooltip');
++    if ($tooltip) {
++      $this->assertTrue($tooltip->isVisible(), 'The CKEditor 5 tooltip is visible and positioned above the modal.');
++    }
++
+     $link_url = '/ckeditor5_test/dialog';
+     $input = $assert_session->waitForElementVisible('css', '.ck-balloon-panel input.ck-input-text');
+     // Make sure the input field can have focus and we can type into it.
+-- 
+GitLab
+
+
+From e050b993d20c243e417203bbeb6af0ffcfe2afc0 Mon Sep 17 00:00:00 2001
+From: Shivam-Innoraft <shivam.tiwari@innoraft.com>
+Date: Fri, 11 Apr 2025 12:36:40 +0530
+Subject: [PATCH 6/6] Removed important property.
+
+---
+ core/modules/ckeditor5/css/editor.css | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/modules/ckeditor5/css/editor.css b/core/modules/ckeditor5/css/editor.css
+index 1ee20eec0878..b4f2d1fa126a 100644
+--- a/core/modules/ckeditor5/css/editor.css
++++ b/core/modules/ckeditor5/css/editor.css
+@@ -27,10 +27,10 @@
+ 
+ /* Balloon panels need a higher z-index than Drupal's modals */
+ .ck.ck-balloon-panel {
+-  z-index: 1261 !important;
++  z-index: 1261;
+ }
+ .ck.ck-balloon-panel.ck-tooltip {
+-  z-index: 1262 !important;
++  z-index: 1262;
+ }
+ 
+ /* Enhance visibility of selected/active buttons on the toolbar. */
+-- 
+GitLab
+

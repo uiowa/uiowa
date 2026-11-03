@@ -7,6 +7,8 @@
 {% endif %}
 
 <footer class="footer">
+  {# Landing pages show only the socket. #}
+  {% if not footer_socket_only %}
   <div class="footer__container footer__container--flex">
     <div class="footer__links footer__links--contact">
 
@@ -17,13 +19,11 @@
       {% include '@uids_base/uids/logo.twig' with {
         path: uiowa_url,
         logo_classes: 'logo--footer',
-        logo_id: 'footer',
         is_homepage: is_homepage|default(false),
       } %}
       {% elseif header_branding == 'uihc' %}
         {% include '@uids_base/uids/logo-uihc.twig' with {
           logo_classes: 'logo--footer logo--healthcare',
-          logo_id: 'footer',
         } %}
       {% endif %}
 
@@ -71,6 +71,7 @@
     {% endif %}
 
   </div>
+  {% endif %}
   <div class="footer__container">
     {% if uiowa_logo is not empty %}
     {% include '@uids_base/uids/footer--socket-menu.twig' %}

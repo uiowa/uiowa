@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\FieldConfigInterface;
+use Drupal\uiowa_core\Access\UiowaCoreAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -31,11 +32,19 @@ class PersonTypeForm extends EntityForm {
   protected $entityFieldManager;
 
   /**
+   * The UIowa access checker.
+   *
+   * @var \Drupal\uiowa_core\Access\UiowaCoreAccess
+   */
+  protected $uiowaAccess;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(EntityFieldManagerInterface $entityFieldManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(EntityFieldManagerInterface $entityFieldManager, ConfigFactoryInterface $configFactory, UiowaCoreAccess $uiowaAccess) {
     $this->entityFieldManager = $entityFieldManager;
     $this->configFactory = $configFactory;
+    $this->uiowaAccess = $uiowaAccess;
   }
 
   /**
@@ -44,7 +53,8 @@ class PersonTypeForm extends EntityForm {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_field.manager'),
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('uiowa_core.access_checker')
     );
   }
 
@@ -67,7 +77,7 @@ class PersonTypeForm extends EntityForm {
       '#machine_name' => [
         'exists' => '\Drupal\sitenow_people\Entity\PersonType::load',
       ],
-      '#disabled' => !$this->entity->isNew(),
+      '#disabled' => !$this->entity->isNew() || $this->entity->isLocked(),
     ];
 
     $form['status'] = [
@@ -85,9 +95,18 @@ class PersonTypeForm extends EntityForm {
 
     $form['allow_former'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Allow displaying an alternate version of this type, such as "Former."'),
+      '#title' => $this->t('Allow former designation'),
       '#default_value' => $this->entity->getAllowFormer(),
     ];
+
+    if ($this->uiowaAccess->access()->isAllowed()) {
+      $form['locked'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Locked'),
+        '#description' => $this->t('Prevent this person type from being deleted.'),
+        '#default_value' => $this->entity->isLocked(),
+      ];
+    }
 
     $form['allowed_fields'] = [
       '#type' => 'details',
@@ -147,6 +166,17 @@ class PersonTypeForm extends EntityForm {
     $entity->set('allowed_fields', $allowedFields);
 
     return $entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function actionsElement(array $form, FormStateInterface $form_state) {
+    $actions = parent::actionsElement($form, $form_state);
+    if ($this->entity->isLocked()) {
+      unset($actions['delete']);
+    }
+    return $actions;
   }
 
   /**

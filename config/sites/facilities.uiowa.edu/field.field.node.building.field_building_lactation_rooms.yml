@@ -1,10 +1,13 @@
-uuid: 436ff77d-7d6a-41e1-9a39-04aa515e4623
+uuid: a3164502-0f2c-4fcd-8248-686e5a4399c7
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_building_lactation_rooms
     - node.type.building
+    - paragraphs.paragraphs_type.service_resource
+  module:
+    - entity_reference_revisions
 id: node.building.field_building_lactation_rooms
 field_name: field_building_lactation_rooms
 entity_type: node
@@ -12,8 +15,12 @@ bundle: building
 label: 'Lactation rooms'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: string
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      service_resource: service_resource
+field_type: entity_reference_revisions

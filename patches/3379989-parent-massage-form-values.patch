@@ -1,0 +1,65 @@
+diff --git a/modules/linkit_attributes/tests/src/Functional/LinkitAttributesFieldTest.php b/modules/linkit_attributes/tests/src/Functional/LinkitAttributesFieldTest.php
+index 9167d16..2b80958 100644
+--- a/modules/linkit_attributes/tests/src/Functional/LinkitAttributesFieldTest.php
++++ b/modules/linkit_attributes/tests/src/Functional/LinkitAttributesFieldTest.php
+@@ -152,6 +152,39 @@ class LinkitAttributesFieldTest extends BrowserTestBase {
+     $this->assertEquals($expected_link_two, $field_values[1]['options']['attributes']['class']);
+   }
+ 
++  /**
++   * Tests that the widget normalizes the submitted URI on save.
++   */
++  public function testUriIsNormalized() {
++    // Add a content type with a link field using the linkit_attributes widget.
++    $type = $this->drupalCreateContentType();
++    $field_name = mb_strtolower($this->randomMachineName());
++    $add_path = 'node/add/' . $type->id();
++
++    $this->fieldUIAddNewField('admin/structure/types/manage/' . $type->id(), $field_name, $field_name, 'link');
++    \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
++    \Drupal::entityTypeManager()
++      ->getStorage('entity_form_display')
++      ->load('node.' . $type->id() . '.default')
++      ->setComponent('field_' . $field_name, ['type' => 'linkit_attributes'])
++      ->save();
++
++    // Create the node that will be linked to.
++    $target = $this->drupalCreateNode(['type' => $type->id()]);
++
++    // Submit a schemeless path, as produced by Linkit. The link widget turns it
++    // into "internal:/node/N", which Linkit must then normalize.
++    $edit = [
++      'title[0][value]' => 'Linkit URI normalization',
++      'field_' . $field_name . '[0][uri]' => '/node/' . $target->id(),
++    ];
++    $this->drupalGet($add_path);
++    $this->submitForm($edit, 'Save');
++
++    $node = $this->drupalGetNodeByTitle($edit['title[0][value]']);
++    $this->assertEquals('entity:node/' . $target->id(), $node->get('field_' . $field_name)->uri);
++  }
++
+   /**
+    * Tests saving a node without any attributes enabled in the widget settings.
+    */
+diff --git a/src/LinkWithAttributesWidgetTrait.php b/src/LinkWithAttributesWidgetTrait.php
+index 115841a..f8e5751 100644
+--- a/src/LinkWithAttributesWidgetTrait.php
++++ b/src/LinkWithAttributesWidgetTrait.php
+@@ -126,10 +126,15 @@ trait LinkWithAttributesWidgetTrait {
+    * {@inheritdoc}
+    */
+   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
++    // Give the parent widget the chance to process the submitted values first.
++    $values = parent::massageFormValues($values, $form, $form_state);
++
+     // Convert a class string to an array so that it can be merged reliable.
+     foreach ($values as $delta => $value) {
+       $values[$delta] += ['options' => []];
+-      $values[$delta]['options'] += $value['attributes'];
++      if (isset($value['attributes'])) {
++        $values[$delta]['options'] += $value['attributes'];
++      }
+       if (isset($value['options']['attributes']['class']) && is_string($value['options']['attributes']['class'])) {
+         $values[$delta]['options']['attributes']['class'] = explode(' ', $value['options']['attributes']['class']);
+       }

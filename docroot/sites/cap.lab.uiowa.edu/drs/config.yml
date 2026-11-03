@@ -1,0 +1,16 @@
+project:
+  machine_name: labcap
+  human_name: cap.lab.uiowa.edu
+  local:
+    hostname: labcap.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labcap.prod
+drupal:
+  db:
+    database: cap_lab_uiowa_edu
+uiowa:
+  requester: daguest
+  site-name: 'CAP Lab'

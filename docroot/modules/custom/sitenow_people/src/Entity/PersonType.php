@@ -44,7 +44,8 @@ use Drupal\sitenow_people\PersonTypeInterface;
  *     "label",
  *     "description",
  *     "allow_former",
- *     "allowed_fields"
+ *     "allowed_fields",
+ *     "locked"
  *   }
  * )
  */
@@ -93,6 +94,13 @@ class PersonType extends ConfigEntityBase implements PersonTypeInterface {
   protected $allow_former;
 
   /**
+   * Whether this person type is locked from deletion.
+   *
+   * @var bool
+   */
+  protected $locked = FALSE;
+
+  /**
    * {@inheritdoc}
    */
   public function getAllowFormer() {
@@ -104,6 +112,13 @@ class PersonType extends ConfigEntityBase implements PersonTypeInterface {
    */
   public function getAllowedFields() {
     return $this->allowed_fields ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isLocked() {
+    return (bool) $this->locked;
   }
 
 }

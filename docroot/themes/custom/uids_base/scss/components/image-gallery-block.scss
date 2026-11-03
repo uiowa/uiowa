@@ -1,6 +1,8 @@
 @use '../../uids/scss/abstracts/_variables.scss';
 @use '../../uids/scss/abstracts/_utilities.scss';
 
+
+
 // Masonry
 .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery {
   display: block;
@@ -17,8 +19,6 @@
     display: flex;
     margin: 0 0 1.5rem;
     img {
-      object-fit: unset;
-      aspect-ratio: unset;
       height: auto;
     }
   }
@@ -41,24 +41,13 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
+// The media format (selected in Layout Builder) drives the Photoswipe
+// thumbnail image style, so the crop is baked into the image style itself.
+// The responsive image carries its own width/height, which reserves the box
+// shape and prevents layout shift.
 .uiowa-image-gallery img {
-  object-fit: cover;
   width: 100%;
-  aspect-ratio: 1 / 1;
-}
-
-.media--no-crop .uiowa-image-gallery img {
-  object-fit: unset;
-  aspect-ratio: unset;
-  width: 100%;
-}
-
-.media--square .uiowa-image-gallery img {
-  aspect-ratio: 1 / 1;
-}
-
-.media--widescreen .uiowa-image-gallery img {
-  aspect-ratio: 16 / 9;
+  height: auto;
 }
 
 // Single page photoswipe image with thumbnails.
@@ -104,5 +93,25 @@
      font-size: 1.3rem;
      padding-top: 1.5rem;
     }
+  }
+}
+
+// Photoswipe reuses the gallery thumbnail as a low-res placeholder while the
+// full image loads, but for some reason with our image styles it scales up 
+// to the incorrect size. Hide it so the lightbox fades from its background
+// straight to the full image.
+.pswp__img--placeholder {
+  display: none;
+}
+
+@keyframes pswp-img-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pswp__img:not(.pswp__img--placeholder) {
+    // Fade each full image in as it appears so its not jarring on slideshow load.
+    animation: pswp-img-fade-in var(--pswp-transition-duration, 0.3s) ease-in-out;
   }
 }

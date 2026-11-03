@@ -390,3 +390,34 @@ function sitenow_people_update_10001() {
   $view->save();
 
 }
+
+/**
+ * Add additional person types on existing and mark person types as locked.
+ */
+function sitenow_people_update_10002() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $storage = \Drupal::entityTypeManager()->getStorage('person_type');
+
+  // Import new additional person types from config/default, preserving
+  // canonical UUIDs. Use entity API to check existence so sites that already
+  // have these types (e.g. via the old additional_person_types feature split)
+  // keep their existing config unchanged.
+  $person_type_config_names = [
+    'sitenow_people.person_type.adjunct_faculty',
+    'sitenow_people.person_type.alumni',
+    'sitenow_people.person_type.postdoc',
+    'sitenow_people.person_type.visiting_faculty',
+  ];
+  foreach ($person_type_config_names as $config_name) {
+    $values = $source->read($config_name);
+    if ($values && !$storage->load($values['id'])) {
+      $storage->create($values)->save();
+    }
+  }
+
+  // Mark all existing person types as locked.
+  foreach ($storage->loadMultiple() as $person_type) {
+    $person_type->set('locked', TRUE)->save();
+  }
+}

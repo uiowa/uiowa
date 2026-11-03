@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: siteshalekas.uiowa.ddev.site
+  paths:
+    files: sites/halekas.sites.uiowa.edu/files
+dev:
+  uri: siteshalekas.dev.drupal.uiowa.edu
+  host: uiowa08dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/halekas.sites.uiowa.edu/files
+  root: /var/www/html/uiowa08.dev/docroot
+  user: uiowa08.dev
+prod:
+  uri: halekas.sites.uiowa.edu
+  host: uiowa08prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/halekas.sites.uiowa.edu/files
+  root: /var/www/html/uiowa08.prod/docroot
+  user: uiowa08.prod
+test:
+  uri: siteshalekas.stage.drupal.uiowa.edu
+  host: uiowa08stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/halekas.sites.uiowa.edu/files
+  root: /var/www/html/uiowa08.stage/docroot
+  user: uiowa08.stage

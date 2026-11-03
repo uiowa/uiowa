@@ -15,6 +15,7 @@ class MailTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'file',
     'filter',
     'symfony_mailer',
     'system',
@@ -99,7 +100,7 @@ class MailTest extends KernelTestBase {
    * @return array
    *   Array of arguments.
    */
-  public function providerO365() {
+  public static function providerO365() {
     return [
       [
         'someone@external.com',

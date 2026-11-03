@@ -1,0 +1,18 @@
+project:
+  machine_name: labhuddl
+  human_name: huddl.lab.uiowa.edu
+  local:
+    hostname: labhuddl.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labhuddl.prod
+drupal:
+  db:
+    database: huddl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: https://labhuddl.prod.drupal.uiowa.edu
+  requester: nfears
+  site-name: Human Development & Daily Life Lab

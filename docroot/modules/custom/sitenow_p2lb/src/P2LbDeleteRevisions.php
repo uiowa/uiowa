@@ -23,7 +23,11 @@ class P2LbDeleteRevisions {
       $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
       // Fetch revision ids.
-      $vids = $node_storage->revisionIds($node);
+      $vids = $node_storage->getQuery()
+        ->allRevisions()
+        ->accessCheck(FALSE)
+        ->condition('nid', $node->id())
+        ->execute();
 
       // Get the protected revision.
       $protected_vid = $node->get('field_v3_conversion_revision_id')->value;
@@ -34,7 +38,7 @@ class P2LbDeleteRevisions {
       }
 
       if ($protected_vid) {
-        foreach ($vids as $vid) {
+        foreach (array_keys($vids) as $vid) {
           if ($vid <= $protected_vid) {
             // Built-in protection from deleting active revision.
             $node_storage->deleteRevision($vid);

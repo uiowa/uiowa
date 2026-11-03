@@ -651,10 +651,6 @@ function sitenow_articles_inline_entity_form_table_fields_alter(array &$fields, 
 function sitenow_articles_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
 
-    case 'field_block:node:article:field_gallery_images':
-      $variables['attributes']['class'][] = 'media--square';
-      break;
-
     case 'field_block:node:article:field_article_author':
     case 'field_block:node:article:field_article_source_link':
     case 'field_block:node:article:field_article_source_org':

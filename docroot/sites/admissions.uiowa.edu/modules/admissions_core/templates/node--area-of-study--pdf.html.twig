@@ -123,12 +123,12 @@
           {{ content.field_area_of_study_selective|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
           {{ content.field_area_of_study_select_txt|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {% if field_area_of_study_competitive|render|replace({'\xc2\xa0': ' '})|striptags is not empty %}
+        {% if content.field_area_of_study_competitive|render|replace({'\xc2\xa0': ' '})|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_competitive|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
           {{ content.field_area_of_study_comp_txt|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {{ content.field_area_of_study_scholarship|render|replace({'\xc2\xa0': ' '})|striptags('<p><strong><div>')|t }}
+        {{ content.field_area_of_study_scholarship|render|replace({'\xc2\xa0': ' '})|striptags('<h2><p><strong><div>')|t }}
       </div>
 
       {{ content.field_area_of_study_subtitle|render|replace({'\xc2\xa0': ' '})|t }}

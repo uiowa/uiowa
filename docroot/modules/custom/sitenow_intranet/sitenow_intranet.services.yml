@@ -8,3 +8,7 @@ services:
     arguments: [ '@current_user' ]
     tags:
       - { name: event_subscriber }
+  sitenow_intranet.scoped_rendered_item_subscriber:
+    class: Drupal\sitenow_intranet\EventSubscriber\ScopedRenderedItemSubscriber
+    tags:
+      - { name: event_subscriber }

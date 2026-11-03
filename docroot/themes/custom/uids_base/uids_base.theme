@@ -8,6 +8,7 @@
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
+use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
@@ -20,6 +21,22 @@ use Drupal\uids_base\UidsPreRender;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\views\field\EntityField;
+
+/**
+ * Gets a UIDS Base theme setting.
+ *
+ * @param string $setting
+ *   The setting name.
+ * @param string|null $theme
+ *   The theme name, when reading another theme's settings.
+ *
+ * @return mixed
+ *   The configured setting value.
+ */
+function uids_base_theme_get_setting(string $setting, ?string $theme = NULL): mixed {
+  return \Drupal::service(ThemeSettingsProvider::class)
+    ->getSetting($setting, $theme);
+}
 
 /**
  * Implements hook_element_info_alter().
@@ -136,30 +153,36 @@ function uids_base_preprocess(&$variables, $hook) {
  */
 function uids_base_preprocess_html(&$variables) {
   $config = \Drupal::config('system.site');
-  $variables['site_has_parent'] = $config->get('has_parent');
+  // Respect a module that has already hidden the parent site.
+  $variables['site_has_parent'] = ($variables['site_has_parent'] ?? NULL) !== FALSE && $config->get('has_parent');
   // Body class for top links.
   // Load the uids_base_toplinks block entity.
   if (class_exists('\Drupal\block\Entity\Block')) {
     $block = Block::load('uids_base_toplinks');
     if ($block) {
-      // Initialize a variable to count the number of enabled menu links.
-      $enabled_links = 0;
-      // Load the 'top-links' menu tree.
-      $menu_links = \Drupal::menuTree()->load('top-links', new MenuTreeParameters());
-      // Iterate through the menu links.
-      foreach ($menu_links as $menu_link) {
-        // If the link is disabled, skip to the next link.
-        if (!$menu_link->link->isEnabled()) {
-          continue;
+      // Respect a module that has already hidden the top links.
+      $has_enabled_links = $variables['has_enabled_links'] ?? NULL;
+
+      if ($has_enabled_links === NULL) {
+        // Initialize a variable to count the number of enabled menu links.
+        $enabled_links = 0;
+        // Load the 'top-links' menu tree.
+        $menu_links = \Drupal::menuTree()->load('top-links', new MenuTreeParameters());
+        // Iterate through the menu links.
+        foreach ($menu_links as $menu_link) {
+          // If the link is disabled, skip to the next link.
+          if (!$menu_link->link->isEnabled()) {
+            continue;
+          }
+          // Increment the number of enabled links.
+          $enabled_links++;
         }
-        // Increment the number of enabled links.
-        $enabled_links++;
+        // Check if there are any enabled links in the menu.
+        $has_enabled_links = ($enabled_links > 0);
+        // Add the 'has_enabled_links' variable to the variables array,
+        // to be used in templates.
+        $variables['has_enabled_links'] = $has_enabled_links;
       }
-      // Check if there are any enabled links in the menu.
-      $has_enabled_links = ($enabled_links > 0);
-      // Add the 'has_enabled_links' variable to the variables array,
-      // to be used in templates.
-      $variables['has_enabled_links'] = $has_enabled_links;
       // Add the 'has_top_links' variable to the variables array,
       // to be used in templates.
       // If there are enabled links, set the variable to 'has-top-links',
@@ -184,7 +207,7 @@ function uids_base_preprocess_html(&$variables) {
 
   $sticky_class = 'header-not-sticky';
   // Only set to sticky if it is set and nav_style is 'toggle'.
-  if (theme_get_setting('header.nav_style') === 'toggle' && theme_get_setting('header.sticky')) {
+  if (uids_base_theme_get_setting('header.nav_style') === 'toggle' && uids_base_theme_get_setting('header.sticky')) {
     $sticky_class = 'header-sticky';
   }
 
@@ -192,26 +215,31 @@ function uids_base_preprocess_html(&$variables) {
 
   $toppage = 'no-top-scroll';
   // Used for page by page basis display of scroll to top button.
-  if (theme_get_setting('header.toppage')) {
+  if (uids_base_theme_get_setting('header.toppage')) {
     $toppage = 'top-scroll';
   }
   $variables['attributes']['class'][] = $toppage;
 
   // Get header type for setting sticky padding for tertiary header.
-  $variables['header_type'] = theme_get_setting('header.type');
+  $variables['header_type'] = uids_base_theme_get_setting('header.type');
+
+  // Match the 'inline' header used when the site name is hidden.
+  if (($variables['show_site_name'] ?? TRUE) === FALSE) {
+    $variables['header_type'] = 'inline';
+  }
 
   // Get header branding type.
-  $variables['header_branding'] = theme_get_setting('header.branding_options');
+  $variables['header_branding'] = uids_base_theme_get_setting('header.branding_options');
 
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
-  $style_selector = theme_get_setting('style.style_selector');
+  $style_selector = uids_base_theme_get_setting('style.style_selector');
   if ($style_selector !== NULL && $style_selector !== 'brand') {
     $variables['#attached']['library'][] = 'uids_base/theme-overrides';
   }
 
-  if (theme_get_setting('style.style_selector') === 'gray') {
+  if (uids_base_theme_get_setting('style.style_selector') === 'gray') {
     $variables['attributes']['class'][] = 'off-brand';
     $css = ':root {--brand-primary: #d7d7d7!important;}';
     $variables['#attached']['html_head'][] = [
@@ -229,7 +257,7 @@ function uids_base_preprocess_html(&$variables) {
   }
 
   // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
-  if (theme_get_setting('fonts.font-family') === 'serif') {
+  if (uids_base_theme_get_setting('fonts.font-family') === 'serif') {
     $variables['attributes']['class'][] = 'text--serif';
     $variables['#attached']['library'][] = 'uids_base/global-serif';
   }
@@ -269,21 +297,31 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_slogan'] = $config->get('slogan');
 
   // These values will be populated automatically if uiowa_core is enabled.
-  $variables['site_has_parent'] = $config->get('has_parent');
+  // Respect a module that has already hidden the parent site.
+  $variables['site_has_parent'] = ($variables['site_has_parent'] ?? NULL) !== FALSE && $config->get('has_parent');
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
+
+  // Render primary_menu blocks inline so toggle-nav.html.twig can test the
+  // region for content.
+  // @see https://www.drupal.org/project/drupal/issues/3533588
+  if (!empty($variables['page']['primary_menu'])) {
+    foreach (Element::children($variables['page']['primary_menu']) as $key) {
+      $variables['page']['primary_menu'][$key]['#create_placeholder'] = FALSE;
+    }
+  }
 
   $variables['uiowa_logo'] = TRUE;
   $variables['is_off_brand'] = FALSE;
 
-  $style_selector = theme_get_setting('style.style_selector');
+  $style_selector = uids_base_theme_get_setting('style.style_selector');
   if (!empty($style_selector) && $style_selector !== 'brand') {
     $variables['uiowa_logo'] = FALSE;
     $variables['is_off_brand'] = TRUE;
   }
 
-  if (!theme_get_setting('logo.use_default')) {
-    $logo_path = theme_get_setting('logo.path');
+  if (!uids_base_theme_get_setting('logo.use_default')) {
+    $logo_path = uids_base_theme_get_setting('logo.path');
     if (!empty($logo_path)) {
       $file_system = \Drupal::service('file_system');
       $logo_uri = $file_system->realpath($logo_path);
@@ -300,12 +338,12 @@ function uids_base_preprocess_page(&$variables) {
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $variables['uiowa_logo_path'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
-  $variables['header_type'] = theme_get_setting('header.type');
-  $variables['header_nav'] = theme_get_setting('header.nav_style');
-  $variables['header_sticky'] = theme_get_setting('header.sticky');
-  $variables['header_toppage'] = theme_get_setting('header.toppage');
-  $variables['header_branding'] = theme_get_setting('header.branding_options');
-  $variables['footer_logo'] = theme_get_setting('header.footer_logo');
+  $variables['header_type'] = uids_base_theme_get_setting('header.type');
+  $variables['header_nav'] = uids_base_theme_get_setting('header.nav_style');
+  $variables['header_sticky'] = uids_base_theme_get_setting('header.sticky');
+  $variables['header_toppage'] = uids_base_theme_get_setting('header.toppage');
+  $variables['header_branding'] = uids_base_theme_get_setting('header.branding_options');
+  $variables['footer_logo'] = uids_base_theme_get_setting('header.footer_logo');
   $variables['header_classes'] = [];
   $name_length = strlen($variables['site_name']);
 
@@ -327,6 +365,12 @@ function uids_base_preprocess_page(&$variables) {
   // characters, we force the site to use the 'below' header option.
   if ($variables['site_has_parent'] || $name_length > 43) {
     $variables['header_type'] = 'below';
+  }
+
+  // A hidden site name would leave the 'below' header's second bar empty, so
+  // use the 'inline' header option instead.
+  if (($variables['show_site_name'] ?? TRUE) === FALSE) {
+    $variables['header_type'] = 'inline';
   }
 
   $variables['uiowa_url'] = 'https://uiowa.edu';
@@ -365,7 +409,7 @@ function uids_base_preprocess_page(&$variables) {
   }
 
   // Link to the SSO route if configured to display the footer login link.
-  if (theme_get_setting('footer.login_link') ?? TRUE) {
+  if (uids_base_theme_get_setting('footer.login_link') ?? TRUE) {
     $route = 'samlauth.saml_controller_login';
     $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
 
@@ -887,7 +931,7 @@ function uids_base_preprocess_layout__twocol__card_sidebar(&$variables) {
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
 function uids_base_preprocess_block(&$variables) {
-  $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
+  $variables['uids_base_container_settings'] = uids_base_theme_get_setting('layout.container');
 
   if (in_array($variables['base_plugin_id'], [
     'system_menu_block',
@@ -1177,7 +1221,7 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
 function uids_base_preprocess_menu(&$variables) {
   switch ($variables['menu_name']) {
     case 'top-links':
-      $variables['limit'] = theme_get_setting('header.top_links_limit');
+      $variables['limit'] = uids_base_theme_get_setting('header.top_links_limit');
 
       // Remove nested children from menu items.
       if (!empty($variables['items'])) {
@@ -1485,6 +1529,11 @@ function uids_base_theme_suggestions_page_title_alter(array &$suggestions, array
  * Implements hook_photoswipe_js_options_alter().
  */
 function uids_base_photoswipe_js_options_alter(array &$settings) {
-  // Disable's photoswipe's share links (twitter, fb, pintrest).
+  // Disable photoswipe's share links (twitter, fb, pinterest).
   $settings['shareEl'] = FALSE;
+  // Cross-fade the lightbox open/close instead of zooming from the thumbnail.
+  // Gallery thumbnails are focal-point square crops while the lightbox opens
+  // the full image, so a zoom animation can't line up with the crop; a fade
+  // avoids the mismatch entirely.
+  $settings['showHideAnimationType'] = 'fade';
 }

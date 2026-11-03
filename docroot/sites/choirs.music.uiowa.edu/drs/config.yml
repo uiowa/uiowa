@@ -1,0 +1,18 @@
+project:
+  machine_name: musicchoirs
+  human_name: choirs.music.uiowa.edu
+  local:
+    hostname: musicchoirs.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: musicchoirs.prod
+drupal:
+  db:
+    database: choirs_music_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://musicchoirs.prod.drupal.uiowa.edu'
+  requester: dpuderba
+  site-name: choirs.music.uiowa.edu
