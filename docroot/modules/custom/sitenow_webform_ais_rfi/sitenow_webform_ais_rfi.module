@@ -19,10 +19,11 @@ function sitenow_webform_ais_rfi_webform_options_ais_rfi_maui_sessions_alter(arr
   $years = 4;
   foreach ($maui->getSessionsBounded(0, 4 * $years) as $session) {
     // Per request, remove "Winter" sessions.
-    if (stripos($session->shortDescription, 'Winter') !== FALSE) {
+    $short_description = $session->shortDescription ?? '';
+    if (stripos($short_description, 'Winter') !== FALSE) {
       continue;
     }
-    $options[$session->legacyCode] = Html::escape($session->shortDescription);
+    $options[$session->legacyCode] = Html::escape($short_description);
   }
 
 }
