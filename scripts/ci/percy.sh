@@ -61,6 +61,25 @@ if [ ! -f "node_modules/.bin/percy" ]; then
   exit 1
 fi
 
+# Pre-generate image style derivatives. Drupal builds each one on first
+# request, and the single-threaded dev server can't keep up when asset
+# discovery requests them all at once, so images go uncaptured.
+echo "Warming image style derivatives..."
+for path in $(grep -E '^\s+url:' snapshots.yml | awk '{print $2}'); do
+  curl -s "$SIMPLETEST_BASE_URL$path" \
+    | grep -oE '(src|srcset)="[^"]*"' \
+    | sed -E 's/^[a-z]+="//; s/"$//; s/&amp;/\&/g' \
+    | tr ', ' '\n\n' \
+    | grep '/styles/' \
+    | sort -u \
+    | while read -r url; do
+        case "$url" in
+          /*) url="$SIMPLETEST_BASE_URL$url" ;;
+        esac
+        curl -s -o /dev/null "$url" || true
+      done || true  # no matches is fine; don't trip set -e/pipefail
+done
+
 # Percy's CLI treats per-snapshot errors (e.g. a selector that didn't match)
 # as non-fatal and still exits 0 so one broken page doesn't kill the whole
 # suite. That means a build where every snapshot failed and no build was
@@ -72,6 +91,12 @@ trap 'rm -f "$PERCY_LOG"' EXIT
 if npx percy snapshot --base-url "$SIMPLETEST_BASE_URL" snapshots.yml 2>&1 | tee "$PERCY_LOG"; then
   if grep -qi "Build not created" "$PERCY_LOG"; then
     echo -e "\n${RED}✗ Percy snapshot failed: no build was created (all snapshots errored)${NC}"
+    exit 1
+  fi
+  # Percy can also exit 0 without ever starting (e.g. the Chromium download
+  # dropping mid-transfer), so require the finalized build line too.
+  if ! grep -q "Finalized build" "$PERCY_LOG"; then
+    echo -e "\n${RED}✗ Percy snapshot failed: no build was finalized${NC}"
     exit 1
   fi
   echo -e "\n${GREEN}✓ Percy snapshot complete${NC}"
