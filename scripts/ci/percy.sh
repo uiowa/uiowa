@@ -74,6 +74,12 @@ if npx percy snapshot --base-url "$SIMPLETEST_BASE_URL" snapshots.yml 2>&1 | tee
     echo -e "\n${RED}✗ Percy snapshot failed: no build was created (all snapshots errored)${NC}"
     exit 1
   fi
+  # Percy can also exit 0 without ever starting (e.g. the Chromium download
+  # dropping mid-transfer), so require the finalized build line too.
+  if ! grep -q "Finalized build" "$PERCY_LOG"; then
+    echo -e "\n${RED}✗ Percy snapshot failed: no build was finalized${NC}"
+    exit 1
+  fi
   echo -e "\n${GREEN}✓ Percy snapshot complete${NC}"
   exit 0
 else
