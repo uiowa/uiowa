@@ -1,8 +1,5 @@
 - name: Front page with events block hidden
   url: /
-  # Load lazy images up front; at mobile width the lower ones are too far
-  # below the fold for asset discovery to request them.
-  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';document.querySelectorAll('img[loading=lazy]').forEach(img => img.loading = 'eager');"
   waitForTimeout: 1000
 - name: About page with search input visible
   url: /about
