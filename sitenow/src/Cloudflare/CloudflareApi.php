@@ -99,6 +99,7 @@ class CloudflareApi {
    * @return array
    *   Each host's certificate pack status, e.g. "active" or
    *   "pending_validation", or NULL when no pack covers it, keyed by host.
+   *   "active" when any pack covering the host is active.
    */
   public function certificateStatuses(string $zoneId, array $hosts): array {
     $packs = $this->getAll("zones/{$zoneId}/ssl/certificate_packs", ['status' => 'all']);
@@ -111,7 +112,9 @@ class CloudflareApi {
         $covered = $pack['hosts'] ?? [];
         if (in_array($host, $covered, TRUE) || in_array($wildcard, $covered, TRUE)) {
           $statuses[$host] = $pack['status'];
-          break;
+          if ($pack['status'] === 'active') {
+            break;
+          }
         }
       }
     }
