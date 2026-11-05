@@ -1,0 +1,10 @@
+version: 2
+discovery:
+  # Always capture Google Fonts. Otherwise capture depends on Percy's per-run
+  # domain auto-validation, and builds that miss it render with a fallback font.
+  allowed-hostnames:
+    - fonts.googleapis.com
+    - fonts.gstatic.com
+  # Capture every srcset candidate. Percy's renderer can pick a different
+  # candidate than the discovery browser did, and 404s on anything uncaptured.
+  capture-srcset: true
