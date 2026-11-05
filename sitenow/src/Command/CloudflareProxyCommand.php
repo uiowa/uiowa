@@ -230,6 +230,8 @@ class CloudflareProxyCommand extends Command {
     }
 
     $apps = $this->hostApps();
+    $leadHosts = ["www.{$name}", $name];
+    $leads = [];
     $todo = [];
     $proxied = 0;
     $reclaim = [];
@@ -249,6 +251,9 @@ class CloudflareProxyCommand extends Command {
       }
       else {
         $todo[$host] = $records[0];
+      }
+      if (count($records) === 1 && isset($apps[$host]) && in_array($host, $leadHosts, TRUE)) {
+        $leads[$host] = $records[0];
       }
     }
 
@@ -276,13 +281,29 @@ class CloudflareProxyCommand extends Command {
 
     $plan = new Plan($title, $input, $validation, $summary);
 
+    if (!$todo) {
+      return $plan;
+    }
+
     // The www host and the zone's own name each get a step, so a failure stops
-    // the run before the batch.
-    $first = array_intersect_key($todo, ["www.{$name}" => TRUE, $name => TRUE]);
+    // the run before the batch. One already proxied is checked without being
+    // proxied again.
+    $first = [];
+    foreach ($leadHosts as $host) {
+      if (isset($leads[$host]) && ($leads[$host]['proxied'] || isset($todo[$host]))) {
+        $first[$host] = $leads[$host];
+      }
+    }
     foreach ($first as $host => $record) {
-      $plan->addStep("Proxy {$host} and check it", function (SymfonyStyle $io) use ($api, $zone, $record, $host): void {
-        $api->proxy($zone['id'], $record['id']);
-        $io->writeln("Proxy enabled for {$host}");
+      $label = $record['proxied'] ? "Check {$host}" : "Proxy {$host} and check it";
+      $plan->addStep($label, function (SymfonyStyle $io) use ($api, $zone, $record, $host): void {
+        if (!$record['proxied']) {
+          $api->proxy($zone['id'], $record['id']);
+          $io->writeln("Proxy enabled for {$host}");
+        }
+        else {
+          $io->writeln("Checking {$host}");
+        }
         $this->awaitCertificate($io, $api, $zone['id'], $host);
         $this->checkCloudflareRouting($zone, $host);
         $io->writeln('DNS through Cloudflare: Active');
