@@ -1,0 +1,7 @@
+version: 2
+discovery:
+  # Always capture Google Fonts. Otherwise capture depends on Percy's per-run
+  # domain auto-validation, and builds that miss it render with a fallback font.
+  allowed-hostnames:
+    - fonts.googleapis.com
+    - fonts.gstatic.com
