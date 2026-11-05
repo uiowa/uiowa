@@ -61,6 +61,25 @@ if [ ! -f "node_modules/.bin/percy" ]; then
   exit 1
 fi
 
+# Pre-generate image style derivatives. Drupal builds each one on first
+# request, and the single-threaded dev server can't keep up when asset
+# discovery requests them all at once, so images go uncaptured.
+echo "Warming image style derivatives..."
+for path in $(grep -E '^\s+url:' snapshots.yml | awk '{print $2}'); do
+  curl -s "$SIMPLETEST_BASE_URL$path" \
+    | grep -oE '(src|srcset)="[^"]*"' \
+    | sed -E 's/^[a-z]+="//; s/"$//; s/&amp;/\&/g' \
+    | tr ', ' '\n\n' \
+    | grep '/styles/' \
+    | sort -u \
+    | while read -r url; do
+        case "$url" in
+          /*) url="$SIMPLETEST_BASE_URL$url" ;;
+        esac
+        curl -s -o /dev/null "$url" || true
+      done || true  # no matches is fine; don't trip set -e/pipefail
+done
+
 # Percy's CLI treats per-snapshot errors (e.g. a selector that didn't match)
 # as non-fatal and still exits 0 so one broken page doesn't kill the whole
 # suite. That means a build where every snapshot failed and no build was
