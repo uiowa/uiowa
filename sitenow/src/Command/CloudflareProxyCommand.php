@@ -183,7 +183,12 @@ class CloudflareProxyCommand extends Command {
         $io->writeln("Proxy enabled for {$host}");
       });
     }
-    $plan->addStep('Wait for the SSL certificate to become active', fn(SymfonyStyle $io) => $this->awaitCertificate($io, $api, $zone['id'], $host));
+    $plan->addStep('Wait for the SSL certificate to become active', function (SymfonyStyle $io) use ($api, $zone, $record, $host): void {
+      if ($record['proxied']) {
+        $io->writeln("Proxy already enabled for {$host}");
+      }
+      $this->awaitCertificate($io, $api, $zone['id'], $host);
+    });
     $plan->addStep('Check DNS routes through Cloudflare', function (SymfonyStyle $io) use ($zone, $host): void {
       $this->checkCloudflareRouting($zone, $host);
       $io->writeln('DNS through Cloudflare: Active');
@@ -302,7 +307,7 @@ class CloudflareProxyCommand extends Command {
           $io->writeln("Proxy enabled for {$host}");
         }
         else {
-          $io->writeln("Checking {$host}");
+          $io->writeln("Proxy already enabled for {$host}");
         }
         $this->awaitCertificate($io, $api, $zone['id'], $host);
         $this->checkCloudflareRouting($zone, $host);
