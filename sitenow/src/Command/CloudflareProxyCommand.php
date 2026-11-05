@@ -111,7 +111,7 @@ class CloudflareProxyCommand extends Command {
 
     $plan = $host
       ? $this->decide(strtolower($host))
-      : $this->decideZone(strtolower($zone), $limit === NULL ? NULL : (int) $limit);
+      : $this->decideZone($io, strtolower($zone), $limit === NULL ? NULL : (int) $limit);
 
     if (!$plan->failed() && !$plan->steps()) {
       $this->renderPlan($io, $plan->title, $plan->summary, $plan->validation);
@@ -208,7 +208,7 @@ class CloudflareProxyCommand extends Command {
    * @return \SiteNow\Plan\Plan
    *   The plan.
    */
-  private function decideZone(string $name, ?int $limit): Plan {
+  private function decideZone(SymfonyStyle $io, string $name, ?int $limit): Plan {
     $title = "cloudflare:proxy --zone={$name}";
     $input = ['zone' => $name, 'limit' => $limit];
     $token = $this->credentials()->cloudflareToken();
@@ -233,6 +233,8 @@ class CloudflareProxyCommand extends Command {
     foreach ($this->addressRecords($api->records($zone['id'])) as $record) {
       $byHost[$record['name']][] = $record;
     }
+    $io->writeln(sprintf('Scanning %d hosts in %s ...', count($byHost), $name));
+    $known = [$name => $byHost];
 
     $apps = $this->hostApps();
     $leadHosts = ["www.{$name}", $name];
@@ -242,7 +244,7 @@ class CloudflareProxyCommand extends Command {
     $reclaim = [];
     $skipped = [];
     foreach ($byHost as $host => $records) {
-      if (in_array($host, self::ACQUIA_TARGETS, TRUE) || !array_filter($records, fn($r) => $this->reachesAcquia($api, $r['content']))) {
+      if (in_array($host, self::ACQUIA_TARGETS, TRUE) || !array_filter($records, fn($r) => $this->reachesAcquia($api, $r['content'], $known))) {
         continue;
       }
       if (count($records) > 1) {
@@ -461,18 +463,20 @@ class CloudflareProxyCommand extends Command {
    *   The Cloudflare API.
    * @param string $content
    *   A record's content: a hostname or an IP.
+   * @param array $known
+   *   Address records already fetched, keyed by zone name, then host.
    * @param int $depth
    *   Records followed so far, to stop on a loop.
    *
    * @return bool
    *   TRUE when the chain ends at Acquia.
    */
-  private function reachesAcquia(CloudflareApi $api, string $content, int $depth = 0): bool {
+  private function reachesAcquia(CloudflareApi $api, string $content, array $known = [], int $depth = 0): bool {
     $content = rtrim(strtolower($content), '.');
     if (in_array($content, self::ACQUIA_TARGETS, TRUE)) {
       return TRUE;
     }
-    if ($depth > 5) {
+    if ($depth > 5 || filter_var($content, FILTER_VALIDATE_IP)) {
       return FALSE;
     }
 
@@ -482,8 +486,11 @@ class CloudflareProxyCommand extends Command {
       return (bool) array_intersect($answers, self::ACQUIA_TARGETS);
     }
 
-    foreach ($this->addressRecords($api->records($zone['id'], $content)) as $record) {
-      if ($this->reachesAcquia($api, $record['content'], $depth + 1)) {
+    $records = isset($known[$zone['name']])
+      ? $known[$zone['name']][$content] ?? []
+      : $this->addressRecords($api->records($zone['id'], $content));
+    foreach ($records as $record) {
+      if ($this->reachesAcquia($api, $record['content'], $known, $depth + 1)) {
         return TRUE;
       }
     }

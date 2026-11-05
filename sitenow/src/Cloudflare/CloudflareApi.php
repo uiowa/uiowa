@@ -73,7 +73,7 @@ class CloudflareApi {
    *   The matching records, of any type.
    */
   public function records(string $zoneId, ?string $name = NULL): array {
-    return $this->getAll("zones/{$zoneId}/dns_records", $name ? ['name' => $name] : []);
+    return $this->getAll("zones/{$zoneId}/dns_records", ($name ? ['name' => $name] : []) + ['per_page' => 5000]);
   }
 
   /**
