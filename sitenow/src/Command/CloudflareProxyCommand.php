@@ -237,7 +237,7 @@ class CloudflareProxyCommand extends Command {
     $reclaim = [];
     $skipped = [];
     foreach ($byHost as $host => $records) {
-      if (!array_filter($records, fn($r) => $this->reachesAcquia($api, $r['content']))) {
+      if (in_array($host, self::ACQUIA_TARGETS, TRUE) || !array_filter($records, fn($r) => $this->reachesAcquia($api, $r['content']))) {
         continue;
       }
       if (count($records) > 1) {
