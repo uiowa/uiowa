@@ -106,11 +106,9 @@ class CloudflareApi {
     $statuses = [];
 
     foreach ($hosts as $host) {
-      $wildcard = '*.' . substr($host, strpos($host, '.') + 1);
       $statuses[$host] = NULL;
       foreach ($packs as $pack) {
-        $covered = $pack['hosts'] ?? [];
-        if (in_array($host, $covered, TRUE) || in_array($wildcard, $covered, TRUE)) {
+        if (in_array($host, $pack['hosts'] ?? [], TRUE)) {
           $statuses[$host] = $pack['status'];
           if ($pack['status'] === 'active') {
             break;
