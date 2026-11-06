@@ -8097,3 +8097,9 @@ $sites['labartemyev.uiowa.ddev.site'] = 'artemyev.lab.uiowa.edu';
 $sites['labartemyev.dev.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
 $sites['labartemyev.stage.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
 $sites['labartemyev.prod.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
+
+// Directory aliases for insight.program.uiowa.edu.
+$sites['programinsight.uiowa.ddev.site'] = 'insight.program.uiowa.edu';
+$sites['programinsight.dev.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
+$sites['programinsight.stage.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
+$sites['programinsight.prod.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
