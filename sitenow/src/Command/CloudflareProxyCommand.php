@@ -200,6 +200,8 @@ class CloudflareProxyCommand extends Command {
   /**
    * Produce the plan for every unproxied Acquia record in a zone.
    *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The console output, for the scan progress line.
    * @param string $name
    *   The zone name, e.g. "admissions.uiowa.edu".
    * @param int|null $limit
