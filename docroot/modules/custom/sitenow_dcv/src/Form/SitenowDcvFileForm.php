@@ -134,16 +134,8 @@ class SitenowDcvFileForm extends FormBase {
 
     /** @var \Drupal\file\FileInterface $file */
     $file = file_save_upload('file', [
-      'file_validate_is_file' => [],
-      'file_validate_extensions' => [
-        'txt',
-      ],
-    ],
-    $directory,
-    FALSE,
-    0,
-      FileExists::Replace
-    );
+      'FileExtension' => ['extensions' => 'txt'],
+    ], $directory, 0, FileExists::Replace);
 
     if ($file) {
       $form_state->set('sitenow_dcv_filename', $file->getFilename());
