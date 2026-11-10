@@ -14,11 +14,11 @@ source "$(dirname "$0")/colors.sh"
 echo -e "${GREEN}=== Running PHPUnit Tests ===${NC}\n"
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 # Export CI=true to ensure Drupal loads ci.settings.php instead of local settings
 # This allows local `ddev ci` testing to run the CI configuration
-if [ "${CI:-false}" = "false" ] && [ "${TRAVIS:-false}" = "false" ] && [ "${GITHUB_ACTIONS:-false}" = "false" ]; then
+if [ "${CI:-false}" = "false" ] && [ "${GITHUB_ACTIONS:-false}" = "false" ]; then
   echo "Setting CI=true for local testing"
   export CI="true"
 fi
@@ -42,7 +42,7 @@ if [ -z "${SIMPLETEST_DB:-}" ]; then
 
   # Set defaults based on environment
   if [ "${CI:-false}" = "true" ]; then
-    # CI environment (Travis, GitHub Actions, etc.)
+    # CI environment (GitHub Actions, etc.)
     export SIMPLETEST_DB="mysql://drupal:drupal@localhost/drupal_test"
     export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://localhost:8080}"
   else

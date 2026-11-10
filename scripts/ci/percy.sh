@@ -16,7 +16,7 @@ source "$(dirname "$0")/colors.sh"
 echo -e "${GREEN}=== Percy Visual Regression ===${NC}\n"
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 # PERCY_TOKEN authenticates with the Percy project. In GitHub Actions, a
 # missing token is a misconfiguration and must fail the build rather than
@@ -43,7 +43,7 @@ fi
 
 # Determine the base URL to snapshot against
 if [ -z "${SIMPLETEST_BASE_URL:-}" ]; then
-  if [ "${GITHUB_ACTIONS:-false}" = "true" ] || [ "${TRAVIS:-false}" = "true" ] || [ "${CI:-false}" = "true" ]; then
+  if [ "${GITHUB_ACTIONS:-false}" = "true" ] || [ "${CI:-false}" = "true" ]; then
     # 127.0.0.1, not localhost: Percy's asset-discovery direct-fetch fallback
     # can resolve "localhost" to the IPv6 loopback, which the dev server
     # (bound to 0.0.0.0, IPv4 only) doesn't listen on.

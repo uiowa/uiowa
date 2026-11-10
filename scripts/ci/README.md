@@ -1,6 +1,6 @@
 # CI Scripts
 
-Scripts for running continuous integration checks both locally (DDEV) and in Travis CI.
+Scripts for running continuous integration checks both locally (DDEV) and in GitHub Actions.
 
 ## Quick Start
 
@@ -26,7 +26,7 @@ ddev ci
 - **Functional tests**: ⚠️ Slow (~2-5s), need full Drupal install + web server
 - **JavaScript tests**: ⚠️ Very slow (~5-10s), need ChromeDriver
 
-**Best practice:** Run unit/kernel tests locally, let Travis CI run functional tests.
+**Best practice:** Run unit/kernel tests locally, let GitHub Actions run functional tests.
 
 See `FUNCTIONAL_TESTS.md` for details on running functional tests when needed.
 
@@ -126,16 +126,17 @@ SIMPLETEST_DB=mysql://db:db@db/drupal_test
 SIMPLETEST_BASE_URL=http://localhost:8080
 ```
 
-## Travis CI Integration
+## GitHub Actions Integration
 
-These same scripts run in Travis CI. The `.travis.yml` file calls:
+These same scripts run in GitHub Actions. The jobs in `.github/workflows/ci.yml` call:
 
-```yaml
-script:
-  - scripts/ci/setup.sh
-  - scripts/ci/lint.sh
-  - scripts/ci/static-analysis.sh
-  - scripts/ci/test.sh
+```
+scripts/ci/lint.sh
+scripts/ci/static-analysis.sh
+scripts/ci/security.sh
+scripts/ci/setup.sh
+scripts/ci/test.sh
+scripts/ci/percy.sh
 ```
 
 This ensures **local checks match CI exactly**.
@@ -242,8 +243,8 @@ ddev exec php -i | grep memory_limit
 ## Benefits of This Approach
 
 ✅ **Catch issues locally** before pushing to CI
-✅ **Faster feedback** than waiting for Travis
-✅ **Same environment** - DDEV and Travis both use PHP 8.3, MySQL 8.0
+✅ **Faster feedback** than waiting for GitHub Actions
+✅ **Same environment** - DDEV and GitHub Actions both use PHP 8.3, MySQL 8.0
 ✅ **Easy to use** - single `ddev ci` command
 ✅ **Modular** - run individual checks as needed
 ✅ **No deprecated tooling** - no dependency on legacy build tools
@@ -253,4 +254,4 @@ ddev exec php -i | grep memory_limit
 - Issue: https://github.com/uiowa/uiowa/issues/9852
 - PHPUnit config: `phpunit.xml.dist`
 - PHPCS config: `phpcs.xml`
-- Travis config: `.travis.yml`
+- GitHub Actions workflow: `.github/workflows/ci.yml`
