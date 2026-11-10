@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Extension\ThemeSettingsProvider;
@@ -1176,6 +1177,39 @@ function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables) 
 }
 
 /**
+ * Resolve the anchor ID for a collection item.
+ *
+ * A Unique ID value is always wins. Otherwise, derive the anchor from the
+ * collection item headline, which is the documented default. If the headline
+ * cleans to nothing, an ID is generated.
+ *
+ * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+ *   The collection item paragraph.
+ *
+ * @return string
+ *   The anchor ID.
+ */
+function _uids_base_collection_item_anchor_id(ParagraphInterface $paragraph) {
+  if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
+    return $paragraph->get('field_unique_id')->value;
+  }
+
+  $headline = $paragraph->hasField('field_collection_headline') ? $paragraph->get('field_collection_headline')->value : '';
+  $slug = strtolower(Html::cleanCssIdentifier((string) $headline));
+
+  // Cap the length and drop any hyphen left dangling by truncation.
+  $slug = rtrim(Unicode::truncate($slug, 100), '-');
+
+  // A headline of only special characters cleans to an empty string.
+  // Fallback to a generated id.
+  if ($slug === '') {
+    $slug = Html::getUniqueId('accordion-item');
+  }
+
+  return $slug;
+}
+
+/**
  * Implements hook_preprocess_HOOK() for block_content__uiowa_collection__accordion.html.twig.
  */
 function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables) {
@@ -1197,17 +1231,13 @@ function uids_base_preprocess_block__inline_block__uiowa_collection(&$variables)
   $variables['accordion_container_classes'] = implode(' ', $accordion_container_classes);
 
   // Assemble the aria-owns attribute for the accordion.
-  $accordion_item_id = 'accordion-item-' . $block->id();
   $items = Element::children($variables['elements']['content']['field_uiowa_collection_items']);
   $variables['aria_owns'] = [];
   foreach ($items as $delta) {
-    $unique_id = $accordion_item_id . '-' . $delta;
-
-    // Set the unique ID to a stored value if it exists.
     $paragraph = $variables['elements']['content']['field_uiowa_collection_items'][$delta]['#paragraph'];
-    if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
-      $unique_id = $paragraph->get('field_unique_id')->value;
-    }
+    $unique_id = _uids_base_collection_item_anchor_id($paragraph);
+    $variables['content']['field_uiowa_collection_items'][$delta]['#accordion_item_id'] = $unique_id;
+
     $variables['aria_owns'][] = $unique_id;
   }
   // Convert this to a comma-separated string as that is how it will be printed
@@ -1349,22 +1379,12 @@ function uids_base_preprocess_paragraph(&$variables) {
  * Implements hook_preprocess_paragraph().
  */
 function uids_base_preprocess_paragraph__uiowa_collection_item(&$variables) {
-  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
-
   /** @var Drupal\Core\Routing\AdminContext $admin_context */
   $admin_context = \Drupal::service('router.admin_context');
 
-  if (!$admin_context->isAdminRoute()) {
-
-    $block = $paragraph->getParentEntity();
-    if ($block instanceof ContentEntityInterface) {
-      $unique_id = 'accordion-item-' . $block->id() . '-' . $variables['delta'];
-      if ($paragraph->hasField('field_unique_id') && !$paragraph->get('field_unique_id')->isEmpty()) {
-        $unique_id = $paragraph->get('field_unique_id')->value;
-      }
-      $variables['accordion_item_id'] = $unique_id;
-    }
+  // Keep the accordion item ID in sync.
+  if (!$admin_context->isAdminRoute() && !empty($variables['elements']['#accordion_item_id'])) {
+    $variables['accordion_item_id'] = $variables['elements']['#accordion_item_id'];
   }
 }
 
