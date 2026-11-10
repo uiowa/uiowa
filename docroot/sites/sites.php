@@ -8103,3 +8103,9 @@ $sites['programinsight.uiowa.ddev.site'] = 'insight.program.uiowa.edu';
 $sites['programinsight.dev.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
 $sites['programinsight.stage.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
 $sites['programinsight.prod.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
+
+// Directory aliases for healthscience-exp.program.uiowa.edu.
+$sites['programhealthscience-exp.uiowa.ddev.site'] = 'healthscience-exp.program.uiowa.edu';
+$sites['programhealthscience-exp.dev.drupal.uiowa.edu'] = 'healthscience-exp.program.uiowa.edu';
+$sites['programhealthscience-exp.stage.drupal.uiowa.edu'] = 'healthscience-exp.program.uiowa.edu';
+$sites['programhealthscience-exp.prod.drupal.uiowa.edu'] = 'healthscience-exp.program.uiowa.edu';
