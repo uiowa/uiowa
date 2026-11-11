@@ -139,7 +139,7 @@ scripts/ci/test.sh
 scripts/ci/percy.sh
 ```
 
-This ensures **local checks match CI exactly**.
+Local checks use **the same scripts as the CI**. `ddev ci` does not run Percy, and the frontend build and deploy jobs run only in GitHub Actions.
 
 ## File Structure
 

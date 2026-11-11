@@ -2,7 +2,7 @@
 
 ###
 # Run All CI Checks
-# Simulates the complete GitHub Actions CI pipeline locally
+# Runs the GitHub Actions PHP checks locally (no frontend build, Percy, or deploy)
 ###
 
 set -e  # Exit on any error

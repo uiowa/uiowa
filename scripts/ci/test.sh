@@ -42,7 +42,7 @@ if [ -z "${SIMPLETEST_DB:-}" ]; then
 
   # Set defaults based on environment
   if [ "${CI:-false}" = "true" ]; then
-    # CI environment (GitHub Actions, etc.)
+    # Generic CI fallback (GitHub Actions sets SIMPLETEST_DB before this point)
     export SIMPLETEST_DB="mysql://drupal:drupal@localhost/drupal_test"
     export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://localhost:8080}"
   else

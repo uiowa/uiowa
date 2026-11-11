@@ -125,7 +125,7 @@ ddev phpunit --filter=Functional
 ddev ci test --filter='Unit|Kernel'
 
 # Let GitHub Actions handle functional tests
-git push  # GitHub Actions runs all tests
+git push  # Runs all tests once a pull request to main is open
 ```
 
 ## Test Execution Time Comparison
