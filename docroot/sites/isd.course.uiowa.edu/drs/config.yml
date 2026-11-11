@@ -1,0 +1,16 @@
+project:
+  machine_name: courseisd
+  human_name: isd.course.uiowa.edu
+  local:
+    hostname: courseisd.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: courseisd.prod
+drupal:
+  db:
+    database: isd_course_uiowa_edu
+uiowa:
+  requester: laverman
+  site-name: 'Information Systems Design'
