@@ -9,6 +9,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
@@ -26,6 +27,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeAccessRebuild;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\uiowa_core\Entity\Card;
 use Drupal\uiowa_core\Entity\Event;
 
@@ -5000,4 +5002,80 @@ function sitenow_update_10044() {
   \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
 
   return t('Removed orphaned field definitions: @fields.', ['@fields' => implode(', ', $removed)]);
+}
+
+/**
+ * One-time preservation of existing IDs for accordion collection items.
+ *
+ * The automatic anchor ID for a collection item has
+ * "accordion-item-{block_id}-{delta}". Freeze that value into the
+ * field_unique_id field so existing anchors keep resolving once new items
+ * default to the collection item headline method.
+ */
+function sitenow_update_10045() {
+  $database = \Drupal::database();
+  $block_storage = \Drupal::entityTypeManager()->getStorage('block_content');
+  $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  $count = 0;
+  $tags = [];
+
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_collection', function (&$component, $block) use ($database, $block_storage, $paragraph_storage, &$count, &$tags) {
+    if (!$block instanceof BlockContentInterface || !$block->id()) {
+      return;
+    }
+
+    // Resolve deltas against the block's default revision, matching how the
+    // current anchor IDs are generated at render time.
+    $current = $block_storage->load($block->id());
+    if (!$current) {
+      return;
+    }
+    $deltas = [];
+    foreach ($current->get('field_uiowa_collection_items')->getValue() as $delta => $item) {
+      $deltas[$item['target_id']] = $delta;
+    }
+
+    foreach ($block->get('field_uiowa_collection_items')->getValue() as $item) {
+      if (empty($item['target_id']) || empty($item['target_revision_id'])) {
+        continue;
+      }
+
+      // Preserve ids for published only, respecting existing values.
+      $paragraph = $paragraph_storage->loadRevision($item['target_revision_id']);
+      if (!$paragraph instanceof ParagraphInterface || !$paragraph->get('field_unique_id')->isEmpty()) {
+        continue;
+      }
+
+      $delta = $deltas[$item['target_id']] ?? 0;
+      $unique_id = 'accordion-item-' . $block->id() . '-' . $delta;
+
+      // Freeze the current anchor ID onto the pinned revision's row.
+      $database->merge('paragraph_revision__field_unique_id')
+        ->keys([
+          'entity_id' => $item['target_id'],
+          'revision_id' => $item['target_revision_id'],
+          'deleted' => 0,
+          'delta' => 0,
+          'langcode' => 'en',
+        ])
+        ->fields([
+          'bundle' => 'uiowa_collection_item',
+          'field_unique_id_value' => $unique_id,
+        ])
+        ->execute();
+
+      $tags[] = 'paragraph:' . $item['target_id'];
+      $tags['block_content:' . $block->id()] = 'block_content:' . $block->id();
+      $count++;
+    }
+  });
+
+  // Invalidate cache so that direct db edits are re-rendered.
+  if ($tags) {
+    Cache::invalidateTags(array_values($tags));
+  }
+
+  \Drupal::logger('sitenow')->notice('Backfilled unique IDs for @count collection items.', ['@count' => $count]);
+
+  return t('Backfilled unique IDs for @count collection items.', ['@count' => $count]);
 }
