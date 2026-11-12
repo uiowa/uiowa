@@ -1799,8 +1799,9 @@ function uiowa_core_form_views_exposed_form_alter(&$form, FormStateInterface $fo
 
     switch ($view_id) {
       case 'content':
+      case 'moderated_content':
         $form['field_tags_target_id']['#size'] = "15";
-        $form['uid']['#size'] = "15";
+        $form['user']['#size'] = "15";
         $form['#attached']['library'][] = 'uiowa_core/claro-exposed-form';
         break;
 

@@ -208,23 +208,123 @@ display:
             format: custom
             format_custom_false: Unpublished
             format_custom_true: Published
+        name_1:
+          id: name_1
+          table: users_field_data
+          field: name
+          relationship: revision_uid
+          group_type: group
+          admin_label: ''
+          entity_type: user
+          entity_field: name
+          plugin_id: field
+          label: 'Last edited by'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: user_name
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         changed:
           id: changed
           table: node_field_data
           field: changed
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
           entity_field: changed
           plugin_id: field
           label: Updated
           exclude: false
           alter:
-            alter_text: false
+            alter_text: true
+            text: '{{ changed }}{% if name_1 %} by {{ name_1 }}{% endif %}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
           element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
           element_default_classes: true
           empty: ''
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          click_sort_column: value
           type: timestamp
           settings:
             date_format: short
@@ -239,6 +339,16 @@ display:
               past_format: '@interval ago'
               granularity: 2
               refresh: 60
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         operations:
           id: operations
           table: node
@@ -519,35 +629,33 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        uid:
-          id: uid
-          table: node_field_data
-          field: uid
+        combine:
+          id: combine
+          table: views
+          field: combine
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: uid
-          plugin_id: user_name
-          operator: in
-          value: {  }
+          plugin_id: combine
+          operator: contains
+          value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: uid_op
-            label: 'Authored by'
+            operator_id: combine_op
+            label: 'Author or editor'
             description: ''
             use_operator: false
-            operator: uid_op
+            operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: uid
+            identifier: user
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -560,6 +668,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          fields:
+            name: name
+            name_1: name_1
       filter_groups:
         operator: AND
         groups:
@@ -670,6 +781,17 @@ display:
           admin_label: author
           plugin_id: standard
           required: true
+        revision_uid:
+          id: revision_uid
+          table: node_revision
+          field: revision_uid
+          relationship: none
+          group_type: group
+          admin_label: 'revision user'
+          entity_type: node
+          entity_field: revision_uid
+          plugin_id: standard
+          required: false
       show_admin_links: false
       display_extenders: {  }
     cache_metadata:
