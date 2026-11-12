@@ -45,30 +45,23 @@ setup_database() {
   local root_pass=$3
   local app_user=$4
   local app_pass=$5
-  local app_host=$6
-  local env_name=$7
+  local env_name=$6
 
   echo "Setting up database for $env_name..."
 
   # Build MySQL command prefix
-  local MYSQL_CMD="mysql -h $db_host -u $root_user"
-  [ -n "$root_pass" ] && MYSQL_CMD="$MYSQL_CMD -p$root_pass"
+  local MYSQL_CMD="mysql -h $db_host -u $root_user -p$root_pass"
 
   # Drop and create test database
   $MYSQL_CMD -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
   $MYSQL_CMD -e "CREATE DATABASE drupal_test;"
 
-  # Create user and grant privileges if app user differs from root
-  if [ "$app_user" != "$root_user" ]; then
-    $MYSQL_CMD -e "CREATE USER IF NOT EXISTS '$app_user'@'$app_host' IDENTIFIED BY '$app_pass';"
-    $MYSQL_CMD -e "GRANT ALL PRIVILEGES ON *.* TO '$app_user'@'$app_host' WITH GRANT OPTION;"
-    $MYSQL_CMD -e "FLUSH PRIVILEGES;"
-    echo "✓ Database created: drupal_test"
-    echo "✓ User '$app_user' granted all privileges"
-  else
-    $MYSQL_CMD -e "FLUSH PRIVILEGES;"
-    echo "✓ Database created: drupal_test"
-  fi
+  # Create the app user and grant privileges
+  $MYSQL_CMD -e "CREATE USER IF NOT EXISTS '$app_user'@'%' IDENTIFIED BY '$app_pass';"
+  $MYSQL_CMD -e "GRANT ALL PRIVILEGES ON *.* TO '$app_user'@'%' WITH GRANT OPTION;"
+  $MYSQL_CMD -e "FLUSH PRIVILEGES;"
+  echo "✓ Database created: drupal_test"
+  echo "✓ User '$app_user' granted all privileges"
 }
 
 # Setup test database
@@ -76,11 +69,11 @@ echo -e "\n${YELLOW}Setting up test database...${NC}"
 
 if [ "$ENV" = "local" ]; then
   # DDEV: host=db, root password=root, app user=db
-  setup_database "db" "root" "root" "db" "db" "%" "DDEV"
+  setup_database "db" "root" "root" "db" "db" "DDEV"
   DB_URL="mysql://db:db@db/drupal_test"
 else
   # GitHub Actions: host=127.0.0.1, root password=root, app user=drupal
-  setup_database "127.0.0.1" "root" "root" "drupal" "drupal" "%" "GitHub Actions"
+  setup_database "127.0.0.1" "root" "root" "drupal" "drupal" "GitHub Actions"
   DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
 fi
 

@@ -18,7 +18,7 @@ cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 # Export CI=true to ensure Drupal loads ci.settings.php instead of local settings
 # This allows local `ddev ci` testing to run the CI configuration
-if [ "${CI:-false}" = "false" ] && [ "${GITHUB_ACTIONS:-false}" = "false" ]; then
+if [ "${CI:-false}" = "false" ]; then
   echo "Setting CI=true for local testing"
   export CI="true"
 fi
@@ -38,9 +38,16 @@ fi
 
 # Ensure database is configured
 if [ -z "${SIMPLETEST_DB:-}" ]; then
+
+  # The defaults below only resolve inside DDEV, so fail clearly in CI.
+  if [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
+    echo -e "${RED}Error: SIMPLETEST_DB not set. Set it on the workflow step or run scripts/ci/setup.sh first.${NC}" >&2
+    exit 1
+  fi
+
   echo -e "${YELLOW}Warning: SIMPLETEST_DB not set. Run scripts/ci/setup.sh first.${NC}"
 
-  # Local DDEV defaults (GitHub Actions always sets SIMPLETEST_DB)
+  # Local DDEV defaults
   export SIMPLETEST_DB="mysql://db:db@db/drupal_test"
   export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
 

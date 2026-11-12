@@ -77,12 +77,7 @@ ddev phpunit --filter=Functional --testsuite=uiowa_core
 
 ### For CI (GitHub Actions)
 
-The `test` job in `.github/workflows/ci.yml` runs all tests including functional:
-```yaml
-- run: scripts/ci/setup.sh
-- run: scripts/ci/test.sh
-```
-
+The `test` job in `.github/workflows/ci.yml` runs all tests including functional.
 The job has the full environment set up (web server, Selenium Chrome, etc.)
 
 ## Workarounds for Local Functional Tests
