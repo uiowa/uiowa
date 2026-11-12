@@ -17,9 +17,6 @@ echo -e "${GREEN}=== CI Setup ===${NC}"
 if [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
   ENV="github"
   echo "Running in GitHub Actions"
-elif [ "${CI:-false}" = "true" ]; then
-  ENV="ci"
-  echo "Running in CI environment"
 else
   ENV="local"
   echo "Running in local DDEV environment (CI mode)"
@@ -81,14 +78,10 @@ if [ "$ENV" = "local" ]; then
   # DDEV: host=db, root password=root, app user=db
   setup_database "db" "root" "root" "db" "db" "%" "DDEV"
   DB_URL="mysql://db:db@db/drupal_test"
-elif [ "$ENV" = "github" ]; then
+else
   # GitHub Actions: host=127.0.0.1, root password=root, app user=drupal
   setup_database "127.0.0.1" "root" "root" "drupal" "drupal" "%" "GitHub Actions"
   DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
-else
-  # Other CI: host=localhost, no root password, app user=drupal
-  setup_database "localhost" "root" "" "drupal" "drupal" "localhost" "CI"
-  DB_URL="mysql://drupal:drupal@localhost/drupal_test"
 fi
 
 echo "Test database ready"
@@ -101,7 +94,7 @@ if [ "$ENV" = "local" ]; then
   # Local DDEV environment
   export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
 else
-  # CI environments (GitHub Actions, etc.)
+  # GitHub Actions
   # Use 127.0.0.1 rather than localhost: Node-based tooling (e.g. Percy's
   # asset-discovery direct-fetch fallback) can resolve "localhost" to the
   # IPv6 loopback (::1), which drush runserver's "0.0.0.0" bind doesn't

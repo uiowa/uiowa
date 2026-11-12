@@ -43,7 +43,7 @@ fi
 
 # Determine the base URL to snapshot against
 if [ -z "${SIMPLETEST_BASE_URL:-}" ]; then
-  if [ "${GITHUB_ACTIONS:-false}" = "true" ] || [ "${CI:-false}" = "true" ]; then
+  if [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
     # 127.0.0.1, not localhost: Percy's asset-discovery direct-fetch fallback
     # can resolve "localhost" to the IPv6 loopback, which the dev server
     # (bound to 0.0.0.0, IPv4 only) doesn't listen on.

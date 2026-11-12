@@ -40,16 +40,9 @@ fi
 if [ -z "${SIMPLETEST_DB:-}" ]; then
   echo -e "${YELLOW}Warning: SIMPLETEST_DB not set. Run scripts/ci/setup.sh first.${NC}"
 
-  # Set defaults based on environment
-  if [ "${CI:-false}" = "true" ]; then
-    # Generic CI fallback (GitHub Actions sets SIMPLETEST_DB before this point)
-    export SIMPLETEST_DB="mysql://drupal:drupal@localhost/drupal_test"
-    export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://localhost:8080}"
-  else
-    # Local environment (DDEV)
-    export SIMPLETEST_DB="mysql://db:db@db/drupal_test"
-    export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
-  fi
+  # Local DDEV defaults (GitHub Actions always sets SIMPLETEST_DB)
+  export SIMPLETEST_DB="mysql://db:db@db/drupal_test"
+  export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
 
   export BROWSERTEST_OUTPUT_DIRECTORY="${BROWSERTEST_OUTPUT_DIRECTORY:-/tmp/browsertest_output}"
   export SYMFONY_DEPRECATIONS_HELPER="${SYMFONY_DEPRECATIONS_HELPER:-disabled}"
