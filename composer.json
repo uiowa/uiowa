@@ -6,6 +6,21 @@
     "prefer-stable": true,
     "license": "GPL-2.0-only",
     "repositories": {
+        "noli42/chosen": {
+            "type": "package",
+            "package": {
+                "name": "noli42/chosen",
+                "version": "3.1.4",
+                "type": "drupal-library",
+                "extra": {
+                    "installer-name": "chosen"
+                },
+                "dist": {
+                    "url": "https://github.com/noli42/chosen/releases/download/3.1.4/chosen-assets-v3.1.4.zip",
+                    "type": "zip"
+                }
+            }
+        },
         "big_pipe_sessionless": {
             "type": "package",
             "package": {
@@ -123,7 +138,6 @@
         "ext-simplexml": "*",
         "acquia/drupal-recommended-settings": "^1.2",
         "acquia/memcache-settings": "^1.1",
-        "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "6.7.2",
         "bower-asset/lazysizes": "^5.2",
         "bower-asset/photoswipe": "^5",
@@ -262,6 +276,7 @@
         "giggsey/libphonenumber-for-php-lite": "^9.0",
         "iio/libmergepdf": "^4.0",
         "kartsims/easysvg": "2.5",
+        "noli42/chosen": "3.1.4",
         "npm-asset/accessible-menu": "4.0.0",
         "npm-asset/dompurify": "^3.4",
         "npm-asset/jquery-collapse": "^1.1",
@@ -301,9 +316,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "bower-asset/chosen": {
-                "Replace removed jQuery.trim with native string trimming": "patches/chosen-jquery4-trim.patch"
-            },
             "drupal/address": {
                 "Return type declaration for extension of diff plugin base": "https://www.drupal.org/files/issues/2024-07-10/diff-module-support-3460590-2.patch"
             },
