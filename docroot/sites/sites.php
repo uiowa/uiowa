@@ -8097,3 +8097,21 @@ $sites['labartemyev.uiowa.ddev.site'] = 'artemyev.lab.uiowa.edu';
 $sites['labartemyev.dev.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
 $sites['labartemyev.stage.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
 $sites['labartemyev.prod.drupal.uiowa.edu'] = 'artemyev.lab.uiowa.edu';
+
+// Directory aliases for insight.program.uiowa.edu.
+$sites['programinsight.uiowa.ddev.site'] = 'insight.program.uiowa.edu';
+$sites['programinsight.dev.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
+$sites['programinsight.stage.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
+$sites['programinsight.prod.drupal.uiowa.edu'] = 'insight.program.uiowa.edu';
+
+// Directory aliases for healthscience-exp.program.uiowa.edu.
+$sites['programhealthscience-exp.uiowa.ddev.site'] = 'healthscience-exp.program.uiowa.edu';
+$sites['programhealthscience-exp.dev.drupal.uiowa.edu'] = 'healthscience-exp.program.uiowa.edu';
+$sites['programhealthscience-exp.stage.drupal.uiowa.edu'] = 'healthscience-exp.program.uiowa.edu';
+$sites['programhealthscience-exp.prod.drupal.uiowa.edu'] = 'healthscience-exp.program.uiowa.edu';
+
+// Directory aliases for isd.course.uiowa.edu.
+$sites['courseisd.uiowa.ddev.site'] = 'isd.course.uiowa.edu';
+$sites['courseisd.dev.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
+$sites['courseisd.stage.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
+$sites['courseisd.prod.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
