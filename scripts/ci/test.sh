@@ -14,11 +14,11 @@ source "$(dirname "$0")/colors.sh"
 echo -e "${GREEN}=== Running PHPUnit Tests ===${NC}\n"
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 # Export CI=true to ensure Drupal loads ci.settings.php instead of local settings
 # This allows local `ddev ci` testing to run the CI configuration
-if [ "${CI:-false}" = "false" ] && [ "${TRAVIS:-false}" = "false" ] && [ "${GITHUB_ACTIONS:-false}" = "false" ]; then
+if [ "${CI:-false}" = "false" ]; then
   echo "Setting CI=true for local testing"
   export CI="true"
 fi
@@ -38,18 +38,18 @@ fi
 
 # Ensure database is configured
 if [ -z "${SIMPLETEST_DB:-}" ]; then
+
+  # The defaults below only resolve inside DDEV, so fail clearly in CI.
+  if [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
+    echo -e "${RED}Error: SIMPLETEST_DB not set. Set it on the workflow step or run scripts/ci/setup.sh first.${NC}" >&2
+    exit 1
+  fi
+
   echo -e "${YELLOW}Warning: SIMPLETEST_DB not set. Run scripts/ci/setup.sh first.${NC}"
 
-  # Set defaults based on environment
-  if [ "${CI:-false}" = "true" ]; then
-    # CI environment (Travis, GitHub Actions, etc.)
-    export SIMPLETEST_DB="mysql://drupal:drupal@localhost/drupal_test"
-    export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-http://localhost:8080}"
-  else
-    # Local environment (DDEV)
-    export SIMPLETEST_DB="mysql://db:db@db/drupal_test"
-    export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
-  fi
+  # Local DDEV defaults
+  export SIMPLETEST_DB="mysql://db:db@db/drupal_test"
+  export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
 
   export BROWSERTEST_OUTPUT_DIRECTORY="${BROWSERTEST_OUTPUT_DIRECTORY:-/tmp/browsertest_output}"
   export SYMFONY_DEPRECATIONS_HELPER="${SYMFONY_DEPRECATIONS_HELPER:-disabled}"
