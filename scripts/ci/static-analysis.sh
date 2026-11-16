@@ -14,7 +14,7 @@ source "$(dirname "$0")/colors.sh"
 echo -e "${GREEN}=== Running PHPStan Static Analysis ===${NC}\n"
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 # Check if phpstan exists
 if [ ! -f "vendor/bin/phpstan" ]; then

@@ -19,7 +19,7 @@ source "$(dirname "$0")/colors.sh"
 echo -e "${GREEN}=== Running Linting & Validation ===${NC}\n"
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 LINT_FAILED=0
 
