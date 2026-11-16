@@ -89,7 +89,7 @@ class UiowaCoreSiteInformationForm extends SiteInformationForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Save additional site information config.
-    $this->config('system.site')
+    $this->configFactory()->getEditable('system.site')
       ->set('has_parent', $form_state->getValue('has_parent'))
       ->set('parent.name', $form_state->getValue('site_parent_name'))
       ->set('parent.url', $form_state->getValue('site_parent_url'))

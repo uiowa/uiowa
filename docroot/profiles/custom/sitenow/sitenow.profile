@@ -7,6 +7,7 @@
 
 use Drupal\sitenow\Plugin\WebformHandler\EmailOverrideWebformHandler;
 use Drupal\Component\Utility\Html;
+use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
@@ -1183,5 +1184,20 @@ function sitenow_webform_handler_info_alter(array &$handlers) {
   // Replace the default email handler to override what settings are allowed.
   if (isset($handlers['email'])) {
     $handlers['email']['class'] = EmailOverrideWebformHandler::class;
+  }
+}
+
+/**
+ * Implements hook_config_ignore_ignored_alter().
+ */
+function sitenow_config_ignore_ignored_alter(ConfigIgnoreConfig $ignored) {
+  // Config Ignore drops ignored keys from config it creates, and a split
+  // created without a status is active.
+  foreach (['import', 'export'] as $direction) {
+    $list = array_filter(
+      $ignored->getList($direction, 'create'),
+      fn($line) => !preg_match('/^config_split\.config_split\.[^:]+:status$/', $line),
+    );
+    $ignored->setList($direction, 'create', $list);
   }
 }

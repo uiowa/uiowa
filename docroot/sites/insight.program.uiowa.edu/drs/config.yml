@@ -1,0 +1,16 @@
+project:
+  machine_name: programinsight
+  human_name: insight.program.uiowa.edu
+  local:
+    hostname: programinsight.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: programinsight.prod
+drupal:
+  db:
+    database: insight_program_uiowa_edu
+uiowa:
+  requester: brzimmerman
+  site-name: 'Iowa INSIGHT'

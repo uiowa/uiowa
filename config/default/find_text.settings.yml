@@ -27,28 +27,32 @@ field_types:
     value_columns:
       - _headline
 allow_all_entities: true
+save_as_csv: false
+results_per_page: 50
+max_results: 2000
 entity_types:
   node:
     allowed: true
     bundles:
       - page
       - article
-  menu:
-    allowed: true
-    bundles: null
-  taxonomy:
-    allowed: true
-    bundles: null
   block_content:
     allowed: true
     bundles: null
   paragraph:
     allowed: true
     bundles: null
+  menu_link_content:
+    allowed: true
+    bundles: null
+  taxonomy_term:
+    allowed: true
+    bundles: null
+skip_field_prefixes:
+  - rh_
 tables_to_skip:
   - block_content_revision
   - block_content_field_data
   - node_revision
   - paragraphs_item_field_data
   - node__field_teaser
-save_as_csv: 0

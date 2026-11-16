@@ -3,7 +3,7 @@
 namespace Drupal\sitenow_dcv\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\State\StateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,20 +14,20 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SitenowDcvController extends ControllerBase {
 
   /**
-   * The EntityTypeManager service.
+   * The state service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\State\StateInterface
    */
-  protected $entityTypeManager;
+  protected $state;
 
   /**
    * SitenowDcvController constructor.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The EntityTypeManager service.
+   * @param \Drupal\Core\State\StateInterface $state
+   *   The state service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
-    $this->entityTypeManager = $entityTypeManager;
+  public function __construct(StateInterface $state) {
+    $this->state = $state;
   }
 
   /**
@@ -35,28 +35,21 @@ class SitenowDcvController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('state')
     );
   }
 
   /**
-   * Returns file content.
+   * Returns the uploaded DCV file.
    */
   public function dcvFile($filename) {
-    /** @var \Drupal\file\Entity\File[] $file */
-    $file = $this->entityTypeManager
-      ->getStorage('file')
-      ->loadByProperties(['filename' => $filename]);
+    $uri = 'public://.well-known/pki-validation/' . $filename;
 
-    // There can be only one (file replaced on upload).
-    $file = array_pop($file);
-
-    if ($file) {
-      return new BinaryFileResponse($file->getFileUri(), 200, ['Content-Type' => 'text/plain']);
-    }
-    else {
+    if ($filename !== $this->state->get('sitenow_dcv_filename') || !file_exists($uri)) {
       throw new NotFoundHttpException();
     }
+
+    return new BinaryFileResponse($uri, 200, ['Content-Type' => 'text/plain']);
   }
 
 }

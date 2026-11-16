@@ -1,6 +1,8 @@
 - name: Front page with events block hidden
   url: /
-  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';"
+  # Load lazy images up front; otherwise the ones far down the page aren't
+  # captured and render broken.
+  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.uiowa-alerts-wrapper').style.display = 'none';document.querySelectorAll('img[loading=lazy]').forEach(img => img.loading = 'eager');"
   waitForTimeout: 1000
 - name: About page with search input visible
   url: /about

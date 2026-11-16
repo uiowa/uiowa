@@ -1,0 +1,16 @@
+project:
+  machine_name: labsml
+  human_name: sml.lab.uiowa.edu
+  local:
+    hostname: labsml.uiowa.ddev.site
+    protocol: https
+drush:
+  aliases:
+    local: self
+    remote: labsml.prod
+drupal:
+  db:
+    database: sml_lab_uiowa_edu
+uiowa:
+  requester: cajons
+  site-name: 'Swallow Modulation Lab'

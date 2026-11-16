@@ -67,6 +67,16 @@ class Credentials {
   }
 
   /**
+   * The Cloudflare API token.
+   *
+   * @return string|null
+   *   The token, or NULL when cloudflare.token is not set.
+   */
+  public function cloudflareToken(): ?string {
+    return ($this->all()['cloudflare']['token'] ?? NULL) ?: NULL;
+  }
+
+  /**
    * The whole credentials file.
    *
    * The file is optional.

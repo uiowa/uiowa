@@ -4,41 +4,31 @@ All modifications to contributed projects and most modifications to Drupal core 
 
 ## Applying patches
 
-Patches can be applied by referencing them in `composer.json` in the format below. [cweagans/composer-patches](https://github.com/cweagans/composer-patches) applies the patches on any subsequent site builds.
-
-Patch information should be specified in the JSON array in accordance with the following schema:
+Patches are declared in `composer.json` under `extra.patches`, keyed by package. [cweagans/composer-patches](https://github.com/cweagans/composer-patches) applies them on every build.
 
     "extra": {
       "patches": {
         "drupal/core": {
-          "Ignore front end vendor folders to improve directory search performance": "https://www.drupal.org/files/issues/ignore_front_end_vendor-2329453-116.patch",
-          "My custom local patch": "./patches/drupal/some_patch-1234-1.patch"
+          "[2985199] Extensions in multisite directories not registered when rebuilding cache": "https://www.drupal.org/files/issues/2024-08-01/2985199-98.patch",
+          "[3428235] Drupal 11 compatibility": "patches/3428235.patch"
         }
       }
     },
 
-Note that when a package is patched, it's advisable to pin it to a specific version to avoid downloading an updated version that could introduce a patch conflict.
+Pin a patched package to a specific version so a later update cannot pull in a release the patch no longer applies to.
 
-After modifying `composer.json`, run `composer update VENDOR_NAME/PACKAGE_NAME`, replacing `VENDOR_NAME/PACKAGE_NAME` with the name of the patched dependency, e.g.,
+After editing `extra.patches`, refresh the lock file. Which command depends on what changed:
 
-    composer update drupal/core
+- Package version changed too: `composer update drupal/core`, naming the patched package. Bare `composer update` also works but updates every dependency.
+- Patches section only: `composer update --lock`. This rewrites the `content-hash` that editing `composer.json` invalidated. CI fails on a mismatch, and `composer install` will not catch it locally because the patch still applies.
 
-This will apply the patch and update `composer.lock`. Commit the modified `composer.json` and `composer.lock` files.
-
-_Alternatively the patch can be applied by running `composer update`. This, however, will update all of the project's dependencies, which may not be desired._
+Commit `composer.json` and `composer.lock` together, along with the patch file when it is a local copy.
 
 ## Storing patches
 
-Patches that can be contributed on Drupal.org should be contributed there. Please follow [Drupal.org's patch naming conventions](https://www.drupal.org/node/1054616#naming-conventions) when creating patches.
+Patches come from upstream issues on drupal.org. Prefer finding or filing an issue there over writing a local-only fix.
 
-Patches that cannot be contributed publicly are extremely rare. In the unlikely event that such a change must be committed, all project-specific patches should reside in this directory. This ensures one consistent place for patches and avoids accidental patch deletion.
-
-Patches should be stored in sub-directories based on project name being patched.
-
-Examples:
-
-- /patches/drupal/some_patch-1234-1.patch
-- /patches/ctools/another_patch_name-9876-12.patch
+When the issue has a patch file under `drupal.org/files/issues/`, reference that URL directly in `composer.json`. When the fix exists only as a merge request, there is no stable file to link, so download it and commit the copy to this directory.
 
 ## Gotchas
 

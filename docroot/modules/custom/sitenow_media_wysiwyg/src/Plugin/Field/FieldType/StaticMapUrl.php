@@ -13,7 +13,7 @@ use Drupal\link\Plugin\Field\FieldType\LinkItem;
  *   id = "static_map_url",
  *   label = @Translation("Static Map URL"),
  *   description = @Translation("This field is used to capture the URL of a static map."),
- *   category = @Translation("General"),
+ *   category = "general",
  *   default_widget = "static_map_url_widget",
  *   default_formatter = "static_map_url_formatter"
  * )

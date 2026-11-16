@@ -17,7 +17,7 @@ use Drupal\Core\TypedData\DataReferenceTargetDefinition;
  *   id = "uiowa_academic_units",
  *   label = @Translation("Academic Units"),
  *   description = @Translation("Reference academic unit configuration entities."),
- *   category = @Translation("Reference"),
+ *   category = "reference",
  *   default_formatter = "uiowa_academic_units_formatter",
  *   default_widget = "uiowa_academic_units_widget",
  *   list_class = "\Drupal\Core\Field\EntityReferenceFieldItemList",

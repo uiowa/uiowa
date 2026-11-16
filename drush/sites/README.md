@@ -1,5 +1,5 @@
-This directory should contain Drush site aliases. These aliases can be generated in several ways:
-* Using the `blt recipes:aliases:init:acquia` command (for Acquia Cloud applications)
-* Using the [acsf-tools](https://github.com/acquia/acsf-tools) package
-* By downloading aliases directly from Acquia Cloud (not recommended--use one of the above tools if possible)
-* Manually, based on the [Drush examples](https://raw.githubusercontent.com/drush-ops/drush/master/examples/example.site.yml).
+This directory holds Drush site aliases, one file per site, named `{id}.site.yml`.
+
+`multisite:create` writes a site's alias file when it provisions the site. An application's own alias file is committed by hand first; provisioning fails without it.
+
+Aliases for an Acquia Cloud application can also be downloaded from the _Credentials_ tab of your user profile at https://accounts.acquia.com.

@@ -111,26 +111,26 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['session'] = [
       '#title' => $this->t('Session'),
       '#description' => $this->t('What relative session you wish to display dates for. This will roll over automatically when the session ends. The %exposed option will allow the user to select a session, defaulting to the current.', [
-        '@current' => $current->shortDescription,
+        '@current' => $current->shortDescription ?? '',
         '%exposed' => '- Exposed -',
       ]),
       '#type' => 'select',
       '#options' => [
         0 => $this->t('Current session (@session, ends @end)', [
-          '@session' => $current->shortDescription,
-          '@end' => date('n/j/Y', strtotime($current->endDate)),
+          '@session' => $current->shortDescription ?? '',
+          '@end' => date('n/j/Y', strtotime($current->endDate ?? '')),
         ]),
         1 => $this->t('Current session plus one (@session, ends @end)', [
-          '@session' => $plus_one->shortDescription,
-          '@end' => date('n/j/Y', strtotime($plus_one->endDate)),
+          '@session' => $plus_one->shortDescription ?? '',
+          '@end' => date('n/j/Y', strtotime($plus_one->endDate ?? '')),
         ]),
         2 => $this->t('Current session plus two (@session, ends @end)', [
-          '@session' => $plus_two->shortDescription,
-          '@end' => date('n/j/Y', strtotime($plus_two->endDate)),
+          '@session' => $plus_two->shortDescription ?? '',
+          '@end' => date('n/j/Y', strtotime($plus_two->endDate ?? '')),
         ]),
         3 => $this->t('Current session plus three (@session, ends @end)', [
-          '@session' => $plus_three->shortDescription,
-          '@end' => date('n/j/Y', strtotime($plus_three->endDate)),
+          '@session' => $plus_three->shortDescription ?? '',
+          '@end' => date('n/j/Y', strtotime($plus_three->endDate ?? '')),
         ]),
       ],
       '#default_value' => $config['session'] ?? '',

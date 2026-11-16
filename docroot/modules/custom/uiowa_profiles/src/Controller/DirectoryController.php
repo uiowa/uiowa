@@ -183,7 +183,7 @@ class DirectoryController extends ControllerBase {
         $title = [
           '#tag' => 'title',
           '#value' => $this->t('@name | @site_name', [
-            '@name' => $meta->name,
+            '@name' => $meta->name ?? '',
             '@site_name' => $this->config('system.site')->get('name'),
           ]),
         ];
@@ -193,8 +193,8 @@ class DirectoryController extends ControllerBase {
           '#attributes' => [
             'name' => 'description',
             'content' => $this->t('@name - @title - The University of Iowa', [
-              '@name' => $meta->name,
-              '@title' => $meta->directoryTitle,
+              '@name' => $meta->name ?? '',
+              '@title' => $meta->directoryTitle ?? '',
             ]),
           ],
         ];

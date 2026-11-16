@@ -117,7 +117,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -142,27 +142,6 @@ third_party_settings:
               layout_builder_styles_style: {  }
             third_party_settings: {  }
           -
-            uuid: 8a0dcacd-e306-420e-a795-86efd1a81760
-            region: content
-            configuration:
-              id: 'field_block:node:building:field_building_address'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 3
-            additional:
-              layout_builder_styles_style: {  }
-            third_party_settings: {  }
-          -
             uuid: 999d055a-5be7-4bed-a180-9ba9d2bbf840
             region: content
             configuration:
@@ -179,9 +158,22 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional:
               layout_builder_styles_style: {  }
+            third_party_settings: {  }
+          -
+            uuid: 17f90cc6-8231-4434-9633-c4c15dc20d0b
+            region: content
+            configuration:
+              id: 'extra_field_block:node:building:building_map_links'
+              label: 'Map links'
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 3
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
@@ -547,6 +539,11 @@ targetEntityType: node
 bundle: building
 mode: default
 content:
+  building_map_links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
   field_building_abbreviation:
     type: string
     label: inline
