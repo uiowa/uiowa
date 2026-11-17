@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: tippietip.uiowa.ddev.site
+  paths:
+    files: sites/tip.tippie.uiowa.edu/files
+dev:
+  uri: tippietip.dev.drupal.uiowa.edu
+  host: uiowa08dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/tip.tippie.uiowa.edu/files
+  root: /var/www/html/uiowa08.dev/docroot
+  user: uiowa08.dev
+prod:
+  uri: tip.tippie.uiowa.edu
+  host: uiowa08prod.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/tip.tippie.uiowa.edu/files
+  root: /var/www/html/uiowa08.prod/docroot
+  user: uiowa08.prod
+test:
+  uri: tippietip.stage.drupal.uiowa.edu
+  host: uiowa08stage.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/tip.tippie.uiowa.edu/files
+  root: /var/www/html/uiowa08.stage/docroot
+  user: uiowa08.stage
