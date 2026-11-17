@@ -8115,3 +8115,9 @@ $sites['courseisd.uiowa.ddev.site'] = 'isd.course.uiowa.edu';
 $sites['courseisd.dev.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
 $sites['courseisd.stage.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
 $sites['courseisd.prod.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
+
+// Directory aliases for fischer.lab.uiowa.edu.
+$sites['labfischer.uiowa.ddev.site'] = 'fischer.lab.uiowa.edu';
+$sites['labfischer.dev.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
+$sites['labfischer.stage.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
+$sites['labfischer.prod.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
