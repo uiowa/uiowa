@@ -8121,3 +8121,9 @@ $sites['labfischer.uiowa.ddev.site'] = 'fischer.lab.uiowa.edu';
 $sites['labfischer.dev.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
 $sites['labfischer.stage.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
 $sites['labfischer.prod.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
+
+// Directory aliases for morita.lab.uiowa.edu.
+$sites['labmorita.uiowa.ddev.site'] = 'morita.lab.uiowa.edu';
+$sites['labmorita.dev.drupal.uiowa.edu'] = 'morita.lab.uiowa.edu';
+$sites['labmorita.stage.drupal.uiowa.edu'] = 'morita.lab.uiowa.edu';
+$sites['labmorita.prod.drupal.uiowa.edu'] = 'morita.lab.uiowa.edu';
