@@ -5079,3 +5079,23 @@ function sitenow_update_10045() {
 
   return t('Backfilled unique IDs for @count collection items.', ['@count' => $count]);
 }
+
+/**
+ * Uninstall Field UI on Acquia environments ahead of config import.
+ *
+ * Field UI now lives in the local config split only. The deployment runs updb
+ * before cim, so uninstalling here ahead of the normal cim conflicts.
+ */
+function sitenow_update_10046() {
+  if (!getenv('AH_SITE_ENVIRONMENT')) {
+    return t('Not an Acquia environment; Field UI left installed.');
+  }
+
+  if (!\Drupal::moduleHandler()->moduleExists('field_ui')) {
+    return t('Field UI is not installed.');
+  }
+
+  \Drupal::service('module_installer')->uninstall(['field_ui']);
+
+  return t('Uninstalled Field UI.');
+}
