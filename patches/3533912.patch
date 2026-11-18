@@ -1,0 +1,31 @@
+diff --git a/src/MenuParentFormSelector/CshsMenuParentFormSelector.php b/src/MenuParentFormSelector/CshsMenuParentFormSelector.php
+index 4bf4b01c8812551ac22b19a93d2008f6c870878c..ae8e3388b315765826fa7aacc02425dc8c573384 100644
+--- a/src/MenuParentFormSelector/CshsMenuParentFormSelector.php
++++ b/src/MenuParentFormSelector/CshsMenuParentFormSelector.php
+@@ -16,7 +16,7 @@ class CshsMenuParentFormSelector extends MenuParentFormSelector {
+   /**
+    * {@inheritdoc}
+    */
+-  public function getParentSelectOptionsCshs($id = '', array $menus = NULL, CacheableMetadata &$cacheability = NULL) {
++  public function getParentSelectOptionsCshs($id = '', ?array $menus = NULL, ?CacheableMetadata &$cacheability = NULL) {
+     if (!isset($menus)) {
+       $menus = $this->getMenuOptions();
+     }
+@@ -47,7 +47,7 @@ class CshsMenuParentFormSelector extends MenuParentFormSelector {
+   /**
+    * {@inheritdoc}
+    */
+-  public function parentSelectElement($menu_parent, $id = '', array $menus = NULL) {
++  public function parentSelectElement($menu_parent, $id = '', ?array $menus = NULL) {
+     $options_cacheability = new CacheableMetadata();
+     $options = $this->getParentSelectOptionsCshs($id, $menus, $options_cacheability);
+     // If no options were found, there is nothing to select.
+@@ -80,7 +80,7 @@ class CshsMenuParentFormSelector extends MenuParentFormSelector {
+   /**
+    * {@inheritdoc}
+    */
+-  protected function parentSelectOptionsTreeWalkCshs(array $tree, $menu_name, $indent, array &$options, $exclude, $depth_limit, CacheableMetadata &$cacheability = NULL) {
++  protected function parentSelectOptionsTreeWalkCshs(array $tree, $menu_name, $indent, array &$options, $exclude, $depth_limit, ?CacheableMetadata &$cacheability = NULL) {
+     /** @var \Drupal\Core\Menu\MenuLinkTreeElement[] $tree */
+     foreach ($tree as $element) {
+       if ($element->depth > $depth_limit) {
