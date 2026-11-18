@@ -244,7 +244,7 @@ ddev exec php -i | grep memory_limit
 
 ✅ **Catch issues locally** before pushing to CI
 ✅ **Faster feedback** than waiting for GitHub Actions
-✅ **Same environment** - DDEV and GitHub Actions both use PHP 8.3, MySQL 8.0
+✅ **Same environment** - DDEV and GitHub Actions both use PHP 8.4, MySQL 8.0
 ✅ **Easy to use** - single `ddev ci` command
 ✅ **Modular** - run individual checks as needed
 ✅ **No deprecated tooling** - no dependency on legacy build tools

@@ -1,0 +1,13 @@
+diff --git a/src/Controller/AccessController.php b/src/Controller/AccessController.php
+index a6bf4c992cff3a16580593f2ee2a1d3b775812dd..3679165c9537396080fcc2bc5feec993a2299c10 100644
+--- a/src/Controller/AccessController.php
++++ b/src/Controller/AccessController.php
+@@ -54,7 +54,7 @@ class AccessController extends SystemController {
+    * @return \Drupal\Core\Access\AccessResultInterface
+    *   The access result.
+    */
+-  public function access(AccountInterface $account, string $theme = NULL): AccessResultInterface {
++  public function access(AccountInterface $account, ?string $theme = NULL): AccessResultInterface {
+     if (empty($theme)) {
+ 
+       $current_request = $this->requestStack->getCurrentRequest();
