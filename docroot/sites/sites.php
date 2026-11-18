@@ -8115,3 +8115,21 @@ $sites['courseisd.uiowa.ddev.site'] = 'isd.course.uiowa.edu';
 $sites['courseisd.dev.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
 $sites['courseisd.stage.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
 $sites['courseisd.prod.drupal.uiowa.edu'] = 'isd.course.uiowa.edu';
+
+// Directory aliases for fischer.lab.uiowa.edu.
+$sites['labfischer.uiowa.ddev.site'] = 'fischer.lab.uiowa.edu';
+$sites['labfischer.dev.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
+$sites['labfischer.stage.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
+$sites['labfischer.prod.drupal.uiowa.edu'] = 'fischer.lab.uiowa.edu';
+
+// Directory aliases for morita.lab.uiowa.edu.
+$sites['labmorita.uiowa.ddev.site'] = 'morita.lab.uiowa.edu';
+$sites['labmorita.dev.drupal.uiowa.edu'] = 'morita.lab.uiowa.edu';
+$sites['labmorita.stage.drupal.uiowa.edu'] = 'morita.lab.uiowa.edu';
+$sites['labmorita.prod.drupal.uiowa.edu'] = 'morita.lab.uiowa.edu';
+
+// Directory aliases for tip.tippie.uiowa.edu.
+$sites['tippietip.uiowa.ddev.site'] = 'tip.tippie.uiowa.edu';
+$sites['tippietip.dev.drupal.uiowa.edu'] = 'tip.tippie.uiowa.edu';
+$sites['tippietip.stage.drupal.uiowa.edu'] = 'tip.tippie.uiowa.edu';
+$sites['tippietip.prod.drupal.uiowa.edu'] = 'tip.tippie.uiowa.edu';
