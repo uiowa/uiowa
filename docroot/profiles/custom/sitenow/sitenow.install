@@ -5101,30 +5101,61 @@ function sitenow_update_10046() {
 }
 
 /**
- * Trim whitespace from the default Google Tag container ID.
+ * Trim whitespace from the Google Tag container IDs.
  *
- * sitenow_update_10040 trimmed the container config names but left
- * google_tag.settings:default_google_tag_entity untrimmed, so cache tags built
- * from it still contained a space and Purge rejects them.
+ * Sitenow_update_10040 only trimmed the ends of container IDs, so spaces
+ * elsewhere survived, and it never updated
+ * google_tag.settings:default_google_tag_entity.
+ * Cache tags built from those IDs contain a space and Purge rejects them.
  */
 function sitenow_update_10047() {
-  $settings = \Drupal::configFactory()->getEditable('google_tag.settings');
-  $default = $settings->get('default_google_tag_entity');
+  $config_factory = \Drupal::configFactory();
+  $strip = fn($value) => preg_replace('/\s+/', '', $value);
+  $old_ids = [];
 
-  if (!is_string($default) || $default === trim($default)) {
-    return t('Default Google Tag container ID has no whitespace.');
+  foreach ($config_factory->listAll('google_tag.container.') as $config_name) {
+    $id = substr($config_name, strlen('google_tag.container.'));
+    $clean_id = $strip($id);
+    $data = $config_factory->get($config_name)->getRawData();
+    $tag_ids = $data['tag_container_ids'] ?? [];
+    $clean_tag_ids = array_map($strip, $tag_ids);
+
+    if ($clean_id === $id && $clean_tag_ids === $tag_ids) {
+      continue;
+    }
+
+    $data['id'] = $clean_id;
+    $data['label'] = trim($data['label'] ?? $clean_id);
+    $data['tag_container_ids'] = $clean_tag_ids;
+
+    $config_factory->getEditable($config_name)->delete();
+    $config_factory->getEditable('google_tag.container.' . $clean_id)
+      ->setData($data)
+      ->save();
+    $old_ids[] = $id;
   }
 
-  $settings->set('default_google_tag_entity', trim($default))->save();
+  $settings = $config_factory->getEditable('google_tag.settings');
+  $default = $settings->get('default_google_tag_entity');
+  if (is_string($default) && $default !== $strip($default)) {
+    $settings->set('default_google_tag_entity', $strip($default))->save();
+    $old_ids[] = $default;
+  }
 
-  // Drop queued purge items that still carry the invalid tag, otherwise they
+  if (!$old_ids) {
+    return t('No Google Tag container IDs contained whitespace.');
+  }
+
+  // Drop queued purge items that still carry the invalid tags, otherwise they
   // keep failing on every queue run.
   $database = \Drupal::database();
   if ($database->schema()->tableExists('purge_queue')) {
-    $database->delete('purge_queue')
-      ->condition('data', '%config:google_tag.container. %', 'LIKE')
-      ->execute();
+    foreach (array_unique($old_ids) as $old_id) {
+      $database->delete('purge_queue')
+        ->condition('data', '%' . $database->escapeLike('config:google_tag.container.' . $old_id) . '%', 'LIKE')
+        ->execute();
+    }
   }
 
-  return t('Trimmed whitespace from the default Google Tag container ID.');
+  return t('Removed whitespace from @count Google Tag ID(s).', ['@count' => count($old_ids)]);
 }
