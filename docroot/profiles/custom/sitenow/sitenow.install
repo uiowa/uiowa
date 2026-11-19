@@ -5110,13 +5110,17 @@ function sitenow_update_10046() {
  */
 function sitenow_update_10047() {
   $config_factory = \Drupal::configFactory();
+  // Direct edits. Using the config API invalidates and adds to the queue
+  // again causing a runaround.
+  $storage = \Drupal::service('config.storage');
   $strip = fn($value) => preg_replace('/\s+/', '', $value);
   $old_ids = [];
 
   foreach ($config_factory->listAll('google_tag.container.') as $config_name) {
     $id = substr($config_name, strlen('google_tag.container.'));
     $clean_id = $strip($id);
-    $data = $config_factory->get($config_name)->getRawData();
+    $clean_name = 'google_tag.container.' . $clean_id;
+    $data = $storage->read($config_name);
     $tag_ids = $data['tag_container_ids'] ?? [];
     $clean_tag_ids = array_map($strip, $tag_ids);
 
@@ -5128,10 +5132,14 @@ function sitenow_update_10047() {
     $data['label'] = trim($data['label'] ?? $clean_id);
     $data['tag_container_ids'] = $clean_tag_ids;
 
-    $config_factory->getEditable($config_name)->delete();
-    $config_factory->getEditable('google_tag.container.' . $clean_id)
-      ->setData($data)
-      ->save();
+    // Keep any container that already holds the clean name.
+    if ($storage->exists($clean_name)) {
+      $storage->delete($config_name);
+    }
+    else {
+      $storage->rename($config_name, $clean_name);
+      $storage->write($clean_name, $data);
+    }
     $old_ids[] = $id;
   }
 
@@ -5140,6 +5148,27 @@ function sitenow_update_10047() {
   if (is_string($default) && $default !== $strip($default)) {
     $settings->set('default_google_tag_entity', $strip($default))->save();
     $old_ids[] = $default;
+  }
+
+  if ($old_ids) {
+    $config_factory->reset();
+
+    // Surface any other config that still points at a renamed ID.
+    $database = \Drupal::database();
+    foreach (array_unique($old_ids) as $old_id) {
+      $referrers = $database->select('config', 'c')
+        ->fields('c', ['name'])
+        ->condition('collection', '')
+        ->condition('data', '%' . $database->escapeLike($old_id) . '%', 'LIKE')
+        ->execute()
+        ->fetchCol();
+      if ($referrers) {
+        \Drupal::logger('sitenow')->warning('Config still references renamed Google Tag ID "@id": @names', [
+          '@id' => $old_id,
+          '@names' => implode(', ', $referrers),
+        ]);
+      }
+    }
   }
 
   // Drop queued purge items whose tag still contains whitespace, otherwise
