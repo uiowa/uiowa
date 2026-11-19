@@ -5099,3 +5099,32 @@ function sitenow_update_10046() {
 
   return t('Uninstalled Field UI.');
 }
+
+/**
+ * Trim whitespace from the default Google Tag container ID.
+ *
+ * sitenow_update_10040 trimmed the container config names but left
+ * google_tag.settings:default_google_tag_entity untrimmed, so cache tags built
+ * from it still contained a space and Purge rejects them.
+ */
+function sitenow_update_10047() {
+  $settings = \Drupal::configFactory()->getEditable('google_tag.settings');
+  $default = $settings->get('default_google_tag_entity');
+
+  if (!is_string($default) || $default === trim($default)) {
+    return t('Default Google Tag container ID has no whitespace.');
+  }
+
+  $settings->set('default_google_tag_entity', trim($default))->save();
+
+  // Drop queued purge items that still carry the invalid tag, otherwise they
+  // keep failing on every queue run.
+  $database = \Drupal::database();
+  if ($database->schema()->tableExists('purge_queue')) {
+    $database->delete('purge_queue')
+      ->condition('data', '%config:google_tag.container. %', 'LIKE')
+      ->execute();
+  }
+
+  return t('Trimmed whitespace from the default Google Tag container ID.');
+}
