@@ -5142,20 +5142,23 @@ function sitenow_update_10047() {
     $old_ids[] = $default;
   }
 
-  if (!$old_ids) {
-    return t('No Google Tag container IDs contained whitespace.');
-  }
-
-  // Drop queued purge items that still carry the invalid tags, otherwise they
-  // keep failing on every queue run.
+  // Drop queued purge items whose tag still contains whitespace, otherwise
+  // they keep failing on every queue run. This runs even when config was
+  // already clean, since the queue can outlive the config fix.
   $database = \Drupal::database();
+  $purged = 0;
   if ($database->schema()->tableExists('purge_queue')) {
-    foreach (array_unique($old_ids) as $old_id) {
-      $database->delete('purge_queue')
-        ->condition('data', '%' . $database->escapeLike('config:google_tag.container.' . $old_id) . '%', 'LIKE')
-        ->execute();
-    }
+    $purged = $database->delete('purge_queue')
+      ->condition('data', 'config:google_tag\\.container\\.[^"]*[[:space:]]', 'REGEXP')
+      ->execute();
   }
 
-  return t('Removed whitespace from @count Google Tag ID(s).', ['@count' => count($old_ids)]);
+  if (!$old_ids && !$purged) {
+    return t('No Google Tag container IDs or queued purge tags contained whitespace.');
+  }
+
+  return t('Removed whitespace from @count Google Tag ID(s) and @purged queued purge item(s).', [
+    '@count' => count($old_ids),
+    '@purged' => $purged,
+  ]);
 }
