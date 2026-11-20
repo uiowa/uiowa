@@ -12,7 +12,7 @@ Everything below is removed or altered intentionally. This list is the record
 of intent. If one of these reappears, it's a regression, not a feature.
 
 ### Search engines
-- Robots meta tag set to `noindex, follow`, so the page isn't indexed.
+- The robots meta tag follows the page's SEO settings.
 - Page is left out of the XML sitemap.
 
 ### Header
