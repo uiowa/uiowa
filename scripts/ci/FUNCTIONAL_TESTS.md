@@ -55,8 +55,8 @@ ChromeDriver isn't installed by default. You would need to:
 2. Configure MINK_DRIVER_ARGS in phpunit.xml.dist
 3. Start ChromeDriver service
 
-**In Travis:**
-ChromeDriver is available via the `chrome: stable` addon.
+**In GitHub Actions:**
+Chrome is provided by a `selenium/standalone-chrome` container started in the workflow.
 
 ## Recommended Approach
 
@@ -75,16 +75,10 @@ ddev ci test --filter=Kernel
 ddev phpunit --filter=Functional --testsuite=uiowa_core
 ```
 
-### For CI (Travis)
+### For CI (GitHub Actions)
 
-Run all tests including functional:
-```yaml
-script:
-  - scripts/ci/setup.sh
-  - scripts/ci/test.sh
-```
-
-Travis has the full environment set up (web server, ChromeDriver, etc.)
+The `test` job in `.github/workflows/ci.yml` runs all tests including functional.
+The job has the full environment set up (web server, Selenium Chrome, etc.)
 
 ## Workarounds for Local Functional Tests
 
@@ -125,8 +119,8 @@ ddev phpunit --filter=Functional
 # Only run unit and kernel tests
 ddev ci test --filter='Unit|Kernel'
 
-# Let Travis CI handle functional tests
-git push  # Travis runs all tests
+# Let GitHub Actions handle functional tests
+git push  # Runs all tests once a pull request to main is open
 ```
 
 ## Test Execution Time Comparison
@@ -213,7 +207,7 @@ ddev phpunit \
 
 **Recommendation:**
 - Use `ddev ci test --filter='Unit|Kernel'` for local development
-- Let Travis CI run functional tests in the full environment
+- Let GitHub Actions run functional tests in the full environment
 - Manually run functional tests when working on them specifically
 
 This gives you fast feedback locally while ensuring full test coverage in CI.

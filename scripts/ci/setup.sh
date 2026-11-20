@@ -2,7 +2,7 @@
 
 ###
 # CI Setup Script
-# Prepares environment for testing (works in Travis CI and DDEV)
+# Prepares environment for testing (works in GitHub Actions and DDEV)
 ###
 
 set -e  # Exit on error
@@ -14,15 +14,9 @@ source "$(dirname "$0")/colors.sh"
 echo -e "${GREEN}=== CI Setup ===${NC}"
 
 # Detect environment
-if [ "${TRAVIS:-false}" = "true" ]; then
-  ENV="travis"
-  echo "Running in Travis CI"
-elif [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
+if [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
   ENV="github"
   echo "Running in GitHub Actions"
-elif [ "${CI:-false}" = "true" ]; then
-  ENV="ci"
-  echo "Running in CI environment"
 else
   ENV="local"
   echo "Running in local DDEV environment (CI mode)"
@@ -31,8 +25,8 @@ else
 fi
 
 # Ensure we're in the project root
-# Works for Travis, GitHub Actions, and local
-cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+# Works for GitHub Actions and local
+cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 # Check for required binaries
 echo -e "\n${YELLOW}Checking dependencies...${NC}"
@@ -51,30 +45,23 @@ setup_database() {
   local root_pass=$3
   local app_user=$4
   local app_pass=$5
-  local app_host=$6
-  local env_name=$7
+  local env_name=$6
 
   echo "Setting up database for $env_name..."
 
   # Build MySQL command prefix
-  local MYSQL_CMD="mysql -h $db_host -u $root_user"
-  [ -n "$root_pass" ] && MYSQL_CMD="$MYSQL_CMD -p$root_pass"
+  local MYSQL_CMD="mysql -h $db_host -u $root_user -p$root_pass"
 
   # Drop and create test database
   $MYSQL_CMD -e "DROP DATABASE IF EXISTS drupal_test;" 2>/dev/null || true
   $MYSQL_CMD -e "CREATE DATABASE drupal_test;"
 
-  # Create user and grant privileges if app user differs from root
-  if [ "$app_user" != "$root_user" ]; then
-    $MYSQL_CMD -e "CREATE USER IF NOT EXISTS '$app_user'@'$app_host' IDENTIFIED BY '$app_pass';"
-    $MYSQL_CMD -e "GRANT ALL PRIVILEGES ON *.* TO '$app_user'@'$app_host' WITH GRANT OPTION;"
-    $MYSQL_CMD -e "FLUSH PRIVILEGES;"
-    echo "✓ Database created: drupal_test"
-    echo "✓ User '$app_user' granted all privileges"
-  else
-    $MYSQL_CMD -e "FLUSH PRIVILEGES;"
-    echo "✓ Database created: drupal_test"
-  fi
+  # Create the app user and grant privileges
+  $MYSQL_CMD -e "CREATE USER IF NOT EXISTS '$app_user'@'%' IDENTIFIED BY '$app_pass';"
+  $MYSQL_CMD -e "GRANT ALL PRIVILEGES ON *.* TO '$app_user'@'%' WITH GRANT OPTION;"
+  $MYSQL_CMD -e "FLUSH PRIVILEGES;"
+  echo "✓ Database created: drupal_test"
+  echo "✓ User '$app_user' granted all privileges"
 }
 
 # Setup test database
@@ -82,16 +69,12 @@ echo -e "\n${YELLOW}Setting up test database...${NC}"
 
 if [ "$ENV" = "local" ]; then
   # DDEV: host=db, root password=root, app user=db
-  setup_database "db" "root" "root" "db" "db" "%" "DDEV"
+  setup_database "db" "root" "root" "db" "db" "DDEV"
   DB_URL="mysql://db:db@db/drupal_test"
-elif [ "$ENV" = "github" ]; then
-  # GitHub Actions: host=127.0.0.1, root password=root, app user=drupal
-  setup_database "127.0.0.1" "root" "root" "drupal" "drupal" "%" "GitHub Actions"
-  DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
 else
-  # Travis CI: host=localhost, no root password, app user=drupal
-  setup_database "localhost" "root" "" "drupal" "drupal" "localhost" "Travis CI"
-  DB_URL="mysql://drupal:drupal@localhost/drupal_test"
+  # GitHub Actions: host=127.0.0.1, root password=root, app user=drupal
+  setup_database "127.0.0.1" "root" "root" "drupal" "drupal" "GitHub Actions"
+  DB_URL="mysql://drupal:drupal@127.0.0.1/drupal_test"
 fi
 
 echo "Test database ready"
@@ -104,7 +87,7 @@ if [ "$ENV" = "local" ]; then
   # Local DDEV environment
   export SIMPLETEST_BASE_URL="${SIMPLETEST_BASE_URL:-https://uiowa.ddev.site}"
 else
-  # CI environments (Travis, GitHub Actions, etc.)
+  # GitHub Actions
   # Use 127.0.0.1 rather than localhost: Node-based tooling (e.g. Percy's
   # asset-discovery direct-fetch fallback) can resolve "localhost" to the
   # IPv6 loopback (::1), which drush runserver's "0.0.0.0" bind doesn't
@@ -120,7 +103,7 @@ export SYMFONY_DEPRECATIONS_HELPER="${SYMFONY_DEPRECATIONS_HELPER:-disabled}"
 # wait for it when the caller actually started a Selenium container (e.g.
 # the PHPUnit job) -- jobs with no FunctionalJavascript tests (e.g. Percy)
 # set NEEDS_WEBDRIVER=false and skip this entirely.
-if [ "${NEEDS_WEBDRIVER:-true}" = "true" ] && { [ "$ENV" = "travis" ] || [ "$ENV" = "github" ]; }; then
+if [ "${NEEDS_WEBDRIVER:-true}" = "true" ] && [ "$ENV" = "github" ]; then
   export MINK_DRIVER_ARGS_WEBDRIVER='["chrome", {"browserName":"chrome","goog:chromeOptions":{"w3c":true,"args":["--headless=new","--disable-gpu","--no-sandbox"]}}, "http://127.0.0.1:4444/wd/hub"]'
 
   echo "Waiting for Selenium WebDriver..."
@@ -152,7 +135,7 @@ if [ "${INSTALL_DRUPAL:-false}" = "true" ]; then
   echo "Using database URL: $DB_URL"
 
   # Run drush from docroot directory and ensure db-url is used
-  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/docroot"
+  cd "${GITHUB_WORKSPACE:-/var/www/html}/docroot"
 
   # Site install with explicit database URL. --existing-config imports the
   # real module/config set from config/default -- without it, the sitenow
@@ -170,7 +153,7 @@ if [ "${INSTALL_DRUPAL:-false}" = "true" ]; then
 
   echo "✓ Drupal installed successfully"
 
-  cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+  cd "${GITHUB_WORKSPACE:-/var/www/html}"
 fi
 
 # Start web server for functional tests using Drush (optional)
@@ -178,7 +161,7 @@ fi
 if [ "${RUN_SERVER:-false}" = "true" ]; then
   echo -e "\n${YELLOW}Starting web server for functional tests...${NC}"
 
-  PROJECT_ROOT="${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+  PROJECT_ROOT="${GITHUB_WORKSPACE:-/var/www/html}"
 
   # Create tmp directory for logs
   mkdir -p "$PROJECT_ROOT/tmp"
@@ -240,7 +223,7 @@ fi
 
 # Export environment variables to a file for other scripts to source
 # This is necessary because in CI, each script runs in a separate shell
-ENV_FILE="${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}/tmp/ci-env.sh"
+ENV_FILE="${GITHUB_WORKSPACE:-/var/www/html}/tmp/ci-env.sh"
 mkdir -p "$(dirname "$ENV_FILE")"
 cat > "$ENV_FILE" <<EOF
 export SIMPLETEST_DB="$SIMPLETEST_DB"

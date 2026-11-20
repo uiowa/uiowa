@@ -2,7 +2,7 @@
 
 ###
 # Run All CI Checks
-# Simulates the complete Travis CI pipeline locally
+# Runs the GitHub Actions PHP checks locally (no frontend build, Percy, or deploy)
 ###
 
 set -e  # Exit on any error
@@ -19,7 +19,7 @@ echo -e "${BLUE}╚════════════════════�
 FAILED_CHECKS=()
 
 # Ensure we're in the project root
-cd "${TRAVIS_BUILD_DIR:-${GITHUB_WORKSPACE:-/var/www/html}}"
+cd "${GITHUB_WORKSPACE:-/var/www/html}"
 
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
