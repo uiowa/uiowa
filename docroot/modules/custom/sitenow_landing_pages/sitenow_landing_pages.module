@@ -28,18 +28,6 @@ function _sitenow_landing_pages_shows_site_name(NodeInterface $node): bool {
 }
 
 /**
- * Implements hook_metatags_alter().
- */
-function sitenow_landing_pages_metatags_alter(array &$metatags, array &$context) {
-  $entity = $context['entity'] ?? NULL;
-
-  // Keep landing pages out of search engine results.
-  if ($entity instanceof NodeInterface && _sitenow_landing_pages_is_landing_page($entity)) {
-    $metatags['robots'] = 'noindex, follow';
-  }
-}
-
-/**
  * Implements hook_form_BASE_FORM_ID_alter() for node forms.
  */
 function sitenow_landing_pages_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
