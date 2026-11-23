@@ -296,10 +296,6 @@ jobs:
       - name: Start Selenium WebDriver
         run: docker run --detach --rm --name selenium-chrome --network host --shm-size=2g selenium/standalone-chrome:4.49.0
 
-      # The site's image toolkit is ImageMagick; ubuntu-24.04 runners don't ship it.
-      - name: Install ImageMagick
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
-
       - name: Setup test environment and web server
         run: scripts/ci/setup.sh
         env:
@@ -428,7 +424,7 @@ jobs:
 
       # The site's image toolkit is ImageMagick; ubuntu-24.04 runners don't ship it.
       - name: Install ImageMagick
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends imagemagick
 
       - name: Setup test environment and web server
         run: scripts/ci/setup.sh
