@@ -65,20 +65,45 @@ fi
 # request, and the single-threaded dev server can't keep up when asset
 # discovery requests them all at once, so images go uncaptured.
 echo "Warming image style derivatives..."
+warmed=0
+failed=0
 for path in $(grep -E '^\s+url:' snapshots.yml | awk '{print $2}'); do
-  curl -s "$SIMPLETEST_BASE_URL$path" \
+  urls=$(curl -s "$SIMPLETEST_BASE_URL$path" \
     | grep -oE '(src|srcset)="[^"]*"' \
     | sed -E 's/^[a-z]+="//; s/"$//; s/&amp;/\&/g' \
     | tr ', ' '\n\n' \
     | grep '/styles/' \
-    | sort -u \
-    | while read -r url; do
-        case "$url" in
-          /*) url="$SIMPLETEST_BASE_URL$url" ;;
-        esac
-        curl -s -o /dev/null "$url" || true
-      done || true  # no matches is fine; don't trip set -e/pipefail
+    | sort -u || true)
+  echo "  $path: $(printf '%s' "$urls" | grep -c . || true) derivatives"
+  while read -r url; do
+    [ -z "$url" ] && continue
+    case "$url" in
+      /*) url="$SIMPLETEST_BASE_URL$url" ;;
+    esac
+    code=000
+    for attempt in 1 2 3; do
+      code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$url" || echo 000)
+      [ "$code" = "200" ] && break
+      sleep 1
+    done
+    if [ "$code" = "200" ]; then
+      warmed=$((warmed + 1))
+    else
+      failed=$((failed + 1))
+      echo -e "    ${RED}$code${NC} $url"
+    fi
+  done <<< "$urls"
 done
+echo "Warmed $warmed derivatives, $failed failed"
+
+if [ "$warmed" -eq 0 ] || [ "$failed" -gt 0 ]; then
+  echo -e "${RED}✗ Image derivatives did not all load; refusing to snapshot broken images${NC}" >&2
+  if [ -f tmp/runserver.log ]; then
+    echo "--- tail tmp/runserver.log ---"
+    tail -n 50 tmp/runserver.log
+  fi
+  exit 1
+fi
 
 # Percy's CLI treats per-snapshot errors (e.g. a selector that didn't match)
 # as non-fatal and still exits 0 so one broken page doesn't kill the whole
