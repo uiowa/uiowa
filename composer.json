@@ -103,7 +103,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "8.3"
+            "php": "8.4"
         },
         "allow-plugins": {
             "acquia/drupal-recommended-settings": true,
@@ -379,6 +379,9 @@
             "drupal/media_thumbnails_video": {
                 "Drupal 11 compatibility: viewElements() return type and FileVideoFormatter constructor signature (backported from 2.1.x)": "patches/media_thumbnails_video-d11-formatter.patch"
             },
+            "drupal/menu_link_weight": {
+                "[3533912] PHP 8.4 implicit nullable deprecation": "patches/3533912.patch"
+            },
             "drupal/paragraphs": {
                 "[3090200] Paragraph view access check using incorrect revision of its parent": "https://www.drupal.org/files/issues/2026-07-06/paragraphs-parent-access-block-content-skip-3090200-97.patch"
             },
@@ -397,6 +400,9 @@
             },
             "drupal/symfony_mailer": {
                 "Add support for complex address strings in back-compatibility mode": "https://www.drupal.org/files/issues/2025-05-28/symfony_mailer-support_complex_address_strings-3350992-38.patch"
+            },
+            "drupal/theme_permission": {
+                "[3586002] PHP 8.4 implicit nullable deprecation": "patches/3586002.patch"
             }
         },
         "installer-types": [

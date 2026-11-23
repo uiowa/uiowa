@@ -20,7 +20,7 @@ jobs:
   # Linting job - fast feedback
   lint:
     name: Code Standards (PHPCS)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.action != 'ready_for_review'
     concurrency:
       group: lint-${{ github.ref }}
@@ -33,7 +33,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: gd, pdo_mysql
           coverage: none
 
@@ -99,7 +99,7 @@ jobs:
   # Static analysis job
   static-analysis:
     name: Static Analysis (PHPStan)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.action != 'ready_for_review'
     concurrency:
       group: static-analysis-${{ github.ref }}
@@ -112,7 +112,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: gd, pdo_mysql
           coverage: none
 
@@ -162,7 +162,7 @@ jobs:
   # Security audit job
   security:
     name: Security Audit (Composer)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.action != 'ready_for_review'
     concurrency:
       group: security-${{ github.ref }}
@@ -175,7 +175,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: gd, pdo_mysql
           coverage: none
 
@@ -225,7 +225,7 @@ jobs:
   # PHPUnit tests job - all test types
   test:
     name: PHPUnit Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.action != 'ready_for_review'
     concurrency:
       group: test-${{ github.ref }}
@@ -247,7 +247,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: gd, pdo_mysql, memcache
           coverage: none
 
@@ -313,7 +313,7 @@ jobs:
   # Build frontend assets
   frontend:
     name: Frontend Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.action != 'ready_for_review'
     concurrency:
       group: frontend-${{ github.ref }}
@@ -348,7 +348,7 @@ jobs:
   # that pull requests are compared against. Draft PRs are skipped.
   percy:
     name: Percy Visual Regression
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.event.pull_request.draft != true
 
     services:
@@ -368,7 +368,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: gd, pdo_mysql
           coverage: none
           ini-values: memory_limit=-1, max_execution_time=0
@@ -422,6 +422,10 @@ jobs:
       - name: Build frontend assets
         run: yarn workspaces run build
 
+      # The site's image toolkit is ImageMagick; ubuntu-24.04 runners don't ship it.
+      - name: Install ImageMagick
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends imagemagick
+
       - name: Setup test environment and web server
         run: scripts/ci/setup.sh
         env:
@@ -438,7 +442,7 @@ jobs:
   # Build the artifact and push it to the Acquia Cloud remotes.
   deploy:
     name: Push artifact to Acquia
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [ lint, static-analysis, security, test, frontend ]
     if: github.event_name == 'push'
     environment: acquia
@@ -457,7 +461,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: gd, pdo_mysql
           coverage: none
 
