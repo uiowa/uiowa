@@ -2,6 +2,9 @@ uiowa_profiles.settings:
   type: config_object
   label: 'Settings for profile directories.'
   mapping:
+    environment:
+      type: string
+      label: 'Profiles environment override (test or prod). Unset uses the Acquia environment.'
     directories:
       type: sequence
       label: 'A directory.'
