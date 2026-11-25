@@ -119,11 +119,8 @@ class SiteUpdateCommand extends Command {
       $this->drush(['php:script', $twig_script], uri: $site);
     }
 
-    // Runs updatedb, config:import, cache:rebuild, and deploy:hook. --yes
-    // answers the update and config-import confirmations explicitly rather
-    // than relying on the non-interactive default.
-    $result = $this->drush(['deploy', '--yes'], stream: TRUE, uri: $site);
-    if (!$result->isSuccessful()) {
+    // Runs updatedb, config:import, cache:rebuild, and deploy:hook.
+    if (!$this->runDeploy($io, $site)) {
       $io->error("Failed updating {$site}.");
       return Command::FAILURE;
     }
@@ -148,6 +145,124 @@ class SiteUpdateCommand extends Command {
 
     $io->writeln("Finished updating {$site}.");
     return $config_state;
+  }
+
+  /**
+   * Run drush deploy for a site, retrying once on failure.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The console style for progress and warnings.
+   * @param string $site
+   *   The site host / canonical domain.
+   *
+   * @return bool
+   *   TRUE if either attempt succeeded.
+   */
+  protected function runDeploy(SymfonyStyle $io, string $site): bool {
+    // Record maintenance mode before deploying, so a failure that leaves it on
+    // is never mistaken for the owner's choice.
+    $maint_before = $this->maintenanceMode($site);
+
+    // First attempt, only if maintenance mode could be read. If it couldn't
+    // (e.g. a bootstrap failure), a failed deploy couldn't be safely restored.
+    if ($maint_before !== NULL && $this->deploy($site)) {
+      return TRUE;
+    }
+
+    // Before retrying, report why and undo what the failure left behind.
+    if ($maint_before === NULL) {
+      $io->warning("Could not read {$site} maintenance mode; retrying once with -vvv.");
+      $maint_before = $this->maintenanceMode($site);
+      if ($maint_before === NULL) {
+        $io->warning("Still could not read {$site} maintenance mode; drush deploy never ran.");
+        return FALSE;
+      }
+    }
+    else {
+      $io->warning("drush deploy failed on {$site}; retrying once with -vvv.");
+      $this->restoreMaintenanceMode($io, $site, $maint_before);
+    }
+
+    // Retry verbosely, so a second failure has full logs.
+    $deployed = $this->deploy($site, verbose: TRUE);
+
+    // Restore even on success: drush deploy puts back the maintenance mode it
+    // found, which may be one the first failure left on.
+    $this->restoreMaintenanceMode($io, $site, $maint_before);
+
+    return $deployed;
+  }
+
+  /**
+   * Run drush deploy once.
+   *
+   * @param string $site
+   *   The site host / canonical domain.
+   * @param bool $verbose
+   *   Whether to run with -vvv.
+   *
+   * @return bool
+   *   TRUE if drush deploy succeeded.
+   */
+  private function deploy(string $site, bool $verbose = FALSE): bool {
+    // --yes answers the update and config-import confirmations explicitly
+    // rather than relying on the non-interactive default.
+    $args = ['deploy', '--yes'];
+    if ($verbose) {
+      $args[] = '-vvv';
+    }
+    return $this->drush($args, stream: TRUE, uri: $site)->isSuccessful();
+  }
+
+  /**
+   * Turn maintenance mode back off if a failed update left it on.
+   *
+   * @param \Symfony\Component\Console\Style\SymfonyStyle $io
+   *   The console style for reporting.
+   * @param string $site
+   *   The site host / canonical domain.
+   * @param bool $before
+   *   Maintenance mode before the update; only FALSE allows turning it off.
+   *   TRUE (the owner's choice) leaves the site untouched.
+   */
+  private function restoreMaintenanceMode(SymfonyStyle $io, string $site, bool $before): void {
+    // Nothing to do if maintenance mode isn't currently on.
+    if ($this->maintenanceMode($site) === FALSE) {
+      return;
+    }
+
+    // Maintenance mode was on prior to update. Nothing to do.
+    if ($before) {
+      return;
+    }
+
+    // Maintenance mode was off prior to update.
+    // Turn back off and log a message.
+    $set = $this->drush(['maint:set', '0'], uri: $site);
+    if ($set->isSuccessful()) {
+      $io->writeln("Took {$site} out of the maintenance mode left on by the failed update.");
+    }
+    else {
+      $io->warning("Could not take {$site} out of maintenance mode after the failed update. Needs developer attention.");
+    }
+  }
+
+  /**
+   * Whether a site is in maintenance mode.
+   *
+   * @return bool|null
+   *   The maintenance mode state, or NULL if it could not be read.
+   */
+  protected function maintenanceMode(string $site): ?bool {
+    $result = $this->drush(['maint:get'], uri: $site);
+    if (!$result->isSuccessful()) {
+      return NULL;
+    }
+    return match (trim($result->getOutput())) {
+      '1' => TRUE,
+      '0' => FALSE,
+      default => NULL,
+    };
   }
 
   /**
