@@ -5099,3 +5099,95 @@ function sitenow_update_10046() {
 
   return t('Uninstalled Field UI.');
 }
+
+/**
+ * Trim whitespace from the Google Tag container IDs.
+ *
+ * Sitenow_update_10040 only trimmed the ends of container IDs, so spaces
+ * elsewhere survived, and it never updated
+ * google_tag.settings:default_google_tag_entity.
+ * Cache tags built from those IDs contain a space and Purge rejects them.
+ */
+function sitenow_update_10047() {
+  $config_factory = \Drupal::configFactory();
+  // Direct edits. Using the config API invalidates and adds to the queue
+  // again causing a runaround.
+  $storage = \Drupal::service('config.storage');
+  $strip = fn($value) => preg_replace('/\s+/', '', $value);
+  $old_ids = [];
+
+  foreach ($config_factory->listAll('google_tag.container.') as $config_name) {
+    $id = substr($config_name, strlen('google_tag.container.'));
+    $clean_id = $strip($id);
+    $clean_name = 'google_tag.container.' . $clean_id;
+    $data = $storage->read($config_name);
+    $tag_ids = $data['tag_container_ids'] ?? [];
+    $clean_tag_ids = array_map($strip, $tag_ids);
+
+    if ($clean_id === $id && $clean_tag_ids === $tag_ids) {
+      continue;
+    }
+
+    $data['id'] = $clean_id;
+    $data['label'] = trim($data['label'] ?? $clean_id);
+    $data['tag_container_ids'] = $clean_tag_ids;
+
+    // Keep any container that already holds the clean name.
+    if ($storage->exists($clean_name)) {
+      $storage->delete($config_name);
+    }
+    else {
+      $storage->rename($config_name, $clean_name);
+      $storage->write($clean_name, $data);
+    }
+    $old_ids[] = $id;
+  }
+
+  $settings = $config_factory->getEditable('google_tag.settings');
+  $default = $settings->get('default_google_tag_entity');
+  if (is_string($default) && $default !== $strip($default)) {
+    $settings->set('default_google_tag_entity', $strip($default))->save();
+    $old_ids[] = $default;
+  }
+
+  if ($old_ids) {
+    $config_factory->reset();
+
+    // Surface any other config that still points at a renamed ID.
+    $database = \Drupal::database();
+    foreach (array_unique($old_ids) as $old_id) {
+      $referrers = $database->select('config', 'c')
+        ->fields('c', ['name'])
+        ->condition('collection', '')
+        ->condition('data', '%' . $database->escapeLike($old_id) . '%', 'LIKE')
+        ->execute()
+        ->fetchCol();
+      if ($referrers) {
+        \Drupal::logger('sitenow')->warning('Config still references renamed Google Tag ID "@id": @names', [
+          '@id' => $old_id,
+          '@names' => implode(', ', $referrers),
+        ]);
+      }
+    }
+  }
+
+  // Drop queued purge items whose tag still contains whitespace, otherwise
+  // they keep failing on every queue run. This runs even when config was
+  // already clean, since the queue can outlive the config fix.
+  $database = \Drupal::database();
+  $purged = 0;
+  if ($database->schema()->tableExists('purge_queue')) {
+    $purged = $database->delete('purge_queue')
+      ->condition('data', 'config:google_tag\\.container\\.[^"]*[[:space:]]', 'REGEXP')
+      ->execute();
+  }
+
+  if (!$old_ids && !$purged) {
+    return t('No Google Tag container IDs or queued purge tags contained whitespace.');
+  }
+
+  return t('Removed whitespace from @count Google Tag ID(s) and @purged queued purge item(s).', [
+    '@count' => count($old_ids),
+    '@purged' => $purged,
+  ]);
+}
