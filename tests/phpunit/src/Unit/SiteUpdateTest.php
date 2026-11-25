@@ -215,13 +215,13 @@ class SiteUpdateTest extends UnitTestCase {
   }
 
   /**
-   * An unreadable starting state is treated as unknown and left alone.
+   * An unreadable starting state fails before deploying, so it can be retried.
    */
-  public function testUnknownMaintenanceModeIsLeftAlone() {
-    $command = $this->scriptedCommand([FALSE, TRUE], [NULL]);
+  public function testUnreadableMaintenanceModeFailsBeforeDeploy() {
+    $command = $this->scriptedCommand([], [NULL]);
 
-    $this->assertTrue($command->pubRunDeploy('site.uiowa.edu'));
-    $this->assertNotContains('maint:set 0', $command->calls);
+    $this->assertFalse($command->pubRunDeploy('site.uiowa.edu'));
+    $this->assertSame(['maint:get'], $command->calls);
   }
 
   /**

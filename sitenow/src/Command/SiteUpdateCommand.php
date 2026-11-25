@@ -156,10 +156,17 @@ class SiteUpdateCommand extends Command {
    *   The site host / canonical domain.
    *
    * @return bool
-   *   TRUE if either attempt succeeded.
+   *   TRUE if either attempt succeeded. FALSE without deploying if the
+   *   starting maintenance mode cannot be read, so the site can be retried.
    */
   protected function runDeploy(SymfonyStyle $io, string $site): bool {
+    // Without the starting state, a failed deploy could not safely restore
+    // maintenance mode, so fail before changing anything.
     $maint_before = $this->maintenanceMode($site);
+    if ($maint_before === NULL) {
+      $io->warning("Could not read {$site} maintenance mode before the update; skipped deploy so it can be retried.");
+      return FALSE;
+    }
 
     // --yes answers the update and config-import confirmations explicitly
     // rather than relying on the non-interactive default.
@@ -188,35 +195,29 @@ class SiteUpdateCommand extends Command {
    *   The console style for reporting.
    * @param string $site
    *   The site host / canonical domain.
-   * @param bool|null $before
+   * @param bool $before
    *   Maintenance mode before the update; only FALSE allows turning it off.
-   *   TRUE (the owner's choice) and NULL (unknown) leave the site untouched.
+   *   TRUE (the owner's choice) leaves the site untouched.
    */
-  private function restoreMaintenanceMode(SymfonyStyle $io, string $site, ?bool $before): void {
+  private function restoreMaintenanceMode(SymfonyStyle $io, string $site, bool $before): void {
     // Nothing to do if maintenance mode isn't currently on.
     if ($this->maintenanceMode($site) === FALSE) {
       return;
     }
 
     // Maintenance mode was on prior to update. Nothing to do.
-    if ($before === TRUE) {
+    if ($before) {
       return;
     }
+
     // Maintenance mode was off prior to update.
     // Turn back off and log a message.
-    elseif ($before === FALSE) {
-      $set = $this->drush(['maint:set', '0'], uri: $site);
-      if ($set->isSuccessful()) {
-        $io->writeln("Took {$site} out of the maintenance mode left on by the failed update.");
-      }
-      else {
-        $io->warning("Could not take {$site} out of maintenance mode after the failed update. Needs developer attention.");
-      }
+    $set = $this->drush(['maint:set', '0'], uri: $site);
+    if ($set->isSuccessful()) {
+      $io->writeln("Took {$site} out of the maintenance mode left on by the failed update.");
     }
-    // Unable to determine maintenance mode status prior to update.
-    // Log a message, but leave unchanged.
     else {
-      $io->warning("Could not read {$site} maintenance mode before the update, so it was left as is. Needs developer attention.");
+      $io->warning("Could not take {$site} out of maintenance mode after the failed update. Needs developer attention.");
     }
   }
 
