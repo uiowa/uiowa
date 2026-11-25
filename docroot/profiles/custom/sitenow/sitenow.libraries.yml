@@ -18,13 +18,13 @@ global-scripts:
 
 chosen:
   css:
-    theme:
-      /libraries/chosen/chosen.css: {}
+    component:
+      /libraries/chosen/chosen.min.css: {}
   js:
-    /libraries/chosen/chosen.jquery.js: {}
+    /libraries/chosen/chosen.min.js: { minified: true }
     js/chosen.behaviors.js: {}
   dependencies:
-    - core/jquery
+    - core/drupal
     - core/once
 
 get_clickid:

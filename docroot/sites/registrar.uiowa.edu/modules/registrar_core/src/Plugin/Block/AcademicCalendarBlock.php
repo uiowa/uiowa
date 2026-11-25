@@ -213,7 +213,6 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
 
     // Attach the library for the calendar.
     $build['#attached']['library'][] = 'uids_base/card';
-    $build['#attached']['library'][] = 'uids_base/chosen';
     $build['#attached']['library'][] = 'registrar_core/academic-calendar';
 
     $current = $this->maui->getCurrentSession();
