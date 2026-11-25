@@ -159,41 +159,59 @@ class SiteUpdateCommand extends Command {
    *   TRUE if either attempt succeeded.
    */
   protected function runDeploy(SymfonyStyle $io, string $site): bool {
-    // --yes answers the update and config-import confirmations explicitly
-    // rather than relying on the non-interactive default. The retry is
-    // verbose, so a true failure includes extensive logging.
-    $attempts = [
-      ['deploy', '--yes'],
-      ['deploy', '--yes', '-vvv'],
-    ];
+    // Record maintenance mode before deploying, so a failure that leaves it on
+    // is never mistaken for the owner's choice.
+    $maint_before = $this->maintenanceMode($site);
 
-    $maint_before = NULL;
-    foreach ($attempts as $i => $args) {
-      if ($i > 0) {
-        $io->warning("drush deploy failed on {$site}; retrying once with -vvv.");
-      }
+    // First attempt, only if maintenance mode could be read. If it couldn't
+    // (e.g. a bootstrap failure), a failed deploy couldn't be safely restored.
+    if ($maint_before !== NULL && $this->deploy($site)) {
+      return TRUE;
+    }
 
-      // Read the pre-deployment state once it can be read, and keep it, so a
-      // retry never mistakes maintenance mode left on by a failure for the
-      // owner's choice. If it can't be read (e.g. a bootstrap failure), count
-      // the attempt as failed without deploying, since a failure could not
-      // then be safely restored.
-      $maint_before ??= $this->maintenanceMode($site);
+    // Before retrying, report why and undo what the failure left behind.
+    if ($maint_before === NULL) {
+      $io->warning("Could not read {$site} maintenance mode; retrying once with -vvv.");
+      $maint_before = $this->maintenanceMode($site);
       if ($maint_before === NULL) {
-        $io->warning("Could not read {$site} maintenance mode; skipped this deploy attempt.");
-        continue;
+        $io->warning("Still could not read {$site} maintenance mode; drush deploy never ran.");
+        return FALSE;
       }
-
-      if ($this->drush($args, stream: TRUE, uri: $site)->isSuccessful()) {
-        return TRUE;
-      }
-
-      // Restore maintenance mode to its pre-deployment state
-      // so drush deploy properly handles a successful retry.
+    }
+    else {
+      $io->warning("drush deploy failed on {$site}; retrying once with -vvv.");
       $this->restoreMaintenanceMode($io, $site, $maint_before);
     }
 
-    return FALSE;
+    // Retry verbosely, so a second failure has full logs.
+    $deployed = $this->deploy($site, verbose: TRUE);
+
+    // Restore even on success: drush deploy puts back the maintenance mode it
+    // found, which may be one the first failure left on.
+    $this->restoreMaintenanceMode($io, $site, $maint_before);
+
+    return $deployed;
+  }
+
+  /**
+   * Run drush deploy once.
+   *
+   * @param string $site
+   *   The site host / canonical domain.
+   * @param bool $verbose
+   *   Whether to run with -vvv.
+   *
+   * @return bool
+   *   TRUE if drush deploy succeeded.
+   */
+  private function deploy(string $site, bool $verbose = FALSE): bool {
+    // --yes answers the update and config-import confirmations explicitly
+    // rather than relying on the non-interactive default.
+    $args = ['deploy', '--yes'];
+    if ($verbose) {
+      $args[] = '-vvv';
+    }
+    return $this->drush($args, stream: TRUE, uri: $site)->isSuccessful();
   }
 
   /**
