@@ -126,8 +126,11 @@ class Client {
   protected function setEndpoint() {
     $endpoint = '';
 
-    if ($this->environment === 'test') {
+    if ($this->environment === 'feature') {
       $endpoint = 'https://api-feature.profiles.uiowa.edu/api';
+    }
+    elseif ($this->environment === 'test') {
+      $endpoint = 'https://api-test.profiles.uiowa.edu/api';
     }
     elseif ($this->environment === 'prod') {
       $endpoint = 'https://api.profiles.uiowa.edu/api';
