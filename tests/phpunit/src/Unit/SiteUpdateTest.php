@@ -215,13 +215,27 @@ class SiteUpdateTest extends UnitTestCase {
   }
 
   /**
-   * An unreadable starting state fails before deploying, so it can be retried.
+   * An unreadable starting state skips that attempt and retries.
    */
-  public function testUnreadableMaintenanceModeFailsBeforeDeploy() {
-    $command = $this->scriptedCommand([], [NULL]);
+  public function testUnreadableMaintenanceModeRetries() {
+    $command = $this->scriptedCommand([TRUE], [NULL, FALSE]);
+
+    $this->assertTrue($command->pubRunDeploy('site.uiowa.edu'));
+    $this->assertSame([
+      'maint:get',
+      'maint:get',
+      'deploy --yes -vvv',
+    ], $command->calls);
+  }
+
+  /**
+   * A state that stays unreadable never deploys and reports failure.
+   */
+  public function testPersistentlyUnreadableMaintenanceModeFails() {
+    $command = $this->scriptedCommand([], [NULL, NULL]);
 
     $this->assertFalse($command->pubRunDeploy('site.uiowa.edu'));
-    $this->assertSame(['maint:get'], $command->calls);
+    $this->assertSame(['maint:get', 'maint:get'], $command->calls);
   }
 
   /**
