@@ -33,6 +33,7 @@ use Drupal\uiowa_core\Entity\TimelineItem;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkAnalyticsHelper;
 use Drupal\uiowa_core\RegionHelper;
+use Drupal\uiowa_core\WebformDataLayerHelper;
 use Drupal\views\Views;
 use Drupal\webform\Element\WebformRoles;
 use Drupal\workflows\Entity\Workflow;
@@ -803,6 +804,13 @@ function uiowa_core_page_attachments(&$page) {
     }
   }
 
+  // Push confirmed webform submissions queued before this page load.
+  if ($events = WebformDataLayerHelper::pop(\Drupal::request())) {
+    $page['#attached']['library'][] = 'uiowa_core/webform-datalayer';
+    $page['#attached']['drupalSettings']['uiowaWebformDataLayer']['events'] = $events;
+    $page['#cache']['max-age'] = 0;
+  }
+
   // Message explaining containers that show as inactive (overwritten).
   if (\Drupal::routeMatch()->getRouteName() === 'entity.google_tag_container.collection') {
     $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
@@ -811,6 +819,13 @@ function uiowa_core_page_attachments(&$page) {
         ->addWarning(t('Google Tag Manager containers are currently blocked from being inserted on this website. Containers below may show as inactive (overwritten) as a result. Contact an administrator to remove the site-wide restriction.'));
     }
   }
+}
+
+/**
+ * Implements hook_webform_submission_form_alter().
+ */
+function uiowa_core_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  WebformDataLayerHelper::formAlter($form);
 }
 
 /**

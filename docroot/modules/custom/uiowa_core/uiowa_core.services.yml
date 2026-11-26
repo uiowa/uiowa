@@ -25,3 +25,7 @@ services:
       - '@stream_wrapper_manager'
       - '@database'
       - '@logger.channel.uiowa_core'
+  uiowa_core.webform_datalayer_subscriber:
+    class: Drupal\uiowa_core\EventSubscriber\WebformDataLayerSubscriber
+    tags:
+      - { name: event_subscriber }
