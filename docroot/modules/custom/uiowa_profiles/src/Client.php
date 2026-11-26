@@ -136,7 +136,7 @@ class Client {
       $endpoint = 'https://api.profiles.uiowa.edu/api';
     }
 
-    if (!isset($endpoint)) {
+    if ($endpoint === '') {
       $this->logger->error('Invalid environment @env. Unable to set API endpoint.', [
         '@env' => $this->environment,
       ]);
