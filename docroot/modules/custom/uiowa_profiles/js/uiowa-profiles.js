@@ -40,12 +40,21 @@
       // Set query parameters, in this case the api key gotten from settings.
       let params = 'api-key=' + drupalSettings.uiowaProfiles.api_key;
 
+      // The visitor may have left this person's page before a response arrives.
+      // A late response must not change the head of the page they are on now.
+      const stillOnPerson = () => window.location.pathname.replace(/\/$/, '') === path;
+
       // Retrieve the person metadata.
       fetch(`${endpoint}/people/${person}/metadata?${params}`)
         .then(response => response.json())
         .then(data => {
-          // Construct the metadata elements and set appropriately.
-          let canonical = data.canonical_url;
+          if (!stillOnPerson()) {
+            return;
+          }
+
+          // Construct the metadata elements and set appropriately. A person
+          // without a canonical URL keeps this page's own URL.
+          let canonical = data.canonical_url || url.origin + url.pathname;
           let meta_description_markup = this.personMetaElement(data.name, data.directoryTitle);
           let meta_description = document.head.querySelector('meta[name="description"]');
 
@@ -66,7 +75,7 @@
       fetch(`${endpoint}/people/${person}/structured?${params}`)
         .then(response => response.text())
         .then(data => {
-          if (!document.head.querySelector('script[type="application/ld+json"]')) {
+          if (stillOnPerson() && !document.head.querySelector('script[type="application/ld+json"]')) {
             let schema = document.createElement('script');
             schema.text = data;
             schema.setAttribute('type', 'application/ld+json');

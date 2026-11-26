@@ -126,14 +126,17 @@ class Client {
   protected function setEndpoint() {
     $endpoint = '';
 
-    if ($this->environment === 'test') {
-      $endpoint = 'https://profiles-test.uiowa.edu/api';
+    if ($this->environment === 'feature') {
+      $endpoint = 'https://api-feature.profiles.uiowa.edu/api';
+    }
+    elseif ($this->environment === 'test') {
+      $endpoint = 'https://api-test.profiles.uiowa.edu/api';
     }
     elseif ($this->environment === 'prod') {
-      $endpoint = 'https://profiles.uiowa.edu/api';
+      $endpoint = 'https://api.profiles.uiowa.edu/api';
     }
 
-    if (!isset($endpoint)) {
+    if ($endpoint === '') {
       $this->logger->error('Invalid environment @env. Unable to set API endpoint.', [
         '@env' => $this->environment,
       ]);
