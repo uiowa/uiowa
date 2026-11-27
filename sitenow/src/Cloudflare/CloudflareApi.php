@@ -108,7 +108,7 @@ class CloudflareApi {
     foreach ($hosts as $host) {
       $statuses[$host] = NULL;
       foreach ($packs as $pack) {
-        if (in_array($host, $pack['hosts'] ?? [], TRUE)) {
+        if ($this->packCovers($pack['hosts'] ?? [], $host)) {
           $statuses[$host] = $pack['status'];
           if ($pack['status'] === 'active') {
             break;
@@ -118,6 +118,27 @@ class CloudflareApi {
     }
 
     return $statuses;
+  }
+
+  /**
+   * Whether a certificate pack's hosts cover a host.
+   *
+   * A wildcard such as "*.example.edu" covers exactly one label below it.
+   *
+   * @param string[] $packHosts
+   *   The hosts listed on the pack.
+   * @param string $host
+   *   The host to look for.
+   *
+   * @return bool
+   *   TRUE when a listed host matches exactly or by wildcard.
+   */
+  private function packCovers(array $packHosts, string $host): bool {
+    if (in_array($host, $packHosts, TRUE)) {
+      return TRUE;
+    }
+    $parent = explode('.', $host, 2)[1] ?? '';
+    return $parent !== '' && in_array("*.{$parent}", $packHosts, TRUE);
   }
 
   /**
